@@ -75,6 +75,7 @@ func geometry(t: EITerrain,key: Vector2i,data: Dictionary) -> void:
 	var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(var_to_bytes(data))
 	rows.append({"case":"mesh","key":str(key),"records":data.records.size(),"vertices":v.size(),"triangles":(a[Mesh.ARRAY_INDEX] as PackedInt32Array).size()/3,"uv_error":worst,"height_error":height_error,"sha256":digest.finish().hex_encode()})
 func cut_at(t: EITerrain,p: Vector2,cell: Vector2i) -> float:
+	if oracle.type_profile(t,cell/2).y <= 0: return 0
 	var soft := t.details.soft_ground; var state := soft.shared_field()._tile_image.get_pixel(cell.x/2,cell.y/2)
 	if state.g<0.5 or state.r<0.5: return 0
 	var key := Vector2i(cell.x/32,cell.y/32); var img: Image = soft.sectors[key].image
@@ -217,6 +218,25 @@ func run() -> void:
 		await submissions(view,d,focus)
 	await probe(t,chosen.key,chosen.data,p,"loose"); await probe(t,chosen.key,chosen.data,p,"negative",true)
 	var soft := d.soft_ground; soft.add_step(p,Vector2(0.30,0.46),0.4)
+	if t.ground_type(p.x,p.y)==3:
+		check(soft.sectors.is_empty(),"sand rejects physical footsteps")
+		soft.add_travel(1,p,Vector2(0.12,0.18));soft.add_travel(1,p+Vector2(0.3,0),Vector2(0.12,0.18))
+		check(soft.sectors.is_empty() and soft._walkers.is_empty(),"sand rejects connected travel tracks")
+		check(delta(base,await snap(view,"sand-contact")).changed==0,"sand contact leaves ground and piles unchanged")
+		# A neighboring snow footprint can install dense geometry over sand.
+		# Seed that field explicitly; sand's profile and pile remain rigid.
+		soft._add_mark({"p":p,"extent":Vector2(0.30,0.46),"angle":0.4,"time":soft._age})
+		drain(soft)
+		await probe(t,chosen.key,chosen.data,p,"sand-field-overlap")
+		# Tessellation alone can change a few lighting quantization values.
+		# Compare the same installed mesh with its track field cleared; the
+		# independent GPU height probe above also checks every mound vertex.
+		var overlap := await snap(view,"sand-field-overlap")
+		rows.append({"case":"sand-tessellation","difference":delta(base,overlap)})
+		for row: Dictionary in soft.sectors.values():
+			row.image.fill(Color(0,0,0,0));soft.field.update(row.key)
+		check(delta(overlap,await snap(view,"sand-field-cleared")).changed==0,"overlapping snow field cannot compact sand piles")
+		soft.clear();view.free();return
 	check(not soft.sectors.is_empty(),"authored footstep admitted")
 	await probe(t,chosen.key,chosen.data,p,"pending")
 	check(delta(base,await snap(view,"pending")).changed==0,"pending mesh does not prematurely compact mound")
@@ -291,7 +311,7 @@ func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--mound-hd"): GameData.options["gfx_hd_textures"]=1
 	check(oracle!=null,"independent surface oracle supplied")
 	print("MOUND_STAGE oracle")
-	Engine.max_fps=120; Engine.time_scale=0; DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true); Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+	Engine.time_scale=0; DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true); Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	RenderingServer.set_render_loop_enabled(true); Gfx.ensure_globals(); metadata()
 	print("MOUND_STAGE metadata")
 	if oracle: await run(); oracle.free()

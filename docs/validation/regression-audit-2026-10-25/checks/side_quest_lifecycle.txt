@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:42:47 +5166ms] session 73edb0e4d4fe: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+SIDE_QUEST_LIFECYCLE {"archives":28,"campaign_routes":28,"checks":590,"failures":[]}
+[trace 00:42:52 +9771ms] clean exit

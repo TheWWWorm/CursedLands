@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: AMD - NVIDIA GeForce RTX 3090 Ti
+[trace 00:10:22 +9632ms] session 4f1c356bf591: 1.28.0, Windows 10.0.19045, AMD NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+DESCRIPTOR_BUDGET {"capacity":262144,"failures":[],"rows":[{"cycle":0,"descriptors":131072,"sets":2048},{"cycle":1,"descriptors":131072,"sets":2048},{"cycle":2,"descriptors":131072,"sets":2048}]}
+[trace 00:10:23 +11158ms] clean exit

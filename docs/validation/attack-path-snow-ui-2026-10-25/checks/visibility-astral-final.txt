@@ -1,0 +1,85 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:30:23 +5171ms] session 48235087e5da: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 00:30:24 +5654ms] zone load gz1h (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.483214,"msaa_3d":2,"nodes":814.0,"objects":5217.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3987586,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":630.0,"screen_space_aa":2,"static_bytes":480283997.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":5.654609,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"gz1h (loading)"}
+Unicode parsing error: Invalid unicode codepoint (41a), cannot represent as ASCII/Latin-1
+Unicode parsing error: Invalid unicode codepoint (418), cannot represent as ASCII/Latin-1
+Unicode parsing error: Invalid unicode codepoint (420), cannot represent as ASCII/Latin-1
+[trace 00:30:36 +18177ms] navigation prepared 7 classes in 1351 ms
+[trace 00:30:36 +18197ms] zone ready gz1h
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":1284,"figure_models":78,"object_textures":13,"unit_textures":47,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":12.543242,"msaa_3d":2,"nodes":36115.0,"objects":66655.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3987586,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":630.0,"screen_space_aa":2,"static_bytes":2264532619.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":18.197989,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":613207247498,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":414,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+PASS 997056 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 997056 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 997056 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 997056 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 997056 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 997322 dead=false offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.0, 0.0) command relevance player=0
+PASS 997322 dead=false offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.2, 0.0) command relevance player=0
+PASS 997322 dead=false offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(-0.2, 0.0) command relevance player=0
+PASS 997322 dead=false offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.0, 0.2) command relevance player=0
+PASS 997322 dead=false offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.0, -0.2) command relevance player=0
+PASS 1001005 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 1001005 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 1001005 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 1001005 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 1001005 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 1002008 dead=false offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.0, 0.0) command relevance player=0
+PASS 1002008 dead=false offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.2, 0.0) command relevance player=0
+PASS 1002008 dead=false offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(-0.2, 0.0) command relevance player=0
+PASS 1002008 dead=false offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.0, 0.2) command relevance player=0
+PASS 1002008 dead=false offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.0, -0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 33318975 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 33318975 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 33318975 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 33318975 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 33318975 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS fixture exercises blocked eye rays, not only clear ground
+PASS unnoticed distant target stays outside relevance radius
+UNIT_VISIBILITY 72 checks 0 failures; 24 blocked eye samples
+[trace 00:30:37 +19052ms] clean exit

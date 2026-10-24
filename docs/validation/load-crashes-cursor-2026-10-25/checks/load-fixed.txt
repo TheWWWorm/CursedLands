@@ -1,0 +1,64 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: AMD - NVIDIA GeForce RTX 3090
+[trace 00:08:32 +7666ms] session c2f28532f5b4: 1.28.0, Windows 10.0.19045, AMD NVIDIA GeForce RTX 3090, forward_plus / d3d12
+[trace 00:08:51 +27089ms] zone load gz1h (from host)
+[trace 00:09:23 +58901ms] shader warm-up: 35 of 35 materials, 2799 ms (zone's first picture 5951 ms)
+[trace 00:09:23 +58902ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":0,"materials":5,"meshes":1304,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":847918592.0,"worker":true,"zone":"gz1h"}
+[trace 00:09:36 +71912ms] zone load gz1h (from host)
+[trace 00:09:43 +79342ms] zone teardown gz1h
+[trace 00:09:47 +82844ms] shader warm-up: 8 of 8 materials, 422 ms (zone's first picture 272 ms)
+[trace 00:09:47 +82845ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":1,"materials":5,"meshes":1304,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":855081216.0,"worker":true,"zone":"gz1h"}
+[trace 00:09:56 +91921ms] zone load gz2h (from host)
+[trace 00:10:04 +99618ms] zone teardown gz1h
+[trace 00:10:09 +104902ms] shader warm-up: 10 of 10 materials, 1989 ms (zone's first picture 1279 ms)
+[trace 00:10:09 +104903ms] zone ready gz2h (from host)
+RELOAD_SAMPLE {"cycle":2,"materials":5,"meshes":1853,"nodes":28672.0,"old_world_freed":true,"resources":631.0,"vram":851833344.0,"worker":true,"zone":"gz2h"}
+[trace 00:10:18 +113897ms] zone load bz2h (from host)
+[trace 00:10:26 +121485ms] zone teardown gz2h
+[trace 00:10:27 +122906ms] shader warm-up: 8 of 8 materials, 229 ms (zone's first picture 194 ms)
+[trace 00:10:27 +122907ms] zone ready bz2h (from host)
+RELOAD_SAMPLE {"cycle":3,"materials":5,"meshes":2016,"nodes":18168.0,"old_world_freed":true,"resources":631.0,"vram":1046769152.0,"worker":true,"zone":"bz2h"}
+[trace 00:10:39 +134501ms] zone load gz1h (from host)
+[trace 00:10:46 +141919ms] zone teardown bz2h
+[trace 00:10:49 +145178ms] shader warm-up: 8 of 8 materials, 508 ms (zone's first picture 285 ms)
+[trace 00:10:49 +145179ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":4,"materials":5,"meshes":2016,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":909590272.0,"worker":true,"zone":"gz1h"}
+[trace 00:11:01 +157330ms] zone load gz1h (from host)
+[trace 00:11:09 +164538ms] zone teardown gz1h
+[trace 00:11:12 +167853ms] shader warm-up: 8 of 8 materials, 510 ms (zone's first picture 299 ms)
+[trace 00:11:12 +167854ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":5,"materials":5,"meshes":2016,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":921126656.0,"worker":true,"zone":"gz1h"}
+[trace 00:11:20 +176340ms] zone load gz2h (from host)
+[trace 00:11:25 +180559ms] zone teardown gz1h
+[trace 00:11:27 +182800ms] shader warm-up: 10 of 10 materials, 333 ms (zone's first picture 276 ms)
+[trace 00:11:27 +182801ms] zone ready gz2h (from host)
+RELOAD_SAMPLE {"cycle":6,"materials":5,"meshes":2016,"nodes":28673.0,"old_world_freed":true,"resources":631.0,"vram":883783424.0,"worker":true,"zone":"gz2h"}
+[trace 00:11:35 +190766ms] zone load bz2h (from host)
+[trace 00:11:42 +197965ms] zone teardown gz2h
+[trace 00:11:43 +199132ms] shader warm-up: 8 of 8 materials, 336 ms (zone's first picture 173 ms)
+[trace 00:11:43 +199133ms] zone ready bz2h (from host)
+RELOAD_SAMPLE {"cycle":7,"materials":5,"meshes":2016,"nodes":18170.0,"old_world_freed":true,"resources":631.0,"vram":1067084800.0,"worker":true,"zone":"bz2h"}
+[trace 00:11:56 +211578ms] zone load gz1h (from host)
+[trace 00:12:04 +219405ms] zone teardown bz2h
+[trace 00:12:07 +222864ms] shader warm-up: 8 of 8 materials, 527 ms (zone's first picture 299 ms)
+[trace 00:12:07 +222865ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":8,"materials":5,"meshes":2016,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":921144832.0,"worker":true,"zone":"gz1h"}
+[trace 00:12:19 +235357ms] zone load gz1h (from host)
+[trace 00:12:27 +242995ms] zone teardown gz1h
+[trace 00:12:30 +246263ms] shader warm-up: 8 of 8 materials, 412 ms (zone's first picture 304 ms)
+[trace 00:12:30 +246264ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":9,"materials":5,"meshes":2016,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":921146880.0,"worker":true,"zone":"gz1h"}
+[trace 00:12:39 +255009ms] zone load gz2h (from host)
+[trace 00:12:43 +259401ms] zone teardown gz1h
+[trace 00:12:46 +261560ms] shader warm-up: 10 of 10 materials, 279 ms (zone's first picture 263 ms)
+[trace 00:12:46 +261561ms] zone ready gz2h (from host)
+RELOAD_SAMPLE {"cycle":10,"materials":5,"meshes":2016,"nodes":28680.0,"old_world_freed":true,"resources":631.0,"vram":883804672.0,"worker":true,"zone":"gz2h"}
+[trace 00:12:54 +269766ms] zone load bz2h (from host)
+[trace 00:13:01 +277356ms] zone teardown gz2h
+[trace 00:13:03 +278405ms] shader warm-up: 8 of 8 materials, 182 ms (zone's first picture 185 ms)
+[trace 00:13:03 +278406ms] zone ready bz2h (from host)
+RELOAD_SAMPLE {"cycle":11,"materials":5,"meshes":2016,"nodes":18170.0,"old_world_freed":true,"resources":631.0,"vram":1067330048.0,"worker":true,"zone":"bz2h"}
+DESCRIPTOR_RELOAD 12 loads []
+[trace 00:13:07 +282564ms] clean exit

@@ -1,0 +1,76 @@
+{
+	"checks": 31,
+	"failures": 0,
+	"rows": [
+		{
+			"case": "prepare",
+			"us": 181627
+		},
+		{
+			"case": "mesh",
+			"height_error": 0.0000019073486328125,
+			"key": "(17, 24)",
+			"records": 1,
+			"sha256": "6d395fbb23614d20f91bff5555faff5f372887b040db51b43c410cca4439de96",
+			"triangles": 456,
+			"uv_error": 0.0,
+			"vertices": 308
+		},
+		{
+			"case": "chosen",
+			"key": "(17, 24)",
+			"record": "{ \"p\": (137.8777, 194.0213), \"kind\": 2, \"radius\": 0.52145202457905, \"height\": 0.08975559473038, \"phase\": 1.45437950627561 }",
+			"zone": "gz15h"
+		},
+		{
+			"active_chunks": 4,
+			"active_median_us": 8718,
+			"case": "build-cost",
+			"chunks": 25,
+			"max_us": 9398,
+			"median_us": 22,
+			"mounds": 6,
+			"vertices": 2270
+		},
+		{
+			"case": "visible",
+			"difference": {
+				"changed": 1681,
+				"over_2": 777,
+				"peak": 14
+			}
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "loose",
+			"negative": false,
+			"samples": 308
+		},
+		{
+			"bad": 308,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "negative",
+			"negative": true,
+			"samples": 308
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "sand-field-overlap",
+			"negative": false,
+			"samples": 308
+		},
+		{
+			"case": "sand-tessellation",
+			"difference": {
+				"changed": 359,
+				"over_2": 0,
+				"peak": 1
+			}
+		}
+	]
+}

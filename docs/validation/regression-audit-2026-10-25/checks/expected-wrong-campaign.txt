@@ -1,0 +1,10 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:50:02 +5137ms] session 8c4b98416156: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ERROR: Gameplay test was given the wrong campaign data
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _ready (/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/parity/gameplay_bootstrap.gd:29)
+       [1] _start (res://src/main.gd:119)
+       [2] _ready (res://src/main.gd:69)
+[trace 00:50:02 +5416ms] clean exit

@@ -1,0 +1,57 @@
+{
+  "git_head": "493f5e1578f560e5c1a60d45f8d044c08c2ae125",
+  "game_source_sha256": "32bdb21bfc3a4ed6b113e370a23caaeca707cf2b539264bfd138f60b7e32967d",
+  "manifest_sha256": "45e342cf61f6c0f17c93c04fdea8de36805b51560083051077c52342af0a4c83",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "recent_character_controls",
+      "script": "tools/tests/recent_character_controls.gd",
+      "script_sha256": "a09516058f6bfea62966d89716ebab7d19824720c533309276a164a5a1464617",
+      "contract": "Every authored kit spell survives selection/save/admission; View and training Accept/Cancel work.",
+      "issues": [
+        79,
+        81,
+        84,
+        87
+      ],
+      "mode": "headless",
+      "seconds": 5.77,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/recent_character_controls.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "recent_character_controls/run.log",
+      "passed": false,
+      "result": null,
+      "errors": [
+        "Missing or repeated profile/campaign confirmation",
+        "ERROR: Gameplay test was given the wrong campaign data",
+        "Expected exactly one RECENT_CHARACTER_CONTROLS summary, found 0",
+        "Process exit: 2"
+      ],
+      "infrastructure_diagnostics": [],
+      "retained_log": "checks/expected-wrong-campaign.txt",
+      "retained_log_sha256": "c662d1c7a36fff18af3b4f074ad458afe643ca67b6050e0c7db5eb09c496f9db"
+    }
+  ],
+  "passed": false
+}

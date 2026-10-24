@@ -228,7 +228,7 @@ func layout_cases() -> void:
 	for language in ["en","ru","de"]:
 		RemakeText.lang = language
 		check(TutorialGuide.title("zt7") == {"en":"Healing", "ru":"Лечение", "de":"Heilung"}[language], "healing heading language " + language)
-		for resolution in [Vector2i(800,600), Vector2i(1280,720), Vector2i(1920,1080), Vector2i(2560,1080), Vector2i(600,960)]:
+		for resolution in [Vector2i(800,600), Vector2i(1280,720), Vector2i(1920,1080), Vector2i(2560,1080), Vector2i(3840,2160), Vector2i(600,960)]:
 			DisplayServer.window_set_size(resolution); get_window().size = resolution
 			await frames(5)
 			for pad in [false,true]:
@@ -241,7 +241,9 @@ func layout_cases() -> void:
 				check(rect.end.x <= g.hud.ui_size().x+1 and rect.end.y <= g.hud.ui_size().y+1 and rect.position.x >= 0 and rect.position.y >= 0, "hint fits %s %s pad=%s" % [language,resolution,pad])
 				check(hint._body.get_visible_line_count() == hint._body.get_line_count(), "hint text not clipped %s %s" % [language,resolution])
 				check(hint._heading.text == TutorialGuide.title("zt7"), "translated heading reaches card " + language)
-				if resolution in [Vector2i(800,600),Vector2i(1920,1080),Vector2i(600,960)]: await capture("hint-%s-%sx%s-%s" % [language,resolution.x,resolution.y,"pad" if pad else "mouse"])
+				check(is_equal_approx(hint._book.size.x,maxf(44.0 if TouchInput.enabled else 28.0,28*g.hud.top_scale())),"guide book scales with HUD and keeps its base size")
+				check(hint._book.get_global_rect().position.y>=g.hud.top_bottom() and hint._book.get_global_rect().end.x<=g.hud.ui_size().x,"guide book clears the portrait and stays on screen")
+				if resolution in [Vector2i(800,600),Vector2i(1920,1080),Vector2i(3840,2160),Vector2i(600,960)]: await capture("hint-%s-%sx%s-%s" % [language,resolution.x,resolution.y,"pad" if pad else "mouse"])
 				hint.show_last(); advance(0.1); await frames(3); advance(0.1)
 				check(hint._card.get_global_rect().end.y <= g.hud.ui_size().y+1, "expanded fits %s %s" % [language,resolution])
 				hint.close()

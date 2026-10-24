@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Draw live attack previews toward the enemy’s current position, including running and newly revealed targets, while keeping predictive pursuit. ([#85](https://github.com/TheWWWorm/CursedLands/issues/85))
+- Keep ground deformation for snow and remove it from sand, including neighboring deformation fields and ground-cover placement.
+- Scale tutorial cards and guide/info controls with the HUD on high-resolution screens while preserving their base size.
+- Increase Direct3D 12 resource-descriptor capacity and shader-instance storage to accommodate overlapping large maps during loading.
+- Report terrain map coordinates and a ready-to-use `teleport` command from `cursor`, with translated help and an explicit screen-pixel fallback when no map ground is available.
 - Preserve NPC corpse memory, pending discoveries and ongoing investigations through saves and reloads. ([#112](https://github.com/TheWWWorm/CursedLands/issues/112))
 - Restore magic-trap casts with target masks derived from the owner’s map diplomacy, retaining activation and cooldown state. ([#110](https://github.com/TheWWWorm/CursedLands/issues/110), [#106](https://github.com/TheWWWorm/CursedLands/issues/106))
 - Play the requested posture transition after a spell finishes casting. ([#109](https://github.com/TheWWWorm/CursedLands/issues/109))

@@ -1,0 +1,382 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:47:33 +5165ms] session bb4cf7c9ce36: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/repeated_spells_input.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/audit-main-catalog/tests/spells/repeated_spells_input/profile/data/godot/app_userdata/Cursed Lands"}
+[trace 00:47:34 +5623ms] zone load gz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":0.462059,"msaa_3d":2,"nodes":814.0,"objects":5217.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=1 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":4019297,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":2,"static_bytes":484616899.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":5.627507,"video_allocated_bytes":null,"vsync":null,"window":[800,600],"world_count":0,"worlds":[],"zone":"gz1g (loading)"}
+[trace 00:47:37 +8566ms] navigation prepared 5 classes in 230 ms
+[trace 00:47:37 +8571ms] zone ready gz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":898,"figure_models":56,"object_textures":36,"unit_textures":12,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":2.943845,"msaa_3d":2,"nodes":5867.0,"objects":15715.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=1 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":4019297,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":634.0,"screen_space_aa":2,"static_bytes":945648389.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":8.571496,"video_allocated_bytes":null,"vsync":null,"window":[800,600],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":618861169290,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS prepare: loaded scene accepts third-person keyboard input
+PASS prepare: original navigation supplies a clear nearby target location
+PASS classic: spell selects again: weak{} cast 1
+PASS classic: same living target remains eligible: weak{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: weak{}
+PASS classic: effect applies through normal queued execution: weak{} cast 1
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: weak{} cast 2
+PASS classic: same living target remains eligible: weak{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: weak{}
+PASS classic: effect applies through normal queued execution: weak{} cast 2
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: effect expires before third cast: weak{}
+PASS classic: spell selects again: weak{} cast 3
+PASS classic: same living target remains eligible: weak{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: weak{}
+PASS classic: effect applies through normal queued execution: weak{} cast 3
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: slow{} cast 1
+PASS classic: same living target remains eligible: slow{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: slow{}
+PASS classic: effect applies through normal queued execution: slow{} cast 1
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: slow{} cast 2
+PASS classic: same living target remains eligible: slow{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: slow{}
+PASS classic: effect applies through normal queued execution: slow{} cast 2
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: effect expires before third cast: slow{}
+PASS classic: spell selects again: slow{} cast 3
+PASS classic: same living target remains eligible: slow{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: slow{}
+PASS classic: effect applies through normal queued execution: slow{} cast 3
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: strength{} cast 1
+PASS classic: same living target remains eligible: strength{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: strength{}
+PASS classic: effect applies through normal queued execution: strength{} cast 1
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: strength{} cast 2
+PASS classic: same living target remains eligible: strength{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: strength{}
+PASS classic: effect applies through normal queued execution: strength{} cast 2
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: effect expires before third cast: strength{}
+PASS classic: spell selects again: strength{} cast 3
+PASS classic: same living target remains eligible: strength{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: strength{}
+PASS classic: effect applies through normal queued execution: strength{} cast 3
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: healing{} cast 1
+PASS classic: same living target remains eligible: healing{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: healing{}
+PASS classic: effect applies through normal queued execution: healing{} cast 1
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: healing{} cast 2
+PASS classic: same living target remains eligible: healing{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: healing{}
+PASS classic: effect applies through normal queued execution: healing{} cast 2
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS classic: spell selects again: healing{} cast 3
+PASS classic: same living target remains eligible: healing{}
+PASS classic: crosshair picks native target silhouette
+PASS classic: cast clears targeting for the next selection
+PASS classic: input queues one validated learned-spell command
+PASS classic: cast spends normal stamina: healing{}
+PASS classic: effect applies through normal queued execution: healing{} cast 3
+PASS classic: cast animation and pending effect finish normally
+PASS classic: equipped spell remains available after execution
+PASS keyboard: spell selects again: weak{} cast 1
+PASS keyboard: same living target remains eligible: weak{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: weak{}
+PASS keyboard: effect applies through normal queued execution: weak{} cast 1
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: weak{} cast 2
+PASS keyboard: same living target remains eligible: weak{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: weak{}
+PASS keyboard: effect applies through normal queued execution: weak{} cast 2
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: effect expires before third cast: weak{}
+PASS keyboard: spell selects again: weak{} cast 3
+PASS keyboard: same living target remains eligible: weak{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: weak{}
+PASS keyboard: effect applies through normal queued execution: weak{} cast 3
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: slow{} cast 1
+PASS keyboard: same living target remains eligible: slow{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: slow{}
+PASS keyboard: effect applies through normal queued execution: slow{} cast 1
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: slow{} cast 2
+PASS keyboard: same living target remains eligible: slow{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: slow{}
+PASS keyboard: effect applies through normal queued execution: slow{} cast 2
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: effect expires before third cast: slow{}
+PASS keyboard: spell selects again: slow{} cast 3
+PASS keyboard: same living target remains eligible: slow{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: slow{}
+PASS keyboard: effect applies through normal queued execution: slow{} cast 3
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: strength{} cast 1
+PASS keyboard: same living target remains eligible: strength{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: strength{}
+PASS keyboard: effect applies through normal queued execution: strength{} cast 1
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: strength{} cast 2
+PASS keyboard: same living target remains eligible: strength{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: strength{}
+PASS keyboard: effect applies through normal queued execution: strength{} cast 2
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: effect expires before third cast: strength{}
+PASS keyboard: spell selects again: strength{} cast 3
+PASS keyboard: same living target remains eligible: strength{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: strength{}
+PASS keyboard: effect applies through normal queued execution: strength{} cast 3
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: healing{} cast 1
+PASS keyboard: same living target remains eligible: healing{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: healing{}
+PASS keyboard: effect applies through normal queued execution: healing{} cast 1
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: healing{} cast 2
+PASS keyboard: same living target remains eligible: healing{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: healing{}
+PASS keyboard: effect applies through normal queued execution: healing{} cast 2
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS keyboard: spell selects again: healing{} cast 3
+PASS keyboard: same living target remains eligible: healing{}
+PASS keyboard: crosshair picks native target silhouette
+PASS keyboard: cast clears targeting for the next selection
+PASS keyboard: input queues one validated learned-spell command
+PASS keyboard: cast spends normal stamina: healing{}
+PASS keyboard: effect applies through normal queued execution: healing{} cast 3
+PASS keyboard: cast animation and pending effect finish normally
+PASS keyboard: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 0
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: weak{} cast 1
+PASS gamepad: same living target remains eligible: weak{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: weak{}
+PASS gamepad: effect applies through normal queued execution: weak{} cast 1
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 0
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: weak{} cast 2
+PASS gamepad: same living target remains eligible: weak{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: weak{}
+PASS gamepad: effect applies through normal queued execution: weak{} cast 2
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: effect expires before third cast: weak{}
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 0
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: weak{} cast 3
+PASS gamepad: same living target remains eligible: weak{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: weak{}
+PASS gamepad: effect applies through normal queued execution: weak{} cast 3
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 1
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: slow{} cast 1
+PASS gamepad: same living target remains eligible: slow{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: slow{}
+PASS gamepad: effect applies through normal queued execution: slow{} cast 1
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 1
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: slow{} cast 2
+PASS gamepad: same living target remains eligible: slow{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: slow{}
+PASS gamepad: effect applies through normal queued execution: slow{} cast 2
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: effect expires before third cast: slow{}
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 1
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: slow{} cast 3
+PASS gamepad: same living target remains eligible: slow{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: slow{}
+PASS gamepad: effect applies through normal queued execution: slow{} cast 3
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 2
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: strength{} cast 1
+PASS gamepad: same living target remains eligible: strength{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: strength{}
+PASS gamepad: effect applies through normal queued execution: strength{} cast 1
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 2
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: strength{} cast 2
+PASS gamepad: same living target remains eligible: strength{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: strength{}
+PASS gamepad: effect applies through normal queued execution: strength{} cast 2
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: effect expires before third cast: strength{}
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 2
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: strength{} cast 3
+PASS gamepad: same living target remains eligible: strength{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: strength{}
+PASS gamepad: effect applies through normal queued execution: strength{} cast 3
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 3
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: healing{} cast 1
+PASS gamepad: same living target remains eligible: healing{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: healing{}
+PASS gamepad: effect applies through normal queued execution: healing{} cast 1
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 3
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: healing{} cast 2
+PASS gamepad: same living target remains eligible: healing{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: healing{}
+PASS gamepad: effect applies through normal queued execution: healing{} cast 2
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+PASS gamepad: LB opens the spell wheel
+PASS gamepad: D-pad selects spell slot 3
+PASS gamepad: A confirms and closes the spell wheel
+PASS gamepad: spell selects again: healing{} cast 3
+PASS gamepad: same living target remains eligible: healing{}
+PASS gamepad: D-pad acquires the repeated spell target
+PASS gamepad: cast clears targeting for the next selection
+PASS gamepad: input queues one validated learned-spell command
+PASS gamepad: cast spends normal stamina: healing{}
+PASS gamepad: effect applies through normal queued execution: healing{} cast 3
+PASS gamepad: cast animation and pending effect finish normally
+PASS gamepad: equipped spell remains available after execution
+REPEATED_SPELLS_INPUT 371 checks 0 failures
+[trace 00:47:42 +14304ms] clean exit

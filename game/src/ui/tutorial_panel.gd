@@ -100,7 +100,6 @@ func _ready() -> void:
 		_book = _button("", open_guide)
 		_book.icon = load("res://icons/wiki/book.svg")
 		_book.expand_icon = true
-		_book.add_theme_constant_override("icon_max_width", 20)
 		_book.tooltip_text = RemakeText.t("Getting started")
 		get_parent().add_child.call_deferred(_book)
 
@@ -255,9 +254,14 @@ func _process(dt: float) -> void:
 	var usable := _usable()
 	if is_instance_valid(_book):
 		_book.visible = usable
-		var side := 44.0 if TouchInput.enabled else 28.0
+		# This control lives outside the archive HUD's scaling transform.
+		# Match that HUD explicitly so its book stays readable at high DPI.
+		var side := maxf(44.0 if TouchInput.enabled else 28.0, 28.0 * hud.top_scale())
 		_book.size = Vector2.ONE * side
-		_book.position = Vector2(size.x - side - 8, hud.top_bottom() + 8) if hud.portrait() else Vector2(hud._actions.offset_right + 10, hud.top_bottom() + 8)
+		_book.add_theme_constant_override("icon_max_width", roundi(side * 20.0 / 28.0))
+		_book.tooltip_text = RemakeText.t("Getting started")
+		var gap := maxf(8.0, 6.0 * hud.top_scale())
+		_book.position = Vector2(size.x - side - gap, hud.top_bottom() + gap) if hud.portrait() else Vector2(hud._actions.offset_right + gap, hud.top_bottom() + gap)
 	if not usable:
 		if visible: _card.hide()
 		# A hidden screen's old hint must not return on its next visit.
@@ -346,6 +350,9 @@ func _layout() -> void:
 		x = 12.0
 		width = size.x - 24.0
 		bottom = maxf(hud.top_bottom() + 100.0, size.y * 0.62)
+	elif hud:
+		scale_factor = maxf(1.0, hud.top_scale())
+		width = minf(320.0, (size.x - 24.0) / scale_factor)
 	elif get_parent() is CampView:
 		# The shop's right description column is empty until an item is
 		# inspected. Retire this hint as soon as those descriptions are needed.

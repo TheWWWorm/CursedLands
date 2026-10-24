@@ -1,0 +1,453 @@
+{
+  "scope": "Additional focused regression runs; counts exclude the separate 11-case catalog replay and earlier issue/path/rendering suites.",
+  "runs": 22,
+  "assertions": 5135,
+  "passed": true,
+  "cases": [
+    {
+      "id": "camp_inventory_ui",
+      "script": "tools/tests/camp_inventory_ui.gd",
+      "script_sha256": "e30d052c865c38670c39a3b81223ff423b6052e6fd2a96bb5abe73e70a7094a0",
+      "contract": "Shift stacks, charge/wear identity, quest-item protection and independent filters survive page changes.",
+      "issues": [
+        100,
+        101,
+        102
+      ],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/camp_inventory_ui.txt",
+      "passed": true,
+      "result": {
+        "checks": 116,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "77d0cbe45d5eae5d1bbb9a60ab4fb6d3b1508f1309fea4e4c2124e81b469d7f6"
+    },
+    {
+      "id": "camp_transactions",
+      "script": "tools/tests/camp_transactions.gd",
+      "script_sha256": "b6de35a6a514d0e344fa4c8f6e5dbdcf410c0bee74bf0e8838bfba7fba8a8712",
+      "contract": "Co-op repair and swapping preserve private purses and reject stale transactions.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/camp_transactions.txt",
+      "passed": true,
+      "result": {
+        "checks": 53,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "5f27912fea2a96ed1dd357c26a61982058cbefac2f9e9e84d9bdf24a79218506"
+    },
+    {
+      "id": "spell_constructor_transactions",
+      "script": "tools/tests/spell_constructor_transactions.gd",
+      "script_sha256": "6760a902807f0ed824a282c463c34b0a06aef68bd561915eb54fd6434c7195da",
+      "contract": "Paused co-op guest constructs from shop/mixed/bag sources atomically.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/spell_constructor_transactions.txt",
+      "passed": true,
+      "result": {
+        "checks": 52,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "722ec0a3499826e344586804808acecc5d5aaad97f31485fd744b0cc5e42a0df"
+    },
+    {
+      "id": "repeated_spells_input",
+      "script": "tools/tests/repeated_spells_input.gd",
+      "script_sha256": "e4c6af0078f94fbcba5cf5514167b6595882945d710a18ed74b156d601f3f29c",
+      "contract": "Repeated casts succeed through classic, direct keyboard and controller input.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/repeated_spells_input.txt",
+      "passed": true,
+      "result": {
+        "checks": 371,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "0918950187d271c601805b4885220776edd4f891a5cb505a080213ac2e058a3b"
+    },
+    {
+      "id": "dialogue_clock_coop",
+      "script": "tools/tests/dialogue_clock_coop.gd",
+      "script_sha256": "98c13ea9f2d27dd1a5816c21d321116ae5e0bcec9234ae3fc996007f3dad2f33",
+      "contract": "Host resets both peers to normal unpaused dialogue; guest cannot override it.",
+      "issues": [
+        92
+      ],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/dialogue_clock_coop.txt",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "b17420ce30fb8191ba6fd9ab6af51d80f84a6d25087201d8999557cd69099221"
+    },
+    {
+      "id": "dialogue_hold_space",
+      "script": "tools/tests/dialogue_hold_space.gd",
+      "script_sha256": "9e4546d2de10d74eeb8a61dd3db2ba3d46f877f360fe0d2e8fcbd9dd669aa3b4",
+      "contract": "Held Space advances phrases but preserves the final phrase until a fresh press.",
+      "issues": [
+        108
+      ],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/dialogue_hold_space.txt",
+      "passed": true,
+      "result": {
+        "checks": 6,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "fc932bc133ae3819de5235ee961159b3cfe4890be732954b4c982c0d97878535"
+    },
+    {
+      "id": "issue_ui_controls",
+      "script": "tools/tests/issue_ui_controls.gd",
+      "script_sha256": "1dd819e657a5dcdf7cda5b76249920a97b5cde6cb575451454ea5ff0d403e96f",
+      "contract": "Hovered-list scrolling, quest journal states and EN/RU/DE option strings.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/issue_ui_controls.txt",
+      "passed": true,
+      "result": {
+        "checks": 198,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "9509a403b4dcf0977fb7ed811dec0449e099f460578b5d74663e19d8e4c17ebd"
+    },
+    {
+      "id": "hidden_presentation",
+      "script": "tools/tests/hidden_presentation.gd",
+      "script_sha256": "71ede6a4474ef6a7cd0308f326efdb7b0bdd1945a6f9a8cd49ff10fc129a0d41",
+      "contract": "Hidden replica wakes at its current position without double-counting animation time.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/hidden_presentation.txt",
+      "passed": true,
+      "result": {
+        "checks": 69,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "9d3f69482a57b08b43ab515d85994f65867a6d5b8abc050bbba049e667291895"
+    },
+    {
+      "id": "dialogue_mouths",
+      "script": "tools/tests/dialogue_mouths.gd",
+      "script_sha256": "fdd2c160f60a2dfe5aa8ba774a96db70be2ebdbb1824ed1ca30c6909cf6a906d",
+      "contract": "Original body and portrait mouth atlases, speaker changes and stop/skip lifecycle.",
+      "issues": [
+        76
+      ],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/dialogue_mouths.txt",
+      "passed": true,
+      "result": {
+        "checks": 90,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "964bc300d978812584829619f24ea6352c75d607e3aa2233eee30bf9058cdd19"
+    },
+    {
+      "id": "dialogue_feedback",
+      "script": "tools/tests/dialogue_feedback.gd",
+      "script_sha256": "21e13411d88810f0ea23f16469feb2584cd6dbe0def63594f568748be1c73560",
+      "contract": "LiA smith topics, Back, reopening, highlighting and localized reward names.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "astral",
+      "log": "checks/dialogue_feedback.txt",
+      "passed": true,
+      "result": {
+        "checks": 16,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "b3f5345e9e73c21fb2f0db0431f63e782b73e870067f38303e3258776287b8a2"
+    },
+    {
+      "id": "save_actor_refs",
+      "script": "tools/tests/save_actor_refs.gd",
+      "script_sha256": "873f1db9b5f9323783f64cf925ca58b5d679ae6ad2415249806b00a07c9cc679",
+      "contract": "Saved runtime actor identities remain distinct.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/save_actor_refs.txt",
+      "passed": true,
+      "result": {
+        "checks": 14,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "fcc54de3f2775100d9ed9ec4a54542e15109994afe2237ffd71a108de62a1c74"
+    },
+    {
+      "id": "side_quest_lifecycle",
+      "script": "tools/tests/side_quest_lifecycle.gd",
+      "script_sha256": "11f86133396652ce15792db64ab597c0315158bcddca23eb3e26237b3bb865c5",
+      "contract": "Authored side-quest activation, return and completion survive the campaign flow.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/side_quest_lifecycle.txt",
+      "passed": true,
+      "result": {
+        "checks": 590,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "0bb61a9d7e7f31049b2c03379fafe31615459d52eb681a21d2a1bfc8d707d4c9"
+    },
+    {
+      "id": "campaign_feedback",
+      "script": "tools/tests/campaign_feedback.gd",
+      "script_sha256": "5a375b952af4e1274736688168e4e149b3bebe7dd4e8516d7a41708aca772443",
+      "contract": "Saved clocks, solo defeat and Suslanger revisit quest-state retention.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/campaign_feedback.txt",
+      "passed": true,
+      "result": {
+        "checks": 35,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "59c9c1d7b7c71f614855e0f89e95d19db2f79516e9ed2093066e58b44d9fb6b5"
+    },
+    {
+      "id": "prison_alarm_state",
+      "script": "tools/tests/prison_alarm_state.gd",
+      "script_sha256": "0eac604d4d2931a8dbcc252bf2c34d214fdf2a55ee211cdf4d42d7ccbce87b98",
+      "contract": "Guard pursuit and prison alarm reset retain native identity.",
+      "issues": [],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/prison_alarm_state.txt",
+      "passed": true,
+      "result": {
+        "checks": 70,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "3fade750fbfdda6cba36f55f96290fbea25f618d16b860683b5a9489b7f31224"
+    },
+    {
+      "id": "recent_character_controls",
+      "script": "tools/tests/recent_character_controls.gd",
+      "script_sha256": "a09516058f6bfea62966d89716ebab7d19824720c533309276a164a5a1464617",
+      "contract": "Every spell in a real multiplayer kit survives selection/save/admission; View and training Accept/Cancel work.",
+      "issues": [
+        79,
+        81,
+        84,
+        87
+      ],
+      "mode": "headless",
+      "campaign": "base",
+      "log": "checks/recent_character_controls.txt",
+      "passed": true,
+      "result": {
+        "checks": 71,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log_sha256": "17a7d1b63616dd96e98632655294cea95de4280233f25932e9e7a3f128f8d129"
+    },
+    {
+      "id": "camp_art_regressions",
+      "script": "tools/tests/camp_art_regressions.gd",
+      "script_sha256": "5f3142e5428fc47bcfdf15527d5c3ad904a89f60b11cfc46e041c6f5244baf12",
+      "contract": "Original item UVs, spell availability, constructor filtering and EN/RU/DE labels.",
+      "issues": [
+        69,
+        70,
+        71,
+        77
+      ],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/camp_art_regressions.txt",
+      "passed": true,
+      "result": {
+        "checks": 115,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "7d3421b079411587b380439fd291a74b50acfffad891c61d6fbc20dc99a43d19"
+    },
+    {
+      "id": "travel_preview_regressions",
+      "script": "tools/tests/travel_preview_regressions.gd",
+      "script_sha256": "5834405638e7426fee4404d998c74909184e88ec52121e8d4753778ea75d0bdd",
+      "contract": "Distinct healer field/cave destinations and original EN/RU/DE unit previews.",
+      "issues": [],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/travel_preview_regressions.txt",
+      "passed": true,
+      "result": {
+        "checks": 55,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "bba7096d87423b9fee6e75dcf03cc7b223ec9836a48507ad2e21bed1e7b74161"
+    },
+    {
+      "id": "issue_ui_rendered_en",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "script_sha256": "7ce3309cafb4d0706c8c2cccc8ec47a3910263ec27f176f52307eb17571b2f14",
+      "contract": "Original character/item bounds while turning; options layout in en.",
+      "issues": [
+        78,
+        86
+      ],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/issue_ui_rendered_en.txt",
+      "passed": true,
+      "result": {
+        "checks": 1055,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "403e6813b3087f87f074709580cfe79315bc5c851bab8cd048a5d61a441ab8d9"
+    },
+    {
+      "id": "issue_ui_rendered_ru",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "script_sha256": "7ce3309cafb4d0706c8c2cccc8ec47a3910263ec27f176f52307eb17571b2f14",
+      "contract": "Original character/item bounds while turning; options layout in ru.",
+      "issues": [
+        78,
+        86
+      ],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/issue_ui_rendered_ru.txt",
+      "passed": true,
+      "result": {
+        "checks": 1055,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "336c8c7f533798e9cb89f66575d2fca3c1d2a988da6aabe036250556197fb7f8"
+    },
+    {
+      "id": "issue_ui_rendered_de",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "script_sha256": "7ce3309cafb4d0706c8c2cccc8ec47a3910263ec27f176f52307eb17571b2f14",
+      "contract": "Original character/item bounds while turning; options layout in de.",
+      "issues": [
+        78,
+        86
+      ],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/issue_ui_rendered_de.txt",
+      "passed": true,
+      "result": {
+        "checks": 1055,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "e1ae014a7ac7de5fb3f3cbde614f72eda5c07cfca4ab227fd52321f6226209c9"
+    },
+    {
+      "id": "ground_mark_receivers",
+      "script": "tools/tests/ground_mark_receivers.gd",
+      "script_sha256": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67",
+      "contract": "Original footprints, blood and scorch remain visible on slopes and raised floors; lifecycle releases geometry.",
+      "issues": [
+        29,
+        96
+      ],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/ground_mark_receivers.txt",
+      "passed": true,
+      "result": {
+        "checks": 13,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "38cbdebd904babe68597fa533b5b8ffb259c589be6e997a237eff8772f90122e"
+    },
+    {
+      "id": "ground_mark_animation",
+      "script": "tools/tests/ground_mark_animation.gd",
+      "script_sha256": "da00cc3b843e73b8e89ec7c64edc250501fd65cfdc1b59297f855f95d3b7351e",
+      "contract": "Animated blood matches the independent CPU-clipped receiver across sizes/angles and after surface changes.",
+      "issues": [
+        29,
+        96
+      ],
+      "mode": "rendered",
+      "campaign": "base",
+      "log": "checks/ground_mark_animation.txt",
+      "passed": true,
+      "result": {
+        "checks": 24,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log_sha256": "5659904b8df8b9b5c017034862b877e40134aaf1c8d2ed54d4a575250ee6de2c"
+    }
+  ]
+}

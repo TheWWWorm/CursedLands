@@ -6,11 +6,13 @@ func _ready() -> void:
 	var test_seed := 20261020
 	var campaign := ""
 	var display := "headless"
+	var script_root := ""
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--suite-script="): script_path = arg.trim_prefix("--suite-script=")
 		if arg.begins_with("--suite-seed="): test_seed = int(arg.trim_prefix("--suite-seed="))
 		if arg.begins_with("--suite-campaign="): campaign = arg.trim_prefix("--suite-campaign=")
 		if arg.begins_with("--suite-display="): display = arg.trim_prefix("--suite-display=")
+		if arg.begins_with("--suite-script-root="): script_root = arg.trim_prefix("--suite-script-root=")
 	var actual_display := "headless" if DisplayServer.get_name() == "headless" else "rendered"
 	if actual_display != display:
 		push_error("Gameplay test display does not match the selected mode")
@@ -27,12 +29,15 @@ func _ready() -> void:
 		push_error("Gameplay test was given the wrong campaign data")
 		get_tree().quit(2)
 		return
-	if not script_path.begins_with("res://tools/tests/") or not script_path.ends_with(".gd"):
+	var staged := script_path.begins_with("res://tools/tests/") and not ".." in script_path
+	var external := script_root.is_absolute_path() and script_path.is_absolute_path() \
+		and script_path.simplify_path().get_base_dir() == script_root.simplify_path()
+	if not (staged or external) or not script_path.ends_with(".gd"):
 		push_error("Invalid gameplay test path")
 		get_tree().quit(2)
 		return
 	seed(test_seed)
-	Engine.max_fps = 60
+	Engine.max_fps = mini(Engine.max_fps, 60) if Engine.max_fps > 0 else 60
 	GameData.options.merge({"auto_graphics":0, "autosave":0, "show_tutorial":0,
 		"net_upnp":0, "net_lan":0, "net_directory":0, "net_websocket":0}, true)
 	print("GAMEPLAY_SUITE_START ", JSON.stringify({

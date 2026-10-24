@@ -1,0 +1,123 @@
+undefined4 FUN_0054df50(int *param_1,int param_2)
+
+{
+  float fVar1;
+  float fVar2;
+  char cVar3;
+  int iVar4;
+  int in_ECX;
+  float fVar5;
+  float fVar6;
+  int iVar7;
+  float10 fVar8;
+  int iStack_cc;
+  float fStack_c8;
+  float fStack_c4;
+  int iStack_c0;
+  undefined **local_bc;
+  int local_b8;
+  int local_b4;
+  undefined4 local_b0;
+  undefined4 local_ac;
+  int iStack_a8;
+  int local_a4;
+  float fStack_a0;
+  float fStack_9c;
+  int iStack_98;
+  undefined1 auStack_94 [88];
+  float fStack_3c;
+  float fStack_38;
+  undefined **ppuStack_24;
+  int iStack_20;
+  int iStack_10;
+  void *local_c;
+  undefined1 *puStack_8;
+  int local_4;
+
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00720c07;
+  local_c = ExceptionList;
+  ExceptionList = &local_c;
+  local_a4 = in_ECX;
+  iVar4 = FUN_00455950();
+  param_1[5] = -0x40800000;
+  if (((*param_1 == 6) && ((int *)param_1[2] != (int *)0x0)) && (param_1[1] == 0)) {
+    local_bc = &PTR_LAB_0073c120;
+    local_b8 = 0;
+    local_ac = 0;
+    local_b0 = 0;
+    local_b4 = 0;
+    iVar7 = *(int *)param_1[2];
+    local_4 = 0;
+    fVar8 = (float10)(**(code **)(**(int **)(in_ECX + 0x1c) + 0xf0))();
+    (**(code **)(iVar7 + 0xb0))(&local_bc,(float)fVar8);
+    if (0 < local_b4) {
+      FUN_00545750();
+      FUN_00545750();
+      local_4._0_1_ = 2;
+      FUN_00557230();
+      local_4._0_1_ = 3;
+      FUN_005b23a0();
+      local_4._0_1_ = 4;
+      iVar7 = 0x7fffffff;
+      iStack_cc = 0;
+      if (local_b4 < 1) {
+LAB_0054e155:
+        local_4._0_1_ = 5;
+        ppuStack_24 = &PTR_LAB_0073f07c;
+        if (iStack_20 != 0) {
+          FUN_00700598(iStack_20);
+        }
+        FUN_00539890();
+        local_4 = (uint)local_4._1_3_ << 8;
+        FUN_00539890();
+        local_bc = &PTR_LAB_0073c120;
+        if (local_b8 != 0) {
+          FUN_00700598(local_b8);
+        }
+        ExceptionList = local_c;
+        return 0;
+      }
+      iStack_a8 = iVar4 + 0x170;
+      iVar4 = 0;
+      fVar5 = fStack_9c;
+      fVar6 = fStack_a0;
+      do {
+        fStack_c8 = *(float *)(iVar4 + local_b8);
+        fStack_c4 = *(float *)(iVar4 + local_b8 + 4);
+        iStack_c0 = *(int *)(iVar4 + local_b8 + 8);
+        FUN_005b23a0();
+        cVar3 = FUN_005bb350(*(undefined4 *)(local_a4 + 0x1c),&fStack_c8,auStack_94,0x49742400,0);
+        if (((cVar3 != '\0') &&
+            (fVar2 = fStack_38 * 0.5 - fStack_c4, fVar1 = fStack_3c * 0.5 - fStack_c8,
+            fVar2 * fVar2 + fVar1 * fVar1 < 0.040000003)) &&
+           ((iStack_10 < iVar7 &&
+            (iStack_98 = iStack_c0, fVar5 = fStack_c4, fVar6 = fStack_c8, iVar7 = iStack_10,
+            param_2 != 0)))) {
+          FUN_005b22c0(param_2);
+        }
+        iStack_cc = iStack_cc + 1;
+        iVar4 = iVar4 + 0xc;
+      } while (iStack_cc < local_b4);
+      if (iVar7 == 0x7fffffff) goto LAB_0054e155;
+      *(undefined1 *)(param_1 + 6) = 1;
+      param_1[3] = (int)fVar6;
+      param_1[4] = (int)fVar5;
+      param_1[5] = iStack_98;
+      local_4._0_1_ = 6;
+      ppuStack_24 = &PTR_LAB_0073f07c;
+      if (iStack_20 != 0) {
+        FUN_00700598(iStack_20);
+      }
+      FUN_00539890();
+      local_4 = (uint)local_4._1_3_ << 8;
+      FUN_00539890();
+    }
+    local_bc = &PTR_LAB_0073c120;
+    if (local_b8 != 0) {
+      FUN_00700598(local_b8);
+    }
+  }
+  ExceptionList = local_c;
+  return 1;
+}

@@ -1,0 +1,38 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:30:07 +5332ms] session 4cae90085de4: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 00:30:07 +5750ms] zone load gz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.41759,"msaa_3d":2,"nodes":813.0,"objects":5211.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3987076,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":631.0,"screen_space_aa":2,"static_bytes":479721458.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":5.750776,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"gz1g (loading)"}
+[trace 00:30:10 +8766ms] navigation prepared 5 classes in 222 ms
+[trace 00:30:10 +8771ms] zone ready gz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":898,"figure_models":56,"object_textures":36,"unit_textures":12,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":3.020829,"msaa_3d":2,"nodes":5867.0,"objects":15714.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3987076,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":940817127.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":8.771736,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":617468662875,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS issue 9: original human database gives identical walk and kneel speeds
+PASS issue 9: original crawl base is 78.17% of walking
+PASS issue 9: native quantized crouch translation equals walking
+PASS issue 9: native packed crawl byte gives 80% of walking
+PASS issue 12: paused command remains queued, attack=false
+PASS issue 12: path is emitted before a simulation tick, attack=false
+PASS issue 12: paused path has actual particle geometry
+PASS issue 12: paused path particles have visible alpha
+PASS issue 12: preview does not advance actor, world or effects clocks
+PASS issue 12: paused command remains queued, attack=true
+PASS issue 12: path is emitted before a simulation tick, attack=true
+PASS issue 12: replacement paused command removes the previous preview
+PASS issue 12: paused path has actual particle geometry
+PASS issue 12: paused path particles have visible alpha
+PASS issue 12: preview does not advance actor, world or effects clocks
+PASS issues 13 and 14: explicit attack-move acquires enemy, aggressive=false
+PASS issues 13 and 14: automatic attack requests its new path
+PASS issues 13 and 14: aimed attack-move retains the selected running gait
+PASS issues 13 and 14: attack-move leaves standing aggression preference intact
+PASS issues 13 and 14: explicit attack-move acquires enemy, aggressive=true
+PASS issues 13 and 14: automatic attack requests its new path
+PASS issues 13 and 14: aimed attack-move retains the selected running gait
+PASS issues 13 and 14: attack-move leaves standing aggression preference intact
+PASS issues 13 and 14: defensive idle never starts an unsolicited attack
+PASS issue 10: playing quest dialogue silences incidental creature voices
+PASS issue 10: bored acknowledgement is not queued during dialogue
+PASS issue 10: dialogue clears pending chatter but preserves scripted lines
+PASS issue 10: ordinary voices resume after dialogue
+ISSUE_CAMPAIGN_ORDERS 28 checks 0 failures
+[trace 00:30:11 +9292ms] clean exit

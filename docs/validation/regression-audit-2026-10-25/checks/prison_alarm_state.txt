@@ -1,0 +1,80 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:44:05 +5160ms] session 3419fd08bd4e: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS complete original source admits the single registrar
+PASS registrar has no host actor parameter
+PASS repeated adaptation is idempotent
+PASS altered original definition fails closed: VTriger#0#415
+PASS altered original definition fails closed: VTriger#0#416
+PASS altered original definition fails closed: VCheck#0#417
+PASS altered original definition fails closed: VTriger#0#48
+PASS altered original definition fails closed: VCheck#0#227
+PASS altered original definition fails closed: VCheck#0#229
+PASS altered original definition fails closed: VCheck#0#230
+PASS altered original definition fails closed: VCheck#0#393
+PASS altered original definition fails closed: VCheck#0#398
+PASS altered original definition fails closed: VCheck#0#403
+PASS altered original definition fails closed: VTriger#0#233
+PASS altered original definition fails closed: VTriger#0#234
+PASS altered original definition fails closed: VTriger#0#235
+PASS altered original definition fails closed: VTriger#0#219
+PASS altered original definition fails closed: VTriger#0#241
+PASS altered original definition fails closed: VTriger#0#242
+PASS altered original definition fails closed: VTriger#0#408
+PASS altered original definition fails closed: VCheck#0#410
+PASS altered original definition fails closed: VTriger#0#413
+PASS altered original definition fails closed: VCheck#0#422
+PASS altered original definition fails closed: VTriger#0#425
+PASS altered original definition fails closed: VCheck#0#180
+PASS altered original definition fails closed: VTriger#0#181
+PASS missing original definition fails closed: VTriger#0#416
+PASS missing original definition fails closed: VCheck#0#417
+PASS missing original definition fails closed: VTriger#0#425
+PASS missing authored startup call cannot arm registration
+PASS registrar stays within original gz19h scope: ["lost_in_astral", "gz19h"]
+PASS registrar stays within original gz19h scope: ["cursed_lands", "gz15h"]
+PASS native area predicate and body remain exactly unchanged
+PASS original multiplayer mode does not install a live registrar
+REGISTRATION_SETUP begin
+REGISTRATION_SETUP prepared
+REGISTRATION_SETUP spawn
+REGISTRATION_SETUP spawned 2
+REGISTRATION_SETUP step
+PASS native For registers the initially present actor once
+PASS later actor gets one native wait without duplicating the early actor
+PASS recovery and continued polling cannot duplicate registration
+PASS solo projection leaves authority snapshot immutable (spent=false)
+PASS shared registrar retains only recipient's remapped identity (spent=false)
+PASS returned solo hero has exactly its own pending/spent wait (spent=false)
+PASS solo recovery does not rearm or duplicate the recipient (spent=false)
+PASS guest naturally reaches original Sleep(20) with its saved frame
+PASS fired initial wait is spent while its native pursuit remains pending
+PASS solo projection leaves authority snapshot immutable (spent=true)
+PASS shared registrar retains only recipient's remapped identity (spent=true)
+PASS returned solo hero has exactly its own pending/spent wait (spent=true)
+PASS spent guest returns with its original pending pursuit delay
+PASS solo recovery does not rearm or duplicate the recipient (spent=true)
+PASS disconnect holds the original remaining delay, poll and instruction
+PASS absent reload preserves raw actor identity and remaining native wait
+PASS absent reload-save preserves unresolved original Try1
+PASS second absent reload retains frame and delay without a fresh idle wait
+PASS spent guest has no duplicate idle watcher while absent
+PASS rejoin binds the exact hero despite recycled old unit id
+PASS saved alarm intruder rebinds to that returning hero
+PASS first present tick resumes the remaining Sleep rather than resetting it
+PASS return and continued pursuit do not repeat the initial alarm activation
+PASS original reset reaches its own one-tick Sleep(1)
+PASS SEEN does not suppress the original explicit rearm
+PASS old host-side idle anchor recovers the missing late guest once
+PASS old save without native history is not guessed or rearmed
+PASS solo projection of host-only legacy history has no invented guest anchor
+PASS old absent actor's raw continuation supplies its stable seen identity
+PASS legacy recovery does not add an idle wait beside a spent continuation
+PASS a later real host alarm replaces the absent saved intruder
+PASS returning guest cannot overwrite the later authored alarm target
+PASS newcomer's native alarm is queued before its body executes
+PASS queued then absent newcomer cannot discard the saved intruder before assignment
+PASS held queued alarm has not executed its original success/body statements
+PASS returning newcomer replaces Try1 when its original body actually executes
+PRISON_ALARM_STATE 70 checks 0 failures
+[trace 00:44:06 +6155ms] clean exit

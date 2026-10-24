@@ -1,0 +1,18 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:23:50 +7047ms] session 3dd234a085bc: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS authored zone11
+PASS map exposes dry authored surface witnesses
+PASS contact admission zone11 type 9
+PASS snow retains footprint and travel marks
+PASS snow installs dense geometry through production dispatcher
+SNOW_SURFACES zone11 { 9: 43314 }
+PASS authored zone15
+PASS map exposes dry authored surface witnesses
+PASS contact admission zone15 type 3
+PASS sand creates no tracks, geometry or travel history
+SNOW_SURFACES zone15 { 3: 6807 }
+PASS authored sand and loose snow exercised
+PASS packed-snow profile and contact eligibility retained
+SNOW_ONLY_TRACKS 11 checks 0 failures
+[trace 00:23:52 +9238ms] clean exit

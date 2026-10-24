@@ -1,5 +1,5 @@
 extends RefCounted
-## Mirror the raster's loose snow/sand vertex lift in acceleration geometry.
+## Mirror the raster's snow vertex lift in acceleration geometry.
 ## Authored UV/tile coordinates, including shifted MPR vertices, identify the
 ## logical grid. Collision and source arrays remain unchanged.
 var terrain: EITerrain

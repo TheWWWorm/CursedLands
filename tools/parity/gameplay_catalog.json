@@ -2431,7 +2431,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 109,
       "quick": false,
-      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -2451,7 +2451,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 113,
       "quick": false,
-      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -8151,6 +8151,227 @@
         "res/database.res",
         "res/texts.res"
       ]
+    },
+    {
+      "id": "pathing/attack_path_current_target",
+      "category": "pathing",
+      "script": "tools/tests/attack_path_current_target.gd",
+      "marker": "ATTACK_PATH_CURRENT_TARGET",
+      "min_checks": 41,
+      "quick": false,
+      "description": "Live, paused, queued and revealed moving targets use current-position previews; pursuit remains predictive.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        85
+      ]
+    },
+    {
+      "id": "persistence/corpse_memory_save",
+      "category": "persistence",
+      "script": "tools/tests/corpse_memory_save.gd",
+      "marker": "CORPSE_MEMORY_SAVE",
+      "min_checks": 30,
+      "quick": false,
+      "description": "Observer discoveries and an active investigation survive save/load.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        112,
+        103,
+        95,
+        94
+      ]
+    },
+    {
+      "id": "combat/magic_trap_targets",
+      "category": "combat",
+      "script": "tools/tests/magic_trap_targets.gd",
+      "marker": "MAGIC_TRAP_TARGETS",
+      "min_checks": 17,
+      "quick": false,
+      "description": "Original diplomacy selects hostile victims and excludes neutral goblins after reload.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        110,
+        106
+      ]
+    },
+    {
+      "id": "animation/cast_posture_queue",
+      "category": "animation",
+      "script": "tools/tests/cast_posture_queue.gd",
+      "marker": "CAST_POSTURE_QUEUE",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Requested posture follows a locked cast on authority and replica.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        109
+      ]
+    },
+    {
+      "id": "spells/repeated_spells_input",
+      "category": "spells",
+      "script": "tools/tests/repeated_spells_input.gd",
+      "marker": "REPEATED_SPELLS_INPUT",
+      "min_checks": 371,
+      "quick": false,
+      "description": "Repeated casts succeed through classic, direct keyboard and controller input.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": []
+    },
+    {
+      "id": "coop/dialogue_clock_coop",
+      "category": "coop",
+      "script": "tools/tests/dialogue_clock_coop.gd",
+      "marker": "DIALOGUE_CLOCK_COOP",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Host resets both peers to normal unpaused dialogue; guest cannot override it.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        92
+      ]
+    },
+    {
+      "id": "dialogue/dialogue_hold_space",
+      "category": "dialogue",
+      "script": "tools/tests/dialogue_hold_space.gd",
+      "marker": "DIALOGUE_HOLD_SPACE",
+      "min_checks": 6,
+      "quick": false,
+      "description": "Held Space advances phrases but preserves the final phrase until a fresh press.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        108
+      ]
+    },
+    {
+      "id": "animation/dialogue_mouths",
+      "category": "animation",
+      "script": "tools/tests/dialogue_mouths.gd",
+      "marker": "DIALOGUE_MOUTHS",
+      "min_checks": 90,
+      "quick": false,
+      "description": "Original body and portrait mouth atlases, speaker changes and stop/skip lifecycle.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        76
+      ]
+    },
+    {
+      "id": "interface/recent_character_controls",
+      "category": "interface",
+      "script": "tools/tests/recent_character_controls.gd",
+      "marker": "RECENT_CHARACTER_CONTROLS",
+      "min_checks": 71,
+      "quick": false,
+      "description": "Every spell in a real multiplayer kit survives selection/save/admission; View and training Accept/Cancel work.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": [
+        79,
+        81,
+        84,
+        87
+      ]
+    },
+    {
+      "id": "persistence/campaign_feedback",
+      "category": "persistence",
+      "script": "tools/tests/campaign_feedback.gd",
+      "marker": "CAMPAIGN_FEEDBACK",
+      "min_checks": 35,
+      "quick": false,
+      "description": "Saved clocks, solo defeat and Suslanger revisit quest-state retention.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": []
+    },
+    {
+      "id": "quests/prison_alarm_state",
+      "category": "quests",
+      "script": "tools/tests/prison_alarm_state.gd",
+      "marker": "PRISON_ALARM_STATE",
+      "min_checks": 70,
+      "quick": false,
+      "description": "Guard pursuit and prison alarm reset retain native identity.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": []
     }
   ]
 }

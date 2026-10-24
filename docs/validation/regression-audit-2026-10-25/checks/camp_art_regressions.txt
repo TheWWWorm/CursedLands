@@ -1,0 +1,136 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+[trace 00:40:58 +6673ms] session becf0eb6d0e1: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+PASS real texture exists: stone axe.rock
+PASS actual item renderer uses replacement resolution: stone axe.rock x1
+PASS logical UV canvas survives replacement: stone axe.rock x1
+PASS actual item icon renders visible pixels: stone axe.rock x1
+PASS actual item renderer uses replacement resolution: stone axe.rock x4
+PASS logical UV canvas survives replacement: stone axe.rock x4
+PASS actual item icon renders visible pixels: stone axe.rock x4
+PASS HD replacement preserves rendered item mapping: stone axe.rock
+PASS real texture exists: gipat medium helm.thin
+PASS actual item renderer uses replacement resolution: gipat medium helm.thin x1
+PASS logical UV canvas survives replacement: gipat medium helm.thin x1
+PASS actual item icon renders visible pixels: gipat medium helm.thin x1
+PASS actual item renderer uses replacement resolution: gipat medium helm.thin x4
+PASS logical UV canvas survives replacement: gipat medium helm.thin x4
+PASS actual item icon renders visible pixels: gipat medium helm.thin x4
+PASS HD replacement preserves rendered item mapping: gipat medium helm.thin
+PASS real texture exists: gipat medium plate.thin
+PASS actual item renderer uses replacement resolution: gipat medium plate.thin x1
+PASS logical UV canvas survives replacement: gipat medium plate.thin x1
+PASS actual item icon renders visible pixels: gipat medium plate.thin x1
+PASS actual item renderer uses replacement resolution: gipat medium plate.thin x4
+PASS logical UV canvas survives replacement: gipat medium plate.thin x4
+PASS actual item icon renders visible pixels: gipat medium plate.thin x4
+PASS HD replacement preserves rendered item mapping: gipat medium plate.thin
+PASS real texture exists: bp:stone axe
+PASS actual item renderer uses replacement resolution: bp:stone axe x1
+PASS logical UV canvas survives replacement: bp:stone axe x1
+PASS actual item icon renders visible pixels: bp:stone axe x1
+PASS actual item renderer uses replacement resolution: bp:stone axe x4
+PASS logical UV canvas survives replacement: bp:stone axe x4
+PASS actual item icon renders visible pixels: bp:stone axe x4
+PASS HD replacement preserves rendered item mapping: bp:stone axe
+PASS real texture exists: tiny potion 1
+PASS actual item renderer uses replacement resolution: tiny potion 1 x1
+PASS logical UV canvas survives replacement: tiny potion 1 x1
+PASS actual item icon renders visible pixels: tiny potion 1 x1
+PASS actual item renderer uses replacement resolution: tiny potion 1 x4
+PASS logical UV canvas survives replacement: tiny potion 1 x4
+PASS actual item icon renders visible pixels: tiny potion 1 x4
+PASS HD replacement preserves rendered item mapping: tiny potion 1
+PASS real texture exists: keystone:fireball
+PASS actual item renderer uses replacement resolution: keystone:fireball x1
+PASS logical UV canvas survives replacement: keystone:fireball x1
+PASS actual item icon renders visible pixels: keystone:fireball x1
+PASS actual item renderer uses replacement resolution: keystone:fireball x4
+PASS logical UV canvas survives replacement: keystone:fireball x4
+PASS actual item icon renders visible pixels: keystone:fireball x4
+PASS HD replacement preserves rendered item mapping: keystone:fireball
+PASS real texture exists: rune:e1
+PASS actual item renderer uses replacement resolution: rune:e1 x1
+PASS logical UV canvas survives replacement: rune:e1 x1
+PASS actual item icon renders visible pixels: rune:e1 x1
+PASS actual item renderer uses replacement resolution: rune:e1 x4
+PASS logical UV canvas survives replacement: rune:e1 x4
+PASS actual item icon renders visible pixels: rune:e1 x4
+PASS HD replacement preserves rendered item mapping: rune:e1
+[trace 00:41:00 +8739ms] zone load bz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":15269284.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":17,"figure_models":6,"object_textures":8,"unit_textures":3,"wound_jobs":0,"wound_layers":0},"draw_calls":4.0,"drawn_frames":41,"focus":"in","frame_limit":30,"interval_fps":19.8409049775507,"interval_s":2.066438,"msaa_3d":0,"nodes":815.0,"objects":4947.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.048,"pid":4007086,"primitives":32.0,"process_ms":14.677,"reason":"scene","recent_fps":28.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":631.0,"screen_space_aa":0,"static_bytes":473433183.0,"taa":false,"texture_bytes":87557579.0,"time_scale":1.0,"uptime_s":8.74014,"video_allocated_bytes":102826863.0,"vsync":1,"window":[2880,1800],"world_count":0,"worlds":[],"zone":"bz1g (loading)"}
+[trace 00:41:16 +24164ms] navigation prepared 2 classes in 7 ms
+[trace 00:41:19 +27411ms] shader warm-up: 12 of 26 materials, 2235 ms (zone's first picture 45 ms)
+[trace 00:41:19 +27429ms] zone ready bz1g
+PERFORMANCE {"buffer_bytes":67840302.0,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":850,"figure_models":56,"object_textures":46,"unit_textures":41,"wound_jobs":0,"wound_layers":0},"draw_calls":691.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":18.689933,"msaa_3d":0,"nodes":3388.0,"objects":14607.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":39.0,"paused":false,"physics_ms":0.048,"pid":4007086,"primitives":127903.0,"process_ms":14.677,"reason":"scene","recent_fps":28.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":633.0,"screen_space_aa":0,"static_bytes":1056983849.0,"taa":false,"texture_bytes":204616098.0,"time_scale":1.0,"uptime_s":27.430243,"video_allocated_bytes":272456400.0,"vsync":1,"window":[2880,1800],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":623391019868,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":29,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+PASS enter actual Gipat camp
+PASS original spell trader exists
+PASS rendered buy/sell atlas quadrant 0,0
+PASS rendered buy/sell atlas quadrant 1,0
+PASS rendered buy/sell atlas quadrant 2,0
+PASS rendered buy/sell atlas quadrant 3,0
+PASS rendered buy/sell atlas quadrant 0,1
+PASS rendered buy/sell atlas quadrant 1,1
+PASS rendered buy/sell atlas quadrant 2,1
+PASS rendered buy/sell atlas quadrant 3,1
+PASS rendered buy/sell atlas quadrant 0,2
+PASS rendered buy/sell atlas quadrant 1,2
+PASS rendered buy/sell atlas quadrant 2,2
+PASS rendered buy/sell atlas quadrant 3,2
+PASS rendered buy/sell atlas quadrant 0,3
+PASS rendered buy/sell atlas quadrant 1,3
+PASS rendered buy/sell atlas quadrant 2,3
+PASS rendered buy/sell atlas quadrant 3,3
+PASS occupied backing fixture: shop0
+PASS occupied cell renders original patterned backing: shop0
+PASS occupied backing fixture: bag0
+PASS occupied cell renders original patterned backing: bag0
+PASS ready-spells filter excludes runes and keystones
+PASS bag constructor filter retains accessible components
+PASS elemental button opens actual keystone stock
+PASS untrained party cannot construct the original fireball template
+PASS unavailable shop template uses red tint
+PASS bag template uses the same requirement tint
+PASS other party member's training invalidates rendered availability
+PASS party-wide knowledge enables the untrained hero's template
+PASS actual shop cell exists for keystone:fireball
+PASS accepted keystone stages through actual camp input
+PASS rune filter exposes actual rune stock
+PASS compatible rune is visibly available
+PASS full constructor visibly refuses a ninth rune
+PASS rune stays unavailable until a compatible keystone exists
+PASS spell artwork stays inside frame: shop0
+PASS spell artwork stays inside frame: bag0
+PASS spell artwork stays inside frame: buy0
+PASS spell artwork stays inside frame: sell0
+PASS spell artwork stays inside frame: sready
+PASS spell artwork stays inside frame: skey
+PASS spell artwork stays inside frame: srune0
+PASS spell artwork stays inside frame: top0
+PASS original translation loaded: en
+PASS ready-spell button keeps localized meaning: en spelltrade
+PASS ready filter has only finished spells: en spelltrade
+PERFORMANCE {"buffer_bytes":67846128.0,"cache_entries":{"camera_materials":0,"figure_materials":7,"figure_meshes":851,"figure_models":56,"object_textures":50,"unit_textures":41,"wound_jobs":0,"wound_layers":0},"draw_calls":79.0,"drawn_frames":44,"focus":"in","frame_limit":30,"interval_fps":11.1944361616924,"interval_s":3.930524,"msaa_3d":0,"nodes":3368.0,"objects":14681.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":1.0,"paused":false,"physics_ms":0.271,"pid":4007086,"primitives":1988.0,"process_ms":8.587,"reason":"interval","recent_fps":15.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":633.0,"screen_space_aa":0,"static_bytes":1076336129.0,"taa":false,"texture_bytes":253297557.0,"time_scale":1.0,"uptime_s":31.360912,"video_allocated_bytes":321143685.0,"vsync":1,"window":[2880,1800],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":623391019868,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":29,"visible":false,"zone":"bz1g"}],"zone":"bz1g"}
+PASS ready-spell button keeps localized meaning: en spellconstr
+PASS ready filter has only finished spells: en spellconstr
+PASS original translation loaded: ru
+PASS ready-spell button keeps localized meaning: ru spelltrade
+PASS ready filter has only finished spells: ru spelltrade
+PASS ready-spell button keeps localized meaning: ru spellconstr
+PASS ready filter has only finished spells: ru spellconstr
+PASS original translation loaded: de
+PASS ready-spell button keeps localized meaning: de spelltrade
+PASS ready filter has only finished spells: de spelltrade
+PASS ready-spell button keeps localized meaning: de spellconstr
+PASS ready filter has only finished spells: de spellconstr
+CAMP_ART_REGRESSIONS 115 checks 0 failures
+[trace 00:41:29 +37151ms] clean exit

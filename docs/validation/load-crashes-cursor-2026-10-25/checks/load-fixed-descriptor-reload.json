@@ -1,0 +1,140 @@
+{
+	"capacity": 262144,
+	"failures": [],
+	"gpu": "NVIDIA GeForce RTX 3090",
+	"instance_buffer_entries": 524288,
+	"rows": [
+		{
+			"cycle": 0,
+			"materials": 5,
+			"meshes": 1304,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 847918592.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 1,
+			"materials": 5,
+			"meshes": 1304,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 855081216.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 2,
+			"materials": 5,
+			"meshes": 1853,
+			"nodes": 28672.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 851833344.0,
+			"worker": true,
+			"zone": "gz2h"
+		},
+		{
+			"cycle": 3,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 18168.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 1046769152.0,
+			"worker": true,
+			"zone": "bz2h"
+		},
+		{
+			"cycle": 4,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 909590272.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 5,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 921126656.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 6,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 28673.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 883783424.0,
+			"worker": true,
+			"zone": "gz2h"
+		},
+		{
+			"cycle": 7,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 18170.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 1067084800.0,
+			"worker": true,
+			"zone": "bz2h"
+		},
+		{
+			"cycle": 8,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 921144832.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 9,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 921146880.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 10,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 28680.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 883804672.0,
+			"worker": true,
+			"zone": "gz2h"
+		},
+		{
+			"cycle": 11,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 18170.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 1067330048.0,
+			"worker": true,
+			"zone": "bz2h"
+		}
+	]
+}

@@ -1,12 +1,12 @@
 class_name SoftGroundDeform
 extends Node
-## Optional snow/sand compaction: planted feet and connected travel troughs.
+## Optional snow compaction: planted feet and connected travel troughs.
 ## Only touched tiles
 ## are tessellated; original triangle planes, UVs and lighting are interpolated.
 ## Per-sector textures and geometry are bounded and discarded on leaving the
 ## world, loading or disabling the option. Saves and collision remain original.
 
-const TYPES := [3, 9, 12] # authored sand, loose snow, packed snow
+const TYPES := [9, 12] # authored loose snow and packed snow
 const SECTOR := SoftGroundField.SECTOR
 const RESOLUTION := SoftGroundField.RESOLUTION
 const SUBDIV := 16
@@ -199,8 +199,6 @@ func add_travel(owner: int, p: Vector2, extent: Vector2) -> void:
 	# foot paths merge into a compressed corridor with the prints inside it.
 	var width := clampf(footprint.x * 1.8 + footprint.y * 0.5 + 0.14, 0.18, 0.65)
 	var pressure := clampf(sqrt(footprint.x * footprint.y / 0.009), 0.35, 1.0)
-	if terrain.ground_type(p.x, p.y) == 3:
-		width *= 0.75
 	_add_mark({"p": from, "to": p, "extent": Vector2.ONE * width, "pressure": pressure, "angle": 0.0, "time": _age})
 
 

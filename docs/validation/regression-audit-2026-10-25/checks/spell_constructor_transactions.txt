@@ -1,0 +1,79 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:39:56 +5490ms] session e546e9a2c76d: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:138)
+         [3] _add_ui (res://src/ui/game_hud.gd:1265)
+         [4] _ready (res://src/ui/game_hud.gd:167)
+         [5] _ready (res://src/game/game.gd:97)
+         [6] peer (/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/spell_constructor_transactions.gd:23)
+         [7] _ready (/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/spell_constructor_transactions.gd:40)
+         [8] _start (res://src/main.gd:119)
+         [9] _ready (res://src/main.gd:69)
+PASS isolated constructor host
+PASS guest connects
+PASS peers connected
+[trace 00:39:56 +6212ms] zone load bz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.721062,"msaa_3d":0,"nodes":1585.0,"objects":7591.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":104.557,"pid":4005205,"primitives":0.0,"process_ms":3.091,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":631.0,"screen_space_aa":2,"static_bytes":510829693.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":6.21237,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"bz1g (loading)"}
+[trace 00:40:00 +9709ms] navigation prepared 2 classes in 6 ms
+[trace 00:40:00 +9717ms] zone ready bz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":841,"figure_models":49,"object_textures":39,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":3.504928,"msaa_3d":0,"nodes":4109.0,"objects":16372.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":76.0,"paused":false,"physics_ms":104.557,"pid":4005205,"primitives":0.0,"process_ms":3.091,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":1117653054.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":9.717422,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":663941548701,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+[trace 00:40:00 +10172ms] zone load bz1g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":843,"figure_models":50,"object_textures":42,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.455399,"msaa_3d":0,"nodes":4194.0,"objects":17044.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.593,"pid":4005205,"primitives":0.0,"process_ms":3697.39,"reason":"scene","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":1135584310.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":10.172995,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":663941548701,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.055,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g (loading)"}
+[trace 00:40:01 +11177ms] zone ready bz1g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":843,"figure_models":50,"object_textures":42,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":1.004597,"msaa_3d":0,"nodes":6724.0,"objects":21132.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.593,"pid":4005205,"primitives":0.0,"process_ms":3697.39,"reason":"scene","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":1186197209.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":11.177791,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":663941548701,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.055,"units":30,"visible":true,"zone":"bz1g"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":877028983444,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+PASS guest loads camp
+PASS eight-rune lightning wall fixture
+PASS shop fixture synchronized
+PASS shop accepts eight purchased runes
+PASS shop valid preview can assemble
+PASS shop receives acknowledgement while paused
+PASS shop settled inventory precedes success
+PASS shop settles all ingredients and fee once
+PASS shop one refresh and private purse preserved
+PASS shop confirms successful assembly once
+PASS shop completed spell remains visible in constructor
+PASS shop completed spell returns visibly to bag
+PASS shop shop loses only purchased ingredients
+PASS shop duplicate delivery cannot construct twice
+PASS shop disassembly replies while paused
+PASS shop disassembly returns all eight rune copies before acknowledgement
+PASS mixed fixture synchronized
+PASS mixed accepts eight purchased runes
+PASS mixed valid preview can assemble
+PASS five shop mana runes give the displayed 4975 total
+PASS mixed receives acknowledgement while paused
+PASS mixed settled inventory precedes success
+PASS mixed settles all ingredients and fee once
+PASS mixed one refresh and private purse preserved
+PASS mixed confirms successful assembly once
+PASS mixed completed spell remains visible in constructor
+PASS mixed completed spell returns visibly to bag
+PASS mixed shop loses only purchased ingredients
+PASS mixed duplicate delivery cannot construct twice
+PASS mixed disassembly replies while paused
+PASS mixed disassembly returns all eight rune copies before acknowledgement
+PASS bag fixture synchronized
+PASS bag accepts eight purchased runes
+PASS bag valid preview can assemble
+PASS bag receives acknowledgement while paused
+PASS bag settled inventory precedes success
+PASS bag settles all ingredients and fee once
+PASS bag one refresh and private purse preserved
+PASS bag confirms successful assembly once
+PASS bag completed spell remains visible in constructor
+PASS bag completed spell returns visibly to bag
+PASS bag shop loses only purchased ingredients
+PASS bag duplicate delivery cannot construct twice
+PASS bag disassembly replies while paused
+PASS bag disassembly returns all eight rune copies before acknowledgement
+PASS stale fixture synced
+PASS stale selection acknowledged
+PASS missing shop rune consumes nothing
+PASS refused constructor stays editable
+SPELL_CONSTRUCTOR_TRANSACTIONS 52 checks 0 failures
+[trace 00:40:04 +13934ms] clean exit

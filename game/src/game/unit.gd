@@ -2343,8 +2343,9 @@ func motion_notice(at: Vector2, mode: int, reach := -1.0, full_path := false) ->
 	_send_motion_notice(order, path, record, at, mode, reach, full_path)
 
 
-## Tactical pause plans a preview without advancing orders, movement, combat,
-## RNG or world timers. The real order replans against live state on resume.
+## Plan a separate command preview without advancing movement, combat, RNG or
+## timers. Used both during tactical pause and for live attack previews; the
+## real order can independently replan pursuit against the moving target.
 func preview_order_path(command: Dictionary) -> void:
 	if not command.get("path_notice", false) or world == null or world.session == null: return
 	var kind := String(command.get("type", ""))
@@ -3011,6 +3012,13 @@ func _do_attack(dt: float) -> void:
 		return
 	var ranged: bool = stats.get("ranged", false)
 	var reach: float = stats.reach if ranged else melee_reach(t)
+	# Native54e600 reads the target's current position and builds a separate
+	# ghost route before pursuit. The intercept route below can lead several
+	# metres ahead of a running target and must never supply the click preview.
+	# Emit even when pursuit decides to wait for an approaching target.
+	if order.get("path_notice", false):
+		preview_order_path(order)
+		order.erase("path_notice")
 	var d := pos.distance_to(t.pos)
 	if d <= reach: remove_meta("arena_opening")
 	if not ranged and d <= reach and not _melee_height_clear(t):
@@ -3026,8 +3034,6 @@ func _do_attack(dt: float) -> void:
 		and pos.distance_squared_to(t.pos) < 10.0 \
 		and absf(float(PackedFloat32Array([wrapf((t.pos - pos).angle() - facing, -PI, PI)])[0])) <= 0.009999999776482582 \
 		and not world.ai._flying(self) and not world.ai._flying(t)
-	if d <= reach:
-		motion_notice(t.pos, 2, reach, bool(order.get("full_path", false)))
 	#  hands the tick to while the strike delay
 	#  runs or the target is out of reach; that one only stands
 	# still next to a target that is not moving — one that
@@ -3176,7 +3182,6 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 		if path.is_empty() or _goal.distance_to(at) >= (d + 1.0) * 0.1:
 			_fresh_path = _avoid != null and is_instance_valid(_avoid)
 			path = _path_to(at,t,-1,3.0*dist3(t)+15.0 if controller < 0 else 1000000.0)
-			motion_notice(at, 2, reach, bool(order.get("full_path", false)))
 			_goal = at
 			_arrive_t = world.time + ticks * TICK
 			if path.is_empty() or path[-1].distance_to(at) > reach or _path_too_long(t):

@@ -1,0 +1,82 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:39:42 +5446ms] session d4ff4cae1aa6: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:138)
+         [3] _add_ui (res://src/ui/game_hud.gd:1265)
+         [4] _ready (res://src/ui/game_hud.gd:167)
+         [5] _ready (res://src/game/game.gd:97)
+         [6] peer (/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/camp_transactions.gd:33)
+         [7] _ready (/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/camp_transactions.gd:50)
+         [8] _start (res://src/main.gd:119)
+         [9] _ready (res://src/main.gd:69)
+PASS host opens transaction test port
+PASS guest joins
+PASS peers connected
+[trace 00:39:43 +6227ms] zone load bz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.781031,"msaa_3d":0,"nodes":1585.0,"objects":7592.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":107.513,"pid":4004795,"primitives":0.0,"process_ms":3.474,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":631.0,"screen_space_aa":2,"static_bytes":510939689.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":6.22806,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"bz1g (loading)"}
+[trace 00:39:47 +9894ms] navigation prepared 2 classes in 6 ms
+[trace 00:39:47 +9901ms] zone ready bz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":842,"figure_models":49,"object_textures":39,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":3.67308,"msaa_3d":0,"nodes":4109.0,"objects":16374.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":76.0,"paused":false,"physics_ms":107.513,"pid":4004795,"primitives":0.0,"process_ms":3.474,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":1117770314.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":9.901278,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":664025434782,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+[trace 00:39:47 +10340ms] zone load bz1g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":844,"figure_models":50,"object_textures":42,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.439085,"msaa_3d":0,"nodes":4194.0,"objects":17046.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.523,"pid":4004795,"primitives":0.0,"process_ms":3867.084,"reason":"scene","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":1135702382.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":10.340502,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":664025434782,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.055,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g (loading)"}
+[trace 00:39:48 +11266ms] zone ready bz1g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":844,"figure_models":50,"object_textures":42,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.925815,"msaa_3d":0,"nodes":6724.0,"objects":21134.0,"options":"hd_textures=0 materials=0 sharp_units=1 detailed_heads=1 sky=1 far_view=0 terrain=1 wind=1 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=1 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=0 q_aniso=2 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.523,"pid":4004795,"primitives":0.0,"process_ms":3867.084,"reason":"scene","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":1186316005.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":11.266452,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":664025434782,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.055,"units":30,"visible":true,"zone":"bz1g"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":877163201174,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+PASS guest loads original camp
+PASS private worn bag reaches guest
+PASS three damaged copies staged
+PASS one confirmation submits one repair batch; double submit is ignored
+PASS pending repair retains and locks its selection
+PASS repair reply arrives while simulation is paused
+PASS repair preserves shared pause
+PASS all selected bag copies repair together, preserving charge
+PASS guest pays the complete quoted repair cost once
+PASS repair leaves the host purse untouched
+PASS one result follows the final inventory
+PASS batch publishes one inventory refresh
+PASS successful repair clears the selection and confirms once
+PASS late duplicate packet cannot repair or charge twice
+REPAIR_BATCH_FEEDBACK_MS 70
+PASS repair-all submits equipment as one batch
+PASS equipment batch is acknowledged promptly
+PASS all equipped weapons restore durability
+PASS equipment refresh and state publish happen once
+PASS equipment batch preserves matching bag copies
+PASS stale-selection fixture synced
+PASS stale repair receives a refusal
+PASS missing copy causes no partial repair or charge
+PASS rejected repair remains editable
+PASS unaffordable batch rejected
+PASS unaffordable batch preserves all originals
+PASS another player's equipment cannot be repaired by the request
+PASS malformed repair rejected
+PASS named free shop rates override the host's open-shop rates
+PASS free repair restores both copies
+PASS swap fixture has separate bags
+PASS player offers pair over ENet
+PASS rapid clicks stage twelve copies and subtract pending copies
+PASS authority retains every copy beyond eight
+PASS eight distinct stacks fit the offer
+PASS full grid accepts an existing stack but rejects a ninth variant
+PASS stack increment reaches authority
+PASS own grid gives duplicate copies one cell
+PASS partner grid uses matching stack cells
+PASS partner stack quantity is complete
+PASS authority rejects ninth stack without silently truncating or returning escrow
+PASS malformed offer cannot replace an agreed item set
+PASS oversized payload leaves the whole offer unchanged
+PASS withdrawing closes both offers
+PASS withdrawal returns every stacked copy
+PASS offers pair again
+PASS both final stacked offers are visible
+[trace 00:39:49 +12308ms] swap 1 <-> 0: ["tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1", "tiny potion 1"] + 0 / ["rune:r2", "rune:r2", "rune:r2"] + 0
+PASS both agreements commit the exchange
+PASS host receives all twelve offered copies
+PASS guest receives all three copies and retains its remainder
+PASS item-only exchange preserves both purses
+CAMP_TRANSACTIONS 53 checks 0 failures
+[trace 00:39:50 +12626ms] clean exit

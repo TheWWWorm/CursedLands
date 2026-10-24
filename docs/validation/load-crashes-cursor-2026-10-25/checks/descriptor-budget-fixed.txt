@@ -1,0 +1,14 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+WARNING: AMD FSR runtime is missing or does not match the pinned production SDK.
+   at: initialize_device (drivers/fsr_sdk/fsr_sdk.cpp:185)
+D3D12 12_0 - Forward+ - Using Device #0: AMD - NVIDIA GeForce RTX 3090
+
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F4, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+DESCRIPTOR_BUDGET {"capacity":262144,"failures":[],"rows":[{"cycle":0,"descriptors":131072,"sets":2048},{"cycle":1,"descriptors":131072,"sets":2048},{"cycle":2,"descriptors":131072,"sets":2048}]}

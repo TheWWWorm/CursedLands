@@ -21,7 +21,8 @@ void vertex() {
 	float height = query_elevation(a,b,c,weights,cell,upper);
 	float cut = 0.0;
 	vec2 state = texelFetch(query_tiles,cell/2,0).rg;
-	if (soft_ground && state.y > 0.5 && state.x > 0.0) {
+	// A snow mark may cover an adjacent sand tile. Only snow piles compact.
+	if (soft_ground && texelFetch(terrain_tiles,cell/2,0).a > 0.0 && state.y > 0.5 && state.x > 0.0) {
 		vec2 p = vec2(point.x,-point.z);
 		vec3 uv = soft_track_coord(p);
 		vec4 track = uv.z >= 0.0 ? textureLod(query_tracks,uv,0.0) : vec4(0.0);

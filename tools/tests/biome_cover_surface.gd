@@ -69,7 +69,6 @@ func type_profile(t: EITerrain, p: Vector2i) -> Vector2:
 	match type:
 		9: return Vector2(0.20,0.30)
 		12: return Vector2(0.075,0.12)
-		3: return Vector2(0.008,0.025)
 	return Vector2.ZERO
 
 ## GroundSurfaceShader.soft_surface at one original terrain vertex.
@@ -271,7 +270,7 @@ func choose(d: TerrainDetails, type: int, hint: Vector2) -> Dictionary:
 	keys.sort_custom(func(a: Vector2i,b: Vector2i): return (Vector2(a)*8-hint).length_squared()<(Vector2(b)*8-hint).length_squared())
 	for key in keys:
 		for record: Dictionary in d._cover_field.records(key,d._scenery.get(key,[]),d._trees.get(key,[])):
-			if record.kind!=Cover.Kind.DRY or d.terrain.ground_type(record.p.x,record.p.y)!=type or record.anchor.x<0: continue
+			if record.kind!=Cover.Kind.DRY or d.terrain.ground_type(record.p.x,record.p.y)!=type or (type!=3 and record.anchor.x<0): continue
 			if camera_clear(d,Vector3(record.p.x,record.height,-record.p.y)): return record
 	return {}
 
@@ -322,6 +321,13 @@ func run() -> void:
 	var p: Vector2=chosen.p; var focus := Vector3(p.x,chosen.height,-p.y); build(d,p)
 	rows.append({"case":"scene","zone":id,"type":type,"point":str(p),"record":str(chosen)})
 	var soft := d.soft_ground
+	if type==3:
+		check(chosen.anchor.x<0,"sand cover keeps rigid original-ground roots")
+		check(not soft.step_allowed(p),"sand rejects deformation contact")
+		soft.add_step(p,Vector2(0.30,0.46),0.4)
+		soft.add_travel(1,p,Vector2(0.12,0.18));soft.add_travel(1,p+Vector2(0.3,0),Vector2(0.12,0.18))
+		check(soft.sectors.is_empty() and soft._walkers.is_empty(),"sand creates no footprint mesh or travel history")
+		view.free();return
 	if OS.get_cmdline_user_args().has("--surface-script-mesh"): soft._native_mesh=false
 	check(d._cover_surface==t.ground_surface_data(),"cover shares the map geometry resource")
 	check(d._cover_surface.normals==null and d._cover_surface.metadata==null,"cover alone does not build contact-light normals or metadata")
@@ -434,7 +440,7 @@ func run() -> void:
 func _ready() -> void:
 	for option in ["gfx_hd_textures","gfx_terrain","gfx_ground_contact","gfx_grass","gfx_vegetation_interaction","gfx_wind","gfx_water","gfx_water_interaction","gfx_water_caustics","gfx_volumetric","gfx_ssao","gfx_bloom","confine_mouse","vsync"]: GameData.options[option]=0
 	GameData.options["gfx_biome_cover"]=1; GameData.options["gfx_soft_ground"]=1
-	Engine.max_fps=120; Engine.time_scale=0; DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
+	Engine.time_scale=0; DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE; RenderingServer.set_render_loop_enabled(true); Gfx.ensure_globals()
 	anchor_rules()
 	if DisplayServer.get_name()=="headless": check(false,"this fixture requires a real renderer")

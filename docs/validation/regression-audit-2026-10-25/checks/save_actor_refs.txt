@@ -1,0 +1,19 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:42:35 +5205ms] session 944dcbb46cb9: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS projection leaves source checkpoint unchanged
+PASS recipient survives controller and display-name changes
+PASS pet survives UID reuse and ownership change
+PASS unrelated protagonists never resolve to same-name solo hero
+PASS shared authored companion retains its role
+PASS replaced roster slot cannot steal a named companion reference
+PASS older name/controller effect records still load
+PASS older host reference cannot alias recipient by name
+PASS VM and spells share the same pet identity
+PASS script combat target projection distinguishes physical participants
+PASS script combat references retain shared companion identity
+PASS missing pet reference cannot fall back to its saved numeric ID
+PASS old body records do not erase existing pet identity
+PASS new deployment IDs skip restored dynamic actors
+SAVE_ACTOR_REFS 14 checks 0 failures
+[trace 00:42:35 +5487ms] clean exit

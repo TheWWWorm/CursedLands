@@ -1,0 +1,18 @@
+{
+  "baseline_pck": {
+    "file": "patched-engine.pck",
+    "sha256": "7b313c214c1e16d3ecc3396a270d3d031e8f9cc6e363a17b3ef33d73aafd1349"
+  },
+  "fixed_pck": {
+    "file": "load-fixed.pck",
+    "sha256": "3b8d58dda6f287a39faf38885857c78acbc34583dc34c92c079e1de1347fdbb7"
+  },
+  "standard_windows_exe": {
+    "file": "CursedLands.exe",
+    "sha256": "f949339afe15ccd5d2fc03553d8e9d9cd14d8860252b865e371357208dfd0447"
+  },
+  "seed_save": {
+    "file": "gz1h.sav",
+    "sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045"
+  }
+}

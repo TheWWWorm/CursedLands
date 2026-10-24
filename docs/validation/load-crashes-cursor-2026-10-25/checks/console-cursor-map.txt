@@ -1,0 +1,26 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS real camera pick returns the hero's map coordinates
+PASS fixture distinguishes screen pixels from map coordinates
+PASS en: sample includes an executable teleport command
+PASS en: command uses terrain map x/y
+PASS en: teleport accepts the copied command
+PASS en: teleport lands at the sampled ground
+PASS en: map status is localized
+PASS en: client can inspect the same coordinates
+PASS ru: sample includes an executable teleport command
+PASS ru: command uses terrain map x/y
+PASS ru: teleport accepts the copied command
+PASS ru: teleport lands at the sampled ground
+PASS ru: map status is localized
+PASS ru: client can inspect the same coordinates
+PASS de: sample includes an executable teleport command
+PASS de: command uses terrain map x/y
+PASS de: teleport accepts the copied command
+PASS de: teleport lands at the sampled ground
+PASS de: map status is localized
+PASS de: client can inspect the same coordinates
+PASS outside-viewport sample does not invent a teleport target
+PASS loading never exposes the outgoing world's coordinates
+PASS closed campaign falls back to clearly labelled screen pixels
+CONSOLE_CURSOR_MAP {"checks":23,"failures":[]}

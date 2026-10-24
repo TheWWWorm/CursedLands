@@ -1,0 +1,66 @@
+{
+  "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "entry": "0x54e600",
+  "stop": "0x5bb350",
+  "target_getter": "0x52fdf0",
+  "rows": [
+    {
+      "target": [
+        20.25,
+        30.5,
+        1.0
+      ],
+      "command_fallback": [
+        999,
+        777,
+        -1
+      ],
+      "pathfinder_target": [
+        20.25,
+        30.5,
+        1.0
+      ],
+      "actor_matches": true,
+      "passed": true
+    },
+    {
+      "target": [
+        400.0,
+        88.75,
+        5.5
+      ],
+      "command_fallback": [
+        999,
+        777,
+        -1
+      ],
+      "pathfinder_target": [
+        400.0,
+        88.75,
+        5.5
+      ],
+      "actor_matches": true,
+      "passed": true
+    },
+    {
+      "target": [
+        1.5,
+        2.25,
+        -0.5
+      ],
+      "command_fallback": [
+        999,
+        777,
+        -1
+      ],
+      "pathfinder_target": [
+        1.5,
+        2.25,
+        -0.5
+      ],
+      "actor_matches": true,
+      "passed": true
+    }
+  ],
+  "scope": "Replay the original attack preview up to its fresh pathfinder call.\n\nRequires the user's unmodified English GOG 1.06 game.exe and Unicorn.\nObject records and allocation/path-container boundaries are supplied. Target\nposition selection, its living-unit getter and the pathfinder argument assembly\nexecute original x86 bytes. This is not an entire world or moving-AI replay.\n"
+}

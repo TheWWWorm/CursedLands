@@ -1,0 +1,117 @@
+{
+  "git_head": "493f5e1578f560e5c1a60d45f8d044c08c2ae125",
+  "game_source_sha256": "32bdb21bfc3a4ed6b113e370a23caaeca707cf2b539264bfd138f60b7e32967d",
+  "manifest_sha256": "5eca499bbbcbf37c86b8aaa2a2b718956fc24e4ccda59615b845d3fe5998061d",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "recent_character_controls",
+      "script": "tools/tests/recent_character_controls.gd",
+      "script_sha256": "a09516058f6bfea62966d89716ebab7d19824720c533309276a164a5a1464617",
+      "contract": "Every authored kit spell survives selection/save/admission; View and training Accept/Cancel work.",
+      "issues": [
+        79,
+        81,
+        84,
+        87
+      ],
+      "mode": "headless",
+      "seconds": 6.93,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/recent_character_controls.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "recent_character_controls/run.log",
+      "passed": true,
+      "result": {
+        "checks": 71,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [],
+      "retained_log": "checks/recent_character_controls.txt",
+      "retained_log_sha256": "17a7d1b63616dd96e98632655294cea95de4280233f25932e9e7a3f128f8d129"
+    },
+    {
+      "id": "issue_ui_rendered_de",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "script_sha256": "7ce3309cafb4d0706c8c2cccc8ec47a3910263ec27f176f52307eb17571b2f14",
+      "contract": "Original character/item bounds while turning; options layout in de.",
+      "issues": [
+        78,
+        86
+      ],
+      "mode": "rendered",
+      "seconds": 13.13,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/audit-suite-guard-final/issue_ui_rendered_de/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/audit-suite-guard-final/issue_ui_rendered_de/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/audit-suite-guard-final/issue_ui_rendered_de/cache",
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/issue_ui_rendered.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered",
+        "--ui-language=de"
+      ],
+      "log": "issue_ui_rendered_de/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1055,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "retained_log": "checks/issue_ui_rendered_de.txt",
+      "retained_log_sha256": "e1ae014a7ac7de5fb3f3cbde614f72eda5c07cfca4ab227fd52321f6226209c9"
+    }
+  ],
+  "passed": true
+}

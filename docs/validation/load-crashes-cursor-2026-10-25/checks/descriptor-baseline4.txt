@@ -1,0 +1,49 @@
+[trace 00:04:25 +110194ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":0,"materials":5,"meshes":1304,"nodes":37372.0,"old_world_freed":true,"resources":631.0,"vram":835517696.0,"worker":true,"zone":"gz1h"}
+[trace 00:05:45 +190678ms] zone teardown gz1h
+131066.260:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:05:45 +190678ms] zone teardown gz1h
+ERROR: Too many instances using shader instance variables. Increase buffer size in Project Settings.
+   at: global_shader_parameters_instance_allocate (servers/rendering/renderer_rd/storage_rd/material_storage.cpp:2031)
+ERROR: Too many instances using shader instance variables. Increase buffer size in Project Settings.
+ERROR: Too many instances using shader instance variables. Increase buffer size in Project Settings.
+   at: global_shader_parameters_instance_allocate (servers/rendering/renderer_rd/storage_rd/material_storage.cpp:2031)
+ERROR: Condition "global_shader_uniforms.instance_buffer_pos.has(p_instance)" is true. Returning: -1
+   at: global_shader_parameters_instance_allocate (servers/rendering/renderer_rd/storage_rd/material_storage.cpp:2028)
+ERROR: Condition "global_shader_uniforms.instance_buffer_pos.has(p_instance)" is true. Returning: -1
+[trace 00:05:50 +194863ms] zone ready gz1h (from host)
+ERROR: Condition "global_shader_uniforms.instance_buffer_pos.has(p_instance)" is true. Returning: -1
+   at: global_shader_parameters_instance_allocate (servers/rendering/renderer_rd/storage_rd/material_storage.cpp:2028)
+ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.
+Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.
+   at: uniform_set_create (drivers/d3d12/rendering_device_driver_d3d12.cpp:3502)
+Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.
+   at: uniform_set_create (drivers/d3d12/rendering_device_driver_d3d12.cpp:3502)
+ERROR: Condition "!driver_uniform_set" is true. Returning: RID()
+   at: uniform_set_create (servers/rendering/rendering_device.cpp:4767)
+ERROR: Parameter "us" is null.
+ERROR: Condition "!driver_uniform_set" is true. Returning: RID()
+   at: uniform_set_create (servers/rendering/rendering_device.cpp:4767)
+ERROR: Parameter "us" is null.
+   at: uniform_set_set_invalidation_callback (servers/rendering/rendering_device.cpp:4809)
+ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.
+ERROR: Condition "!driver_uniform_set" is true. Returning: RID()
+   at: uniform_set_create (servers/rendering/rendering_device.cpp:4767)
+ERROR: Condition "rid.is_null()" is true. Returning: rid
+   at: _allocate_from_uniforms (servers/rendering/renderer_rd/uniform_set_cache_rd.h:119)
+ERROR: Parameter "uniform_set" is null.
+ERROR: Condition "rid.is_null()" is true. Returning: rid
+   at: _allocate_from_uniforms (servers/rendering/renderer_rd/uniform_set_cache_rd.h:119)
+ERROR: Parameter "uniform_set" is null.
+   at: draw_list_bind_uniform_set (servers/rendering/rendering_device.cpp:5787)
+ERROR: Parameter "uniform_set" is null.
+RELOAD_SAMPLE {"cycle":1,"materials":5,"meshes":1304,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":842671360.0,"worker":true,"zone":"gz1h"}
+[trace 00:06:09 +214228ms] zone teardown gz1h
+[trace 00:06:26 +231162ms] zone ready gz2h (from host)
+RELOAD_SAMPLE {"cycle":2,"materials":5,"meshes":1853,"nodes":28382.0,"old_world_freed":true,"resources":631.0,"vram":834192640.0,"worker":true,"zone":"gz2h"}
+[trace 00:06:48 +253157ms] zone teardown gz2h
+[trace 00:06:50 +255381ms] zone ready bz2h (from host)
+RELOAD_SAMPLE {"cycle":3,"materials":5,"meshes":2016,"nodes":17941.0,"old_world_freed":true,"resources":631.0,"vram":1032769024.0,"worker":true,"zone":"bz2h"}
+[trace 00:07:11 +276078ms] zone teardown bz2h
+[trace 00:07:14 +279603ms] zone ready gz1h (from host)
+RELOAD_SAMPLE {"cycle":4,"materials":5,"meshes":2016,"nodes":37370.0,"old_world_freed":true,"resources":631.0,"vram":903996160.0,"worker":true,"zone":"gz1h"}

@@ -1,0 +1,169 @@
+{
+	"checks": 50,
+	"failures": 0,
+	"rows": [
+		{
+			"case": "prepare",
+			"us": 240876
+		},
+		{
+			"case": "mesh",
+			"height_error": 0.00000214576721191406,
+			"key": "(49, 21)",
+			"records": 1,
+			"sha256": "f39c52ea8c37b9f04b38f8d1ea670715af1046f2ff8c19f043f5db6604be9864",
+			"triangles": 1359,
+			"uv_error": 0.0,
+			"vertices": 870
+		},
+		{
+			"case": "chosen",
+			"key": "(49, 21)",
+			"record": "{ \"p\": (393.7135, 169.7135), \"kind\": 1, \"radius\": 0.89145184457302, \"height\": 0.15704026833177, \"phase\": 4.22717505297987 }",
+			"zone": "gz11k"
+		},
+		{
+			"active_chunks": 8,
+			"active_median_us": 5985,
+			"case": "build-cost",
+			"chunks": 25,
+			"max_us": 11248,
+			"median_us": 311,
+			"mounds": 10,
+			"vertices": 6222
+		},
+		{
+			"case": "visible",
+			"difference": {
+				"changed": 4515,
+				"over_2": 3087,
+				"peak": 81
+			}
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "loose",
+			"negative": false,
+			"samples": 870
+		},
+		{
+			"bad": 870,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "negative",
+			"negative": true,
+			"samples": 870
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "pending",
+			"negative": false,
+			"samples": 870
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 119,
+			"label": "installed",
+			"negative": false,
+			"samples": 870
+		},
+		{
+			"case": "footprint",
+			"difference": {
+				"changed": 3857,
+				"over_2": 2574,
+				"peak": 114
+			}
+		},
+		{
+			"case": "exposed-trough",
+			"changed": 0,
+			"pixels": 174
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 88,
+			"label": "fading",
+			"negative": false,
+			"samples": 870
+		},
+		{
+			"bad": 0,
+			"case": "probe",
+			"fully_cut_positive_height_samples": 0,
+			"label": "expired",
+			"negative": false,
+			"samples": 870
+		},
+		{
+			"area": "[P: (319, 231), S: (151, 154)]",
+			"case": "restoration",
+			"label": "soft-ground round trip restores mound",
+			"patch": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			},
+			"region_only": false,
+			"whole_scene": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			}
+		},
+		{
+			"area": "[P: (319, 231), S: (151, 154)]",
+			"case": "restoration",
+			"label": "soft-off static shader restores exact pixels",
+			"patch": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			},
+			"region_only": false,
+			"whole_scene": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			}
+		},
+		{
+			"area": "[P: (319, 231), S: (151, 154)]",
+			"case": "restoration",
+			"label": "rebuild restores original mound scene",
+			"patch": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			},
+			"region_only": false,
+			"whole_scene": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			}
+		},
+		{
+			"area": "[P: (319, 231), S: (151, 154)]",
+			"case": "restoration",
+			"label": "cover off restores original scene",
+			"patch": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			},
+			"region_only": false,
+			"whole_scene": {
+				"changed": 0,
+				"over_2": 0,
+				"peak": 0
+			}
+		}
+	]
+}

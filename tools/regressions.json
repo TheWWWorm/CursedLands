@@ -1,0 +1,364 @@
+{
+  "version": 1,
+  "scope": "Focused recent campaign/UI regressions; not a certification of all historical issues or platforms.",
+  "cases": [
+    {
+      "id": "attack_path_current_target",
+      "script": "tools/tests/attack_path_current_target.gd",
+      "summary": "ATTACK_PATH_CURRENT_TARGET",
+      "contract": "Live, paused, queued and revealed moving targets use current-position previews; pursuit remains predictive.",
+      "issues": [
+        85
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 41
+    },
+    {
+      "id": "corpse_memory_save",
+      "script": "tools/tests/corpse_memory_save.gd",
+      "summary": "CORPSE_MEMORY_SAVE",
+      "contract": "Observer discoveries and an active investigation survive save/load.",
+      "issues": [
+        112,
+        103,
+        95,
+        94
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 30
+    },
+    {
+      "id": "magic_trap_targets",
+      "script": "tools/tests/magic_trap_targets.gd",
+      "summary": "MAGIC_TRAP_TARGETS",
+      "contract": "Original diplomacy selects hostile victims and excludes neutral goblins after reload.",
+      "issues": [
+        110,
+        106
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 17
+    },
+    {
+      "id": "cast_posture_queue",
+      "script": "tools/tests/cast_posture_queue.gd",
+      "summary": "CAST_POSTURE_QUEUE",
+      "contract": "Requested posture follows a locked cast on authority and replica.",
+      "issues": [
+        109
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 12
+    },
+    {
+      "id": "camp_inventory_ui",
+      "script": "tools/tests/camp_inventory_ui.gd",
+      "summary": "CAMP_INVENTORY_UI",
+      "contract": "Shift stacks, charge/wear identity, quest-item protection and independent filters survive page changes.",
+      "issues": [
+        100,
+        101,
+        102
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 116
+    },
+    {
+      "id": "camp_transactions",
+      "script": "tools/tests/camp_transactions.gd",
+      "summary": "CAMP_TRANSACTIONS",
+      "contract": "Co-op repair and swapping preserve private purses and reject stale transactions.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 53
+    },
+    {
+      "id": "spell_constructor_transactions",
+      "script": "tools/tests/spell_constructor_transactions.gd",
+      "summary": "SPELL_CONSTRUCTOR_TRANSACTIONS",
+      "contract": "Paused co-op guest constructs from shop/mixed/bag sources atomically.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 52
+    },
+    {
+      "id": "repeated_spells_input",
+      "script": "tools/tests/repeated_spells_input.gd",
+      "summary": "REPEATED_SPELLS_INPUT",
+      "contract": "Repeated casts succeed through classic, direct keyboard and controller input.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 371
+    },
+    {
+      "id": "dialogue_clock_coop",
+      "script": "tools/tests/dialogue_clock_coop.gd",
+      "summary": "DIALOGUE_CLOCK_COOP",
+      "contract": "Host resets both peers to normal unpaused dialogue; guest cannot override it.",
+      "issues": [
+        92
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 12
+    },
+    {
+      "id": "dialogue_hold_space",
+      "script": "tools/tests/dialogue_hold_space.gd",
+      "summary": "DIALOGUE_HOLD_SPACE",
+      "contract": "Held Space advances phrases but preserves the final phrase until a fresh press.",
+      "issues": [
+        108
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 6
+    },
+    {
+      "id": "issue_ui_controls",
+      "script": "tools/tests/issue_ui_controls.gd",
+      "summary": "ISSUE_UI_CONTROLS",
+      "contract": "Hovered-list scrolling, quest journal states and EN/RU/DE option strings.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 198
+    },
+    {
+      "id": "hidden_presentation",
+      "script": "tools/tests/hidden_presentation.gd",
+      "summary": "HIDDEN_PRESENTATION",
+      "contract": "Hidden replica wakes at its current position without double-counting animation time.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 69
+    },
+    {
+      "id": "dialogue_mouths",
+      "script": "tools/tests/dialogue_mouths.gd",
+      "summary": "DIALOGUE_MOUTHS",
+      "contract": "Original body and portrait mouth atlases, speaker changes and stop/skip lifecycle.",
+      "issues": [
+        76
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 90
+    },
+    {
+      "id": "recent_character_controls",
+      "script": "tools/tests/recent_character_controls.gd",
+      "summary": "RECENT_CHARACTER_CONTROLS",
+      "contract": "Every spell in a real multiplayer kit survives selection/save/admission; View and training Accept/Cancel work.",
+      "issues": [
+        79,
+        81,
+        84,
+        87
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 71
+    },
+    {
+      "id": "dialogue_feedback",
+      "script": "tools/tests/dialogue_feedback.gd",
+      "summary": "DIALOGUE_FEEDBACK",
+      "contract": "LiA smith topics, Back, reopening, highlighting and localized reward names.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 16
+    },
+    {
+      "id": "campaign_feedback",
+      "script": "tools/tests/campaign_feedback.gd",
+      "summary": "CAMPAIGN_FEEDBACK",
+      "contract": "Saved clocks, solo defeat and Suslanger revisit quest-state retention.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 35
+    },
+    {
+      "id": "save_actor_refs",
+      "script": "tools/tests/save_actor_refs.gd",
+      "summary": "SAVE_ACTOR_REFS",
+      "contract": "Saved runtime actor identities remain distinct.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 14
+    },
+    {
+      "id": "prison_alarm_state",
+      "script": "tools/tests/prison_alarm_state.gd",
+      "summary": "PRISON_ALARM_STATE",
+      "contract": "Guard pursuit and prison alarm reset retain native identity.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 70
+    },
+    {
+      "id": "side_quest_lifecycle",
+      "script": "tools/tests/side_quest_lifecycle.gd",
+      "summary": "SIDE_QUEST_LIFECYCLE",
+      "contract": "Authored side-quest activation, return and completion survive the campaign flow.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 590
+    },
+    {
+      "id": "camp_art_regressions",
+      "script": "tools/tests/camp_art_regressions.gd",
+      "summary": "CAMP_ART_REGRESSIONS",
+      "contract": "Original item UVs, spell availability, constructor filtering and EN/RU/DE labels.",
+      "issues": [
+        69,
+        70,
+        71,
+        77
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--en-texts={texts_en}",
+        "--ru-texts={texts_ru}",
+        "--de-texts={texts_de}"
+      ],
+      "min_checks": 115
+    },
+    {
+      "id": "travel_preview_regressions",
+      "script": "tools/tests/travel_preview_regressions.gd",
+      "summary": "TRAVEL_PREVIEW",
+      "contract": "Distinct healer field/cave destinations and original EN/RU/DE unit previews.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--texts-en={texts_en}",
+        "--texts-ru={texts_ru}",
+        "--texts-de={texts_de}"
+      ],
+      "min_checks": 55
+    },
+    {
+      "id": "issue_ui_rendered_en",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "summary": "ISSUE_UI_RENDERED",
+      "contract": "Original character/item bounds while turning; options layout in en.",
+      "issues": [
+        78,
+        86
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ui-language=en"
+      ],
+      "min_checks": 1055
+    },
+    {
+      "id": "issue_ui_rendered_ru",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "summary": "ISSUE_UI_RENDERED",
+      "contract": "Original character/item bounds while turning; options layout in ru.",
+      "issues": [
+        78,
+        86
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ui-language=ru"
+      ],
+      "min_checks": 1055
+    },
+    {
+      "id": "issue_ui_rendered_de",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "summary": "ISSUE_UI_RENDERED",
+      "contract": "Original character/item bounds while turning; options layout in de.",
+      "issues": [
+        78,
+        86
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ui-language=de"
+      ],
+      "min_checks": 1055
+    },
+    {
+      "id": "contextual_tutorials",
+      "script": "tools/tests/contextual_tutorials.gd",
+      "summary": "CONTEXTUAL_TUTORIALS",
+      "contract": "Tutorial triggers and HUD-relative scaling from 800x600 to 4K, EN/RU/DE mouse and controller.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 496
+    },
+    {
+      "id": "ground_mark_receivers",
+      "script": "tools/tests/ground_mark_receivers.gd",
+      "summary": "GROUND_MARK_RECEIVERS",
+      "contract": "Original footprints, blood and scorch remain visible on slopes and raised floors; lifecycle releases geometry.",
+      "issues": [
+        29,
+        96
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 13
+    },
+    {
+      "id": "ground_mark_animation",
+      "script": "tools/tests/ground_mark_animation.gd",
+      "summary": "GROUND_MARK_ANIMATION",
+      "contract": "Animated blood matches the independent CPU-clipped receiver across sizes/angles and after surface changes.",
+      "issues": [
+        29,
+        96
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 24
+    }
+  ]
+}

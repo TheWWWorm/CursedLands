@@ -1,0 +1,21 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+[trace 00:32:25 +6431ms] session ebc68ff620a0: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+MOUND_STAGE ready
+MOUND_STAGE oracle
+MOUND_STAGE metadata
+MOUND_STAGE run
+MOUND_STAGE load gz11k
+MOUND_STAGE prepared
+PERFORMANCE {"buffer_bytes":59851428.0,"cache_entries":{"camera_materials":0,"figure_materials":0,"figure_meshes":357,"figure_models":44,"object_textures":20,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":2275.0,"drawn_frames":237,"focus":"in","frame_limit":30,"interval_fps":9.56783309048397,"interval_s":24.770499,"msaa_3d":0,"nodes":10302.0,"objects":21137.0,"options":"hd_textures=0 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=0 wind=0 grass=0 biome_cover=1 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=0 ssao=0 contact_shadows=1 bloom=0 depth_of_field=0 water=0 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=0 auto_graphics=0","orphan_nodes":1.0,"paused":true,"physics_ms":0.015,"pid":3991252,"primitives":512690.0,"process_ms":188.81,"reason":"interval","recent_fps":26.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":630.0,"screen_space_aa":0,"static_bytes":602852350.0,"taa":false,"texture_bytes":95749226.0,"time_scale":1.0,"uptime_s":31.202575,"video_allocated_bytes":155600654.0,"vsync":0,"window":[2880,1800],"world_count":1,"worlds":[{"authority":true,"instance":565006305758,"logic_debt_s":0.0,"looted":0,"presentation":true,"process_mode":1,"time":0.0,"units":0,"visible":true}],"zone":"(menu)"}
+BIOME_MOUNDS checks=50 failures=0
+[trace 00:32:59 +40708ms] clean exit

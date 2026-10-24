@@ -1,0 +1,55 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+[cursor] Cursor at 9.633 s: x=640.0, y=360.0 px | No map ground under cursor.
+[cursor] Cursor at 9.634 s: x=640.0, y=360.0 px | No map ground under cursor.
+[cursor] Cursor at 9.737 s: x=1440.0, y=900.0 px | No map ground under cursor.
+[cursor] Cursor at 9.870 s: x=1440.0, y=900.0 px | No map ground under cursor.
+[cursor] Cursor at 10.004 s: x=1440.0, y=900.0 px | No map ground under cursor.
+[cursor] Cursor at 10.238 s: x=1440.0, y=900.0 px | No map ground under cursor.
+[cursor] Cursor at 10.304 s: x=1440.0, y=900.0 px | No map ground under cursor.
+[cursor] Cursor at 10.370 s: x=1440.0, y=900.0 px | No map ground under cursor.
+[cursor] Cursor at 10.537 s: x=123.0, y=234.0 px | No map ground under cursor.
+[cursor] Cursor at 10.637 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.638 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.638 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.639 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.640 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.640 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.640 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.640 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.640 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.641 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.641 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.641 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.641 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.641 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.641 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.642 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.642 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.642 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.642 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.642 s: x=456.0, y=345.0 px | No map ground under cursor.
+[cursor] Cursor at 10.644 s: x=456.0, y=345.0 px | No map ground under cursor.
+CAPTURE console-cursor-en
+[cursor] Курсор в 10.868 с: x=456.0, y=345.0 пикс. | Под курсором нет поверхности карты.
+[cursor] Курсор в 10.970 с: x=456.0, y=345.0 пикс. | Под курсором нет поверхности карты.
+CAPTURE console-cursor-ru
+[cursor] Mauszeiger bei 11.093 s: x=456.0, y=345.0 px | Kein Kartengelände unter dem Mauszeiger.
+[cursor] Mauszeiger bei 11.204 s: x=456.0, y=345.0 px | Kein Kartengelände unter dem Mauszeiger.
+CAPTURE console-cursor-de
+CONSOLE_CURSOR {"checks":30,"failures":[]}

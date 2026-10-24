@@ -1250,7 +1250,6 @@ func _ground_tile_image() -> Image:
 		match int(tiles[i * 4 + 1]):
 			9: tiles[i * 4 + 2] = 0.20; tiles[i * 4 + 3] = 0.30
 			12: tiles[i * 4 + 2] = 0.075; tiles[i * 4 + 3] = 0.12
-			3: tiles[i * 4 + 2] = 0.008; tiles[i * 4 + 3] = 0.025
 	return Image.create_from_data(sectors_x * TILES,
 		sectors_y * TILES, false, Image.FORMAT_RGBAF, tiles.to_byte_array())
 

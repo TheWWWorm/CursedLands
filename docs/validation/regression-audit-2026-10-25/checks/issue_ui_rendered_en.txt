@@ -1,0 +1,17 @@
+GPU Lab job: 6024c78cb5954dc0
+dbus-daemon[4010778]: [session uid=1000 pid=4010778] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=4010779 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[4010778]: [session uid=1000 pid=4010778] Successfully activated service 'org.a11y.Bus'
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+
+[trace 00:42:44 +6286ms] session 68d5f45deb2f: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, gl_compatibility / opengl3
+ISSUE_UI_RENDERED {"checks":1055,"failures":[],"language":"en"}
+[trace 00:42:49 +11611ms] clean exit

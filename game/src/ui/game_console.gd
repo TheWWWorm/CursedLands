@@ -88,12 +88,31 @@ func _process(_dt:float):
 
 func _log_cursor():
 	var point:=get_viewport().get_mouse_position()
-	var text:=RemakeText.t("Cursor at %.3f s: x=%.1f, y=%.1f px")%[Time.get_ticks_msec()/1000.0,point.x,point.y]
+	var text:=_cursor_text(point)
 	# Keep hidden-console sampling cheap; reopening redraws retained output.
 	lines.append(text)
 	while lines.size()>line_limit:lines.remove_at(0)
 	if visible:_render_output()
 	print("[cursor] ",text)
+
+func _cursor_text(point:Vector2) -> String:
+	var seconds:=Time.get_ticks_msec()/1000.0
+	var s:=_bind_session()
+	if s and not s.loading_game and not s._remote_loading and is_instance_valid(s.game) \
+			and is_instance_valid(s.world) and s.game.world==s.world and s.world.terrain \
+			and is_instance_valid(s.game.rig) and is_instance_valid(s.game.rig.camera) \
+			and get_viewport().get_visible_rect().has_point(point):
+		# Use the same terrain/BASE-face projection as gameplay orders. These
+		# are EI map x/y, not viewport pixels or Godot x/z coordinates.
+		var ground:Variant=s.game.pick_ground(point)
+		var bounds:=Vector2(s.world.nav.size)*NavGrid.CELL
+		if ground is Vector2 and ground.is_finite() and Rect2(Vector2.ZERO,bounds).has_point(ground):
+			# Truncate inside the map so formatting a point next to the outer
+			# edge cannot round it up to teleport's excluded upper bound.
+			ground=Vector2(floorf(ground.x*1000.0),floorf(ground.y*1000.0))/1000.0
+			var command:="teleport %.3f %.3f"%[ground.x,ground.y]
+			return RemakeText.t("Cursor at %.3f s: map x=%.3f, y=%.3f | %s")%[seconds,ground.x,ground.y,command]
+	return RemakeText.t("Cursor at %.3f s: x=%.1f, y=%.1f px")%[seconds,point.x,point.y]+" | "+RemakeText.t("No map ground under cursor.")
 
 func _cursor(words:PackedStringArray):
 	if words.size()==1:_log_cursor();return

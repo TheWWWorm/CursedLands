@@ -1,0 +1,29 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+WARNING: AMD FSR runtime is missing or does not match the pinned production SDK.
+   at: initialize_device (drivers/fsr_sdk/fsr_sdk.cpp:185)
+D3D12 12_0 - Forward+ - Using Device #0: AMD - NVIDIA GeForce RTX 3090
+
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F4, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.
+Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.
+   at: uniform_set_create (drivers/d3d12/rendering_device_driver_d3d12.cpp:3502)
+ERROR: Condition "!driver_uniform_set" is true. Returning: RID()
+   at: uniform_set_create (servers/rendering/rendering_device.cpp:4767)
+ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.
+Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.
+   at: uniform_set_create (drivers/d3d12/rendering_device_driver_d3d12.cpp:3502)
+ERROR: Condition "!driver_uniform_set" is true. Returning: RID()
+   at: uniform_set_create (servers/rendering/rendering_device.cpp:4767)
+ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.
+Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.
+   at: uniform_set_create (drivers/d3d12/rendering_device_driver_d3d12.cpp:3502)
+ERROR: Condition "!driver_uniform_set" is true. Returning: RID()
+   at: uniform_set_create (servers/rendering/rendering_device.cpp:4767)
+DESCRIPTOR_BUDGET {"capacity":65536,"failures":["cycle 0 allocated 1023/2048 sets","cycle 1 allocated 1022/2048 sets","cycle 2 allocated 1022/2048 sets"],"rows":[{"cycle":0,"descriptors":65472,"sets":1023},{"cycle":1,"descriptors":65408,"sets":1022},{"cycle":2,"descriptors":65408,"sets":1022}]}

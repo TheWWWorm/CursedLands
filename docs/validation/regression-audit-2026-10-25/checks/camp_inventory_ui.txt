@@ -1,0 +1,126 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:39:42 +5282ms] session 99005c13983b: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS original localized material description: thin
+PASS original localized material description: thick
+PASS original localized material description: tanned thin
+PASS original localized material description: troll green
+PASS original localized material description: troll blue
+PASS original localized material description: troll black
+PASS original localized material description: dragon red
+PASS original localized material description: dragon green
+PASS original localized material description: dragon black
+PASS original localized material description: tiger hide
+PASS original localized material description: decayed bones
+PASS original localized material description: dry bones
+PASS original localized material description: burned bones
+PASS original localized material description: scrab bones
+PASS original localized material description: dragon red bones
+PASS original localized material description: dragon green bones
+PASS original localized material description: dragon black bones
+PASS original localized material description: rock
+PASS original localized material description: granite
+PASS original localized material description: silicon
+PASS original localized material description: malachite
+PASS original localized material description: bronze
+PASS original localized material description: iron
+PASS original localized material description: steel
+PASS original localized material description: mithrill
+PASS original localized material description: adamantium
+PASS original localized material description: meteoric
+PASS original localized material description: diamond
+PASS original localized material description: wool
+PASS original localized material description: cotton
+PASS original localized material description: silk red
+PASS original localized material description: silk blue
+PASS original localized material description: tiger hide white
+PASS checked the original material catalogue
+PASS stone does not use the generic placeholder
+PASS blueprint text retains its original source
+PASS eight installed runes use real original icons
+PASS duplicate rune icons retain multiplicity and order
+PASS allowed prototype modifiers do not create installed markers
+PASS canonical spell parsing supplies marker identities
+[trace 00:39:43 +5716ms] zone load bz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.433887,"msaa_3d":2,"nodes":813.0,"objects":5215.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":4004796,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":630.0,"screen_space_aa":2,"static_bytes":477670010.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":5.716506,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"bz1g (loading)"}
+[trace 00:39:47 +9894ms] navigation prepared 2 classes in 7 ms
+[trace 00:39:47 +9897ms] zone ready bz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":841,"figure_models":49,"object_textures":16,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":4.181359,"msaa_3d":2,"nodes":3300.0,"objects":13887.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":39.0,"paused":false,"physics_ms":null,"pid":4004796,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":2,"static_bytes":1124269550.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":9.898027,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":617921645193,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":29,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+PASS fixture enters an actual campaign camp
+PASS constructor fixtures use original weapon and armour records
+PASS original quest item fixture
+PASS quest prototypes cannot appear in shop stock
+PASS script-designated quest items also stay out of stock
+PASS authority refuses buying a script-designated quest item
+PASS native and script-designated quest items stay out of the selling row, including personal-bag copies
+PASS quest items cannot be sold by a stale client command
+PASS wheel over bag advances only the bag
+PASS wheel over stock advances only stock
+PASS wheel clamps at last visible page
+PASS reverse wheel returns to first items
+PASS wheel never stages a trade
+PASS selected bag tab survives activity change: weapons
+PASS selected bag tab survives activity change: itemtrade
+PASS selected bag tab survives activity change: itemconstr
+PASS selected bag tab survives activity change: spelltrade
+PASS selected bag tab survives activity change: spellconstr
+PASS selected bag tab survives activity change: spells
+PASS selected bag tab survives activity change: repair
+PASS item blueprint tab and scroll survive the spell shop
+PASS item blueprint tab survives dressing
+PASS spell goods retain their independent tab
+PASS repair starts with damaged equipment only
+PASS spell trading starts with spells and their ingredients
+PASS quest items remain accessible in player inventory
+PASS inventory text includes installed rune inscriptions
+PASS spell constructor preserves a manually selected quest tab
+PASS spell constructor shows keystones, runes, bag and learned spells together
+PASS spell constructor hides unrelated bag items
+PASS ready-spell shop filter keeps its meaning in the spell constructor
+PASS elemental filter exposes the constructor's keystones
+PASS rune filter exposes the constructor's basic runes
+PASS legacy 3D viewports cannot cover the completed spell artwork
+PASS item constructor keeps the chosen bag tab and item goods row
+PASS weapon and armour blueprints and dismantlable equipment remain accessible
+PASS item constructor includes materials and enchantment spells
+PASS item constructor hides unrelated ingredients and consumables
+PASS item constructor shop defaults include both equipment families and materials
+PASS manual all-items filter remains available
+PASS re-entering a constructor retains the selected all-items tab
+PASS hover panel receives the original stone description
+PASS actual bag cell exists for tiny potion 1
+PASS physical Shift-click transfers the full stack without starting repeat
+PASS actual bag cell exists for tiny potion 1
+PASS mouse press stages one copy and captures held transfer
+PASS hold delay does not repeat early
+PASS held button repeats after its delay
+PASS repeat stops at the exact stack count
+PASS shifted cells do not transfer the next item or merge worn copies
+PASS actual bag cell exists for stone axe.rock@1.0
+PASS repeating worn items keeps the pristine item separate
+PASS actual bag cell exists for tiny potion 1
+PASS release outside the cell stops transfer
+PASS actual bag cell exists for tiny potion 1
+PASS application focus loss stops transfer
+PASS actual bag cell exists for tiny potion 1
+PASS closing inventory stops transfer
+PASS actual bag cell exists for tiny potion 1
+PASS mode change cancels capture and returns staged copies
+PASS actual bag cell exists for tiny potion 1
+PASS external inventory depletion stops capture
+PASS actual shop cell exists for tiny potion 1
+PASS shop holds stage purchases with authoritative stock counts
+PASS filter changes cancel held transfer
+PASS actual bag cell exists for tiny potion 1
+PASS submitting a trade cancels the held transfer immediately
+PASS the held offer settles exactly once through the authority
+PASS charge-state fixture uses an actual charge-bearing item
+PASS actual bag cell exists for wand 1.rock@0~1.0
+PASS held transfers preserve charge-state distinctions
+PASS touch hold captures a shop item without a tap on release
+PASS touch hold repeats the same staged item
+PASS touch release stops without adding a final copy
+PASS equipped slots retain installed rune IDs
+PASS equipped tooltip names duplicate installed runes
+CAMP_INVENTORY_UI {"checks":116,"failures":0}
+[trace 00:39:50 +13461ms] clean exit

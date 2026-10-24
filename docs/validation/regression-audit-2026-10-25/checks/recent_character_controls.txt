@@ -1,0 +1,77 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:47:10 +5265ms] session 8ebeb04a554c: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/recent_character_controls.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/audit-suite-guard-final/recent_character_controls/data/godot/app_userdata/Cursed Lands"}
+PASS original multiplayer kit supplies multiple spell choices
+PASS creation opens the kit screen
+PASS authored spell has a selectable kit cell: arrow {e1}
+PASS clicked spell becomes the selected kit piece: arrow {e1}
+PASS unusable spell explains requirements in en
+PASS unusable spell explains requirements in ru
+PASS unusable spell explains requirements in de
+PASS finish returns to character selection
+PASS chosen spell survives disk reload: arrow {e1}
+PASS host admission retains chosen spell: arrow {e1}
+PASS creation opens the kit screen
+PASS authored spell has a selectable kit cell: eagle_sight {d1}
+PASS clicked spell becomes the selected kit piece: eagle_sight {d1}
+PASS unusable spell explains requirements in en
+PASS unusable spell explains requirements in ru
+PASS unusable spell explains requirements in de
+PASS finish returns to character selection
+PASS chosen spell survives disk reload: eagle_sight {d1}
+PASS host admission retains chosen spell: eagle_sight {d1}
+PASS creation opens the kit screen
+PASS authored spell has a selectable kit cell: vision_fog {d1}
+PASS clicked spell becomes the selected kit piece: vision_fog {d1}
+PASS unusable spell explains requirements in en
+PASS unusable spell explains requirements in ru
+PASS unusable spell explains requirements in de
+PASS finish returns to character selection
+PASS chosen spell survives disk reload: vision_fog {d1}
+PASS host admission retains chosen spell: vision_fog {d1}
+PASS creation opens the kit screen
+PASS authored spell has a selectable kit cell: healing {e1}
+PASS clicked spell becomes the selected kit piece: healing {e1}
+PASS unusable spell explains requirements in en
+PASS unusable spell explains requirements in ru
+PASS unusable spell explains requirements in de
+PASS finish returns to character selection
+PASS chosen spell survives disk reload: healing {e1}
+PASS host admission retains chosen spell: healing {e1}
+PASS fixture includes a spell the new hero cannot cast yet
+PASS View opens the actual camp for the saved character
+PASS single-character camp has no hero-cycle arrows
+PASS pending training leaves saved skill and XP untouched
+PASS pending preview shows the next skill and its price
+PASS Cancel discards training without charging XP
+PASS Accept applies exactly one skill and its displayed price
+PASS repeated Accept cannot buy again
+PASS leaving Skills discards unaccepted changes
+PASS default training mode applies the command immediately
+PASS inactive ability is never offered: sword1
+PASS inactive ability is never offered: axe1
+PASS inactive ability is never offered: dagger1
+PASS inactive ability is never offered: spear1
+PASS inactive ability is never offered: bludgeon1
+PASS inactive ability is never offered: bow1
+PASS inactive ability is never offered: xbow1
+PASS inactive ability is never offered: fire1
+PASS inactive ability is never offered: lightning1
+PASS inactive ability is never offered: acid1
+PASS inactive ability is never offered: illusion1
+PASS inactive ability is never offered: enchantments1
+PASS inactive ability is never offered: night1
+PASS inactive ability is never offered: health1
+PASS inactive ability is never offered: mana1
+PASS inactive ability is never offered: vitality1
+PASS inactive ability is never offered: spirit1
+PASS inactive ability is never offered: quickness1
+PASS inactive ability is never offered: lift1
+PASS inactive ability is never offered: bs1
+PASS inactive ability is never offered: str1
+PASS inactive ability is never offered: dex1
+PASS inactive ability is never offered: int1
+PASS closing View saves accepted training to the character
+RECENT_CHARACTER_CONTROLS 71 checks 0 failures
+[trace 00:47:11 +6475ms] clean exit

@@ -1,0 +1,110 @@
+[
+  {
+    "file": "CursedLands-report-20261024-234059.txt",
+    "sha256": "0e748a8d1184394265ca2ad6610f168bb7e45b1f8c1570e5921160ecd09dcb1e",
+    "lines": 5061,
+    "descriptor_heap_errors": 2,
+    "null_uniform_sets": 2492,
+    "fence_errors": 1,
+    "error_sequence": [
+      {
+        "line": 189,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 4152,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 5023,
+        "text": "ERROR: D3D12: fence completion failed (HRESULT 0x887a0005; device removed reason 0x887a0006).",
+        "next": [
+          "   at: _report_device_failure (drivers\\d3d12\\ei_device_diagnostics_d3d12.cpp:113)",
+          "ERROR: D3D12 GPU fence completion failed. Rendering must stop to avoid reusing in-flight resources; see the device diagnostics above."
+        ]
+      }
+    ]
+  },
+  {
+    "file": "CursedLands-report-20261025-004033.txt",
+    "sha256": "013f6336dba1abc7ac5bc760caf6538070a203561a85771e23f4571d2184141c",
+    "lines": 5061,
+    "descriptor_heap_errors": 7,
+    "null_uniform_sets": 2478,
+    "fence_errors": 1,
+    "error_sequence": [
+      {
+        "line": 338,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 1227,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 1232,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 1305,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 1790,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 2155,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 4540,
+        "text": "ERROR: Cannot create uniform set because there's not enough room in the RESOURCES descriptor heap.",
+        "next": [
+          "Please increase the value of the rendering/rendering_device/d3d12/max_resource_descriptors project setting.",
+          "   at: uniform_set_create (drivers\\d3d12\\rendering_device_driver_d3d12.cpp:3502)"
+        ]
+      },
+      {
+        "line": 5023,
+        "text": "ERROR: D3D12: fence completion failed (HRESULT 0x887a0005; device removed reason 0x887a0006).",
+        "next": [
+          "   at: _report_device_failure (drivers\\d3d12\\ei_device_diagnostics_d3d12.cpp:113)",
+          "ERROR: D3D12 GPU fence completion failed. Rendering must stop to avoid reusing in-flight resources; see the device diagnostics above."
+        ]
+      }
+    ]
+  }
+]

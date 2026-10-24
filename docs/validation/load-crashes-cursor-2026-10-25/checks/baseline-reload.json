@@ -1,0 +1,62 @@
+{
+	"capacity": 65536,
+	"failures": [],
+	"gpu": "NVIDIA GeForce RTX 3090",
+	"rows": [
+		{
+			"cycle": 0,
+			"materials": 5,
+			"meshes": 1304,
+			"nodes": 37372.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 835517696.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 1,
+			"materials": 5,
+			"meshes": 1304,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 842671360.0,
+			"worker": true,
+			"zone": "gz1h"
+		},
+		{
+			"cycle": 2,
+			"materials": 5,
+			"meshes": 1853,
+			"nodes": 28382.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 834192640.0,
+			"worker": true,
+			"zone": "gz2h"
+		},
+		{
+			"cycle": 3,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 17941.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 1032769024.0,
+			"worker": true,
+			"zone": "bz2h"
+		},
+		{
+			"cycle": 4,
+			"materials": 5,
+			"meshes": 2016,
+			"nodes": 37370.0,
+			"old_world_freed": true,
+			"resources": 631.0,
+			"vram": 903996160.0,
+			"worker": true,
+			"zone": "gz1h"
+		}
+	]
+}

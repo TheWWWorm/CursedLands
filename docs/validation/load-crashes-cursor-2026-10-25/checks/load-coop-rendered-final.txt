@@ -1,0 +1,693 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+132719.470:0164:0168:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+132719.470:0164:0168:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+132719.472:0164:0168:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+132719.472:0164:0168:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+132719.473:0164:0168:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+132719.473:0164:0168:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.1.0.
+132719.473:0164:0168:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 0bb64c56c8f0dcc+.
+132719.485:0164:0168:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+132719.485:0164:0168:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+132719.513:0164:0168:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+132719.515:0164:0168:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+132719.515:0164:0168:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling shader_float_controls2 on NV drivers due to buggy implementation.
+132720.091:0164:0168:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+132720.091:0164:0168:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+132720.095:0164:0168:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+132720.095:0164:0168:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+132720.096:0164:0168:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Enabling fast paths for advanced ExecuteIndirect() graphics and compute (EXT_dgc).
+132720.096:0164:0168:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+132720.096:0164:0168:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+132720.096:0164:0168:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+132720.096:0164:0168:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+132720.098:0164:0168:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+132720.098:0164:0168:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.7.
+132720.098:0164:0168:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.8.
+132720.098:0164:0168:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 8064, may be inaccurate.
+132720.098:0164:0168:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+132720.098:0164:0168:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+132720.098:0164:0168:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+132720.098:0164:0168:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\issues-110-112-20261024\load-coop-rendered-final\vkd3d-proton.CursedLands.exe.cache.
+132720.098:0164:0168:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\issues-110-112-20261024\load-coop-rendered-final\vkd3d-proton.CursedLands.exe.cache.
+WARNING: AMD FSR runtime is missing or does not match the pinned production SDK.
+   at: initialize_device (drivers/fsr_sdk/fsr_sdk.cpp:185)
+132720.099:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+132720.099:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: No write cache exists. No need to merge any disk caches.
+132720.099:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 0.334 ms.
+132720.099:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\home\llm2x\Documents\EI\local\scratchpad\issues-110-112-20261024\load-coop-rendered-final\vkd3d-proton.CursedLands.exe.cache.
+132720.099:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+132720.101:0164:0168:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #0: AMD - NVIDIA GeForce RTX 3090 Ti
+132720.263:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132720.772:0164:0168:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+132721.589:0164:0168:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1600 x 900), BufferCount = 3.
+132721.598:0164:0168:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+132721.599:0164:0168:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F4, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+132721.649:0164:0194:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+132722.607:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 192). It seems like application has stopped creating new PSOs for the time being.
+[trace 00:33:23 +7374ms] session ae54ea858119: 1.28.0, Windows 10.0.19045, AMD NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+132726.990:0164:0194:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+132726.991:0164:0168:info:vkd3d-proton:dxgi_vk_swap_chain_ChangeProperties: Reallocating swapchain (800 x 600), BufferCount = 3.
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+   at: get_screen_transform_internal (scene/main/viewport.cpp:5746)
+132728.157:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132728.157:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132728.157:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132728.159:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132728.159:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132728.160:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132728.225:0164:0168:info:vkd3d-proton:dxgi_vk_swap_chain_ChangeProperties: Reallocating swapchain (1600 x 900), BufferCount = 3.
+132728.285:0164:0194:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+132728.293:0164:0168:info:vkd3d-proton:dxgi_vk_swap_chain_ChangeProperties: Reallocating swapchain (800 x 600), BufferCount = 3.
+HOST_MESSAGE Игрок Rendering Guest присоединился к игре
+GUEST_MESSAGE Игрок Rendering Guest присоединился к игре
+[trace 00:33:25 +9289ms] load descriptor-gz1h (from )
+[trace 00:33:25 +9333ms] zone load gz1h (entrance 1)
+PERFORMANCE {"buffer_bytes":32458656.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":4.0,"drawn_frames":11,"focus":"in","frame_limit":30,"interval_fps":5.61624790730944,"interval_s":1.958603,"msaa_3d":0,"nodes":1589.0,"objects":7049.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.156,"pid":356,"primitives":20.0,"process_ms":1200.523,"reason":"scene","recent_fps":6.0,"render_scale":1.0,"renderer":"forward_plus","resources":631.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":345961472.0,"time_scale":1.0,"uptime_s":9.334495,"video_allocated_bytes":391353600.0,"vsync":1,"window":[800,600],"world_count":0,"worlds":[],"zone":"gz1h (loading)"}
+132729.567:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 18). It seems like application has stopped creating new PSOs for the time being.
+132737.349:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132737.349:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132737.349:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132737.353:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132737.353:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132737.354:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132737.357:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132737.370:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132738.433:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 17). It seems like application has stopped creating new PSOs for the time being.
+132744.193:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.193:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.193:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.208:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132744.208:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.208:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.208:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.223:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.237:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132744.238:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132745.338:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 18). It seems like application has stopped creating new PSOs for the time being.
+132750.702:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132750.702:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132750.702:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132750.705:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132751.754:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 10). It seems like application has stopped creating new PSOs for the time being.
+132751.963:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132751.974:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132752.000:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132752.000:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132753.223:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 31). It seems like application has stopped creating new PSOs for the time being.
+132754.717:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132754.717:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132754.717:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132754.717:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132754.718:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132754.719:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132754.721:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132755.746:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 10). It seems like application has stopped creating new PSOs for the time being.
+132760.279:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.305:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132760.305:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.305:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.715:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.715:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.716:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.716:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.719:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.719:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.848:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.848:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.848:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.848:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.852:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.852:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.974:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.974:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.975:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.975:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.977:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132760.977:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.017:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.017:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.017:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.017:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.020:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.020:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.059:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.059:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.063:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.063:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.131:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.137:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.169:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.169:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.175:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.176:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.250:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.258:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.360:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.360:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.372:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.373:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.547:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.547:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.547:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.564:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.564:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.579:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.579:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.591:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.592:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.717:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132761.720:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.038:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.038:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.039:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.055:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.055:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.070:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.070:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.181:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.194:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.437:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.438:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.441:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.441:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.443:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.492:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.493:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.626:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.626:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.628:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.629:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.661:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.661:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.663:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.663:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.664:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.664:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.665:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.665:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.682:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.685:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.904:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.904:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.905:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.905:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.907:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.907:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.955:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.956:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132762.956:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.057:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.057:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.057:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.057:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.096:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.096:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.176:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.176:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.176:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.178:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.178:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.179:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.181:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.181:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.183:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.183:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.184:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.185:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.211:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.212:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.325:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.325:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.325:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.330:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.330:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.334:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.340:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.341:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.344:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.344:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.348:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.348:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.403:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.404:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132763.588:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:00 +44409ms] shader warm-up: 35 of 35 materials, 2923 ms (zone's first picture 5954 ms)
+[trace 00:34:00 +44425ms] zone ready gz1h
+PERFORMANCE {"buffer_bytes":78210492.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1303,"figure_models":81,"object_textures":17,"unit_textures":48,"wound_jobs":0,"wound_layers":0},"draw_calls":1827.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":35.091203,"msaa_3d":0,"nodes":37173.0,"objects":75640.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.156,"pid":356,"primitives":329691.0,"process_ms":1200.523,"reason":"scene","recent_fps":6.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":734839808.0,"time_scale":1.0,"uptime_s":44.425938,"video_allocated_bytes":854825984.0,"vsync":1,"window":[800,600],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+132764.593:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 236). It seems like application has stopped creating new PSOs for the time being.
+[trace 00:34:01 +45784ms] navigation prepared 7 classes in 1346 ms
+[trace 00:34:02 +45819ms] load descriptor-gz1h done in gz1h
+132765.302:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132765.477:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132765.477:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132765.477:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+PERFORMANCE {"buffer_bytes":87307896.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":24,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":1073.0,"drawn_frames":1,"focus":"in","frame_limit":30,"interval_fps":0.479791194871992,"interval_s":2.08424,"msaa_3d":0,"nodes":37042.0,"objects":76036.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.156,"pid":356,"primitives":331513.0,"process_ms":1200.523,"reason":"interval","recent_fps":6.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":752099328.0,"time_scale":1.0,"uptime_s":46.51034,"video_allocated_bytes":907742208.0,"vsync":1,"window":[800,600],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.275,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+132765.832:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132766.269:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132766.269:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132766.270:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:03 +47454ms] zone load gz1h (from host)
+PERFORMANCE {"buffer_bytes":91387338.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":24,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":1251.0,"drawn_frames":17,"focus":"in","frame_limit":30,"interval_fps":18.0096764932405,"interval_s":0.943937,"msaa_3d":0,"nodes":37645.0,"objects":76822.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":3.32,"pid":356,"primitives":418913.0,"process_ms":125.562,"reason":"scene","recent_fps":7.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":747943936.0,"time_scale":1.0,"uptime_s":47.454455,"video_allocated_bytes":913746688.0,"vsync":1,"window":[800,600],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.265,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132767.367:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 28). It seems like application has stopped creating new PSOs for the time being.
+132772.072:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.072:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.073:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.073:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132772.073:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132777.999:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132777.999:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.000:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.000:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.067:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.067:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.067:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.067:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.134:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.134:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.134:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.134:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.199:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.199:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.199:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.200:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.200:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.200:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.200:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.201:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.201:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.201:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.202:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.274:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.274:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.274:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.274:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.274:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.275:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.276:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.544:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.544:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.544:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.612:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.612:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.612:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.677:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.677:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.677:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.741:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.741:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.741:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.741:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.741:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.741:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.742:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132778.867:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:15 +59713ms] shader warm-up: 35 of 35 materials, 1352 ms (zone's first picture 307 ms)
+[trace 00:34:15 +59714ms] zone ready gz1h (from host)
+PERFORMANCE {"buffer_bytes":130341020.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":24,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":99.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":12.259919,"msaa_3d":0,"nodes":73190.0,"objects":140578.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":3.32,"pid":356,"primitives":774.0,"process_ms":125.562,"reason":"scene","recent_fps":7.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":912319488.0,"time_scale":1.0,"uptime_s":59.714494,"video_allocated_bytes":1122448384.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.265,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":2022426356767,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":0.0,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+PERFORMANCE {"buffer_bytes":148978042.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":24,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2763.0,"drawn_frames":10,"focus":"in","frame_limit":30,"interval_fps":3.51423070151425,"interval_s":2.845573,"msaa_3d":0,"nodes":74021.0,"objects":141628.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.56,"pid":356,"primitives":1135723.0,"process_ms":272.183,"reason":"interval","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":984056832.0,"time_scale":1.0,"uptime_s":62.560214,"video_allocated_bytes":1217136640.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":4.18,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":2022426356767,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":3.905,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+132782.372:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+132783.372:0164:0184:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 17). It seems like application has stopped creating new PSOs for the time being.
+COOP_RENDER_SAMPLE {"cycle":0,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74312.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1222823168.0}
+[trace 00:34:25 +69097ms] load descriptor-gz1h (from gz1h)
+[trace 00:34:25 +69268ms] zone load gz1h (entrance 1)
+PERFORMANCE {"buffer_bytes":154585074.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":24,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2798.0,"drawn_frames":27,"focus":"in","frame_limit":30,"interval_fps":4.02489711915753,"interval_s":6.708246,"msaa_3d":0,"nodes":74313.0,"objects":142231.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.452,"pid":356,"primitives":1202542.0,"process_ms":390.935,"reason":"scene","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":981656576.0,"time_scale":1.0,"uptime_s":69.268698,"video_allocated_bytes":1220403712.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.34,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":2022426356767,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.12,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132791.770:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132791.770:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132791.771:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132791.771:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132791.771:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132791.771:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132793.936:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132793.936:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132793.936:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132793.936:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132793.936:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132793.937:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:35 +79414ms] zone teardown gz1h
+132799.897:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.897:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.897:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.897:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.897:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.897:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.897:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.898:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.968:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.968:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.969:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.969:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.969:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.970:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.970:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.970:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.970:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.970:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132799.971:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.041:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.041:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.041:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.042:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.042:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.042:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.042:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.043:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.043:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.043:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.044:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.157:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.157:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.157:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.157:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.158:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.158:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.159:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.159:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.159:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132800.159:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:37 +81044ms] shader warm-up: 8 of 8 materials, 366 ms (zone's first picture 243 ms)
+[trace 00:34:37 +81068ms] zone ready gz1h
+PERFORMANCE {"buffer_bytes":197197536.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":24,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":4672.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":11.800754,"msaa_3d":0,"nodes":109746.0,"objects":205851.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.452,"pid":356,"primitives":1467599.0,"process_ms":390.935,"reason":"scene","recent_fps":4.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1140912128.0,"time_scale":1.0,"uptime_s":81.069589,"video_allocated_bytes":1431243776.0,"vsync":1,"window":[800,600],"world_count":3,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":614666864970,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.34,"units":416,"visible":true,"zone":"gz1h"},{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":4132412857224,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":2022426356767,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.12,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+[trace 00:34:38 +82415ms] navigation prepared 7 classes in 1330 ms
+[trace 00:34:38 +82436ms] load descriptor-gz1h done in gz1h
+[trace 00:34:40 +84767ms] zone load gz1h (from host)
+PERFORMANCE {"buffer_bytes":161370960.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2746.0,"drawn_frames":18,"focus":"in","frame_limit":30,"interval_fps":4.86786978772843,"interval_s":3.697716,"msaa_3d":0,"nodes":74182.0,"objects":142138.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":5.372,"pid":356,"primitives":1074709.0,"process_ms":273.347,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":981263360.0,"time_scale":1.0,"uptime_s":84.767678,"video_allocated_bytes":1235427072.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":4132412857224,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.54,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":2022426356767,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.12,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132809.293:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.293:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.294:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132809.295:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:48 +92490ms] zone teardown gz1h
+132814.401:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.401:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.402:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.402:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.402:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.402:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.402:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.403:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.468:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.468:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.468:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.469:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.469:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.470:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.470:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.470:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.471:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.473:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.474:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.578:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.578:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.578:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.578:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.578:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.579:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.579:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.579:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.579:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.580:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.580:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132814.681:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:34:51 +95564ms] shader warm-up: 8 of 8 materials, 380 ms (zone's first picture 269 ms)
+[trace 00:34:51 +95565ms] zone ready gz1h (from host)
+PERFORMANCE {"buffer_bytes":195263438.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":99.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":10.798256,"msaa_3d":0,"nodes":109615.0,"objects":205753.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":5.372,"pid":356,"primitives":792.0,"process_ms":273.347,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1140609024.0,"time_scale":1.0,"uptime_s":95.566097,"video_allocated_bytes":1428985088.0,"vsync":1,"window":[800,600],"world_count":3,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":4132412857224,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.54,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":2022426356767,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.12,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":5398589349504,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":0.0,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+PERFORMANCE {"buffer_bytes":198014172.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":3179.0,"drawn_frames":1,"focus":"in","frame_limit":30,"interval_fps":1.15144759992262,"interval_s":0.868472,"msaa_3d":0,"nodes":73066.0,"objects":140741.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":5.372,"pid":356,"primitives":1009440.0,"process_ms":273.347,"reason":"interval","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1144902656.0,"time_scale":1.0,"uptime_s":96.434908,"video_allocated_bytes":1438173440.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":4132412857224,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":2.09,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":5398589349504,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.815,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+COOP_RENDER_SAMPLE {"cycle":1,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74310.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1165215744.0}
+[trace 00:35:02 +106282ms] load descriptor-gz1h (from gz1h)
+[trace 00:35:02 +106456ms] zone load gz1h (entrance 1)
+PERFORMANCE {"buffer_bytes":153933746.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2793.0,"drawn_frames":34,"focus":"in","frame_limit":30,"interval_fps":3.3925404819882,"interval_s":10.021988,"msaa_3d":0,"nodes":74311.0,"objects":142402.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.178,"pid":356,"primitives":1201026.0,"process_ms":459.91,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":913942528.0,"time_scale":1.0,"uptime_s":106.457051,"video_allocated_bytes":1162790144.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":4132412857224,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.89,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":5398589349504,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.615,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132828.827:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132828.827:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132828.827:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132828.827:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132828.827:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132828.827:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132831.051:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132831.051:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132831.051:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132831.051:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132831.051:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132831.052:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:35:12 +116525ms] zone teardown gz1h
+132837.168:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.168:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.168:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.168:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.168:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.169:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.169:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.169:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.238:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.238:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.238:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.239:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.239:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.240:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.240:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.240:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.240:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.241:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.241:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.310:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.310:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.310:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.312:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.312:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.312:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.312:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.312:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.313:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.313:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.314:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.425:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.425:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.425:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.425:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.426:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.426:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.426:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.426:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.426:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132837.427:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:35:14 +118314ms] shader warm-up: 8 of 8 materials, 366 ms (zone's first picture 275 ms)
+[trace 00:35:14 +118339ms] zone ready gz1h
+PERFORMANCE {"buffer_bytes":187825376.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":4668.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":11.883398,"msaa_3d":0,"nodes":109744.0,"objects":206022.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.178,"pid":356,"primitives":1466925.0,"process_ms":459.91,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1073198080.0,"time_scale":1.0,"uptime_s":118.340579,"video_allocated_bytes":1356254976.0,"vsync":1,"window":[800,600],"world_count":3,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":4132412857224,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.89,"units":416,"visible":true,"zone":"gz1h"},{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":7499667285876,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":5398589349504,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.615,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+[trace 00:35:15 +119725ms] navigation prepared 7 classes in 1369 ms
+[trace 00:35:15 +119750ms] load descriptor-gz1h done in gz1h
+[trace 00:35:18 +122300ms] zone load gz1h (from host)
+PERFORMANCE {"buffer_bytes":151994636.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2741.0,"drawn_frames":18,"focus":"in","frame_limit":30,"interval_fps":4.54593094983439,"interval_s":3.959585,"msaa_3d":0,"nodes":74182.0,"objects":142151.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":6.072,"pid":356,"primitives":1074246.0,"process_ms":180.78,"reason":"scene","recent_fps":9.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":913067008.0,"time_scale":1.0,"uptime_s":122.300539,"video_allocated_bytes":1159947520.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":7499667285876,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.595,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":5398589349504,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.615,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132846.850:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.850:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.851:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132846.851:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:35:26 +130150ms] zone teardown gz1h
+132852.391:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.391:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.391:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.391:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.392:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.392:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.392:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.392:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.503:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.503:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.503:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.503:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.504:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.504:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.504:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.504:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.505:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.507:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.508:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.613:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.613:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.613:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.614:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.614:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.614:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.614:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.615:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.615:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.615:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.616:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.720:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.720:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.720:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132852.721:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:35:29 +133606ms] shader warm-up: 8 of 8 materials, 433 ms (zone's first picture 345 ms)
+[trace 00:35:29 +133608ms] zone ready gz1h (from host)
+PERFORMANCE {"buffer_bytes":185891598.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":99.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":11.308134,"msaa_3d":0,"nodes":109615.0,"objects":205766.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":6.072,"pid":356,"primitives":792.0,"process_ms":180.78,"reason":"scene","recent_fps":9.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1072412672.0,"time_scale":1.0,"uptime_s":133.608807,"video_allocated_bytes":1353514496.0,"vsync":1,"window":[800,600],"world_count":3,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":7499667285876,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.595,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":8,"lights":3,"magic_endings":0,"missiles":0},"instance":5398589349504,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.615,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":0.0,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+PERFORMANCE {"buffer_bytes":186549664.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":3181.0,"drawn_frames":1,"focus":"in","frame_limit":30,"interval_fps":1.16592377889888,"interval_s":0.857689,"msaa_3d":0,"nodes":73066.0,"objects":140757.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":6.072,"pid":356,"primitives":1011279.0,"process_ms":180.78,"reason":"interval","recent_fps":9.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1076706304.0,"time_scale":1.0,"uptime_s":134.46677,"video_allocated_bytes":1358517504.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":7499667285876,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":2.145,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.87,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+COOP_RENDER_SAMPLE {"cycle":2,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74310.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1165218816.0}
+[trace 00:35:40 +144503ms] load descriptor-gz1h (from gz1h)
+[trace 00:35:40 +144677ms] zone load gz1h (entrance 1)
+PERFORMANCE {"buffer_bytes":153935682.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2794.0,"drawn_frames":34,"focus":"in","frame_limit":30,"interval_fps":3.32960743732455,"interval_s":10.211414,"msaa_3d":0,"nodes":74311.0,"objects":142452.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.721,"pid":356,"primitives":1201091.0,"process_ms":442.062,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":913942528.0,"time_scale":1.0,"uptime_s":144.678339,"video_allocated_bytes":1162793216.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":7499667285876,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.945,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.67,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132867.040:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132867.040:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132867.040:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132867.040:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132867.041:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132867.041:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132869.250:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132869.250:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132869.251:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132869.251:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132869.251:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132869.251:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:35:50 +154565ms] zone teardown gz1h
+132875.074:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.074:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.074:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.074:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.074:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.074:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.075:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.075:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.145:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.145:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.146:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.147:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.147:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.147:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.147:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.147:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.148:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.148:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.149:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.219:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.219:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.219:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.220:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.220:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.220:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.220:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.221:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.221:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.221:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.222:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.334:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.334:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.334:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.334:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.336:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.336:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.336:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.336:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.336:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132875.336:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:35:52 +156221ms] shader warm-up: 8 of 8 materials, 366 ms (zone's first picture 245 ms)
+[trace 00:35:52 +156244ms] zone ready gz1h
+PERFORMANCE {"buffer_bytes":187827312.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":4664.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":11.56756,"msaa_3d":0,"nodes":109744.0,"objects":206072.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.721,"pid":356,"primitives":1466799.0,"process_ms":442.062,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1073198080.0,"time_scale":1.0,"uptime_s":156.246036,"video_allocated_bytes":1356258048.0,"vsync":1,"window":[800,600],"world_count":3,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":7499667285876,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.945,"units":416,"visible":true,"zone":"gz1h"},{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":10866988755164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.67,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+[trace 00:35:53 +157575ms] navigation prepared 7 classes in 1314 ms
+[trace 00:35:53 +157602ms] load descriptor-gz1h done in gz1h
+PERFORMANCE {"buffer_bytes":188445556.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":3513.0,"drawn_frames":1,"focus":"in","frame_limit":30,"interval_fps":0.413077880464349,"interval_s":2.420851,"msaa_3d":0,"nodes":73584.0,"objects":141429.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.721,"pid":356,"primitives":1035797.0,"process_ms":442.062,"reason":"interval","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1077639168.0,"time_scale":1.0,"uptime_s":158.667165,"video_allocated_bytes":1361370112.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":10866988755164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.275,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.67,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+[trace 00:35:56 +160063ms] zone load gz1h (from host)
+PERFORMANCE {"buffer_bytes":151996572.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2744.0,"drawn_frames":17,"focus":"in","frame_limit":30,"interval_fps":12.1690553806552,"interval_s":1.396986,"msaa_3d":0,"nodes":74182.0,"objects":142189.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":3.387,"pid":356,"primitives":1074337.0,"process_ms":70.635,"reason":"scene","recent_fps":14.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":913067008.0,"time_scale":1.0,"uptime_s":160.064305,"video_allocated_bytes":1159950592.0,"vsync":1,"window":[800,600],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":10866988755164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.54,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.67,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h (loading)"}
+132884.521:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.521:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.521:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.521:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.521:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.521:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.522:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.522:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.522:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.522:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.522:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132884.522:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:36:03 +167474ms] zone teardown gz1h
+132889.581:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.581:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.581:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.581:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.581:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.581:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.581:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.582:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.693:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.693:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.693:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.694:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.694:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.694:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.694:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.694:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.695:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.697:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.699:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.803:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.803:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.803:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.803:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.803:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.803:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.804:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.804:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.804:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.805:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.805:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:017c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0174:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.911:0164:0178:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+132889.912:0164:0170:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+[trace 00:36:06 +170798ms] shader warm-up: 8 of 8 materials, 435 ms (zone's first picture 367 ms)
+[trace 00:36:06 +170800ms] zone ready gz1h (from host)
+PERFORMANCE {"buffer_bytes":185893534.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":99.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":10.736564,"msaa_3d":0,"nodes":109615.0,"objects":205804.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":3.387,"pid":356,"primitives":792.0,"process_ms":70.635,"reason":"scene","recent_fps":14.0,"render_scale":1.0,"renderer":"forward_plus","resources":632.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":1072412672.0,"time_scale":1.0,"uptime_s":170.801017,"video_allocated_bytes":1353517568.0,"vsync":1,"window":[800,600],"world_count":3,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":10866988755164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":1.54,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":10,"lights":3,"magic_endings":0,"missiles":0},"instance":8765374082675,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":10.67,"units":416,"visible":true,"zone":"gz1h"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":7,"lights":3,"magic_endings":0,"missiles":0},"instance":12132544492334,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":0.0,"units":416,"visible":true,"zone":"gz1h"}],"zone":"gz1h"}
+COOP_RENDER_SAMPLE {"cycle":3,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74310.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1165218816.0}
+PERFORMANCE {"buffer_bytes":153937618.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":1305,"figure_models":81,"object_textures":25,"unit_textures":48,"wound_jobs":0,"wound_layers":1},"draw_calls":2.0,"drawn_frames":35,"focus":"in","frame_limit":30,"interval_fps":2.93258842235876,"interval_s":11.934849,"msaa_3d":0,"nodes":50.0,"objects":7859.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=2 wind=1 grass=1 biome_cover=1 vegetation_interaction=1 soft_ground=1 ground_contact=1 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=1 water=1 water_reflections=2 water_interaction=1 water_caustics=1 water_current=1 water_waves=1 waterfalls=1 ambient_wildlife=1 ambient_particles=1 clouds=3 cloud_shadows=1 cloud_reflections=1 weather_mist=1 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=1 q_aa=0 q_shadows=3 q_aniso=4 render_scale=4 display_mode=0 resolution=1 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":542.64,"pid":356,"primitives":16.0,"process_ms":758.617,"reason":"interval","recent_fps":2.0,"render_scale":1.0,"renderer":"forward_plus","resources":629.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":913065984.0,"time_scale":1.0,"uptime_s":182.736145,"video_allocated_bytes":1161919744.0,"vsync":1,"window":[800,600],"world_count":0,"worlds":[],"zone":"gz1h"}
+COOP_RENDER_RELOAD {"failures":[],"rows":[{"cycle":0,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74312.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1222823168.0},{"cycle":1,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74310.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1165215744.0},{"cycle":2,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74310.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1165218816.0},{"cycle":3,"guest_zone":"gz1h","host_zone":"gz1h","nodes":74310.0,"old_worlds_freed":true,"resources":632.0,"same_generation":true,"vram":1165218816.0}]}
+[trace 00:36:19 +182942ms] clean exit

@@ -1,0 +1,25 @@
+{
+	"capacity": 65536,
+	"failures": [
+		"cycle 0 allocated 1023/2048 sets",
+		"cycle 1 allocated 1022/2048 sets",
+		"cycle 2 allocated 1022/2048 sets"
+	],
+	"rows": [
+		{
+			"cycle": 0,
+			"descriptors": 65472,
+			"sets": 1023
+		},
+		{
+			"cycle": 1,
+			"descriptors": 65408,
+			"sets": 1022
+		},
+		{
+			"cycle": 2,
+			"descriptors": 65408,
+			"sets": 1022
+		}
+	]
+}

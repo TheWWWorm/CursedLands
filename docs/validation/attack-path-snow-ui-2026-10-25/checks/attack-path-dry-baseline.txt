@@ -1,0 +1,61 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+[trace 00:33:55 +3153ms] session cf50b5831b44: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 00:33:55 +3547ms] zone load gz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.394826,"msaa_3d":2,"nodes":814.0,"objects":5002.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":3994085,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":631.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":3.548452,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"gz1g (loading)"}
+[trace 00:33:58 +6466ms] navigation prepared 5 classes in 227 ms
+[trace 00:33:58 +6472ms] zone ready gz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":898,"figure_models":56,"object_textures":36,"unit_textures":12,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":2.924217,"msaa_3d":2,"nodes":5868.0,"objects":15505.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":3994085,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":633.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":6.472845,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":550812783498,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS : authored fearful батрак record
+PASS : authored terrain has a clear running corridor
+PASS fleeing: target uses a live running prediction
+PASS fleeing: one attack preview emitted
+FAIL fleeing: destination ring is on current target
+FAIL fleeing: ghost navigation route ends on current target
+FAIL fleeing: trail stops at reach of current target
+PASS fleeing: actual pursuit still intercepts the running target
+ATTACK_PATH_SAMPLE {"case":"fleeing","current":[120.045051574707,26.838207244873],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53],[240,54],[240,55],[240,56],[240,57],[240,58],[240,59],[240,60],[240,61],[240,62],[240,63],[240,64],[240,65],[240,66],[240,67],[240,68],[240,69],[240,70],[240,71],[240,72],[240,73],[240,74],[240,75],[240,76],[240,77],[240,78],[240,79],[240,80]],"cross":0,"end":[120.0,40.0],"heading":1.5707963267949,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,40.0],"ticks":95.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512,504,515,515,512,512,512,512,512,512,512,512,512,504,512,512,504,483,483,483,483,483,504,504,512,504,512,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 40.0)"}
+PASS fleeing: preview leaves target motion and health unchanged
+PASS approaching: target uses a live running prediction
+PASS approaching: one attack preview emitted
+FAIL approaching: destination ring is on current target
+FAIL approaching: ghost navigation route ends on current target
+FAIL approaching: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"approaching","current":[120.0,20.8818988800049],"predicted":"(120.0, 17.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36]],"cross":0,"end":[120.0,18.385913848877],"heading":1.5621041059494,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,18.385913848877],"ticks":5.0,"to":0,"uid":1500000128,"values":[504,483,512,504,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 18.38591)"}
+PASS approaching: preview leaves target motion and health unchanged
+PASS stationary: one attack preview emitted
+PASS stationary: destination ring is on current target
+PASS stationary: ghost navigation route ends on current target
+PASS stationary: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"stationary","current":[120.0,24.0],"predicted":"(120.0, 24.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48]],"cross":0,"end":[120.0,24.0],"heading":1.5662385225296,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,24.0],"ticks":30.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 24.0)"}
+PASS stationary: preview leaves target motion and health unchanged
+PASS paused: target uses a live running prediction
+PASS paused: paused command draws before any actor tick
+PASS paused: one attack preview emitted
+PASS paused: destination ring is on current target
+PASS paused: ghost navigation route ends on current target
+PASS paused: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"paused","current":[120.045051574707,26.838207244873],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53]],"cross":0,"end":[120.045051574707,26.838207244873],"heading":1.56876993179321,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.045051574707,26.838207244873],"ticks":45.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 24.0)"}
+PASS paused: preview leaves target motion and health unchanged
+PASS queued: target uses a live running prediction
+PASS queued: one attack preview emitted
+FAIL queued: destination ring is on current target
+FAIL queued: ghost navigation route ends on current target
+FAIL queued: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"queued","current":[120.045051574707,26.838207244873],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53],[240,54],[240,55],[240,56],[240,57],[240,58],[240,59],[240,60],[240,61],[240,62],[240,63],[240,64],[240,65],[240,66],[240,67],[240,68],[240,69],[240,70],[240,71],[240,72],[240,73],[240,74],[240,75],[240,76],[240,77],[240,78],[240,79],[240,80]],"cross":0,"end":[120.0,40.0],"heading":1.56876993179321,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,40.0],"ticks":95.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512,504,515,515,512,512,512,512,512,512,512,512,512,504,512,512,504,483,483,483,483,483,504,504,512,504,512,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 40.0)"}
+PASS queued: preview leaves target motion and health unchanged
+PASS revealed: target uses a live running prediction
+PASS revealed: earlier hidden-creature position fix survives visibility restoration
+PASS revealed: one attack preview emitted
+FAIL revealed: destination ring is on current target
+FAIL revealed: ghost navigation route ends on current target
+FAIL revealed: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"revealed","current":[120.045051574707,27.6382064819336],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53],[240,54],[240,55],[240,56],[240,57],[240,58],[240,59],[240,60],[240,61],[240,62],[240,63],[240,64],[240,65],[240,66],[240,67],[240,68],[240,69],[240,70],[240,71],[240,72],[240,73],[240,74],[240,75],[240,76],[240,77],[240,78],[240,79],[240,80]],"cross":0,"end":[120.0,40.0],"heading":1.56118750572205,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,40.0],"ticks":95.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512,504,515,515,512,512,512,512,512,512,512,512,512,504,512,512,504,483,483,483,483,483,504,504,512,504,512,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 40.0)"}
+PASS revealed: preview leaves target motion and health unchanged
+PASS revealed: replica reconstructs the authority's current-target path
+ATTACK_PATH_CURRENT_TARGET 41 checks 12 failures
+[trace 00:33:59 +7060ms] clean exit

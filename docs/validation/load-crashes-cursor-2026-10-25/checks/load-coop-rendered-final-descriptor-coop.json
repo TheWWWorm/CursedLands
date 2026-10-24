@@ -1,0 +1,45 @@
+{
+	"failures": [],
+	"rows": [
+		{
+			"cycle": 0,
+			"guest_zone": "gz1h",
+			"host_zone": "gz1h",
+			"nodes": 74312.0,
+			"old_worlds_freed": true,
+			"resources": 632.0,
+			"same_generation": true,
+			"vram": 1222823168.0
+		},
+		{
+			"cycle": 1,
+			"guest_zone": "gz1h",
+			"host_zone": "gz1h",
+			"nodes": 74310.0,
+			"old_worlds_freed": true,
+			"resources": 632.0,
+			"same_generation": true,
+			"vram": 1165215744.0
+		},
+		{
+			"cycle": 2,
+			"guest_zone": "gz1h",
+			"host_zone": "gz1h",
+			"nodes": 74310.0,
+			"old_worlds_freed": true,
+			"resources": 632.0,
+			"same_generation": true,
+			"vram": 1165218816.0
+		},
+		{
+			"cycle": 3,
+			"guest_zone": "gz1h",
+			"host_zone": "gz1h",
+			"nodes": 74310.0,
+			"old_worlds_freed": true,
+			"resources": 632.0,
+			"same_generation": true,
+			"vram": 1165218816.0
+		}
+	]
+}

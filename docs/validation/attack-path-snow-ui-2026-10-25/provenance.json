@@ -1,0 +1,14 @@
+{
+  "final_pack": {
+    "file": "all-fixes.pck",
+    "sha256": "5ae9419e6626a024bcde5c669e03fd118167c4f88a90d66e0666e64227138990"
+  },
+  "baseline_pack": {
+    "file": "load-fixed.pck",
+    "sha256": "3b8d58dda6f287a39faf38885857c78acbc34583dc34c92c079e1de1347fdbb7"
+  },
+  "original_executable": {
+    "file": "game.exe",
+    "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+  }
+}

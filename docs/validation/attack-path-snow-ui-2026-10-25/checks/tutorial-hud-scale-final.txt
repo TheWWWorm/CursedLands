@@ -1,0 +1,521 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+[trace 00:27:13 +7693ms] session d0b6e5c461f4: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+PASS topic available: zt1
+PASS EN/RU/DE: Moving
+PASS EN/RU/DE: Select your hero, then choose a destination.
+PASS EN/RU/DE: Move, run or sneak using the movement control. Select portraits to change the active character.
+PASS topic available: zt2
+PASS EN/RU/DE: Camera
+PASS EN/RU/DE: Look around to find a clear view of your path.
+PASS EN/RU/DE: Camera controls depend on your view mode. Centre the camera to return to your selected hero.
+PASS topic available: zt3
+PASS EN/RU/DE: Objectives
+PASS EN/RU/DE: Open your objectives to review the next step.
+PASS EN/RU/DE: The journal keeps conversations. The message log keeps recent notices.
+PASS topic available: zt4
+PASS EN/RU/DE: Tactical pause
+PASS EN/RU/DE: Pause when you need time to plan your orders.
+PASS EN/RU/DE: Orders can be given while paused. In co-op, shared pause and speed depend on the host settings.
+PASS topic available: zt5
+PASS EN/RU/DE: Attacking
+PASS EN/RU/DE: Choose a visible enemy to attack.
+PASS EN/RU/DE: Attack-move engages enemies along the route. Forced commands can target otherwise friendly units.
+PASS topic available: zt6
+PASS EN/RU/DE: Loot
+PASS EN/RU/DE: Collect trophies from defeated enemies.
+PASS EN/RU/DE: Collected items go into the inventory. Check their value and weight before your next trip.
+PASS topic available: zt7
+PASS EN/RU/DE: Healing
+PASS EN/RU/DE: Wounded? Choose Healing, then your hero.
+PASS EN/RU/DE: Spells need stamina and time to cast. Your target must be in range; an interrupted cast may not heal.
+PASS topic available: zt8
+PASS EN/RU/DE: Saving
+PASS EN/RU/DE: Save at a quiet moment before moving on.
+PASS EN/RU/DE: Use the game menu for saves and loads. Quick save and autosave keep separate recovery points.
+PASS topic available: zt9
+PASS EN/RU/DE: Combat stance
+PASS EN/RU/DE: Choose defensive or aggressive behaviour on the movement control.
+PASS EN/RU/DE: Aggressive characters engage nearby enemies. Defensive behaviour gives you more control over engagement.
+PASS topic available: zt10
+PASS EN/RU/DE: Minimap
+PASS EN/RU/DE: Use the minimap to orient yourself and choose a route.
+PASS EN/RU/DE: Zoom changes the visible area. Map symbols mark known units, objectives and exits.
+PASS topic available: zt11
+PASS EN/RU/DE: Message log
+PASS EN/RU/DE: Review missed messages in the log.
+PASS EN/RU/DE: Switch between messages and collected items to find what just happened.
+PASS topic available: zt12
+PASS EN/RU/DE: Character status
+PASS EN/RU/DE: Inspect your hero to check wounds and active effects.
+PASS EN/RU/DE: The character panel has views for health, attributes, equipment and effects.
+PASS topic available: zt13
+PASS EN/RU/DE: Stealth
+PASS EN/RU/DE: Sneak or crawl to become harder to notice.
+PASS EN/RU/DE: Movement changes speed, stamina, noise and visibility. Watch enemy awareness before approaching.
+PASS topic available: zt14
+PASS EN/RU/DE: Use and steal
+PASS EN/RU/DE: Choose Use/Steal, then the object or character.
+PASS EN/RU/DE: Stealing can fail and alert the victim. Mechanisms also use this action.
+PASS topic available: zt15
+PASS EN/RU/DE: Aimed strikes
+PASS EN/RU/DE: Choose an aimed strike to target a body part.
+PASS EN/RU/DE: Small targets are harder to hit. Wounds to different body parts have different effects.
+PASS topic available: zt16
+PASS EN/RU/DE: Leaving an area
+PASS EN/RU/DE: Lead your party to an available exit.
+PASS EN/RU/DE: Check the travel map for destinations and routes back to camp. Some exits require quest progress.
+PASS topic available: zt17
+PASS EN/RU/DE: Weapon slots
+PASS EN/RU/DE: Switch weapons using your equipped weapon slots.
+PASS EN/RU/DE: Assign weapons in the equipment screen before using their quick slots in the field.
+PASS topic available: zt18
+PASS EN/RU/DE: Quick items
+PASS EN/RU/DE: Choose a belt item, then its target.
+PASS EN/RU/DE: Potions and wands may have limited uses. Assign them to the belt in the equipment screen.
+PASS topic available: zt19
+PASS EN/RU/DE: Quest completion
+PASS EN/RU/DE: Review your objectives before returning for a reward.
+PASS EN/RU/DE: Some tasks finish immediately; others require returning to the person who gave them.
+PASS topic available: zt20
+PASS EN/RU/DE: Party selection
+PASS EN/RU/DE: Select portraits to command individual companions.
+PASS EN/RU/DE: Select the whole party for shared orders, or command one character for a precise task.
+PASS topic available: zt21
+PASS EN/RU/DE: Backstab
+PASS EN/RU/DE: Approach an unaware enemy from behind.
+PASS EN/RU/DE: Stealth and awareness matter. An enemy who notices you can turn before the strike.
+PASS topic available: zt22
+PASS EN/RU/DE: Pickpocketing
+PASS EN/RU/DE: Get close without being noticed before trying to steal.
+PASS EN/RU/DE: Use/Steal attempts a theft from a character. A failed attempt may provoke a fight.
+PASS topic available: zt23
+PASS EN/RU/DE: Water and terrain
+PASS EN/RU/DE: Look for a shallow route across the water.
+PASS EN/RU/DE: Depth and terrain height can prevent passage. Try a different route if a movement order fails.
+PASS topic available: zt24
+PASS EN/RU/DE: Taking quests
+PASS EN/RU/DE: Talk to characters to discover new tasks.
+PASS EN/RU/DE: Read the available conversation topics, then check your objectives after accepting a task.
+PASS topic available: base
+PASS EN/RU/DE: In the village
+PASS EN/RU/DE: Talk to villagers for quests, services and companions.
+PASS EN/RU/DE: Conversation topics change with events. Shops offer equipment, training and construction.
+PASS topic available: global_map
+PASS EN/RU/DE: Travel
+PASS EN/RU/DE: Choose an available destination on the travel map.
+PASS EN/RU/DE: Routes and destinations open as you explore and complete quests. You can return to camp between trips.
+PASS topic available: quest_global_map
+PASS EN/RU/DE: Choosing a quest
+PASS EN/RU/DE: Select a quest to review its destination.
+PASS EN/RU/DE: Read its objectives before choosing where to travel.
+PASS topic available: quest_mission
+PASS EN/RU/DE: Quest map
+PASS EN/RU/DE: Select an objective to see its details and location.
+PASS EN/RU/DE: Main objectives and smaller steps appear separately. Use the area map to plan your route.
+PASS topic available: camp_weapons
+PASS EN/RU/DE: Equipment
+PASS EN/RU/DE: Choose a character, then place gear in a matching slot.
+PASS EN/RU/DE: Weapon slots and belt slots become quick actions during play. Compare protection, damage and weight.
+PASS topic available: camp_skills
+PASS EN/RU/DE: Training
+PASS EN/RU/DE: Spend experience on the skills your character needs.
+PASS EN/RU/DE: Check attributes, skills and abilities, then assign usable spells to the spell slots.
+PASS topic available: camp_item_trade
+PASS EN/RU/DE: Item trading
+PASS EN/RU/DE: Choose items, review the total, then confirm the trade.
+PASS EN/RU/DE: Buying and selling use different prices. Check the character and your money before confirming.
+PASS topic available: camp_spell_trade
+PASS EN/RU/DE: Spell trading
+PASS EN/RU/DE: Choose spells, review the total, then confirm the trade.
+PASS EN/RU/DE: Check the required school knowledge and stamina before buying a spell.
+PASS topic available: camp_item_constr
+PASS EN/RU/DE: Item construction
+PASS EN/RU/DE: Choose a blueprint, add materials, then review the result.
+PASS EN/RU/DE: Construction and dismantling have costs. Enchantments must fit the item energy and complexity limits.
+PASS topic available: camp_spell_constr
+PASS EN/RU/DE: Spell construction
+PASS EN/RU/DE: Choose a base spell, add compatible runes, then review it.
+PASS EN/RU/DE: Runes change power, duration, complexity and stamina cost. Check the limits before assembling.
+PASS topic available: camp_repair
+PASS EN/RU/DE: Repair
+PASS EN/RU/DE: Choose damaged equipment and check its repair price.
+PASS EN/RU/DE: Durability falls with use. Repair damaged equipment before it becomes unusable.
+PASS topic available: options
+PASS EN/RU/DE: Controls and options
+PASS EN/RU/DE: Select a setting to read what it changes.
+PASS EN/RU/DE: Keyboard and gamepad bindings can be changed here. Contextual hints can be disabled; the guide stays available.
+PASS all 78 original pages retained
+PASS placeholder is excluded
+PASS missing mod text never exposes an internal ID
+PASS unknown installed tutorial remains readable
+[trace 00:27:14 +8316ms] zone load gz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":6737880.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.622907,"msaa_3d":2,"nodes":813.0,"objects":4924.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3981811,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":630.0,"screen_space_aa":2,"static_bytes":475596281.0,"taa":false,"texture_bytes":52318699.0,"time_scale":1.0,"uptime_s":8.31689,"video_allocated_bytes":59056579.0,"vsync":1,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz1g (loading)"}
+[trace 00:27:18 +12641ms] navigation prepared 5 classes in 241 ms
+[trace 00:27:18 +12733ms] shader warm-up: 0 of 30 materials, 4 ms (zone's first picture 67 ms), drawn with the first frame
+[trace 00:27:18 +12733ms] zone ready gz1g
+PERFORMANCE {"buffer_bytes":18505876.0,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":902,"figure_models":58,"object_textures":14,"unit_textures":12,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":4.41674,"msaa_3d":2,"nodes":6056.0,"objects":16766.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3981811,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":632.0,"screen_space_aa":2,"static_bytes":920768117.0,"taa":false,"texture_bytes":226311451.0,"time_scale":1.0,"uptime_s":12.733794,"video_allocated_bytes":244817327.0,"vsync":1,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":615354730971,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PERFORMANCE {"buffer_bytes":24927210.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":903,"figure_models":58,"object_textures":18,"unit_textures":12,"wound_jobs":0,"wound_layers":0},"draw_calls":2571.0,"drawn_frames":1,"focus":"in","frame_limit":30,"interval_fps":0.0215070224407068,"interval_s":46.496441,"msaa_3d":2,"nodes":6114.0,"objects":16969.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":1.0,"paused":false,"physics_ms":200.381,"pid":3981811,"primitives":494838.0,"process_ms":46292.353,"reason":"interval","recent_fps":1.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":632.0,"screen_space_aa":2,"static_bytes":934404241.0,"taa":false,"texture_bytes":277917048.0,"time_scale":1.0,"uptime_s":59.230385,"video_allocated_bytes":302844258.0,"vsync":1,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":615354730971,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS eligible hint appears
+PASS hint neither pauses nor blocks camera
+PASS automatic hint does not capture controller route
+PASS card body passes world clicks
+PASS automatic hint never takes focus
+PASS quest notifications remain eligible
+PASS gamepad field input remains available
+PASS move order accepted while hint is visible
+PASS hint expires, retaining help recovery
+PASS help reopens optional detail
+PASS explicit reading has no time limit
+PASS dismissal does not alter running clock
+PASS dismissal preserves a pre-existing pause
+PASS movement retires hint after local movement
+PASS burst coalesces to one hint, archiving all topics
+PASS no backlog slideshow
+PASS stale requests expire during conversations
+PASS hints-off preference retains guide history
+PASS manual help works with hints off
+PASS script healing trigger alone is not enough
+PASS one automatic sound; optional reading stays silent
+PASS tutorial cue sound exists in installed game
+PASS combat fixture is hostile
+PASS no healing popup during combat
+PASS victory plus newly suffered damage and usable spell triggers healing
+PASS healing cue follows the real spell slot
+PASS health recovery retires healing hint
+PASS old wounds without damage in this fight do not trigger healing
+PASS no healing instruction without stamina
+PASS no healing instruction without equipped healing
+PASS another player's wounds do not trigger local healing
+PASS pad retains gameplay while hint is shown
+PASS actual pad chord opens game wheel
+PASS wheel Help expands without changing field input
+PASS wheel offers guide and dismissal
+PASS wheel dismisses hint
+PASS help follows pad remapping and direct-mode chord
+PASS healing teaches actual rebound actions wheel
+[trace 00:28:05 +59723ms] esc menu open
+PASS explicit guide opens matching article
+PASS full guide uses intentional single-player menu pause
+PASS recent hints links to encountered topic
+PASS guide restores previous clock state
+PASS general help available without encounter spoilers
+PASS context-specific reference unlocks on encounter
+PASS public articles contain no private history
+PASS progress is local to campaign
+PASS cue bounds target the taught control zt1
+PASS cue bounds target the taught control zt4
+PERFORMANCE {"buffer_bytes":83144830.0,"cache_entries":{"camera_materials":0,"figure_materials":6,"figure_meshes":905,"figure_models":60,"object_textures":19,"unit_textures":13,"wound_jobs":0,"wound_layers":0},"draw_calls":2640.0,"drawn_frames":22,"focus":"in","frame_limit":30,"interval_fps":10.4307471876098,"interval_s":2.109149,"msaa_3d":0,"nodes":6155.0,"objects":17473.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":1.0,"paused":false,"physics_ms":0.03,"pid":3981811,"primitives":363759.0,"process_ms":8.147,"reason":"interval","recent_fps":2.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":638.0,"screen_space_aa":0,"static_bytes":991590307.0,"taa":false,"texture_bytes":383080420.0,"time_scale":1.0,"uptime_s":61.339752,"video_allocated_bytes":466225250.0,"vsync":1,"window":[2880,1800],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":615354730971,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS cue bounds target the taught control zt9
+PASS cue bounds target the taught control zt10
+PASS cue bounds target the taught control zt11
+PASS cue bounds target the taught control zt12
+PASS cue bounds target the taught control zt13
+PASS cue bounds target the taught control zt14
+PASS cue bounds target the taught control zt17
+PASS cue bounds target the taught control zt18
+PASS cue bounds target the taught control zt20
+PASS cue bounds target the taught control zt22
+PASS closed panel cue targets its toggle zt10
+PASS closed panel cue targets its toggle zt11
+PASS closed panel cue targets its toggle zt12
+PASS inline shop help remains nonblocking en
+PASS inline shop hint owns no pause en
+PASS construction cue targets blueprint slot en
+PASS shop hint fits en
+PASS inline shop help remains nonblocking ru
+PASS inline shop hint owns no pause ru
+PASS construction cue targets blueprint slot ru
+PASS shop hint fits ru
+PASS inline shop help remains nonblocking de
+PASS inline shop hint owns no pause de
+PASS construction cue targets blueprint slot de
+PASS shop hint fits de
+[trace 00:28:10 +64982ms] esc menu open
+PASS gamepad opens contextual help from shop
+PASS guide has navigable controller targets
+PASS healing heading language en
+PASS hint is rendered en (800, 600)
+PASS hint fits en (800, 600) pad=false
+PASS hint text not clipped en (800, 600)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (800, 600)
+PASS hint is rendered en (800, 600)
+PASS hint fits en (800, 600) pad=true
+PASS hint text not clipped en (800, 600)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (800, 600)
+PASS hint clears controller strip
+PASS hint is rendered en (1280, 720)
+PASS hint fits en (1280, 720) pad=false
+PASS hint text not clipped en (1280, 720)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (1280, 720)
+PASS hint is rendered en (1280, 720)
+PASS hint fits en (1280, 720) pad=true
+PASS hint text not clipped en (1280, 720)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (1280, 720)
+PASS hint clears controller strip
+PASS hint is rendered en (1920, 1080)
+PASS hint fits en (1920, 1080) pad=false
+PASS hint text not clipped en (1920, 1080)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (1920, 1080)
+PASS hint is rendered en (1920, 1080)
+PASS hint fits en (1920, 1080) pad=true
+PASS hint text not clipped en (1920, 1080)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (1920, 1080)
+PASS hint clears controller strip
+PASS hint is rendered en (2560, 1080)
+PASS hint fits en (2560, 1080) pad=false
+PASS hint text not clipped en (2560, 1080)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (2560, 1080)
+PASS hint is rendered en (2560, 1080)
+PASS hint fits en (2560, 1080) pad=true
+PASS hint text not clipped en (2560, 1080)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (2560, 1080)
+PASS hint clears controller strip
+PASS hint is rendered en (3840, 2160)
+PASS hint fits en (3840, 2160) pad=false
+PASS hint text not clipped en (3840, 2160)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (3840, 2160)
+PASS hint is rendered en (3840, 2160)
+PASS hint fits en (3840, 2160) pad=true
+PASS hint text not clipped en (3840, 2160)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (3840, 2160)
+PASS hint clears controller strip
+PASS hint is rendered en (600, 960)
+PASS hint fits en (600, 960) pad=false
+PASS hint text not clipped en (600, 960)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (600, 960)
+PASS hint is rendered en (600, 960)
+PASS hint fits en (600, 960) pad=true
+PASS hint text not clipped en (600, 960)
+PASS translated heading reaches card en
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits en (600, 960)
+PASS hint clears controller strip
+PASS healing heading language ru
+PASS hint is rendered ru (800, 600)
+PASS hint fits ru (800, 600) pad=false
+PASS hint text not clipped ru (800, 600)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (800, 600)
+PASS hint is rendered ru (800, 600)
+PASS hint fits ru (800, 600) pad=true
+PASS hint text not clipped ru (800, 600)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (800, 600)
+PASS hint clears controller strip
+PASS hint is rendered ru (1280, 720)
+PASS hint fits ru (1280, 720) pad=false
+PASS hint text not clipped ru (1280, 720)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (1280, 720)
+PASS hint is rendered ru (1280, 720)
+PASS hint fits ru (1280, 720) pad=true
+PASS hint text not clipped ru (1280, 720)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (1280, 720)
+PASS hint clears controller strip
+PASS hint is rendered ru (1920, 1080)
+PASS hint fits ru (1920, 1080) pad=false
+PASS hint text not clipped ru (1920, 1080)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (1920, 1080)
+PASS hint is rendered ru (1920, 1080)
+PASS hint fits ru (1920, 1080) pad=true
+PASS hint text not clipped ru (1920, 1080)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (1920, 1080)
+PASS hint clears controller strip
+PASS hint is rendered ru (2560, 1080)
+PASS hint fits ru (2560, 1080) pad=false
+PASS hint text not clipped ru (2560, 1080)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (2560, 1080)
+PASS hint is rendered ru (2560, 1080)
+PASS hint fits ru (2560, 1080) pad=true
+PASS hint text not clipped ru (2560, 1080)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (2560, 1080)
+PASS hint clears controller strip
+PASS hint is rendered ru (3840, 2160)
+PASS hint fits ru (3840, 2160) pad=false
+PASS hint text not clipped ru (3840, 2160)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (3840, 2160)
+PASS hint is rendered ru (3840, 2160)
+PASS hint fits ru (3840, 2160) pad=true
+PASS hint text not clipped ru (3840, 2160)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (3840, 2160)
+PASS hint clears controller strip
+PASS hint is rendered ru (600, 960)
+PASS hint fits ru (600, 960) pad=false
+PASS hint text not clipped ru (600, 960)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (600, 960)
+PASS hint is rendered ru (600, 960)
+PASS hint fits ru (600, 960) pad=true
+PASS hint text not clipped ru (600, 960)
+PASS translated heading reaches card ru
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits ru (600, 960)
+PASS hint clears controller strip
+PASS healing heading language de
+PASS hint is rendered de (800, 600)
+PASS hint fits de (800, 600) pad=false
+PASS hint text not clipped de (800, 600)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (800, 600)
+PASS hint is rendered de (800, 600)
+PASS hint fits de (800, 600) pad=true
+PASS hint text not clipped de (800, 600)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (800, 600)
+PASS hint clears controller strip
+PASS hint is rendered de (1280, 720)
+PASS hint fits de (1280, 720) pad=false
+PASS hint text not clipped de (1280, 720)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (1280, 720)
+PASS hint is rendered de (1280, 720)
+PASS hint fits de (1280, 720) pad=true
+PASS hint text not clipped de (1280, 720)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (1280, 720)
+PASS hint clears controller strip
+PASS hint is rendered de (1920, 1080)
+PASS hint fits de (1920, 1080) pad=false
+PASS hint text not clipped de (1920, 1080)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (1920, 1080)
+PASS hint is rendered de (1920, 1080)
+PASS hint fits de (1920, 1080) pad=true
+PASS hint text not clipped de (1920, 1080)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (1920, 1080)
+PASS hint clears controller strip
+PERFORMANCE {"buffer_bytes":83899358.0,"cache_entries":{"camera_materials":0,"figure_materials":6,"figure_meshes":905,"figure_models":60,"object_textures":19,"unit_textures":13,"wound_jobs":0,"wound_layers":0},"draw_calls":3039.0,"drawn_frames":336,"focus":"in","frame_limit":30,"interval_fps":11.2016701690222,"interval_s":29.995527,"msaa_3d":0,"nodes":6266.0,"objects":18056.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":1.0,"paused":false,"physics_ms":0.583,"pid":3981811,"primitives":431856.0,"process_ms":715.36,"reason":"interval","recent_fps":7.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":644.0,"screen_space_aa":0,"static_bytes":1026121965.0,"taa":false,"texture_bytes":356845778.0,"time_scale":1.0,"uptime_s":91.335537,"video_allocated_bytes":440745136.0,"vsync":1,"window":[2560,1080],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":615354730971,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS hint is rendered de (2560, 1080)
+PASS hint fits de (2560, 1080) pad=false
+PASS hint text not clipped de (2560, 1080)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (2560, 1080)
+PASS hint is rendered de (2560, 1080)
+PASS hint fits de (2560, 1080) pad=true
+PASS hint text not clipped de (2560, 1080)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (2560, 1080)
+PASS hint clears controller strip
+PASS hint is rendered de (3840, 2160)
+PASS hint fits de (3840, 2160) pad=false
+PASS hint text not clipped de (3840, 2160)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (3840, 2160)
+PASS hint is rendered de (3840, 2160)
+PASS hint fits de (3840, 2160) pad=true
+PASS hint text not clipped de (3840, 2160)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (3840, 2160)
+PASS hint clears controller strip
+PASS hint is rendered de (600, 960)
+PASS hint fits de (600, 960) pad=false
+PASS hint text not clipped de (600, 960)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (600, 960)
+PASS hint is rendered de (600, 960)
+PASS hint fits de (600, 960) pad=true
+PASS hint text not clipped de (600, 960)
+PASS translated heading reaches card de
+PASS guide book scales with HUD and keeps its base size
+PASS guide book clears the portrait and stays on screen
+PASS expanded fits de (600, 960)
+PASS hint clears controller strip
+CONTEXTUAL_TUTORIALS {"captures":["/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/shop-hint-en.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/shop-hint-ru.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/shop-hint-de.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/guide-de-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-800x600-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-800x600-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-1920x1080-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-1920x1080-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-3840x2160-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-3840x2160-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-600x960-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-en-600x960-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-800x600-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-800x600-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-1920x1080-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-1920x1080-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-3840x2160-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-3840x2160-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-600x960-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-ru-600x960-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-800x600-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-800x600-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-1920x1080-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-1920x1080-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-3840x2160-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-3840x2160-pad.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-600x960-mouse.png","/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/tutorial-hud-scale-final/data/godot/app_userdata/Cursed Lands/hint-de-600x960-pad.png"],"checks":496,"failures":[],"scope":"Prepared native game contexts and synthetic input; no physical controller or novice playtest."}
+[trace 00:28:45 +99086ms] clean exit

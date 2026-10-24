@@ -1,0 +1,69 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+[trace 00:35:17 +6506ms] session 4e81c350468c: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+[trace 00:35:17 +7043ms] zone load gz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":6737880.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":0.536601,"msaa_3d":2,"nodes":813.0,"objects":4922.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3996504,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":631.0,"screen_space_aa":2,"static_bytes":470955210.0,"taa":false,"texture_bytes":52318699.0,"time_scale":1.0,"uptime_s":7.043717,"video_allocated_bytes":59056579.0,"vsync":1,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz1g (loading)"}
+[trace 00:35:21 +10131ms] navigation prepared 5 classes in 231 ms
+[trace 00:35:21 +10212ms] shader warm-up: 0 of 27 materials, 2 ms (zone's first picture 58 ms), drawn with the first frame
+[trace 00:35:21 +10213ms] zone ready gz1g
+PERFORMANCE {"buffer_bytes":18494164.0,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":902,"figure_models":58,"object_textures":39,"unit_textures":12,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":30,"interval_fps":null,"interval_s":3.169724,"msaa_3d":2,"nodes":5983.0,"objects":16639.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":null,"pid":3996504,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":633.0,"screen_space_aa":2,"static_bytes":905622151.0,"taa":false,"texture_bytes":79697063.0,"time_scale":1.0,"uptime_s":10.213568,"video_allocated_bytes":98191227.0,"vsync":1,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":6,"lights":5,"magic_endings":0,"missiles":0},"instance":613458907962,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":48,"visible":true,"zone":"gz1g"}],"zone":"gz1g"}
+PASS : authored fearful батрак record
+PASS : authored terrain has a clear running corridor
+PASS fleeing: target uses a live running prediction
+PASS fleeing: one attack preview emitted
+PASS fleeing: destination ring is on current target
+PASS fleeing: ghost navigation route ends on current target
+PASS fleeing: trail stops at reach of current target
+PASS fleeing: actual pursuit still intercepts the running target
+ATTACK_PATH_SAMPLE {"case":"fleeing","current":[120.045051574707,26.838207244873],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53]],"cross":0,"end":[120.045051574707,26.838207244873],"heading":1.5707963267949,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.045051574707,26.838207244873],"ticks":45.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 40.0)"}
+PASS fleeing: current-target preview reaches the rendered particle buffer
+PASS fleeing: preview leaves target motion and health unchanged
+PASS approaching: target uses a live running prediction
+PASS approaching: one attack preview emitted
+PASS approaching: destination ring is on current target
+PASS approaching: ghost navigation route ends on current target
+PASS approaching: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"approaching","current":[120.0,20.8818988800049],"predicted":"(120.0, 17.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41]],"cross":0,"end":[120.0,20.8818988800049],"heading":1.5621041059494,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,20.8818988800049],"ticks":15.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(inf, inf)"}
+PASS approaching: preview leaves target motion and health unchanged
+PASS stationary: one attack preview emitted
+PASS stationary: destination ring is on current target
+PASS stationary: ghost navigation route ends on current target
+PASS stationary: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"stationary","current":[120.0,24.0],"predicted":"(120.0, 24.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48]],"cross":0,"end":[120.0,24.0],"heading":1.5621041059494,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.0,24.0],"ticks":30.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 24.0)"}
+PASS stationary: preview leaves target motion and health unchanged
+PASS paused: target uses a live running prediction
+PASS paused: paused command draws before any actor tick
+PASS paused: one attack preview emitted
+PASS paused: destination ring is on current target
+PASS paused: ghost navigation route ends on current target
+PASS paused: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"paused","current":[120.045051574707,26.838207244873],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53]],"cross":0,"end":[120.045051574707,26.838207244873],"heading":1.56693172454834,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.045051574707,26.838207244873],"ticks":45.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 24.0)"}
+PASS paused: preview leaves target motion and health unchanged
+PASS queued: target uses a live running prediction
+PASS queued: one attack preview emitted
+PASS queued: destination ring is on current target
+PASS queued: ghost navigation route ends on current target
+PASS queued: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"queued","current":[120.045051574707,26.838207244873],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53]],"cross":0,"end":[120.045051574707,26.838207244873],"heading":1.56693172454834,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.045051574707,26.838207244873],"ticks":45.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 40.0)"}
+PASS queued: preview leaves target motion and health unchanged
+PASS revealed: target uses a live running prediction
+PASS revealed: earlier hidden-creature position fix survives visibility restoration
+PASS revealed: one attack preview emitted
+PASS revealed: destination ring is on current target
+PASS revealed: ghost navigation route ends on current target
+PASS revealed: trail stops at reach of current target
+ATTACK_PATH_SAMPLE {"case":"revealed","current":[120.045051574707,27.6382064819336],"predicted":"(120.0, 40.0)","preview":{"cells":[[240,32],[240,33],[240,34],[240,35],[240,36],[240,37],[240,38],[240,39],[240,40],[240,41],[240,42],[240,43],[240,44],[240,45],[240,46],[240,47],[240,48],[240,49],[240,50],[240,51],[240,52],[240,53],[240,54],[240,55]],"cross":0,"end":[120.045051574707,27.6382064819336],"heading":1.56035602092743,"mode":2,"start":[120.0,16.0],"t":"order_path","target":[120.045051574707,27.6382064819336],"ticks":45.0,"to":0,"uid":1500000128,"values":[504,483,512,504,483,453,483,483,453,483,453,453,383,383,418,483,504,504,504,504,504,512,504,512]},"prototype":"Human Hadagan Peasants F1","pursuit":"(120.0, 40.0)"}
+PASS revealed: preview leaves target motion and health unchanged
+PASS revealed: replica reconstructs the authority's current-target path
+PERFORMANCE {"buffer_bytes":70735430.0,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":919,"figure_models":59,"object_textures":45,"unit_textures":13,"wound_jobs":0,"wound_layers":0},"draw_calls":2.0,"drawn_frames":12,"focus":"in","frame_limit":30,"interval_fps":0.571318851003519,"interval_s":21.004033,"msaa_3d":0,"nodes":49.0,"objects":5554.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=1 vsync=1 auto_graphics=0","orphan_nodes":0.0,"paused":false,"physics_ms":0.513,"pid":3996504,"primitives":16.0,"process_ms":1903.477,"reason":"interval","recent_fps":7.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":630.0,"screen_space_aa":0,"static_bytes":736058184.0,"taa":false,"texture_bytes":106984938.0,"time_scale":1.0,"uptime_s":31.217739,"video_allocated_bytes":177720368.0,"vsync":1,"window":[2880,1800],"world_count":0,"worlds":[],"zone":"gz1g"}
+ATTACK_PATH_CURRENT_TARGET 42 checks 0 failures
+[trace 00:35:42 +31351ms] clean exit

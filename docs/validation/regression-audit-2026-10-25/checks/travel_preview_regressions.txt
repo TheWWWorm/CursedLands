@@ -1,0 +1,69 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+[trace 00:40:58 +6608ms] session 104f7adcd1e1: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, gl_compatibility / opengl3
+PASS original route graph offers field and healer cave
+PASS original map loads healer field and cave figures
+PASS completed healer field stays independent of the cave
+PASS both destinations have distinct clickable pixels
+PASS field hover names the outdoor area
+PASS field click opens its usable outdoor entrance
+PASS cave click selects the healer directly
+PASS original text archive supplied: en
+PASS load DragonBlueM14 / en
+PASS native info_scale preserved: DragonBlueM14 / en
+PASS animation does not shrink preview: DragonBlueM14 / en
+PASS animation does not shrink preview: DragonBlueM14 / en
+PASS localized full name fits: Blue dragon
+PASS load TrollBlackSlowF16 / en
+PASS native info_scale preserved: TrollBlackSlowF16 / en
+PASS animation does not shrink preview: TrollBlackSlowF16 / en
+PASS animation does not shrink preview: TrollBlackSlowF16 / en
+PASS localized full name fits: Slow black troll
+PASS load Human Hero / en
+PASS native info_scale preserved: Human Hero / en
+PASS animation does not shrink preview: Human Hero / en
+PASS animation does not shrink preview: Human Hero / en
+PASS localized full name fits: Zak
+PASS original text archive supplied: ru
+PASS load DragonBlueM14 / ru
+PASS native info_scale preserved: DragonBlueM14 / ru
+PASS animation does not shrink preview: DragonBlueM14 / ru
+PASS animation does not shrink preview: DragonBlueM14 / ru
+PASS localized full name fits: Синий дракон
+PASS load TrollBlackSlowF16 / ru
+PASS native info_scale preserved: TrollBlackSlowF16 / ru
+PASS animation does not shrink preview: TrollBlackSlowF16 / ru
+PASS animation does not shrink preview: TrollBlackSlowF16 / ru
+PASS localized full name fits: Неторопливый черный тролль
+PASS load Human Hero / ru
+PASS native info_scale preserved: Human Hero / ru
+PASS animation does not shrink preview: Human Hero / ru
+PASS animation does not shrink preview: Human Hero / ru
+PASS localized full name fits: Зак
+PASS original text archive supplied: de
+PASS load DragonBlueM14 / de
+PASS native info_scale preserved: DragonBlueM14 / de
+PASS animation does not shrink preview: DragonBlueM14 / de
+PASS animation does not shrink preview: DragonBlueM14 / de
+PASS localized full name fits: Blauer Drache
+PASS load TrollBlackSlowF16 / de
+PASS native info_scale preserved: TrollBlackSlowF16 / de
+PASS animation does not shrink preview: TrollBlackSlowF16 / de
+PASS animation does not shrink preview: TrollBlackSlowF16 / de
+PASS localized full name fits: Langsamer schwarzer Troll
+PASS load Human Hero / de
+PASS native info_scale preserved: Human Hero / de
+PASS animation does not shrink preview: Human Hero / de
+PASS animation does not shrink preview: Human Hero / de
+PASS localized full name fits: Kiran
+TRAVEL_PREVIEW 55 checks 0 failures []
+[trace 00:41:09 +17383ms] clean exit

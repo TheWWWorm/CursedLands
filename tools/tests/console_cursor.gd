@@ -1,5 +1,5 @@
 extends Node
-## Local screen-coordinate diagnostics, real-time sampling and discoverability.
+## Local cursor diagnostics, real-time sampling and discoverability.
 var checks:=0
 var failures:Array[String]=[]
 func check(ok:bool,label:String):

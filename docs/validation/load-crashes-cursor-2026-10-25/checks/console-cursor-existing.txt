@@ -1,0 +1,39 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[cursor] Cursor at 6.819 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 6.820 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 6.921 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.054 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.154 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.422 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.488 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.554 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.623 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.623 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.623 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.623 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.623 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.624 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.625 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Cursor at 7.626 s: x=0.0, y=0.0 px | No map ground under cursor.
+[cursor] Курсор в 7.792 с: x=0.0, y=0.0 пикс. | Под курсором нет поверхности карты.
+[cursor] Mauszeiger bei 7.958 s: x=0.0, y=0.0 px | Kein Kartengelände unter dem Mauszeiger.
+CONSOLE_CURSOR {"checks":27,"failures":[]}

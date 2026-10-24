@@ -4,6 +4,7 @@ extends "base_campaign_support.gd"
 ## Walking/combat are accelerated, and unrelated main-story threads are paused.
 
 func island() -> String: return "gipat"
+func marker() -> String: return "BASE_CAMPAIGN_SIDE_GIPAT"
 
 func enter_side(zone: String, id: String) -> bool:
 	await s.enter_zone(zone,1,false)
@@ -269,4 +270,4 @@ func run() -> void:
 		await one(q); n += 1
 	check(n == (selected.size() if not selected.is_empty() else {"gipat":12,"ingos":6,"suslanger":10}[island()]),
 		"all selected side archives exercised" if not selected.is_empty() else "all installed island side archives exercised")
-	await finish("BASE_CAMPAIGN_SIDE_"+island().to_upper(),"Real installed side-quest overlays and authored objective chains, normal acceptance/interaction/loot/reward controls, partial/done/rewarded save-load. Earlier island access prepared; walking/combat accelerated and unrelated story threads paused; not an uninterrupted playthrough or new native runtime capture.")
+	await finish(marker(),"Real installed side-quest overlays and authored objective chains, normal acceptance/interaction/loot/reward controls, partial/done/rewarded save-load. Earlier island access prepared; walking/combat accelerated and unrelated story threads paused; not an uninterrupted playthrough or new native runtime capture.")

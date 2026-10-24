@@ -1,0 +1,21 @@
+{
+	"capacity": 262144,
+	"failures": [],
+	"rows": [
+		{
+			"cycle": 0,
+			"descriptors": 131072,
+			"sets": 2048
+		},
+		{
+			"cycle": 1,
+			"descriptors": 131072,
+			"sets": 2048
+		},
+		{
+			"cycle": 2,
+			"descriptors": 131072,
+			"sets": 2048
+		}
+	]
+}
