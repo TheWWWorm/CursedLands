@@ -1712,6 +1712,14 @@ func _set_first_person_shift(shift: Vector3) -> void:
 			RenderingServer.instance_set_transform(mesh.get_instance(), presented)
 
 
+## Ray-traced camera receivers must occupy the same place as their raster
+## instances. The complete shadow/reflection copies keep the authored pose.
+func presented_mesh_transform(mesh: MeshInstance3D) -> Transform3D:
+	var presented := mesh.global_transform
+	if _view_active and _view_meshes.has(mesh): presented.origin += _view_shift
+	return presented
+
+
 ## A stable eye anchor from the authored resting pose. Reading its tracks
 ## avoids moving the live skeleton or inheriting attack/walk head motion.
 var _view_eyes := {}

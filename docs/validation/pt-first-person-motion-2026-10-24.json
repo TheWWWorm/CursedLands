@@ -1,0 +1,1148 @@
+{
+  "date": "2026-10-24",
+  "base_commit": "87a9c578853d4564fba05b82b8ecb640f8089697",
+  "upstream_windows_fix": "bab580bd43e7d146c341904c3413bcfb471e5d22",
+  "modified_game_files": {
+    "game/src/ei/unit_model.gd": "213862106941e54579fbaa5167ae1ca2dbf9d1c0bcd09851931550e518e15094",
+    "game/src/game/fx/water_raytrace_scene.gd": "942ed7a14d14cecdb80b52b4bbd025e2eae5a7019c72f3ef3941d84ade99fe99"
+  },
+  "checks_passed": 459,
+  "runs": [
+    {
+      "suite": "water_raytrace_native",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.82,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "6640959bee3a8fe653c96e94acd4a64a06d8adf08c6baffb2bc6081e663d0122",
+      "tag": "motion-candidate-native",
+      "checks": 285,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-candidate-native/native.json",
+      "report_sha256": "1d89e1bce149f9ea9b3b45bfb81ea5029fa9e3f8d9b1a12cab05562f2db4d319",
+      "result_sha256": "1c33eefc614a3b4bfc0f80fb5b991e86c174cabedd95fd1556364ea2a72a3c17",
+      "log_sha256": "fb5bc1fc9c62fcbd5f58aa9e2fd268b886fa56edb32c17690841b3d90f4d6c41"
+    },
+    {
+      "suite": "path_trace_first_person_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 90.77,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "de10ef77dfd426c7d93c2ba45f556a284cea8c4e780735130e7e1fe32ee55d56",
+      "tag": "motion-candidate-vk-first-person-v2",
+      "checks": 11,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-candidate-vk-first-person-v2/first-person-live.json",
+      "report_sha256": "75f7a53fda7d5d754a6536656ff70fd763b80fb362f51b32f5bb1fca375beb66",
+      "result_sha256": "90834bb19c4fdea2b3534d00b70ab677f8e9c60ea7556964a9a398e6910c253f",
+      "log_sha256": "f23969c17ef68ee4376b90165edd04735770e3586f6f4a711fab4b073c1f81e7",
+      "zone": "gz1g",
+      "route_metres": null,
+      "inactive_frames": 0,
+      "max_transform_error": 0.0,
+      "transform_mismatches": 0,
+      "body_coverage": {
+        "frames": [
+          {
+            "matched": 32767,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 32728,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 32726,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 32825,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          }
+        ]
+      },
+      "in_flight_reads": null,
+      "motion_frames": 540,
+      "snapshot_generations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "dlss": {}
+    },
+    {
+      "suite": "path_trace_first_person_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 129.93,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "28023d01a00d3b8a563c5a24b6147058e7669c36a7edfb2eb24131cd020521ae",
+      "tag": "motion-final-vk-cave-v2",
+      "checks": 12,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-vk-cave-v2/first-person-live.json",
+      "report_sha256": "2103b4eb02965e683ea5a9e130db2b33760191810152d590f6f5b13797d3dd8d",
+      "result_sha256": "c27965eed38913653f30a70a499561f3dc7cdde85a91f4ec7c2fa1623b4d3611",
+      "log_sha256": "7412e5d50e59fb62bc2f83f87d68e4d8945885a36bb3171f9acb73bc0bc5e6d4",
+      "zone": "gz14k",
+      "route_metres": 5.99999904632568,
+      "inactive_frames": 0,
+      "max_transform_error": 0.0,
+      "transform_mismatches": 0,
+      "body_coverage": {
+        "frames": [
+          {
+            "matched": 33170,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 33231,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 33264,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 33317,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          }
+        ]
+      },
+      "in_flight_reads": null,
+      "motion_frames": 540,
+      "snapshot_generations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "dlss": {}
+    },
+    {
+      "suite": "path_trace_first_person_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 94.11,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "6b9f0754c84d4969dfd3ea05999cb4c2333b65cd4844a8fa1e8c3237f8b719df",
+      "tag": "motion-final-vk-desert-v2",
+      "checks": 12,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-vk-desert-v2/first-person-live.json",
+      "report_sha256": "12c93e255773c6a32b909041102e124f3d3e12cd1853667ea15b0fbb9a138f73",
+      "result_sha256": "a26fa6526897248ff2531832a7c6d620acddfd6d6dddefad5cde68782be3cc74",
+      "log_sha256": "5921e2e74518f57e90d790bd9d3a1fed671845e4ea72ed57a037883eda2d3ef9",
+      "zone": "gz15h",
+      "route_metres": 6.0,
+      "inactive_frames": 0,
+      "max_transform_error": 0.0,
+      "transform_mismatches": 0,
+      "body_coverage": {
+        "frames": [
+          {
+            "matched": 33082,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 33004,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 32992,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 33206,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          }
+        ]
+      },
+      "in_flight_reads": 0,
+      "motion_frames": 540,
+      "snapshot_generations": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        3
+      ],
+      "dlss": {}
+    },
+    {
+      "suite": "path_trace_first_person_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 95.92,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "877b93367cbb0c821b7bc8616821c10f19d5b18a26b6f32c00241a21d9867064",
+      "tag": "motion-final-vk-script-tracker",
+      "checks": 12,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-vk-script-tracker/first-person-live.json",
+      "report_sha256": "67c23328ec3f2de61b7f98b835806c70229d7b192152bb6be15ce56e5272d897",
+      "result_sha256": "8bfd2089479799aa9be20dfc8a2252e38ec3751b291a7e487260d5057b276f85",
+      "log_sha256": "de81e7f087080fe0b5040cd67b77d942ba9f1421c0cc9868003507456876e4f0",
+      "zone": "gz1g",
+      "route_metres": 2.0,
+      "inactive_frames": 0,
+      "max_transform_error": 0.0,
+      "transform_mismatches": 0,
+      "body_coverage": {
+        "frames": [
+          {
+            "matched": 35365,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 35457,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 35608,
+            "missed": 1,
+            "rejected_fraction": 2.80827880591985e-05
+          },
+          {
+            "matched": 35753,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          }
+        ]
+      },
+      "in_flight_reads": null,
+      "motion_frames": 540,
+      "snapshot_generations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "dlss": {}
+    },
+    {
+      "suite": "path_trace_first_person_live",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 124.82,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "5ea4a6f79fb6da9b3971fb9522b04279569ff426d5e166ab2742eae24bfb08fa"
+      },
+      "fixture_sha256": "1f04d23ac6d2170da9893a93f10284ca5e7333ec2cd2ddcec68fca5a1f242453",
+      "tag": "motion-final-dx12-dlss-river-v2",
+      "checks": 14,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-dx12-dlss-river-v2/first-person-live.json",
+      "report_sha256": "e5cc0dd08ac0aa98d7596f3a3521a36565729e36a19c0f78f965244d518a2870",
+      "result_sha256": "69f138107b7d043066105e0d52dc80516de09e8b48cefa13ef64cb188066b7ed",
+      "log_sha256": "0f8cd71cdd7398742d923593cf6581360aa7090e17b665bb6b7c6052ee6b76ae",
+      "zone": "gz11k",
+      "route_metres": 6.0,
+      "inactive_frames": 0,
+      "max_transform_error": 0.0,
+      "transform_mismatches": 0,
+      "body_coverage": {
+        "frames": [
+          {
+            "matched": 31738,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 31867,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 32071,
+            "missed": 0,
+            "rejected_fraction": 0.0
+          },
+          {
+            "matched": 32251,
+            "missed": 2,
+            "rejected_fraction": 6.2009735528478e-05
+          }
+        ]
+      },
+      "in_flight_reads": null,
+      "motion_frames": 540,
+      "snapshot_generations": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "dlss": {
+        "compiled": true,
+        "dlss_evaluations": 864,
+        "enhanced_barriers": true,
+        "fg_support_reason": "sl::eErrorNoSupportedAdapterFound",
+        "fg_support_result": 6,
+        "fg_supported": false,
+        "frame_generation_active": false,
+        "frame_generation_input_size": "(0, 0)",
+        "frame_generation_output_size": "(0, 0)",
+        "frame_generation_size_supported": false,
+        "frame_generation_status": 0,
+        "frame_generation_ui_alpha_frames": 0,
+        "frame_generation_ui_alpha_texture": "RID(0)",
+        "game_presents": 867,
+        "initialized": true,
+        "last_error": 0,
+        "present_count_available": false,
+        "presented_frames": 0,
+        "reflex_supported": true,
+        "requested": true,
+        "sr_support_reason": "sl::eOk",
+        "sr_support_result": 0,
+        "sr_supported": true
+      }
+    },
+    {
+      "suite": "water_raytrace_first_person",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 35.98,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "fe184e5d29b4efbd42f08662b7c5063706520562e545b81500316e2cfb97997c",
+      "tag": "motion-final-vk-reflections",
+      "checks": 9,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-vk-reflections/first-person.json",
+      "report_sha256": "e37bc7ac0cee4e4ae25961bf2f9cc06dc8ce22d4574c9acf6dc9a255ed3ce926",
+      "result_sha256": "f44daded0d87fcf8e81f6651749cad19ca7fc1e0479d4142f29aac3917e32e46",
+      "log_sha256": "62910a2c52c217dd474e7441e2a8277f28afa8dcda895e68e7ac85ef6f76931a"
+    },
+    {
+      "suite": "path_trace_motion_route",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 439.62,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "3ee88d421c0d02b157c7a0b6b9e2fb8404866e57b521a03935f67355183eb99e"
+      },
+      "fixture_sha256": "b7434e010ee9190b792b51386ef53e2fa676327f3ced97bbd04dd4fb7f22bc93",
+      "tag": "motion-final-vk-route",
+      "checks": 26,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-vk-route/recording-route.json",
+      "report_sha256": "477c7ce18497ce196ccd7a97b625230395992470a380fb2dc2f2b01248df84e0",
+      "result_sha256": "3332977c8904488c3b7273262e3b9824bc273a4908bbf75d91356ceb841e35ff",
+      "log_sha256": "cf8522212faa823af6e451b810bb25d94c7ae39d9f20c092a290164ac594f5d8",
+      "distance": 130.910135244951,
+      "inactive_frames": 0,
+      "inactive_nrd_frames": 0,
+      "host_process": true,
+      "authority": false,
+      "dlss": {},
+      "sampled_frames": 6128,
+      "sampled_seconds": 253.298,
+      "stages": [
+        {
+          "phase": "ruins-held",
+          "sampled_frames": 50,
+          "seconds": 10.341,
+          "pos": [
+            52.5,
+            138.0
+          ],
+          "hp": 38.6875,
+          "generation": 1,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "east-opening",
+          "sampled_frames": 45,
+          "seconds": 5.885,
+          "pos": [
+            59.546875,
+            139.109375
+          ],
+          "hp": 38.6875,
+          "generation": 1,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "downhill-path",
+          "sampled_frames": 128,
+          "seconds": 21.652,
+          "pos": [
+            66.53125,
+            125.265625
+          ],
+          "hp": 38.6875,
+          "generation": 1,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "fight-wolf",
+          "sampled_frames": 224,
+          "seconds": 7.392,
+          "pos": [
+            66.0,
+            123.125
+          ],
+          "hp": 22.0881195068359,
+          "generation": 2,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "loot-wolf",
+          "sampled_frames": 36,
+          "seconds": 1.149,
+          "pos": [
+            66.0,
+            122.015625
+          ],
+          "hp": 23.9237213134766,
+          "generation": 2,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "heal-wolf",
+          "sampled_frames": 603,
+          "seconds": 20.023,
+          "pos": [
+            66.0,
+            122.015625
+          ],
+          "hp": 34.7333831787109,
+          "generation": 3,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "slope-to-boar",
+          "sampled_frames": 48,
+          "seconds": 7.589,
+          "pos": [
+            57.5,
+            106.0
+          ],
+          "hp": 38.8125,
+          "generation": 3,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "fight-slope-boar",
+          "sampled_frames": 382,
+          "seconds": 12.669,
+          "pos": [
+            53.734375,
+            100.734375
+          ],
+          "hp": 19.2576084136963,
+          "generation": 4,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "loot-slope-boar",
+          "sampled_frames": 23,
+          "seconds": 0.718,
+          "pos": [
+            53.265625,
+            99.765625
+          ],
+          "hp": 20.7501029968262,
+          "generation": 4,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "heal-slope-boar",
+          "sampled_frames": 603,
+          "seconds": 20.018,
+          "pos": [
+            53.265625,
+            99.765625
+          ],
+          "hp": 31.6579704284668,
+          "generation": 5,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "slope-after-combat",
+          "sampled_frames": 753,
+          "seconds": 25.021,
+          "pos": [
+            53.265625,
+            99.765625
+          ],
+          "hp": 38.875,
+          "generation": 5,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "down-to-beach",
+          "sampled_frames": 178,
+          "seconds": 5.941,
+          "pos": [
+            48.421875,
+            83.0625
+          ],
+          "hp": 38.875,
+          "generation": 6,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "fight-beach-boar",
+          "sampled_frames": 74,
+          "seconds": 2.412,
+          "pos": [
+            51.34375,
+            77.65625
+          ],
+          "hp": 38.9375,
+          "generation": 7,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "loot-beach-boar",
+          "sampled_frames": 25,
+          "seconds": 0.791,
+          "pos": [
+            52.1875,
+            76.921875
+          ],
+          "hp": 38.9375,
+          "generation": 7,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "beach-after-combat",
+          "sampled_frames": 753,
+          "seconds": 25.021,
+          "pos": [
+            52.1875,
+            76.921875
+          ],
+          "hp": 38.9375,
+          "generation": 8,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "fight-shore-toad",
+          "sampled_frames": 163,
+          "seconds": 5.434,
+          "pos": [
+            42.03125,
+            71.765625
+          ],
+          "hp": 33.1740188598633,
+          "generation": 8,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "loot-shore-toad",
+          "sampled_frames": 23,
+          "seconds": 0.746,
+          "pos": [
+            41.140625,
+            71.296875
+          ],
+          "hp": 35.0337028503418,
+          "generation": 8,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "heal-shore-toad",
+          "sampled_frames": 56,
+          "seconds": 1.807,
+          "pos": [
+            41.140625,
+            71.296875
+          ],
+          "hp": 37.5153198242188,
+          "generation": 8,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "fight-south-toad",
+          "sampled_frames": 345,
+          "seconds": 11.612,
+          "pos": [
+            45.125,
+            52.25
+          ],
+          "hp": 30.4315776824951,
+          "generation": 11,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "loot-south-toad",
+          "sampled_frames": 22,
+          "seconds": 0.69,
+          "pos": [
+            45.5,
+            51.453125
+          ],
+          "hp": 32.0886383056641,
+          "generation": 11,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "heal-south-toad",
+          "sampled_frames": 245,
+          "seconds": 8.087,
+          "pos": [
+            45.5,
+            51.453125
+          ],
+          "hp": 37.2654113769531,
+          "generation": 12,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "shore-after-five-kills",
+          "sampled_frames": 598,
+          "seconds": 20.005,
+          "pos": [
+            45.5,
+            51.453125
+          ],
+          "hp": 39.125,
+          "generation": 14,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "shore-paused",
+          "sampled_frames": 242,
+          "seconds": 8.002,
+          "pos": [
+            45.5,
+            51.453125
+          ],
+          "hp": 39.125,
+          "generation": 14,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "shore-still-scene-filter",
+          "sampled_frames": 453,
+          "seconds": 15.031,
+          "pos": [
+            45.5,
+            51.453125
+          ],
+          "hp": 39.125,
+          "generation": 14,
+          "dlss_evaluations": 0
+        },
+        {
+          "phase": "look-back-uphill",
+          "sampled_frames": 56,
+          "seconds": 15.262,
+          "pos": [
+            45.5,
+            51.453125
+          ],
+          "hp": 39.125,
+          "generation": 14,
+          "dlss_evaluations": 0
+        }
+      ],
+      "capture_frames": 67,
+      "profile_seed": null
+    },
+    {
+      "suite": "path_trace_motion_route",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 354.31,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/motion-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "5ea4a6f79fb6da9b3971fb9522b04279569ff426d5e166ab2742eae24bfb08fa"
+      },
+      "fixture_sha256": "594df42bf23e5e59ecf79bb44949deafb3a298fa9df2b99c8ed9141a620c7254",
+      "tag": "motion-final-dx12-dlss-route-warm",
+      "checks": 78,
+      "report_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-final-dx12-dlss-route-warm/recording-route.json",
+      "report_sha256": "9ac17af0c2e27966de7eec6f7195907772afc57988cd8d4ee61f8bffa155e866",
+      "result_sha256": "141be19ed2105a5196f09d8d86d2b377cdece2d95f82ed9fa4bb9873a4f5d05c",
+      "log_sha256": "bc458878533fb2b8e2150025135998f5ccf13f9e622252149bbd138b992b0318",
+      "distance": 120.126279756427,
+      "inactive_frames": 0,
+      "inactive_nrd_frames": 0,
+      "host_process": true,
+      "authority": false,
+      "dlss": {
+        "compiled": true,
+        "dlss_evaluations": 8876,
+        "enhanced_barriers": true,
+        "fg_support_reason": "sl::eErrorNoSupportedAdapterFound",
+        "fg_support_result": 6,
+        "fg_supported": false,
+        "frame_generation_active": false,
+        "frame_generation_input_size": "(0, 0)",
+        "frame_generation_output_size": "(0, 0)",
+        "frame_generation_size_supported": false,
+        "frame_generation_status": 0,
+        "frame_generation_ui_alpha_frames": 0,
+        "frame_generation_ui_alpha_texture": "RID(0)",
+        "game_presents": 8900,
+        "initialized": true,
+        "last_error": 0,
+        "present_count_available": false,
+        "presented_frames": 0,
+        "reflex_supported": true,
+        "requested": true,
+        "sr_support_reason": "sl::eOk",
+        "sr_support_result": 0,
+        "sr_supported": true
+      },
+      "sampled_frames": 5061,
+      "sampled_seconds": 221.491,
+      "stages": [
+        {
+          "phase": "ruins-held",
+          "sampled_frames": 49,
+          "seconds": 10.101,
+          "pos": [
+            52.5,
+            138.0
+          ],
+          "hp": 38.6875,
+          "generation": 1,
+          "dlss_evaluations": 50
+        },
+        {
+          "phase": "east-opening",
+          "sampled_frames": 45,
+          "seconds": 6.469,
+          "pos": [
+            60.0,
+            139.0
+          ],
+          "hp": 38.6875,
+          "generation": 1,
+          "dlss_evaluations": 45
+        },
+        {
+          "phase": "downhill-path",
+          "sampled_frames": 64,
+          "seconds": 22.1,
+          "pos": [
+            66.0,
+            125.0
+          ],
+          "hp": 38.6875,
+          "generation": 1,
+          "dlss_evaluations": 63
+        },
+        {
+          "phase": "fight-wolf",
+          "sampled_frames": 149,
+          "seconds": 5.212,
+          "pos": [
+            66.0,
+            123.125
+          ],
+          "hp": 30.2463531494141,
+          "generation": 2,
+          "dlss_evaluations": 148
+        },
+        {
+          "phase": "loot-wolf",
+          "sampled_frames": 22,
+          "seconds": 0.777,
+          "pos": [
+            66.0,
+            121.96875
+          ],
+          "hp": 31.9799785614014,
+          "generation": 2,
+          "dlss_evaluations": 21
+        },
+        {
+          "phase": "heal-wolf",
+          "sampled_frames": 214,
+          "seconds": 7.127,
+          "pos": [
+            66.0,
+            121.96875
+          ],
+          "hp": 36.8749198913574,
+          "generation": 3,
+          "dlss_evaluations": 213
+        },
+        {
+          "phase": "slope-to-boar",
+          "sampled_frames": 47,
+          "seconds": 7.404,
+          "pos": [
+            57.59375,
+            105.828125
+          ],
+          "hp": 38.8125,
+          "generation": 3,
+          "dlss_evaluations": 47
+        },
+        {
+          "phase": "fight-slope-boar",
+          "sampled_frames": 154,
+          "seconds": 5.092,
+          "pos": [
+            53.734375,
+            100.734375
+          ],
+          "hp": 29.9444217681885,
+          "generation": 4,
+          "dlss_evaluations": 153
+        },
+        {
+          "phase": "loot-slope-boar",
+          "sampled_frames": 22,
+          "seconds": 0.722,
+          "pos": [
+            53.265625,
+            99.765625
+          ],
+          "hp": 31.4841766357422,
+          "generation": 4,
+          "dlss_evaluations": 21
+        },
+        {
+          "phase": "heal-slope-boar",
+          "sampled_frames": 255,
+          "seconds": 8.44,
+          "pos": [
+            53.265625,
+            99.765625
+          ],
+          "hp": 37.0272941589355,
+          "generation": 5,
+          "dlss_evaluations": 254
+        },
+        {
+          "phase": "slope-after-combat",
+          "sampled_frames": 752,
+          "seconds": 25.001,
+          "pos": [
+            53.265625,
+            99.765625
+          ],
+          "hp": 38.875,
+          "generation": 5,
+          "dlss_evaluations": 751
+        },
+        {
+          "phase": "down-to-beach",
+          "sampled_frames": 178,
+          "seconds": 5.962,
+          "pos": [
+            48.421875,
+            83.078125
+          ],
+          "hp": 38.875,
+          "generation": 6,
+          "dlss_evaluations": 178
+        },
+        {
+          "phase": "fight-beach-boar",
+          "sampled_frames": 103,
+          "seconds": 3.466,
+          "pos": [
+            48.484375,
+            81.046875
+          ],
+          "hp": 35.5613899230957,
+          "generation": 7,
+          "dlss_evaluations": 102
+        },
+        {
+          "phase": "loot-beach-boar",
+          "sampled_frames": 22,
+          "seconds": 0.746,
+          "pos": [
+            48.46875,
+            80.09375
+          ],
+          "hp": 36.9936790466309,
+          "generation": 7,
+          "dlss_evaluations": 21
+        },
+        {
+          "phase": "beach-after-combat",
+          "sampled_frames": 750,
+          "seconds": 25.023,
+          "pos": [
+            48.46875,
+            80.09375
+          ],
+          "hp": 38.9375,
+          "generation": 8,
+          "dlss_evaluations": 749
+        },
+        {
+          "phase": "fight-shore-toad",
+          "sampled_frames": 223,
+          "seconds": 7.434,
+          "pos": [
+            42.765625,
+            71.03125
+          ],
+          "hp": 32.0879287719727,
+          "generation": 8,
+          "dlss_evaluations": 223
+        },
+        {
+          "phase": "loot-shore-toad",
+          "sampled_frames": 21,
+          "seconds": 0.695,
+          "pos": [
+            42.453125,
+            70.1875
+          ],
+          "hp": 33.7423400878906,
+          "generation": 8,
+          "dlss_evaluations": 20
+        },
+        {
+          "phase": "heal-shore-toad",
+          "sampled_frames": 144,
+          "seconds": 4.854,
+          "pos": [
+            42.453125,
+            70.1875
+          ],
+          "hp": 37.3605995178223,
+          "generation": 9,
+          "dlss_evaluations": 143
+        },
+        {
+          "phase": "fight-south-toad",
+          "sampled_frames": 201,
+          "seconds": 6.658,
+          "pos": [
+            47.671875,
+            56.671875
+          ],
+          "hp": 29.3207359313965,
+          "generation": 9,
+          "dlss_evaluations": 200
+        },
+        {
+          "phase": "loot-south-toad",
+          "sampled_frames": 28,
+          "seconds": 1.025,
+          "pos": [
+            48.046875,
+            55.796875
+          ],
+          "hp": 31.2324905395508,
+          "generation": 9,
+          "dlss_evaluations": 27
+        },
+        {
+          "phase": "heal-south-toad",
+          "sampled_frames": 272,
+          "seconds": 9.124,
+          "pos": [
+            47.90625,
+            55.84375
+          ],
+          "hp": 37.2311973571777,
+          "generation": 10,
+          "dlss_evaluations": 271
+        },
+        {
+          "phase": "shore-after-five-kills",
+          "sampled_frames": 599,
+          "seconds": 20.014,
+          "pos": [
+            47.90625,
+            55.84375
+          ],
+          "hp": 39.1875,
+          "generation": 10,
+          "dlss_evaluations": 598
+        },
+        {
+          "phase": "shore-paused",
+          "sampled_frames": 242,
+          "seconds": 8.015,
+          "pos": [
+            47.90625,
+            55.84375
+          ],
+          "hp": 39.1875,
+          "generation": 10,
+          "dlss_evaluations": 241
+        },
+        {
+          "phase": "shore-still-scene-filter",
+          "sampled_frames": 451,
+          "seconds": 15.022,
+          "pos": [
+            47.90625,
+            55.84375
+          ],
+          "hp": 39.1875,
+          "generation": 10,
+          "dlss_evaluations": 450
+        },
+        {
+          "phase": "look-back-uphill",
+          "sampled_frames": 54,
+          "seconds": 15.008,
+          "pos": [
+            47.90625,
+            55.84375
+          ],
+          "hp": 39.1875,
+          "generation": 10,
+          "dlss_evaluations": 54
+        }
+      ],
+      "capture_frames": 63,
+      "profile_seed": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/motion-dx12-dlss-route/prefix/drive_c/users/steamuser/AppData/Roaming/Godot/app_userdata/Cursed Lands"
+    }
+  ],
+  "baseline": {
+    "tag": "motion-baseline-vk-body-coverage",
+    "report_sha256": "45fb00b7b4b9faa53327b3da30c2cc607f6d39fabde9c414b90a61037a5b5dc6",
+    "max_transform_error_metres": 0.15387649834156,
+    "transform_mismatches": 4485,
+    "body_coverage": {
+      "frames": [
+        {
+          "matched": 10764,
+          "missed": 20954,
+          "rejected_fraction": 0.660634340122328
+        },
+        {
+          "matched": 9170,
+          "missed": 22382,
+          "rejected_fraction": 0.709368661257606
+        },
+        {
+          "matched": 7899,
+          "missed": 23582,
+          "rejected_fraction": 0.749086750738541
+        },
+        {
+          "matched": 6301,
+          "missed": 25172,
+          "rejected_fraction": 0.799796651097766
+        }
+      ]
+    },
+    "failures": [
+      "PT receivers follow the presented first-person body (max error 0.153876 m)",
+      "visible first-person body consistently receives PT lighting"
+    ]
+  },
+  "limits": [
+    "Windows executable tested under Proton/VKD3D, not native Windows.",
+    "Original DLSS Super Resolution DLLs used; DLSS frame generation not exercised.",
+    "Visual readbacks and a 30 FPS cap make these qualification runs unsuitable as performance benchmarks.",
+    "Prepared multi-location routes use explicit placement/animation and production camera/body APIs; separate campaign routes use the real simulation process, movement orders, combat, looting and healing.",
+    "The initial cold-cache Proton campaign attempt lost its local simulation owner during loading. The completed Windows route uses that isolated test profile's warmed caches. It does not establish cold-start stability on native Windows.",
+    "Coverage establishes the corrected first-person mismatch and the sampled routes; it is not a guarantee of zero artifacts in every scene."
+  ],
+  "diagnostics": [
+    "The initial fixture was corrected for a duplicate inherited variable name before meaningful rendering.",
+    "Early alignment probes compared before the priority-101 scene update. The qualifying probes compare after frame_post_draw.",
+    "The original cave site had no traversable exit. The qualifying cave route searches nearby open navigation and verifies actual body movement.",
+    "One desert run observed five transient reads of the render-thread NRD working flag. The fixture now queues a render-thread check after a false main-thread read. The qualifying rerun has zero inactive completed frames; raw working-flag observations are not treated as proof of visible dropout."
+  ]
+}

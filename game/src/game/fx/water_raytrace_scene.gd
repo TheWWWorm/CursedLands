@@ -22,6 +22,7 @@ var _nodes := {}
 var _mesh_roots := {}
 var _unit_roots := {}
 var _groups := {}
+var _view_models := {}
 var _morph_geometries: Array[int] = []
 var _terrain: EITerrain
 var _plane := 0.0
@@ -154,7 +155,7 @@ func topology_changed() -> bool:
 func discard_geometry() -> void:
 	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
-	_mesh_roots.clear();_groups.clear();_morph_geometries.clear()
+	_mesh_roots.clear();_groups.clear();_view_models.clear();_morph_geometries.clear()
 	_kernel=null;_watching=false;_cursor=0
 	_ground=Ground.new()
 
@@ -214,6 +215,10 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 	var key := root.get_instance_id()
 	if not _groups.has(key): _groups[key] = {"node":weakref(root),"indices":[],"visible":-1}
 	_groups[key].indices.append(instances.size())
+	if root is GameUnit and is_instance_valid(root.model) and root.model.is_ancestor_of(node):
+		var model_key: int = root.model.get_instance_id()
+		if not _view_models.has(model_key): _view_models[model_key] = {"model":weakref(root.model),"indices":[]}
+		_view_models[model_key].indices.append(instances.size())
 	instances.append({"geometry":geometry,"node":weakref(node),"mesh":node.mesh if node is MeshInstance3D else null,
 		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
 
@@ -342,6 +347,36 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 
 ## Plain values only: the render thread never dereferences a scene node.
 func _instance_updates(force: bool) -> Array:
+	# First-person clearance is a renderer-only shift, absent from Node3D's
+	# transform and the native tracker. Finish the pose after DirectPose, then
+	# apply that presentation only to the local camera's visible body. Water
+	# reflections and full-body shadow/GI copies retain their authored pose.
+	var presented := {}
+	if lighting_camera_mask >= 0:
+		for group: Dictionary in _view_models.values():
+			var model: EIUnitModel = group.model.get_ref()
+			if not is_instance_valid(model) or not model._view_active: continue
+			model._align_first_person_body()
+			for i: int in group.indices:
+				var entry: Dictionary = instances[i]
+				var mesh: MeshInstance3D = entry.node.get_ref()
+				if not is_instance_valid(mesh) or not model._view_meshes.has(mesh): continue
+				presented[i] = {"before":entry.transform,"mask":entry.mask,
+					"transform":model.presented_mesh_transform(mesh)}
+	var changes := _tracked_instance_updates(force)
+	if presented.is_empty(): return changes
+	var changed := {}
+	for change: Dictionary in changes: changed[change.index] = change
+	for i: int in presented:
+		var view: Dictionary = presented[i]
+		var entry: Dictionary = instances[i]
+		entry.transform = view.transform
+		if force or entry.transform != view.before or entry.mask != view.mask:
+			changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask}
+		else: changed.erase(i)
+	return changed.values()
+
+func _tracked_instance_updates(force: bool) -> Array:
 	if _kernel != null and (lighting_camera_mask < 0 or _kernel.has_method("lighting_updates")):
 		if not _watching:
 			_kernel.clear_instances()

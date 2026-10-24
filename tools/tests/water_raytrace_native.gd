@@ -98,6 +98,7 @@ func run() -> void:
 	check(native._instance_updates(true)==script._instance_updates(true),"freed ancestor is safe and stays masked")
 	lighting_tracking()
 	unit_visibility()
+	first_person_presentation()
 	terrain.free(); finish()
 
 
@@ -156,6 +157,38 @@ func unit_visibility() -> void:
 		check(a==b and native.instances[0].mask==(0 if hidden else 7),"invisible unit masks match without a scene rebuild: "+str(hidden))
 	parent.free()
 	check(native._instance_updates(true)==script._instance_updates(true),"freed unit masks its retained parts safely")
+
+func first_person_presentation() -> void:
+	var unit := VisibilityUnit.new(); add_child(unit)
+	var model := EIUnitModel.new(); unit.model=model; unit.add_child(model)
+	var body := MeshInstance3D.new(); body.mesh=BoxMesh.new(); model.add_child(body)
+	var shadow := MeshInstance3D.new(); shadow.mesh=body.mesh; model.add_child(shadow)
+	body.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	body.layers=EIUnitModel.CLOSE_VIEW_LAYER
+	shadow.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+	model._view_meshes.assign([body]); model._view_active=true
+	var native := Scene.new(); var script := Scene.new(); script._kernel=null
+	for scene in [native,script]:
+		scene.lighting_camera_mask=1|EIUnitModel.CLOSE_VIEW_LAYER
+		for mesh: MeshInstance3D in [body,shadow]:
+			scene._mesh_roots[mesh.get_instance_id()]=weakref(unit)
+			scene._add_instance(mesh,0,mesh.global_transform)
+	for shift: Vector3 in [Vector3(0.2,0,-0.1),Vector3(0.4,0,-0.2),Vector3.ZERO]:
+		model._view_shift=shift
+		var a := native._instance_updates(false); var b := script._instance_updates(false)
+		check(a==b,"first-person presentation agrees in native/script trackers: "+str(shift))
+		check(native.instances[0].transform.origin==body.global_position+shift and native.instances[0].mask==1,
+			"camera body follows renderer-only shift without casting a duplicate shadow")
+		check(native.instances[1].transform==shadow.global_transform and native.instances[1].mask==6,
+			"complete shadow/GI copy retains authored pose")
+		check(native._instance_updates(false).is_empty() and script._instance_updates(false).is_empty(),
+			"stationary presented instances avoid redundant updates")
+	model._view_shift=Vector3(0.3,0,0); native._instance_updates(false); script._instance_updates(false)
+	model._view_active=false; body.layers=1
+	check(native._instance_updates(false)==script._instance_updates(false) and native.instances[0].transform==body.global_transform,
+		"leaving first person restores authored camera placement")
+	unit.free()
+	check(native._instance_updates(true)==script._instance_updates(true),"freed first-person model safely masks retained instances")
 
 func finish() -> void:
 	FileAccess.open(out.path_join("native.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"\t"))
