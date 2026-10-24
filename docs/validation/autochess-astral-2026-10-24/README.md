@@ -129,3 +129,18 @@ with `lia_hero:wrapped`, nine prepared companies and a running local worker.
 Both processes exited. The automated `--quit-after` shutdown reports the existing
 local-host reaper `add_child` warning while the tree is being torn down; explicit
 session closure in the multiplayer fixtures reports no runtime errors.
+
+## Skin selection pruning
+
+The follow-up catalog retains two appearances for Zak (original and Joon) and
+three for Kir (transformed, original and face wrap). Outfit-only duplicates
+were removed, including Kel's alternate clothing; single-appearance characters
+hide the skin selector. The resulting catalog has 18 selectable appearances
+across 15 characters, with one transformed Kir choice.
+
+Retired IDs normalize to the matching face: `hero:hadagan` to `hero`,
+`lia_hero:armored` to `lia_hero:unmasked`, and `lia_merc2:armored` to `lia_merc2`.
+Existing settings, saved armies, and online snapshots remain readable.
+The rules fixture passes 1,078 checks, including save/snapshot migration and
+label normalization; ENet/WebSocket lobby fixtures pass 40 checks using retired
+choices as input and verifying the retained identities on both peers.

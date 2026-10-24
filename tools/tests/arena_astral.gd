@@ -74,6 +74,15 @@ func _ready() -> void:
 	var snapshot: Dictionary = JSON.parse_string(JSON.stringify(extra.snapshot()))
 	var restored := ArenaTournamentRun.new(); restored.auto_save = false
 	check(restored.restore(snapshot) and restored.expansion and restored.commander == "lia_hero:wrapped", "expansion JSON save restores army, mode and identity")
+	var restored_army := restored.army.duplicate(true)
+	for pair in [["hero:hadagan", "hero"], ["lia_hero:armored", "lia_hero:unmasked"], ["lia_merc2:armored", "lia_merc2"]]:
+		var old_skin := snapshot.duplicate(true)
+		old_skin.commander = pair[0]
+		check(restored.restore(old_skin) and restored.commander == pair[1] and restored.army == restored_army, "retired skin save preserves the face and army " + pair[0])
+		var replica := ArenaOnlineView.new()
+		ArenaOnlineView._copy_company(replica, old_skin)
+		check(replica.commander == pair[1], "retired skin snapshot preserves the face " + pair[0])
+		check(ArenaCommanders.skin_title(pair[0]) == ArenaCommanders.skin_title(pair[1]), "retired skin label uses the retained choice " + pair[0])
 	snapshot.expansion = false
 	check(not restored.restore(snapshot), "mixed-mode snapshot cannot import expansion recruits into standard mode")
 	var legacy: Dictionary = JSON.parse_string(JSON.stringify(standard.snapshot()))

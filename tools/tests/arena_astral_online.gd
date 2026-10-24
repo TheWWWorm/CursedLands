@@ -7,7 +7,7 @@ func _ready() -> void:
 	for ws in [false, true]:
 		var port := 29824 if ws else 29823
 		var addr := ("ws://" if ws else "") + "127.0.0.1:" + str(port)
-		GameData.arena_character = "lia_hero:wrapped"
+		GameData.arena_character = "lia_hero:armored"
 		var host := ArenaOnlineSession.new(); host.expansion = true; add_child(host)
 		check(host.host(port, ws) == OK, "expansion host opens")
 		check(host.lan_info().expansion, "LAN advertises expansion mode")
@@ -22,7 +22,7 @@ func _ready() -> void:
 		check(await wait_for(func(): return not wrong.status.is_empty()), "content mismatch rejected")
 		check(wrong.status == RemakeText.t(MODE_ERROR) and host.members.size() == 1, "content rejection reserves no seat")
 		wrong.close(); wrong.queue_free()
-		GameData.arena_character = "hero:jun"
+		GameData.arena_character = "hero:hadagan"
 		var guest := ArenaOnlineSession.new(); guest.expansion = true; add_child(guest)
 		check(guest.join(addr) == OK, "compatible client connects")
 		check(await wait_for(func(): return guest.my_seat == 1), "compatible client gets seat")
@@ -33,7 +33,7 @@ func _ready() -> void:
 		check(await wait_for(func(): return guest.started), "expansion snapshot arrives")
 		check(guest.view.expansion and guest.view.rivals.all(func(r): return r.expansion), "every replica company has expansion pool")
 		check(guest.view.pool_left().size() == 37, "replica shared pool includes eight new families")
-		check(guest.view.commander == "hero:jun" and host.game.run.commander == "lia_hero:wrapped", "LiA choices remain with their owners")
+		check(guest.view.commander == "hero" and host.game.run.commander == "lia_hero:unmasked", "retired skin choices retain the correct owner and face")
 		check(range(2, ArenaTournamentRun.PLAYER_COUNT).all(func(seat): return ArenaCommanders.character(host.game.run.company(seat).commander) not in ["hero", "lia_hero"]), "NPC selection excludes both chosen characters across skins")
 		check(host.game.run.rivals.any(func(r): return r.commander == "lia_merc2"), "NPCs include LiA companions")
 		guest.close(); host.close(); guest.queue_free(); host.queue_free(); await frames()

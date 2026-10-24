@@ -19,8 +19,6 @@ const CHARACTERS := {
 const CHARACTER_SKINS := {
 	"lia_hero_unmasked": "Hero1",
 	"lia_hero_wrapped": "Hero2",
-	"lia_hero_armored": "Hero3",
-	"lia_merc2_armored": "merc2g",
 }
 # Source prototypes and OBJPRIMTXTR palettes from LiA's shipped MOB records.
 # Repeated native ages retain one species/role; arena stars supply the budget.

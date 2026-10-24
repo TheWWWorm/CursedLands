@@ -6,14 +6,17 @@ const IDS := ["hero", "merc1", "merc2", "merc3", "merc4", "merc5", "merc6", "mer
 ## carries a validated optional suffix, preserving old unsuffixed selections.
 const SKINS := {
 	"hero": [["", "Original appearance", "Human Hero"],
-		["hadagan", "Khadagan outfit", "Human Hero Hadagan"],
 		["jun", "Joon appearance", "Jun Male Hero"]],
 	"lia_hero": [["", "Transformed", "arena-lia/lia_hero"],
 		["unmasked", "Original appearance", "arena-lia/lia_hero_unmasked"],
-		["wrapped", "Face wrap", "arena-lia/lia_hero_wrapped"],
-		["armored", "Armored outfit", "arena-lia/lia_hero_armored"]],
-	"lia_merc2": [["", "Original appearance", "arena-lia/lia_merc2"],
-		["armored", "Armored outfit", "arena-lia/lia_merc2_armored"]],
+		["wrapped", "Face wrap", "arena-lia/lia_hero_wrapped"]],
+}
+## The bust must look distinct at HUD size. Retired outfit-only choices keep
+## their face identity when read from settings, saves or a network snapshot.
+const SKIN_ALIASES := {
+	"hero:hadagan": "hero",
+	"lia_hero:armored": "lia_hero:unmasked",
+	"lia_merc2:armored": "lia_merc2",
 }
 
 static func character(id: String) -> String:
@@ -27,7 +30,8 @@ static func skins(id: String) -> Array:
 	return result
 
 static func skin_title(id: String) -> String:
-	var who := character(valid(id))
+	id = valid(id)
+	var who := character(id)
 	var rows: Array = SKINS.get(who, [["", "Original appearance", ""]])
 	return RemakeText.t(rows[maxi(0, skins(who).find(id))][1])
 
@@ -35,6 +39,7 @@ static func choices(expansion := false) -> Array:
 	return IDS + ArenaExpansion.CHARACTERS.keys() if expansion else IDS
 
 static func valid(id: String, expansion := true) -> String:
+	id = SKIN_ALIASES.get(id, id)
 	var who := character(id)
 	if who not in choices(expansion): return "hero"
 	return id if id in skins(who) else who

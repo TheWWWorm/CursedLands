@@ -30,6 +30,7 @@ func _ready() -> void:
 				screen._skin_picker.item_selected.emit(ArenaCommanders.skins(id).find(id))
 				await frames(12)
 				check(GameData.arena_character == id and portrait.commander == id, "skin selection updates native preview " + id)
+				check(screen._skin_row.visible == (ArenaCommanders.skins(id).size() > 1), "skin choices appear only for distinct variants " + id)
 				check(portrait.face.get_shader_parameter("portrait_unlit") == true, "native portrait avoids double lighting " + id)
 				check(portrait._framed and portrait.face != null, "native animated bust " + id)
 				await RenderingServer.frame_post_draw
