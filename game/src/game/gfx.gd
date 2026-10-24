@@ -1292,7 +1292,7 @@ static func setup_sun_casters(sun: DirectionalLight3D) -> void:
 static func apply_quality(vp: Viewport) -> void:
 	apply_effect_quality()
 	var aa := GameData.option("q_aa")
-	if vp != GameData.get_tree().root or not FsrGraphics.sr_active():
+	if vp != GameData.get_tree().root or (not FsrGraphics.sr_active() and not RtxGraphics.sr_active()):
 		vp.msaa_3d = Viewport.MSAA_4X if aa == 2 or aa == 3 else Viewport.MSAA_DISABLED
 		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if (aa == 1 or aa == 3) and not Portability.compatibility() else Viewport.SCREEN_SPACE_AA_DISABLED
 		vp.use_taa = aa == 4 and RenderingServer.get_current_rendering_method() == "forward_plus"
@@ -1312,6 +1312,7 @@ static func apply_quality(vp: Viewport) -> void:
 	RenderingServer.directional_shadow_atlas_set_size(atlas, true)
 	vp.positional_shadow_atlas_size = atlas
 	FsrGraphics.apply_upscaling(vp)
+	RtxGraphics.apply_upscaling(vp)
 
 
 ## Option q_shadow_fit: the sun's four cascades span what can be seen, the

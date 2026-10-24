@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.28.0-experimental.3 (local preview)
+
+- Restore NVIDIA DLSS/DLAA and the hardware-gated 2× frame-generation path in
+  the normal Screen controls, with exclusive SDK presentation ownership.
+- Preserve NRD, traversal/blood-mark performance fixes and current DXR barriers.
+- Restore NVIDIA/AMD SDK splash and credits; add missing NRD credits on both
+  desktop platforms, with EN/RU/DE text and pinned production-file notices.
+- Keep NVIDIA mark-placement approval explicitly pending for local review.
+
+
 ## 1.28.0-experimental.2 — unreleased
 
 - Reuse projected blood-mark geometry while animating its growth and rotation, reducing CPU work after combat. Preserve surface placement, fading and lifetime.

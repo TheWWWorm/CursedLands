@@ -243,6 +243,7 @@ const OPTIONS := [
 	# Opt-in Windows/D3D12 experiment, disabled on fresh profiles.
 	# The AA dropdown combines q_aa and the legacy FSR selection. Keep both
 	# saved keys for compatibility, with one visible selector on Screen.
+	["rtx_upscaling", 1, 5, -1, 0, 0], ["rtx_frame_generation", 1, 2, -1, 0, 0],
 	["fsr_upscaling", 1, 3, -1, 0, 0], ["fsr_quality", 1, 4, 12, 4, 1], ["fsr_frame_generation", 1, 3, 12, 5, 0],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
@@ -511,7 +512,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"gfx_ssao", "gfx_bloom", "gfx_depth_of_field", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_rain_puddles", "gfx_lava_light", "gfx_detailed_heads",
-	"gfx_sharp_units", "q_aa", "fsr_upscaling", "fsr_quality", "fsr_frame_generation", "q_shadows", "q_shadow_fit", "q_aniso", "q_water_rt_quality", "rt_shadows", "rt_gi", "q_rt_lighting", "pt_mode", "pt_accumulation", "confine_mouse",
+	"gfx_sharp_units", "q_aa", "rtx_upscaling", "rtx_frame_generation", "fsr_upscaling", "fsr_quality", "fsr_frame_generation", "q_shadows", "q_shadow_fit", "q_aniso", "q_water_rt_quality", "rt_shadows", "rt_gi", "q_rt_lighting", "pt_mode", "pt_accumulation", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"control_mode", "character_light", "selection_glow", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
 	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "stamina_regen", "armor_formula", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
@@ -1365,7 +1366,7 @@ func _apply_window() -> void:
 		# supersampled scale (> 1) to FSR, the mode set before the scale made
 		# Godot warn "FSR ... not designed for downsampling" for that moment.
 		# Bilinear first, then the scale, then the mode.
-		if not FsrGraphics.sr_active():
+		if not FsrGraphics.sr_active() and not RtxGraphics.sr_active():
 			if vp.scaling_3d_mode != smode:
 				vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
 			vp.scaling_3d_scale = scale
@@ -1470,7 +1471,7 @@ class FpsLabel extends Label:
 		_t += dt
 		if _t >= 0.25:
 			_t = 0.0
-			var native := FsrGraphics.bridge()
+			var native := RtxGraphics.bridge() if RtxGraphics.facts().launch else FsrGraphics.bridge()
 			var status: Dictionary = native.call("get_status") if native else {}
 			rates = meter.sample(status, Time.get_ticks_usec(), Engine.get_frames_per_second())
 			text = FrameRateMeter.label_text(rates)

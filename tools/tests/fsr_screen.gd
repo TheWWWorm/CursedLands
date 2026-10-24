@@ -32,16 +32,18 @@ func _run() -> void:
 				var choices := GameData.option_choices(name)
 				check(picker.item_count == choices.size() and picker.get_item_text(0) == choices[0],language + " translated choices retained for " + name)
 			check(aa.visible and quality.visible and fg.visible, "all three controls are directly in Screen")
-			check(aa.item_count == 8 and aa.get_item_text(6) == "FSR 3.1" and aa.get_item_text(7) == "FSR 4", "AA includes ordinary modes and explicit FSR versions")
+			check(aa.item_count == 9 and aa.get_item_text(6) == "FSR 3.1" and aa.get_item_text(7) == "FSR 4" and aa.get_item_text(8) == "NVIDIA DLSS", "AA includes ordinary modes and explicit FSR versions")
 			check(panel._rows[10].name == "brightness" and panel._rows[12].name == "gamma", "original screen controls retained")
 			if RendererChoice.available(): check(panel._rows[13].name == "renderer", "renderer remains on Screen")
-			for i in [6, 7]:
-				check(aa.is_item_disabled(i) == not facts["sr" + str(i - 3)], "unsupported AA version visibly disabled")
-			for i in [1, 2]:
-				check(fg.is_item_disabled(i) == not facts["fg" + str(i + 2)], "unsupported FG version visibly disabled")
+			for i in [6, 7, 8]:
+				check(aa.is_item_disabled(i) == not TemporalGraphics.aa_reason(i,panel._values).is_empty(), "unsupported AA version visibly disabled")
+			for i in [1, 2, 3]:
+				check(fg.is_item_disabled(i) == not TemporalGraphics.fg_reason(i,panel._values).is_empty(), "unsupported FG version visibly disabled")
 			check(aa.get_theme_color("font_color") == panel.TEXT, "editable dropdown uses enabled text color")
 			check(FsrGraphics.QUALITY in GameData.OPTIONS_APPLIED and FsrGraphics.FRAME_GENERATION in GameData.OPTIONS_APPLIED, "implemented FSR labels are not painted as stubs")
 			# Old saves must remain recoverable on a different renderer/GPU.
+			panel._values[RtxGraphics.UPSCALING] = 0
+			panel._values[RtxGraphics.FRAME_GENERATION] = 0
 			panel._values[FsrGraphics.UPSCALING] = 2
 			panel._values[FsrGraphics.FRAME_GENERATION] = 2
 			panel._show_group(OptionsPanel.SCREEN_GROUP)
@@ -50,21 +52,43 @@ func _run() -> void:
 			fg.item_selected.emit(0)
 			check(panel._values[FsrGraphics.UPSCALING] == 0 and panel._values.q_aa == 0 and panel._values[FsrGraphics.FRAME_GENERATION] == 0, "ordinary AA and FG Off clear saved requests")
 			check(quality.disabled and panel._rows[4].disabled, "quality is disabled until FSR AA selected")
-			if facts.sr3:
+			if TemporalGraphics.aa_reason(6,panel._values).is_empty():
 				aa.item_selected.emit(6)
 				quality.item_selected.emit(3)
 				check(panel._values[FsrGraphics.UPSCALING] == 1 and panel._values[FsrGraphics.QUALITY] == 3 and not quality.disabled, "FSR AA enables its quality dropdown")
 			else:
 				aa.item_selected.emit(6)
 				check(panel._values[FsrGraphics.UPSCALING] == 0, "unavailable AA cannot be activated")
-			if facts.fg3:
+			if TemporalGraphics.fg_reason(1,panel._values).is_empty():
 				aa.item_selected.emit(1)
 				fg.item_selected.emit(1)
 				check(panel._values[FsrGraphics.UPSCALING] == 0 and panel._values[FsrGraphics.FRAME_GENERATION] == 1, "FG can be selected independently of FSR AA")
-				if facts.sr3: aa.item_selected.emit(6)
+				if TemporalGraphics.aa_reason(6,panel._values).is_empty(): aa.item_selected.emit(6)
 			else:
 				fg.item_selected.emit(1)
 				check(panel._values[FsrGraphics.FRAME_GENERATION] == 0 and fg.disabled, "unavailable FG cannot be activated")
+			# NVIDIA request uses the same controls, remains mutually exclusive with AMD,
+			# and is removable even after moving the save to unsupported hardware.
+			aa.item_selected.emit(0)
+			fg.item_selected.emit(0)
+			if TemporalGraphics.aa_reason(8,panel._values).is_empty():
+				aa.item_selected.emit(8)
+				quality.item_selected.emit(0)
+				check(panel._values[RtxGraphics.UPSCALING] == 1 and quality.selected == 0, "Native AA selects DLAA")
+				quality.item_selected.emit(3)
+				check(panel._values[RtxGraphics.UPSCALING] == 4 and quality.selected == 3, "Performance selects DLSS Performance")
+				check(panel._values[FsrGraphics.UPSCALING] == 0 and panel._values[FsrGraphics.FRAME_GENERATION] == 0, "DLSS clears AMD requests")
+				fg.item_selected.emit(1)
+				check(panel._values[FsrGraphics.FRAME_GENERATION] == 0, "cannot mix AMD FG with NVIDIA presentation")
+				check(RtxGraphics.needs_restart(panel._values) == not RtxGraphics.facts().launch, "restart reflects native presentation owner")
+			else:
+				aa.item_selected.emit(8)
+				check(panel._values[RtxGraphics.UPSCALING] == 0, "unsupported DLSS cannot be selected")
+				panel._values[RtxGraphics.UPSCALING] = 2
+				panel._values[RtxGraphics.FRAME_GENERATION] = 1
+				panel._show_group(OptionsPanel.SCREEN_GROUP)
+				aa.item_selected.emit(0)
+				check(panel._values[RtxGraphics.UPSCALING] == 0 and panel._values[RtxGraphics.FRAME_GENERATION] == 0, "stale NVIDIA request can be cleared")
 			if OS.get_name() == "Windows" and not facts.api:
 				check(panel._fsr_hint == RemakeText.t(FsrGraphics.RENDERER_HINT), "wrong renderer shows apply/restart instructions without hovering")
 			check(panel.text_width(panel._fsr_hint, 1) <= 592, language + " renderer hint fits")

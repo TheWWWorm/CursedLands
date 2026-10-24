@@ -104,3 +104,24 @@ The project adapter uses the godot-cpp bindings and compiler runtime described
 under Optional compiled navigation. Pinned revisions, build commands and the
 RenderingDevice integration are documented in
 `docs/integrations/path-tracing-nrd.md`.
+
+## Optional NVIDIA DLSS and Reflex
+
+The Windows preview includes NVIDIA DLSS, NGX, Reflex and Streamline 2.14.16
+production components under their respective licenses in `licenses/NVIDIA/`.
+They are not covered by the application's Apache-2.0 license. Streamline's
+integration code is MIT; NVIDIA's Godot port retains its Godot MIT notices.
+This software contains source code provided by NVIDIA Corporation.
+
+The restored engine integration derives from NVIDIA's Godot fork, commit
+`54c99593e0abd3126eb6974abc2d843f015b288a`, with local capability, resource,
+Agility, presentation-owner and fallback handling. It implements DLSS Super
+Resolution, DLAA and an optional 2x frame-generation path. It does not implement
+DLSS Ray Reconstruction or Multi Frame Generation. NRD remains the path-tracing
+denoiser, with its separate notices above.
+
+NVIDIA, the NVIDIA logo, GeForce RTX and DLSS are trademarks and/or registered
+trademarks of NVIDIA Corporation in the U.S. and other countries. Their artwork
+is excluded from the game's Apache-2.0 license. Proposed mark placements are
+for local review; see `docs/branding/graphics-sdk-attribution.md` for pending
+approval and release-notification requirements.

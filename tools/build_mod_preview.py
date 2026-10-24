@@ -33,6 +33,9 @@ def build(args):
     with tarfile.open(fileobj=io.BytesIO(archive)) as stream:
         stream.extractall(source, filter="data")
     game = source / "game"
+    project = game / "project.godot"
+    if (game / "src/native/path_nrd.cfg").exists():
+        project.write_text(project.read_text().replace("[application]", "[application]\ngraphics_sdk/nrd=true"))
     version = re.search(r'^config/version="([^"]+)"', (game / "project.godot").read_text(), re.M)[1]
     if "-" not in version:
         raise ValueError("This helper builds previews only")

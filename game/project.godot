@@ -25,7 +25,7 @@ boot_splash/bg_color=Color(0.0667, 0.0588, 0.0471, 1)
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.28.0-experimental.2"
+config/version="1.28.0-experimental.3"
 config/project_settings_override.android="user://renderer.cfg"
 config/project_settings_override.windows="user://renderer.cfg"
 
@@ -35,6 +35,7 @@ DiscordPresence="*res://src/platform/discord_presence.gd"
 
 GameData="*res://src/ei/game_data.gd"
 FsrExperiment="*res://src/platform/fsr_graphics.gd"
+RtxExperiment="*res://src/platform/rtx_graphics.gd"
 TouchInput="*res://src/platform/touch_input.gd"
 PadInput="*res://src/platform/pad_input.gd"
 DeveloperConsole="*res://src/ui/game_console.gd"

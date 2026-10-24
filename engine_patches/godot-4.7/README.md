@@ -9,6 +9,16 @@ build instructions. Adding a patch here does not update installed templates.
 the sixteen common patches. Build with `use_fsr_sdk=yes` and the pinned AMD
 headers. See [FSR setup and build instructions](../../docs/integrations/fsr-experiment.md).
 
+`restore-dlss.patch` restores the Windows DLSS/DLAA/Reflex integration after
+all twenty current Windows patches (including FSR, DXR and device diagnostics).
+Build with both `use_streamline=yes` and `use_fsr_sdk=yes`, using the pinned
+Streamline 2.14.16 headers. It preserves the FSR enum value and the corrected
+DXR barriers. Agility-created devices are upgraded through Streamline instead
+of bypassing the Agility device factory. The saved DLSS request chooses the
+presentation owner before creating devices; changing AMD/NVIDIA owner requires
+a restart. Headless workers do not initialize Streamline. See the
+[restored integration](../../docs/integrations/nvidia-dlss.md).
+
 `water-raytracing-uniform-stages.patch` is an optional Vulkan experiment applied
 after the common patches. It fixes RT uniform stage masks and adds a capability
 guard. See [the water experiment](../../docs/integrations/water-raytracing-experiment.md).

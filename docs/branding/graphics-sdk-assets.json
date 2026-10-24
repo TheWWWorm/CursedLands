@@ -1,5 +1,16 @@
 {
+  "retrieved": "2026-10-20",
+  "nvidia_placement_approval": "pending; local review only",
+  "alterations": "None. Official files are retained byte-for-byte; presentation uses aspect-preserving resizing.",
   "assets": [
+    {
+      "file": "game/assets/branding/vendors/nvidia-geforce-rtx-white.png",
+      "source_page": "https://nvidianews.nvidia.com/file/geforcertx-logo-wht296273",
+      "download_url": "https://nvidianews.nvidia.com/_gallery/get_file/?file_id=692f50423d6332b451bbc5cd",
+      "resolved_url": "https://iprsoftwaremedia.com/219/files/202512/202512022046/geforcertx-logo-wht.png?download=true",
+      "sha256": "8f587fb15bd0c1bc93ba3eb49c0163898717c5313b207a46c0cb3f5440506aa1",
+      "bytes": 63680
+    },
     {
       "file": "game/assets/branding/vendors/amd-fsr-upscaling-white.png",
       "source_page": "https://gpuopen.com/amd-fsr-naming-guidelines/",
@@ -18,14 +29,19 @@
     }
   ],
   "master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
-  "presentation": {
-    "note": "Official transparent white AMD FSR lockups, uniformly resized with original aspect ratios, centered in two cells beneath the title.",
-    "cell_width": 256,
-    "gap": 40,
-    "row_height": 144
-  },
-  "regenerate": "node tools/generate_branding.cjs --fsr",
+  "regenerate": "node tools/generate_branding.cjs --graphics-sdk",
   "derived_files": {
+    "game/assets/branding/splash-nvidia.png": "82a91afed0ac0b54a581d623c28329d9af6c0f35f69389f2987f2ddba89388ab",
+    "game/assets/branding/splash-graphics.png": "3c7e14155b8d4a3409bb1932b5ffb2f81f2231cafaffa9b7b7cfc2aff213bac7",
     "game/assets/branding/splash-fsr.png": "251edf11e4d567bf11967d61e953a28ddfe216aef3d5a334350617f7df4c3557"
+  },
+  "presentation": {
+    "nvidia_badge_region": {
+      "left": 290,
+      "top": 278,
+      "width": 2420,
+      "height": 730
+    },
+    "note": "Exclude only the opaque white page surrounding the complete NVIDIA badge. Keep the badge pixels and proportions intact; supply clear space with layout margins."
   }
 }

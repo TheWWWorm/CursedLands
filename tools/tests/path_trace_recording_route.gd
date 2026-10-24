@@ -23,6 +23,7 @@ func create_game() -> Game:
 
 func run() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
+	var dlss:=OS.get_cmdline_user_args().has("--route-dlss")
 	var inventory:=OS.get_cmdline_user_args().has("--route-inventory")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="):out=arg.trim_prefix("--audit-out=")
@@ -33,6 +34,9 @@ func run() -> void:
 		"gfx_terrain":1,"gfx_ground_contact":0,"gfx_depth_of_field":0,"gfx_water_reflections":2,
 		"pt_mode":0 if inventory else 1,"pt_accumulation":0,"q_rt_lighting":0,"fsr_upscaling":0,"fsr_frame_generation":0,
 		"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
+	GameData.options.rtx_upscaling=2 if dlss else 0
+	GameData.options.rtx_frame_generation=0
+	if dlss:check(RtxGraphics.facts().sr,"DLSS SDK available before traversal")
 	s=create_session();get_parent().add_child(s)
 	g=create_game();g.session=s;s.game=g;get_parent().add_child(g)
 	if DisplayServer.get_name()=="headless":
@@ -97,7 +101,7 @@ func run() -> void:
 	FileAccess.open(out.path_join("recording-route.json"),FileAccess.WRITE).store_string(JSON.stringify({
 		"checks":checks,"failures":failures,"device":RenderingServer.get_video_adapter_name(),
 		"runs":route_results,"track":track,"distance":route_distance,"inactive_frames":inactive_frames,
-		"inactive_nrd_frames":inactive_nrd_frames,"host_process":s.local_host.frontend,"authority":s.world.authority,"stats":rt.stats},"\t"))
+		"inactive_nrd_frames":inactive_nrd_frames,"dlss":RtxGraphics.bridge().call("get_status") if RtxGraphics.bridge()!=null else {},"host_process":s.local_host.frontend,"authority":s.world.authority,"stats":rt.stats},"\t"))
 	await finish()
 
 func update_view() -> void:
@@ -131,7 +135,7 @@ func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 		if predicate.is_valid() and predicate.call():break
 		if h.dead:check(false,"hero survives "+label);break
 	sampling=false
-	var row:={"phase":label,"seconds":(Time.get_ticks_msec()-start)/1000.0,"frame_ms":summary(wall),
+	var row:={"dlss":RtxGraphics.bridge().call("get_status") if RtxGraphics.bridge()!=null else {},"phase":label,"seconds":(Time.get_ticks_msec()-start)/1000.0,"frame_ms":summary(wall),
 		"process_ms":summary(cpu),"rt_gpu_ms":summary(gpu_samples.duplicate()),"hp":h.hp,"pos":[h.pos.x,h.pos.y],
 		"world_time":s.world.time,"generation":rt.stats.get("snapshot_generation",0),"distance":route_distance,
 		"vram":Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),"wound_layers":UnitWounds._wound_layers.size(),

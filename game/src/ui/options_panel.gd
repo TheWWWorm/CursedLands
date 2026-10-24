@@ -230,6 +230,7 @@ func _ready() -> void:
 		_screen_pickers[name] = picker
 		picker.item_selected.connect(func(index):
 			if name == "q_aa": _set_aa_value(picker.get_item_id(index))
+			elif name == FsrGraphics.FRAME_GENERATION: _set_fg_value(picker.get_item_id(index))
 			else: _set_value(name, picker.get_item_id(index))
 			_sel = SCREEN_PICKER_ROWS[name])
 		picker.get_popup().add_theme_font_override("font", font())
@@ -390,18 +391,24 @@ func _show_group(g: int) -> void:
 		if name in ["resolution","render_scale"]: _rows[int(o[4])].kind = "dropdown"
 		if name == "q_aa":
 			_rows[int(o[4])].kind = "dropdown"
-			_rows[int(o[4])].choices = choices + RemakeText.tl(["FSR 3.1", "FSR 4"])
-			_rows[int(o[4])].max = choices.size() + 2
-			_rows[int(o[4])].tip += "\n\n" + RemakeText.t(FsrGraphics.SR_HELP)
+			_rows[int(o[4])].choices = choices + RemakeText.tl(["FSR 3.1", "FSR 4", "NVIDIA DLSS"])
+			_rows[int(o[4])].max = choices.size() + 3
+			_rows[int(o[4])].tip += "\n\n" + RemakeText.t(FsrGraphics.SR_HELP) + "\n\n" + RemakeText.t(RtxGraphics.SR_HELP)
 		if ModSchema.RULES.has(name):
 			var reason := ModStore.editable(name)
 			_rows[int(o[4])].disabled = reason != ""
 			if reason != "": _rows[int(o[4])].tip += "\n" + RemakeText.t(reason)
-		if name in FsrGraphics.OPTIONS:
-			_rows[int(o[4])].kind = "dropdown"
-			var reason := FsrGraphics.reason(name, _values)
-			_rows[int(o[4])].disabled = reason != "" and (name == FsrGraphics.QUALITY or int(_values.get(name, 0)) == 0)
-			if reason != "": _rows[int(o[4])].tip += "\n\n" + RemakeText.t(reason)
+		if name in [FsrGraphics.QUALITY, FsrGraphics.FRAME_GENERATION]:
+			var row: Dictionary = _rows[int(o[4])]
+			row.kind = "dropdown"
+			var reason := TemporalGraphics.quality_reason(_values) if name == FsrGraphics.QUALITY else ""
+			row.disabled = not reason.is_empty()
+			row.tip = RemakeText.t(TemporalGraphics.QUALITY_HELP if name == FsrGraphics.QUALITY else TemporalGraphics.FG_HELP)
+			if name == FsrGraphics.FRAME_GENERATION:
+				row.choices = RemakeText.tl(TemporalGraphics.FG_CHOICES)
+				row.max = TemporalGraphics.FG_CHOICES.size()
+				row.disabled = TemporalGraphics.fg_selection(_values) == 0 and [1,2,3].all(func(value): return not TemporalGraphics.fg_reason(value,_values).is_empty())
+			if reason != "": row.tip += "\n\n" + RemakeText.t(reason)
 	for a: Array in EIKeymap.ACTIONS:
 		if int(a[2]) != _group:
 			continue
@@ -468,7 +475,7 @@ func _show_group(g: int) -> void:
 
 
 func _refresh_screen_pickers() -> void:
-	_fsr_hint = RemakeText.t(FsrGraphics.screen_hint(FsrGraphics.facts())) if _group == SCREEN_GROUP else ""
+	_fsr_hint = RemakeText.t(TemporalGraphics.hint(_values)) if _group == SCREEN_GROUP else ""
 	for name: String in _screen_pickers:
 		var picker: OptionButton = _screen_pickers[name]
 		picker.get_popup().hide()
@@ -480,23 +487,32 @@ func _refresh_screen_pickers() -> void:
 		for i in row.choices.size():
 			picker.add_item(row.choices[i], i)
 			var reason := ""
-			if name == "q_aa": reason = FsrGraphics.aa_reason(i, _values)
-			elif name == FsrGraphics.FRAME_GENERATION and i > 0:
-				var proposed := _values.duplicate()
-				proposed[name] = i
-				reason = FsrGraphics.reason(name, proposed)
+			if name == "q_aa": reason = TemporalGraphics.aa_reason(i, _values)
+			elif name == FsrGraphics.FRAME_GENERATION:
+				reason = TemporalGraphics.fg_reason(i, _values)
 			picker.set_item_disabled(i, not reason.is_empty())
 			picker.get_popup().set_item_tooltip(i, RemakeText.t(reason) if not reason.is_empty() else row.tip)
 	_sync_screen_pickers()
 
 
 func _set_aa_value(selection: int) -> void:
-	if not FsrGraphics.aa_reason(selection, _values).is_empty(): return
-	if selection >= 6:
-		_set_value(FsrGraphics.UPSCALING, selection - 5)
+	if not TemporalGraphics.aa_reason(selection, _values).is_empty(): return
+	if selection == 8:
+		_values[RtxGraphics.UPSCALING] = TemporalGraphics.quality_selection(_values) + 1
+		_values[FsrGraphics.UPSCALING] = 0
+		_values[FsrGraphics.FRAME_GENERATION] = 0
 	else:
-		_set_value(FsrGraphics.UPSCALING, 0)
-		_set_value("q_aa", selection)
+		_values[RtxGraphics.UPSCALING] = 0
+		_values[RtxGraphics.FRAME_GENERATION] = 0
+		_values[FsrGraphics.UPSCALING] = selection - 5 if selection >= 6 else 0
+		if selection < 6: _set_value("q_aa", selection)
+	_show_group(_group)
+
+func _set_fg_value(selection: int) -> void:
+	if not TemporalGraphics.fg_reason(selection, _values).is_empty(): return
+	_values[RtxGraphics.FRAME_GENERATION] = 1 if selection == 3 else 0
+	_values[FsrGraphics.FRAME_GENERATION] = selection if selection < 3 else 0
+	_show_group(_group)
 
 
 # ------------------------------------------------------------------ keys
@@ -645,10 +661,9 @@ func _switch_text(row: Dictionary) -> String:
 
 func _set_value(name: String, v: int) -> void:
 	if ModSchema.RULES.has(name) and ModStore.editable(name) != "": return
-	if name in FsrGraphics.OPTIONS:
-		var proposed := _values.duplicate()
-		proposed[name] = v
-		if (name == FsrGraphics.QUALITY or v > 0) and not FsrGraphics.reason(name, proposed).is_empty(): return
+	if name == FsrGraphics.QUALITY:
+		if not TemporalGraphics.quality_reason(_values).is_empty(): return
+		if RtxGraphics.selected(_values): _values[RtxGraphics.UPSCALING] = v + 1
 	var was := int(_values.get(name, 0))
 	if name == "graphics_preset":
 		var preset_values := GfxPresets.values(v)
@@ -773,8 +788,8 @@ func _apply() -> void:
 		if int(_values[n]) != GameData.option(n):
 			changes[n] = int(_values[n])
 	GameData.set_options(changes)
-	if renderer and get_parent():
-		RendererChoice.ask_restart(get_parent(), game_files)   # applies at the next start
+	if (renderer or RtxGraphics.needs_restart(_values)) and get_parent():
+		RendererChoice.ask_restart(get_parent(), game_files, not renderer)   # applies at the next start
 
 
 ## ✗ / Esc (case 1): the live rows go back.
@@ -899,7 +914,7 @@ func _sync_screen_pickers() -> void:
 			picker.get_popup().add_theme_font_size_override("font_size", font_px(1))
 			picker.get_popup().add_theme_constant_override("v_separation", maxi(8, roundi(8 * kv().y)))
 		picker.size = rect.size
-		picker.select(FsrGraphics.aa_selection(_values) if name == "q_aa" else int(_values.get(name, 0)))
+		picker.select(TemporalGraphics.aa_selection(_values) if name == "q_aa" else TemporalGraphics.fg_selection(_values) if name == FsrGraphics.FRAME_GENERATION else TemporalGraphics.quality_selection(_values) if name == FsrGraphics.QUALITY else int(_values.get(name, 0)))
 
 
 func group_font_px(g: int) -> int:
