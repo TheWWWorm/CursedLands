@@ -1,6 +1,6 @@
 # Restored NVIDIA DLSS
 
-The local `1.28.0-experimental.3` preview restores the prior Streamline 2.14.16
+The local `1.28.0-experimental.4` preview restores the prior Streamline 2.14.16
 integration onto the current patched Godot 4.7 renderer. It retains NRD 4.18
 REBLUR, the DXR barrier fixes, scene caching, terrain-sector tracing, grass
 lighting and the animated blood-mark performance fix. DLSS Super Resolution
@@ -24,8 +24,9 @@ frame. It requires active DLSS/DLAA, an SDK-supported GPU/driver, Reflex support
 and Windows hardware GPU scheduling. Its actual SDK capability gates the
 choice. The path suspends for menus, loading, movies, pause or focus loss.
 The FPS display uses measured presentation counters; it never assumes that
-an enabled option doubles output. RTX 30-series hardware can validate DLSS
-SR/DLAA and unavailable-FG handling, but cannot qualify NVIDIA frame generation.
+an enabled option doubles output. The standard NVIDIA runtime does not expose
+FG on RTX 30. The optional [DLSS-G SM86 package](dlssg-sm86.md) enables native
+NVIDIA generation on Ampere through a third-party compatibility layer.
 
 The AMD and NVIDIA SDKs have exclusive presentation ownership. A NVIDIA
 selection clears AMD upscaling/FG requests; selecting ordinary/AMD AA clears

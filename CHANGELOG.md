@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.28.0-experimental.4 (local preview)
+
+- Add an optional dlssg_for_sm86 0.4.0 package for native NVIDIA frame
+  generation on Ampere, with pinned files and complete upstream notices.
+- Restrict Reflex presentation markers to real presents and sample NVIDIA
+  frame-generation presentation telemetry once per present.
+- Describe GPU capability requirements consistently in EN/RU/DE.
+
 ## 1.28.0-experimental.3 (local preview)
 
 - Restore NVIDIA DLSS/DLAA and the hardware-gated 2× frame-generation path in

@@ -8,14 +8,14 @@ const FRAME_GENERATION := "rtx_frame_generation"
 const GROUP := -1
 const SECTION := ["NVIDIA DLSS", "DLSS and DLAA for Windows with Direct3D 12. Switching between AMD and NVIDIA requires a restart. Both features start off."]
 const SR_HELP := "Reconstruct the campaign view with NVIDIA DLSS. Native AA uses DLAA; Quality, Balanced and Performance render fewer pixels. Overrides anti-aliasing and Render scale. Requires an RTX GPU and Forward+ (Direct3D 12). Switching between AMD and NVIDIA requires a restart."
-const FG_HELP := "Generate one extra display frame per rendered frame in campaign gameplay. Requires DLSS or DLAA, RTX 40 or 50 hardware, a compatible driver and Windows hardware-accelerated GPU scheduling. NVIDIA Reflex is enabled automatically. Pauses during menus, loading and loss of focus. The FPS counter shows rendered frames."
+const FG_HELP := "Generate one extra display frame per rendered frame in campaign gameplay. Requires DLSS or DLAA, a compatible GPU and driver, and Windows hardware-accelerated GPU scheduling. NVIDIA Reflex is enabled automatically. Pauses during menus, loading and loss of focus. The FPS counter shows rendered frames."
 const CHOICES := ["Off", "DLAA", "Quality", "Balanced", "Performance"]
 const SCALES := [1.0, 1.0, 2.0 / 3.0, 0.58, 0.5]
 const UNAVAILABLE := "This build does not include NVIDIA DLSS."
 const NEED_RESTART := "Apply and restart to switch graphics technologies."
 const NEED_API := "Requires Windows and the Direct3D 12 Forward+ renderer."
 const NEED_SR := "DLSS is unavailable on this GPU or driver, or its runtime could not be loaded."
-const NEED_FG := "Frame generation is unavailable. Check RTX 40/50 support, the driver and Windows GPU scheduling."
+const NEED_FG := "Frame generation is unavailable. Check GPU compatibility, the driver and Windows GPU scheduling."
 const ENABLE_SR := "Select DLSS or DLAA first."
 
 var _previous_fg := false

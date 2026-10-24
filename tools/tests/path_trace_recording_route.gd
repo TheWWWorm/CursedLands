@@ -14,6 +14,7 @@ var view_mode:=3
 var inactive_frames:=0
 var inactive_nrd_frames:=0
 var began:=0
+var dlss_fg:=false
 
 func create_session() -> Session:
 	return Session.new()
@@ -24,6 +25,7 @@ func create_game() -> Game:
 func run() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
 	var dlss:=OS.get_cmdline_user_args().has("--route-dlss")
+	dlss_fg=OS.get_cmdline_user_args().has("--route-dlss-fg")
 	var inventory:=OS.get_cmdline_user_args().has("--route-inventory")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="):out=arg.trim_prefix("--audit-out=")
@@ -35,8 +37,10 @@ func run() -> void:
 		"pt_mode":0 if inventory else 1,"pt_accumulation":0,"q_rt_lighting":0,"fsr_upscaling":0,"fsr_frame_generation":0,
 		"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
 	GameData.options.rtx_upscaling=2 if dlss else 0
-	GameData.options.rtx_frame_generation=0
+	GameData.options.rtx_frame_generation=1 if dlss_fg else 0
 	if dlss:check(RtxGraphics.facts().sr,"DLSS SDK available before traversal")
+	if dlss_fg:check(dlss and RtxGraphics.facts().fg and RtxGraphics.facts().reflex,"native NVIDIA frame generation available before traversal")
+	if not failures.is_empty():await finish();return
 	s=create_session();get_parent().add_child(s)
 	g=create_game();g.session=s;s.game=g;get_parent().add_child(g)
 	if DisplayServer.get_name()=="headless":
@@ -120,12 +124,15 @@ func update_view() -> void:
 
 func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 	var wall:=[];var cpu:=[];var generations:=[]
+	var rtx_before:Dictionary=RtxGraphics.bridge().call("get_status") if RtxGraphics.bridge()!=null else {}
+	var fg_active_frames:=0
 	var dlss_before:=int(RtxGraphics.bridge().call("get_status").get("dlss_evaluations",0)) if RtxGraphics.bridge()!=null else 0
 	gpu_samples.clear();sampling=true
 	var start:=Time.get_ticks_msec();var previous:=Time.get_ticks_usec();var last_track:=start-1000
 	while Time.get_ticks_msec()-start<seconds*1000:
 		update_view();await frames(1)
 		var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
+		if dlss_fg and RtxGraphics.bridge().call("get_status").get("frame_generation_active",false):fg_active_frames+=1
 		cpu.append(Performance.get_monitor(Performance.TIME_PROCESS)*1000)
 		route_distance+=h.pos.distance_to(last_pos);last_pos=h.pos
 		if not rt.stats.get("active",false):inactive_frames+=1
@@ -147,6 +154,16 @@ func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 		"wound_jobs":UnitWounds._jobs.size(),"nrd":rt.device.get("nrd_active") if rt.device!=null else false}
 	row["sampled_frames"]=wall.size()
 	row["dlss_evaluations"]=int(row.dlss.get("dlss_evaluations",0))-dlss_before
+	row["game_presents"]=int(row.dlss.get("game_presents",0))-int(rtx_before.get("game_presents",0))
+	row["presented_frames"]=int(row.dlss.get("presented_frames",0))-int(rtx_before.get("presented_frames",0))
+	row["fg_active_frames"]=fg_active_frames
+	if dlss_fg:
+		if get_tree().paused:
+			check(not row.dlss.get("frame_generation_active",true),"NVIDIA frame generation suspends while paused")
+		else:
+			check(fg_active_frames>=wall.size()-20,"NVIDIA frame generation stays active: "+label)
+			check(row.presented_frames>=wall.size()*1.8 and row.presented_frames<=wall.size()*2.2,"NVIDIA presents approximately two frames per render: "+label)
+		check(int(FsrGraphics.bridge().call("get_status").get("frame_generation_dispatches",0))==0,"FSR frame generation unused: "+label)
 	if OS.get_cmdline_user_args().has("--route-dlss"):
 		check(row.dlss.get("sr_supported",false) and int(row.dlss.get("last_error",-1))==0,"DLSS remains available: "+label)
 		check(row.dlss_evaluations>=wall.size()-2,"DLSS evaluates rendered frames: "+label)

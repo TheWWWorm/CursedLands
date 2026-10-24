@@ -1,0 +1,97 @@
+extends Node
+## Hardware test: requires real DLSS SR and DLSS-G evaluation/presentation.
+## Unsupported capability is blocked, never counted as a successful FG test.
+var checks := 0
+var failures: Array[String] = []
+var rows: Array[Dictionary] = []
+var scene: MenuScene
+
+func _ready() -> void:
+	_run.call_deferred()
+
+func check(ok: bool, message: String) -> void:
+	checks += 1
+	if not ok:
+		failures.append(message)
+		printerr("FAIL ", message)
+
+func status() -> Dictionary:
+	return RtxGraphics.bridge().call("get_status") if RtxGraphics.bridge() else {}
+
+func save_result(blocked := false) -> void:
+	var result := {"checks":checks,"failures":failures,"blocked":blocked,"rows":rows,
+		"gpu":RenderingServer.get_video_adapter_name(),"facts":RtxGraphics.facts(),"status":status(),
+		"fsr_status":FsrGraphics.bridge().call("get_status") if FsrGraphics.bridge() else {}}
+	FileAccess.open("user://dlss-framegen.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t")+"\n")
+	print("DLSS_FRAMEGEN ",JSON.stringify(result))
+
+func settle(count: int) -> void:
+	for i in count: await RenderingServer.frame_post_draw
+
+func sample(label: String, enabled: bool, moving := false) -> void:
+	GameData.options.rtx_frame_generation = 1 if enabled else 0
+	get_tree().root.set("frame_generation",enabled)
+	RtxGraphics.bridge().call("set_parameter",0,1.0 if enabled else 0.0)
+	await settle(90)
+	var before := status()
+	var camera_start := scene.camera.transform
+	var start := Time.get_ticks_usec()
+	for i in 180:
+		if moving: scene.camera.position.x = camera_start.origin.x + sin(float(i)*0.04)*0.8
+		await RenderingServer.frame_post_draw
+	var after := status()
+	var evaluated := int(after.get("dlss_evaluations",0))-int(before.get("dlss_evaluations",0))
+	var presented := int(after.get("presented_frames",0))-int(before.get("presented_frames",0))
+	var game_presents := int(after.get("game_presents",0))-int(before.get("game_presents",0))
+	check(evaluated >= 175,label+": actual DLSS SR evaluations")
+	check(game_presents >= 175 and game_presents <= 185,label+": one game present per rendered frame")
+	check(int(after.get("last_error",-1)) == 0,label+": SDK reports no error")
+	check(bool(after.get("frame_generation_active",false)) == enabled,label+": expected DLSS-G activity")
+	if enabled:
+		check(after.get("present_count_available",false),label+": SDK presentation counter available")
+		check(presented >= 330 and presented <= 390,label+": generated frames actually presented at 2x")
+	var fsr: Dictionary = FsrGraphics.bridge().call("get_status") if FsrGraphics.bridge() else {}
+	check(int(fsr.get("frame_generation_dispatches",0)) == 0,label+": no FSR frame-generation dispatch")
+	rows.append({"label":label,"enabled":enabled,"frames":180,"dlss_evaluations":evaluated,
+		"presented_frames":presented,"game_presents":game_presents,"elapsed_ms":(Time.get_ticks_usec()-start)/1000.0,"status":after})
+	get_tree().root.get_texture().get_image().save_png("user://dlss-fg-"+label+".png")
+	scene.camera.transform = camera_start
+	save_result()
+
+func _run() -> void:
+	await settle(5)
+	var f := RtxGraphics.facts()
+	if not f.sr or not f.fg or not f.reflex:
+		save_result(true)
+		get_tree().quit(2)
+		return
+	get_tree().root.get_node("RtxExperiment").set_process(false)
+	get_tree().root.get_node("FsrExperiment").set_process(false)
+	GameData.options.merge({"rtx_upscaling":2,"rtx_frame_generation":0,"fsr_upscaling":0,"fsr_frame_generation":0,
+		"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0,
+		"q_aa":0,"render_scale":4,"display_mode":0,"vsync":0},true)
+	for option: Array in GameData.OPTIONS:
+		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]] = 0
+	GameData._window_state.clear()
+	GameData._apply_window()
+	await get_tree().create_timer(0.4).timeout
+	GameData._window_gen += 1
+	get_window().mode = Window.MODE_WINDOWED
+	get_window().size = Vector2i(1280,720)
+	Engine.max_fps = 30
+	Gfx.ensure_globals();Gfx.apply_surface_options();Gfx.set_foliage_wind(false)
+	scene = MenuScene.create()
+	check(scene != null,"real game scene created")
+	if scene == null:
+		save_result();get_tree().quit(1);return
+	scene.process_mode = Node.PROCESS_MODE_DISABLED
+	add_child(scene);scene.set_hour(12);scene.camera.current = true
+	await sample("off",false)
+	await sample("on-motion",true,true)
+	await sample("disabled",false,true)
+	get_window().size = Vector2i(1600,900)
+	await sample("resized",true,true)
+	await sample("off-restored",false)
+	scene.free();TexUpscale.shutdown();UnitWounds.shutdown()
+	await settle(4)
+	save_result();get_tree().quit(1 if not failures.is_empty() else 0)

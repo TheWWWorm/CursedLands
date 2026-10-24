@@ -139,23 +139,29 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  
  #include <dxgi1_6.h>
  
-@@ -2576,6 +2577,7 @@
+@@ -2576,6 +2577,11 @@
  		}
  	}
  
-+	Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEGIN_PRESENT);
++	// Upload/compute flushes use this method without presenting a swap chain.
++	// Reflex markers and DLSS-G presentation telemetry must describe real presents.
++	if (p_swap_chains.size() > 0) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEGIN_PRESENT);
++	}
  
  	HRESULT res;
  	bool any_present_failed = false;
-@@ -2592,6 +2594,7 @@
+@@ -2592,6 +2598,9 @@
  		}
  	}
  
-+	Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_END_PRESENT);
++	if (p_swap_chains.size() > 0) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_END_PRESENT);
++	}
  
  	_flush_diagnostic_messages();
  	return any_present_failed ? FAILED : OK;
-@@ -2833,6 +2836,11 @@
+@@ -2833,6 +2842,11 @@
  		return ERR_SKIP;
  	}
  
@@ -167,7 +173,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  
  	HRESULT res;
  	const bool is_tearing_supported = context_driver->get_tearing_supported();
-@@ -6039,6 +6047,9 @@
+@@ -6039,6 +6053,9 @@
  		}
  	}
  
@@ -177,7 +183,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  
  	if (D3D12Hooks::get_singleton() != nullptr) {
  		D3D12Hooks::get_singleton()->cleanup_device();
-@@ -6103,10 +6114,18 @@
+@@ -6103,10 +6120,18 @@
  	ID3D12DeviceFactory *device_factory = context_driver->device_factory_get();
  	if (device_factory != nullptr) {
  		res = device_factory->CreateDevice(adapter.Get(), requested_feature_level, IID_PPV_ARGS(device.GetAddressOf()));
@@ -196,7 +202,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  
  		res = d3d_D3D12CreateDevice(adapter.Get(), requested_feature_level, IID_PPV_ARGS(device.GetAddressOf()));
  	}
-@@ -6500,6 +6519,7 @@
+@@ -6500,6 +6525,7 @@
  	Error err = _initialize_device();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
  
@@ -204,7 +210,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  #ifdef FSR_SDK_ENABLED
  	FidelityFX::get_singleton()->initialize_device(device.Get());
  #endif
-@@ -6507,8 +6527,10 @@
+@@ -6507,8 +6533,10 @@
  	err = _check_capabilities();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
  
@@ -217,7 +223,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  
  	err = _get_device_limits();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
-@@ -6522,6 +6544,7 @@
+@@ -6522,6 +6550,7 @@
  	err = _initialize_command_signatures();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
  
@@ -2057,7 +2063,7 @@ diff --git a/servers/rendering/renderer_rd/effects/dlss.cpp b/servers/rendering/
 new file mode 100644
 --- /dev/null
 +++ b/servers/rendering/renderer_rd/effects/dlss.cpp
-@@ -0,0 +1,458 @@
+@@ -0,0 +1,461 @@
 +/**************************************************************************/
 +/*  dlss.cpp                                                              */
 +/**************************************************************************/
@@ -2443,13 +2449,16 @@ new file mode 100644
 +	if (!context->evaluated || !ctx.last_token || !ctx.slDLSSGSetOptions || !ctx.slDLSSGGetState ||
 +			ctx.sr_failed.get() || ctx.fg_failed.get() || ctx.dlssg_delay > 0) { return; }
 +	RD *rd = RD::get_singleton();
-+	sl::DLSSGState state;
-+	if (!ctx.check(ctx.slDLSSGGetState(context->viewport, state, nullptr), true)) { return; }
-+	ctx.presented_frames.add(state.numFramesActuallyPresented);
-+	RD::TextureFormat size = rd->texture_get_format(context->hudless);
-+	if (state.numFramesToGenerateMax < 1 || size.width < state.minWidthOrHeight || size.height < state.minWidthOrHeight) {
-+		ctx.dlssg_disable();
-+		return;
++	if (ctx.dlssg_viewport != context->viewport) {
++		// Check limits only when enabling a viewport. During active generation,
++		// GetState is sampled once at the real present boundary for telemetry.
++		sl::DLSSGState state;
++		if (!ctx.check(ctx.slDLSSGGetState(context->viewport, state, nullptr), true)) { return; }
++		RD::TextureFormat size = rd->texture_get_format(context->hudless);
++		if (state.numFramesToGenerateMax < 1 || size.width < state.minWidthOrHeight || size.height < state.minWidthOrHeight) {
++			ctx.dlssg_disable();
++			return;
++		}
 +	}
 +	// Set Reflex on the render thread before enabling FG, including its first frame.
 +	if (ctx.reflex_options.mode == sl::ReflexMode::eOff || ctx.reflex_options_dirty) {

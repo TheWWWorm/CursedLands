@@ -1,0 +1,71 @@
+Cursed Lands: experimental NVIDIA DLSS frame generation on RTX 30
+
+ENGLISH
+This optional local package uses dlssg_for_sm86 0.4.0 by sdli1995 to run
+NVIDIA DLSS-G on Ampere. It does not replace frame generation with AMD FSR.
+The game requests one generated frame per rendered frame (2x). The mod uses
+its exact consistency tier; its separate super-resolution modification is off.
+
+Start CursedLands.exe. In Options > Screen select Forward+ (Direct3D 12),
+then NVIDIA DLSS under Anti-aliasing. Apply and restart when prompted.
+Select NVIDIA DLSS under Frame generation. Frame generation runs during
+campaign gameplay and suspends for menus, loading, pause and focus loss.
+Path tracing and NRD remain under Remake > Ray tracing / Path tracing.
+
+Keep winmm.dll, dlssg_sm86.ini and the entire dlssg_sm86 folder beside the EXE.
+The ordinary Windows copy can be restored by removing those three additions.
+Your settings and saves are not replaced. This package is a local experiment;
+native Windows and every RTX 30 model have not been qualified. Testing used
+RTX 3090-class cards through Proton 11 with a private CUDA bridge.
+On Windows use a compatible NVIDIA driver and hardware GPU scheduling.
+
+RUSSIAN / РУССКИЙ
+Этот дополнительный локальный пакет использует dlssg_for_sm86 0.4.0 автора
+sdli1995 для запуска NVIDIA DLSS-G на Ampere. Генерация кадров не заменяется
+на AMD FSR. Игра запрашивает один дополнительный кадр на каждый отрисованный
+кадр (2x). Выбран точный режим мода; его отдельная модификация масштабирования
+отключена.
+
+Запустите CursedLands.exe. В настройках экрана выберите Forward+ (Direct3D 12),
+затем NVIDIA DLSS в настройках сглаживания. Примените изменения и перезапустите
+игру по запросу. Выберите NVIDIA DLSS в настройках генерации кадров.
+Генерация работает в кампании и приостанавливается в меню, при загрузке,
+на паузе и при потере фокуса окна. Трассировка пути и NRD остаются в подменю
+трассировки лучей и пути в разделе настроек ремейка.
+
+Файлы winmm.dll и dlssg_sm86.ini и вся папка dlssg_sm86 должны лежать рядом
+с EXE. Для возврата к обычной версии Windows удалите эти три дополнения.
+Настройки и сохранения не заменяются. Это локальный эксперимент; работа
+в самой Windows и на всех моделях RTX 30 не проверена. Тесты проводились
+на картах класса RTX 3090 через Proton 11 с отдельным мостом CUDA.
+В Windows нужны совместимый драйвер NVIDIA и аппаратное планирование GPU.
+
+GERMAN / DEUTSCH
+Dieses optionale lokale Paket nutzt dlssg_for_sm86 0.4.0 von sdli1995,
+um NVIDIA DLSS-G auf Ampere auszuführen. Es ersetzt die Frame-Generierung
+nicht durch AMD FSR. Das Spiel fordert ein zusätzliches Bild pro gerendertem
+Bild an (2x). Die exakte Qualitätsstufe des Mods ist aktiv; seine separate
+Super-Resolution-Modifikation bleibt ausgeschaltet.
+
+Starten Sie CursedLands.exe. Wählen Sie unter Optionen > Bildschirm zuerst
+Forward+ (Direct3D 12), dann NVIDIA DLSS für die Kantenglättung. Übernehmen
+Sie die Änderungen und starten Sie das Spiel bei Aufforderung neu.
+Wählen Sie NVIDIA DLSS für die Frame-Generierung. Sie läuft während der
+Kampagne und pausiert in Menüs, beim Laden, bei Spielpause und Fokusverlust.
+Pathtracing und NRD bleiben im Raytracing-/Pathtracing-Untermenü des Remakes.
+
+winmm.dll, dlssg_sm86.ini und der gesamte Ordner dlssg_sm86 müssen neben der
+EXE liegen. Entfernen Sie diese drei Ergänzungen, um die normale Windows-
+Version wiederherzustellen. Einstellungen und Spielstände werden nicht
+ersetzt. Dies ist ein lokales Experiment; natives Windows und alle RTX-30-
+Modelle sind noch nicht geprüft. Getestet wurden Karten der RTX-3090-Klasse
+über Proton 11 mit einer separaten CUDA-Brücke. Unter Windows werden ein
+kompatibler NVIDIA-Treiber und hardwarebeschleunigte GPU-Planung benötigt.
+
+ATTRIBUTION / АВТОРСТВО / URHEBER
+dlssg_for_sm86: Copyright (c) 2026 sdli1995.
+https://github.com/sdli1995/dlssg_for_sm86/releases/tag/0.4.0
+The upstream 0.4.0 MIT license and complete third-party notices, including
+the separate terms for NVIDIA-derived assets, are included unchanged in
+licenses/dlssg_for_sm86. NVIDIA/AMD/NRD notices remain in the game package.
+MIT does not relicense NVIDIA's runtime or derived kernel material.
