@@ -144,3 +144,16 @@ Existing settings, saved armies, and online snapshots remain readable.
 The rules fixture passes 1,078 checks, including save/snapshot migration and
 label normalization; ENet/WebSocket lobby fixtures pass 40 checks using retired
 choices as input and verifying the retained identities on both peers.
+
+The updated private Linux build uses source commit `d24fe17e` and passes all
+164 packaged UI checks (GPU Lab job `5ddae3ad529948d7`). The fixture renders all
+18 appearances, exercises neutral/smile/frown transitions and checks selector
+visibility, with EN/RU/DE layouts at 1600×900 and 1280×720. Kir's three native
+portraits and all three 720p translations were also inspected visually.
+The virtual-display startup still logs the known null-monitor refresh-rate
+diagnostic; the fixture finishes with zero failures and exit code 0.
+
+`CursedLands-astral-d24fe17e-linux-x86_64.tar.gz` contains 425 compiled scripts
+and 1,467 verified PCK resources. All 59 payload files match `BUILD-INFO.json`,
+and archived files match the unpacked build. Archive SHA-256:
+`c56871929a2889e24feb4b733b9593725e49f4860c60fc5a2e4336a5f0d21747`.
