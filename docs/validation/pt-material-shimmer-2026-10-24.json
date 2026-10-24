@@ -1,0 +1,1310 @@
+{
+  "date": "2026-10-24",
+  "source_parent": "6973e6e7effa1a0e5ff4ed160eba87f061b8ae8e",
+  "upstream_main_included": "bab580bd43e7d146c341904c3413bcfb471e5d22",
+  "checks_passed": 262,
+  "shader_source_sha256": "fef75100584e5556ab4e2195a7d6bb80d36c033c1ec624726530c17afe5ae461",
+  "shader_binaries_reproduced": 18,
+  "final_checks": [
+    {
+      "tag": "shimmer-final-linux-path_trace_material_minification",
+      "checks_passed": 9,
+      "suite": "path_trace_material_minification",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 13.39,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "7fc6fa01784e810d0b6616e4f5628d71816d16cda3480088e1237dc95c44bb11"
+    },
+    {
+      "tag": "shimmer-final-linux-path_trace_surface_maps",
+      "checks_passed": 16,
+      "suite": "path_trace_surface_maps",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 11.84,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "4f265cae6dccaf7ffa83b020da9d7be3065f29ac49c631621ab9e6d997c29a1c"
+    },
+    {
+      "tag": "shimmer-final-linux-path_trace_surface_detail",
+      "checks_passed": 47,
+      "suite": "path_trace_surface_detail",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 15.81,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "a4915b5fd3e1adfb9f73cc0bfc71057a4c8a7337a62ec3c4b1e4f4001332cd12"
+    },
+    {
+      "tag": "shimmer-final-linux-path_trace_material_receivers",
+      "checks_passed": 6,
+      "suite": "path_trace_material_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 17.4,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "9c22581a6b8b75159430bee987b1b0dca894ca67fe6ca65fc438e0e08062af52"
+    },
+    {
+      "tag": "shimmer-final-linux-path_trace_nrd_motion",
+      "checks_passed": 42,
+      "suite": "path_trace_nrd_motion",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 22.45,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "b5f050836a53ea87f621cbe76ef30c1e876adade4cd89c9052e2096e183cb579"
+    },
+    {
+      "tag": "shimmer-final-windows-path_trace_material_minification",
+      "checks_passed": 9,
+      "suite": "path_trace_material_minification",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "seconds": 18.3,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "c9ba811a4e5b4dc63d5b83f9d5e1ee491f61d7d1e0f82ce44df785aab5e50e7c"
+      },
+      "fixture_sha256": "73da163e6607c1159f08b901bd0fe2ff90ac466250112c95f3db8e2c5b63dedd"
+    },
+    {
+      "tag": "shimmer-final-windows-path_trace_surface_maps",
+      "checks_passed": 16,
+      "suite": "path_trace_surface_maps",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "seconds": 14.7,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "c9ba811a4e5b4dc63d5b83f9d5e1ee491f61d7d1e0f82ce44df785aab5e50e7c"
+      },
+      "fixture_sha256": "1e28fb994f8b196befd30c591087ab4a65ed8f1f5565acf8dbac1a23f3a28e84"
+    },
+    {
+      "tag": "shimmer-final-windows-path_trace_surface_detail",
+      "checks_passed": 47,
+      "suite": "path_trace_surface_detail",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "seconds": 23.19,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "c9ba811a4e5b4dc63d5b83f9d5e1ee491f61d7d1e0f82ce44df785aab5e50e7c"
+      },
+      "fixture_sha256": "789afb6448631117807bed0e32bc3dc07a609960e262ab8bd1b5afa403723d4f"
+    },
+    {
+      "tag": "shimmer-final-windows-path_trace_material_receivers",
+      "checks_passed": 6,
+      "suite": "path_trace_material_receivers",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "seconds": 22.51,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "c9ba811a4e5b4dc63d5b83f9d5e1ee491f61d7d1e0f82ce44df785aab5e50e7c"
+      },
+      "fixture_sha256": "9fa6eed9c8908285389b67c296ca0898d9235a4dc314a068b02806617ec140b7"
+    },
+    {
+      "tag": "shimmer-final-windows-path_trace_nrd_motion",
+      "checks_passed": 42,
+      "suite": "path_trace_nrd_motion",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "seconds": 19.33,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "c9ba811a4e5b4dc63d5b83f9d5e1ee491f61d7d1e0f82ce44df785aab5e50e7c"
+      },
+      "fixture_sha256": "e6fe8d7f3ba320aaf1bf15704ba50372a780ded22bd45de83837675fa4cc8f5c"
+    },
+    {
+      "tag": "shimmer-final-vk-character-v2",
+      "checks_passed": 8,
+      "suite": "path_trace_character_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 75.16,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "57ae83d10dda99af11ef638a95a680ed40118d4888cef087fbcccebc78512559"
+    },
+    {
+      "tag": "shimmer-final-dx12-dlss-character-v2",
+      "checks_passed": 11,
+      "suite": "path_trace_character_live",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "seconds": 156.76,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "c9ba811a4e5b4dc63d5b83f9d5e1ee491f61d7d1e0f82ce44df785aab5e50e7c"
+      },
+      "fixture_sha256": "2bc32179c68027af905ae9c7afc674642dbf0034e4b65af6f91da565d6931ea3"
+    },
+    {
+      "tag": "shimmer-perf-shimmer-candidate",
+      "checks_passed": 3,
+      "suite": "path_trace_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "seconds": 86.67,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/shimmer-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "b5367238a9a67bb11cfa7a3d70e6e3841cd3ab1cf54cd0a1b15f16b5b2937daf"
+      },
+      "fixture_sha256": "116234bd1477024a4d7673eeadf7f701bb0196be396114ae9de9097364946552"
+    }
+  ],
+  "negative_control": {
+    "runtime": "effects-final",
+    "checks": 9,
+    "failures": [
+      "orthographic front preserves the subpixel material average: 0.3065",
+      "orthographic front remains stable under subtexel camera motion: (0.507936, 0.612903)",
+      "orthographic grazing preserves the subpixel material average: 0.5000",
+      "orthographic grazing remains stable under subtexel camera motion: (0.809524, 1.0)",
+      "perspective front preserves the subpixel material average: 0.0806",
+      "perspective grazing preserves the subpixel material average: 0.1129",
+      "perspective grazing remains stable under subtexel camera motion: (0.174603, 0.225806)"
+    ],
+    "observations": [
+      {
+        "case": "orthographic front",
+        "max_error": 0.306451618671417,
+        "range": [
+          0.507936507463455,
+          0.612903237342834
+        ],
+        "values": [
+          [
+            0.761904776096344,
+            0.806451618671417
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ],
+          [
+            0.253968268632889,
+            0.193548381328583
+          ]
+        ]
+      },
+      {
+        "case": "orthographic grazing",
+        "max_error": 0.5,
+        "range": [
+          0.809523813426495,
+          1.0
+        ],
+        "values": [
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.095238097012043,
+            0.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ],
+          [
+            0.904761910438538,
+            1.0
+          ]
+        ]
+      },
+      {
+        "case": "perspective front",
+        "max_error": 0.0806451737880707,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ],
+          [
+            0.428571432828903,
+            0.419354826211929
+          ]
+        ]
+      },
+      {
+        "case": "perspective grazing",
+        "max_error": 0.112903237342834,
+        "range": [
+          0.174603193998337,
+          0.225806474685669
+        ],
+        "values": [
+          [
+            0.58730161190033,
+            0.612903237342834
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ],
+          [
+            0.412698417901993,
+            0.387096762657166
+          ]
+        ]
+      }
+    ]
+  },
+  "minification": {
+    "linux": [
+      {
+        "case": "orthographic front",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      },
+      {
+        "case": "orthographic grazing",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      },
+      {
+        "case": "perspective front",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      },
+      {
+        "case": "perspective grazing",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      }
+    ],
+    "windows": [
+      {
+        "case": "orthographic front",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      },
+      {
+        "case": "orthographic grazing",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      },
+      {
+        "case": "perspective front",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      },
+      {
+        "case": "perspective grazing",
+        "max_error": 0.0161290168762207,
+        "range": [
+          0.0,
+          0.0
+        ],
+        "values": [
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ],
+          [
+            0.492063492536545,
+            0.516129016876221
+          ]
+        ]
+      }
+    ]
+  },
+  "character": {
+    "vulkan": {
+      "checks": 8,
+      "failures": [],
+      "dlss": {},
+      "receiver_coverage": [
+        {
+          "matched": 5254,
+          "missed": 0
+        },
+        {
+          "matched": 5258,
+          "missed": 0
+        },
+        {
+          "matched": 5227,
+          "missed": 0
+        },
+        {
+          "matched": 5236,
+          "missed": 0
+        },
+        {
+          "matched": 5223,
+          "missed": 0
+        },
+        {
+          "matched": 5230,
+          "missed": 0
+        },
+        {
+          "matched": 5225,
+          "missed": 0
+        },
+        {
+          "matched": 5226,
+          "missed": 0
+        }
+      ],
+      "inactive": 0,
+      "history_resets": 0,
+      "animated_updates": 47
+    },
+    "dx12_dlss": {
+      "checks": 11,
+      "failures": [],
+      "dlss": {
+        "compiled": true,
+        "dlss_evaluations": 357,
+        "enhanced_barriers": true,
+        "fg_support_reason": "sl::eErrorNoSupportedAdapterFound",
+        "fg_support_result": 6,
+        "fg_supported": false,
+        "frame_generation_active": false,
+        "frame_generation_input_size": "(0, 0)",
+        "frame_generation_output_size": "(0, 0)",
+        "frame_generation_size_supported": false,
+        "frame_generation_status": 0,
+        "frame_generation_ui_alpha_frames": 0,
+        "frame_generation_ui_alpha_texture": "RID(0)",
+        "game_presents": 360,
+        "initialized": true,
+        "last_error": 0,
+        "present_count_available": false,
+        "presented_frames": 0,
+        "reflex_supported": true,
+        "requested": true,
+        "sr_support_reason": "sl::eOk",
+        "sr_support_result": 0,
+        "sr_supported": true
+      },
+      "receiver_coverage": [
+        {
+          "matched": 5234,
+          "missed": 0
+        },
+        {
+          "matched": 5196,
+          "missed": 0
+        },
+        {
+          "matched": 5183,
+          "missed": 0
+        },
+        {
+          "matched": 5192,
+          "missed": 0
+        },
+        {
+          "matched": 5204,
+          "missed": 0
+        },
+        {
+          "matched": 5196,
+          "missed": 0
+        },
+        {
+          "matched": 5194,
+          "missed": 0
+        },
+        {
+          "matched": 5194,
+          "missed": 0
+        }
+      ],
+      "inactive": 0,
+      "history_resets": 0,
+      "animated_updates": 47
+    }
+  },
+  "performance": {
+    "effects-final": {
+      "device": "NVIDIA GeForce RTX 3090",
+      "runs": [
+        {
+          "round": 0,
+          "rt_gpu_ms": {
+            "median": 0.848128,
+            "n": 90,
+            "p95": 0.996704
+          },
+          "controller_cpu_ms": {
+            "median": 1.585,
+            "n": 90,
+            "p95": 2.808
+          },
+          "frame_ms": {
+            "median": 12.431,
+            "n": 90,
+            "p95": 20.01
+          }
+        },
+        {
+          "round": 1,
+          "rt_gpu_ms": {
+            "median": 0.855616,
+            "n": 89,
+            "p95": 0.901984
+          },
+          "controller_cpu_ms": {
+            "median": 1.604,
+            "n": 90,
+            "p95": 2.094
+          },
+          "frame_ms": {
+            "median": 12.175,
+            "n": 90,
+            "p95": 16.857
+          }
+        }
+      ]
+    },
+    "shimmer-candidate": {
+      "device": "NVIDIA GeForce RTX 3090",
+      "runs": [
+        {
+          "round": 0,
+          "rt_gpu_ms": {
+            "median": 0.848384,
+            "n": 89,
+            "p95": 0.892224
+          },
+          "controller_cpu_ms": {
+            "median": 1.464,
+            "n": 90,
+            "p95": 1.798
+          },
+          "frame_ms": {
+            "median": 11.02,
+            "n": 90,
+            "p95": 16.798
+          }
+        },
+        {
+          "round": 1,
+          "rt_gpu_ms": {
+            "median": 0.847648,
+            "n": 89,
+            "p95": 0.884352
+          },
+          "controller_cpu_ms": {
+            "median": 1.421,
+            "n": 90,
+            "p95": 1.751
+          },
+          "frame_ms": {
+            "median": 10.659,
+            "n": 90,
+            "p95": 15.478
+          }
+        }
+      ]
+    }
+  },
+  "diagnostic_correction": "The first character coverage classifier counted warm arm/cloth pixels as red rejects. Green/magenta diagnostic colours isolate the torso; the two corrected runs use the same unchanged runtime packs.",
+  "scope": "Windows EXE and original DLSS SR SDK tested under Proton/VKD3D; native Windows and DLSS FG were not exercised. This corrects a proven material-sampling alias source, not a claim that every artifact in the recordings is eliminated."
+}

@@ -1026,7 +1026,21 @@ void main(inout Surface result,Attributes attributes) {
     float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge1)),0.001),
                       length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge2)),0.001));
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);
-    float base_texels=max(result.cone*RayTCurrent()*density*float(width),1.0);
+    float footprint=result.cone*RayTCurrent();
+    if(result.cone==0.0) {
+        // Primary rays have no continuation cone. Their material footprint
+        // comes from the actual trace grid, including reduced-resolution PT
+        // under temporal upscaling. LOD 0 here made fine equipment masks and
+        // reflected texture colour alternate as the camera/actor moved.
+        footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
+        if(frame.camera.x<0.5) {
+            float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+            float3 forward=-mul(frame.camera_world,float4(0,0,1,0)).xyz;
+            footprint*=max(dot(position-eye,forward),0.0);
+        }
+    }
+    footprint/=max(abs(dot(result.geometric_normal,WorldRayDirection())),0.1);
+    float base_texels=max(footprint*density*float(width),1.0);
     float lod=log2(base_texels);
     float3 texel=float3(hit_uv(a,b,c,w),a.emission_layer.w);
     float3 colour=0.0;
