@@ -49,7 +49,7 @@ class DetachedDevice extends PathDevice:
 		super.render(size,bytes,changes,texture_filter)
 		evidence.events.append("render");evidence.rendered=output_ready()
 	func dispose() -> void:
-		var images: Array[RID]=_raw+_history+_filter_auxiliary+_retired_outputs
+		var images: Array[RID]=_raw+_history+_filter_auxiliary+_retired_outputs+_spatial_images
 		super.dispose()
 		evidence.events.append("dispose")
 		evidence.disposed=_closed and _owned.is_empty() and _raw.is_empty() and not output_ready()
@@ -211,6 +211,8 @@ func failure_probe(kind: String,bytes: PackedByteArray) -> void:
 		"resize_history_copy":device.fail_copy=true;target+=Vector2i(16,9)
 		"pose_upload":device.fail_pose=true;changes={"poses":[{"geometry":0,"data":mesh_data.slice(0,6*16).to_byte_array()}]}
 		"resize":device.fail_image_in=1;target+=Vector2i(16,9)
+		"spatial_image":device._release_spatial();device.fail_image_in=2
+		"spatial_set":device._release_spatial();device.fail_set_in=2
 	device.render(target,bytes,changes)
 	var calls: int=device.uploads
 	device.render(size,bytes,{})
@@ -245,7 +247,7 @@ func sustained_switches() -> void:
 		check(device._owned.size()==resources,"cycle "+str(cycle)+" retains the bounded pipeline and scene resource pool")
 	check(successful,"repeated resize, emitter and bounce changes produce finite fresh histories")
 	RenderingServer.call_on_render_thread(live_image_probe);await probed
-	check(probe.live_images==16,"only the current sixteen lighting, guide and auxiliary images remain live")
+	check(probe.live_images==18,"only the current eighteen lighting, guide, auxiliary and spatial images remain live")
 
 func run() -> void:
 	for arg in OS.get_cmdline_user_args():
@@ -289,7 +291,7 @@ func run() -> void:
 	var resumed:=await native_frame()
 	check(device.output_ready() and device._history_valid and resumed.a==1.0,"render after emissive motion publishes a fresh valid estimate")
 	await sustained_switches()
-	for kind: String in ["frame_upload","history_copy","pose_upload","resize","resize_frame_upload","resize_history_copy","first_frame_upload","first_history_copy"]:
+	for kind: String in ["frame_upload","history_copy","pose_upload","resize","resize_frame_upload","resize_history_copy","first_frame_upload","first_history_copy","spatial_image","spatial_set"]:
 		await new_device(not kind.begins_with("first_"))
 		RenderingServer.call_on_render_thread(failure_probe.bind(kind,frame()));await probed;await frames(2)
 		report[kind+"_render"]=probe.duplicate()

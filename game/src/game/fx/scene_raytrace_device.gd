@@ -149,6 +149,9 @@ func _copy_history() -> bool:
 func _render_failed() -> void:
 	_history_valid=false;_published_valid=false;_ready=false;_notify(&"prepared",[false])
 
+func filter_presented(_frame_data: PackedByteArray) -> bool:
+	return true
+
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
 	if not update_scene(changes): _history_valid=false;_published_valid=false;return
@@ -172,7 +175,9 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;
 	# a small GPU copy supplies next frame's history without descriptor churn.
-	var copied := _copy_history()
+	# Presentation-only filtering must not feed its broader blur back into the
+	# temporal history. Retain the current surface guides and history first.
+	var copied := _copy_history() and filter_presented(frame)
 	_rd.capture_timestamp("Scene RT end")
 	if not copied: _render_failed();return
 	_publish_targets()

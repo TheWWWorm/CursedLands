@@ -25,6 +25,22 @@ and each command.
 
 ## Hardware and virtual display
 
+`--suite motion_quality` covers responsive spatial reconstruction, daylight and
+torch history, a 4K Ingos camera/travel/topology route, three rounds of the actual
+tactical/third-person/first-person cameras, snow footfalls, and resource failure
+handling. The route advances daylight and records every movement frame; both the
+fixture and runner reject inactive PT. `snow_tracks` measures receiver coverage
+before/after real footprints; it does not require exact ray geometry for their
+dynamic depressions. Individual suite names are `spatial`, `camera_routes`,
+`camera_modes`, `snow_tracks`, `light_history` and `lifecycle`.
+
+Run `--suite spatial_performance` separately in a GPU Lab **heavy** job. It
+alternates filtering off/on/on/off at 4K, with 40 warm-up and 120 measured frames
+per block. It is excluded from `full`, since ordinary shared visual jobs are not
+valid performance comparisons. See the
+[motion and snow validation](integrations/path-tracing-motion-and-snow-2026-10-24.md)
+for captures, limits and the measured cost.
+
 On the development workstation, submit graphical runs through GPU Lab. It owns
 one accelerated virtual screen per GPU and can run one test on each concurrently.
 Leave the submission's GPU choice omitted or `auto`; pin a card only for an

@@ -23,6 +23,7 @@ var _pending_scene: Scene
 var _pending_ready := false
 var _pending_stats := {}
 var _snapshot_generation := 0
+var _topology_pending := false
 var _failure_reason := ""
 var _failure_position := Vector3.INF
 var _failure_watch: Scene
@@ -110,15 +111,16 @@ func _process(dt: float) -> void:
 	if _scene != null and _poll<=0.0 and not terrain_preparing:
 		_poll = 1.0
 		_collect_lights(camera.global_position)
-		# Incompatible mesh/material changes must not keep shading stale data.
+		# Keep the working region lit while changed membership/equipment is
+		# gathered. Instance updates immediately mask removed/replaced meshes;
+		# a new scene is published only after its first complete frame.
 		if _scene.topology_changed():
-			prepare=prepare or not _preparation_owner.is_empty()
-			_release();may_retry=true
+			_topology_pending=true
 	var building := _gather if _gather!=null else _pending_scene
 	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
 		_cancel_candidate()
-	# Apply-time topology invalidation may release the old device above. Start
-	# the new intent afterward so that release cannot dismiss its own cover.
+	# Only explicit settings requests own a preparation cover. Live geometry
+	# replacement continues rendering through the same atomic handoff as travel.
 	if prepare:
 		_preparation_seen=request
 		_begin_preparation()
@@ -126,7 +128,7 @@ func _process(dt: float) -> void:
 	# their old geometry or acknowledge its shaders before their bounded work.
 	if terrain_preparing: return
 	if _gather==null and _pending_device==null and may_retry \
-		and (device==null or camera.global_position.distance_to(_center)>16.0):
+		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>16.0):
 		_begin_snapshot(terrain,camera)
 	if _gather!=null and _gather.step(): _queue_candidate(terrain,camera)
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
@@ -289,6 +291,7 @@ func _activate_candidate() -> void:
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={}
 	_ready_gpu=true;_bound=false;_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
 	_snapshot_generation+=1;_clear_failure()
+	_topology_pending=false
 	# Replace global bindings before retiring their previous GPU owners.
 	_bind_outputs()
 	_retire_device(previous)
@@ -400,12 +403,16 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			# At 60 Hz retain at most 2/3 of the previous estimate. Shorten
 			# the history in slower frames so torch response does not acquire
 			# a longer time constant when the game is under GPU pressure.
-			limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
+			# Daylight drift alone is tiny (bounded to 0.2% per channel).
+			# It must not give the whole outdoor image the torch's short history
+			# every frame. A changing local light still uses the fast response.
+			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4)
+			if local_changed:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
 		var reuse := history and same_projection and (stationary if progressive else same_lighting or gentle_change)
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
 		stats["history_reused"]=reuse;stats["history_limit"]=limit
-		stats["light_history_limited"]=gentle_change and reuse
+		stats["light_history_limited"]=gentle_change and reuse and limit<8.0
 		_path_signature=bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
@@ -438,8 +445,8 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	if current.decode_float(39*4)!=previous.decode_float(39*4): return false
 	var old_direction := Vector3(previous.decode_float(36*4),previous.decode_float(37*4),previous.decode_float(38*4))
 	var direction := Vector3(current.decode_float(36*4),current.decode_float(37*4),current.decode_float(38*4))
-	# At most 0.057 degrees per frame; history remains capped at three frames
-	# (and is shorter at low FPS), so moving sunlight cannot build a long trail.
+	# At most 0.057 degrees per frame; responsive history remains bounded to
+	# eight frames. Abrupt weather/time changes still reject it immediately.
 	if not direction.is_finite() or not old_direction.is_finite() or direction.distance_squared_to(old_direction)>0.000001: return false
 	for i in 7:
 		var offset := (76+i*4)*4
@@ -495,6 +502,7 @@ func _release() -> void:
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
 	_cancel_candidate();_clear_failure()
 	_scene=null;_lights.clear();_path_signature=PackedByteArray();_accumulation_frames=0
+	_topology_pending=false
 	if device!=null:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
 			RenderingServer.global_shader_parameter_set(key,null)

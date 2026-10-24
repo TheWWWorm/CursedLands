@@ -32,6 +32,9 @@ var _detail_options := Vector4i.ZERO
 var path_materials := false
 var _terrain_version := []
 const PathTerrain = preload("res://src/game/fx/path_trace_terrain.gd")
+const Ground = preload("res://src/game/fx/raytrace_ground.gd")
+var _ground := Ground.new()
+var _soft_ground := false
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
 var lighting_camera_mask := -1
@@ -42,6 +45,7 @@ func _init() -> void:
 
 func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_terrain = terrain; center = position; _plane = plane
+	_soft_ground=Gfx.on("gfx_soft_ground");_ground.configure(terrain)
 	_detail_options = Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))
 	if path_materials: _terrain_version=PathTerrain.version(terrain)
 	for child in terrain.get_children():
@@ -134,6 +138,7 @@ func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	return version
 
 func topology_changed() -> bool:
+	if _soft_ground!=Gfx.on("gfx_soft_ground"):return true
 	if lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs")): return true
 	if path_materials and _terrain_version!=PathTerrain.version(_terrain): return true
 	var current := {}
@@ -149,6 +154,7 @@ func discard_geometry() -> void:
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
 	_mesh_roots.clear();_groups.clear();_morph_geometries.clear()
 	_kernel=null;_watching=false;_cursor=0
+	_ground=Ground.new()
 
 func _near(bounds: AABB, clip_plane := true) -> bool:
 	var p := center.clamp(bounds.position,bounds.end)
@@ -161,7 +167,7 @@ func step() -> bool:
 		var node: Node3D = entry.node.get_ref()
 		if is_instance_valid(node):
 			if entry.land:
-				var arrays: Array = node.deformation_arrays()
+				var arrays: Array = _ground.arrays(node.deformation_arrays())
 				var geometry := _append(arrays,node.global_transform,null,true)
 				if path_materials and geometry>=0:
 					# Follow the actual retained triangles, including shifted MPR

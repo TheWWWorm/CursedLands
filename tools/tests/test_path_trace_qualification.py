@@ -211,7 +211,7 @@ class QualificationTests(unittest.TestCase):
         runtime = {"passed": True, "profile": q.PROFILE, "pt_supported": True,
                    "driver": "vulkan", "method": "forward_plus", "display": "X11", "render_thread": dict(THREADS)}
         names = ("pipeline_failure", "image", "filter_set", "ray_set", "sampler", "frame_upload_render",
-                 "history_copy_render", "pose_upload_render", "resize_render")
+                 "history_copy_render", "pose_upload_render", "resize_render", "spatial_image_render", "spatial_set_render")
         report = {"checks": 40, "failures": [], "metrics": {name: {} for name in names}}
         self.assertTrue(q.validate_reports("lifecycle", report, runtime, "vulkan", False))
         lifetime = {"events": ["build", "render", "dispose"], "built": True, "rendered": True,
@@ -229,6 +229,35 @@ class QualificationTests(unittest.TestCase):
         runtime["render_thread"].update(project_model=1, render_id=100)
         lifetime.update(separate_thread=False, render_thread=100, retained_before_execution=False)
         self.assertEqual(q.validate_reports("lifecycle", report, runtime, "vulkan", False), [])
+
+    def test_camera_reports_require_frames_and_each_real_view_transition(self):
+        runtime = {"passed": True, "profile": q.PROFILE, "pt_supported": True,
+                   "driver": "vulkan", "method": "forward_plus", "display": "X11", "render_thread": dict(THREADS)}
+        report = {"checks": 5, "failures": [], "inactive_frames": 0, "samples": []}
+        self.assertTrue(q.validate_reports("camera_modes", report, runtime, "vulkan", False))
+        report["samples"] = [{"label": f"view-{mode}-round-{repeat}", "active": True, "global_active": True}
+                             for repeat in range(3) for mode in (2, 3, 1) for _ in range(40)]
+        self.assertEqual(q.validate_reports("camera_modes", report, runtime, "vulkan", False), [])
+        report["samples"][0]["global_active"] = False
+        self.assertTrue(q.validate_reports("camera_modes", report, runtime, "vulkan", False))
+        report["samples"][0]["global_active"] = True
+        for row in report["samples"]:
+            if row["label"] == "view-3-round-2":
+                row["label"] = "view-2-round-2"
+        self.assertTrue(q.validate_reports("camera_modes", report, runtime, "vulkan", False))
+
+    def test_spatial_benchmark_rejects_incomplete_or_nonfinite_measurements(self):
+        runtime = {"passed": True, "profile": q.PROFILE, "pt_supported": True,
+                   "driver": "vulkan", "method": "forward_plus", "display": "X11", "render_thread": dict(THREADS)}
+        report = {"checks": 6, "failures": [], "runs": []}
+        self.assertTrue(q.validate_reports("spatial_performance", report, runtime, "vulkan", False))
+        report["runs"] = [{"spatial": enabled, "rt_gpu_ms": {"n": 119, "median": 4, "p95": 5},
+                           "frame_ms": {"n": 120, "median": 16, "p95": 18}} for enabled in (False, True, True, False)]
+        self.assertEqual(q.validate_reports("spatial_performance", report, runtime, "vulkan", False), [])
+        report["runs"][0]["rt_gpu_ms"]["n"] = 1
+        self.assertTrue(q.validate_reports("spatial_performance", report, runtime, "vulkan", False))
+        report["runs"][0]["rt_gpu_ms"].update(n=119, median=float("nan"))
+        self.assertTrue(q.validate_reports("spatial_performance", report, runtime, "vulkan", False))
 
     def test_recursive_runtime_library_mutation_changes_frozen_inputs(self):
         with tempfile.TemporaryDirectory() as temporary:

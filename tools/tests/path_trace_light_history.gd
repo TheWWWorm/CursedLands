@@ -91,14 +91,14 @@ func daylight_history() -> void:
 	Gfx.ambient.r+=0.00001;Gfx.fog_sky.b+=0.00001
 	Gfx._cloud_sun_direction=Gfx._cloud_sun_direction.rotated(Vector3.UP,0.0001)
 	var data:=next_frame()
-	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"gradual daylight retains bounded responsive history")
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==8,"gradual daylight retains full responsive history")
 	lamp.light_energy=1.03;Gfx.sun.b+=0.00005;data=next_frame()
 	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"daylight and torch flutter can reuse history together")
 	for i in 10:data=next_frame()
 	check(data.decode_float(145*4)==8 and controller._accumulation_frames==8,"unchanged daylight recovers full responsive history")
 	for rate in [30,20]:
 		prime_daylight();Gfx.sun.b+=0.00005;data=next_frame(false,1.0/rate)
-		check(data.decode_float(82*4)==1 and data.decode_float(145*4)<2,"daylight history time stays bounded at "+str(rate)+" Hz")
+		check(data.decode_float(82*4)==1 and data.decode_float(145*4)==8,"daylight drift preserves denoising at "+str(rate)+" Hz")
 	prime_daylight();Gfx.sun.b+=0.01;data=next_frame()
 	check(data.decode_float(82*4)==0,"larger sun colour changes reset immediately")
 	prime_daylight();Gfx.ambient.r+=0.01;data=next_frame()

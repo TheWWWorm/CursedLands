@@ -45,6 +45,9 @@ REPORTS = {
     "shader_arena": "shader-compilation-arena.json", "shader_scene": "shader-compilation-scene.json",
     "shader_water": "shader-compilation-water.json",
     "shader_settings": "shader-compilation-settings.json",
+    "spatial": "path-spatial.json", "camera_routes": "path-camera-routes.json",
+    "camera_modes": "camera-modes.json", "snow_tracks": "snow-tracks.json",
+    "spatial_performance": "spatial-performance.json",
 }
 FIXTURES = {"water_live": "water_raytrace_live.gd", "shader_ui": "shader_compilation_screen.gd",
             "shader_live": "shader_compilation_live.gd", "shader_arena": "shader_compilation_arena.gd",
@@ -53,7 +56,8 @@ FIXTURES = {"water_live": "water_raytrace_live.gd", "shader_ui": "shader_compila
 GROUPS = {
     "core": ["device", "motion", "lifecycle", "topology", "controller", "detached_live", "resolution", "sustained"],
     "preparation": ["shader_ui", "shader_live", "shader_arena", "shader_scene", "shader_water", "shader_settings"],
-    "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance")],
+    "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance", "spatial_performance")],
+    "motion_quality": ["spatial", "light_history", "camera_routes", "camera_modes", "snow_tracks", "lifecycle"],
     "sdk": ["resolution", "fsr", "sustained"],
     "benchmark": ["resolution_performance"],
 }
@@ -415,7 +419,7 @@ def validate_reports(suite: str, report: dict, runtime: dict, driver: str, requi
         problems.append("FSR/FG fixture did not complete all seven production presentation phases")
     if suite == "lifecycle":
         required = {"pipeline_failure", "image", "filter_set", "ray_set", "sampler", "frame_upload_render",
-                    "history_copy_render", "pose_upload_render", "resize_render"}
+                    "history_copy_render", "pose_upload_render", "resize_render", "spatial_image_render", "spatial_set_render"}
         if not required.issubset(report.get("metrics", {})):
             problems.append("Lifecycle fixture omitted a required allocation/dispatch failure scenario")
         lifetime = report.get("metrics", {}).get("dispatch_lifetime", {})
@@ -431,6 +435,22 @@ def validate_reports(suite: str, report: dict, runtime: dict, driver: str, requi
             problems.append("Controller fixture did not complete all three handoffs and bounded retry probes")
     if suite == "detached_live" and (len(report.get("observations", [])) != 4 or any(row.get("traced_pixels", 0) <= 20 for row in report.get("observations", []))):
         problems.append("Detached live fixture did not observe all four real moving mesh phases")
+    if suite in ("camera_routes", "camera_modes", "snow_tracks"):
+        rows = report.get("samples", [])
+        required = ({"held", "strafe-pan", "topology", "travel", "camera-switch"} if suite == "camera_routes" else
+                    {f"view-{mode}-round-{repeat}" for mode in (1, 2, 3) for repeat in range(3)} if suite == "camera_modes" else {"footfall"})
+        minimum = {"camera_routes": 261, "camera_modes": 360, "snow_tracks": 24}[suite]
+        if (len(rows) < minimum or not required.issubset({row.get("label") for row in rows})
+                or any(row.get("active") is not True or row.get("global_active") is not True for row in rows)
+                or report.get("inactive_frames") != 0):
+            problems.append("Camera/terrain fixture omitted a movement phase or lost active PT")
+    if suite == "spatial_performance":
+        rows = report.get("runs", [])
+        if [row.get("spatial") for row in rows] != [False, True, True, False]:
+            problems.append("Spatial benchmark did not complete all four alternating blocks")
+        if any(not measured_summary(row.get(key, {}), minimum) for row in rows
+               for key, minimum in (("frame_ms", 120), ("rt_gpu_ms", 110))):
+            problems.append("Spatial benchmark has incomplete or invalid GPU/frame samples")
     return problems
 
 
@@ -611,6 +631,8 @@ def main(argv=None) -> int:
                             "--pt-stress-timeout=" + str(max(1, min(args.stress_timeout, remaining) - 20))]
             if suite == "resolution_performance":
                 command += ["--pt-bench-resolution=" + args.benchmark_resolution, "--ei-profile-rt"]
+            if suite == "camera_routes":
+                command.append("--pt-live-clock")
             deadline = min(args.stress_timeout if suite == "sustained" else args.timeout, remaining)
             write_json(directory / "command.json", {"argv": command, "cwd": str(executable.parent), "profile": str(user), "timeout": deadline})
             result = supervise(command, suite_env, executable.parent, directory, deadline, gpu["uuid"],

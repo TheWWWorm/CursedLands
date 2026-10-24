@@ -4,6 +4,14 @@ extends "res://src/game/fx/scene_raytrace_device.gd"
 const PATH_FILTER = preload("res://src/game/fx/shaders/path_trace_filter.glsl")
 const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
 const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
+const SPATIAL = preload("res://src/game/fx/shaders/path_trace_spatial.glsl")
+var _spatial_shader := RID()
+var _spatial_pipeline := RID()
+var _spatial_images: Array[RID] = []
+var _spatial_sets: Array[RID] = []
+var _spatial_source := RID()
+# Same-build diagnostic, for matched camera/noise comparisons.
+var _spatial_enabled := not OS.get_cmdline_user_args().has("--ei-pt-no-spatial")
 var terrain := Terrain.new()
 var _terrain_data := RID()
 var _terrain_atlas := RID()
@@ -171,8 +179,58 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 		_render_failed();return
 	super.render(size,frame,changes,texture_filter)
 
+func _release_spatial() -> void:
+	for rid in _spatial_sets+_spatial_images:
+		if rid.is_valid():_rd.free_rid(rid)
+	_spatial_sets.clear();_spatial_images.clear();_spatial_source=RID()
+
+func _targets(size: Vector2i,sampler: RID) -> bool:
+	# Descriptors must retire before the textures they refer to during resize.
+	if size!=_size:_release_spatial()
+	return super._targets(size,sampler)
+
+func filter_presented(frame_data: PackedByteArray) -> bool:
+	# Still-scene convergence uses the exact temporal estimate. Responsive
+	# play filters diffuse and glossy separately, after saving temporal history.
+	if not _spatial_enabled or frame_data.decode_float(145*4)>8.0:return true
+	if not _spatial_shader.is_valid():
+		_spatial_shader=_own(_rd.shader_create_from_spirv(SPATIAL.get_spirv(),"PT spatial reconstruction"))
+		if not _spatial_shader.is_valid():return false
+		_spatial_pipeline=_own(_rd.compute_pipeline_create(_spatial_shader))
+		if not _spatial_pipeline.is_valid():return false
+	if _spatial_source!=_history[0]:
+		_release_spatial()
+		for i in 2:_spatial_images.append(_lighting_texture(_size))
+		if not _spatial_images.all(func(rid: RID):return rid.is_valid()):return false
+		var current: Array[RID]=[_history[0],_history[2]]
+		for pass_index in 2:
+			var inputs: Array[RID]=current if pass_index==0 else _spatial_images
+			var outputs: Array[RID]=_spatial_images if pass_index==0 else current
+			var bindings: Array[RDUniform]=[]
+			for i in 2:bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i,[inputs[i]]))
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,2,[_history[1]]))
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,3,[_history[3]]))
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,4,[_filter_auxiliary[1]]))
+			for i in 2:bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,5+i,[outputs[i]]))
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,7,[_frame]))
+			var descriptor:=_target_set(bindings,_spatial_shader)
+			if not descriptor.is_valid():return false
+			_spatial_sets.append(descriptor)
+		_spatial_source=_history[0]
+	for pass_index in 2:
+		var push:=PackedInt32Array([1<<pass_index,0,0,0]).to_byte_array()
+		var list:=_rd.compute_list_begin()
+		_rd.compute_list_bind_compute_pipeline(list,_spatial_pipeline)
+		_rd.compute_list_bind_uniform_set(list,_spatial_sets[pass_index],0)
+		_rd.compute_list_set_push_constant(list,push,push.size())
+		_rd.compute_list_dispatch(list,ceili(_size.x/8.0),ceili(_size.y/8.0),1)
+		_rd.compute_list_end()
+	return true
+
 func dispose() -> void:
+	if _rd!=null:_release_spatial()
 	super.dispose()
+	_spatial_shader=RID();_spatial_pipeline=RID()
 	emitters = Emitters.new()
 	terrain = Terrain.new();_terrain_atlas=RID()
 	_variants.clear()
