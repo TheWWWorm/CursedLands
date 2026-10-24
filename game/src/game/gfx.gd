@@ -1194,7 +1194,7 @@ static func setup_original_env(env: Environment) -> void:
 
 ## Per-frame: light colours and fog of the hour. `env` ambient / sun are for
 ## materials that do not use the original model (e.g. the menu signpost).
-static func update_original(env: Environment, sun_light: DirectionalLight3D, lights: EILights, hour: float, cave: bool) -> void:
+static func update_original(env: Environment, sun_light: DirectionalLight3D, lights: EILights, hour: float, cave: bool, overcast := 0.0) -> void:
 	var sun := lights.sample("sunlight", hour) if lights else Color.WHITE
 	var amb := lights.sample("ambient", hour) if lights else Color(0.506, 0.529, 0.49)
 	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
@@ -1206,6 +1206,8 @@ static func update_original(env: Environment, sun_light: DirectionalLight3D, lig
 	if amb.r == 0.0 and amb.g == 0.0 and amb.b == 0.0:
 		amb = sun * 0.8
 	amb.a = 1.0
+	var weather_light := preload("res://src/game/fx/path_trace_sky.gd").overcast(amb,sun,overcast,cave)
+	amb=weather_light[0];sun=weather_light[1]
 	set_light(amb, sun)
 	if sun_light:
 		sun_light.light_color = sun

@@ -74,7 +74,7 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         vec4 guide=texelFetch(ei_rt_guide,p,0);
         if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
         vec3 delta=ei_rt_position(p,guide.w,size)-world;
-        if(abs(dot(delta,plane))>max(0.025,depth*0.0005)||length(delta)>max(0.1,footprint*2.5))continue;
+        if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*2.5))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
         a+=texelFetch(ei_rt_shadow0,p,0)*w;
@@ -82,6 +82,24 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         // the raster receiver only consumes diffuse and glossy radiance.
         if(ei_pt_active<=0.5)b+=texelFetch(ei_rt_shadow1,p,0)*w;
         total+=w;
+    }
+    if(total<0.01 && ei_pt_active>0.5) {
+        // At half resolution a thin leaf can cover all four bilinear samples.
+        // Search one extra texel ring for the actual receiver before falling
+        // back. Depth/plane checks keep background light off the foreground.
+        ivec2 nearest=ivec2(floor(pixel+0.5));
+        for(int y=-2;y<=2;y++)for(int x=-2;x<=2;x++) {
+            ivec2 p=nearest+ivec2(x,y);
+            if(any(lessThan(p,ivec2(0)))||any(greaterThanEqual(p,size)))continue;
+            vec4 guide=texelFetch(ei_rt_guide,p,0);
+            if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
+            vec3 delta=ei_rt_position(p,guide.w,size)-world;
+            if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*3.5))continue;
+            vec2 offset=vec2(p)-pixel;
+            float w=exp(-dot(offset,offset));
+            gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
+            a+=texelFetch(ei_rt_shadow0,p,0)*w;total+=w;
+        }
     }
     if(total<0.01)return false;
     float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);

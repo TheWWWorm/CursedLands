@@ -115,6 +115,15 @@ func daylight_history() -> void:
 	check(data.decode_float(82*4)==0,"still-scene accumulation keeps exact daylight matching")
 	prime_daylight();controller._strict_light_history=true;Gfx.sun.b+=0.00005;data=next_frame()
 	check(data.decode_float(82*4)==0,"strict diagnostic mode rejects gradual daylight")
+	var weather_sound:=GameSound.new();weather_sound.weather=Weather.new(null,null)
+	game_stub.sound=weather_sound;weather_sound.weather._fade=20.0
+	prime_daylight();Gfx.sun=(Gfx.sun.srgb_to_linear()*0.95).linear_to_srgb();data=next_frame()
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"precipitation fade retains short responsive history")
+	prime_daylight();Gfx.sun=(Gfx.sun.srgb_to_linear()*0.5).linear_to_srgb();data=next_frame()
+	check(data.decode_float(82*4)==0,"abrupt lighting jumps still reset during rain fade")
+	prime_daylight(true);Gfx.sun=(Gfx.sun.srgb_to_linear()*0.999).linear_to_srgb();data=next_frame()
+	check(data.decode_float(82*4)==0,"progressive accumulation never holds fading weather")
+	game_stub.sound=null;weather_sound.free()
 
 func inputs_for(dark:=false) -> Array[Image]:
 	var inputs: Array[Image]=[]

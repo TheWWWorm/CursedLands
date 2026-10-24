@@ -63,6 +63,24 @@ float glossy_compatibility(vec3 current,vec3 other,float roughness) {
     float overlap=1.0/(1.0+dot(delta,delta)/(4.0*alpha*alpha));
     return overlap*overlap;
 }
+// Shading normals contain painted relief and are not a geometric plane.
+// Reconstruct the local plane from primary depth, choosing the shorter side
+// at silhouettes. The ordinary normal guide still controls lighting edges.
+vec3 surface_plane(int centre,vec3 world,vec3 fallback) {
+    vec3 tangent[2];
+    for(int axis=0;axis<2;axis++) {
+        int step_=axis==0?1:12;
+        int a=centre-step_,b=centre+step_;
+        vec3 da=world-tile_world[a],db=tile_world[b]-world;
+        bool va=tile_guide[a].w>0.0,vb=tile_guide[b].w>0.0;
+        if(!va&&!vb)return fallback;
+        tangent[axis]=va&&(!vb||dot(da,da)<dot(db,db))?da:db;
+    }
+    vec3 plane=cross(tangent[0],tangent[1]);
+    if(dot(plane,plane)<1e-16)return fallback;
+    plane=normalize(plane);
+    return dot(plane,fallback)<0.0?-plane:plane;
+}
 float spatial_variance(vec3 sum,vec3 squares,float weight,float weight_squared) {
     // Centred moments avoid cancellation on a constant, bright HDR surface.
     // Correct for unequal weights; an isolated sample has no spatial estimate.
@@ -118,7 +136,10 @@ void main() {
     vec3 reflection=reflection_at(world,guide.xyz,eye,parallel_view);
     float footprint=frame.camera.x>0.5?abs(frame.inv_projection[1][1])*2.0/float(size.y):
         abs(frame.inv_projection[1][1])*2.0*guide.w/float(size.y);
-    float plane_tolerance=max(0.025,footprint*0.5);
+    vec3 plane_normal=progressive?guide.xyz:surface_plane(centre,world,guide.xyz);
+    // RGBA16F view depth has a relative quantization error. Include it in
+    // geometry checks so distant or grazing surfaces do not flicker in/out.
+    float plane_tolerance=max(max(0.025,footprint*0.5),guide.w*0.00075);
     int radius=progressive?0:2;
     vec3 dlo=vec3(1e20),dhi=vec3(0.0),slo=vec3(1e20),shi=vec3(0.0);
     vec3 centre_d=progressive?finite_signal(imageLoad(raw_diffuse,p).rgb):tile_diffuse[centre];
@@ -132,11 +153,12 @@ void main() {
         int at=centre+y*12+x;
         vec4 g=progressive?imageLoad(raw_guide,q):tile_guide[at],m=progressive?imageLoad(raw_material,q):tile_material[at];
         vec2 other_surface=surface_at(m.w);
-        if(g.w<=0.0||dot(guide.xyz,g.xyz)<0.94||any(greaterThan(abs(other_surface-surface),vec2(0.15))))continue;
+        float normal_match=max(dot(guide.xyz,g.xyz),0.0);
+        if(g.w<=0.0||normal_match<0.65||abs(other_surface.y-surface.y)>0.15)continue;
         vec3 other_world=progressive?position_at(q,g.w,size):tile_world[at],delta=other_world-world;
-        float plane=abs(dot(delta,guide.xyz));
+        float plane=abs(dot(delta,plane_normal));
         if(plane>plane_tolerance||length(delta)>max(0.15,footprint*5.0))continue;
-        float weight=exp(-float(x*x+y*y)*0.5)*exp(-plane/max(plane_tolerance,0.001));
+        float weight=exp(-float(x*x+y*y)*0.5)*exp(-plane/max(plane_tolerance,0.001))*pow(normal_match,4.0);
         vec3 d=progressive?finite_signal(imageLoad(raw_diffuse,q).rgb):tile_diffuse[at];
         vec3 s=progressive?finite_signal(imageLoad(raw_specular,q).rgb):tile_specular[at];
         dcount++;dpeak=max(dpeak,max(d.x,max(d.y,d.z)));
@@ -144,7 +166,7 @@ void main() {
         dw+=weight;dlo=min(dlo,d);dhi=max(dhi,d);
         vec3 dd=d-centre_d;dsum+=dd*weight;dsquares+=dd*dd*weight;dw2+=weight*weight;
         // Glossy radiance must not smear across different material colours.
-        if(abs(x)<=1&&abs(y)<=1&&length(m.rgb-material.rgb)<0.25) {
+        if(abs(x)<=1&&abs(y)<=1&&normal_match>=0.94&&abs(other_surface.x-surface.x)<=0.15&&length(m.rgb-material.rgb)<0.25) {
             float glossy_weight=weight*glossy_compatibility(reflection,
                 reflection_at(other_world,g.xyz,eye,parallel_view),min(surface.x,other_surface.x));
             sw+=glossy_weight;slo=min(slo,s);shi=max(shi,s);
@@ -163,7 +185,7 @@ void main() {
     float age=1.0,specular_age=1.0;
     uint instance=(packHalf2x16(vec2(identity,0.0))&65535u)-0x3c00u;
     bool valid_instance=identity>=1.0&&instance<uint(motion.length());
-    vec3 old_position=world,old_normal=guide.xyz;
+    vec3 old_position=world,old_normal=guide.xyz,old_plane=plane_normal;
     bool valid_motion=false;
     if(valid_instance) {
         valid_motion=motion[instance].normal[0].w>0.5;
@@ -173,6 +195,8 @@ void main() {
                 dot(motion[instance].position[1],position),dot(motion[instance].position[2],position));
             // Inverse transpose of current->previous, prepared once per
             // placement. Rotation, nonuniform scale and shear remain valid.
+            old_plane=normalize(vec3(dot(motion[instance].normal[0].xyz,plane_normal),
+                dot(motion[instance].normal[1].xyz,plane_normal),dot(motion[instance].normal[2].xyz,plane_normal)));
             old_normal=normalize(vec3(dot(motion[instance].normal[0].xyz,guide.xyz),
                 dot(motion[instance].normal[1].xyz,guide.xyz),dot(motion[instance].normal[2].xyz,guide.xyz)));
         }
@@ -189,7 +213,7 @@ void main() {
         float specular_confidence=0.0,specular_new_weight=0.0;
         float old_dvariance=0.0,old_svariance=0.0;
         float old_ddark=0.0,old_sdark=0.0;
-        vec3 view_normal=(mat3(frame.previous_view)*old_normal);
+        vec3 view_normal=(mat3(frame.previous_view)*old_plane);
         vec3 old_eye=-(transpose(mat3(frame.previous_view))*frame.previous_view[3].xyz);
         vec3 old_parallel_view=vec3(frame.previous_view[0][2],frame.previous_view[1][2],frame.previous_view[2][2]);
         float reach=max(0.1,footprint*2.5/max(abs(view_normal.z),0.1));
@@ -201,11 +225,15 @@ void main() {
             if(imageLoad(previous_identity,q).r!=identity)continue;
             vec4 g=imageLoad(previous_guide,q),m=imageLoad(previous_material,q);
             vec2 old_surface=surface_at(m.w);
-            if(g.w<=0.0||dot(g.xyz,old_normal)<=0.96||any(greaterThanEqual(abs(old_surface-surface),vec2(0.05)))||length(m.rgb-material.rgb)>=0.15)continue;
+            // Demodulated diffuse history is independent of painted albedo.
+            // Keep the strict material/angular rejection for glossy radiance.
+            float normal_match=dot(g.xyz,old_normal);
+            if(g.w<=0.0||normal_match<=0.8||abs(old_surface.y-surface.y)>=0.05)continue;
+            bool glossy_match=normal_match>0.96&&abs(old_surface.x-surface.x)<0.05&&length(m.rgb-material.rgb)<0.15;
             vec3 old_world=previous_position(q,g.w,size),delta=old_world-old_position;
             // Compare surfaces in world space. Adjacent pixels on a slope
             // legitimately have different depths; unrelated layers still fail.
-            if(abs(dot(delta,old_normal))>plane_tolerance||length(delta)>reach)continue;
+            if(abs(dot(delta,old_plane))>plane_tolerance||length(delta)>reach)continue;
             vec2 sigma=imageLoad(previous_noise,q).rg;
             bvec2 was_dark=lessThan(sigma,vec2(0.0));
             sigma=vec2(finite_sigma(sigma.x),finite_sigma(sigma.y));
@@ -216,7 +244,7 @@ void main() {
                 if(was_dark.x)old_ddark+=w;
             }
             vec4 glossy_history=imageLoad(previous_specular,q);
-            if(glossy_history.a>=1.0) {
+            if(glossy_history.a>=1.0&&glossy_match) {
                 float confidence=progressive?1.0:glossy_compatibility(reflection,
                     reflection_at(old_world,g.xyz,old_eye,old_parallel_view),min(surface.x,old_surface.x));
                 // Variance-aware colour bounds are deliberately less aggressive.

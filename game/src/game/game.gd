@@ -533,7 +533,13 @@ func _update_daylight(advance := true) -> void:
 		if rig:
 			Gfx.update_pass_lights(get_tree(), rig.global_position)
 		return
-	Gfx.update_original(_env, _sun, _lights, hour, _sky_cave)
+	var overcast := 0.0
+	if GameData.option("pt_mode")>0 and not _sky_cave and is_instance_valid(sound) \
+		and sound.weather!=null and sound.weather.world==world:
+		var now := sound._ticks+sound._tick_acc/GameSound.TICK
+		var weather_wind = preload("res://src/game/fx/weather_wind.gd")
+		overcast=maxf(weather_wind.precipitation(sound.weather,now,1),weather_wind.precipitation(sound.weather,now,2)*0.8)
+	Gfx.update_original(_env, _sun, _lights, hour, _sky_cave, overcast)
 	# Lighting keeps the clock: the land's vertex light and the EI materials'
 	# sun term read ei_sun_dir, not the held light's direction (_aim_sun).
 	if sun_aim_mode != 1 or GameData.option("q_shadows") == 0:
@@ -548,7 +554,8 @@ func _update_daylight(advance := true) -> void:
 	_sky_mat.ground_bottom_color = sky
 	if _sky_shader:
 		EISky.update(_sky_shader, _lights, hour, _sky_cave, Gfx.on("gfx_sky"), _env)
-		Gfx.update_volumetric(_env, _sun.light_color, _sky_cave)
+		# Weather attenuation must not classify a cloudy noon as nighttime.
+		Gfx.update_volumetric(_env, _lights.sample("sunlight",0.0 if _sky_cave else hour), _sky_cave)
 		_env.volumetric_fog_albedo = sky.lerp(Color.WHITE, 0.5)
 
 

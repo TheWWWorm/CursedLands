@@ -1,0 +1,662 @@
+{
+  "date": "2026-10-24",
+  "base_stable": "1.27.0",
+  "base_commit": "44d99daa",
+  "public_release": false,
+  "native_windows_tested": false,
+  "measurements": {
+    "method": "Matched 1080p Gipat ruins, Low/50%, 2 bounces, fast response. See integration note for masks and limits.",
+    "noise": {
+      "scene": "zone1 ruins first-person, dry daylight, Low 50%, 2 bounces, fast response",
+      "common_pixels": 417985,
+      "held_frames": 8,
+      "observations": [
+        {
+          "name": "baseline",
+          "variance": 3.08238591001624e-05,
+          "mean": 0.3847824690225924,
+          "mean_history_age": 8.0
+        },
+        {
+          "name": "candidate",
+          "variance": 2.0104576761974632e-05,
+          "mean": 0.3845810364390283,
+          "mean_history_age": 7.999997615814209
+        }
+      ],
+      "variance_reduction": 0.34775925698840515
+    },
+    "motion_history": [
+      {
+        "frame": 20,
+        "pixels": 419699,
+        "baseline_age": 7.523059844970703,
+        "candidate_age": 7.6422624588012695,
+        "baseline_age4_fraction": 0.9497163443324859,
+        "candidate_age4_fraction": 0.9646389436238828
+      },
+      {
+        "frame": 40,
+        "pixels": 422571,
+        "baseline_age": 7.6041693687438965,
+        "candidate_age": 7.6832780838012695,
+        "baseline_age4_fraction": 0.9603261937047265,
+        "candidate_age4_fraction": 0.9693850264215954
+      },
+      {
+        "frame": 60,
+        "pixels": 423557,
+        "baseline_age": 7.756887435913086,
+        "candidate_age": 7.8135833740234375,
+        "baseline_age4_fraction": 0.977405638438274,
+        "candidate_age4_fraction": 0.9830058292036254
+      },
+      {
+        "frame": 80,
+        "pixels": 422972,
+        "baseline_age": 7.795576095581055,
+        "candidate_age": 7.85167932510376,
+        "baseline_age4_fraction": 0.9815850694608627,
+        "candidate_age4_fraction": 0.9867745382673084
+      },
+      {
+        "frame": 100,
+        "pixels": 420576,
+        "baseline_age": 7.6734724044799805,
+        "candidate_age": 7.774847030639648,
+        "baseline_age4_fraction": 0.9677751464657993,
+        "candidate_age4_fraction": 0.9785128014912882
+      },
+      {
+        "frame": 119,
+        "pixels": 420562,
+        "baseline_age": 7.651406764984131,
+        "candidate_age": 7.745548248291016,
+        "baseline_age4_fraction": 0.9641527289674293,
+        "candidate_age4_fraction": 0.9746054089527822
+      }
+    ]
+  },
+  "qualified_checks": [
+    {
+      "suite": "path_trace_cloud_weather",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "5ea97607d945c4680925564f5080aed06af148ca8ca8cb05e8f877782f9579d8",
+      "checks": 32,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_cloud_weather"
+    },
+    {
+      "suite": "path_trace_lifecycle",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "6171e931fff6a5bb890522993fdc34ae1d2caac6ef577a6772abccbd08561b60",
+      "checks": 167,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_lifecycle"
+    },
+    {
+      "suite": "path_trace_light_history",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "253180e1c585aac16e5998d299bbc98f8c47781d828dc7e43cd41cbbc0dc38b2",
+      "checks": 52,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_light_history"
+    },
+    {
+      "suite": "path_trace_receivers",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "ab3b4c2d8ae8e079bfc58e7389522f46e60a1489f7518aa4f159484b87098634",
+      "checks": 17,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_receivers"
+    },
+    {
+      "suite": "path_trace_relief_filter",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "160dd9d5dcd4929dd797f2987ef29b82f24256631862dc6fd2018609ab670d52",
+      "checks": 11,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_relief_filter"
+    },
+    {
+      "suite": "path_trace_spatial",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "9f930178649e43d65cd9e2abb2645cbad53d05d5b5e3a2ed9ca357fcf7a75261",
+      "checks": 21,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_spatial"
+    },
+    {
+      "suite": "path_trace_weather_quality",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "a9699572a677c84237c6f2ccefa6cfc6d8f1c2986d2c4109723019155ae86caf"
+      },
+      "fixture_sha256": "b4284d20209b938191c94564ca1a77187e2ae895e8dcfea8e88dfda7e2a39180",
+      "checks": 12,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-dx12-path_trace_weather_quality"
+    },
+    {
+      "suite": "path_trace_cloud_weather",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "7efded62a66950da681cd2afbe10a25c1b2479324da952b3fe2c618271502689",
+      "checks": 32,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_cloud_weather"
+    },
+    {
+      "suite": "path_trace_lifecycle",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "2e2f24f208de13fe37c086728ec84dc688efd0b173d734c2c4eec662c8631cfc",
+      "checks": 168,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_lifecycle"
+    },
+    {
+      "suite": "path_trace_light_history",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "2e50ee26c0ba05f52552710bc28ff929e859ace791744e8af3ba8385e0ede2a7",
+      "checks": 52,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_light_history"
+    },
+    {
+      "suite": "path_trace_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "214235dd4da3fa42c4bcb176845de617ac4eacf1b7c620aaa1ac15cde1333991",
+      "checks": 17,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_receivers"
+    },
+    {
+      "suite": "path_trace_relief_filter",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "afd4665769dde6dfecbccc94f373a741f44b8cfa9fb22934449368578293b5ba",
+      "checks": 11,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_relief_filter"
+    },
+    {
+      "suite": "path_trace_spatial",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "07ba0a1ea185fddc79613055f7ccb63dc80fd9248acf7ebdd779d005d4827f37",
+      "checks": 21,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_spatial"
+    },
+    {
+      "suite": "path_trace_weather_quality",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/validated/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "991ba2b4066f5d6274f5a0a618f6294c0797fc626a65ad4dc97cd532c53b9fc1"
+      },
+      "fixture_sha256": "e620e03f4803307c8c2016e8e4d662add0dab73e9d795be91a4f38a4c56a272e",
+      "checks": 12,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/validated-vulkan-path_trace_weather_quality"
+    }
+  ],
+  "final_package_smoke_checks": [
+    {
+      "suite": "path_trace_cloud_weather",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "ec100108b7728f669d550dcb02f91b2471e40d9f470187b0fd8e6ae174f31ca3"
+      },
+      "fixture_sha256": "822cde89fa8a4a184a17a37b5da2f194db9459315ab3c7fca6045486cb97adb7",
+      "checks": 32,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/complete-dx12-path_trace_cloud_weather"
+    },
+    {
+      "suite": "path_trace_weather_quality",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "ec100108b7728f669d550dcb02f91b2471e40d9f470187b0fd8e6ae174f31ca3"
+      },
+      "fixture_sha256": "90943fd4e32a90504b59e856585cbac97362cc31a5441d8557af00034db95609",
+      "checks": 12,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/complete-dx12-path_trace_weather_quality"
+    },
+    {
+      "suite": "path_trace_cave",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "d511b8307c4c0ae39b10b94ed6226dc844dd75481fb1ad7299f24750c01d5577"
+      },
+      "fixture_sha256": "886c5e1c1e6d54c7cbbe39fd1ef2e9a44249597395785cc34a1b4e9d386febbf",
+      "checks": 12,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/complete-vulkan-path_trace_cave"
+    },
+    {
+      "suite": "path_trace_weather_quality",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/complete/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "d511b8307c4c0ae39b10b94ed6226dc844dd75481fb1ad7299f24750c01d5577"
+      },
+      "fixture_sha256": "730ac75d8be35de4593e409b3e3246bedc385429269d1417f9353a7412e8d719",
+      "checks": 12,
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/pt-quality-20261024/checks/complete-vulkan-path_trace_weather_quality"
+    }
+  ],
+  "translation_errors": 0,
+  "shader_binaries_verified": 18,
+  "final_scope_note": "625 reconstruction/lifetime/weather checks passed before a one-line cave-only fog palette compatibility correction. Final exports then passed 68 cave/cloud/weather checks. No shader or reconstruction changes followed the 625-check qualification.",
+  "performance": [
+    {
+      "checks": 3,
+      "device": "NVIDIA GeForce RTX 3090",
+      "failures": [],
+      "resolution": [
+        1920,
+        1080
+      ],
+      "runs": [
+        {
+          "frame_ms": {
+            "median": 4.333,
+            "n": 240,
+            "p95": 5.335
+          },
+          "rt_gpu_ms": {
+            "median": 2.41904,
+            "n": 239,
+            "p95": 3.322816
+          }
+        }
+      ],
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "display_size": [
+          1920,
+          1080
+        ],
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 980,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1082,
+        "light_history_limited": false,
+        "lights": 2,
+        "path_bounces": 2,
+        "path_samples": 1,
+        "path_tracing": true,
+        "quality": 0,
+        "rebuilding": false,
+        "render_scale": 1.0,
+        "render_size": [
+          1920,
+          1080
+        ],
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "snapshot_generation": 1,
+        "supported": true,
+        "terrain_material_build_us": 11320,
+        "terrain_material_bytes": 448928,
+        "terrain_material_triangles": 39705,
+        "trace_render_scale": 1.0,
+        "triangles": 87527,
+        "updated_instances": 0,
+        "updated_poses": 0,
+        "window_resolution_reference": false
+      }
+    },
+    {
+      "checks": 3,
+      "device": "NVIDIA GeForce RTX 3090",
+      "failures": [],
+      "resolution": [
+        1920,
+        1080
+      ],
+      "runs": [
+        {
+          "frame_ms": {
+            "median": 4.876,
+            "n": 240,
+            "p95": 5.995
+          },
+          "rt_gpu_ms": {
+            "median": 2.828576,
+            "n": 239,
+            "p95": 3.521632
+          }
+        }
+      ],
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "display_size": [
+          1920,
+          1080
+        ],
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 980,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1082,
+        "light_history_limited": false,
+        "lights": 2,
+        "path_bounces": 2,
+        "path_samples": 1,
+        "path_tracing": true,
+        "quality": 0,
+        "rebuilding": false,
+        "render_scale": 1.0,
+        "render_size": [
+          1920,
+          1080
+        ],
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "snapshot_generation": 1,
+        "supported": true,
+        "terrain_material_build_us": 11856,
+        "terrain_material_bytes": 448928,
+        "terrain_material_triangles": 39705,
+        "trace_render_scale": 1.0,
+        "triangles": 87527,
+        "updated_instances": 0,
+        "updated_poses": 0,
+        "window_resolution_reference": false
+      }
+    },
+    {
+      "checks": 3,
+      "device": "NVIDIA GeForce RTX 3090",
+      "failures": [],
+      "resolution": [
+        1920,
+        1080
+      ],
+      "runs": [
+        {
+          "frame_ms": {
+            "median": 4.945,
+            "n": 240,
+            "p95": 6.386
+          },
+          "rt_gpu_ms": {
+            "median": 2.827904,
+            "n": 239,
+            "p95": 3.549088
+          }
+        }
+      ],
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "display_size": [
+          1920,
+          1080
+        ],
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 980,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1082,
+        "light_history_limited": false,
+        "lights": 2,
+        "path_bounces": 2,
+        "path_samples": 1,
+        "path_tracing": true,
+        "quality": 0,
+        "rebuilding": false,
+        "render_scale": 1.0,
+        "render_size": [
+          1920,
+          1080
+        ],
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "snapshot_generation": 1,
+        "supported": true,
+        "terrain_material_build_us": 11175,
+        "terrain_material_bytes": 448928,
+        "terrain_material_triangles": 39705,
+        "trace_render_scale": 1.0,
+        "triangles": 87527,
+        "updated_instances": 0,
+        "updated_poses": 0,
+        "window_resolution_reference": false
+      }
+    },
+    {
+      "checks": 3,
+      "device": "NVIDIA GeForce RTX 3090",
+      "failures": [],
+      "resolution": [
+        1920,
+        1080
+      ],
+      "runs": [
+        {
+          "frame_ms": {
+            "median": 4.513,
+            "n": 240,
+            "p95": 5.622
+          },
+          "rt_gpu_ms": {
+            "median": 2.650592,
+            "n": 239,
+            "p95": 3.213184
+          }
+        }
+      ],
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "display_size": [
+          1920,
+          1080
+        ],
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 980,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1082,
+        "light_history_limited": false,
+        "lights": 2,
+        "path_bounces": 2,
+        "path_samples": 1,
+        "path_tracing": true,
+        "quality": 0,
+        "rebuilding": false,
+        "render_scale": 1.0,
+        "render_size": [
+          1920,
+          1080
+        ],
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "snapshot_generation": 1,
+        "supported": true,
+        "terrain_material_build_us": 10744,
+        "terrain_material_bytes": 448928,
+        "terrain_material_triangles": 39705,
+        "trace_render_scale": 1.0,
+        "triangles": 87527,
+        "updated_instances": 0,
+        "updated_poses": 0,
+        "window_resolution_reference": false
+      }
+    }
+  ],
+  "camera_modes": {
+    "checks": 5,
+    "failures": [],
+    "inactive_frames": 0,
+    "stats": {
+      "accumulation_frames": 8.0,
+      "active": true,
+      "display_size": [
+        3840,
+        2160
+      ],
+      "emissive_candidates": 0,
+      "emissive_triangles": 0,
+      "geometries": 766,
+      "gi_samples": 0,
+      "history_limit": 8.0,
+      "history_reused": true,
+      "instances": 1066,
+      "light_history_limited": false,
+      "lights": 2,
+      "path_bounces": 2,
+      "path_samples": 1,
+      "path_tracing": true,
+      "quality": 0,
+      "rebuilding": true,
+      "render_scale": 1.0,
+      "render_size": [
+        3840,
+        2160
+      ],
+      "shadow_samples": 0,
+      "size": [
+        1920,
+        1080
+      ],
+      "snapshot_generation": 1,
+      "supported": true,
+      "terrain_material_build_us": 22103,
+      "terrain_material_bytes": 664692,
+      "terrain_material_triangles": 33032,
+      "trace_render_scale": 1.0,
+      "triangles": 67628,
+      "updated_instances": 0,
+      "updated_poses": 0,
+      "window_resolution_reference": false
+    }
+  },
+  "base_game_tree": "666af4ee5fe4897d7e2e4f28620c119ab3260fb5",
+  "final_game_sources_sha256": {
+    "game/src/game/fx/cloud_shadow_field.gd": "ddc4cdf29ad8affcdb9bd61235dede3499e6b4dc5bc38480ab494faa7aafb8c0",
+    "game/src/game/fx/path_trace_device.gd": "536a6e586d710573982de1cd23bdd0d45facb504016ec5597310560ac736d6f6",
+    "game/src/game/fx/path_trace_sky.gd": "14db80aa341731cba0301a86d8834a5dd14da95bbe10f17f9c77e009dfbff349",
+    "game/src/game/fx/scene_raytrace.gd": "1e35d3abc9622372c92699cc0ded9a24ed71978b96c13a680bafe0e664edacd4",
+    "game/src/game/fx/scene_raytrace_shader.gd": "db0b737f27797a6d4faddd17ee98b08edbbf6e31e387196c4b4cca81119a4623",
+    "game/src/game/fx/shaders/path_trace.hlsl": "5820262ef61e124599d2faebdf7354e0135b0b7c261a6587c920c79b1f641d00",
+    "game/src/game/fx/shaders/path_trace_build.json": "07c1cab3f2d56ba81c3929ce5b02c4125046732acae016cd5bfd10a01f4a032d",
+    "game/src/game/fx/shaders/path_trace_filter.glsl": "5be055b430ab3d2e95884e39b5e9d89e727f650b138e19c342105e35848f9b1a",
+    "game/src/game/fx/shaders/path_trace_spatial.glsl": "54f0c041df648392763207b9c58f8708da62a019621db8a073212605c34176b2",
+    "game/src/game/game.gd": "ea1ae24c19226cf931653370066f8572a40ecc4497ae7bdfe24aa7a3c4b7ef70",
+    "game/src/game/gfx.gd": "3dd7d992f51a951e7accb3526edad028c1dad68982769b31d37dac53895bc556"
+  }
+}

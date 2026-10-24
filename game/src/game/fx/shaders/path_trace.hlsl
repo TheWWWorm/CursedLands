@@ -15,6 +15,8 @@
 [[vk::binding(12,0)]] ByteAddressBuffer emitter_lookup : register(t1200000);
 [[vk::binding(13,0)]] ByteAddressBuffer terrain_data : register(t1300000);
 [[vk::binding(14,0)]] Texture2DArray<float4> terrain_colours : register(t1400000);
+[[vk::binding(15,0)]] Texture2D<float4> cloud_texture : register(t1500000);
+[[vk::binding(16,0)]] SamplerState cloud_sampler : register(s1600000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -33,6 +35,9 @@ struct Frame {
     float4 sky_zenith;
     float4 sky_horizon;
     float4 sky_ground;
+    float4 cloud_state;      // Threshold, strength, height, 0 off/1 sheet/2 field.
+    float4 cloud_phases;
+    float4 cloud_domain;     // Volume field minimum xz, span, texture size.
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
@@ -209,6 +214,22 @@ float3 sample_bsdf(Surface s,float3 v,PathSampler sampler) {
     // a rejected specular sample, never an extra diffuse-transmission sample.
     return dot(reflected,s.normal)>0.0?reflected:float3(0,0,0);
 }
+float cloud_visibility(float3 position) {
+    if(frame.cloud_state.w<0.5||frame.cloud_state.y<=0.0||frame.sun_direction.y<0.12)return 1.0;
+    if(frame.cloud_state.w>1.5) {
+        if(frame.cloud_domain.w<=0.0||frame.sun_direction.y<0.18||position.y>=2200.0)return 1.0;
+        float2 uv=(position.xz-position.y*frame.sun_direction.xz/frame.sun_direction.y-frame.cloud_domain.xy)/frame.cloud_domain.z;
+        float margin=0.5/frame.cloud_domain.w;
+        if(any(uv<margin)||any(uv>1.0-margin))return 1.0;
+        return saturate(cloud_texture.SampleLevel(cloud_sampler,uv,0.0).r);
+    }
+    if(position.y>=frame.cloud_state.z)return 1.0;
+    float2 projected=position.xz+frame.sun_direction.xz*max(frame.cloud_state.z-position.y,0.0)/max(frame.sun_direction.y,0.18);
+    float coarse=cloud_texture.SampleLevel(cloud_sampler,frac(projected/384.0+frame.cloud_phases.xy),2.0).r;
+    float detail=cloud_texture.SampleLevel(cloud_sampler,frac(float2(projected.y,-projected.x)/128.0+frame.cloud_phases.zw),1.0).r;
+    float density=smoothstep(frame.cloud_state.x-0.14,frame.cloud_state.x+0.14,coarse*0.75+detail*0.25);
+    return 1.0-density*frame.cloud_state.y;
+}
 void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
     diffuse=0.0;specular=0.0;
     for(uint i=0;i<8;i++) {
@@ -216,7 +237,7 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
         if(i==0) {
             if(!any(frame.sun.rgb>0.0))continue;
             direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,i));
-            colour=frame.sun.rgb;reach=frame.camera.w;
+            colour=frame.sun.rgb*cloud_visibility(s.position);reach=frame.camera.w;
         } else {
             float4 lamp=frame.point_position[i-1];
             float3 delta=lamp.xyz-s.position;float distance=length(delta);

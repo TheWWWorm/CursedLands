@@ -39,6 +39,7 @@ void fragment(){
  COLOR=vec4(cv_shadow(vec3(column.x,0,column.y),ei_sun_dir),0,0,1);
 }
 """
+var domain := Vector4.ZERO
 var view: SubViewport
 var _parent: WeakRef
 var _published := false
@@ -67,7 +68,8 @@ func update(owner: Node, map_size: Vector2, enabled: bool, frame: Dictionary) ->
 	if not _published:
 		RenderingServer.global_shader_parameter_set(&"ei_cv_shadow_field",view.get_texture())
 		_published=true
-	RenderingServer.global_shader_parameter_set(&"ei_cv_shadow_domain",Vector4(origin.x,origin.y,SPAN,float(SIZE) if enabled else 0.0))
+	domain=Vector4(origin.x,origin.y,SPAN,float(SIZE) if enabled else 0.0)
+	RenderingServer.global_shader_parameter_set(&"ei_cv_shadow_domain",domain)
 	# A child viewport renders before its receiving viewport. Both programs
 	# read the same final global sun/weather values, including clock holds.
 	# Twinkle and sheet phases do not affect this volume integral. A held
@@ -89,6 +91,7 @@ func request_refresh() -> void:
 
 
 func release() -> void:
+	domain=Vector4.ZERO
 	RenderingServer.global_shader_parameter_set(&"ei_cv_shadow_domain",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_cv_shadow_field",null)
 	if is_instance_valid(view):

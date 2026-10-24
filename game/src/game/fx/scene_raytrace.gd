@@ -46,6 +46,7 @@ var _history_key := ""
 var _mode := ""
 var _path_mode := false
 var _path_signature := PackedByteArray()
+var _path_cloud_signature := PackedByteArray()
 var _accumulation_frames := 0.0
 # A visible settings request owns one cover. Ordinary recenter/topology work
 # keeps this key, so cancellation and automatic recovery never reopen it.
@@ -208,6 +209,7 @@ func _end_preparation() -> void:
 	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
 
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
+	if target is PathDevice:Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
 	# An active device is the visible target even while a recenter replacement
 	# builds. With no active scene, the candidate must finish privately first.
 	if _preparation_owner.is_empty() or (target!=device and device!=null):
@@ -346,6 +348,24 @@ func _retire_device(retired: Device) -> void:
 		if retired.emitter_stats.is_connected(emitter_callback): retired.emitter_stats.disconnect(emitter_callback)
 	Device.dispatch(retired,&"dispose")
 
+func _path_cloud_texture() -> Texture2D:
+	if _terrain==null or game._sky_cave or not Gfx.Clouds.shadows_enabled() or Gfx._cloud_owner!=_terrain.get_instance_id():return null
+	if Gfx.Clouds.mode()==1:return Gfx._cloud_sheet_noise
+	var field := Gfx._cloud_shadow_field
+	return field.view.get_texture() if field!=null and is_instance_valid(field.view) and field._published and field.domain.w>0.0 else null
+
+func _path_cloud_frame() -> PackedFloat32Array:
+	var data:=PackedFloat32Array();data.resize(12)
+	if _terrain==null or _path_cloud_texture()==null:return data
+	var state: Vector4=Gfx._cloud_frame.state
+	var phases: Vector4=Gfx._cloud_frame.phases
+	var domain:=Vector4.ZERO
+	if Gfx.Clouds.mode()>1:
+		domain=Gfx._cloud_shadow_field.domain
+		state.w=2.0
+	for i in 4:data[i]=state[i];data[4+i]=phases[i];data[8+i]=domain[i]
+	return data
+
 func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
 	var view := Projection(transform.affine_inverse())
@@ -381,14 +401,22 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
 	data.append_array(colours)
 	if _path_mode:
-		var environment := PathSky.palette(Gfx.ambient,Gfx.sun,Gfx.fog_sky,game._sky_cave)
+		# Cloud attenuation changes illumination, not the authored time of day.
+		var daylight := Gfx.sun_day(Gfx.sun)
+		if game._lights!=null and game.session!=null and game.session.state!=null:
+			daylight=Gfx.sun_day(game._lights.sample("sunlight",game.session.state.world_time))
+		var environment := PathSky.palette(Gfx.ambient,Gfx.sun,Gfx.fog_sky,game._sky_cave,daylight)
 		# Progressive accumulation is valid only for an exactly unchanged
 		# camera, projection, lighting and scene. Never retain moving shadows.
 		var signature := data.slice(0,32)
 		signature.append_array(data.slice(64,76));signature.append_array(data.slice(84,144))
 		signature.append_array(environment)
 		var bytes := signature.to_byte_array()
-		var stationary := history and not scene_changed and bytes==_path_signature
+		var clouds := _path_cloud_frame()
+		var cloud_bytes := clouds.to_byte_array()
+		var same_cloud_mode := _path_cloud_signature.size()==cloud_bytes.size() \
+			and _path_cloud_signature.decode_float(3*4)==clouds[3]
+		var stationary := history and not scene_changed and bytes==_path_signature and cloud_bytes==_path_cloud_signature
 		var progressive := GameData.option("pt_accumulation")>0
 		var limit := 256.0 if progressive else 8.0
 		# Fire/lava flutter and the advancing daylight change every frame.
@@ -397,8 +425,12 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		# Still-scene accumulation always requires exact lighting and geometry.
 		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
 		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
+		var weather_fading := _weather_fading()
+		# Rain's cosine fade spans twenty world ticks (1.1 seconds), not
+		# twenty seconds. Give it the same short response as fluttering fire.
+		var outdoor_tolerance := clampf(0.1*delta_seconds*60.0,0.1,0.25) if weather_fading else 0.002
 		var gentle_change := not progressive and not _strict_light_history and not same_lighting \
-			and _small_lighting_change(bytes,_path_signature)
+			and _small_lighting_change(bytes,_path_signature,outdoor_tolerance)
 		if gentle_change:
 			# At 60 Hz retain at most 2/3 of the previous estimate. Shorten
 			# the history in slower frames so torch response does not acquire
@@ -407,23 +439,29 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			# It must not give the whole outdoor image the torch's short history
 			# every frame. A changing local light still uses the fast response.
 			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4)
-			if local_changed:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
-		var reuse := history and same_projection and (stationary if progressive else same_lighting or gentle_change)
+			if local_changed or weather_fading:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
+		var reuse := history and same_projection and same_cloud_mode and (stationary if progressive else same_lighting or gentle_change)
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
 		stats["history_reused"]=reuse;stats["history_limit"]=limit
 		stats["light_history_limited"]=gentle_change and reuse and limit<8.0
 		_path_signature=bytes
+		_path_cloud_signature=cloud_bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
 		for axis in 4:
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 		data.append_array(environment)
+		data.append_array(clouds)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
 
-static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray) -> bool:
+func _weather_fading() -> bool:
+	return not game._sky_cave and is_instance_valid(game.sound) and game.sound.weather!=null \
+		and game.sound.weather.world==game.world and game.sound.weather._fade>0.0
+
+static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray, outdoor_tolerance := 0.002) -> bool:
 	# Signature floats 76..103 are the seven linear RGB/source-size records.
 	# Projection is checked by the caller; ordinary camera motion reprojects.
 	# Region and local-light positions/ranges stay exact. The campaign clock
@@ -441,7 +479,7 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 		if minf(old.x,minf(old.y,old.z))<0.0 or minf(now.x,minf(now.y,now.z))<0.0: return false
 		if old==Vector3.ZERO or now==Vector3.ZERO: return false
 		for channel in 3:
-			if absf(now[channel]-old[channel])>maxf(maxf(now[channel],old[channel]),0.0001)*0.002: return false
+			if absf(now[channel]-old[channel])>maxf(maxf(now[channel],old[channel]),0.0001)*outdoor_tolerance: return false
 	if current.decode_float(39*4)!=previous.decode_float(39*4): return false
 	var old_direction := Vector3(previous.decode_float(36*4),previous.decode_float(37*4),previous.decode_float(38*4))
 	var direction := Vector3(current.decode_float(36*4),current.decode_float(37*4),current.decode_float(38*4))
@@ -501,7 +539,7 @@ func _release() -> void:
 	stats["active"]=false;stats["rebuilding"]=false
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
 	_cancel_candidate();_clear_failure()
-	_scene=null;_lights.clear();_path_signature=PackedByteArray();_accumulation_frames=0
+	_scene=null;_lights.clear();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
 	_topology_pending=false
 	if device!=null:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
