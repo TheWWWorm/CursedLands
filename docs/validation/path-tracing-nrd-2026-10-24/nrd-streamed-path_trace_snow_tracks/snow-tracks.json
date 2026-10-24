@@ -1,0 +1,282 @@
+{
+	"after": {
+		"accepted": 513274,
+		"fraction": 0.99107160097162,
+		"rejected": 4624
+	},
+	"before": {
+		"accepted": 517895,
+		"fraction": 1.0,
+		"rejected": 0
+	},
+	"checks": 9,
+	"failures": [],
+	"inactive_frames": 0,
+	"point": "(136.5, 140.5)",
+	"samples": [
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 185,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 186,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 187,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 188,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 189,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 190,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 191,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 192,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 193,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 194,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 195,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 196,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 197,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 198,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 199,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 200,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 201,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 202,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 203,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 204,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 205,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 206,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 207,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		},
+		{
+			"active": true,
+			"camera": "[X: (-0.0, 0.0, -1.0), Y: (-0.999999, 0.001656, 0.0), Z: (0.001656, 0.999999, -0.0), O: (136.51, 14.88615, -140.5)]",
+			"frame": 208,
+			"generation": 2,
+			"global_active": true,
+			"history": 8.0,
+			"label": "footfall",
+			"rebuilding": false,
+			"reused": true
+		}
+	]
+}

@@ -1,0 +1,64 @@
+{
+	"checks": 438,
+	"display": "X11",
+	"failures": [],
+	"pages": {
+		"r_effects": [
+			"gfx_clouds",
+			"gfx_cloud_shadows",
+			"gfx_cloud_reflections",
+			"gfx_weather_mist",
+			"gfx_weather_surfaces",
+			"gfx_heat_haze",
+			"gfx_soft_particles",
+			"gfx_lit_particles",
+			"gfx_severed_limbs",
+			"gfx_rain_puddles"
+		],
+		"r_lighting": [
+			"gfx_firelight",
+			"gfx_torch_glow",
+			"gfx_lava_light",
+			"gfx_foliage_light",
+			"gfx_volumetric",
+			"gfx_ssao",
+			"gfx_contact_shadows",
+			"gfx_bloom",
+			"gfx_depth_of_field",
+			"q_shadows",
+			"q_shadow_fit"
+		],
+		"r_terrain": [
+			"gfx_terrain",
+			"gfx_wind",
+			"gfx_grass",
+			"gfx_biome_cover",
+			"gfx_vegetation_interaction",
+			"gfx_soft_ground",
+			"gfx_ground_contact",
+			"gfx_terrain_cliffs"
+		],
+		"r_water": [
+			"gfx_water",
+			"gfx_water_reflections",
+			"q_water_rt_quality",
+			"gfx_water_interaction",
+			"gfx_water_caustics",
+			"gfx_water_current",
+			"gfx_water_waves",
+			"gfx_waterfalls"
+		],
+		"r_world": [
+			"gfx_hd_textures",
+			"gfx_materials",
+			"gfx_sharp_units",
+			"gfx_detailed_heads",
+			"gfx_sky",
+			"gfx_far_view",
+			"q_aniso",
+			"gfx_ambient_wildlife",
+			"gfx_ambient_particles"
+		]
+	},
+	"renderer": "forward_plus"
+}

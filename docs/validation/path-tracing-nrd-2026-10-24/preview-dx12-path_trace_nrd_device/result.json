@@ -1,0 +1,82 @@
+{
+  "suite": "path_trace_nrd_device",
+  "platform": "windows",
+  "renderer": "d3d12",
+  "exit": 0,
+  "seconds": 11.43,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-dx12-path_trace_nrd_device/fixtures/path_trace_nrd_device.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-dx12-path_trace_nrd_device",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "89359.157:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\preview-dx12-path_trace_nrd_device\\vkd3d-proton.CursedLands.exe.cache.",
+    "89359.157:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\preview-dx12-path_trace_nrd_device\\vkd3d-proton.CursedLands.exe.cache.",
+    "89359.159:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\preview-dx12-path_trace_nrd_device\\vkd3d-proton.CursedLands.exe.cache.",
+    "PASS qualified NRD test device",
+    "PASS build actual ray-traced NRD fixture",
+    "PASS native NRD 4.18 runtime and compute shaders loaded",
+    "PASS NRD ran without custom fallback",
+    "PASS native dispatch planner and GPU passes execute every frame",
+    "PASS NRD preserves coloured emission and positive indirect light",
+    "PASS stationary surface reuses NRD history",
+    "PASS NRD output remains finite and bounded",
+    "PASS NRD presents stable public texture handles",
+    "PASS progressive mode keeps exact long accumulation",
+    "PASS return to NRD restarts and converges",
+    "PASS odd-sized resize rebuilds NRD pools",
+    "PASS lighting reset removes extinguished emission immediately",
+    "PASS NRD dispatch failure falls back to usable custom lighting",
+    "PASS fallback accumulates current illumination after NRD failure",
+    "PASS NRD failure releases all pool images and is not retried every frame",
+    "PASS NRD pools, descriptors and pipelines are released",
+    "SCENE_RT_DEVICE 17 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.exe": "0a5c220d7f1208d77aad3016de97a875d70524a6f0f49f1a2f2fac1779e86264",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.pck": "0710fd595f893f78aa490ac9505c62733bd7334c4b58fa2d4f423ab30acf67f8"
+  },
+  "repository_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+  "repository_status": "",
+  "fixture_hashes": {
+    "path_trace_device.gd": "2e929c468c58b482d212099ea08b60edd8c249d0e3e22a20f7ea2021c5306d64",
+    "path_trace_nrd_device.gd": "da659199d2334e8dde629f92c67ae62dbe2832eccd5a814741cfed7ed32b530b",
+    "path_trace_quality.gd": "6e224fd1706481a83209bebd0f6cc46fa5ca1b465a4fdf0edabf69136db4a12e",
+    "scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47"
+  },
+  "fixture_sha256": "da659199d2334e8dde629f92c67ae62dbe2832eccd5a814741cfed7ed32b530b",
+  "full_result_sha256": "678bf6d6e3d2699de96a851762262e7846b3909a2ebbbd7f84d4f2817fa7ad84"
+}

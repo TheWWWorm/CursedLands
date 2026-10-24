@@ -1,0 +1,76 @@
+{
+  "suite": "path_trace_weather_quality",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 61.06,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-weather-quality/fixtures/path_trace_weather_quality.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-weather-quality",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS authored route exists: zone1",
+    "PASS ruins supplies a player for the eye camera",
+    "PASS ruins first person prepares",
+    "PASS actual rain reaches the shared scene lighting",
+    "PASS cloud mode settles with PT: 1",
+    "PASS shared cloud field reaches PT mode 1",
+    "PASS cloud mode settles with PT: 2",
+    "PASS shared cloud field reaches PT mode 2",
+    "PASS cloud mode settles with PT: 0",
+    "PASS shared cloud field reaches PT mode 0",
+    "PASS rain fade preserves responsive history: 0 resets",
+    "PASS cloud and weather transitions keep PT active"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.pck": "86e58844c44f6f1c59df757a9411a4b87f10770f2eedace191b78e63477325a5"
+  },
+  "repository_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+  "repository_status": "",
+  "fixture_hashes": {
+    "path_trace_camera_routes.gd": "4a8dd39327f1a9e99a6d27d66a22e86a3af8c501bf7722a4dfed049760ee4cca",
+    "path_trace_weather_quality.gd": "f9440e12c1edadb72b4a516d59e0b1029e9924fc2c2c32383c5609ab185e91c4",
+    "scene_raytrace_live.gd": "9cef23559c7ca820e8722dbccd1dc7d64f2c44d32b871f82b354161263c68a98",
+    "water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b"
+  },
+  "fixture_sha256": "f9440e12c1edadb72b4a516d59e0b1029e9924fc2c2c32383c5609ab185e91c4",
+  "full_result_sha256": "1ca0e14a6263a17f12a9a4c253e38738f4406cf7ad1b0f92039fcdf6dc2e31c9"
+}

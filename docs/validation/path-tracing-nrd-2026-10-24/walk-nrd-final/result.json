@@ -1,0 +1,69 @@
+{
+  "suite": "path_trace_walk_performance",
+  "platform": "windows",
+  "renderer": "d3d12",
+  "exit": 0,
+  "seconds": 71.44,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/walk-nrd-final/fixtures/path_trace_walk_performance.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/walk-nrd-final",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-windows-x86_64/mods",
+    "--ei-profile-rt"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "88674.429:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\walk-nrd-final\\vkd3d-proton.CursedLands.exe.cache.",
+    "88674.429:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\walk-nrd-final\\vkd3d-proton.CursedLands.exe.cache.",
+    "88674.430:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\walk-nrd-final\\vkd3d-proton.CursedLands.exe.cache.",
+    "PASS live full-effects scene prepares PT",
+    "PASS walking benchmark uses the requested full resolution",
+    "PASS PT remains active throughout the full walking route"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [],
+  "bundle_declared_source": {
+    "source_commit": "4f31af72c3505c35c9bae651c68357bd75a21bca",
+    "game_tree": "666af4ee5fe4897d7e2e4f28620c119ab3260fb5",
+    "build_type": null
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "bb4fb36f16383fcad04329c98029cf16884756b696d0e7d2251fff8847df0031"
+  },
+  "repository_commit": "155cb827e69d5a093640ef9aa0e2c0c4b47baa33",
+  "repository_status": " M THIRD_PARTY_NOTICES.md\n M docs/integrations/path-tracing-experiment.md\n M game/export_presets.cfg\n M game/src/ei/game_data.gd\n M game/src/ei/remake_text.gd\n M game/src/game/fx/path_trace_device.gd\n M game/src/game/fx/raytrace_ground.gd\n M game/src/game/fx/scene_raytrace.gd\n M game/src/game/fx/scene_raytrace_device.gd\n M game/src/game/fx/scene_raytrace_shader.gd\n M game/src/game/fx/shaders/path_trace.hlsl\n M game/src/game/fx/shaders/path_trace_any_hit.spv\n M game/src/game/fx/shaders/path_trace_build.json\n M game/src/game/fx/shaders/path_trace_closest_hit.spv\n M game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv\n M game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv\n M game/src/game/fx/shaders/path_trace_miss.spv\n M game/src/game/fx/shaders/path_trace_raygen.dxil\n M game/src/game/fx/shaders/path_trace_raygen.spv\n M game/src/game/fx/shaders/path_trace_raygen_deep.dxil\n M game/src/game/fx/shaders/path_trace_raygen_deep.spv\n M game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.dxil\n M game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.spv\n M game/src/game/fx/shaders/path_trace_raygen_no_emitters.dxil\n M game/src/game/fx/shaders/path_trace_raygen_no_emitters.spv\n M game/src/game/fx/water_raytrace_scene.gd\n M game/src/ui/options_panel.gd\n M tools/build_fsr_preview.py\n M tools/build_mod_preview.py\n M tools/tests/path_trace_lifecycle.gd\n M tools/tests/path_trace_motion.gd\n M tools/tests/path_trace_snow_tracks.gd\n M tools/tests/scene_raytrace_live.gd\n M tools/tests/scene_raytrace_options.gd\n?? docs/integrations/path-tracing-nrd.md\n?? game/src/game/fx/path_trace_nrd.gd\n?? game/src/game/fx/raytrace_source_cache.gd\n?? game/src/game/fx/shaders/nrd/\n?? game/src/game/fx/shaders/path_trace_nrd.hlsl\n?? game/src/native/NATIVE_NRD_NOTICES.txt\n?? game/src/native/bin/libpath_nrd.dll\n?? game/src/native/bin/libpath_nrd.so\n?? game/src/native/nrd/\n?? game/src/native/path_nrd.cfg\n?? tools/build_path_nrd.py\n?? tools/tests/path_trace_grass_receivers.gd\n?? tools/tests/path_trace_nrd_device.gd\n?? tools/tests/path_trace_nrd_motion.gd\n?? tools/tests/path_trace_nrd_pipelines.gd\n?? tools/tests/path_trace_walk_diagnostic.gd\n?? tools/tests/path_trace_walk_performance.gd\n?? tools/tests/raytrace_source_cache.gd\n",
+  "fixture_hashes": {
+    "path_trace_camera_routes.gd": "d388859aaddb601e0f84d13a7ab11cd5cd6bf0228c2c7d23f10866d03f6e87d6",
+    "path_trace_spatial_performance.gd": "58449600f2c396b8815e91abcfd8dfc0227d9822db75ad33fea092bd0fb17aac",
+    "path_trace_walk_performance.gd": "5ffd92fdddbf64d0b241f70f2804f95085516ffa791d9d491eb63fe2970cfe31",
+    "scene_raytrace_live.gd": "67a1c1da5621020deb0da2ad06f4532f52a77a5d727e9573ab32348b70c83d76",
+    "water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b"
+  },
+  "fixture_sha256": "5ffd92fdddbf64d0b241f70f2804f95085516ffa791d9d491eb63fe2970cfe31",
+  "full_result_sha256": "bc5c1177fcd6c7fde7916a3ca390a9f412f9b50388f33ed3ff38af0bedf2208b"
+}

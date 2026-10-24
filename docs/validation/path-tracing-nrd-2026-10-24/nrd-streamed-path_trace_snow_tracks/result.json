@@ -1,0 +1,73 @@
+{
+  "suite": "path_trace_snow_tracks",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 38.98,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/streamed/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/nrd-streamed-path_trace_snow_tracks/fixtures/path_trace_snow_tracks.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/nrd-streamed-path_trace_snow_tracks",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/streamed/CursedLands-1.27.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS authored route exists: zone11",
+    "PASS find a dry authored snow walking surface",
+    "PASS close snow scene is ready",
+    "PASS recenter reuses identical lifted terrain geometry",
+    "PASS cached lifting preserves original terrain arrays",
+    "PASS disabling soft ground invalidates cached lift",
+    "PASS restoring soft ground rebuilds from the current terrain tables",
+    "PASS production footfalls install real dense snow geometry",
+    "PASS PT stays active while snow geometry changes: 0"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "4f31af72c3505c35c9bae651c68357bd75a21bca",
+    "game_tree": "666af4ee5fe4897d7e2e4f28620c119ab3260fb5",
+    "build_type": null
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/streamed/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/streamed/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "af3cc8e52c455c510166ac6c96426e9a4cd0ef93bb47507473caa0d10edfecea"
+  },
+  "repository_commit": "155cb827e69d5a093640ef9aa0e2c0c4b47baa33",
+  "repository_status": " M THIRD_PARTY_NOTICES.md\n M docs/integrations/path-tracing-experiment.md\n M game/export_presets.cfg\n M game/src/ei/game_data.gd\n M game/src/ei/remake_text.gd\n M game/src/game/fx/path_trace_device.gd\n M game/src/game/fx/raytrace_ground.gd\n M game/src/game/fx/scene_raytrace.gd\n M game/src/game/fx/scene_raytrace_device.gd\n M game/src/game/fx/scene_raytrace_shader.gd\n M game/src/game/fx/shaders/path_trace.hlsl\n M game/src/game/fx/shaders/path_trace_any_hit.spv\n M game/src/game/fx/shaders/path_trace_build.json\n M game/src/game/fx/shaders/path_trace_closest_hit.spv\n M game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv\n M game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv\n M game/src/game/fx/shaders/path_trace_miss.spv\n M game/src/game/fx/shaders/path_trace_raygen.dxil\n M game/src/game/fx/shaders/path_trace_raygen.spv\n M game/src/game/fx/shaders/path_trace_raygen_deep.dxil\n M game/src/game/fx/shaders/path_trace_raygen_deep.spv\n M game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.dxil\n M game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.spv\n M game/src/game/fx/shaders/path_trace_raygen_no_emitters.dxil\n M game/src/game/fx/shaders/path_trace_raygen_no_emitters.spv\n M game/src/game/fx/water_raytrace_scene.gd\n M game/src/ui/options_panel.gd\n M tools/build_fsr_preview.py\n M tools/build_mod_preview.py\n M tools/tests/path_trace_lifecycle.gd\n M tools/tests/path_trace_motion.gd\n M tools/tests/path_trace_snow_tracks.gd\n M tools/tests/scene_raytrace_live.gd\n M tools/tests/scene_raytrace_options.gd\n?? docs/integrations/path-tracing-nrd.md\n?? game/src/game/fx/path_trace_nrd.gd\n?? game/src/game/fx/raytrace_source_cache.gd\n?? game/src/game/fx/shaders/nrd/\n?? game/src/game/fx/shaders/path_trace_nrd.hlsl\n?? game/src/native/NATIVE_NRD_NOTICES.txt\n?? game/src/native/bin/libpath_nrd.dll\n?? game/src/native/bin/libpath_nrd.so\n?? game/src/native/nrd/\n?? game/src/native/path_nrd.cfg\n?? tools/build_path_nrd.py\n?? tools/tests/path_trace_grass_receivers.gd\n?? tools/tests/path_trace_nrd_device.gd\n?? tools/tests/path_trace_nrd_motion.gd\n?? tools/tests/path_trace_nrd_pipelines.gd\n?? tools/tests/path_trace_walk_diagnostic.gd\n?? tools/tests/path_trace_walk_performance.gd\n?? tools/tests/raytrace_source_cache.gd\n",
+  "fixture_hashes": {
+    "path_trace_camera_routes.gd": "1207788b5d4f894d0be08dda58ef7a15509b9827b95b16658f22807419fdb93f",
+    "path_trace_snow_tracks.gd": "80aa68badbe2b4f79271414c79390946b2ba9b4b9f7d141b0eea78d0922c6422",
+    "scene_raytrace_live.gd": "4ca26fba1f7e18734fa4c61e95ed6577c6316afb771bc0d93f6b2373945fb01f",
+    "water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b"
+  },
+  "fixture_sha256": "80aa68badbe2b4f79271414c79390946b2ba9b4b9f7d141b0eea78d0922c6422",
+  "full_result_sha256": "c1bc6cb74f3ba77814b9871166dc2dc83e852959389d090816f96320cbf71ae3"
+}

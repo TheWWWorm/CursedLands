@@ -1,0 +1,71 @@
+{
+  "suite": "path_trace_walk_performance",
+  "platform": "windows",
+  "renderer": "d3d12",
+  "exit": 0,
+  "seconds": 108.54,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/wide-nrd-preview/fixtures/path_trace_walk_performance.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/wide-nrd-preview",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/mods",
+    "--ei-profile-rt",
+    "--pt-wide",
+    "--pt-storm-fast"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "89772.246:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\wide-nrd-preview\\vkd3d-proton.CursedLands.exe.cache.",
+    "89772.246:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\wide-nrd-preview\\vkd3d-proton.CursedLands.exe.cache.",
+    "89772.247:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\wide-nrd-preview\\vkd3d-proton.CursedLands.exe.cache.",
+    "PASS live full-effects scene prepares PT",
+    "PASS walking benchmark uses the requested full resolution",
+    "PASS PT remains active throughout the full walking route"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.exe": "0a5c220d7f1208d77aad3016de97a875d70524a6f0f49f1a2f2fac1779e86264",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.pck": "0710fd595f893f78aa490ac9505c62733bd7334c4b58fa2d4f423ab30acf67f8"
+  },
+  "repository_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+  "repository_status": " M tools/tests/path_trace_walk_performance.gd\n?? docs/validation/path-tracing-nrd-2026-10-24/\n",
+  "fixture_hashes": {
+    "path_trace_camera_routes.gd": "ec63bdbbb70269ca76c723ec3970a64e4acffb3308ca24aa79069404e002da68",
+    "path_trace_spatial_performance.gd": "cc3c8e9eb93d479deb35114023d27303acacc1d86ed7b6e8c9f24170257189b5",
+    "path_trace_walk_performance.gd": "f0767abdeea00cbadec98e1347edab2f5f062699756839ad50a2b27b7262b9a2",
+    "scene_raytrace_live.gd": "38af00e315ccded8f67e41127815f2246e8f0aa90c42921f8fda8dc1072860db",
+    "water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b"
+  },
+  "fixture_sha256": "f0767abdeea00cbadec98e1347edab2f5f062699756839ad50a2b27b7262b9a2",
+  "full_result_sha256": "ec989d9a5b4cbe7e7d208a01dfa70a268408045142ec7d633d931d5006fa3f0c"
+}

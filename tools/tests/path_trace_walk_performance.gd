@@ -5,6 +5,8 @@ var walk_legs := 9
 var walk_ticks := 180
 var soak := false
 var storm_fast := false
+var route_span := 24.0
+var player_eye := false
 func summary(values: Array) -> Dictionary:
 	values.sort()
 	return {} if values.is_empty() else {"n":values.size(),"median":values[values.size()/2],
@@ -16,6 +18,8 @@ func run() -> void:
 		if arg=="--pt-hd":resolution=Vector2i(1920,1080)
 		if arg=="--pt-soak":soak=true;walk_legs=30;walk_ticks=240
 		if arg=="--pt-storm-fast":storm_fast=true
+		if arg=="--pt-wide":route_span=64.0;walk_legs=5;walk_ticks=600
+		if arg=="--pt-player-eye":player_eye=true
 	DirAccess.make_dir_recursive_absolute(out)
 	GameData.options.merge(GfxPresets.values(GfxPresets.ULTRA),true)
 	GameData.options.merge({"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0,
@@ -42,6 +46,10 @@ func run() -> void:
 	camera.position=start;camera.current=true
 	game.rig.set_process(false);game.direct.set_process(false)
 	game.hud.hide();game.hud.set_process(false)
+	if player_eye and soak:
+		var diagnostic:=camera;camera=game.rig.camera
+		game.direct._set_view_mode(3);game.direct.tilt=-0.12;game.direct.apply_camera()
+		camera.current=true;diagnostic.queue_free()
 	Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	var rt: Node=game.get_node("SceneRaytrace")
 	check(await ready_scene(rt),"live full-effects scene prepares PT")
@@ -50,8 +58,8 @@ func run() -> void:
 	await frames(20)
 	check(rt.stats.display_size==[resolution.x,resolution.y],"walking benchmark uses the requested full resolution")
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED);Engine.max_fps=30 if soak else 0
-	var route: Array[Vector2]=[Vector2(start.x,-start.z),Vector2(start.x+24,-start.z),
-		Vector2(start.x+24,-start.z+24),Vector2(start.x,-start.z+24),Vector2(start.x,-start.z)]
+	var route: Array[Vector2]=[Vector2(start.x,-start.z),Vector2(start.x+route_span,-start.z),
+		Vector2(start.x+route_span,-start.z+route_span),Vector2(start.x,-start.z+route_span),Vector2(start.x,-start.z)]
 	var results:=[];var inactive:=0;var nrd_inactive:=0;var distance:=0.0
 	var began:=Time.get_ticks_msec()
 	var last_hero:=hero.pos if soak else Vector2.ZERO
@@ -65,9 +73,12 @@ func run() -> void:
 			var p:=a.lerp(b,float(tick)/(walk_ticks-1))
 			if soak:
 				distance+=hero.pos.distance_to(last_hero);last_hero=hero.pos;p=hero.pos
-			camera.position=Vector3(p.x,t.height_at(p.x,p.y)+1.7,-p.y)
 			var forward:=Vector3(b.x-a.x,0.0,a.y-b.y).normalized()
-			camera.look_at(camera.position+forward+Vector3(0,-0.12,0))
+			if player_eye and soak:
+				game.direct.heading=(b-a).angle();game.direct.apply_camera(1.0/30.0)
+			else:
+				camera.position=Vector3(p.x,t.height_at(p.x,p.y)+1.7,-p.y)
+				camera.look_at(camera.position+forward+Vector3(0,-0.12,0))
 			await frames(1)
 			var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
 			cpu.append(rt.stats.get("cpu_update_ms",0));process.append(Performance.get_monitor(Performance.TIME_PROCESS)*1000)
@@ -96,7 +107,7 @@ func run() -> void:
 	FileAccess.open(out.path_join("walk-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({
 		"checks":checks,"failures":failures,"device":RenderingServer.get_video_adapter_name(),"runs":results,
 		"resolution":[resolution.x,resolution.y],"stats":rt.stats,"soak":soak,"storm_fast":storm_fast,
-		"time_scale":Engine.time_scale,"sun_linear":Gfx.sun.srgb_to_linear().r,
+		"time_scale":Engine.time_scale,"sun_linear":Gfx.sun.srgb_to_linear().r,"route_span":route_span,"player_eye":player_eye,
 		"inactive_frames":inactive,"nrd_inactive_frames":nrd_inactive},"\t"))
 	game.queue_free();session.queue_free();await frames(16);TexUpscale.shutdown()
 	get_tree().quit(0 if failures.is_empty() else 1)
