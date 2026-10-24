@@ -1,0 +1,221 @@
+{
+  "environment": {
+    "date": "2026-10-24",
+    "os": "Windows 10.0.26300",
+    "gpu": "NVIDIA GeForce RTX 4090 Laptop GPU",
+    "driver": "621.01",
+    "api": "d3d12",
+    "enhanced_barriers": true,
+    "streamline": "2.14.16",
+    "native_debug_layers_available": false
+  },
+  "source_commit": "926579c43e5e08cbd1e179d0da2717671bd7eb9f",
+  "includes_uncommitted_fix": true,
+  "baseline": {
+    "version": "1.28.0",
+    "exe_sha256": "f949339afe15ccd5d2fc03553d8e9d9cd14d8860252b865e371357208dfd0447",
+    "exit_code": 3221225501,
+    "seconds": 41.735,
+    "failure": "Present 0x887a0005; device removed reason 0x887a0001 after DLSS-G enabled"
+  },
+  "hud_and_presentation": {
+    "checks": 67,
+    "failures": [],
+    "blocked": false,
+    "exit_code": 0,
+    "seconds": 77.187,
+    "rows": [
+      {
+        "label": "off",
+        "enabled": false,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 0,
+        "last_error": 0,
+        "frame_generation_active": false,
+        "output_size": "(0, 0)"
+      },
+      {
+        "label": "on-motion",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(1280, 720)"
+      },
+      {
+        "label": "disabled",
+        "enabled": false,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 0,
+        "last_error": 0,
+        "frame_generation_active": false,
+        "output_size": "(1280, 720)"
+      },
+      {
+        "label": "resized",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(1600, 900)"
+      },
+      {
+        "label": "scaled-output",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(1600, 900)"
+      },
+      {
+        "label": "off-restored",
+        "enabled": false,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 0,
+        "last_error": 0,
+        "frame_generation_active": false,
+        "output_size": "(1600, 900)"
+      }
+    ],
+    "log_sha256": "b62562b89a9769eaa4aff7c85980050c518162d1746459eb3e7b53e4d9fdd23d"
+  },
+  "campaign_save_load_pause_resume": {
+    "checks": 71,
+    "failures": [],
+    "blocked": false,
+    "exit_code": 0,
+    "seconds": 160.953,
+    "rows": [
+      {
+        "label": "loaded-0",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "paused-0",
+        "enabled": false,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 0,
+        "last_error": 0,
+        "frame_generation_active": false,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "resumed-0",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "loaded-1",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "paused-1",
+        "enabled": false,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 0,
+        "last_error": 0,
+        "frame_generation_active": false,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "resumed-1",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "loaded-2",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "paused-2",
+        "enabled": false,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 0,
+        "last_error": 0,
+        "frame_generation_active": false,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      },
+      {
+        "label": "resumed-2",
+        "enabled": true,
+        "dlss_evaluations": 180,
+        "game_presents": 180,
+        "presented_frames": 360,
+        "last_error": 0,
+        "frame_generation_active": true,
+        "output_size": "(3840, 2160)",
+        "zone": "gz1g"
+      }
+    ],
+    "log_sha256": "ab42f4025f6d7fbde52ac837717c0961af3994313ab161c950e2ecaa2e8bcb5b"
+  },
+  "build": {
+    "engine_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "clean_patch_count": 21,
+    "patch_exact_source_files": 77,
+    "temporary_engine_instrumentation": false,
+    "embedded_icon_sizes_verified": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "template_native_code_matches": true,
+    "distribution_audit_passed": true,
+    "files_sha256": {
+      "CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+      "CursedLands.pck": "bdc21e4d9354cb5cac588f6b6c5e098d79fcc2c6d0f6892953942ca9405b96a4",
+      "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c"
+    }
+  }
+}

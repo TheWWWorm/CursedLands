@@ -119,6 +119,9 @@ func inspect_alpha(label: String) -> void:
 	var image:=texture.get_image()
 	check(image!=null,label+": mask readback succeeds")
 	if image==null:return
+	# Streamline's D3D12 format resolver supports R16_FLOAT masks. R8_TYPELESS
+	# allocations produce invalid SDK views on native Windows.
+	check(image.get_format()==Image.FORMAT_RH,label+": Streamline-compatible floating-point HUD mask")
 	check(image.get_size()==get_window().size,label+": UI mask matches actual swapchain extent")
 	# These canvas rectangles are unchanged by camera motion or world shading.
 	var mapping:=Vector2(image.get_size())/get_viewport().get_visible_rect().size

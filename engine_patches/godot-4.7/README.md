@@ -18,7 +18,10 @@ of bypassing the Agility device factory. The saved DLSS request chooses the
 presentation owner before creating devices; changing AMD/NVIDIA owner requires
 a restart. Headless workers do not initialize Streamline. The final compositor
 provides a HUD opacity mask and output-sized FG inputs, with a guard for
-unsupported presentation rectangles. See the
+unsupported presentation rectangles. Both opacity masks and their shaders use
+R16 floating point so Streamline can resolve Godot's typeless D3D12 allocations
+to valid views. Rebuild the Windows template and executable for this native fix.
+See the
 [restored integration](../../docs/integrations/nvidia-dlss.md).
 
 `water-raytracing-uniform-stages.patch` is an optional Vulkan experiment applied

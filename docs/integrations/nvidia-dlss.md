@@ -1,7 +1,7 @@
 # Restored NVIDIA DLSS
 
-The local `1.28.0-experimental.6` preview restores the prior Streamline 2.14.16
-integration onto the current patched Godot 4.7 renderer. It retains NRD 4.18
+The Windows 1.28.0 build uses the restored Streamline 2.14.16
+integration on the current patched Godot 4.7 renderer. It retains NRD 4.18
 REBLUR, the DXR barrier fixes, scene caching, terrain-sector tracing, grass
 lighting and the animated blood-mark performance fix. DLSS Super Resolution
 and DLAA reconstruct the final campaign image; NRD separately denoises traced
@@ -33,6 +33,10 @@ canvas opacity after all HUD layers. RGB output is retained while alpha is
 restored for normal presentation. The final compositor tags HUD-less color and
 UI alpha at the actual swapchain size; a scaled full-window viewport is
 resampled consistently. Equal-size output uses the original buffers directly.
+Both HUD opacity textures use R16 floating point. Godot's D3D12 allocations
+are typeless, and Streamline 2.14.16 resolves R16 to a valid floating-point view
+but leaves R8 typeless. The R8 mask caused native D3D12 device removal when
+frame generation started. Both mask-writing shaders use the matching format.
 Cropped, letterboxed and multi-window layouts are not qualified; incompatible
 mappings suspend FG while ordinary rendering continues.
 
@@ -92,8 +96,9 @@ package contents, including when features are disabled or unsupported.
 The complete notices accompany the binaries. The NVIDIA placement review
 remains pending: see [SDK attribution](../branding/graphics-sdk-attribution.md).
 No NVIDIA notification or approval request is sent by these build tools.
-The package is local and unpublished; native Windows, RTX 40/50 frame
-generation, HDR, XR and multi-window output remain separate qualification.
+The native Windows fix and RTX 4090 Laptop frame-generation checks are
+recorded in the [native validation](../validation/dlss-framegen-native-2026-10-24/README.md).
+Other GPUs, HDR, XR and multi-window output require separate qualification.
 
 The [PT and presentation validation](../validation/pt-five-targets-2026-10-24.md)
 records current traversal, HUD opacity, output-size checks and the remaining

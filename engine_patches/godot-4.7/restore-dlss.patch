@@ -2071,7 +2071,7 @@ diff --git a/servers/rendering/renderer_rd/effects/dlss.cpp b/servers/rendering/
 new file mode 100644
 --- /dev/null
 +++ b/servers/rendering/renderer_rd/effects/dlss.cpp
-@@ -0,0 +1,625 @@
+@@ -0,0 +1,628 @@
 +/**************************************************************************/
 +/*  dlss.cpp                                                              */
 +/**************************************************************************/
@@ -2486,7 +2486,10 @@ new file mode 100644
 +	RD::TextureFormat format = rd->texture_get_format(p_color);
 +	rd->texture_copy(p_color, context->hudless, Vector3(), Vector3(), Vector3(format.width, format.height, 1), 0, 0, 0, 0);
 +	if (!context->ui_alpha.is_valid()) {
-+		format.format = RD::DATA_FORMAT_R8_UNORM;
++		// Godot allocates D3D12 textures as typeless. Streamline 2.14.16
++		// resolves R16_TYPELESS to R16_FLOAT for its views, but leaves
++		// R8_TYPELESS unchanged, causing device removal when DLSS-G starts.
++		format.format = RD::DATA_FORMAT_R16_SFLOAT;
 +		format.shareable_formats.clear();
 +		format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
 +		context->ui_alpha = rd->texture_create(format, RD::TextureView());
@@ -2585,7 +2588,7 @@ new file mode 100644
 +			format.shareable_formats.clear();
 +			format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
 +			context->presented_hudless = rd->texture_create(format, RD::TextureView());
-+			format.format = RD::DATA_FORMAT_R8_UNORM;
++			format.format = RD::DATA_FORMAT_R16_SFLOAT; // Same Streamline-compatible mask format as ui_alpha.
 +			context->presented_alpha = rd->texture_create(format, RD::TextureView());
 +			context->present_size = p_size;
 +		}
@@ -3062,7 +3065,7 @@ new file mode 100644
 +#else
 +layout(rgba8, set = 0, binding = 2) uniform restrict writeonly image2D result_hudless;
 +#endif
-+layout(r8, set = 0, binding = 3) uniform restrict writeonly image2D result_alpha;
++layout(r16f, set = 0, binding = 3) uniform restrict writeonly image2D result_alpha;
 +layout(push_constant, std430) uniform Params {
 +	ivec2 size;
 +	ivec2 pad;
@@ -3091,7 +3094,7 @@ new file mode 100644
 +#else
 +layout(rgba8, set = 0, binding = 0) uniform restrict image2D composed;
 +#endif
-+layout(r8, set = 0, binding = 1) uniform restrict writeonly image2D ui_alpha;
++layout(r16f, set = 0, binding = 1) uniform restrict writeonly image2D ui_alpha;
 +layout(push_constant, std430) uniform Params {
 +	ivec2 size;
 +	int clear;
