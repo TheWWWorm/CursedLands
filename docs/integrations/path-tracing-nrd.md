@@ -1,6 +1,6 @@
 # NRD reconstruction and travel performance
 
-The local 1.28.0-experimental.1 preview integrates NVIDIA NRD 4.18.0 REBLUR_DIFFUSE_SPECULAR
+The local 1.28.0 previews integrate NVIDIA NRD 4.18.0 REBLUR_DIFFUSE_SPECULAR
 into the existing Windows DX12 and Linux Vulkan path tracer. The qualified
 Godot engine binaries are unchanged. The published 1.27.0 release is unchanged.
 

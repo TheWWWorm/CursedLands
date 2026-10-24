@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.28.0-experimental.2 — unreleased
+
+- Reuse projected blood-mark geometry while animating its growth and rotation, reducing CPU work after combat. Preserve surface placement, fading and lifetime.
+
 ## 1.28.0-experimental.1 — unreleased
 
 - Integrate NVIDIA NRD 4.18.0 REBLUR for responsive path-traced lighting on Windows DX12 and Linux Vulkan. Preserve sharp direct highlights and retain custom reconstruction as a fallback.

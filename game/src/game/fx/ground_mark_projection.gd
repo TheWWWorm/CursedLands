@@ -9,12 +9,19 @@ uniform sampler2D pigment : source_color, filter_linear_mipmap, repeat_disable;
 uniform float opacity = 1.0;
 uniform float centre_height = 0.0;
 uniform sampler2D track_clock : filter_nearest;
+uniform bool animated_projection = false;
+uniform vec2 projection_center;
+uniform vec4 projection_axes;
 varying vec3 mark_world;
 varying vec3 ei_e;
 varying float ei_k;
 """ + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + GroundSurfaceShader.SOFT_FUNCTIONS + """
 void vertex() {
 	mark_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	if (animated_projection) {
+		vec2 delta = vec2(VERTEX.x, -VERTEX.z) - projection_center;
+		UV = vec2(dot(delta, projection_axes.xy), dot(delta, projection_axes.zw)) + vec2(0.5);
+	}
 	if (COLOR.r > 0.5 && soft_ground) {
 		vec2 profile = soft_profile_grid(UV2);
 		VERTEX.y += profile.x;
@@ -25,6 +32,7 @@ void vertex() {
 	VERTEX.y += 0.01;
 }
 void fragment() {
+	if (animated_projection && (any(lessThan(UV, vec2(0.0))) || any(greaterThan(UV, vec2(1.0))))) discard;
 	vec4 ink = texture(pigment, UV);
 	ALBEDO = ink.rgb;
 	float alpha = opacity;
@@ -116,18 +124,39 @@ func sync(lists: Array) -> void:
 	for list in lists:
 		for mark: GroundMarks.Mark in list:
 			bind(mark.projection.material_override)
-			place(mark)
+			place(mark, true)
 
-func place(mark: GroundMarks.Mark) -> void:
-	_verts.clear(); _uvs.clear(); _grids.clear(); _normals.clear(); _colors.clear()
+func place(mark: GroundMarks.Mark, rebuild := false) -> void:
 	_centre = Vector2(mark.x, mark.y)
 	_across = Vector2(mark.decal.basis.x.x, -mark.decal.basis.x.z)
 	_along = Vector2(mark.decal.basis.z.x, -mark.decal.basis.z.z)
 	_half = Vector2(maxf(mark.a, 0.01), maxf(mark.b, 0.01))
+	_height = mark.decal.position.y
+	var material: ShaderMaterial = mark.projection.material_override
+	material.set_shader_parameter("centre_height",_height + world.global_position.y)
+	material.set_shader_parameter("animated_projection",not mark.foot)
+	if not mark.foot:
+		# Blood keeps turning for its entire lifetime. Re-clipping and
+		# tessellating every pool at every tick causes a frame-time feedback
+		# loop once several kills leave marks behind. Clip a conservative patch
+		# once; the shader projects the exact current rectangle onto that patch.
+		material.set_shader_parameter("projection_center",_centre)
+		material.set_shader_parameter("projection_axes",Vector4(
+			_across.x/(_half.x*2.0),_across.y/(_half.x*2.0),
+			_along.x/(_half.y*2.0),_along.y/(_half.y*2.0)))
+		var grown := Vector2(mark.a,mark.b) + Vector2.ONE * mark.grow * maxi(mark.grow_left,0)
+		var radius := maxf(_half.length(),grown.max(Vector2.ONE*0.01).length())
+		var origin := Vector3(mark.x,mark.y,_height)
+		if not rebuild and mark.projection.mesh != null and origin.is_equal_approx(mark.projection_origin) \
+				and radius <= mark.projection_radius + 0.0001:
+			return
+		mark.projection_radius = radius
+		mark.projection_origin = origin
+		_across = Vector2.RIGHT; _along = Vector2.DOWN
+		_half = Vector2.ONE * radius
+	_verts.clear(); _uvs.clear(); _grids.clear(); _normals.clear(); _colors.clear()
 	var radius := _across.abs() * _half.x + _along.abs() * _half.y
 	_bounds = Rect2(_centre - radius, radius * 2.0)
-	_height = mark.decal.position.y
-	mark.projection.material_override.set_shader_parameter("centre_height",_height + world.global_position.y)
 	var terrain := world.terrain
 	var first := Vector2i((_bounds.position - Vector2.ONE).floor()).max(Vector2i.ZERO)
 	var last := Vector2i((_bounds.end + Vector2.ONE).ceil()).min(Vector2i(terrain.size_ei()) - Vector2i.ONE)

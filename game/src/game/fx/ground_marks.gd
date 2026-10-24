@@ -51,6 +51,8 @@ class Mark:
 	var splash := false         # hit splatter: not picked up by feet
 	var decal: Decal
 	var projection: MeshInstance3D
+	var projection_radius := 0.0
+	var projection_origin := Vector3.INF
 
 
 ## Persistent typed state avoids rebuilding a set and looking up dictionary fields for
