@@ -8,28 +8,28 @@
   "native": {
     "linux": {
       "file": "game/src/native/bin/libpath_nrd.so",
-      "sha256": "f47304c1ab4ab99d16b5ddb3d97509392d1f6a1bf32a2ad340c0baf178dc86ca",
+      "sha256": "78cbbc0b8db8a9c73aeeee38969c8cbb21e5af97f5c0cfe55b9319a2a23f17e1",
       "sources": {
         "game/src/native/nrd/CMakeLists.txt": "0d07f406e5d25ce277f3df8fa76902f708ef4f81f3dab53695599559accc8cb5",
         "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
         "game/src/native/nrd/build_profile.json": "65e8e59e7e464609d22a9d13a7a80ffd99579b2fa27ecfac70418228c054edd0",
         "game/src/native/nrd/mingw_math.hpp": "f85a667583efc1c25bbdd264115bf8ea549236e3be2e243ec2756d0c4451ac48",
         "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
-        "game/src/native/nrd/path_nrd.cpp": "3c0e2bdc2a2e04908db85a617caea57222f2a3ecae9bb30ba4748d372271d74b",
+        "game/src/native/nrd/path_nrd.cpp": "e507450ecd82c55cd450713732469580a285a05311ba688011bdb22add4326ff",
         "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
         "game/src/game/fx/shaders/path_trace_nrd.hlsl": "aa31cad671480caa306cd13212fc10a13789032a45bda98dd99d86141f01505b"
       }
     },
     "windows": {
       "file": "game/src/native/bin/libpath_nrd.dll",
-      "sha256": "e438d73c06facc9f68cc9df5b06162f5c0bcd783a3c0bd5e5aeae4f03c5e7295",
+      "sha256": "22a237dbf7222aadb5b441b99883c7c9a136b4d433f1828b3b37486518119139",
       "sources": {
         "game/src/native/nrd/CMakeLists.txt": "0d07f406e5d25ce277f3df8fa76902f708ef4f81f3dab53695599559accc8cb5",
         "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
         "game/src/native/nrd/build_profile.json": "65e8e59e7e464609d22a9d13a7a80ffd99579b2fa27ecfac70418228c054edd0",
         "game/src/native/nrd/mingw_math.hpp": "f85a667583efc1c25bbdd264115bf8ea549236e3be2e243ec2756d0c4451ac48",
         "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
-        "game/src/native/nrd/path_nrd.cpp": "3c0e2bdc2a2e04908db85a617caea57222f2a3ecae9bb30ba4748d372271d74b",
+        "game/src/native/nrd/path_nrd.cpp": "e507450ecd82c55cd450713732469580a285a05311ba688011bdb22add4326ff",
         "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
         "game/src/game/fx/shaders/path_trace_nrd.hlsl": "aa31cad671480caa306cd13212fc10a13789032a45bda98dd99d86141f01505b"
       }
@@ -41,7 +41,7 @@
     "game/src/native/nrd/build_profile.json": "65e8e59e7e464609d22a9d13a7a80ffd99579b2fa27ecfac70418228c054edd0",
     "game/src/native/nrd/mingw_math.hpp": "f85a667583efc1c25bbdd264115bf8ea549236e3be2e243ec2756d0c4451ac48",
     "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
-    "game/src/native/nrd/path_nrd.cpp": "3c0e2bdc2a2e04908db85a617caea57222f2a3ecae9bb30ba4748d372271d74b",
+    "game/src/native/nrd/path_nrd.cpp": "e507450ecd82c55cd450713732469580a285a05311ba688011bdb22add4326ff",
     "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
     "game/src/game/fx/shaders/path_trace_nrd.hlsl": "aa31cad671480caa306cd13212fc10a13789032a45bda98dd99d86141f01505b"
   },

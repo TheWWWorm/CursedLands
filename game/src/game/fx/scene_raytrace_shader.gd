@@ -33,7 +33,11 @@ varying vec4 ei_rt_visibility1;
 varying vec3 ei_rt_ground;
 #endif
 #ifdef EI_FOLIAGE_WIND
+#ifdef EI_RT_REST_CONTACT
+#define ei_rt_rest ei_rt_rest_contact.xyz
+#else
 varying vec3 ei_rt_rest;
+#endif
 #endif
 
 vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
@@ -91,7 +95,18 @@ bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) 
 }
 #endif
 
-bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
+float ei_pt_material_weight(ivec2 p,vec2 surface) {
+    if(ei_pt_active<=0.5||surface.x<0.0)return 1.0;
+    uint code=uint(round(texelFetch(ei_rt_shadow1,p,0).a));
+    vec2 traced=vec2(float(code&63u)/63.0,float(code>>6u)/31.0);
+    vec2 difference=abs(traced-surface);
+    // Geometry alone cannot separate armour from adjacent skin, or a glossy
+    // inset from rough stone. Allow quantization and texture minification,
+    // while rejecting incompatible material lobes before upsampling them.
+    return (1.0-smoothstep(0.15,0.35,difference.x))*(1.0-smoothstep(0.10,0.25,difference.y));
+}
+
+bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(1.0);visibility1=vec4(1.0);
     if(ei_rt_state.x<0.5)return false;
     vec4 clip=ei_rt_view_projection*vec4(world,1.0);
@@ -128,7 +143,7 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
         vec3 delta=ei_rt_position(p,guide.w,size)-world;
         if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*2.5))continue;
-        float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
+        float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y)*ei_pt_material_weight(p,surface);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
         a+=texelFetch(ei_rt_shadow0,p,0)*w;
         // PT's second shadow channel is the reconstruction material guide;
@@ -149,7 +164,7 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
             vec3 delta=ei_rt_position(p,guide.w,size)-world;
             if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*3.5))continue;
             vec2 offset=vec2(p)-pixel;
-            float w=exp(-dot(offset,offset));
+            float w=exp(-dot(offset,offset))*ei_pt_material_weight(p,surface);
             gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
             a+=texelFetch(ei_rt_shadow0,p,0)*w;total+=w;
         }
@@ -166,6 +181,10 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         visibility0=mix(vec4(1.0),a/total,fade);visibility1=mix(vec4(1.0),b/total,fade);
     }
     return true;
+}
+
+bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
+    return ei_rt_sample_surface(world,normal,vec2(-1.0),gi,visibility0,visibility1);
 }
 
 float ei_rt_point_visibility(vec3 world,vec3 direction,mat4 view,out float range_falloff) {
@@ -191,6 +210,12 @@ const CAPTURE := """
         vec3 indirect;vec4 a,b;
         vec3 world=(INV_VIEW_MATRIX*vec4(VERTEX,1.0)).xyz;
         vec3 normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+        vec2 surface=ei_surface.yz;
+#ifdef EI_TERRAIN_LIGHT
+        // Terrain's traced material includes biome/wetness layers that are
+        // richer than the conventional shader's highlight-only profile.
+        surface=vec2(-1.0);
+#endif
 #ifdef EI_GRASS_LIGHT
         bool matched=ei_rt_ground_sample(indirect,a,b);
 #else
@@ -198,9 +223,9 @@ const CAPTURE := """
         // The acceleration structure contains the undeformed tree. Follow
         // that same surface as its visible vertices sway, instead of switching
         // between unrelated background light and conventional shading.
-        bool matched=ei_rt_sample(ei_rt_rest,normal,indirect,a,b);
+        bool matched=ei_rt_sample_surface(ei_rt_rest,normal,surface,indirect,a,b);
 #else
-        bool matched=ei_rt_sample(world,normal,indirect,a,b);
+        bool matched=ei_rt_sample_surface(world,normal,surface,indirect,a,b);
 #endif
 #endif
         if(matched) {
@@ -280,7 +305,13 @@ static func applicable(code: String,lit: bool) -> bool:
 
 static func inject(code: String,clouds: bool) -> String:
 	if code.contains("#define EI_FOLIAGE_WIND"):
-		code = code.replace("void vertex() {", "void vertex() {\n    ei_rt_rest=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;\n")
+		var capture := "ei_rt_rest=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;"
+		if code.contains("varying float contact_band;"):
+			# Both values travel vertex -> fragment. Share a location so wind,
+			# ground contact and volumetric fog fit the 32-varying RD limit.
+			code=code.replace("varying float contact_band;","#define EI_RT_REST_CONTACT\nvarying vec4 ei_rt_rest_contact;\n#define contact_band ei_rt_rest_contact.w")
+			capture="ei_rt_rest_contact=vec4((MODEL_MATRIX*vec4(VERTEX,1.0)).xyz,0.0);"
+		code = code.replace("void vertex() {", "void vertex() {\n    "+capture+"\n")
 	var at := code.find("\nvoid ")
 	code = code.insert(at+1,COMMON)
 	if code.contains("#define EI_GRASS_LIGHT"):

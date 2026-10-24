@@ -54,7 +54,7 @@ func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
 		return shader_prefix()+"raygen"+("_deep" if _deep_paths else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
-func frame_bytes() -> int: return 752
+func frame_bytes() -> int: return 2816
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
 func raw_formats() -> Array[int]:
 	var formats := super.raw_formats();formats.append(RenderingDevice.DATA_FORMAT_R16G16_SFLOAT)

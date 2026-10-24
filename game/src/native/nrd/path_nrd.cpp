@@ -84,8 +84,12 @@ public:
         c.isMotionVectorInWorldSpace = true; c.motionVectorScale[2] = 1.0f;
         c.isHistoryConfidenceAvailable = true;
         c.timeDeltaBetweenFrames = std::clamp(float(milliseconds), 1.0f, 1000.0f);
-        c.accumulationMode = first ? nrd::AccumulationMode::CLEAR_AND_RESTART :
-            reset ? nrd::AccumulationMode::RESTART : nrd::AccumulationMode::CONTINUE;
+        // A light can change colour or disappear while the receiver remains
+        // geometrically valid. RESTART alone leaves one frame of stale colour
+        // in this integration's stabilized output. Clear every history pool
+        // on explicit rejection so short spell flashes start and stop promptly.
+        c.accumulationMode = (first || reset) ? nrd::AccumulationMode::CLEAR_AND_RESTART :
+            nrd::AccumulationMode::CONTINUE;
         smoothed_ms += (c.timeDeltaBetweenFrames - smoothed_ms) / (1.0f + 200.0f / smoothed_ms);
         nrd::ReblurSettings settings{};
         settings.maxAccumulatedFrameNum = std::clamp(nrd::GetMaxAccumulatedFrameNum(0.35f, 1000.0f / smoothed_ms), 8u, 30u);

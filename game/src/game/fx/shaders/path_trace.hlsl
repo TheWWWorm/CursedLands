@@ -44,6 +44,9 @@ struct Frame {
     float4 cloud_state;      // Threshold, strength, height, 0 off/1 sheet/2 field.
     float4 cloud_phases;
     float4 cloud_domain;     // Volume field minimum xz, span, texture size.
+    float4 local_state;      // Count; W enables the extended local-light table.
+    float4 local_position[64];
+    float4 local_colour[64];  // Signed radius: negative disables specular.
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
@@ -236,31 +239,58 @@ float cloud_visibility(float3 position) {
     float density=smoothstep(frame.cloud_state.x-0.14,frame.cloud_state.x+0.14,coarse*0.75+detail*0.25);
     return 1.0-density*frame.cloud_state.y;
 }
+float local_weight(Surface s,uint i) {
+    float4 lamp=frame.local_position[i];
+    float distance2=dot(lamp.xyz-s.position,lamp.xyz-s.position);
+    if(lamp.w<=0.0||distance2<0.000025)return 0.0;
+    return dot(frame.local_colour[i].rgb,float3(0.2126,0.7152,0.0722))*max(1.0-distance2/(lamp.w*lamp.w),0.0);
+}
+void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float weight,inout float3 diffuse,inout float3 specular) {
+    float3 delta=lamp.xyz-s.position;float distance=length(delta);
+    if(lamp.w<=0.0||distance>=lamp.w||distance<0.005)return;
+    float3 direction=area_ray(delta/distance,abs(colour.w)/distance,u);
+    float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
+    if(colour.w<0.0)sp=0.0;
+    if(!any(d+sp>0.0))return;
+    float3 incoming=colour.rgb*(weight*PI*abs(dot(s.normal,direction))*
+        max(1.0-distance*distance/(lamp.w*lamp.w),0.0)*visibility(s,direction,distance,false));
+    diffuse+=d*incoming;specular+=sp*incoming;
+}
 void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight) {
     diffuse=0.0;specular=0.0;sunlight=0.0;
-    for(uint i=0;i<8;i++) {
-        float3 direction,colour;float reach;
-        if(i==0) {
-            if(!any(frame.sun.rgb>0.0))continue;
-            direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,i));
-            colour=frame.sun.rgb*cloud_visibility(s.position);reach=frame.camera.w;
-        } else {
-            float4 lamp=frame.point_position[i-1];
-            float3 delta=lamp.xyz-s.position;float distance=length(delta);
-            if(lamp.w<=0.0||distance>=lamp.w||distance<0.005)continue;
-            direction=area_ray(delta/distance,frame.point_colour[i-1].w/distance,path_random(sampler,i));
-            colour=frame.point_colour[i-1].rgb*max(1.0-distance*distance/(lamp.w*lamp.w),0.0);
-            reach=distance;
-        }
-        float cosine=abs(dot(s.normal,direction));
-        if(cosine<=0.0)continue;
+    if(any(frame.sun.rgb>0.0)) {
+        float3 direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,0u));
         float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
-        if(!any(d+sp>0.0))continue;
-        // Authored game light values are diffuse irradiance / pi. Convert
-        // them to the radiance scale used by the normalized BRDF.
-        float3 incoming=colour*(PI*cosine*visibility(s,direction,reach,i==0));
-        diffuse+=d*incoming;specular+=sp*incoming;
-        if(i==0)sunlight=d*incoming;
+        if(any(d+sp>0.0)) {
+            float3 incoming=frame.sun.rgb*(PI*abs(dot(s.normal,direction))*cloud_visibility(s.position)*visibility(s,direction,frame.camera.w,true));
+            diffuse=d*incoming;specular=sp*incoming;sunlight=diffuse;
+        }
+    }
+    if(frame.local_state.w<0.5) {
+        for(uint i=0;i<7;i++)point_light(s,v,frame.point_position[i],frame.point_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular);
+        return;
+    }
+    uint count=min(uint(frame.local_state.x),64u);
+    if(count<=7u) {
+        for(uint i=0;i<count;i++)point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular);
+        return;
+    }
+    // Four stratified importance samples keep crowded fire/spell scenes at a
+    // fixed shadow-ray budget. Divide by the selection probability so every
+    // admitted source contributes its full energy, including late spell lights.
+    // https://pbr-book.org/4ed/Light_Sources/Light_Sampling
+    float total=0.0;
+    for(uint i=0;i<count;i++)total+=local_weight(s,i);
+    if(total<=0.0)return;
+    float4 jitter=float4(path_random(sampler,13u),path_random(sampler,14u));
+    float4 thresholds=(float4(0,1,2,3)+jitter)*(total*0.25);
+    float cumulative=0.0;uint draw=0u;
+    for(uint i=0;i<count&&draw<4u;i++) {
+        float weight=local_weight(s,i);cumulative+=weight;
+        while(draw<4u&&thresholds[draw]<cumulative&&weight>0.0) {
+            point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,draw+1u),total/(4.0*weight),diffuse,specular);
+            draw++;
+        }
     }
 }
 #ifndef PATH_NO_EMITTERS

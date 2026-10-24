@@ -25,7 +25,12 @@ func run() -> void:
 	var light:=Image.create(320,180,false,Image.FORMAT_RGBAH);light.fill(Color(.2,.2,.2,1))
 	var guide_texture:=ImageTexture.create_from_image(guide);var light_texture:=ImageTexture.create_from_image(light)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_guide",guide_texture)
-	for key in [&"ei_rt_gi",&"ei_rt_shadow0",&"ei_rt_shadow1"]:RenderingServer.global_shader_parameter_set(key,light_texture)
+	for key in [&"ei_rt_gi",&"ei_rt_shadow0"]:RenderingServer.global_shader_parameter_set(key,light_texture)
+	# PT's fourth target is a material guide: disabled material effects use
+	# roughness=1, metalness=0, encoded as 63, not a lighting alpha of one.
+	var surface:=Image.create(320,180,false,Image.FORMAT_RGBAH);surface.fill(Color(1,1,1,63))
+	var surface_texture:=ImageTexture.create_from_image(surface)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",surface_texture)
 	var white:=Image.create(2,2,false,Image.FORMAT_RGBA8);white.fill(Color.WHITE)
 	var mesh:=QuadMesh.new();mesh.size=Vector2(4,8);mesh.center_offset=Vector3(0,4,0)
 	var material:=ShaderMaterial.new();material.shader=Gfx.make_shader(EIFigure.FOLIAGE_SHADER)
