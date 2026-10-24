@@ -1,0 +1,54 @@
+{
+  "linux-x86_64": {
+    "resource_count": 1436,
+    "compiled_scripts": 424,
+    "pck_sha256": "8559bc00c91e898120de3fa3e9f0abcf0ea67c5dc0c64ef07d674010201fbd12",
+    "exe_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "version": true,
+    "all_scripts_present": true,
+    "nrd_manifest_and_library_match": true,
+    "original_data_absent": true
+  },
+  "windows-x86_64": {
+    "resource_count": 1436,
+    "compiled_scripts": 424,
+    "pck_sha256": "18389d68282ddcb4317e62c4c31a5b355a8a2f41d5172274f6806fcc81954146",
+    "exe_sha256": "0a5c220d7f1208d77aad3016de97a875d70524a6f0f49f1a2f2fac1779e86264",
+    "version": true,
+    "all_scripts_present": true,
+    "nrd_manifest_and_library_match": true,
+    "original_data_absent": true,
+    "approved_icon_pixels": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        48,
+        48
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        256,
+        256
+      ]
+    ],
+    "windows_file_version": "1.28.0.0",
+    "agility_runtime_verified": true,
+    "nrd_imports": [
+      "KERNEL32.dll",
+      "msvcrt.dll"
+    ]
+  }
+}

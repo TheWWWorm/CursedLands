@@ -34,6 +34,8 @@ var _terrain_version := []
 const PathTerrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Ground = preload("res://src/game/fx/raytrace_ground.gd")
 var _ground := Ground.new()
+const SourceCache = preload("res://src/game/fx/raytrace_source_cache.gd")
+var _sources := SourceCache.new()
 var _soft_ground := false
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
@@ -160,14 +162,14 @@ func _near(bounds: AABB, clip_plane := true) -> bool:
 	var p := center.clamp(bounds.position,bounds.end)
 	return p.distance_squared_to(center) <= RADIUS*RADIUS and (not clip_plane or bounds.end.y >= _plane-0.1)
 
-func step() -> bool:
-	var deadline := Time.get_ticks_usec()+6000
+func step(budget_us := 6000) -> bool:
+	var deadline := Time.get_ticks_usec()+budget_us
 	while _cursor < pending.size() and not failed:
 		var entry: Dictionary = pending[_cursor]; _cursor += 1
 		var node: Node3D = entry.node.get_ref()
 		if is_instance_valid(node):
 			if entry.land:
-				var arrays: Array = _ground.arrays(node.deformation_arrays())
+				var arrays: Array = _ground.arrays(node.deformation_arrays(),node.get_instance_id())
 				var geometry := _append(arrays,node.global_transform,null,true)
 				if path_materials and geometry>=0:
 					# Follow the actual retained triangles, including shifted MPR
@@ -192,18 +194,19 @@ func step() -> bool:
 					if morph: key += ":"+str(node.get_instance_id())
 					var geometry: int = _mesh_cache.get(key,-1)
 					if geometry < 0:
-						geometry = _append(mesh.mesh.surface_get_arrays(surface),Transform3D.IDENTITY,material,false)
+						var source: Dictionary=_sources.surface(mesh.mesh,surface)
+						geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
 						if geometry >= 0:
 							_mesh_cache[key] = geometry
 							if morph:
 								_morph_geometries.append(geometry)
 								geometries[geometry].morph = {"node":weakref(node),"mesh":mesh.mesh,"surface":surface,
-									"arrays":mesh.mesh.surface_get_arrays(surface),"shapes":mesh.mesh.surface_get_blend_shape_arrays(surface),"weights":[]}
-					_add_instance(node,geometry,node.global_transform)
+									"arrays":source.arrays,"shapes":source.shapes,"weights":[]}
+					_add_instance(node,geometry,node.global_transform,surface)
 		if Time.get_ticks_usec() >= deadline: break
 	return failed or _cursor >= pending.size()
 
-func _add_instance(node: Node3D, geometry: int, transform: Transform3D) -> void:
+func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface := -1) -> void:
 	if geometry < 0: return
 	_watching = false
 	if instances.size() >= MAX_INSTANCES: failed = true; return
@@ -212,7 +215,25 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D) -> void:
 	if not _groups.has(key): _groups[key] = {"node":weakref(root),"indices":[],"visible":-1}
 	_groups[key].indices.append(instances.size())
 	instances.append({"geometry":geometry,"node":weakref(node),"mesh":node.mesh if node is MeshInstance3D else null,
-		"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
+		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
+
+func history_matches(previous: RefCounted) -> PackedInt32Array:
+	var matches := PackedInt32Array();matches.resize(instances.size());matches.fill(-1)
+	if previous==null or _detail_options!=previous._detail_options or _soft_ground!=previous._soft_ground or _terrain_version!=previous._terrain_version:return matches
+	var old := {}
+	for i in previous.instances.size():
+		var entry: Dictionary=previous.instances[i];var node: Node3D=entry.node.get_ref()
+		if is_instance_valid(node):old["%d:%d"%[node.get_instance_id(),entry.surface]]=i
+	for i in instances.size():
+		var entry: Dictionary=instances[i];var node: Node3D=entry.node.get_ref()
+		if not is_instance_valid(node) or geometries[entry.geometry].has("morph"):continue
+		var key := "%d:%d"%[node.get_instance_id(),entry.surface]
+		if not old.has(key):continue
+		var before: Dictionary=previous.instances[old[key]]
+		if entry.mesh!=before.mesh:continue
+		if _nodes.get(node.get_instance_id())!=previous._nodes.get(node.get_instance_id()):continue
+		matches[i]=old[key]
+	return matches
 
 func _layer(texture: Texture2D, atlas := -1) -> int:
 	var key := "terrain:%d"%atlas if atlas >= 0 else str(texture.get_instance_id()) if texture else "white"
@@ -221,15 +242,12 @@ func _layer(texture: Texture2D, atlas := -1) -> int:
 	var image: Image
 	if atlas >= 0:
 		if atlas >= _terrain._atlases.get_layers(): return -1
-		image = _terrain._atlases.get_layer_data(atlas)
-	elif texture: image = texture.get_image()
+		image = _sources.image(_terrain._atlases,atlas,TEXTURE_SIZE)
+	elif texture: image = _sources.image(texture,-1,TEXTURE_SIZE)
 	else:
-		image = Image.create(1,1,false,Image.FORMAT_RGBA8); image.fill(Color.WHITE)
+		image = Image.create(TEXTURE_SIZE,TEXTURE_SIZE,false,Image.FORMAT_RGBA8)
+		image.fill(Color.WHITE);image.generate_mipmaps()
 	if image == null or image.is_empty(): return -1
-	image = image.duplicate()
-	if image.is_compressed() and image.decompress() != OK: return -1
-	image.clear_mipmaps(); image.convert(Image.FORMAT_RGBA8)
-	image.resize(TEXTURE_SIZE,TEXTURE_SIZE,Image.INTERPOLATE_BILINEAR); image.generate_mipmaps()
 	_opaque_textures.append(image.detect_alpha() == Image.ALPHA_NONE)
 	var layer := images.size(); images.append(image); _textures[key] = layer
 	return layer

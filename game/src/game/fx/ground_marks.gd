@@ -51,6 +51,8 @@ class Mark:
 	var splash := false         # hit splatter: not picked up by feet
 	var decal: Decal
 	var projection: MeshInstance3D
+	var projection_radius := 0.0
+	var projection_origin := Vector3.INF
 
 
 ## Persistent typed state avoids rebuilding a set and looking up dictionary fields for
@@ -142,6 +144,14 @@ func prepare_footprints() -> void:
 func _exit_tree() -> void:
 	if is_instance_valid(world) and world.ground_marks == self:
 		world.ground_marks = null
+
+
+func warmup_variant() -> Array:
+	if world == null or world.terrain == null or world.terrain is ArenaWinterTerrain \
+			or (GameData.option("footprints") == 0 and GameData.option("marks") == 0):
+		return []
+	if _projection == null: _projection = GroundMarkProjection.new(world)
+	return _projection.warmup_variant()
 
 
 ## The prints.db row [alpha, life, fade] of a ground type. The original takes the

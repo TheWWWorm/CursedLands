@@ -1,0 +1,80 @@
+{
+  "suite": "blood_pool_save",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 30.22,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview2-blood-save-vulkan/fixtures/blood_pool_save.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview2-blood-save-vulkan",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS actual death queue creates one blood pool",
+    "PASS full Session save succeeds",
+    "PASS save contains the living pool at its current age",
+    "PASS full Session load succeeds",
+    "PASS reload keeps the same death pose above the pool",
+    "PASS reload recreates exactly one pool",
+    "PASS reload retains pool growth and rotation",
+    "PASS reload retains remaining life and opacity",
+    "PASS reload retains pool position",
+    "PASS late/repeated replay cannot duplicate the pool",
+    "PASS previous-world event cannot recreate a pool",
+    "PASS save/load after removing the corpse succeeds",
+    "PASS pool survives removal of the original body",
+    "PASS save/load after natural expiry succeeds",
+    "PASS expired pools are not resurrected by loading",
+    "PASS malformed pool rejected",
+    "PASS malformed pool rejected",
+    "PASS malformed pool rejected",
+    "BLOOD_POOL_SAVE 18 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "528d820f38c9b1cb0dfce0da587dc1ef433674db",
+    "game_tree": "124309682bb038174c62fac95ab06d99865bd6ac",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/CursedLands.pck": "8559bc00c91e898120de3fa3e9f0abcf0ea67c5dc0c64ef07d674010201fbd12"
+  },
+  "repository_commit": "528d820f38c9b1cb0dfce0da587dc1ef433674db",
+  "repository_status": "",
+  "fixture_hashes": {
+    "blood_pool_save.gd": "a86bdcf3b808131149c1b46666b4cbd753cee4e0ff23ea9b9ab858cf15e4da33"
+  },
+  "fixture_sha256": "a86bdcf3b808131149c1b46666b4cbd753cee4e0ff23ea9b9ab858cf15e4da33",
+  "full_result_sha256": "0b5275b2122b0219c03e65495a90b1bbc51e741ba2ba28104787a49c2f375da4"
+}

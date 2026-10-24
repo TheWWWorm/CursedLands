@@ -1,0 +1,64 @@
+{
+  "suite": "ground_mark_receivers",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 0,
+  "seconds": 16.34,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview2-receivers-gl/fixtures/ground_mark_receivers.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview2-receivers-gl",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/mods",
+    "--enhanced"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "GROUND_MARK_RECEIVERS checks=13 failures=0"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "528d820f38c9b1cb0dfce0da587dc1ef433674db",
+    "game_tree": "124309682bb038174c62fac95ab06d99865bd6ac",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview2/CursedLands-1.28.0-experimental.2-linux-x86_64/CursedLands.pck": "8559bc00c91e898120de3fa3e9f0abcf0ea67c5dc0c64ef07d674010201fbd12"
+  },
+  "repository_commit": "528d820f38c9b1cb0dfce0da587dc1ef433674db",
+  "repository_status": "",
+  "fixture_hashes": {
+    "footprint_surface_scene.gd": "eb5e6e3eaac7044d04604e2d2f96da10435fc732e48f8a444a20fe5b99b76f7a",
+    "ground_mark_receivers.gd": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67"
+  },
+  "fixture_sha256": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67",
+  "full_result_sha256": "7c5cbb3c73e4f11c59f79808aaffec0285b6595a583f7cece40e02b5326e33ae"
+}

@@ -1,7 +1,8 @@
 extends "res://tools/tests/water_raytrace_artifact.gd"
 ## Actual campaign water preparation. Run in a disposable muted profile with
 ## --audit-out. Render counters observe real Mirror draws and RT submissions;
-## the one injected snapshot failure is reported separately from GPU success.
+## the injected snapshot failure and visual-cover clock advance are reported
+## separately from GPU success.
 
 const Reflection = preload("res://src/game/fx/water_reflection.gd")
 const RayDevice = preload("res://src/game/fx/water_raytrace_device.gd")
@@ -59,7 +60,8 @@ func save_report() -> void:
 		"render_acknowledgements":acknowledgements,"screenshots":screenshots,"cover_draws":cover_draws,
 		"last_state":snapshot(),"raytracing_supported":RayDevice.supported(),
 		"driver":RenderingServer.get_current_rendering_driver_name(),"device":RenderingServer.get_video_adapter_name(),
-		"profile":OS.get_user_data_dir(),"injected_failure":"snapshot failed after real gather began"}
+		"profile":OS.get_user_data_dir(),"injected_failure":"snapshot failed after real gather began",
+		"cover_clock":"visual cases advance the cover clock past SHOW_DELAY_MS before synchronous capture"}
 	FileAccess.open(out.path_join("shader-compilation-water.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
 
 
@@ -137,9 +139,20 @@ func begin_case(label: String) -> Dictionary:
 
 
 func cover_capture(label: String, draws_before: int) -> void:
+	check(ShaderCompilationScreen.active(), label+": preparation owner is active before 3D work")
+	if not ShaderCompilationScreen.active(): return
+	var screen := ShaderCompilationScreen._current
+	if Time.get_ticks_msec()-screen._started_ms < ShaderCompilationScreen.SHOW_DELAY_MS:
+		check(not ShaderCompilationScreen.displayed(), label+": short preparation defers the visible cover")
+	# Production intentionally leaves quick cached preparation unobscured.
+	# Advance only this test clock to exercise the longer-work canvas branch
+	# before any 3D draw, without inserting a wall-clock sleep or completing
+	# the real preparation behind the assertion.
+	screen._started_ms -= ShaderCompilationScreen.SHOW_DELAY_MS+1
+	screen.present()
 	var observed := scene_probe.count()
 	cover_draws.append({"case":label,"baseline":draws_before,"observed":observed,"state":snapshot()})
-	check(ShaderCompilationScreen.active(), label+": preparation cover is active before 3D work")
+	check(ShaderCompilationScreen.displayed(), label+": delayed preparation cover is now visible")
 	check(observed == draws_before, label+": presenting the cover did not draw the campaign")
 	var image := get_viewport().get_texture().get_image()
 	check(image != null and not image.is_empty(), label+": completed canvas draw is readable")
@@ -267,8 +280,8 @@ func run() -> void:
 	before = scene_probe.count()
 	var old_revision: int = GameData.graphics_revision
 	GameData.set_options({"q_aniso":0 if GameData.option("q_aniso") != 0 else 1})
-	cover_capture("mirror-explicit-settings",before)
 	_step()
+	cover_capture("mirror-explicit-settings",before)
 	check(GameData.graphics_revision > old_revision and held(), "general explicit graphics changes acquire a water preparation owner")
 	check(await wait_finished(), "Mirror settings preparation finishes")
 	assert_mirror_release("mirror-explicit-settings",int(start.reflection_draws))
@@ -288,8 +301,8 @@ func run() -> void:
 		start = begin_case("rt-quality-settings")
 		before = scene_probe.count()
 		GameData.set_options({"q_water_rt_quality":1})
-		cover_capture("rt-quality-settings",before)
 		_step()
+		cover_capture("rt-quality-settings",before)
 		check(held() and reflector()._preparation_submitted, "quality change waits for its own render despite existing valid output")
 		check(await wait_finished(true), "RT quality preparation finishes")
 		assert_rt_release("rt-quality-settings",int(start.completed_renders))

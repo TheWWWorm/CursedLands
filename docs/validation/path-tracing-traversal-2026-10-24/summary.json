@@ -1,0 +1,260 @@
+[
+  {
+    "tag": "recording-final-before",
+    "suite": "path_trace_recording_route",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS ordinary campaign uses the separate simulation process",
+      "PASS recording route prepares PT",
+      "PASS route renders at recorded 4K resolution",
+      "PASS player walks to east-opening",
+      "PASS player walks to downhill-path",
+      "PASS authored encounter exists: wolf",
+      "PASS normal combat defeats wolf",
+      "PASS normal looting removes wolf",
+      "PASS player walks to slope-to-boar",
+      "PASS authored encounter exists: slope-boar",
+      "PASS normal combat defeats slope-boar",
+      "PASS normal looting removes slope-boar",
+      "PASS player walks to down-to-beach",
+      "PASS authored encounter exists: beach-boar",
+      "PASS normal combat defeats beach-boar",
+      "PASS normal looting removes beach-boar",
+      "PASS authored encounter exists: shore-toad",
+      "PASS normal combat defeats shore-toad",
+      "PASS normal looting removes shore-toad",
+      "PASS authored encounter exists: south-toad",
+      "PASS normal combat defeats south-toad",
+      "PASS normal looting removes south-toad",
+      "PASS PT stays active along the recording-derived route",
+      "PASS NRD stays active during responsive accumulation",
+      "PASS actual player reaches the southern beach from the ruins",
+      "RECORDING_ROUTE 25 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "recording-final-after",
+    "suite": "path_trace_recording_route",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS ordinary campaign uses the separate simulation process",
+      "PASS recording route prepares PT",
+      "PASS route renders at recorded 4K resolution",
+      "PASS player walks to east-opening",
+      "PASS player walks to downhill-path",
+      "PASS authored encounter exists: wolf",
+      "PASS normal combat defeats wolf",
+      "PASS normal looting removes wolf",
+      "PASS player walks to slope-to-boar",
+      "PASS authored encounter exists: slope-boar",
+      "PASS normal combat defeats slope-boar",
+      "PASS normal looting removes slope-boar",
+      "PASS player walks to down-to-beach",
+      "PASS authored encounter exists: beach-boar",
+      "PASS normal combat defeats beach-boar",
+      "PASS normal looting removes beach-boar",
+      "PASS authored encounter exists: shore-toad",
+      "PASS normal combat defeats shore-toad",
+      "PASS normal looting removes shore-toad",
+      "PASS authored encounter exists: south-toad",
+      "PASS normal combat defeats south-toad",
+      "PASS normal looting removes south-toad",
+      "PASS PT stays active along the recording-derived route",
+      "PASS NRD stays active during responsive accumulation",
+      "PASS actual player reaches the southern beach from the ruins",
+      "RECORDING_ROUTE 25 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "recording-marks-fixed-first",
+    "suite": "path_trace_recording_route",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS ordinary campaign uses the separate simulation process",
+      "PASS recording route prepares PT",
+      "PASS route renders at recorded 4K resolution",
+      "PASS player walks to east-opening",
+      "PASS player walks to downhill-path",
+      "PASS authored encounter exists: wolf",
+      "PASS normal combat defeats wolf",
+      "PASS normal looting removes wolf",
+      "PASS player walks to slope-to-boar",
+      "PASS authored encounter exists: slope-boar",
+      "PASS normal combat defeats slope-boar",
+      "PASS normal looting removes slope-boar",
+      "PASS player walks to down-to-beach",
+      "PASS authored encounter exists: beach-boar",
+      "PASS normal combat defeats beach-boar",
+      "PASS normal looting removes beach-boar",
+      "PASS authored encounter exists: shore-toad",
+      "PASS normal combat defeats shore-toad",
+      "PASS normal looting removes shore-toad",
+      "PASS authored encounter exists: south-toad",
+      "PASS normal combat defeats south-toad",
+      "PASS normal looting removes south-toad",
+      "PASS PT stays active along the recording-derived route",
+      "PASS actual player reaches the southern beach from the ruins",
+      "RECORDING_ROUTE 24 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "blood-animation-dx12",
+    "suite": "ground_mark_animation",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "GROUND_MARK_ANIMATION 24 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "blood-animation-vulkan",
+    "suite": "ground_mark_animation",
+    "platform": "linux",
+    "renderer": "vulkan",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "GROUND_MARK_ANIMATION 24 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "blood-animation-gl",
+    "suite": "ground_mark_animation",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "GROUND_MARK_ANIMATION 24 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "blood-soft-vulkan",
+    "suite": "ground_mark_soft_surface",
+    "platform": "linux",
+    "renderer": "vulkan",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SOFT_PROJECTED_MARKS 3 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "preview2-receivers-dx12",
+    "suite": "ground_mark_receivers",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "GROUND_MARK_RECEIVERS checks=13 failures=0"
+    ]
+  },
+  {
+    "tag": "preview2-receivers-gl",
+    "suite": "ground_mark_receivers",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "GROUND_MARK_RECEIVERS checks=13 failures=0"
+    ]
+  },
+  {
+    "tag": "preview2-nrd-dx12",
+    "suite": "path_trace_nrd_device",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS qualified NRD test device",
+      "PASS build actual ray-traced NRD fixture",
+      "PASS native NRD 4.18 runtime and compute shaders loaded",
+      "PASS NRD ran without custom fallback",
+      "PASS native dispatch planner and GPU passes execute every frame",
+      "PASS NRD preserves coloured emission and positive indirect light",
+      "PASS stationary surface reuses NRD history",
+      "PASS NRD output remains finite and bounded",
+      "PASS NRD presents stable public texture handles",
+      "PASS progressive mode keeps exact long accumulation",
+      "PASS return to NRD restarts and converges",
+      "PASS odd-sized resize rebuilds NRD pools",
+      "PASS lighting reset removes extinguished emission immediately",
+      "PASS NRD dispatch failure falls back to usable custom lighting",
+      "PASS fallback accumulates current illumination after NRD failure",
+      "PASS NRD failure releases all pool images and is not retried every frame",
+      "PASS NRD pools, descriptors and pipelines are released",
+      "SCENE_RT_DEVICE 17 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "preview2-nrd-vulkan",
+    "suite": "path_trace_nrd_device",
+    "platform": "linux",
+    "renderer": "vulkan",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS qualified NRD test device",
+      "PASS build actual ray-traced NRD fixture",
+      "PASS native NRD 4.18 runtime and compute shaders loaded",
+      "PASS NRD ran without custom fallback",
+      "PASS native dispatch planner and GPU passes execute every frame",
+      "PASS NRD preserves coloured emission and positive indirect light",
+      "PASS stationary surface reuses NRD history",
+      "PASS NRD output remains finite and bounded",
+      "PASS NRD presents stable public texture handles",
+      "PASS progressive mode keeps exact long accumulation",
+      "PASS return to NRD restarts and converges",
+      "PASS odd-sized resize rebuilds NRD pools",
+      "PASS lighting reset removes extinguished emission immediately",
+      "PASS NRD dispatch failure falls back to usable custom lighting",
+      "PASS fallback accumulates current illumination after NRD failure",
+      "PASS NRD failure releases all pool images and is not retried every frame",
+      "PASS NRD pools, descriptors and pipelines are released",
+      "SCENE_RT_DEVICE 17 checks 0 failures"
+    ]
+  },
+  {
+    "tag": "preview2-blood-save-vulkan",
+    "suite": "blood_pool_save",
+    "platform": "linux",
+    "renderer": "vulkan",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS actual death queue creates one blood pool",
+      "PASS full Session save succeeds",
+      "PASS save contains the living pool at its current age",
+      "PASS full Session load succeeds",
+      "PASS reload keeps the same death pose above the pool",
+      "PASS reload recreates exactly one pool",
+      "PASS reload retains pool growth and rotation",
+      "PASS reload retains remaining life and opacity",
+      "PASS reload retains pool position",
+      "PASS late/repeated replay cannot duplicate the pool",
+      "PASS previous-world event cannot recreate a pool",
+      "PASS save/load after removing the corpse succeeds",
+      "PASS pool survives removal of the original body",
+      "PASS save/load after natural expiry succeeds",
+      "PASS expired pools are not resurrected by loading",
+      "PASS malformed pool rejected",
+      "PASS malformed pool rejected",
+      "PASS malformed pool rejected",
+      "BLOOD_POOL_SAVE 18 checks 0 failures"
+    ]
+  }
+]

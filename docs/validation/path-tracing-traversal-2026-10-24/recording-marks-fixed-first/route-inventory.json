@@ -1,0 +1,565 @@
+{
+	"hero": 1500000001,
+	"size": [
+		256,
+		192
+	],
+	"units": [
+		{
+			"dead": false,
+			"height": 6.30993223190308,
+			"hp": 80.0,
+			"pos": [
+				153.078125,
+				110.65625
+			],
+			"proto": "OgreTutor",
+			"uid": 663
+		},
+		{
+			"dead": false,
+			"height": 7.06632614135742,
+			"hp": 20.0,
+			"pos": [
+				138.578125,
+				120.546875
+			],
+			"proto": "GoblinTutor",
+			"uid": 666
+		},
+		{
+			"dead": false,
+			"height": 6.7307596206665,
+			"hp": 20.0,
+			"pos": [
+				130.96875,
+				152.859375
+			],
+			"proto": "GoblinTutor",
+			"uid": 668
+		},
+		{
+			"dead": false,
+			"height": 6.30706930160522,
+			"hp": 20.0,
+			"pos": [
+				134.359375,
+				156.46875
+			],
+			"proto": "GoblinTutor",
+			"uid": 669
+		},
+		{
+			"dead": false,
+			"height": 6.30289506912231,
+			"hp": 20.0,
+			"pos": [
+				135.21875,
+				151.421875
+			],
+			"proto": "GoblinTutor",
+			"uid": 670
+		},
+		{
+			"dead": false,
+			"height": 12.5523920059204,
+			"hp": 10.0,
+			"pos": [
+				78.515625,
+				139.5625
+			],
+			"proto": "Human Gipath Runner Male F1",
+			"uid": 699
+		},
+		{
+			"dead": false,
+			"height": 12.3128938674927,
+			"hp": 10.0,
+			"pos": [
+				76.5625,
+				138.09375
+			],
+			"proto": "Human Gipath Runner Female F1",
+			"uid": 702
+		},
+		{
+			"dead": false,
+			"height": 6.43578720092773,
+			"hp": 20.0,
+			"pos": [
+				142.921875,
+				128.75
+			],
+			"proto": "GoblinTutor",
+			"uid": 1766
+		},
+		{
+			"dead": false,
+			"height": 12.1200370788574,
+			"hp": 20.0,
+			"pos": [
+				64.03125,
+				114.609375
+			],
+			"proto": "WolfTutorWOLoot",
+			"uid": 1804
+		},
+		{
+			"dead": false,
+			"height": 12.281831741333,
+			"hp": 10.0,
+			"pos": [
+				74.6875,
+				139.046875
+			],
+			"proto": "Human Gipath Runner Male F1",
+			"uid": 1884
+		},
+		{
+			"dead": false,
+			"height": 5.49722051620483,
+			"hp": 20.0,
+			"pos": [
+				54.953125,
+				98.6875
+			],
+			"proto": "BoarTutor",
+			"uid": 1890
+		},
+		{
+			"dead": false,
+			"height": 6.70104074478149,
+			"hp": 80.0,
+			"pos": [
+				131.078125,
+				89.75
+			],
+			"proto": "OgreTutor",
+			"uid": 1898
+		},
+		{
+			"dead": false,
+			"height": 6.43648147583008,
+			"hp": 80.0,
+			"pos": [
+				157.796875,
+				86.328125
+			],
+			"proto": "OgreTutorStealer",
+			"uid": 1900
+		},
+		{
+			"dead": false,
+			"height": 7.75216817855835,
+			"hp": 20.0,
+			"pos": [
+				172.46875,
+				107.78125
+			],
+			"proto": "GoblinTutor",
+			"uid": 1901
+		},
+		{
+			"dead": false,
+			"height": 7.77644729614258,
+			"hp": 20.0,
+			"pos": [
+				173.453125,
+				106.578125
+			],
+			"proto": "GoblinTutor",
+			"uid": 1913
+		},
+		{
+			"dead": false,
+			"height": 4.22552299499512,
+			"hp": 20.0,
+			"pos": [
+				48.203125,
+				76.921875
+			],
+			"proto": "BoarTutor",
+			"uid": 1915
+		},
+		{
+			"dead": false,
+			"height": 4.32315969467163,
+			"hp": 20.0,
+			"pos": [
+				58.515625,
+				61.359375
+			],
+			"proto": "BoarTutor",
+			"uid": 1916
+		},
+		{
+			"dead": false,
+			"height": 4.40126037597656,
+			"hp": 20.0,
+			"pos": [
+				73.703125,
+				58.71875
+			],
+			"proto": "BoarTutor",
+			"uid": 1918
+		},
+		{
+			"dead": false,
+			"height": 4.36965990066528,
+			"hp": 20.0,
+			"pos": [
+				73.34375,
+				43.375
+			],
+			"proto": "BoarTutor",
+			"uid": 1919
+		},
+		{
+			"dead": false,
+			"height": 4.40126037597656,
+			"hp": 20.0,
+			"pos": [
+				87.34375,
+				48.90625
+			],
+			"proto": "BoarTutor",
+			"uid": 1920
+		},
+		{
+			"dead": false,
+			"height": 3.317631483078,
+			"hp": 10.0,
+			"pos": [
+				41.21875,
+				66.734375
+			],
+			"proto": "ToadTutor",
+			"uid": 1921
+		},
+		{
+			"dead": false,
+			"height": 3.03064441680908,
+			"hp": 10.0,
+			"pos": [
+				44.78125,
+				50.703125
+			],
+			"proto": "ToadTutor",
+			"uid": 1922
+		},
+		{
+			"dead": false,
+			"height": 3.38934779167175,
+			"hp": 10.0,
+			"pos": [
+				57.296875,
+				37.0
+			],
+			"proto": "ToadTutor",
+			"uid": 1923
+		},
+		{
+			"dead": false,
+			"height": 3.14167237281799,
+			"hp": 10.0,
+			"pos": [
+				76.828125,
+				29.96875
+			],
+			"proto": "ToadTutor",
+			"uid": 1925
+		},
+		{
+			"dead": false,
+			"height": 2.94926381111145,
+			"hp": 10.0,
+			"pos": [
+				94.71875,
+				38.15625
+			],
+			"proto": "ToadTutor",
+			"uid": 1926
+		},
+		{
+			"dead": false,
+			"height": 2.9939546585083,
+			"hp": 10.0,
+			"pos": [
+				109.375,
+				23.421875
+			],
+			"proto": "ToadTutor",
+			"uid": 1927
+		},
+		{
+			"dead": false,
+			"height": 4.43105268478394,
+			"hp": 10.0,
+			"pos": [
+				126.046875,
+				14.390625
+			],
+			"proto": "ToadTutor",
+			"uid": 1928
+		},
+		{
+			"dead": false,
+			"height": 6.14399909973145,
+			"hp": 10.0,
+			"pos": [
+				126.109375,
+				43.5625
+			],
+			"proto": "ToadTutor",
+			"uid": 1930
+		},
+		{
+			"dead": false,
+			"height": 6.3879017829895,
+			"hp": 10.0,
+			"pos": [
+				122.265625,
+				62.46875
+			],
+			"proto": "ToadTutor",
+			"uid": 1932
+		},
+		{
+			"dead": false,
+			"height": 6.40917015075684,
+			"hp": 10.0,
+			"pos": [
+				99.5625,
+				78.953125
+			],
+			"proto": "ToadTutor",
+			"uid": 1933
+		},
+		{
+			"dead": false,
+			"height": 6.29455995559692,
+			"hp": 10.0,
+			"pos": [
+				96.84375,
+				109.0
+			],
+			"proto": "ToadTutor",
+			"uid": 1934
+		},
+		{
+			"dead": false,
+			"height": 6.24386358261108,
+			"hp": 10.0,
+			"pos": [
+				98.390625,
+				108.328125
+			],
+			"proto": "ToadTutor",
+			"uid": 1935
+		},
+		{
+			"dead": false,
+			"height": 11.0333833694458,
+			"hp": 10.0,
+			"pos": [
+				103.3125,
+				126.359375
+			],
+			"proto": "ToadTutor",
+			"uid": 1936
+		},
+		{
+			"dead": false,
+			"height": 6.06609535217285,
+			"hp": 10.0,
+			"pos": [
+				110.328125,
+				138.40625
+			],
+			"proto": "ToadTutor",
+			"uid": 1937
+		},
+		{
+			"dead": false,
+			"height": 7.16125249862671,
+			"hp": 20.0,
+			"pos": [
+				100.84375,
+				57.109375
+			],
+			"proto": "WolfTutor",
+			"uid": 1938
+		},
+		{
+			"dead": false,
+			"height": 8.93251895904541,
+			"hp": 20.0,
+			"pos": [
+				85.875,
+				75.546875
+			],
+			"proto": "WolfTutor",
+			"uid": 1940
+		},
+		{
+			"dead": false,
+			"height": 6.8130087852478,
+			"hp": 20.0,
+			"pos": [
+				132.046875,
+				135.265625
+			],
+			"proto": "GoblinTutor",
+			"uid": 1943
+		},
+		{
+			"dead": false,
+			"height": 6.49703216552734,
+			"hp": 31.0,
+			"pos": [
+				172.71875,
+				48.5
+			],
+			"proto": "BansheeTutor",
+			"uid": 1944
+		},
+		{
+			"dead": false,
+			"height": 6.97255373001099,
+			"hp": 31.0,
+			"pos": [
+				150.984375,
+				51.71875
+			],
+			"proto": "BansheeTutor",
+			"uid": 1945
+		},
+		{
+			"dead": false,
+			"height": 6.51475620269775,
+			"hp": 20.0,
+			"pos": [
+				190.796875,
+				78.515625
+			],
+			"proto": "PigF0",
+			"uid": 1947
+		},
+		{
+			"dead": false,
+			"height": 6.35216522216797,
+			"hp": 20.0,
+			"pos": [
+				202.65625,
+				70.46875
+			],
+			"proto": "PigF0",
+			"uid": 1948
+		},
+		{
+			"dead": false,
+			"height": 6.35216522216797,
+			"hp": 20.0,
+			"pos": [
+				211.3125,
+				83.90625
+			],
+			"proto": "PigF0",
+			"uid": 1949
+		},
+		{
+			"dead": false,
+			"height": 6.35216522216797,
+			"hp": 20.0,
+			"pos": [
+				222.609375,
+				71.96875
+			],
+			"proto": "PigF0",
+			"uid": 1950
+		},
+		{
+			"dead": false,
+			"height": 4.36461496353149,
+			"hp": 20.0,
+			"pos": [
+				106.140625,
+				39.484375
+			],
+			"proto": "BoarTutor",
+			"uid": 1952
+		},
+		{
+			"dead": false,
+			"height": 4.39410495758057,
+			"hp": 20.0,
+			"pos": [
+				116.640625,
+				31.28125
+			],
+			"proto": "BoarTutor",
+			"uid": 1953
+		},
+		{
+			"dead": false,
+			"height": 7.99422168731689,
+			"hp": 20.0,
+			"pos": [
+				102.734375,
+				68.6875
+			],
+			"proto": "WolfTutor",
+			"uid": 1954
+		},
+		{
+			"dead": false,
+			"height": 6.31219339370728,
+			"hp": 20.0,
+			"pos": [
+				134.234375,
+				74.640625
+			],
+			"proto": "WolfTutor",
+			"uid": 1955
+		},
+		{
+			"dead": false,
+			"height": 11.9581098556519,
+			"hp": 38.6875,
+			"pos": [
+				52.5,
+				138.0
+			],
+			"proto": "Human Hero",
+			"uid": 1500000001
+		}
+	],
+	"zone": {
+		"allod": "gipat",
+		"exits": {
+			"1": {
+				"area": "[P: (49.0, 133.0), S: (10.0, 10.0)]",
+				"deploy": "[P: (49.0, 133.0), S: (10.0, 10.0)]",
+				"to": "none",
+				"to_exit": 0,
+				"view": 90.0
+			},
+			"2": {
+				"area": "[P: (181.0, 108.0), S: (12.0, 12.0)]",
+				"deploy": "[P: (184.0, 101.0), S: (6.0, 7.0)]",
+				"remove": "[P: (181.0, 108.0), S: (12.0, 12.0)]",
+				"to": "bz1g",
+				"to_exit": 1
+			}
+		},
+		"figure": "ingm101",
+		"id": "gz1g",
+		"minimap": "zone1map",
+		"mob": "zone1",
+		"mpr": "zone1",
+		"objtex": "zone1quest",
+		"position": "(-2.37, 0.12, 0.805)",
+		"size": "(8, 6)",
+		"type": "game"
+	}
+}

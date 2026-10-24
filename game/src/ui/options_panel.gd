@@ -107,17 +107,17 @@ const WATER_GROUP := 23    # Remake › Water (also Graphics › …)
 const TAB_ORDER := [0, SCREEN_GROUP, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, REMAKE_GROUP]
 const TABS := 13           # TAB_ORDER.size()
 ## The Remake page's link rows (row = index).
-const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS_GROUP, CAMERA_GROUP,
+const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, SCENE_RT_GROUP, WATER_GROUP, EFFECTS_GROUP, CAMERA_GROUP,
 	INTERFACE_GROUP, PAD_GROUP, GAMEPLAY_GROUP, COOP_GROUP]
 ## The remake pages and the page their « row (and Esc / B) leads back to; the
 ## parent's button is lit while one is up. The graphics sections also hang
 ## under Graphics (GRAPHICS_LINKS) when opened from there (`_came_from`).
-const PARENT := {SCENE_RT_GROUP: LIGHT_GROUP, DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
+const PARENT := {SCENE_RT_GROUP: REMAKE_GROUP, DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
 	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
 	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
 	PAD_BUTTONS_GROUP: PAD_GROUP, TERRAIN_GROUP: REMAKE_GROUP, WATER_GROUP: REMAKE_GROUP}
 ## Five focused graphics sections fit under the original controls and presets.
-## These are direct links from both Graphics (rows 9..13) and Remake (0..4).
+## These are direct links from both Graphics (rows 9..13) and Remake (with the separate RT/PT section).
 const GRAPHICS_LINKS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS_GROUP]
 const GRAPHICS_LINK_ROW := 9
 ## The pages with the Original look toggle in row 12 (PRESET_ROW); on the
@@ -144,14 +144,14 @@ const PAD_ACTIONS := {
 	"view": ["Quests", "The quests screen. Held: the journal."],
 	"menu": ["Menu", "The game menu: save, load, options, exit."],
 }
-## Remake row 11: the original game files (DataSwitch). Only from the main
+## Remake row 12: the original game files (DataSwitch). Only from the main
 ## menu (`game_files`); in a game the row is grey and says so.
 const FILES_GROUP := REMAKE_GROUP
-const FILES_ROW := 11
+const FILES_ROW := 12
 const FILES_LINK := ["Game files…", "Choose another Evil Islands folder or installer, or import the game data again. Saves and settings are kept."]
-## Remake row 12: the log and system information saved or copied
+## Remake row 13: the log and system information saved or copied
 ## (CrashReportBox), from the main menu and in a game.
-const LOG_ROW := 12
+const LOG_ROW := 13
 const LOG_LINK := ["Export log…", "Saves the game's log with the system information to a folder you can open, or copies it, to send it with a bug report."]
 const LIVE := ["volume_sfx", "volume_stream", "volume_voice", "brightness", "contrast", "gamma", "reverse_stereo", "cave_echo",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale"]
@@ -230,6 +230,7 @@ func _ready() -> void:
 		_screen_pickers[name] = picker
 		picker.item_selected.connect(func(index):
 			if name == "q_aa": _set_aa_value(picker.get_item_id(index))
+			elif name == FsrGraphics.FRAME_GENERATION: _set_fg_value(picker.get_item_id(index))
 			else: _set_value(name, picker.get_item_id(index))
 			_sel = SCREEN_PICKER_ROWS[name])
 		picker.get_popup().add_theme_font_override("font", font())
@@ -380,28 +381,35 @@ func _show_group(g: int) -> void:
 			"choices": choices}
 		if name == "q_water_rt_quality":
 			_rows[int(o[4])].disabled = int(_values.get("gfx_water", 0)) == 0 or int(_values.get("gfx_water_reflections", 0)) != 3
-		if name in ["rt_shadows","rt_gi","q_rt_lighting","pt_mode","pt_accumulation"]:
+		if name in ["rt_shadows","rt_gi","q_rt_lighting","pt_mode","pt_accumulation","pt_target_fps"]:
 			var available := preload("res://src/game/fx/scene_raytrace_device.gd").supported()
 			var path_mode := int(_values.get("pt_mode",0))>0
-			_rows[int(o[4])].disabled = (not available and (name in ["q_rt_lighting","pt_accumulation"] or int(_values.get(name,0))==0)) \
+			_rows[int(o[4])].disabled = (not available and (name in ["q_rt_lighting","pt_accumulation","pt_target_fps"] or int(_values.get(name,0))==0)) \
 				or (name=="q_rt_lighting" and not path_mode and int(_values.get("rt_shadows",0))==0 and int(_values.get("rt_gi",0))==0) \
-				or (name in ["rt_shadows","rt_gi"] and path_mode) or (name=="pt_accumulation" and not path_mode)
+				or (name in ["rt_shadows","rt_gi"] and path_mode) or (name in ["pt_accumulation","pt_target_fps"] and not path_mode) \
+				or (name=="pt_target_fps" and int(_values.get("pt_accumulation",0))>0)
 			if not available: _rows[int(o[4])].tip += "\n\n"+RemakeText.t(preload("res://src/game/fx/scene_raytrace.gd").REASON)
 		if name in ["resolution","render_scale"]: _rows[int(o[4])].kind = "dropdown"
 		if name == "q_aa":
 			_rows[int(o[4])].kind = "dropdown"
-			_rows[int(o[4])].choices = choices + RemakeText.tl(["FSR 3.1", "FSR 4"])
-			_rows[int(o[4])].max = choices.size() + 2
-			_rows[int(o[4])].tip += "\n\n" + RemakeText.t(FsrGraphics.SR_HELP)
+			_rows[int(o[4])].choices = choices + RemakeText.tl(["FSR 3.1", "FSR 4", "NVIDIA DLSS"])
+			_rows[int(o[4])].max = choices.size() + 3
+			_rows[int(o[4])].tip += "\n\n" + RemakeText.t(FsrGraphics.SR_HELP) + "\n\n" + RemakeText.t(RtxGraphics.SR_HELP)
 		if ModSchema.RULES.has(name):
 			var reason := ModStore.editable(name)
 			_rows[int(o[4])].disabled = reason != ""
 			if reason != "": _rows[int(o[4])].tip += "\n" + RemakeText.t(reason)
-		if name in FsrGraphics.OPTIONS:
-			_rows[int(o[4])].kind = "dropdown"
-			var reason := FsrGraphics.reason(name, _values)
-			_rows[int(o[4])].disabled = reason != "" and (name == FsrGraphics.QUALITY or int(_values.get(name, 0)) == 0)
-			if reason != "": _rows[int(o[4])].tip += "\n\n" + RemakeText.t(reason)
+		if name in [FsrGraphics.QUALITY, FsrGraphics.FRAME_GENERATION]:
+			var row: Dictionary = _rows[int(o[4])]
+			row.kind = "dropdown"
+			var reason := TemporalGraphics.quality_reason(_values) if name == FsrGraphics.QUALITY else ""
+			row.disabled = not reason.is_empty()
+			row.tip = RemakeText.t(TemporalGraphics.QUALITY_HELP if name == FsrGraphics.QUALITY else TemporalGraphics.FG_HELP)
+			if name == FsrGraphics.FRAME_GENERATION:
+				row.choices = RemakeText.tl(TemporalGraphics.FG_CHOICES)
+				row.max = TemporalGraphics.FG_CHOICES.size()
+				row.disabled = TemporalGraphics.fg_selection(_values) == 0 and [1,2,3].all(func(value): return not TemporalGraphics.fg_reason(value,_values).is_empty())
+			if reason != "": row.tip += "\n\n" + RemakeText.t(reason)
 	for a: Array in EIKeymap.ACTIONS:
 		if int(a[2]) != _group:
 			continue
@@ -414,7 +422,7 @@ func _show_group(g: int) -> void:
 	if _group == REMAKE_GROUP:   # the sections, then the game data rows
 		for i in SECTIONS.size():
 			_rows[i] = _section_link(SECTIONS[i])
-		_rows[10] = {"kind":"link", "name":"", "mods":true, "label":RemakeText.t("Game setup…"), "tip":RemakeText.t("Difficulty, gameplay rules and optional mods.")}
+		_rows[SECTIONS.size()] = {"kind":"link", "name":"", "mods":true, "label":RemakeText.t("Game setup…"), "tip":RemakeText.t("Difficulty, gameplay rules and optional mods.")}
 		_rows[FILES_ROW] = {"kind": "link", "name": "", "files": true, "disabled": not game_files,
 			"label": RemakeText.t(FILES_LINK[0]),
 			"tip": _remake_tip(FILES_LINK) + "\n" + RemakeText.t("Current game files: %s") % DataSwitch.describe()
@@ -439,8 +447,6 @@ func _show_group(g: int) -> void:
 			_rows[4] = {"kind":"link","name":"","profile":true,"label":RemakeText.t("Player name…"),"tip":RemakeText.t(PlayerProfileDialog.HELP)}
 		if _group == CAMERA_GROUP:
 			_rows[12] = _section_link(DIRECT_GROUP)
-		elif _group == LIGHT_GROUP:
-			_rows[11] = _section_link(SCENE_RT_GROUP)
 		elif _group == DIRECT_GROUP:
 			_rows[11] = _section_link(DIRECT_PAD_GROUP)
 			_rows[12] = _section_link(DIRECT_KEYS_GROUP)
@@ -470,7 +476,7 @@ func _show_group(g: int) -> void:
 
 
 func _refresh_screen_pickers() -> void:
-	_fsr_hint = RemakeText.t(FsrGraphics.screen_hint(FsrGraphics.facts())) if _group == SCREEN_GROUP else ""
+	_fsr_hint = RemakeText.t(TemporalGraphics.hint(_values)) if _group == SCREEN_GROUP else ""
 	for name: String in _screen_pickers:
 		var picker: OptionButton = _screen_pickers[name]
 		picker.get_popup().hide()
@@ -482,23 +488,32 @@ func _refresh_screen_pickers() -> void:
 		for i in row.choices.size():
 			picker.add_item(row.choices[i], i)
 			var reason := ""
-			if name == "q_aa": reason = FsrGraphics.aa_reason(i, _values)
-			elif name == FsrGraphics.FRAME_GENERATION and i > 0:
-				var proposed := _values.duplicate()
-				proposed[name] = i
-				reason = FsrGraphics.reason(name, proposed)
+			if name == "q_aa": reason = TemporalGraphics.aa_reason(i, _values)
+			elif name == FsrGraphics.FRAME_GENERATION:
+				reason = TemporalGraphics.fg_reason(i, _values)
 			picker.set_item_disabled(i, not reason.is_empty())
 			picker.get_popup().set_item_tooltip(i, RemakeText.t(reason) if not reason.is_empty() else row.tip)
 	_sync_screen_pickers()
 
 
 func _set_aa_value(selection: int) -> void:
-	if not FsrGraphics.aa_reason(selection, _values).is_empty(): return
-	if selection >= 6:
-		_set_value(FsrGraphics.UPSCALING, selection - 5)
+	if not TemporalGraphics.aa_reason(selection, _values).is_empty(): return
+	if selection == 8:
+		_values[RtxGraphics.UPSCALING] = TemporalGraphics.quality_selection(_values) + 1
+		_values[FsrGraphics.UPSCALING] = 0
+		_values[FsrGraphics.FRAME_GENERATION] = 0
 	else:
-		_set_value(FsrGraphics.UPSCALING, 0)
-		_set_value("q_aa", selection)
+		_values[RtxGraphics.UPSCALING] = 0
+		_values[RtxGraphics.FRAME_GENERATION] = 0
+		_values[FsrGraphics.UPSCALING] = selection - 5 if selection >= 6 else 0
+		if selection < 6: _set_value("q_aa", selection)
+	_show_group(_group)
+
+func _set_fg_value(selection: int) -> void:
+	if not TemporalGraphics.fg_reason(selection, _values).is_empty(): return
+	_values[RtxGraphics.FRAME_GENERATION] = 1 if selection == 3 else 0
+	_values[FsrGraphics.FRAME_GENERATION] = selection if selection < 3 else 0
+	_show_group(_group)
 
 
 # ------------------------------------------------------------------ keys
@@ -647,10 +662,9 @@ func _switch_text(row: Dictionary) -> String:
 
 func _set_value(name: String, v: int) -> void:
 	if ModSchema.RULES.has(name) and ModStore.editable(name) != "": return
-	if name in FsrGraphics.OPTIONS:
-		var proposed := _values.duplicate()
-		proposed[name] = v
-		if (name == FsrGraphics.QUALITY or v > 0) and not FsrGraphics.reason(name, proposed).is_empty(): return
+	if name == FsrGraphics.QUALITY:
+		if not TemporalGraphics.quality_reason(_values).is_empty(): return
+		if RtxGraphics.selected(_values): _values[RtxGraphics.UPSCALING] = v + 1
 	var was := int(_values.get(name, 0))
 	if name == "graphics_preset":
 		var preset_values := GfxPresets.values(v)
@@ -669,7 +683,7 @@ func _set_value(name: String, v: int) -> void:
 	if name in LIVE:   # volumes, gamma ramp, stereo at once
 		GameData.set_option(name, v)
 	if name in FsrGraphics.OPTIONS or (_group == WATER_GROUP and name in ["gfx_water", "gfx_water_reflections", "graphics_preset"]) \
-			or (_group == SCENE_RT_GROUP and name in ["rt_shadows","rt_gi","pt_mode"]):
+			or (_group == SCENE_RT_GROUP and name in ["rt_shadows","rt_gi","pt_mode","pt_accumulation"]):
 		var selected := _sel
 		_show_group(_group)
 		_sel = selected
@@ -775,8 +789,8 @@ func _apply() -> void:
 		if int(_values[n]) != GameData.option(n):
 			changes[n] = int(_values[n])
 	GameData.set_options(changes)
-	if renderer and get_parent():
-		RendererChoice.ask_restart(get_parent(), game_files)   # applies at the next start
+	if (renderer or RtxGraphics.needs_restart(_values)) and get_parent():
+		RendererChoice.ask_restart(get_parent(), game_files, not renderer)   # applies at the next start
 
 
 ## ✗ / Esc (case 1): the live rows go back.
@@ -901,7 +915,7 @@ func _sync_screen_pickers() -> void:
 			picker.get_popup().add_theme_font_size_override("font_size", font_px(1))
 			picker.get_popup().add_theme_constant_override("v_separation", maxi(8, roundi(8 * kv().y)))
 		picker.size = rect.size
-		picker.select(FsrGraphics.aa_selection(_values) if name == "q_aa" else int(_values.get(name, 0)))
+		picker.select(TemporalGraphics.aa_selection(_values) if name == "q_aa" else TemporalGraphics.fg_selection(_values) if name == FsrGraphics.FRAME_GENERATION else TemporalGraphics.quality_selection(_values) if name == FsrGraphics.QUALITY else int(_values.get(name, 0)))
 
 
 func group_font_px(g: int) -> int:

@@ -1,0 +1,67 @@
+{
+  "suite": "path_trace_grass_receivers",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 9.38,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-path_trace_grass_receivers/fixtures/path_trace_grass_receivers.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-path_trace_grass_receivers",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS grass fixture uses calibrated resolution",
+    "PASS raised grass inherits the traced dark and lit ground roots",
+    "PASS ground root is a valid receiver",
+    "PASS grass rejects unrelated foreground walls",
+    "SCENE_RT_DEVICE 4 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.pck": "86e58844c44f6f1c59df757a9411a4b87f10770f2eedace191b78e63477325a5"
+  },
+  "repository_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+  "repository_status": "",
+  "fixture_hashes": {
+    "path_trace_grass_receivers.gd": "fff15002c1914053a832db191002bc1fce523c971892fee2660cbeb1ce1384c2",
+    "scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47"
+  },
+  "fixture_sha256": "fff15002c1914053a832db191002bc1fce523c971892fee2660cbeb1ce1384c2",
+  "full_result_sha256": "d5657136864296240de96744a0f98a4ac4c99836b1acbd6edb1805d7c774f81a"
+}

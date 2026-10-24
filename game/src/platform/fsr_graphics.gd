@@ -84,7 +84,7 @@ static func next_value(name: String, current: int, values: Dictionary) -> int:
 	return current
 
 static func sr_active() -> bool:
-	return GameData.option(UPSCALING) > 0 and reason(UPSCALING).is_empty()
+	return not RtxGraphics.selected(GameData.options) and GameData.option(UPSCALING) > 0 and reason(UPSCALING).is_empty()
 
 static func aa_selection(values: Dictionary) -> int:
 	# Retain the old saved keys and the non-FSR fallback on unsupported builds.

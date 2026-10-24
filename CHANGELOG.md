@@ -1,5 +1,51 @@
 # Changelog
 
+## 1.28.0-experimental.6 (local preview)
+
+- Prepare streamed biome-cover vertex layouts and Mirror-water shader variants during zone loading.
+- Upload replacement ray-tracing texture arrays in bounded batches while retaining the previous scene and its lighting.
+- Record separate resource-creation and texture-upload timings for traversal diagnostics.
+
+## 1.28.0-experimental.5 (local preview)
+
+- Warm projected ground-mark materials during loading and reuse immutable ray pipelines across region replacements. Prepare replacement acceleration structures in bounded steps.
+- Transfer NRD history between compatible regions and reject changed or deformed surfaces independently.
+- Add an optional rendered-frame target for responsive PT with gradual, bounded resolution changes and EN/RU/DE controls.
+- Apply nearby grass shadow-map occlusion to traced direct sunlight while retaining indirect illumination.
+- Supply DLSS-G with actual HUD opacity and presentation-sized inputs; retain normal rendering for unsupported cropped mappings.
+
+## 1.28.0-experimental.4 (local preview)
+
+- Add an optional dlssg_for_sm86 0.4.0 package for native NVIDIA frame
+  generation on Ampere, with pinned files and complete upstream notices.
+- Restrict Reflex presentation markers to real presents and sample NVIDIA
+  frame-generation presentation telemetry once per present.
+- Describe GPU capability requirements consistently in EN/RU/DE.
+
+## 1.28.0-experimental.3 (local preview)
+
+- Restore NVIDIA DLSS/DLAA and the hardware-gated 2× frame-generation path in
+  the normal Screen controls, with exclusive SDK presentation ownership.
+- Preserve NRD, traversal/blood-mark performance fixes and current DXR barriers.
+- Restore NVIDIA/AMD SDK splash and credits; add missing NRD credits on both
+  desktop platforms, with EN/RU/DE text and pinned production-file notices.
+- Keep NVIDIA mark-placement approval explicitly pending for local review.
+- Retain DLSS through forced shader warm-up draws and the local simulation
+  connection through long Windows loads.
+
+
+## 1.28.0-experimental.2 — unreleased
+
+- Reuse projected blood-mark geometry while animating its growth and rotation, reducing CPU work after combat. Preserve surface placement, fading and lifetime.
+
+## 1.28.0-experimental.1 — unreleased
+
+- Integrate NVIDIA NRD 4.18.0 REBLUR for responsive path-traced lighting on Windows DX12 and Linux Vulkan. Preserve sharp direct highlights and retain custom reconstruction as a fallback.
+- Reuse CPU mesh and texture sources and lifted terrain sectors across nearby ray-traced scene snapshots, reducing GPU readbacks during travel.
+- Apply traced ground lighting and shadows to procedural grass and ground cover.
+- Move ray tracing and path tracing options into a direct Remake submenu, with English, Russian and German labels and help.
+- Reduce overbright rainy daylight and improve path-traced surface reconstruction.
+
 ## 1.27.0 — 2026-10-24
 
 - Expand Autochess to 40 items across five tiers, mixing raw statistics with special effects. Higher tiers unlock after rounds 3, 5, 10, 15 and 20; borders progress from none to green, blue, purple and gold.

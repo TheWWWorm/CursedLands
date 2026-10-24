@@ -1,0 +1,197 @@
+{
+  "configuration_sha256": "e849caacadf1a9a0fbed5e8cc899db736498769bbb721e14316e83454a568d15",
+  "events": [],
+  "contexts": [
+    {
+      "t": "ctx",
+      "f": 0,
+      "sr": {
+        "in": [
+          853,
+          480
+        ],
+        "out": [
+          1280,
+          720
+        ],
+        "preset": null,
+        "kernels": "game"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 272,
+      "sr": {
+        "in": [
+          853,
+          480
+        ],
+        "out": [
+          1280,
+          720
+        ],
+        "preset": null,
+        "kernels": "game"
+      },
+      "fg": {
+        "mult": 2,
+        "out": [
+          1280,
+          720
+        ],
+        "route": "ours",
+        "tier": 1,
+        "image": "cubin_sm86"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 321,
+      "sr": {
+        "in": [
+          1280,
+          720
+        ],
+        "out": [
+          1280,
+          720
+        ],
+        "preset": null,
+        "kernels": "game"
+      },
+      "fg": {
+        "mult": 2,
+        "out": [
+          1280,
+          720
+        ],
+        "route": "ours",
+        "tier": 1,
+        "image": "cubin_sm86"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 540,
+      "sr": {
+        "in": [
+          1280,
+          720
+        ],
+        "out": [
+          1280,
+          720
+        ],
+        "preset": null,
+        "kernels": "game"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 810,
+      "sr": {
+        "in": [
+          1067,
+          600
+        ],
+        "out": [
+          1600,
+          900
+        ],
+        "preset": null,
+        "kernels": "game"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 823,
+      "sr": {
+        "in": [
+          1067,
+          600
+        ],
+        "out": [
+          1600,
+          900
+        ],
+        "preset": null,
+        "kernels": "game"
+      },
+      "fg": {
+        "mult": 2,
+        "out": [
+          1600,
+          900
+        ],
+        "route": "ours",
+        "tier": 1,
+        "image": "cubin_sm86"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 834,
+      "sr": {
+        "in": [
+          1600,
+          900
+        ],
+        "out": [
+          1600,
+          900
+        ],
+        "preset": null,
+        "kernels": "game"
+      },
+      "fg": {
+        "mult": 2,
+        "out": [
+          1600,
+          900
+        ],
+        "route": "ours",
+        "tier": 1,
+        "image": "cubin_sm86"
+      }
+    },
+    {
+      "t": "ctx",
+      "f": 1080,
+      "sr": {
+        "in": [
+          1600,
+          900
+        ],
+        "out": [
+          1600,
+          900
+        ],
+        "preset": null,
+        "kernels": "game"
+      }
+    }
+  ],
+  "end": {
+    "t": "end",
+    "reason": "process_exit",
+    "frames": 1350,
+    "late": 0,
+    "lost": 0,
+    "capped": false,
+    "failed_evaluates": 0,
+    "fg_launches": {
+      "in_bracket": 0,
+      "other_list": 0,
+      "outside_evaluate": 0
+    },
+    "other_feature": 0,
+    "timed_evaluates": 1875,
+    "unknown_handle": 0,
+    "untimed": {
+      "copy_list": 0,
+      "no_device": 0,
+      "other_list": 0
+    },
+    "vulkan_evaluates": 0
+  }
+}

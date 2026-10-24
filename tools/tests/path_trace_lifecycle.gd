@@ -2,6 +2,7 @@ extends "res://tools/tests/path_trace_motion.gd"
 ## Real resource replacement and dispatch with controlled failure points.
 ## Faults return normal API failure results without exhausting GPU memory.
 class FaultDevice extends PathDevice:
+	func _init() -> void:nrd.available=false
 	var fail_image_in := 0
 	var fail_set_in := 0
 	var fail_compile := false
@@ -201,7 +202,7 @@ func invalid_frame_probe(bytes: PackedByteArray) -> void:
 	probed.emit.call_deferred()
 
 func failure_probe(kind: String,bytes: PackedByteArray) -> void:
-	var published: Array[RID]=[device.output.texture_rd_rid,device.guide.texture_rd_rid,device.shadow0.texture_rd_rid,device.shadow1.texture_rd_rid]
+	var published: Array[RID]=[device.output.texture_rd_rid,device.guide.texture_rd_rid,device.shadow0.texture_rd_rid,device.shadow1.texture_rd_rid,device.direct_sun.texture_rd_rid]
 	var changes:={}
 	var target:=size
 	match kind:
@@ -216,7 +217,7 @@ func failure_probe(kind: String,bytes: PackedByteArray) -> void:
 	device.render(target,bytes,changes)
 	var calls: int=device.uploads
 	device.render(size,bytes,{})
-	var current: Array[RID]=[device.output.texture_rd_rid,device.guide.texture_rd_rid,device.shadow0.texture_rd_rid,device.shadow1.texture_rd_rid]
+	var current: Array[RID]=[device.output.texture_rd_rid,device.guide.texture_rd_rid,device.shadow0.texture_rd_rid,device.shadow1.texture_rd_rid,device.direct_sun.texture_rd_rid]
 	probe={"stopped":not device._ready and not device._history_valid and not device.output_ready(),"no_more_uploads":device.uploads==calls,
 		"preserved_output":current==published and published.all(func(rid: RID):return not rid.is_valid() or device._rd.texture_is_valid(rid))}
 	probed.emit.call_deferred()
@@ -247,7 +248,7 @@ func sustained_switches() -> void:
 		check(device._owned.size()==resources,"cycle "+str(cycle)+" retains the bounded pipeline and scene resource pool")
 	check(successful,"repeated resize, emitter and bounce changes produce finite fresh histories")
 	RenderingServer.call_on_render_thread(live_image_probe);await probed
-	check(probe.live_images==18,"only the current eighteen lighting, guide, auxiliary and spatial images remain live")
+	check(probe.live_images==21,"only current lighting, direct sun, guide, auxiliary and spatial images remain live")
 
 func run() -> void:
 	for arg in OS.get_cmdline_user_args():

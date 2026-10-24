@@ -35,6 +35,15 @@ var _ready := false
 var _closed := false
 # Written on the render thread, observed there by one-off preparation work.
 var completed_renders := 0
+const Programs = preload("res://src/game/fx/raytrace_programs.gd")
+var programs: Programs
+var incremental_build := false
+var _building := false
+var _build_cursor := 0
+var _pending_images: Array[Image] = []
+var _texture_cursor := 0
+var build_timings := {}
+var initial_poses: Array = []
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
 func shader_prefix() -> String: return SHADERS
@@ -86,6 +95,12 @@ func _own(rid: RID) -> RID:
 	return rid
 
 func _compile() -> RDPipelineShader:
+	if programs!=null:
+		var paths := {}
+		for stage in STAGES:paths[stage]=shader_stage_path(stage)
+		_shader=programs.program(_rd,paths,RenderingServer.get_current_rendering_driver_name()=="d3d12")
+		if not _shader.is_valid():return null
+		var cached := RDPipelineShader.new();cached.shader=_shader;return cached
 	var spirv := RDShaderSPIRV.new()
 	var dxil := {}
 	var directx := RenderingServer.get_current_rendering_driver_name() == "d3d12"
@@ -111,10 +126,16 @@ func _compile() -> RDPipelineShader:
 	wrapped.shader = shader
 	return wrapped
 
+func _create_pipeline(program: RDPipelineShader) -> RID:
+	if programs!=null:return programs.pipeline(program)
+	var group := RDHitGroup.new();group.closest_hit_shader=program;group.any_hit_shader=program
+	return _own(_rd.raytracing_pipeline_create([program],[program],[group],1))
+
 ## data contains a non-indexed triangle list, 64 bytes per vertex. Images are
 ## private CPU snapshots; the render thread never reads scene nodes.
 func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [], placements: Array = []) -> void:
 	if _closed: return
+	var started := Time.get_ticks_usec()
 	_rd = RenderingServer.get_rendering_device()
 	if _rd == null or not _rd.has_feature(RenderingDevice.SUPPORTS_RAYTRACING_PIPELINE) or data.is_empty() or images.is_empty():
 		_notify(&"prepared",[false])
@@ -123,13 +144,12 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	if program == null:
 		_notify(&"prepared",[false])
 		return
-	var group := RDHitGroup.new()
-	group.closest_hit_shader = program
-	group.any_hit_shader = program
-	_pipeline = _own(_rd.raytracing_pipeline_create([program],[program],[group],1))
+	_pipeline = _create_pipeline(program)
+	build_timings["program_ms"]=(Time.get_ticks_usec()-started)/1000.0
 	if not _pipeline.is_valid():
 		_notify(&"prepared",[false])
 		return
+	var stage_started := Time.get_ticks_usec()
 	_vertices = _own(_rd.vertex_buffer_create(data.size(),data,
 		RenderingDevice.BUFFER_CREATION_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT |
 		RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT | RenderingDevice.BUFFER_CREATION_AS_STORAGE_BIT))
@@ -138,6 +158,10 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		return
 	# Own the descriptors: teardown must not clear the caller's scene array.
 	_geometry = geometry_data.duplicate(true) if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
+	for pose: Dictionary in initial_poses:
+		if not _upload_pose(pose):_notify(&"prepared",[false]);return
+	initial_poses.clear()
+	build_timings["vertices_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	var material_data := PackedByteArray(); material_data.resize(_geometry.size()*16)
 	for i in _geometry.size():
 		var description: Dictionary = _geometry[i]
@@ -163,6 +187,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 			| (roundi(clampf(surface.y,0.0,1.0)*255.0)<<8) | (roundi(clampf(surface.z,0.0,1.0)*255.0)<<16) | (relief<<24))
 	_materials = _own(_rd.storage_buffer_create(material_data.size(),material_data))
 	if not _materials.is_valid(): _notify(&"prepared",[false]); return
+	build_timings["materials_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	_blases.resize(_geometry.size())
 	if placements.is_empty(): placements = [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
 	_tlas = _own(_rd.tlas_create(placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
@@ -174,7 +199,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	for placement: Dictionary in placements:
 		var instance := RDAccelerationStructureInstance.new()
 		_placement_geometry.append(placement.geometry)
-		if placement.get("mask",255) != 0:
+		if placement.get("mask",255) != 0 and not incremental_build:
 			instance.blas = _geometry_blas(placement.geometry)
 			if not instance.blas.is_valid(): _notify(&"prepared",[false]); return
 		instance.id = instance_id(placement.geometry,_instances.size())
@@ -184,8 +209,9 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		instance.hit_sbt_range = hit_range
 		if instance.mask != 0: _active_instances[_instances.size()] = instance
 		_instances.append(instance)
-	if _rd.tlas_build(_tlas,_active_instances.values()) != OK:
+	if not incremental_build and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
 		_notify(&"prepared",[false]); return
+	build_timings["placements_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	var format := RDTextureFormat.new()
 	format.texture_type = RenderingDevice.TEXTURE_TYPE_2D_ARRAY
 	format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
@@ -195,8 +221,13 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	format.mipmaps = images[0].get_mipmap_count()+1
 	format.usage_bits = RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
 	var layers: Array[PackedByteArray] = []
-	for im in images: layers.append(im.get_data())
-	_colours = _own(_rd.texture_create(format,RDTextureView.new(),layers))
+	if incremental_build:
+		format.usage_bits |= RenderingDevice.TEXTURE_USAGE_CAN_UPDATE_BIT
+		_pending_images.assign(images)
+	else:
+		for im in images: layers.append(im.get_data())
+	_colours = _own(_create_colour_array(format,layers))
+	build_timings["textures_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	# Small immutable samplers let the existing Texture filtering option
 	# change live without rebuilding the RT scene or reallocating its image.
 	for quality in 5:
@@ -213,7 +244,53 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	_frame = _own(_rd.uniform_buffer_create(frame_bytes()))
 	_ready = _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid())
 	if _ready: _ready = build_extra(data,placements)
-	_notify(&"prepared",[_ready])
+	build_timings["extra_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0
+	build_timings["resources_ms"]=(Time.get_ticks_usec()-started)/1000.0
+	_building=_ready and incremental_build
+	if _building:_ready=false
+	else:_notify(&"prepared",[_ready])
+
+## The controller queues at most one step per frame. A canceled owner cannot
+## schedule more work, and its previous scene remains visible throughout.
+func build_step() -> void:
+	if _closed or not _building:return
+	var started := Time.get_ticks_usec();var built := 0
+	# Retain the private CPU snapshots until each array layer and all its mips
+	# have been uploaded. The controller keeps displaying the old scene and
+	# cannot promote this candidate before both uploads and AS builds finish.
+	if not _pending_images.is_empty():
+		while _texture_cursor < _pending_images.size():
+			if not _upload_colour_layer(_texture_cursor,_pending_images[_texture_cursor].get_data()):
+				_building=false;_pending_images.clear();_notify(&"prepared",[false]);return
+			_pending_images[_texture_cursor]=null
+			_texture_cursor+=1;built+=1
+			if built>=4 or Time.get_ticks_usec()-started>=1500:break
+		if _texture_cursor==_pending_images.size():_pending_images.clear()
+		var elapsed := (Time.get_ticks_usec()-started)/1000.0
+		build_timings["texture_upload_ms"]=build_timings.get("texture_upload_ms",0.0)+elapsed
+		build_timings["texture_upload_step_ms"]=maxf(build_timings.get("texture_upload_step_ms",0.0),elapsed)
+		build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),elapsed)
+		return
+	while _build_cursor<_instances.size():
+		var instance := _instances[_build_cursor]
+		if instance.mask!=0:
+			var geometry := _placement_geometry[_build_cursor]
+			if not _blases[geometry].is_valid():built+=1
+			instance.blas=_geometry_blas(geometry)
+			if not instance.blas.is_valid():_building=false;_notify(&"prepared",[false]);return
+		_build_cursor+=1
+		if built>=16 or Time.get_ticks_usec()-started>=1500:break
+	if _build_cursor==_instances.size():
+		_building=false
+		_ready=_rd.tlas_build(_tlas,_active_instances.values())==OK
+		_notify(&"prepared",[_ready])
+	build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),(Time.get_ticks_usec()-started)/1000.0)
+
+func _upload_colour_layer(layer: int, data: PackedByteArray) -> bool:
+	return _rd.texture_update(_colours,layer,data)==OK
+
+func _create_colour_array(format: RDTextureFormat, layers: Array[PackedByteArray]) -> RID:
+	return _rd.texture_create(format,RDTextureView.new(),layers)
 
 ## Hidden meshes keep CPU/vertex data, but acquire a BLAS only when first
 ## revealed. Reuse it afterward; movement needs only a compact TLAS rebuild.
@@ -321,7 +398,9 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 
 func dispose() -> void:
 	_closed = true
+	_building = false
 	_ready = false
+	_pending_images.clear()
 	output.texture_rd_rid = RID()
 	_samplers.clear()
 	if _rd == null: return

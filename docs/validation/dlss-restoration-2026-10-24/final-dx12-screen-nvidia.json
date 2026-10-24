@@ -1,0 +1,12 @@
+{
+	"checks": 750,
+	"facts": {
+		"api": true,
+		"engine": true,
+		"fg3": false,
+		"fg4": false,
+		"sr3": false,
+		"sr4": false
+	},
+	"failures": 0
+}

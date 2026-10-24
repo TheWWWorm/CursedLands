@@ -163,10 +163,10 @@ static func offer(parent: Node, after: Node = null) -> MessageBox:
 ## Options ✓ with the renderer row changed: the game offers to restart, in a
 ## game (`from_menu` false) saying that unsaved progress goes; ✗ or Esc:
 ## the new renderer comes with the next start.
-static func ask_restart(parent: Node, from_menu: bool) -> MessageBox:
+static func ask_restart(parent: Node, from_menu: bool, graphics_technology := false) -> MessageBox:
 	var b := MessageBox.new()
 	b.title = RemakeText.t(RESTART[0])
-	b.message = RemakeText.t(RESTART[1] if from_menu else RESTART_GAME)
+	b.message = RemakeText.t(("The graphics technology changes after restarting. Restart the game now?" if from_menu else "The graphics technology changes after restarting. Restart now? Progress since the last save will be lost.") if graphics_technology else RESTART[1] if from_menu else RESTART_GAME)
 	b.esc_closes = true
 	parent.add_child(b)
 	var tree := parent.get_tree()

@@ -22,8 +22,9 @@ def digest(path):
 
 
 def build(args):
-    check_source(ROOT)
-    check_template(args.windows_template)
+    include_nvidia = args.rtx_sdk is not None
+    check_source(ROOT, include_nvidia=include_nvidia)
+    check_template(args.windows_template, include_nvidia)
     prepare_fsr_sdk.prepare(args.fsr_sdk)
     if digest(args.fsr_sdk / "agility/x86_64/D3D12Core.dll") != prepare_fsr_sdk.AGILITY_CORE_SHA256:
         raise ValueError("DirectX Agility runtime checksum mismatch")
@@ -37,13 +38,15 @@ def build(args):
     with tarfile.open(archive) as stream:
         stream.extractall(source, filter="data")
     archive.unlink()
-    check_source(source, archived=True)
+    check_source(source, archived=True, include_nvidia=include_nvidia)
     game = source / "game"
     project = game / "project.godot"
     version = re.search(r'^config/version="([^"]+)"', project.read_text(), re.M)[1]
+    splash = "splash-graphics.png" if include_nvidia else "splash-fsr.png"
+    flags = "\ngraphics_sdk/amd=true" + ("\ngraphics_sdk/nrd=true" if (game / "src/native/path_nrd.cfg").exists() else "") + ("\ngraphics_sdk/nvidia=true" if include_nvidia else "")
     project.write_text(project.read_text().replace(
         'boot_splash/image="res://assets/branding/splash.png"',
-        'boot_splash/image="res://assets/branding/splash-fsr.png"\ngraphics_sdk/amd=true'))
+        'boot_splash/image="res://assets/branding/' + splash + '"' + flags))
     profile = args.output / "export-profile"
     user = profile / "data/godot/app_userdata/Cursed Lands"
     user.mkdir(parents=True)
@@ -90,7 +93,8 @@ def build(args):
         shutil.copy2(notice, out)
     for launcher in (source / "tools/windows").glob("Play-*.cmd"):
         shutil.copy2(launcher, out)
-    for relative in ("docs/integrations/fsr-experiment.md", "docs/branding/graphics-sdk-attribution.md",
+    for relative in ("docs/integrations/fsr-experiment.md", "docs/integrations/nvidia-dlss.md",
+                     "docs/integrations/path-tracing-nrd.md", "docs/branding/graphics-sdk-attribution.md",
                      "docs/branding/graphics-sdk-assets.json", f"docs/releases/{version}.md",
                      "docs/validation/fsr-only.md", "docs/validation/fsr-only.json"):
         if (source / relative).exists():
@@ -103,10 +107,10 @@ def build(args):
         shutil.copy2(record, out / "docs/validation" / record.name)
     shutil.copy2(source / "docs/releases" / (version + ".md"), out / "RELEASE-NOTES.md")
     (out / "README.txt").write_text(
-        "Cursed Lands — AMD FSR and formula mods\n\n"
-        "EN: Run CursedLands.exe. Select Forward+ (Direct3D 12) under Options > Screen > Renderer, restart if needed, then open AMD FSR. Upscaling and frame generation start Off. Import the example mods through Mods and rules.\n"
-        "RU: Запустите CursedLands.exe. Выберите Forward+ (Direct3D 12) в Настройки > Экран > Рендерер, при необходимости перезапустите игру и откройте AMD FSR. Масштабирование и генерация кадров по умолчанию выключены. Импортируйте примеры модов через Моды и правила.\n"
-        "DE: Starten Sie CursedLands.exe. Wählen Sie Forward+ (Direct3D 12) unter Optionen > Bildschirm > Renderer, starten Sie bei Bedarf neu und öffnen Sie AMD FSR. Skalierung und Frame-Generierung sind zunächst aus. Importieren Sie die Beispiel-Mods über Mods und Regeln.\n\n"
+        "Cursed Lands — graphics options and formula mods\n\n"
+        "EN: Run CursedLands.exe. Select Forward+ (Direct3D 12) under Options > Screen > Renderer, restart if needed, then choose Anti-aliasing, Upscale quality and Frame generation on Screen. SDK upscaling and frame generation start Off. Import the example mods through Mods and rules.\n"
+        "RU: Запустите CursedLands.exe. Выберите Forward+ (Direct3D 12) в Настройки > Экран > Рендерер, при необходимости перезапустите игру, затем выберите Сглаживание, Качество масштабирования и Генерация кадров в разделе Экран. Масштабирование SDK и генерация кадров по умолчанию выключены. Импортируйте примеры модов через Моды и правила.\n"
+        "DE: Starten Sie CursedLands.exe. Wählen Sie Forward+ (Direct3D 12) unter Optionen > Bildschirm > Renderer, starten Sie bei Bedarf neu und wählen Sie dann Kantenglättung, Skalierungsqualität und Frame-Generierung unter Bildschirm. SDK-Skalierung und Frame-Generierung sind zunächst aus. Importieren Sie die Beispiel-Mods über Mods und Regeln.\n\n"
         "docs/integrations/fsr-experiment.md\ndocs/mod-formulas.md\n"
         "Runtime / Библиотеки / Laufzeit: Microsoft Visual C++ v14 x64\n"
         "https://aka.ms/vc14/vc_redist.x64.exe\n", encoding="utf-8")
@@ -115,17 +119,34 @@ def build(args):
         native = out / "src/native/bin"
         native.mkdir(parents=True, exist_ok=True)
         shutil.copy2(game / "src/native/bin/libmod_lua.dll", native)
+        if (game / "src/native/path_nrd.cfg").exists():
+            shutil.copy2(game / "src/native/bin/libpath_nrd.dll", native)
+            shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", out)
+            nrd_notices = out / "licenses/NVIDIA/NRD"
+            nrd_notices.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", nrd_notices)
         for name in ("mods.md", "mod-formulas.md", "versioning.md"):
             shutil.copy2(source / "docs" / name, out / "docs" / name)
         for name in ("expedition-xp", "quest-focus", "field-medicine", "quick-recovery"):
             package(source / "examples/mods" / name, out / "mods" / (name + "-1.0.0.eimod"))
             shutil.copytree(source / "examples/mods" / name, out / "examples/mods" / name)
-    check_package(out)
+    if include_nvidia:
+        import prepare_rtx_sdk
+        manifest = json.loads((source / "engine_patches/godot-4.7/streamline-sdk.json").read_text())
+        for name, expected in manifest["files"].items():
+            src = args.rtx_sdk / name
+            if not src.is_file() or digest(src) != expected:
+                raise ValueError("NVIDIA SDK file does not match pinned manifest: " + name)
+            dest = out / (Path(name).name if name.endswith(".dll") else "licenses/NVIDIA/" + name)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest)
+    check_package(out, include_nvidia)
     info = {
         "version": version, "source_commit": commit, "platform": "windows-x86_64",
-        "base_release": "v1.19.0", "godot_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "base_release": "v1.27.0", "godot_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
         "engine_template_sha256": digest(args.windows_template), "protocol": 23,
         "fsr_sdk": prepare_fsr_sdk.VERSION,
+        "dlss_sdk_included": include_nvidia, "nvidia_placement_approval": "pending; local review only" if include_nvidia else None,
         "fsr_in_normal_settings": True, "formula_api": 1, "package_api": 3,
         "fsr_manifest_sha256": digest(source / "engine_patches/godot-4.7/fsr-sdk.json"),
         "fsr_engine_patch_sha256": digest(source / "engine_patches/godot-4.7/experimental-fsr.patch"),
@@ -142,9 +163,11 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--windows-template", type=Path, required=True)
     parser.add_argument("--fsr-sdk", type=Path, required=True)
+    parser.add_argument("--rtx-sdk", type=Path, help="Include the pinned NVIDIA SDK for a local combined preview")
     parser.add_argument("--godot", default="godot-4")
     parser.add_argument("--ref", default="HEAD")
     args = parser.parse_args()
     for key in ("output", "windows_template", "fsr_sdk"):
         setattr(args, key, getattr(args, key).resolve())
+    if args.rtx_sdk: args.rtx_sdk = args.rtx_sdk.resolve()
     build(args)

@@ -1,0 +1,126 @@
+{
+  "SConstruct": {
+    "before": "cc97ceb49f7906d7911a3ae2e5d354cc5c15d4fc4cdf12bc0910fd82c420c682",
+    "after": "96192cfd6b0d07ce78d2c26d60ec93a9d824eac96ccf49065270de65e588ac49"
+  },
+  "doc/classes/Streamline.xml": {
+    "before": null,
+    "after": "7cc762e8a0edb600287a106e648fa5f6d168d780f6624e56aa67706857f3f09c"
+  },
+  "drivers/SCsub": {
+    "before": "faacde48700b50b63253bb132f20814dca0a0833a6397f25ac536f5c56c71cf6",
+    "after": "76b9698e3160d5933b9763e2cbd88725f661d3c156df58a4e87cca09c10b29ff"
+  },
+  "drivers/d3d12/rendering_context_driver_d3d12.cpp": {
+    "before": "6cdb0e2d8abd87f0ca15abecfe61d8fffe397104874988e774d8ab323df8a008",
+    "after": "401cb2ac9d5982de3e0c4e50967cfd33e5ab2fdd52de55fc5c782d079c8afb7f"
+  },
+  "drivers/d3d12/rendering_device_driver_d3d12.cpp": {
+    "before": "fe56d298b991bb39acb866ab16e5b741265106d0af08ba1c0122edd77491d8a2",
+    "after": "ea5bdffa4ab900463163f1f4103281e18d5a41c36650128628c434603c7b29fc"
+  },
+  "drivers/fsr_sdk/fsr_sdk.cpp": {
+    "before": "43e65e72cc58eec738e433bb67765d14c44f87c1c8d3b8260570833c1c6dbfdc",
+    "after": "a8a9890cf47739f408dda8c4f6adf47db4a4c3166017b26c92fec01029809d7c"
+  },
+  "drivers/streamline/SCsub": {
+    "before": null,
+    "after": "1cb09fb222ca1fa0cf28386d802f5c68bd7d70a846105b61a0fd9ea23e545d5e"
+  },
+  "drivers/streamline/streamline.cpp": {
+    "before": null,
+    "after": "c067851ee2b34b2b05831c2dcda589db9589be62f1f226f5c66b1fa572d5e6ba"
+  },
+  "drivers/streamline/streamline.h": {
+    "before": null,
+    "after": "0d7690ba1066f1e38b0ca299ae67e24867b867dd9c51b9685a8fed796f086a6e"
+  },
+  "drivers/streamline/streamline_context.cpp": {
+    "before": null,
+    "after": "3318c204132e98dc6965cb931ff25b6b6f022161afaf1f83ca113660d9306f38"
+  },
+  "drivers/streamline/streamline_context.h": {
+    "before": null,
+    "after": "8680beb566ec7220444a4c975eb279fc74b9f515a2061b32bbf8fcb92d02518b"
+  },
+  "drivers/streamline/streamline_data.h": {
+    "before": null,
+    "after": "97929b10b130fe38a7bf72e0d067d646cb9fbb31c1913a960931bac5a9325c1b"
+  },
+  "drivers/streamline/streamline_headers.h": {
+    "before": null,
+    "after": "76c4dc23d532a65c140666f2b7dc686a967e99fb68a0ece39a88b8b4d41c5d29"
+  },
+  "drivers/streamline/streamline_security.h": {
+    "before": null,
+    "after": "6386cdcc34ef2a8ff643412299e69730d58b275a521a808ad601d811e77cb278"
+  },
+  "main/main.cpp": {
+    "before": "d11dbf63298d17c2f23034c1fac51eda6dc40063f6331939b1523be0b8fa1ddc",
+    "after": "66c42b26f4305f7b90fc45aa473bf15af256c792d7ba5996549e2d38ebceae0a"
+  },
+  "scene/main/viewport.cpp": {
+    "before": "491b28523158dec22cf4c8cdd614a4b2c1acb9b3cb66d45f9f486aad7b3a25cb",
+    "after": "78ffdfee6eeba57dffa0586bcc2ead84e9777cbf3a45f38967f8bcffbe068253"
+  },
+  "scene/main/viewport.h": {
+    "before": "cf63d0a5bed742f74136171fb9bbc1e48c3d3384babcd9f25add11b88f4354cd",
+    "after": "faeccc6bd2a7115e618bbae43a9cac3064a1601778d74f3e2136a59dbf0b243b"
+  },
+  "servers/rendering/renderer_rd/effects/dlss.cpp": {
+    "before": null,
+    "after": "ddc40b467e20b7d82389490de67ffdf8099cb1f9a1ac97db92689efe0d300d3b"
+  },
+  "servers/rendering/renderer_rd/effects/dlss.h": {
+    "before": null,
+    "after": "637b56f166810ef384f50b09d17fcfb0957112c2a5a630b49c0a5aa7c0b6b774"
+  },
+  "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp": {
+    "before": "3e21ae2b02cdf495a33dcae2d2412aa7fefa4e20d3516041adf0da8e3f46b621",
+    "after": "a37a9400787a7384cbe983ef650c13e53353f725a5f77eb5dff999c09d9da0f2"
+  },
+  "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h": {
+    "before": "b54efc87828719ef6e9b74bb3207cd75d21656257e90546ec854a9758dc690c6",
+    "after": "0f4371b8daaa794cc7e700ce6723cff13d3f99a951686394cbc29d6c63334407"
+  },
+  "servers/rendering/renderer_rd/renderer_compositor_rd.cpp": {
+    "before": "def96d4762332133e099fa78045edfdf9fa8e0135dee30d18727bf65eaef7876",
+    "after": "c5ee7fc5d2b23fea1475912d0d7bc478c20fc9fbd36c889e96a07bd16648f7b8"
+  },
+  "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": {
+    "before": "ad158b508c3090224e5382ec77dce2bfcff0310dba1faddff6ab4631bf2f6e2d",
+    "after": "dec16031ef0b2be4bb19338f10c49d68ae58d5ea232b5a0c36960c56bfcdce70"
+  },
+  "servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl": {
+    "before": null,
+    "after": "339077efb6ef1d65a3470f852bfa5c035efd346adf1eebf5905ce304fce4da1e"
+  },
+  "servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl": {
+    "before": null,
+    "after": "b9dc6626e706210c4e5e94026b6060b32212358b18dce70c83a0087d5698fa39"
+  },
+  "servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl": {
+    "before": null,
+    "after": "f889f10c8da64650120491907a9bdb93965bd2708530b40f4dabfb54cca87b45"
+  },
+  "servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp": {
+    "before": "a137a02605115998fecdf6fc9ebcfdaffa6b155e8bed36ecec80e414763ee6a5",
+    "after": "7fa54d109c9b71fb42549fe43f2befc98f07a1eef59647dcd473bed0695e0b97"
+  },
+  "servers/rendering/renderer_viewport.cpp": {
+    "before": "b326a31ca54dfbab7128231c4bffafb6965bc45e4a370f3d6e45301d8400a8ed",
+    "after": "389aaf9ec07716cd243ac230b721b51791f206de9a6aee9a0c466c2b269957de"
+  },
+  "servers/rendering/renderer_viewport.h": {
+    "before": "d7b299d686f61511eb62b6a2a1d3d2c460f01ecb6743313f18c7816ee18a6c9b",
+    "after": "20718697b68b41645fada596ba5ab9fd7fc5876f96e44c1397350ca1b9b835dd"
+  },
+  "servers/rendering/rendering_server.cpp": {
+    "before": "ee2311ccc7e05c2c107f2ee1ea5d3e806aebfe30fe6bcc21fcd96aa851b43b41",
+    "after": "6915fdd849d1c22570105a0beb14c2869f670480fdcfbf173d77a6d7923492c5"
+  },
+  "servers/rendering/rendering_server_enums.h": {
+    "before": "78ee89440bc06d73c3ac3438aec9ef3ee720cbcf146c16be5c3a324e51f96723",
+    "after": "00a8fc5ee3206d687b9fa586ed4992e6b0928d3c759b005eaf9b7d6cf6e3b948"
+  }
+}

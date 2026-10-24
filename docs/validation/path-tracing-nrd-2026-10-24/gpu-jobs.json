@@ -1,0 +1,58 @@
+[
+  {
+    "job_id": "2e8c4f16c5514259",
+    "coverage": "4K matched short route",
+    "requested_gpu": "auto",
+    "workload": "heavy",
+    "exit_code": 0
+  },
+  {
+    "job_id": "cd88240fc8bd46fc",
+    "coverage": "Source invalidation and lighting routes",
+    "requested_gpu": "auto",
+    "workload": "auto",
+    "exit_code": 0
+  },
+  {
+    "job_id": "2d9ece75de2b4276",
+    "coverage": "Initial player soak with synthetic eye",
+    "requested_gpu": "auto",
+    "workload": "heavy",
+    "exit_code": 0
+  },
+  {
+    "job_id": "317a68e61bb2449b",
+    "coverage": "Packaged DX12 device/glossy and initial rainy soak",
+    "requested_gpu": "auto",
+    "workload": "heavy",
+    "exit_code": 0
+  },
+  {
+    "job_id": "267204055aa34f17",
+    "coverage": "Packaged Vulkan source/device/menu/grass",
+    "requested_gpu": "auto",
+    "workload": "auto",
+    "exit_code": 0
+  },
+  {
+    "job_id": "9569246a1fa74d3f",
+    "coverage": "Packaged Vulkan first-person weather",
+    "requested_gpu": "auto",
+    "workload": "auto",
+    "exit_code": 0
+  },
+  {
+    "job_id": "b09e4ac80d8c4dce",
+    "coverage": "4K matched wider rainy route",
+    "requested_gpu": "auto",
+    "workload": "heavy",
+    "exit_code": 0
+  },
+  {
+    "job_id": "840c6a2ddf4441bf",
+    "coverage": "Packaged 4K rainy production first-person soak",
+    "requested_gpu": "auto",
+    "workload": "heavy",
+    "exit_code": 0
+  }
+]

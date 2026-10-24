@@ -1,4 +1,5 @@
 extends "res://tools/tests/path_trace_quality.gd"
+var custom_history := true
 ## Known noise/history fields measure rigid reprojection independently of the
 ## integrator. Real primary hits then cover identity, stop/start and rejection.
 var motion_index := 0
@@ -166,6 +167,7 @@ func run() -> void:
 	for i in 4096:placements.append({"geometry":0,"transform":Transform3D.IDENTITY,"mask":7 if i==0 else 0})
 	var white:=Image.create(2,2,false,Image.FORMAT_RGBA8);white.fill(Color.WHITE)
 	var images: Array[Image]=[white];device=PathDevice.new()
+	if custom_history:device.nrd.available=false
 	RenderingServer.call_on_render_thread(device.build.bind(mesh_data.to_byte_array(),images,geometries,placements))
 	check(await device.prepared,"build shared geometry with the full 4096 stable placement IDs")
 	if not device._ready:finish();return

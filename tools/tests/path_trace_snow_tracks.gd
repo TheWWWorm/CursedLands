@@ -25,6 +25,22 @@ func run() -> void:
 	var focus:=Vector3(point.x,t.height_at(point.x,point.y),-point.y)
 	camera.global_position=focus+Vector3(0.01,6,0);camera.look_at(focus)
 	check(await ready_scene(rt),"close snow scene is ready")
+	var sector: EITerrainSector
+	for child in t.get_children():
+		if child is EITerrainSector:sector=child;break
+	var source:=sector.deformation_arrays()
+	var source_vertices: PackedVector3Array=source[Mesh.ARRAY_VERTEX].duplicate()
+	var ground: RefCounted=rt._ground_cache
+	var lifted: Array=ground.arrays(source,sector.get_instance_id())
+	var hits: int=ground.cache_hits
+	ground.configure(t)
+	var reused: Array=ground.arrays(source,sector.get_instance_id())
+	check(ground.cache_hits==hits+1 and reused[Mesh.ARRAY_VERTEX]==lifted[Mesh.ARRAY_VERTEX],"recenter reuses identical lifted terrain geometry")
+	check(source[Mesh.ARRAY_VERTEX]==source_vertices,"cached lifting preserves original terrain arrays")
+	GameData.options.gfx_soft_ground=0;ground.configure(t)
+	check(ground.tiles==null and ground._sectors.is_empty() and ground.arrays(source)==source,"disabling soft ground invalidates cached lift")
+	GameData.options.gfx_soft_ground=1;ground.configure(t)
+	check(ground.tiles!=null and ground._sectors.is_empty(),"restoring soft ground rebuilds from the current terrain tables")
 	await receiver_coverage();var before:=receiver_counts.duplicate()
 	DirAccess.rename_absolute(out.path_join("terrain-receivers.png"),out.path_join("snow-before.png"))
 	for offset: Vector2 in [Vector2.ZERO,Vector2(0.4,0),Vector2(-0.4,0),Vector2(0,0.4)]:

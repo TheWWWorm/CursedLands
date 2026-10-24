@@ -5,6 +5,20 @@ const FILTER = preload("res://src/game/fx/shaders/scene_raytrace_filter.glsl")
 # Extra timestamp boundaries are diagnostic only; normal frames retain the
 # existing whole-pass bracket without intermediate query overhead.
 var _profile_stages := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var measure_budget := false
+var gpu_frame := -1
+var gpu_ms := 0.0
+
+func _measure_budget() -> void:
+	var current := _rd.get_captured_timestamps_frame()
+	if current==gpu_frame:return
+	var begin := -1;var elapsed := 0
+	for i in _rd.get_captured_timestamps_count():
+		var label := _rd.get_captured_timestamp_name(i)
+		if label=="Scene RT begin":begin=_rd.get_captured_timestamp_gpu_time(i)
+		elif label=="Scene RT end" and begin>=0:
+			elapsed+=_rd.get_captured_timestamp_gpu_time(i)-begin;begin=-1
+	if elapsed>0:gpu_frame=current;gpu_ms=elapsed/1000000.0
 
 var guide := Texture2DRD.new()
 var shadow0 := Texture2DRD.new()
@@ -27,10 +41,15 @@ func shader_prefix() -> String: return "res://src/game/fx/shaders/scene_raytrace
 func frame_bytes() -> int: return 576
 func filter_spirv() -> RDShaderSPIRV: return FILTER.get_spirv()
 func extra_ray_uniforms() -> Array[RDUniform]: return []
+func raw_formats() -> Array[int]:
+	return [RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT,
+		RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT]
 ## Optional reconstruction-only textures, in previous/result pairs. They use
 ## bindings 13 onward and are copied together with the stable lighting outputs.
 func filter_auxiliary_formats() -> Array[int]: return []
 func extra_filter_uniforms() -> Array[RDUniform]: return []
+func published_targets() -> Array[RID]:
+	return [output.texture_rd_rid,guide.texture_rd_rid,shadow0.texture_rd_rid,shadow1.texture_rd_rid]
 ## A new device becomes display-ready only after a complete successful render.
 ## History resets and private resizes keep its prior published image ready.
 func output_ready() -> bool:
@@ -89,7 +108,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		# Stage the entire replacement. A failed image or descriptor allocation
 		# must leave the previous complete output and its resource indices intact.
 		var raw: Array[RID] = [];var history: Array[RID] = [];var auxiliary: Array[RID] = []
-		for i in 4: raw.append(_lighting_texture(size))
+		for format: int in raw_formats(): raw.append(_lighting_texture(size,format))
 		for i in 8: history.append(_lighting_texture(size))
 		for format: int in filter_auxiliary_formats(): auxiliary.append(_lighting_texture(size,format))
 		if not (raw+history+auxiliary).all(func(rid: RID): return rid.is_valid()):
@@ -109,7 +128,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 			_rd.free_rid(filter_set);_free_targets(raw+history+auxiliary);return false
 		var old_targets := _filter_sets+_raw+_history+_filter_auxiliary
 		if _set.is_valid(): old_targets.push_front(_set)
-		var published: Array[RID] = [output.texture_rd_rid,guide.texture_rd_rid,shadow0.texture_rd_rid,shadow1.texture_rd_rid]
+		var published := published_targets()
 		for rid in published:
 			if rid.is_valid() and old_targets.has(rid):
 				old_targets.erase(rid);_retired_outputs.append(rid)
@@ -117,7 +136,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		_filter_sets=[filter_set];_set=ray_set;_sampler=sampler;_size=size
 		_history_valid=false
 		# Unpublished work images and descriptors are no longer needed. The
-		# four public images stay valid through upload/dispatch/copy failures.
+		# public images stay valid through upload/dispatch/copy failures.
 		_free_targets(old_targets)
 	elif not _set.is_valid() or sampler != _sampler:
 		var ray_set := _target_set(_ray_bindings(_raw,sampler),_shader)
@@ -152,8 +171,19 @@ func _render_failed() -> void:
 func filter_presented(_frame_data: PackedByteArray) -> bool:
 	return true
 
+func reconstruct(frame: PackedByteArray) -> bool:
+	var filter := _rd.compute_list_begin()
+	_rd.compute_list_bind_compute_pipeline(filter,_filter_pipeline)
+	_rd.compute_list_bind_uniform_set(filter,_filter_sets[0],0)
+	_rd.compute_list_dispatch(filter,ceili(_size.x/8.0),ceili(_size.y/8.0),1)
+	_rd.compute_list_end()
+	if _profile_stages: _rd.capture_timestamp("Scene RT reconstruct")
+	# The custom presentation filter must not feed its broader blur into history.
+	return _copy_history() and filter_presented(frame)
+
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	if measure_budget:_measure_budget()
 	if not update_scene(changes): _history_valid=false;_published_valid=false;return
 	if not _targets(size,_samplers[clampi(texture_filter,0,_samplers.size()-1)]):
 		_render_failed();return
@@ -166,18 +196,12 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	_rd.raytracing_list_trace_rays(rays,0,_sbt,size.x,size.y,1)
 	_rd.raytracing_list_end()
 	if _profile_stages: _rd.capture_timestamp("Scene RT rays")
-	var filter := _rd.compute_list_begin()
-	_rd.compute_list_bind_compute_pipeline(filter,_filter_pipeline)
-	_rd.compute_list_bind_uniform_set(filter,_filter_sets[0],0)
-	_rd.compute_list_dispatch(filter,ceili(size.x/8.0),ceili(size.y/8.0),1)
-	_rd.compute_list_end()
-	if _profile_stages: _rd.capture_timestamp("Scene RT reconstruct")
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;
 	# a small GPU copy supplies next frame's history without descriptor churn.
 	# Presentation-only filtering must not feed its broader blur back into the
 	# temporal history. Retain the current surface guides and history first.
-	var copied := _copy_history() and filter_presented(frame)
+	var copied := reconstruct(frame)
 	_rd.capture_timestamp("Scene RT end")
 	if not copied: _render_failed();return
 	_publish_targets()

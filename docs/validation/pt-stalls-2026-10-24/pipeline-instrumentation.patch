@@ -1,0 +1,17 @@
+--- production/scene_shader_forward_clustered.cpp
++++ diagnostic/scene_shader_forward_clustered.cpp
+@@ -34,0 +35,2 @@
++#include "core/os/os.h"
++#include "core/io/file_access.h"
+@@ -48,0 +51,4 @@
++	if (OS::get_singleton()->get_environment("EI_PIPELINE_TRACE") == "1" && !code.is_empty()) {
++		Ref<FileAccess> dump = FileAccess::open(vformat("user://pipeline-shader-%d.gdshader", code.hash()), FileAccess::WRITE);
++		if (dump.is_valid()) { dump->store_string(code); }
++	}
+@@ -330,0 +337,2 @@
++	const bool trace = OS::get_singleton()->get_environment("EI_PIPELINE_TRACE") == "1";
++	const uint64_t started = trace ? OS::get_singleton()->get_ticks_usec() : 0;
+@@ -506,0 +515,3 @@
++	if (trace) {
++		print_line(vformat("PIPELINE_PROBE {\"at_us\":%d,\"elapsed_us\":%d,\"code\":%d,\"vertex\":%d,\"framebuffer\":%d,\"pass\":%d,\"colors\":%d,\"cull\":%d,\"uber\":%d,\"spec0\":%d,\"spec1\":%d}", OS::get_singleton()->get_ticks_usec(), OS::get_singleton()->get_ticks_usec()-started, code.hash(), p_pipeline_key.vertex_format_id, p_pipeline_key.framebuffer_format_id, p_pipeline_key.version, p_pipeline_key.color_pass_flags, p_pipeline_key.cull_mode, p_pipeline_key.ubershader, p_pipeline_key.shader_specialization.packed_0, p_pipeline_key.shader_specialization.packed_1));
++	}

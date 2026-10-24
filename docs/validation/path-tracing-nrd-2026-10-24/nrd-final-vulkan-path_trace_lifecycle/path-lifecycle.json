@@ -1,0 +1,127 @@
+{
+	"checks": 168,
+	"failures": [],
+	"metrics": {
+		"dispatch_lifetime": {
+			"built": true,
+			"disposed": true,
+			"events": [
+				"build",
+				"render",
+				"dispose"
+			],
+			"images_freed": true,
+			"render_thread": 5,
+			"rendered": true,
+			"retained_before_execution": true,
+			"separate_thread": true
+		},
+		"emitter_history_reset": {
+			"accepted": true,
+			"emitter_updated": true,
+			"history_reset": true,
+			"published_unchanged": true,
+			"ready": true
+		},
+		"filter_set": {
+			"cleaned": true,
+			"next_size": "(128, 72)",
+			"private": true,
+			"published_unchanged": true,
+			"ready_during_reset": true,
+			"rejected": true,
+			"reset": true,
+			"retry": true,
+			"unchanged": true
+		},
+		"first_frame_upload_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"first_history_copy_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"frame_upload_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"history_copy_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"image": {
+			"cleaned": true,
+			"next_size": "(112, 63)",
+			"private": true,
+			"published_unchanged": true,
+			"ready_during_reset": true,
+			"rejected": true,
+			"reset": true,
+			"retry": true,
+			"unchanged": true
+		},
+		"pipeline_failure": {
+			"ready_during_reset": true,
+			"rejected": true,
+			"retry": true,
+			"unchanged": true
+		},
+		"pose_upload_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"ray_set": {
+			"cleaned": true,
+			"next_size": "(144, 81)",
+			"private": true,
+			"published_unchanged": true,
+			"ready_during_reset": true,
+			"rejected": true,
+			"reset": true,
+			"retry": true,
+			"unchanged": true
+		},
+		"resize_frame_upload_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"resize_history_copy_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"resize_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"sampler": {
+			"cleaned": true,
+			"next_size": "(144, 81)",
+			"private": true,
+			"published_unchanged": true,
+			"ready_during_reset": true,
+			"rejected": true,
+			"reset": true,
+			"retry": true,
+			"unchanged": true
+		},
+		"spatial_image_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		},
+		"spatial_set_render": {
+			"no_more_uploads": true,
+			"preserved_output": true,
+			"stopped": true
+		}
+	}
+}

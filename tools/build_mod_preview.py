@@ -33,6 +33,9 @@ def build(args):
     with tarfile.open(fileobj=io.BytesIO(archive)) as stream:
         stream.extractall(source, filter="data")
     game = source / "game"
+    project = game / "project.godot"
+    if (game / "src/native/path_nrd.cfg").exists():
+        project.write_text(project.read_text().replace("[application]", "[application]\ngraphics_sdk/nrd=true"))
     version = re.search(r'^config/version="([^"]+)"', (game / "project.godot").read_text(), re.M)[1]
     if "-" not in version:
         raise ValueError("This helper builds previews only")
@@ -79,9 +82,15 @@ def build(args):
         native = out / "src/native/bin"
         native.mkdir(parents=True)
         shutil.copy2(game / f"src/native/bin/libmod_lua.{extension}", native)
+        if (game / "src/native/path_nrd.cfg").exists():
+            shutil.copy2(game / f"src/native/bin/libpath_nrd.{extension}", native)
+            shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", out)
+            nrd_notices = out / "licenses/NVIDIA/NRD"
+            nrd_notices.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", nrd_notices)
         for name in ["LICENSE.md", "THIRD_PARTY_NOTICES.md", "README.md", "CHANGELOG.md"]:
             shutil.copy2(source / name, out)
-        shutil.copytree(source / "licenses", out / "licenses")
+        shutil.copytree(source / "licenses", out / "licenses", dirs_exist_ok=True)
         shutil.copytree(source / "docs", out / "docs", ignore=shutil.ignore_patterns("validation", "wiki*", "screenshots"))
         (out / "docs/validation").mkdir()
         for suffix in (".md", ".json"):

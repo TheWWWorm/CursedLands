@@ -13,6 +13,8 @@ global uniform sampler2D ei_rt_gi : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_guide : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow0 : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow1 : filter_nearest, repeat_disable;
+global uniform sampler2D ei_pt_direct_sun : filter_nearest, repeat_disable;
+global uniform float ei_pt_grass_shadows;
 global uniform vec4 ei_rt_point0;
 global uniform vec4 ei_rt_point1;
 global uniform vec4 ei_rt_point2;
@@ -27,6 +29,9 @@ varying vec2 ei_rt_flags;
 #define ei_pt_blend ei_rt_flags.y
 varying vec4 ei_rt_visibility0;
 varying vec4 ei_rt_visibility1;
+#ifdef EI_GRASS_LIGHT
+varying vec3 ei_rt_ground;
+#endif
 
 vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
@@ -37,6 +42,51 @@ vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
     bool orthographic=abs(ei_rt_view_projection[0][3])+abs(ei_rt_view_projection[1][3])+abs(ei_rt_view_projection[2][3])<0.001;
     return orthographic?near.xyz+forward*(depth-near_depth):ei_rt_eye+(near.xyz-ei_rt_eye)*(depth/near_depth);
 }
+
+#ifdef EI_GRASS_LIGHT
+// Procedural blades are not in the RT scene. Sample their planted root once
+// per fragment, instead of searching 29 surface pixels that cannot match a
+// raised blade. Reject walls, foreground objects and unrelated ground planes.
+bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
+    gi=vec3(0.0);visibility0=vec4(0.0);visibility1=vec4(0.0);
+    if(ei_rt_state.x<0.5||distance(ei_rt_ground,ei_rt_center.xyz)>=ei_rt_state.w)return false;
+    vec4 clip=ei_rt_view_projection*vec4(ei_rt_ground,1.0);
+    vec2 uv=vec2(clip.x,-clip.y)/clip.w*0.5+0.5;
+    if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;
+    ivec2 size=textureSize(ei_rt_guide,0);
+    vec2 pixel=uv*vec2(size)-0.5,blend=fract(pixel);
+    ivec2 base=ivec2(floor(pixel));
+    float total=0.0;
+    float depth=-(ei_rt_view*vec4(ei_rt_ground,1.0)).z;
+    float nearby=ei_pt_grass_shadows*(1.0-smoothstep(18.0,24.0,distance(ei_rt_ground,ei_rt_eye)));
+    for(int y=0;y<2;y++)for(int x=0;x<2;x++) {
+        ivec2 p=clamp(base+ivec2(x,y),ivec2(0),size-1);
+        vec4 guide=texelFetch(ei_rt_guide,p,0);
+        if(guide.w<=0.0||guide.y<0.35)continue;
+        vec3 delta=ei_rt_position(p,guide.w,size)-ei_rt_ground;
+        if(abs(dot(delta,guide.xyz))>0.12||length(delta)>max(0.5,depth*0.006))continue;
+        float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
+        gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
+        if(ei_pt_active<=0.5) {
+            visibility0+=texelFetch(ei_rt_shadow0,p,0)*w;
+            visibility1+=texelFetch(ei_rt_shadow1,p,0)*w;
+        } else if(nearby>0.0) {
+            visibility0.rgb+=texelFetch(ei_pt_direct_sun,p,0).rgb*w*nearby;
+        }
+        total+=w;
+    }
+    if(total<0.01)return false;
+    gi/=total;visibility0/=total;visibility1/=total;
+    if(ei_pt_active>0.5)visibility0.rgb=clamp(visibility0.rgb,vec3(0.0),gi);
+    // Grass uses the ground's diffuse illumination, never its glossy lobe.
+    if(ei_pt_active<=0.5) {
+        float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance(ei_rt_ground,ei_rt_center.xyz));
+        gi=mix(ei_lin(ei_ambient),gi,fade);
+        visibility0=mix(vec4(1.0),visibility0,fade);visibility1=mix(vec4(1.0),visibility1,fade);
+    }
+    return true;
+}
+#endif
 
 bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(1.0);visibility1=vec4(1.0);
@@ -74,7 +124,7 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         vec4 guide=texelFetch(ei_rt_guide,p,0);
         if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
         vec3 delta=ei_rt_position(p,guide.w,size)-world;
-        if(abs(dot(delta,plane))>max(0.025,depth*0.0005)||length(delta)>max(0.1,footprint*2.5))continue;
+        if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*2.5))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
         a+=texelFetch(ei_rt_shadow0,p,0)*w;
@@ -82,6 +132,24 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         // the raster receiver only consumes diffuse and glossy radiance.
         if(ei_pt_active<=0.5)b+=texelFetch(ei_rt_shadow1,p,0)*w;
         total+=w;
+    }
+    if(total<0.01 && ei_pt_active>0.5) {
+        // At half resolution a thin leaf can cover all four bilinear samples.
+        // Search one extra texel ring for the actual receiver before falling
+        // back. Depth/plane checks keep background light off the foreground.
+        ivec2 nearest=ivec2(floor(pixel+0.5));
+        for(int y=-2;y<=2;y++)for(int x=-2;x<=2;x++) {
+            ivec2 p=nearest+ivec2(x,y);
+            if(any(lessThan(p,ivec2(0)))||any(greaterThanEqual(p,size)))continue;
+            vec4 guide=texelFetch(ei_rt_guide,p,0);
+            if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
+            vec3 delta=ei_rt_position(p,guide.w,size)-world;
+            if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*3.5))continue;
+            vec2 offset=vec2(p)-pixel;
+            float w=exp(-dot(offset,offset));
+            gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
+            a+=texelFetch(ei_rt_shadow0,p,0)*w;total+=w;
+        }
     }
     if(total<0.01)return false;
     float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);
@@ -117,13 +185,25 @@ const CAPTURE := """
         vec3 indirect;vec4 a,b;
         vec3 world=(INV_VIEW_MATRIX*vec4(VERTEX,1.0)).xyz;
         vec3 normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
-        if(ei_rt_sample(world,normal,indirect,a,b)) {
+#ifdef EI_GRASS_LIGHT
+        bool matched=ei_rt_ground_sample(indirect,a,b);
+#else
+        bool matched=ei_rt_sample(world,normal,indirect,a,b);
+#endif
+        if(matched) {
             if(ei_pt_active>0.5) {
                 ei_pt_blend=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_center.xyz));
                 // Retain the terrain's authored underwater attenuation. The
                 // combined PT signal has no individual light direction, so
                 // use the same diffuse-depth factor as the ambient path.
+#ifdef EI_GRASS_LIGHT
+                // Keep indirect light in PT. The native double-sided grass
+                // caster resolves detailed sunlight occlusion in light().
+                ei_rt_visibility0=a;
+                vec3 reflected=ALBEDO*ei_material_diffuse.rgb*(indirect-a.rgb)*max(1.0-ei_k,0.0);
+#else
                 vec3 reflected=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb)*max(1.0-ei_k,0.0);
+#endif
                 EMISSION+=(reflected+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
             } else {
                 ei_rt_valid=1.0;ei_rt_visibility0=a;ei_rt_visibility1=b;
@@ -135,6 +215,11 @@ const CAPTURE := """
 """
 
 const LIGHT := """
+#ifdef EI_GRASS_LIGHT
+    if(ei_pt_blend>0.0 && LIGHT_IS_DIRECTIONAL && abs(SPECULAR_AMOUNT-0.371)<0.002) {
+        DIFFUSE_LIGHT+=ei_rt_visibility0.rgb*ei_material_diffuse.rgb*ATTENUATION*ei_pt_blend*max(1.0-ei_k,0.0);
+    }
+#endif
     // A fully traced receiver already supplied all lighting in fragment().
     // The fade band and unmatched/distant receivers still need raster light.
     if(ei_pt_blend<1.0) {
@@ -183,6 +268,8 @@ static func applicable(code: String,lit: bool) -> bool:
 static func inject(code: String,clouds: bool) -> String:
 	var at := code.find("\nvoid ")
 	code = code.insert(at+1,COMMON)
+	if code.contains("#define EI_GRASS_LIGHT"):
+		code = Gfx._function_tail(code,"vertex","\n    ei_rt_ground=origin;\n")
 	code = Gfx._function_tail(code,"fragment",CAPTURE)
 	code = Gfx._function_tail(code,"light","\n    }\n    DIFFUSE_LIGHT=mix(DIFFUSE_LIGHT,ei_pt_previous_diffuse,ei_pt_blend);\n    SPECULAR_LIGHT=mix(SPECULAR_LIGHT,ei_pt_previous_specular,ei_pt_blend);\n    }\n")
 	return code.replace("void light() {","void light() {"+LIGHT.replace("EI_RT_CLOUD","ei_cloud_sun(world)" if clouds else "1.0"))
@@ -194,7 +281,9 @@ static func globals() -> void:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_MAT4,Projection())
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
-	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
+	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D,null)
+	RenderingServer.global_shader_parameter_add(&"ei_pt_grass_shadows",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,
+		0.0 if OS.get_cmdline_user_args().has("--ei-pt-no-grass-shadows") else 1.0)
 	for i in 7:
 		RenderingServer.global_shader_parameter_add(StringName("ei_rt_point%d"%i),RenderingServer.GLOBAL_VAR_TYPE_VEC4,Vector4.ZERO)

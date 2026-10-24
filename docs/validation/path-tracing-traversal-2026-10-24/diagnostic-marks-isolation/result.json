@@ -1,0 +1,79 @@
+{
+  "suite": "path_trace_route_marks_profile",
+  "platform": "windows",
+  "renderer": "d3d12",
+  "exit": 5,
+  "seconds": 182.93,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/recording-marks-isolation/fixtures/path_trace_route_marks_profile.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/recording-marks-isolation",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/mods",
+    "--ei-profile-rt"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "92335.200:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\recording-marks-isolation\\vkd3d-proton.CursedLands.exe.cache.",
+    "92335.200:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\recording-marks-isolation\\vkd3d-proton.CursedLands.exe.cache.",
+    "92335.201:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-nrd-20261024\\checks\\recording-marks-isolation\\vkd3d-proton.CursedLands.exe.cache.",
+    "PASS ordinary campaign uses the separate simulation process",
+    "PASS recording route prepares PT",
+    "PASS route renders at recorded 4K resolution",
+    "PASS player walks to east-opening",
+    "PASS player walks to downhill-path",
+    "PASS authored encounter exists: wolf",
+    "PASS normal combat defeats wolf",
+    "FAIL normal looting removes wolf",
+    "PASS player walks to slope-to-boar",
+    "PASS authored encounter exists: slope-boar",
+    "PASS normal combat defeats slope-boar",
+    "FAIL normal looting removes slope-boar",
+    "RECORDING_ROUTE 12 checks 2 failures"
+  ],
+  "errors": [
+    "FAIL normal looting removes wolf",
+    "FAIL normal looting removes slope-boar",
+    "RECORDING_ROUTE 12 checks 2 failures",
+    "ERROR: Node not inside tree. Use look_at_from_position() instead.",
+    "marks-profile.json: ['normal looting removes wolf', 'normal looting removes slope-boar']"
+  ],
+  "allowed_diagnostics": [],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.exe": "0a5c220d7f1208d77aad3016de97a875d70524a6f0f49f1a2f2fac1779e86264",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-windows-x86_64/CursedLands.pck": "0710fd595f893f78aa490ac9505c62733bd7334c4b58fa2d4f423ab30acf67f8"
+  },
+  "repository_commit": "ba5ce2cd4fe434d69439e0aa2393ef0e650ee1b7",
+  "repository_status": "?? tools/tests/path_trace_recording_profile.gd\n?? tools/tests/path_trace_recording_route.gd\n?? tools/tests/path_trace_route_marks_profile.gd\n?? tools/tests/path_trace_route_rain_profile.gd\n?? tools/tests/path_trace_route_snapshot_profile.gd\n?? tools/tests/path_trace_traversal_profile.gd\n",
+  "fixture_sha256": "db275325e4cb7f3d045b36b793346b7031d185553bcd39375126814dc18396ca",
+  "qualification": "diagnostic only; two loot-check timing assertions failed; fixed in the retained route fixture",
+  "full_result_sha256": "a8b4a117b4aa3a7bbea1c19b44bc4107e23da299ac4fc52b1f7a00f93fc7d0d0"
+}

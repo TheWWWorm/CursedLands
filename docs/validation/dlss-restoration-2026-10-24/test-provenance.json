@@ -1,0 +1,496 @@
+[
+  {
+    "suite": "rtx_super_resolution",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 73.19,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "fa964f4669922f71cd218fab373e30510bc78b64df94d87c4c8723abb99bea04",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "05b3e9bd4fc09c3ea442d75a6888fa588cd221796eb6d902811be2f5378c76f3"
+    },
+    "bundle_declared_source": {
+      "source_commit": "7a574589831319be092ee2c14182686d98cb03be",
+      "game_tree": "7f28df063ba60da2b35b7282e59a23984744c24a",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "7a574589831319be092ee2c14182686d98cb03be",
+    "fixture_sha256": "f27cb9d7e8d4eebc8f77b0cf0d90038e7608b000f13811ba28aac5bdf61c33c1",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "qualified-dx12-dlss-sr",
+    "report": "qualified-dx12-dlss-sr.json",
+    "checks": 58,
+    "failures": [],
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "fsr_render",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 76.7,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "fa964f4669922f71cd218fab373e30510bc78b64df94d87c4c8723abb99bea04",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "05b3e9bd4fc09c3ea442d75a6888fa588cd221796eb6d902811be2f5378c76f3"
+    },
+    "bundle_declared_source": {
+      "source_commit": "7a574589831319be092ee2c14182686d98cb03be",
+      "game_tree": "7f28df063ba60da2b35b7282e59a23984744c24a",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "7a574589831319be092ee2c14182686d98cb03be",
+    "fixture_sha256": "1e39135c5b1bd9681d851f0f93e3b735ea1a7084e973cbe5ff8db1c3e046f1bc",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "qualified-dx12-fsr-render",
+    "report": "qualified-dx12-fsr-render.json",
+    "checks": 191,
+    "failures": [],
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "android_slow_owner",
+    "platform": "windows",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 157.34,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "fa964f4669922f71cd218fab373e30510bc78b64df94d87c4c8723abb99bea04",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "05b3e9bd4fc09c3ea442d75a6888fa588cd221796eb6d902811be2f5378c76f3"
+    },
+    "bundle_declared_source": {
+      "source_commit": "7a574589831319be092ee2c14182686d98cb03be",
+      "game_tree": "7f28df063ba60da2b35b7282e59a23984744c24a",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "7a574589831319be092ee2c14182686d98cb03be",
+    "fixture_sha256": "8ae6161055785c348bd49aa15218f57a10d626fe12596a65c4ff7daaa3d7bd31",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "qualified-windows-slow-owner",
+    "report": "qualified-windows-slow-owner.json",
+    "checks": 5,
+    "failures": 0,
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "path_trace_recording_route",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 396.26,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "fa964f4669922f71cd218fab373e30510bc78b64df94d87c4c8723abb99bea04",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate4/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "05b3e9bd4fc09c3ea442d75a6888fa588cd221796eb6d902811be2f5378c76f3"
+    },
+    "bundle_declared_source": {
+      "source_commit": "7a574589831319be092ee2c14182686d98cb03be",
+      "game_tree": "7f28df063ba60da2b35b7282e59a23984744c24a",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "7a574589831319be092ee2c14182686d98cb03be",
+    "fixture_sha256": "ab823976a145c0b8a64f9e97b0d4b96644001e166303d74d6bc14b4f7407f564",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "qualified-dx12-dlss-nrd-traversal",
+    "report": "qualified-dx12-dlss-nrd-traversal.json",
+    "checks": 76,
+    "failures": [],
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "vendor": "10de",
+      "device": "2203",
+      "vulkan_uuid": "0eee028eb998532f095be936c7f6191d",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "fsr_screen",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 19.55,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "967b4657f1ec1599545552f81dee2bf064c16a15dfb84138886c7b20de6951c8",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "68a0a1fb1eaea63fd443b373138e65ebaba3dc34a7022243da87f7cc44d6d76a"
+    },
+    "bundle_declared_source": {
+      "source_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+    "fixture_sha256": "63d298b872cd8c45ea7d50b6c61f4a1c41f22617c4b5a8c6741c9ed16b18ec4e",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "final-dx12-screen-nvidia",
+    "report": "final-dx12-screen-nvidia.json",
+    "checks": 750,
+    "failures": 0,
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "fsr_screen",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 19.2,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate2/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "a30c2afe39184c7225b077f48b974eea4b4f1a8b110a6a705fb09fd782c0fa51",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate2/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "f7249db7b359949ae0c5b3d984dce5507220922f025ee5797f536891be7d17c4"
+    },
+    "bundle_declared_source": {
+      "source_commit": "9a1e9121e24c83d5cc631b23068149d0c2fa3fb0",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "9a1e9121e24c83d5cc631b23068149d0c2fa3fb0",
+    "fixture_sha256": "63d298b872cd8c45ea7d50b6c61f4a1c41f22617c4b5a8c6741c9ed16b18ec4e",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "candidate-dx12-screen-amd",
+    "report": "candidate-dx12-screen-amd.json",
+    "checks": 750,
+    "failures": 0
+  },
+  {
+    "suite": "fsr_screen",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 8.53,
+    "errors": [],
+    "allowed_diagnostics": [
+      "ERROR: Parameter \"monitors\" is null."
+    ],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.pck": "160d28d9a17455151df94e493b7896505bf4e5e8fe9f296eac3c7a56ca387905"
+    },
+    "bundle_declared_source": {
+      "source_commit": "85c86afba9a44d306c8fd1d4c32869c4b34088af",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "85c86afba9a44d306c8fd1d4c32869c4b34088af",
+    "fixture_sha256": "63d298b872cd8c45ea7d50b6c61f4a1c41f22617c4b5a8c6741c9ed16b18ec4e",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "candidate-linux-screen",
+    "report": "candidate-linux-screen.json",
+    "checks": 714,
+    "failures": 0
+  },
+  {
+    "suite": "fsr_attribution",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 18.39,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate2/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "a30c2afe39184c7225b077f48b974eea4b4f1a8b110a6a705fb09fd782c0fa51",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate2/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "f7249db7b359949ae0c5b3d984dce5507220922f025ee5797f536891be7d17c4"
+    },
+    "bundle_declared_source": {
+      "source_commit": "9a1e9121e24c83d5cc631b23068149d0c2fa3fb0",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "9a1e9121e24c83d5cc631b23068149d0c2fa3fb0",
+    "fixture_sha256": "978c5ff89e6972197229cfad7cb538bb16808a79d959d0f7394e3b27ed807cdd",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "candidate-dx12-attribution",
+    "report": "candidate-dx12-attribution.json",
+    "checks": 100,
+    "failures": []
+  },
+  {
+    "suite": "fsr_attribution",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 6.73,
+    "errors": [],
+    "allowed_diagnostics": [
+      "ERROR: Parameter \"monitors\" is null."
+    ],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.pck": "160d28d9a17455151df94e493b7896505bf4e5e8fe9f296eac3c7a56ca387905"
+    },
+    "bundle_declared_source": {
+      "source_commit": "85c86afba9a44d306c8fd1d4c32869c4b34088af",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "85c86afba9a44d306c8fd1d4c32869c4b34088af",
+    "fixture_sha256": "978c5ff89e6972197229cfad7cb538bb16808a79d959d0f7394e3b27ed807cdd",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "candidate-linux-attribution",
+    "report": "candidate-linux-attribution.json",
+    "checks": 93,
+    "failures": []
+  },
+  {
+    "suite": "temporal_graphics_apply",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 15.09,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "967b4657f1ec1599545552f81dee2bf064c16a15dfb84138886c7b20de6951c8",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "68a0a1fb1eaea63fd443b373138e65ebaba3dc34a7022243da87f7cc44d6d76a"
+    },
+    "bundle_declared_source": {
+      "source_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+    "fixture_sha256": "0c7056f52f1923a5975fd7dc3c3af2357743bf671df617d8b864e417cc2dbc5c",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "final-dx12-apply-nvidia",
+    "report": "final-dx12-apply-nvidia.json",
+    "checks": 28,
+    "failures": 0,
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "temporal_graphics_apply",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 13.85,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "967b4657f1ec1599545552f81dee2bf064c16a15dfb84138886c7b20de6951c8",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "68a0a1fb1eaea63fd443b373138e65ebaba3dc34a7022243da87f7cc44d6d76a"
+    },
+    "bundle_declared_source": {
+      "source_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+    "fixture_sha256": "0c7056f52f1923a5975fd7dc3c3af2357743bf671df617d8b864e417cc2dbc5c",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "final-dx12-apply-amd",
+    "report": "final-dx12-apply-amd.json",
+    "checks": 28,
+    "failures": 0,
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "path_trace_nrd_device",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 20.75,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.exe": "967b4657f1ec1599545552f81dee2bf064c16a15dfb84138886c7b20de6951c8",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate3/CursedLands-1.28.0-experimental.3-windows-x86_64/CursedLands.pck": "68a0a1fb1eaea63fd443b373138e65ebaba3dc34a7022243da87f7cc44d6d76a"
+    },
+    "bundle_declared_source": {
+      "source_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "5d8d941355ef240bc29fc5283c7bd17a8d0e319c",
+    "fixture_sha256": "2d3449083021f16afd728aa9a5980797d33a9ba5035c3880cf43d8a8e7a10dc5",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "final-dx12-nrd-device-nvidia",
+    "report": "final-dx12-nrd-device-nvidia.json",
+    "checks": 17,
+    "failures": [],
+    "wine_adapter_mapping": {
+      "name": "NVIDIA GeForce RTX 3090",
+      "vendor": "10de",
+      "device": "2204",
+      "vulkan_uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+      "capabilities_overridden": false
+    }
+  },
+  {
+    "suite": "rtx_experiment",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 3.22,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.pck": "160d28d9a17455151df94e493b7896505bf4e5e8fe9f296eac3c7a56ca387905"
+    },
+    "bundle_declared_source": {
+      "source_commit": "85c86afba9a44d306c8fd1d4c32869c4b34088af",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "9a1e9121e24c83d5cc631b23068149d0c2fa3fb0",
+    "fixture_sha256": "df6ac6a462a89a7fec4ef7945c7c014d9a85d0453a5d7998bd456f47f917a766",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "candidate-linux-headless-dlss-fallback",
+    "report": "candidate-linux-headless-dlss-fallback.json",
+    "checks": 13,
+    "failures": 0
+  },
+  {
+    "suite": "fsr_experiment",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 3.22,
+    "errors": [],
+    "allowed_diagnostics": [],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "/home/llm2x/Documents/EI/local/scratchpad/dlss-restore-20261024/candidate1/CursedLands-1.28.0-experimental.3-linux-x86_64/CursedLands.pck": "160d28d9a17455151df94e493b7896505bf4e5e8fe9f296eac3c7a56ca387905"
+    },
+    "bundle_declared_source": {
+      "source_commit": "85c86afba9a44d306c8fd1d4c32869c4b34088af",
+      "game_tree": "552221a014e49e5d7c744650f48e4b9b934281cc",
+      "build_type": "local unpublished DLSS / NRD preview"
+    },
+    "repository_commit": "9a1e9121e24c83d5cc631b23068149d0c2fa3fb0",
+    "fixture_sha256": "28b9b2db567c75cedb4571f64886a22e503d9823909dd01a73cbecd169e79cf3",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "tag": "candidate-linux-headless-fsr-fallback",
+    "report": "candidate-linux-headless-fsr-fallback.json",
+    "checks": 50,
+    "failures": 0
+  }
+]

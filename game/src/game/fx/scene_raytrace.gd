@@ -4,6 +4,7 @@ extends Node
 const Device = preload("res://src/game/fx/scene_raytrace_device.gd")
 const PathDevice = preload("res://src/game/fx/path_trace_device.gd")
 const PathSky = preload("res://src/game/fx/path_trace_sky.gd")
+const Budget = preload("res://src/game/fx/path_trace_budget.gd")
 const Scene = preload("res://src/game/fx/water_raytrace_scene.gd")
 const SCALES := [0.5,0.75,1.0]
 const GI_SAMPLES := [1,2,4]
@@ -22,6 +23,9 @@ var _pending_device: Device
 var _pending_scene: Scene
 var _pending_ready := false
 var _pending_stats := {}
+var _pending_stage := -1
+var _pending_geometries := []
+var _pending_placements := []
 var _snapshot_generation := 0
 var _topology_pending := false
 var _failure_reason := ""
@@ -46,6 +50,7 @@ var _history_key := ""
 var _mode := ""
 var _path_mode := false
 var _path_signature := PackedByteArray()
+var _path_cloud_signature := PackedByteArray()
 var _accumulation_frames := 0.0
 # A visible settings request owns one cover. Ordinary recenter/topology work
 # keeps this key, so cancellation and automatic recovery never reopen it.
@@ -60,6 +65,13 @@ var _preparation_visible_frame := -1
 var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-history")
 # Diagnostic comparison against the old display-resolution PT workload.
 var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
+var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var _ground_cache := Scene.Ground.new()
+var _source_cache := Scene.SourceCache.new()
+var _programs := Device.Programs.new()
+var _handoff_updates := false
+var _budget := Budget.new()
+var _budget_clock := 0
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -80,6 +92,8 @@ static func target_size(viewport: Vector2,quality: int,render_scale := 1.0) -> V
 	return Vector2i(maxi(2,roundi(internal.x*scale)),maxi(2,roundi(internal.y*scale)))
 
 func _process(dt: float) -> void:
+	var cpu_start := Time.get_ticks_usec() if _profile_cpu else 0
+	var cpu_stage := cpu_start
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
@@ -116,6 +130,8 @@ func _process(dt: float) -> void:
 		# a new scene is published only after its first complete frame.
 		if _scene.topology_changed():
 			_topology_pending=true
+	if _profile_cpu:
+		stats["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var building := _gather if _gather!=null else _pending_scene
 	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
 		_cancel_candidate()
@@ -130,7 +146,15 @@ func _process(dt: float) -> void:
 	if _gather==null and _pending_device==null and may_retry \
 		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>16.0):
 		_begin_snapshot(terrain,camera)
-	if _gather!=null and _gather.step(): _queue_candidate(terrain,camera)
+	if _profile_cpu:
+		stats["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
+	# Loading can use the larger preparation budget. Live travel shares the
+	# frame with rendering and simulation, while the previous scene stays lit.
+	if _gather!=null and _gather.step(1500 if device!=null else 6000): _queue_candidate()
+	if _pending_stage>=0:
+		_prepare_candidate(terrain,camera)
+	elif _pending_device!=null and not _pending_ready:Device.dispatch(_pending_device,&"build_step")
+	if _profile_cpu:stats["cpu_gather_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
 	var viewport := camera.get_viewport()
 	var display_size := viewport.get_visible_rect().size
@@ -139,6 +163,19 @@ func _process(dt: float) -> void:
 	# Rays and receiver lookup share the unjittered camera projection. Raster
 	# receivers project world positions into this lattice beside FSR jitter.
 	var size := target_size(display_size,quality,trace_scale)
+	_budget.configure(GameData.option("pt_target_fps") if _path_mode and GameData.option("pt_accumulation")==0 else 0)
+	var now := Time.get_ticks_usec()
+	var seconds := (now-_budget_clock)/1000000.0 if _budget_clock>0 else 0.0
+	_budget_clock=now
+	if _budget.target>0:
+		RenderingServer.viewport_set_measure_render_time(viewport.get_viewport_rid(),true)
+		if device!=null:
+			device.measure_budget=true
+			var raster_ms := RenderingServer.viewport_get_measured_render_time_gpu(viewport.get_viewport_rid())
+			_budget.observe(device.gpu_frame,seconds,raster_ms+device.gpu_ms,device.gpu_ms,
+				get_tree().paused or _gather!=null or _pending_device!=null or not _preparation_owner.is_empty() or not device.output_ready())
+		size=_budget.size(size)
+	elif device!=null:device.measure_budget=false
 	if _pending_ready and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
 		if _pending_scene.topology_changed():
 			var keep_cover := not _preparation_owner.is_empty()
@@ -148,7 +185,10 @@ func _process(dt: float) -> void:
 	var frame := PackedByteArray()
 	if _ready_gpu and device!=null:
 		_scene.lighting_camera_mask = camera.cull_mask
-		var changes := _scene.updates()
+		var update_started := Time.get_ticks_usec()
+		var changes := _scene.updates(_handoff_updates)
+		_handoff_updates=false
+		stats["cpu_update_ms"]=(Time.get_ticks_usec()-update_started)/1000.0
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
 		_render(device,size,frame,changes)
 		if device.output_ready():
@@ -181,13 +221,22 @@ func _process(dt: float) -> void:
 	stats["render_size"]=[render_size.x,render_size.y];stats["render_scale"]=render_scale
 	stats["trace_render_scale"]=trace_scale
 	stats["window_resolution_reference"]=_path_mode and _window_resolution_reference
+	stats["adaptive_target_fps"]=_budget.target;stats["adaptive_scale"]=_budget.scale
+	stats["adaptive_changes"]=_budget.changes;stats["adaptive_gpu_ms"]=_budget.gpu_ms
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size()
 	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
 	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
+	stats["program_compilations"]=_programs.compilations
+	stats["program_cache_hits"]=_programs.hits
+	if device!=null:stats["build_timings"]=device.build_timings.duplicate()
+	if device is PathDevice:
+		stats["history_handoffs"]=device.history_handoffs
+		stats["history_matched_surfaces"]=device.history_matched_surfaces
 	_settle_preparation(size)
+	if _profile_cpu:stats["cpu_total_ms"]=(Time.get_ticks_usec()-cpu_start)/1000.0
 
 func _begin_preparation() -> void:
 	_end_preparation()
@@ -208,6 +257,7 @@ func _end_preparation() -> void:
 	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
 
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
+	if target is PathDevice:Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
 	# An active device is the visible target even while a recenter replacement
 	# builds. With no active scene, the candidate must finish privately first.
 	if _preparation_owner.is_empty() or (target!=device and device!=null):
@@ -245,37 +295,57 @@ func _settle_preparation(size: Vector2i) -> void:
 func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_failed=false
 	_gather=Scene.new();_gather.lighting_camera_mask=camera.cull_mask
+	_gather._ground=_ground_cache
+	_gather._sources=_source_cache
 	_gather.path_materials=_path_mode
 	# No water-plane clipping: ceilings and underground rooms participate.
 	_gather.begin(terrain,camera.global_position,-1.0e20)
 	if device==null: _center=camera.global_position
 
-func _queue_candidate(terrain: EITerrain,camera: Camera3D) -> void:
+func _queue_candidate() -> void:
 	_pending_scene=_gather;_gather=null
 	_pending_stats={"active":false,"supported":true,"triangles":_pending_scene.triangles,
 		"geometries":_pending_scene.geometries.size(),"instances":_pending_scene.instances.size()}
 	if _pending_scene.failed or _pending_scene.triangles==0:
 		_reject_candidate("snapshot_budget" if _pending_scene.failed else "snapshot_empty");return
-	var geometries := []; var placements := []
-	for geometry: Dictionary in _pending_scene.geometries:
-		geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
-			"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
-	for entry: Dictionary in _pending_scene.instances:
-		placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 	_pending_device=PathDevice.new() if _path_mode else Device.new()
-	if _path_mode:
-		_pending_device.terrain.collect(_pending_scene,terrain)
-		if _pending_scene.failed: _reject_candidate("snapshot_budget");return
-		_pending_stats["terrain_material_bytes"]=_pending_device.terrain.data.size()
-		_pending_stats["terrain_material_build_us"]=_pending_device.terrain.build_us
-		_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
+	_pending_device.programs=_programs
+	_pending_device.incremental_build=device!=null
+	if _path_mode:_pending_device.defer_nrd=device is PathDevice and device.nrd_active
 	var id := _pending_device.get_instance_id()
 	_pending_device.prepared.connect(_prepared.bind(id))
 	_pending_device.rendered.connect(_rendered.bind(id))
 	if _path_mode: _pending_device.emitter_stats.connect(_emitter_stats.bind(id))
 	if not _preparation_owner.is_empty(): ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
-	Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,geometries,placements])
-	_collect_lights(camera.global_position)
+	_pending_stage=0
+
+## Packing placements, terrain material metadata and native resource creation
+## used to land in the same 50–60 ms frame after the bounded gather completed.
+## Keep the old scene visible while these independent stages take separate
+## frames. The candidate is still revalidated before its atomic promotion.
+func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
+	match _pending_stage:
+		0:
+			var initial := _pending_scene.updates(true)
+			_pending_device.initial_poses=initial.poses
+			for geometry: Dictionary in _pending_scene.geometries:
+				_pending_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
+					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
+			for entry: Dictionary in _pending_scene.instances:
+				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask})
+			_pending_stage=1
+		1:
+			if _path_mode:
+				_pending_device.terrain.collect(_pending_scene,terrain)
+				if _pending_scene.failed: _reject_candidate("snapshot_budget");return
+				_pending_stats["terrain_material_bytes"]=_pending_device.terrain.data.size()
+				_pending_stats["terrain_material_build_us"]=_pending_device.terrain.build_us
+				_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
+			_pending_stage=2
+		2:
+			Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,_pending_geometries,_pending_placements])
+			_pending_geometries=[];_pending_placements=[];_pending_stage=-1
+			_collect_lights(camera.global_position)
 
 func _bind_outputs() -> void:
 	if _bound: return
@@ -283,13 +353,20 @@ func _bind_outputs() -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_rt_guide",device.guide)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",device.direct_sun if device is PathDevice else null)
 	_bound=true
 
 func _activate_candidate() -> void:
 	var previous := device
+	var preserve := previous is PathDevice and _pending_device is PathDevice and GameData.option("pt_accumulation")==0
+	if preserve:
+		Device.dispatch(_pending_device,&"adopt_history",[previous,_pending_scene.history_matches(_scene)])
+		_handoff_updates=true
+	elif _pending_device is PathDevice:_pending_device.defer_nrd=false
 	device=_pending_device;_scene=_pending_scene;_center=_scene.center;stats=_pending_stats
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={}
-	_ready_gpu=true;_bound=false;_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
+	_ready_gpu=true;_bound=false
+	if not preserve:_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
 	_snapshot_generation+=1;_clear_failure()
 	_topology_pending=false
 	# Replace global bindings before retiring their previous GPU owners.
@@ -334,6 +411,7 @@ func _cancel_candidate() -> void:
 	_end_preparation()
 	_retire_device(_pending_device)
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={};_gather=null
+	_pending_stage=-1;_pending_geometries=[];_pending_placements=[]
 
 func _retire_device(retired: Device) -> void:
 	if retired==null: return
@@ -345,6 +423,24 @@ func _retire_device(retired: Device) -> void:
 		var emitter_callback := _emitter_stats.bind(retired.get_instance_id())
 		if retired.emitter_stats.is_connected(emitter_callback): retired.emitter_stats.disconnect(emitter_callback)
 	Device.dispatch(retired,&"dispose")
+
+func _path_cloud_texture() -> Texture2D:
+	if _terrain==null or game._sky_cave or not Gfx.Clouds.shadows_enabled() or Gfx._cloud_owner!=_terrain.get_instance_id():return null
+	if Gfx.Clouds.mode()==1:return Gfx._cloud_sheet_noise
+	var field := Gfx._cloud_shadow_field
+	return field.view.get_texture() if field!=null and is_instance_valid(field.view) and field._published and field.domain.w>0.0 else null
+
+func _path_cloud_frame() -> PackedFloat32Array:
+	var data:=PackedFloat32Array();data.resize(12)
+	if _terrain==null or _path_cloud_texture()==null:return data
+	var state: Vector4=Gfx._cloud_frame.state
+	var phases: Vector4=Gfx._cloud_frame.phases
+	var domain:=Vector4.ZERO
+	if Gfx.Clouds.mode()>1:
+		domain=Gfx._cloud_shadow_field.domain
+		state.w=2.0
+	for i in 4:data[i]=state[i];data[4+i]=phases[i];data[8+i]=domain[i]
+	return data
 
 func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
@@ -381,14 +477,26 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
 	data.append_array(colours)
 	if _path_mode:
-		var environment := PathSky.palette(Gfx.ambient,Gfx.sun,Gfx.fog_sky,game._sky_cave)
+		# Cloud attenuation changes illumination, not the authored time of day.
+		var daylight := Gfx.sun_day(Gfx.sun)
+		if game._lights!=null and game.session!=null and game.session.state!=null:
+			daylight=Gfx.sun_day(game._lights.sample("sunlight",game.session.state.world_time))
+		var environment := PathSky.palette(Gfx.ambient,Gfx.sun,Gfx.fog_sky,game._sky_cave,daylight)
 		# Progressive accumulation is valid only for an exactly unchanged
 		# camera, projection, lighting and scene. Never retain moving shadows.
 		var signature := data.slice(0,32)
 		signature.append_array(data.slice(64,76));signature.append_array(data.slice(84,144))
+		# The bounded trace region is an acceleration detail, not a light.
+		# NRD rejects newly visible geometry by depth/normal and confidence.
+		if GameData.option("pt_accumulation")==0:
+			for i in range(44,48):signature[i]=0.0
 		signature.append_array(environment)
 		var bytes := signature.to_byte_array()
-		var stationary := history and not scene_changed and bytes==_path_signature
+		var clouds := _path_cloud_frame()
+		var cloud_bytes := clouds.to_byte_array()
+		var same_cloud_mode := _path_cloud_signature.size()==cloud_bytes.size() \
+			and _path_cloud_signature.decode_float(3*4)==clouds[3]
+		var stationary := history and not scene_changed and bytes==_path_signature and cloud_bytes==_path_cloud_signature
 		var progressive := GameData.option("pt_accumulation")>0
 		var limit := 256.0 if progressive else 8.0
 		# Fire/lava flutter and the advancing daylight change every frame.
@@ -397,8 +505,12 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		# Still-scene accumulation always requires exact lighting and geometry.
 		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
 		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
+		var weather_fading := _weather_fading()
+		# Rain's cosine fade spans twenty world ticks (1.1 seconds), not
+		# twenty seconds. Give it the same short response as fluttering fire.
+		var outdoor_tolerance := clampf(0.1*delta_seconds*60.0,0.1,0.25) if weather_fading else 0.002
 		var gentle_change := not progressive and not _strict_light_history and not same_lighting \
-			and _small_lighting_change(bytes,_path_signature)
+			and _small_lighting_change(bytes,_path_signature,outdoor_tolerance)
 		if gentle_change:
 			# At 60 Hz retain at most 2/3 of the previous estimate. Shorten
 			# the history in slower frames so torch response does not acquire
@@ -407,23 +519,29 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			# It must not give the whole outdoor image the torch's short history
 			# every frame. A changing local light still uses the fast response.
 			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4)
-			if local_changed:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
-		var reuse := history and same_projection and (stationary if progressive else same_lighting or gentle_change)
+			if local_changed or weather_fading:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
+		var reuse := history and same_projection and same_cloud_mode and (stationary if progressive else same_lighting or gentle_change)
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
 		stats["history_reused"]=reuse;stats["history_limit"]=limit
 		stats["light_history_limited"]=gentle_change and reuse and limit<8.0
 		_path_signature=bytes
+		_path_cloud_signature=cloud_bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
 		for axis in 4:
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 		data.append_array(environment)
+		data.append_array(clouds)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
 
-static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray) -> bool:
+func _weather_fading() -> bool:
+	return not game._sky_cave and is_instance_valid(game.sound) and game.sound.weather!=null \
+		and game.sound.weather.world==game.world and game.sound.weather._fade>0.0
+
+static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray, outdoor_tolerance := 0.002) -> bool:
 	# Signature floats 76..103 are the seven linear RGB/source-size records.
 	# Projection is checked by the caller; ordinary camera motion reprojects.
 	# Region and local-light positions/ranges stay exact. The campaign clock
@@ -441,7 +559,7 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 		if minf(old.x,minf(old.y,old.z))<0.0 or minf(now.x,minf(now.y,now.z))<0.0: return false
 		if old==Vector3.ZERO or now==Vector3.ZERO: return false
 		for channel in 3:
-			if absf(now[channel]-old[channel])>maxf(maxf(now[channel],old[channel]),0.0001)*0.002: return false
+			if absf(now[channel]-old[channel])>maxf(maxf(now[channel],old[channel]),0.0001)*outdoor_tolerance: return false
 	if current.decode_float(39*4)!=previous.decode_float(39*4): return false
 	var old_direction := Vector3(previous.decode_float(36*4),previous.decode_float(37*4),previous.decode_float(38*4))
 	var direction := Vector3(current.decode_float(36*4),current.decode_float(37*4),current.decode_float(38*4))
@@ -501,12 +619,17 @@ func _release() -> void:
 	stats["active"]=false;stats["rebuilding"]=false
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
 	_cancel_candidate();_clear_failure()
-	_scene=null;_lights.clear();_path_signature=PackedByteArray();_accumulation_frames=0
+	_scene=null;_lights.clear();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
+	_ground_cache=Scene.Ground.new()
+	_source_cache.clear();_source_cache=Scene.SourceCache.new()
 	_topology_pending=false
 	if device!=null:
-		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
+		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
 			RenderingServer.global_shader_parameter_set(key,null)
 		_retire_device(device);device=null
+	Device.dispatch(_programs,&"dispose");_programs=Device.Programs.new()
+	_handoff_updates=false
+	_budget=Budget.new();_budget_clock=0
 	stats.erase("emissive_triangles");stats.erase("emissive_candidates")
 
 func _set_gi_active(active: bool) -> void:

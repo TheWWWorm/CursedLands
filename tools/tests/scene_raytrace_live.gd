@@ -55,8 +55,8 @@ func run() -> void:
 		# Menu text and pending options use the real rows and translation path.
 		for language: String in ["en","ru","de"]:
 			RemakeText.lang=language
-			var panel:=OptionsPanel.new();add_child(panel);panel.open();panel._show_group(OptionsPanel.LIGHT_GROUP)
-			check(panel._rows[11].to==OptionsPanel.SCENE_RT_GROUP,"lighting page links to RT controls: "+language)
+			var panel:=OptionsPanel.new();add_child(panel);panel.open();panel._show_group(OptionsPanel.REMAKE_GROUP)
+			check(panel._rows[OptionsPanel.SECTIONS.find(OptionsPanel.SCENE_RT_GROUP)].to==OptionsPanel.SCENE_RT_GROUP,"Remake page links to RT/PT controls: "+language)
 			panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 			for row in 3:
 				var option: Dictionary=panel._rows[row]

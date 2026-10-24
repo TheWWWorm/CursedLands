@@ -1,0 +1,26 @@
+{
+  "checks": 5,
+  "failures": 0,
+  "rows": [
+    {
+      "label": "actual client loading frame exercised slow renderer",
+      "ok": true
+    },
+    {
+      "label": "client finishes loading its visible world",
+      "ok": true
+    },
+    {
+      "label": "local authority survives slow loading with a live owner",
+      "ok": true
+    },
+    {
+      "label": "world runs after slow loading",
+      "ok": true
+    },
+    {
+      "label": "saving still works after slow loading",
+      "ok": true
+    }
+  ]
+}

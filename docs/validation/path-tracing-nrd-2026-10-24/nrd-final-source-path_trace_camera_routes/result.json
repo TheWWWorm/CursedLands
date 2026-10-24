@@ -1,0 +1,69 @@
+{
+  "suite": "path_trace_camera_routes",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 83.61,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/nrd-final-source-path_trace_camera_routes/fixtures/path_trace_camera_routes.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/nrd-final-source-path_trace_camera_routes",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS authored route exists: zone11",
+    "PASS route prepares actual path tracing",
+    "PASS trace lattice is half the actual 4K/HD viewport",
+    "PASS changed actor geometry is replaced",
+    "PASS PT stays active throughout all movement and topology frames: 0",
+    "PATH_CAMERA_ROUTES 5 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "4f31af72c3505c35c9bae651c68357bd75a21bca",
+    "game_tree": "666af4ee5fe4897d7e2e4f28620c119ab3260fb5",
+    "build_type": null
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/final/CursedLands-1.27.0-linux-x86_64/CursedLands.pck": "7078961c2e881fc59e90a1f7ec91cbc3b36027a93ccf85f7874f31b4ab709b4d"
+  },
+  "repository_commit": "155cb827e69d5a093640ef9aa0e2c0c4b47baa33",
+  "repository_status": " M THIRD_PARTY_NOTICES.md\n M docs/integrations/path-tracing-experiment.md\n M game/export_presets.cfg\n M game/src/ei/game_data.gd\n M game/src/ei/remake_text.gd\n M game/src/game/fx/path_trace_device.gd\n M game/src/game/fx/raytrace_ground.gd\n M game/src/game/fx/scene_raytrace.gd\n M game/src/game/fx/scene_raytrace_device.gd\n M game/src/game/fx/scene_raytrace_shader.gd\n M game/src/game/fx/shaders/path_trace.hlsl\n M game/src/game/fx/shaders/path_trace_any_hit.spv\n M game/src/game/fx/shaders/path_trace_build.json\n M game/src/game/fx/shaders/path_trace_closest_hit.spv\n M game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv\n M game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv\n M game/src/game/fx/shaders/path_trace_miss.spv\n M game/src/game/fx/shaders/path_trace_raygen.dxil\n M game/src/game/fx/shaders/path_trace_raygen.spv\n M game/src/game/fx/shaders/path_trace_raygen_deep.dxil\n M game/src/game/fx/shaders/path_trace_raygen_deep.spv\n M game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.dxil\n M game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.spv\n M game/src/game/fx/shaders/path_trace_raygen_no_emitters.dxil\n M game/src/game/fx/shaders/path_trace_raygen_no_emitters.spv\n M game/src/game/fx/water_raytrace_scene.gd\n M game/src/ui/options_panel.gd\n M tools/build_fsr_preview.py\n M tools/build_mod_preview.py\n M tools/tests/path_trace_lifecycle.gd\n M tools/tests/path_trace_motion.gd\n M tools/tests/path_trace_snow_tracks.gd\n M tools/tests/scene_raytrace_live.gd\n M tools/tests/scene_raytrace_options.gd\n?? docs/integrations/path-tracing-nrd.md\n?? game/src/game/fx/path_trace_nrd.gd\n?? game/src/game/fx/raytrace_source_cache.gd\n?? game/src/game/fx/shaders/nrd/\n?? game/src/game/fx/shaders/path_trace_nrd.hlsl\n?? game/src/native/NATIVE_NRD_NOTICES.txt\n?? game/src/native/bin/libpath_nrd.dll\n?? game/src/native/bin/libpath_nrd.so\n?? game/src/native/nrd/\n?? game/src/native/path_nrd.cfg\n?? tools/build_path_nrd.py\n?? tools/tests/path_trace_grass_receivers.gd\n?? tools/tests/path_trace_nrd_device.gd\n?? tools/tests/path_trace_nrd_motion.gd\n?? tools/tests/path_trace_nrd_pipelines.gd\n?? tools/tests/path_trace_walk_diagnostic.gd\n?? tools/tests/path_trace_walk_performance.gd\n?? tools/tests/raytrace_source_cache.gd\n",
+  "fixture_hashes": {
+    "path_trace_camera_routes.gd": "76824dec011453e05b8f66f300db380ae3bd5643151068a8d97a71d22d8a3672",
+    "scene_raytrace_live.gd": "d4760fd44cca727f975d11d66a4fabf828c291ce330617438443aca03b2a53fc",
+    "water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b"
+  },
+  "fixture_sha256": "76824dec011453e05b8f66f300db380ae3bd5643151068a8d97a71d22d8a3672",
+  "full_result_sha256": "c12b8338843d9b93e2650149cced892864cc345304e00477fd89dfbbe7863b27"
+}

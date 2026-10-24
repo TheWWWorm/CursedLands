@@ -1,0 +1,20 @@
+{
+  "version": "2.14.16",
+  "url": "https://github.com/NVIDIA-RTX/Streamline/releases/download/v2.14.16/streamline-sdk-v2.14.16.zip",
+  "archive_sha256": "32041e51db0cab709a271b72a352281b690c2abbd669a827809401a5dd23956b",
+  "files": {
+    "license.txt": "7b6f23e7d6f3ad6292f9308d2b42cdc3d82ae4e9b2abb55f230279d83bedd43d",
+    "3rd-party-licenses.md": "cb251639994465f31d2178c16acedf1ff4f9cef1c370a09782ed36d4c86c1dca",
+    "external/ngx-sdk/license.txt": "3027f23ca5a46dd9cb8183fbd522983a86f64d7daac5982912bf9f214671f294",
+    "bin/x64/nvngx_dlss.license.txt": "3027f23ca5a46dd9cb8183fbd522983a86f64d7daac5982912bf9f214671f294",
+    "bin/x64/reflex.license.txt": "ebf83c07fb3b2939908c3795d887afde3161c89a28ba391724efc784ce1bdabe",
+    "bin/x64/sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+    "bin/x64/sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+    "bin/x64/sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+    "bin/x64/sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+    "bin/x64/sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+    "bin/x64/sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+    "bin/x64/nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+    "bin/x64/nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7"
+  }
+}

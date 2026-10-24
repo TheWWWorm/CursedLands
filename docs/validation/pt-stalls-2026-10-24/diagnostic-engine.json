@@ -1,0 +1,7 @@
+{
+  "production_template_sha256": "d2ae5a44290f1018cc667ae46b4ac8e53ab1fcd71b04ee7ffb17b90695b61c44",
+  "diagnostic_template_sha256": "1cc18d77880df2055783ea5d789b6a37b1731381c4d3ccccccfe6c1b56dc9d95",
+  "production_source_sha256": "801518f7eb08f816cdfdb3a599fd103ca17a1c27796e90735238eb39e38ed46e",
+  "diagnostic_source_sha256": "564402b9e7ddf24d55837b487cb9a838cc30db5765d7b83c359d87ec823bddc6",
+  "production_template_restored": true
+}

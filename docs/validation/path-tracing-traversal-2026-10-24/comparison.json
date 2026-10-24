@@ -1,0 +1,14 @@
+{
+  "device": "NVIDIA GeForce RTX 3090 Ti",
+  "same_fixture_source": true,
+  "normalization": "Replace each run-specific absolute fixture prefix with res://tools/tests/",
+  "normalized_fixture_hashes": {
+    "path_trace_camera_routes.gd": "1fe00819ce6e1bc399d926245611324d3071aacc1974e71f340797aa90d97fb5",
+    "path_trace_recording_route.gd": "2db17e7405d8d8788064792bd74829c6f4862312c553d90a37be028e62a8e59b",
+    "path_trace_spatial_performance.gd": "af17a6c6c2c985a458228bc06d218d4cd8fe5a8c52ea3a9e1b9dc9daceb823b6",
+    "path_trace_walk_performance.gd": "5fb10ddb6681a176f3064a6a12fc88f78e8c308cee9b06c8dfbbd20cefaa5ddd",
+    "scene_raytrace_live.gd": "f64a5509e6cc055d3f32964ab20bc49c9a1442844e14a287bb9e175a9fbcf94f",
+    "water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b"
+  },
+  "gpu_lab_job": "a922aff34645452a"
+}

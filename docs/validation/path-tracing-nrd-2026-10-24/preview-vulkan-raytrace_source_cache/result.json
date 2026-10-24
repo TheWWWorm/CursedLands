@@ -1,0 +1,70 @@
+{
+  "suite": "raytrace_source_cache",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 6.77,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-raytrace_source_cache/fixtures/raytrace_source_cache.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-raytrace_source_cache",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS repeated snapshot avoids the second GPU mesh readback",
+    "PASS cached geometry is identical to the source",
+    "PASS mesh change invalidates old source geometry",
+    "PASS source cache does not retain mesh resources",
+    "PASS expired source entry can be released",
+    "PASS repeated snapshot avoids the second texture readback",
+    "PASS texture update invalidates normalized cached pixels",
+    "PASS explicit teardown releases source images and arrays",
+    "RT_SOURCE_CACHE 8 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.pck": "86e58844c44f6f1c59df757a9411a4b87f10770f2eedace191b78e63477325a5"
+  },
+  "repository_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+  "repository_status": "",
+  "fixture_hashes": {
+    "raytrace_source_cache.gd": "2f924e09966dee02502e6239215eaef776babf8b6accfcd8445c610dc3fab212"
+  },
+  "fixture_sha256": "2f924e09966dee02502e6239215eaef776babf8b6accfcd8445c610dc3fab212",
+  "full_result_sha256": "50f69094e7c529f56d9dd854364f24aec904be2ce62ddf81fda5bb6f6843ec7e"
+}

@@ -99,10 +99,20 @@ for table in ('REMAKE_OPTIONS', 'DISPLAY_CHOICES'):
                 errors.append(f'{table}[{name}]: missing RU/DE key: {key}')
 # FSR option choices, help and capability errors are selected dynamically.
 fsr_source = (ROOT / 'platform/fsr_graphics.gd').read_text()
-for match in re.finditer(r'^const (?:SECTION|SR_HELP|QUALITY_HELP|FG_HELP|VERSIONS|QUALITIES|UNAVAILABLE|START_LAUNCHER|NEED_API|NEED_SR|NEED_FG|ENABLE_SR) := (.+)$', fsr_source, re.M):
+for match in re.finditer(r'^const (?:SECTION|SR_HELP|QUALITY_HELP|FG_HELP|VERSIONS|QUALITIES|UNAVAILABLE|NEED_RESTART|NEED_API|NEED_SR|NEED_FG|ENABLE_SR) := (.+)$', fsr_source, re.M):
     value = json.loads(match[1])
     for key in value if isinstance(value, list) else [value]:
         if key not in entries: errors.append(f'FSR experiment text missing RU/DE key: {key}')
+# NVIDIA/combined selectors and package-aware credits choose strings dynamically.
+for filename in ('platform/rtx_graphics.gd', 'platform/temporal_graphics.gd', 'ui/graphics_attribution.gd'):
+    source = (ROOT / filename).read_text()
+    for match in re.finditer(r'^const (?:SECTION|SR_HELP|FG_HELP|QUALITY_HELP|CHOICES|FG_CHOICES|UNAVAILABLE|NEED_RESTART|NEED_API|NEED_SR|NEED_FG|ENABLE_SR|NVIDIA_CREDIT|NVIDIA_SOURCE|NVIDIA_MARKS|NRD_CREDIT|AMD_CREDIT|AMD_MARKS|LICENSES) := (.+)$', source, re.M):
+        value = json.loads(match[1])
+        for key in value if isinstance(value, list) else [value]:
+            if key not in entries: errors.append(f'{filename}: missing RU/DE key: {key}')
+    for match in re.finditer(r'return ("(?:[^"\\]|\\.)*")', source):
+        key = json.loads(match[1])
+        if key and key not in entries: errors.append(f'{filename}: dynamic reason missing RU/DE key: {key}')
 # The wiki translates categories, damage types, mechanics titles and stat
 # labels dynamically. Check their source tables as well as literal calls.
 permissions_source = (ROOT / 'game/coop_permissions.gd').read_text()

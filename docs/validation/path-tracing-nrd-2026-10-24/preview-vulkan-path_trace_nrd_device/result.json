@@ -1,0 +1,82 @@
+{
+  "suite": "path_trace_nrd_device",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 9.13,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-path_trace_nrd_device/fixtures/path_trace_nrd_device.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/preview-vulkan-path_trace_nrd_device",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS qualified NRD test device",
+    "PASS build actual ray-traced NRD fixture",
+    "PASS native NRD 4.18 runtime and compute shaders loaded",
+    "PASS NRD ran without custom fallback",
+    "PASS native dispatch planner and GPU passes execute every frame",
+    "PASS NRD preserves coloured emission and positive indirect light",
+    "PASS stationary surface reuses NRD history",
+    "PASS NRD output remains finite and bounded",
+    "PASS NRD presents stable public texture handles",
+    "PASS progressive mode keeps exact long accumulation",
+    "PASS return to NRD restarts and converges",
+    "PASS odd-sized resize rebuilds NRD pools",
+    "PASS lighting reset removes extinguished emission immediately",
+    "PASS NRD dispatch failure falls back to usable custom lighting",
+    "PASS fallback accumulates current illumination after NRD failure",
+    "PASS NRD failure releases all pool images and is not retried every frame",
+    "PASS NRD pools, descriptors and pipelines are released",
+    "SCENE_RT_DEVICE 17 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "bundle_declared_source": {
+    "source_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+    "game_tree": "5fb4d00cc15d85b3b91503bfcd1d180a833ada3c",
+    "build_type": "local unpublished NRD preview"
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/preview/CursedLands-1.28.0-experimental.1-linux-x86_64/CursedLands.pck": "86e58844c44f6f1c59df757a9411a4b87f10770f2eedace191b78e63477325a5"
+  },
+  "repository_commit": "fabaadea280053dd7174dd7998ae299a9ed27582",
+  "repository_status": "",
+  "fixture_hashes": {
+    "path_trace_device.gd": "b61420a44bef84f2b5429608f96e90f81dd3d016d06650f1571f16a63274b312",
+    "path_trace_nrd_device.gd": "4a34caa535f7204c00b028e94c6496f00dc8d121d341c883e327df9206cc3fa5",
+    "path_trace_quality.gd": "86c52b4801118da512102783e9ffa95067315f6db889db6d2b946c905a462483",
+    "scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47"
+  },
+  "fixture_sha256": "4a34caa535f7204c00b028e94c6496f00dc8d121d341c883e327df9206cc3fa5",
+  "full_result_sha256": "e2fe998a69b65e0f7d6b7e5c4b0e5fac96531ed351218437f9a95e5131d4fbe6"
+}

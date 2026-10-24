@@ -19,20 +19,23 @@ func run() -> void:
 	await settle()
 	GameData._window_gen += 1
 	get_window().mode = Window.MODE_WINDOWED
-	if OS.get_name() == "Windows":
-		check(ProjectSettings.get_setting(GraphicsAttribution.AMD_FLAG, false), "exported package declares AMD SDK")
-		check(ProjectSettings.get_setting("application/boot_splash/image") == "res://assets/branding/splash-fsr.png", "native boot uses FSR splash")
-	ProjectSettings.set_setting(GraphicsAttribution.AMD_FLAG, false)
-	check(GraphicsAttribution.credits_bbcode().is_empty(), "ordinary build has no SDK claims")
-	check(not Engine.has_singleton("Streamline"), "engine has no private SDK singleton")
-	check(not ClassDB.class_has_integer_constant("Viewport", "SCALING_3D_MODE_DLSS"), "engine has no private upscaling mode")
-	check(not ResourceLoader.exists("res://src/platform/rtx_graphics.gd"), "package omits private script")
-	check(not ResourceLoader.exists("res://assets/branding/vendors/nvidia-geforce-rtx-white.png"), "package omits private artwork")
-	check(not ResourceLoader.exists("res://assets/branding/splash-graphics.png"), "package omits combined splash")
-	check(not GameData.OPTION_GROUPS.has("r_rtx"), "no private options group")
-	for option: Array in GameData.OPTIONS:
-		check(not str(option[0]).begins_with("rtx_"), "option is publishable: " + str(option[0]))
-	ProjectSettings.set_setting(GraphicsAttribution.AMD_FLAG, true)
+	var packaged_dlss := bool(ProjectSettings.get_setting(GraphicsAttribution.NVIDIA_FLAG, false))
+	var packaged_nrd := bool(ProjectSettings.get_setting(GraphicsAttribution.NRD_FLAG, false))
+	var packaged_amd := bool(ProjectSettings.get_setting(GraphicsAttribution.AMD_FLAG, false))
+	check(packaged_nrd, "desktop package declares bundled NRD")
+	check(packaged_dlss == (OS.get_name() == "Windows"), "DLSS attribution matches platform contents")
+	check(packaged_amd == (OS.get_name() == "Windows"), "AMD SDK attribution matches platform contents")
+	if packaged_dlss:
+		check(ProjectSettings.get_setting("application/boot_splash/image") == "res://assets/branding/splash-graphics.png", "native boot uses combined attribution splash")
+	for flag in [GraphicsAttribution.NVIDIA_FLAG,GraphicsAttribution.NRD_FLAG,GraphicsAttribution.AMD_FLAG]: ProjectSettings.set_setting(flag,false)
+	check(GraphicsAttribution.credits_bbcode().is_empty(), "unbundled SDKs have no credits claim")
+	ProjectSettings.set_setting(GraphicsAttribution.NRD_FLAG,true)
+	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NRD_CREDIT)), "NRD-only package has credits")
+	check(not GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NVIDIA_CREDIT)), "NRD-only package does not claim DLSS")
+	ProjectSettings.set_setting(GraphicsAttribution.NVIDIA_FLAG,packaged_dlss)
+	ProjectSettings.set_setting(GraphicsAttribution.AMD_FLAG,packaged_amd)
+	GameData.options.rtx_upscaling=0;GameData.options.pt_mode=0
+	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NRD_CREDIT)), "turning features off keeps package attribution")
 	for resolution: Vector2i in [Vector2i(800, 600), Vector2i(1280, 720)]:
 		GameData.options.resolution = GameData.resolutions().find(resolution)
 		GameData._window_state.clear()
@@ -49,7 +52,7 @@ func run() -> void:
 		splash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		add_child(splash)
 		var picture := TextureRect.new()
-		picture.texture = load("res://assets/branding/splash-fsr.png")
+		picture.texture = load(ProjectSettings.get_setting("application/boot_splash/image"))
 		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -69,19 +72,18 @@ func run() -> void:
 			panel._layout()
 			check(panel._text.get_content_height() > 500, language + " SDK and original credits loaded")
 			check(panel._text.text.contains(GraphicsAttribution.credits_bbcode()), language + " actual credits include SDK attribution")
-			check(not panel._text.text.contains("NVIDIA DLSS"), language + " no private attribution")
+			check(panel._text.text.contains(RemakeText.t(GraphicsAttribution.NRD_CREDIT)), language + " NRD attributed")
 			check(panel._text.size.x <= panel._clip.size.x, language + " credits wrap in clip width")
 			panel._text.position.y = 0
 			await settle()
-			# Find the first line containing the AMD logos, then align it with the clip.
-			var parsed := panel._text.get_parsed_text()
-			var needle := RemakeText.t(GraphicsAttribution.AMD_CREDIT)
-			var char_at := parsed.find(needle)
-			check(char_at >= 0, language + " AMD attribution is present")
-			var line := panel._text.get_character_line(char_at)
-			panel._text.position.y = -panel._text.get_line_offset(maxi(0, line - 3))
-			await settle()
-			get_viewport().get_texture().get_image().save_png("user://attribution-amd-%s-%d.png" % [language,resolution.x])
+			for credit: String in [GraphicsAttribution.NRD_CREDIT,GraphicsAttribution.AMD_CREDIT] if packaged_amd else [GraphicsAttribution.NRD_CREDIT]:
+				var parsed := panel._text.get_parsed_text()
+				var char_at := parsed.find(RemakeText.t(credit))
+				check(char_at >= 0, language + " technology attribution is present")
+				var line := panel._text.get_character_line(char_at)
+				panel._text.position.y = -panel._text.get_line_offset(maxi(0, line - 4))
+				await settle()
+				get_viewport().get_texture().get_image().save_png("user://attribution-%s-%s-%d.png" % ["nvidia" if credit==GraphicsAttribution.NRD_CREDIT else "amd",language,resolution.x])
 			panel.set_process(true)
 			var escape := InputEventKey.new()
 			escape.keycode = KEY_ESCAPE

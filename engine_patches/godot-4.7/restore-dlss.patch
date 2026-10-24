@@ -1,0 +1,3236 @@
+diff --git a/SConstruct b/SConstruct
+--- a/SConstruct
++++ b/SConstruct
+@@ -200,6 +200,7 @@
+ opts.Add(BoolVariable("metal", "Enable the Metal rendering driver on supported platforms (Apple arm64 only)", False))
+ opts.Add(BoolVariable("use_volk", "Use the volk library to load the Vulkan loader dynamically", True))
+ opts.Add(BoolVariable("use_fsr_sdk", "Enable the experimental Windows D3D12 FidelityFX integration", False))
++opts.Add(BoolVariable("use_streamline", "Enable the experimental Windows D3D12 Streamline integration", False))
+ opts.Add(BoolVariable("accesskit", "Enable the AccessKit driver for screen reader support", True))
+ opts.Add(BoolVariable("angle", "Enable the ANGLE rendering driver for OpenGL ES 3.0 on supported platforms", True))
+ opts.Add(BoolVariable("sdl", "Enable the SDL3 input driver", True))
+@@ -596,6 +597,12 @@
+ 
+ if env["precision"] == "double":
+     env.Append(CPPDEFINES=["REAL_T_IS_DOUBLE"])
++
++if env["use_streamline"]:
++    if env["platform"] == "windows":
++        env.AppendUnique(CPPDEFINES=["STREAMLINE_ENABLED"])
++    else:
++        env["use_streamline"] = False
+ 
+ if env["use_fsr_sdk"]:
+     if env["platform"] == "windows":
+diff --git a/doc/classes/Streamline.xml b/doc/classes/Streamline.xml
+new file mode 100644
+--- /dev/null
++++ b/doc/classes/Streamline.xml
+@@ -0,0 +1,65 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<class name="Streamline" inherits="Object" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../class.xsd">
++	<brief_description>
++		Streamline interface.
++	</brief_description>
++	<description>
++		Global streamline interface, facilitates advanced graphics features.
++	</description>
++	<tutorials>
++	</tutorials>
++	<methods>
++		<method name="get_status" qualifiers="const">
++			<return type="Dictionary" />
++			<description>
++				Reports compiled and initialized state, runtime capabilities, successful DLSS evaluations, SDK presented-frame counts and last errors. Feature support does not imply successful rendering. This experimental integration only initializes for Windows Direct3D 12 with --experimental-rtx after the argument separator.
++			</description>
++		</method>
++		<method name="get_capability">
++			<return type="bool" />
++			<param index="0" name="capability_type" type="int" enum="StreamlineCapabilityType" />
++			<description>
++				Enumerate various capabilities related to Streamline. See [enum StreamlineCapabilityType] for types.
++			</description>
++		</method>
++		<method name="set_parameter">
++			<return type="void" />
++			<param index="0" name="parameter_type" type="int" enum="StreamlineParameterType" />
++			<param index="1" name="value" type="Variant" />
++			<description>
++				Set various parameters related to Streamline. See [enum StreamlineParameterType] for types.
++			</description>
++		</method>
++	</methods>
++	<constants>
++		<constant name="STREAMLINE_PARAM_REFLEX_MODE" value="0" enum="StreamlineParameterType">
++			Enable/Disable reflex. Set parameter to 0.0 to disable, 1.0 to enable, 2.0 to enable with low latency boost.
++		</constant>
++		<constant name="STREAMLINE_PARAM_REFLEX_FRAME_LIMIT_US" value="1" enum="StreamlineParameterType">
++			Do frame limiting using Streamline Reflex, improving latency. Example: Set to 16666.7 for 60 FPS. (1000000/60 = 16666.7 us = 16.67 ms)
++		</constant>
++		<constant name="STREAMLINE_PARAM_DLSS_PRESET" value="2" enum="StreamlineParameterType">
++			The default DLSS preset to use.
++			Valid values: ?,F,G,H,I,J,K,L,M,N,O
++		</constant>
++		<constant name="STREAMLINE_PARAM_DLSS_RR_PRESET" value="3" enum="StreamlineParameterType">
++			The default DLSS Ray Reconstruction preset to use.
++			Valid values: ?,D,E,F,G,H,I,J,K,L,M,N,O
++		</constant>
++		<constant name="STREAMLINE_CAPABILITY_DLSS" value="0" enum="StreamlineCapabilityType">
++			Whether Streamline reports that NVIDIA DLSS upscaling is supported.
++		</constant>
++		<constant name="STREAMLINE_CAPABILITY_DLSS_G" value="1" enum="StreamlineCapabilityType">
++			Whether Streamline reports that NVIDIA DLSS frame generation is supported.
++		</constant>
++		<constant name="STREAMLINE_CAPABILITY_NIS" value="4" enum="StreamlineCapabilityType">
++			Whether Streamline reports that NVIDIA Image Scaling upscaling is supported.
++		</constant>
++		<constant name="STREAMLINE_CAPABILITY_REFLEX" value="2" enum="StreamlineCapabilityType">
++			Whether Streamline reports that NVIDIA Reflex is supported.
++		</constant>
++		<constant name="STREAMLINE_CAPABILITY_PCL" value="3" enum="StreamlineCapabilityType">
++			Whether Streamline reports that PCL metrics are supported.
++		</constant>
++	</constants>
++</class>
+diff --git a/drivers/SCsub b/drivers/SCsub
+--- a/drivers/SCsub
++++ b/drivers/SCsub
+@@ -68,7 +68,8 @@
+ # Core dependencies
+ SConscript("png/SCsub")
+ 
+-# FidelityFX
++# Streamline
++SConscript("streamline/SCsub")
+ SConscript("fsr_sdk/SCsub")
+ 
+ env.add_source_files(env.drivers_sources, "*.cpp")
+diff --git a/drivers/d3d12/rendering_context_driver_d3d12.cpp b/drivers/d3d12/rendering_context_driver_d3d12.cpp
+--- a/drivers/d3d12/rendering_context_driver_d3d12.cpp
++++ b/drivers/d3d12/rendering_context_driver_d3d12.cpp
+@@ -36,6 +36,8 @@
+ #include "core/string/ustring.h"
+ #include "core/templates/local_vector.h"
+ 
++#include "drivers/streamline/streamline.h"
++
+ GODOT_GCC_WARNING_PUSH_AND_IGNORE("-Wnon-virtual-dtor")
+ GODOT_CLANG_WARNING_PUSH_AND_IGNORE("-Wnon-virtual-dtor")
+ #include <dxcapi.h>
+@@ -189,6 +191,10 @@
+ 	PFN_DXGI_CREATE_DXGI_FACTORY2 dxgi_CreateDXGIFactory2 = (PFN_DXGI_CREATE_DXGI_FACTORY2)(void *)GetProcAddress(lib_dxgi, "CreateDXGIFactory2");
+ 	ERR_FAIL_NULL_V(dxgi_CreateDXGIFactory2, ERR_CANT_CREATE);
+ 
++	if (Streamline::get_singleton()->get_internal_parameter(STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory2)) {
++		dxgi_CreateDXGIFactory2 = (PFN_DXGI_CREATE_DXGI_FACTORY2)Streamline::get_singleton()->get_internal_parameter(STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory2);
++	}
++
+ 	HRESULT res = dxgi_CreateDXGIFactory2(dxgi_factory_flags, IID_PPV_ARGS(&dxgi_factory));
+ 	ERR_FAIL_COND_V(!SUCCEEDED(res), ERR_CANT_CREATE);
+ 
+diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/rendering_device_driver_d3d12.cpp
+--- a/drivers/d3d12/rendering_device_driver_d3d12.cpp
++++ b/drivers/d3d12/rendering_device_driver_d3d12.cpp
+@@ -39,6 +39,7 @@
+ 
+ #include <drivers/d3d12/godot_d3d12ma.h>
+ #include <drivers/d3d12/godot_nir.h>
++#include "drivers/streamline/streamline.h"
+ 
+ #include <dxgi1_6.h>
+ 
+@@ -2576,6 +2577,11 @@
+ 		}
+ 	}
+ 
++	// Upload/compute flushes use this method without presenting a swap chain.
++	// Reflex markers and DLSS-G presentation telemetry must describe real presents.
++	if (p_swap_chains.size() > 0) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEGIN_PRESENT);
++	}
+ 
+ 	HRESULT res;
+ 	bool any_present_failed = false;
+@@ -2592,6 +2598,9 @@
+ 		}
+ 	}
+ 
++	if (p_swap_chains.size() > 0) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_END_PRESENT);
++	}
+ 
+ 	_flush_diagnostic_messages();
+ 	return any_present_failed ? FAILED : OK;
+@@ -2833,6 +2842,11 @@
+ 		return ERR_SKIP;
+ 	}
+ 
++#ifdef STREAMLINE_ENABLED
++	if (Streamline::get_singleton()) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_MODIFY_SWAPCHAIN);
++	}
++#endif
+ 
+ 	HRESULT res;
+ 	const bool is_tearing_supported = context_driver->get_tearing_supported();
+@@ -6039,6 +6053,9 @@
+ 		}
+ 	}
+ 
++	if (Streamline::get_singleton()) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEFORE_DEVICE_DESTROY);
++	}
+ 
+ 	if (D3D12Hooks::get_singleton() != nullptr) {
+ 		D3D12Hooks::get_singleton()->cleanup_device();
+@@ -6103,10 +6120,18 @@
+ 	ID3D12DeviceFactory *device_factory = context_driver->device_factory_get();
+ 	if (device_factory != nullptr) {
+ 		res = device_factory->CreateDevice(adapter.Get(), requested_feature_level, IID_PPV_ARGS(device.GetAddressOf()));
++		if (SUCCEEDED(res)) {
++			ID3D12Device *upgraded = device.Detach();
++			Streamline::get_singleton()->upgrade_interface(reinterpret_cast<void **>(&upgraded));
++			device.Attach(upgraded);
++		}
+ 	} else {
+ 		PFN_D3D12_CREATE_DEVICE d3d_D3D12CreateDevice = (PFN_D3D12_CREATE_DEVICE)(void *)GetProcAddress(context_driver->lib_d3d12, "D3D12CreateDevice");
+ 		ERR_FAIL_NULL_V(d3d_D3D12CreateDevice, ERR_CANT_CREATE);
+ 
++		if (Streamline::get_singleton()->get_internal_parameter(STREAMLINE_INTERNAL_PARAMETER_FUNC_D3D12CreateDevice)) {
++			d3d_D3D12CreateDevice = (PFN_D3D12_CREATE_DEVICE)Streamline::get_singleton()->get_internal_parameter(STREAMLINE_INTERNAL_PARAMETER_FUNC_D3D12CreateDevice);
++		}
+ 
+ 		res = d3d_D3D12CreateDevice(adapter.Get(), requested_feature_level, IID_PPV_ARGS(device.GetAddressOf()));
+ 	}
+@@ -6500,6 +6525,7 @@
+ 	Error err = _initialize_device();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
++	Streamline::get_singleton()->set_internal_parameter("d3d12_device", (void *)device.Get());
+ #ifdef FSR_SDK_ENABLED
+ 	FidelityFX::get_singleton()->initialize_device(device.Get());
+ #endif
+@@ -6507,8 +6533,10 @@
+ 	err = _check_capabilities();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
+-
+-
++	// Streamline's resource contract needs enhanced barriers. Query the actual
++	// device before gating support; the member is false until this point.
++	Streamline::get_singleton()->set_internal_parameter("d3d12_enhanced_barriers", barrier_capabilities.enhanced_barriers_supported ? this : nullptr);
++	Streamline::get_singleton()->set_internal_parameter("d3d12_adapter_luid", (void *)&adapter_desc.AdapterLuid);
+ 
+ 	err = _get_device_limits();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+@@ -6522,6 +6550,7 @@
+ 	err = _initialize_command_signatures();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
++	Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_AFTER_DEVICE_CREATION);
+ 
+ 	return OK;
+ }
+diff --git a/drivers/fsr_sdk/fsr_sdk.cpp b/drivers/fsr_sdk/fsr_sdk.cpp
+--- a/drivers/fsr_sdk/fsr_sdk.cpp
++++ b/drivers/fsr_sdk/fsr_sdk.cpp
+@@ -1,5 +1,6 @@
+ // Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
+ #include "fsr_sdk.h"
++#include "drivers/streamline/streamline.h"
+ #include "core/config/engine.h"
+ #include "core/os/os.h"
+ #ifdef FSR_SDK_ENABLED
+@@ -170,6 +171,7 @@
+ }
+ 
+ void FidelityFX::initialize_device(ID3D12Device *p_device) {
++	if (Streamline::get_singleton()->requested) { return; }
+ 	if (OS::get_singleton()->get_current_rendering_method() != "forward_plus" ||
+ 			Engine::get_singleton()->is_editor_hint()) { return; }
+ 	// Only signed SDK binaries beside the executable, never the working directory.
+diff --git a/drivers/streamline/SCsub b/drivers/streamline/SCsub
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/SCsub
+@@ -0,0 +1,25 @@
++#!/usr/bin/env python
++
++Import("env")
++
++thirdparty_vulkan_dir = "#thirdparty/vulkan"
++thirdparty_streamline_dir = "#thirdparty/streamline"
++
++env_streamline = env.Clone()
++
++# Godot source files
++driver_obj = []
++
++if env["use_streamline"]:
++    env_streamline.Prepend(CPPPATH=[thirdparty_streamline_dir + "/include"])
++
++if False:
++    env_streamline.Prepend(CPPPATH=[thirdparty_vulkan_dir, thirdparty_vulkan_dir + "/include"])
++    env_streamline.Prepend(CPPDEFINES=["STREAMLINE_ENABLED_VULKAN=1"])
++
++if env["d3d12"]:
++    env_streamline.Prepend(CPPPATH=["#thirdparty/directx_headers/include/directx"])
++    env_streamline.Prepend(CPPDEFINES=["STREAMLINE_ENABLED_D3D12=1"])
++
++env_streamline.add_source_files(driver_obj, "*.cpp")
++env.drivers_sources += driver_obj
+diff --git a/drivers/streamline/streamline.cpp b/drivers/streamline/streamline.cpp
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline.cpp
+@@ -0,0 +1,378 @@
++/**************************************************************************/
++/*  streamline.cpp                                                        */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#include "streamline.h"
++#include "streamline_context.h"
++
++#include "core/config/engine.h"
++#include "core/config/project_settings.h"
++#include "core/input/input.h"
++#include "core/object/object.h"
++
++Streamline *Streamline::singleton = nullptr;
++
++void Streamline::_bind_methods() {
++	ClassDB::bind_method(D_METHOD("set_parameter", "parameter_type", "value"), &Streamline::set_parameter);
++	ClassDB::bind_method(D_METHOD("get_status"), &Streamline::get_status);
++	ClassDB::bind_method(D_METHOD("get_capability", "capability_type"), &Streamline::get_capability);
++
++	BIND_ENUM_CONSTANT(STREAMLINE_PARAM_REFLEX_MODE);
++	BIND_ENUM_CONSTANT(STREAMLINE_PARAM_REFLEX_FRAME_LIMIT_US);
++	BIND_ENUM_CONSTANT(STREAMLINE_PARAM_DLSS_PRESET);
++	BIND_ENUM_CONSTANT(STREAMLINE_PARAM_DLSS_RR_PRESET);
++
++	BIND_ENUM_CONSTANT(STREAMLINE_CAPABILITY_DLSS);
++	BIND_ENUM_CONSTANT(STREAMLINE_CAPABILITY_DLSS_G);
++	BIND_ENUM_CONSTANT(STREAMLINE_CAPABILITY_DLSS_RR);
++	BIND_ENUM_CONSTANT(STREAMLINE_CAPABILITY_NIS);
++	BIND_ENUM_CONSTANT(STREAMLINE_CAPABILITY_REFLEX);
++	BIND_ENUM_CONSTANT(STREAMLINE_CAPABILITY_PCL);
++}
++
++void Streamline::register_singleton() {
++	GDREGISTER_CLASS(Streamline);
++	Engine::get_singleton()->add_singleton(Engine::Singleton("Streamline", Streamline::get_singleton()));
++
++	GLOBAL_DEF("rendering/streamline/streamline_log", false);
++	GLOBAL_DEF("rendering/streamline/streamline_imgui", false);
++	GLOBAL_DEF(PropertyInfo(Variant::INT, "rendering/streamline/reflex_mode", PROPERTY_HINT_RANGE, "0,2,1"), 0);
++	GLOBAL_DEF(PropertyInfo(Variant::INT, "rendering/streamline/reflex_frame_limit_us", PROPERTY_HINT_RANGE, "0,1000000,1"), 0);
++	GLOBAL_DEF(PropertyInfo(Variant::STRING, "rendering/streamline/dlss_preset", PROPERTY_HINT_ENUM, "?,F,G,H,I,J,K,L,M,N,O"), "?");
++	GLOBAL_DEF(PropertyInfo(Variant::STRING, "rendering/streamline/dlss_ray_reconstruction_preset", PROPERTY_HINT_ENUM, "?,D,E,F,G,H,I,J,K,L,M,N,O"), "?");
++}
++
++Streamline *Streamline::get_singleton() {
++	return singleton;
++}
++
++Streamline::Streamline() {
++	singleton = this;
++}
++
++Streamline::~Streamline() {
++	singleton = nullptr;
++}
++
++void Streamline::update_project_settings() {
++#ifdef STREAMLINE_ENABLED
++	set_parameter(STREAMLINE_PARAM_REFLEX_MODE, (double)GLOBAL_GET("rendering/streamline/reflex_mode"));
++	set_parameter(STREAMLINE_PARAM_REFLEX_FRAME_LIMIT_US, (double)GLOBAL_GET("rendering/streamline/reflex_frame_limit_us"));
++	set_parameter(STREAMLINE_PARAM_DLSS_PRESET, GLOBAL_GET("rendering/streamline/dlss_preset"));
++	set_parameter(STREAMLINE_PARAM_DLSS_RR_PRESET, GLOBAL_GET("rendering/streamline/dlss_ray_reconstruction_preset"));
++#endif
++}
++
++void Streamline::emit_marker(StreamlineMarkerType marker) {
++#ifdef STREAMLINE_ENABLED
++	StreamlineContext &sl_context = StreamlineContext::get();
++
++	switch (marker) {
++		case StreamlineMarkerType::STREAMLINE_MARKER_INITIALIZE_VULKAN:
++		case StreamlineMarkerType::STREAMLINE_MARKER_INITIALIZE_D3D12:
++			requested = true;
++			sl_context.initialize(marker == StreamlineMarkerType::STREAMLINE_MARKER_INITIALIZE_D3D12);
++			return;
++		case StreamlineMarkerType::STREAMLINE_MARKER_AFTER_DEVICE_CREATION:
++			sl_context.load_functions_post_init();
++
++			if (sl_context.streamline_capabilities.pcl_available) {
++				sl::PCLOptions pcl_options = {};
++				pcl_options.virtualKey = sl::PCLHotKey::eVK_F13;
++				pcl_options.idThread = 0;
++				sl_context.pcl_set_options(pcl_options);
++			}
++
++			if (sl_context.streamline_capabilities.reflex_available) {
++				sl::ReflexOptions reflex_options = {};
++				reflex_options.frameLimitUs = 0;
++				reflex_options.virtualKey = (uint16_t)sl::PCLHotKey::eVK_F13;
++				reflex_options.mode = sl::ReflexMode::eOff;
++				reflex_options.useMarkersToOptimize = false;
++				reflex_options.idThread = 0;
++				sl_context.reflex_set_options(reflex_options);
++			}
++
++			// load initial project settings
++			update_project_settings();
++			return;
++		case StreamlineMarkerType::STREAMLINE_MARKER_BEFORE_DEVICE_DESTROY:
++			if (sl_context.initialized && sl_context.slShutdown) {
++				sl_context.slShutdown();
++				sl_context.initialized = false;
++				sl_context.slShutdown = nullptr;
++			}
++			return;
++		default:
++			break;
++	}
++
++	if (!sl_context.initialized) { return; }
++	if (marker == STREAMLINE_MARKER_BEGIN_RENDER) {
++		// Loading and shader warm-up may force multiple draws within one
++		// simulation iteration. Each submission needs a fresh SDK frame token;
++		// reusing it rejects constants and permanently disables SR.
++		if (sl_context.frame_token_rendered || !sl_context.last_token) {
++			sl_context.get_new_frame_token();
++			if (sl_context.last_token && sl_context.is_game && sl_context.streamline_capabilities.reflex_available) {
++				// A forced draw has no additional simulation work.
++				sl_context.pcl_marker(sl_context.last_token, sl::PCLMarker::eSimulationStart);
++				sl_context.pcl_marker(sl_context.last_token, sl::PCLMarker::eSimulationEnd);
++			}
++		}
++		sl_context.frame_token_rendered = true;
++		sl_context.fg_tagged_this_frame = false;
++	}
++	if (marker == STREAMLINE_MARKER_BEGIN_SIMULATION && !sl_context.last_token) { sl_context.get_new_frame_token(); }
++	if (marker == STREAMLINE_MARKER_BEGIN_PRESENT && !sl_context.fg_tagged_this_frame) { sl_context.dlssg_disable(); }
++	if (marker == STREAMLINE_MARKER_END_PRESENT) { sl_context.game_presents.increment(); sl_context.poll_presented_frames(); }
++	if (!sl_context.is_game || !sl_context.streamline_capabilities.reflex_available) {
++		// Make sure we still get frame tokens, needed for DLSS.
++		if (marker == StreamlineMarkerType::STREAMLINE_MARKER_BEFORE_MESSAGE_LOOP) {
++			sl_context.get_new_frame_token();
++		}
++		return;
++	}
++
++	sl::PCLMarker sl_marker = sl::PCLMarker::eMaximum;
++	switch (marker) {
++		case StreamlineMarkerType::STREAMLINE_MARKER_MODIFY_SWAPCHAIN:
++			sl_context.dlssg_disable();
++			return;
++		case StreamlineMarkerType::STREAMLINE_MARKER_BEFORE_MESSAGE_LOOP:
++			if (sl_context.dlssg_delay > 0) {
++				--sl_context.dlssg_delay;
++			}
++			if (sl_context.pcl_options_dirty) {
++				sl_context.pcl_set_options(sl_context.pcl_options);
++			}
++			if (sl_context.reflex_options_dirty) {
++				sl_context.reflex_set_options(sl_context.reflex_options);
++			}
++
++			sl_context.get_new_frame_token();
++			if (sl_context.reflex_options.mode != sl::ReflexMode::eOff || sl_context.reflex_options.frameLimitUs > 0) {
++				sl_context.reflex_sleep(sl_context.last_token);
++			}
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_BEGIN_RENDER:
++			sl_marker = sl::PCLMarker::eRenderSubmitStart;
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_END_RENDER:
++			sl_marker = sl::PCLMarker::eRenderSubmitEnd;
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_BEGIN_SIMULATION:
++			sl_marker = sl::PCLMarker::eSimulationStart;
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_END_SIMULATION:
++			sl_marker = sl::PCLMarker::eSimulationEnd;
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_BEGIN_PRESENT:
++			sl_marker = sl::PCLMarker::ePresentStart;
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_END_PRESENT:
++			sl_marker = sl::PCLMarker::ePresentEnd;
++			break;
++		case StreamlineMarkerType::STREAMLINE_MARKER_PC_PING:
++			sl_marker = sl::PCLMarker::ePCLatencyPing;
++			break;
++		default:
++			return;
++	}
++
++	if (sl_context.last_token && sl_marker != sl::PCLMarker::eMaximum) {
++		sl_context.pcl_marker(sl_context.last_token, sl_marker);
++	}
++#endif
++}
++void Streamline::set_parameter(StreamlineParameterType p_parameter_type, const Variant &p_value) {
++	_THREAD_SAFE_METHOD_
++	switch (p_parameter_type) {
++#ifdef STREAMLINE_ENABLED
++		case StreamlineParameterType::STREAMLINE_PARAM_REFLEX_MODE: {
++			double val = p_value;
++			sl::ReflexMode newMode;
++			if (val > 1.0) {
++				newMode = sl::ReflexMode::eLowLatencyWithBoost;
++			} else if (val > 0.0) {
++				newMode = sl::ReflexMode::eLowLatency;
++			} else {
++				newMode = sl::ReflexMode::eOff;
++			}
++
++			if (StreamlineContext::get().reflex_options.mode != newMode) {
++				StreamlineContext::get().reflex_options_dirty = true;
++			}
++			StreamlineContext::get().reflex_options.mode = newMode;
++			break;
++		}
++		case StreamlineParameterType::STREAMLINE_PARAM_REFLEX_FRAME_LIMIT_US: {
++			double val = p_value;
++			bool updated = StreamlineContext::get().reflex_options.frameLimitUs != (unsigned int)val;
++			StreamlineContext::get().reflex_options.frameLimitUs = (unsigned int)val;
++			if (updated) {
++				StreamlineContext::get().reflex_options_dirty = true;
++			}
++			break;
++		}
++		case StreamlineParameterType::STREAMLINE_PARAM_DLSS_PRESET: {
++			if (p_value.is_string()) {
++				String preset = p_value;
++				if (preset.length() == 1) {
++					StreamlineContext::get().dlss_default_preset = (char)preset.get(0);
++				}
++			}
++			break;
++		}
++		case StreamlineParameterType::STREAMLINE_PARAM_DLSS_RR_PRESET: {
++			if (p_value.is_string()) {
++				String preset = p_value;
++				if (preset.length() == 1) {
++					StreamlineContext::get().dlss_rr_default_preset = (char)preset.get(0);
++				}
++			}
++			break;
++		}
++#endif
++		default:
++			break;
++	}
++}
++
++bool Streamline::get_capability(StreamlineCapabilityType p_capability_type) {
++#ifdef STREAMLINE_ENABLED
++	_THREAD_SAFE_METHOD_
++	switch (p_capability_type) {
++		case STREAMLINE_CAPABILITY_DLSS:
++			return StreamlineContext::get().streamline_capabilities.dlss_available && !StreamlineContext::get().sr_failed.get();
++		case STREAMLINE_CAPABILITY_DLSS_G:
++			return StreamlineContext::get().streamline_capabilities.dlss_g_available && !StreamlineContext::get().fg_failed.get();
++		case STREAMLINE_CAPABILITY_DLSS_RR:
++			return StreamlineContext::get().streamline_capabilities.dlss_rr_available;
++		case STREAMLINE_CAPABILITY_NIS:
++			return StreamlineContext::get().streamline_capabilities.nis_available;
++		case STREAMLINE_CAPABILITY_REFLEX:
++			return StreamlineContext::get().streamline_capabilities.reflex_available;
++		case STREAMLINE_CAPABILITY_PCL:
++			return StreamlineContext::get().streamline_capabilities.pcl_available;
++	}
++#endif
++	return false;
++}
++void Streamline::set_internal_parameter(const char *key, void *value) {
++#ifdef STREAMLINE_ENABLED
++	_THREAD_SAFE_METHOD_
++#if STREAMLINE_ENABLED_VULKAN
++	if (strcmp(key, "vulkan_physical_device") == 0) {
++		void *phys_device = (void *)value;
++		StreamlineContext::get().streamline_capabilities = StreamlineContext::get().enumerate_support_vulkan(phys_device);
++	}
++#endif
++#if STREAMLINE_ENABLED_D3D12
++	if (strcmp(key, "d3d12_enhanced_barriers") == 0) {
++		StreamlineContext::get().enhanced_barriers = value != nullptr;
++	}
++	if (strcmp(key, "d3d12_adapter_luid") == 0) {
++		void *adapter_luid = (void *)value;
++		StreamlineContext::get().streamline_capabilities = StreamlineContext::get().enumerate_support_d3d12(adapter_luid);
++	}
++	if (strcmp(key, "d3d12_device") == 0) {
++		void *d3d_device = (void *)value;
++		StreamlineContext::get().init_device_d3d12(d3d_device);
++	}
++#endif
++#endif
++}
++
++void *Streamline::get_internal_parameter(StreamlineInternalParameterType p_internal_parameter_type) {
++#ifdef STREAMLINE_ENABLED
++	if (!StreamlineContext::get().initialized) { return nullptr; }
++#if STREAMLINE_ENABLED_D3D12
++	switch (p_internal_parameter_type) {
++		case STREAMLINE_INTERNAL_PARAMETER_FUNC_D3D12GetInterface:
++			return StreamlineContext::get().func_D3D12GetInterface;
++		case STREAMLINE_INTERNAL_PARAMETER_FUNC_D3D12CreateDevice:
++			return StreamlineContext::get().func_D3D12CreateDevice;
++		case STREAMLINE_INTERNAL_PARAMETER_FUNC_DXGIGetDebugInterface1:
++			return StreamlineContext::get().func_DXGIGetDebugInterface1;
++		case STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory:
++			return StreamlineContext::get().func_CreateDXGIFactory;
++		case STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory1:
++			return StreamlineContext::get().func_CreateDXGIFactory1;
++		case STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory2:
++			return StreamlineContext::get().func_CreateDXGIFactory2;
++	}
++#endif
++#endif
++	return nullptr;
++}
++
++Dictionary Streamline::get_status() const {
++	Dictionary out;
++	out["compiled"] = false;
++	out["requested"] = requested;
++#ifdef STREAMLINE_ENABLED
++	auto &ctx = StreamlineContext::get();
++	out["compiled"] = true;
++	out["initialized"] = ctx.initialized;
++	out["sr_supported"] = ctx.initialized && ctx.streamline_capabilities.dlss_available && !ctx.sr_failed.get();
++	out["fg_supported"] = ctx.initialized && ctx.streamline_capabilities.dlss_g_available && !ctx.fg_failed.get();
++	out["reflex_supported"] = ctx.initialized && ctx.streamline_capabilities.reflex_available;
++	out["enhanced_barriers"] = ctx.enhanced_barriers;
++	out["sr_support_result"] = (uint32_t)ctx.sr_support_result;
++	out["fg_support_result"] = (uint32_t)ctx.fg_support_result;
++	out["sr_support_reason"] = StreamlineContext::result_to_string(ctx.sr_support_result);
++	out["fg_support_reason"] = StreamlineContext::result_to_string(ctx.fg_support_result);
++	out["dlss_evaluations"] = ctx.dlss_evaluations.get();
++	out["presented_frames"] = ctx.presented_frames.get();
++	out["game_presents"] = ctx.game_presents.get();
++	out["present_count_available"] = ctx.initialized && ctx.streamline_capabilities.dlss_g_available;
++	out["frame_generation_active"] = ctx.fg_active.get() != 0;
++	out["last_error"] = ctx.last_error.get();
++	out["frame_generation_status"] = ctx.fg_status.get();
++	out["frame_generation_ui_alpha_frames"] = ctx.ui_alpha_frames.get();
++	out["frame_generation_ui_alpha_texture"] = RID::from_uint64(ctx.ui_alpha_texture.get());
++	out["frame_generation_input_size"] = Vector2i(ctx.fg_input_width.get(),ctx.fg_input_height.get());
++	out["frame_generation_output_size"] = Vector2i(ctx.fg_output_width.get(),ctx.fg_output_height.get());
++	out["frame_generation_size_supported"] = ctx.fg_size_supported.get()!=0;
++#endif
++	return out;
++}
++
++// Agility devices are created by ID3D12DeviceFactory, then registered with
++// Streamline instead of falling back to the older system D3D12 runtime.
++bool Streamline::upgrade_interface(void **p_interface) {
++#ifdef STREAMLINE_ENABLED
++	auto &ctx = StreamlineContext::get();
++	if (ctx.initialized) {
++		return ctx.slUpgradeInterface && ctx.check(ctx.slUpgradeInterface(p_interface), false);
++	}
++#endif
++	return true;
++}
+diff --git a/drivers/streamline/streamline.h b/drivers/streamline/streamline.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline.h
+@@ -0,0 +1,68 @@
++/**************************************************************************/
++/*  streamline.h                                                          */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#pragma once
++
++#include "core/object/class_db.h"
++#include "core/object/object.h"
++#include "core/os/thread_safe.h"
++#include "core/variant/binder_common.h"
++#include "core/variant/variant.h"
++#include "streamline_data.h"
++
++class Streamline : public Object {
++	GDCLASS(Streamline, Object);
++	_THREAD_SAFE_CLASS_
++protected:
++	static void _bind_methods();
++	static Streamline *singleton;
++
++public:
++	static Streamline *get_singleton();
++	static void register_singleton();
++
++	bool requested = false;
++	bool upgrade_interface(void **p_interface);
++	void emit_marker(StreamlineMarkerType p_marker);
++	void set_parameter(StreamlineParameterType p_parameter_type, const Variant &p_value);
++	Dictionary get_status() const;
++	bool get_capability(StreamlineCapabilityType p_capability_type);
++
++	void set_internal_parameter(const char *p_key, void *p_value);
++	void *get_internal_parameter(StreamlineInternalParameterType p_internal_parameter_type);
++
++	void update_project_settings();
++
++	Streamline();
++	virtual ~Streamline();
++};
++
++VARIANT_ENUM_CAST(StreamlineParameterType);
++VARIANT_ENUM_CAST(StreamlineCapabilityType);
+diff --git a/drivers/streamline/streamline_context.cpp b/drivers/streamline/streamline_context.cpp
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline_context.cpp
+@@ -0,0 +1,410 @@
++/**************************************************************************/
++/*  streamline_context.cpp                                                */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#include "streamline_context.h"
++
++#ifdef STREAMLINE_ENABLED
++#ifdef _WIN32
++#include <windows.h>
++#include "streamline_security.h"
++#include "core/os/os.h"
++#endif
++
++#if defined(__clang__)
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wnon-virtual-dtor"
++#pragma clang diagnostic ignored "-Wshadow"
++#pragma clang diagnostic ignored "-Wdeprecated-declarations"
++#elif defined(__GNUC__)
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
++#pragma GCC diagnostic ignored "-Wshadow"
++#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++#endif
++
++#if STREAMLINE_ENABLED_VULKAN
++#include <vulkan/vulkan.h>
++#endif
++
++
++
++#if defined(__clang__)
++#pragma clang diagnostic pop
++#elif defined(__GNUC__)
++#pragma GCC diagnostic pop
++#endif
++
++#include "core/config/engine.h"
++#include "core/config/project_settings.h"
++
++StreamlineContext &StreamlineContext::get() {
++	static StreamlineContext _context;
++	return _context;
++}
++
++void StreamlineContext::load_functions(bool d3d12) {
++#ifdef _WIN32
++	String path = OS::get_singleton()->get_executable_path().get_base_dir().path_join("sl.interposer.dll");
++	Char16String wide_path = path.utf16();
++	if (!sl::security::verifyEmbeddedSignature((const wchar_t *)wide_path.get_data())) {
++		return;
++	}
++	HMODULE streamline = LoadLibraryExW((const wchar_t *)wide_path.get_data(), nullptr, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
++	if (streamline == nullptr) {
++		return;
++	}
++#define SL_GETPROC(type, name) (type *)(void *)GetProcAddress(streamline, name)
++	this->slUpgradeInterface = SL_GETPROC(PFun_slUpgradeInterface, "slUpgradeInterface");
++	this->slInit = SL_GETPROC(PFun_slInit, "slInit");
++	this->slShutdown = SL_GETPROC(PFun_slShutdown, "slShutdown");
++	this->slIsFeatureSupported = SL_GETPROC(PFun_slIsFeatureSupported, "slIsFeatureSupported");
++	this->slGetFeatureFunction = SL_GETPROC(PFun_slGetFeatureFunction, "slGetFeatureFunction");
++	this->slGetNewFrameToken = SL_GETPROC(PFun_slGetNewFrameToken, "slGetNewFrameToken");
++	this->slSetFeatureLoaded = SL_GETPROC(PFun_slSetFeatureLoaded, "slSetFeatureLoaded");
++	this->slSetD3DDevice = SL_GETPROC(PFun_slSetD3DDevice, "slSetD3DDevice");
++
++	this->slAllocateResources = SL_GETPROC(PFun_slAllocateResources, "slAllocateResources");
++	this->slFreeResources = SL_GETPROC(PFun_slFreeResources, "slFreeResources");
++	this->slEvaluateFeature = SL_GETPROC(PFun_slEvaluateFeature, "slEvaluateFeature");
++	this->slSetTagForFrame = SL_GETPROC(PFun_slSetTagForFrame, "slSetTagForFrame");
++	this->slSetConstants = SL_GETPROC(PFun_slSetConstants, "slSetConstants");
++#undef SL_GETPROC
++
++#if STREAMLINE_ENABLED_D3D12
++	if (d3d12) {
++		this->func_CreateDXGIFactory = (void *)GetProcAddress(streamline, "CreateDXGIFactory");
++		this->func_CreateDXGIFactory1 = (void *)GetProcAddress(streamline, "CreateDXGIFactory1");
++		this->func_CreateDXGIFactory2 = (void *)GetProcAddress(streamline, "CreateDXGIFactory2");
++		this->func_D3D12CreateDevice = (void *)GetProcAddress(streamline, "D3D12CreateDevice");
++		this->func_D3D12GetInterface = (void *)GetProcAddress(streamline, "D3D12GetInterface");
++		this->func_DXGIGetDebugInterface1 = (void *)GetProcAddress(streamline, "DXGIGetDebugInterface1");
++	}
++#endif
++#endif
++}
++
++void StreamlineContext::load_functions_post_init() {
++	if (!initialized) { return; }
++	if (slGetFeatureFunction) {
++		slGetFeatureFunction(sl::kFeatureReflex, "slReflexSetOptions", (void *&)this->slReflexSetOptions);
++		slGetFeatureFunction(sl::kFeatureReflex, "slReflexSleep", (void *&)this->slReflexSleep);
++		slGetFeatureFunction(sl::kFeatureReflex, "slReflexGetState", (void *&)this->slReflexGetState);
++		slGetFeatureFunction(sl::kFeaturePCL, "slPCLSetMarker", (void *&)this->slPCLSetMarker);
++		slGetFeatureFunction(sl::kFeaturePCL, "slPCLSetOptions", (void *&)this->slPCLSetOptions);
++
++		slGetFeatureFunction(sl::kFeatureDLSS, "slDLSSGetOptimalSettings", (void *&)this->slDLSSGetOptimalSettings);
++		slGetFeatureFunction(sl::kFeatureDLSS, "slDLSSGetState", (void *&)this->slDLSSGetState);
++		slGetFeatureFunction(sl::kFeatureDLSS, "slDLSSSetOptions", (void *&)this->slDLSSSetOptions);
++
++		slGetFeatureFunction(sl::kFeatureDLSS_G, "slDLSSGGetState", (void *&)this->slDLSSGGetState);
++		slGetFeatureFunction(sl::kFeatureDLSS_G, "slDLSSGSetOptions", (void *&)this->slDLSSGSetOptions);
++
++		// DLSS Ray Reconstruction (DLSS-RR)
++		slGetFeatureFunction(sl::kFeatureDLSS_RR, "slDLSSDGetOptimalSettings", (void *&)this->slDLSSDGetOptimalSettings);
++		slGetFeatureFunction(sl::kFeatureDLSS_RR, "slDLSSDGetState", (void *&)this->slDLSSDGetState);
++		slGetFeatureFunction(sl::kFeatureDLSS_RR, "slDLSSDSetOptions", (void *&)this->slDLSSDSetOptions);
++
++		slGetFeatureFunction(sl::kFeatureNIS, "slNISSetOptions", (void *&)this->slNISSetOptions);
++	}
++	streamline_capabilities.dlss_available &= slDLSSSetOptions && slDLSSGetOptimalSettings;
++	streamline_capabilities.dlss_g_available &= slDLSSGSetOptions && slDLSSGGetState;
++	streamline_capabilities.reflex_available &= slReflexSetOptions && slReflexSleep;
++
++}
++
++static void _enumerate_support(StreamlineContext *self, sl::AdapterInfo &adapterInfo, StreamlineCapabilities &outSupport) {
++	if (self->initialized && self->enhanced_barriers && self->slIsFeatureSupported) {
++		self->sr_support_result = self->slIsFeatureSupported(sl::kFeatureDLSS, adapterInfo);
++		self->fg_support_result = self->slIsFeatureSupported(sl::kFeatureDLSS_G, adapterInfo);
++		outSupport.dlss_available = self->sr_support_result == sl::Result::eOk;
++		outSupport.dlss_g_available = self->fg_support_result == sl::Result::eOk;
++		outSupport.dlss_rr_available = self->slIsFeatureSupported(sl::kFeatureDLSS_RR, adapterInfo) == sl::Result::eOk;
++		outSupport.reflex_available = self->slIsFeatureSupported(sl::kFeatureReflex, adapterInfo) == sl::Result::eOk;
++		outSupport.pcl_available = self->slIsFeatureSupported(sl::kFeaturePCL, adapterInfo) == sl::Result::eOk;
++		outSupport.nis_available = self->slIsFeatureSupported(sl::kFeatureNIS, adapterInfo) == sl::Result::eOk;
++	}
++}
++
++#if STREAMLINE_ENABLED_VULKAN
++StreamlineCapabilities StreamlineContext::enumerate_support_vulkan(void *vk_physical_device) {
++	VkPhysicalDevice device = (VkPhysicalDevice)vk_physical_device;
++	StreamlineCapabilities support;
++	sl::AdapterInfo adapterInfo;
++	adapterInfo.vkPhysicalDevice = device;
++	_enumerate_support(this, adapterInfo, support);
++	return support;
++}
++#endif
++
++#if STREAMLINE_ENABLED_D3D12
++StreamlineCapabilities StreamlineContext::enumerate_support_d3d12(void *d3d_adapter_luid) {
++	StreamlineCapabilities support;
++	sl::AdapterInfo adapterInfo;
++	adapterInfo.deviceLUID = (uint8_t *)d3d_adapter_luid;
++	adapterInfo.deviceLUIDSizeInBytes = sizeof(LUID);
++	_enumerate_support(this, adapterInfo, support);
++	return support;
++}
++
++void StreamlineContext::init_device_d3d12(void *d3d12_device) {
++	if (initialized && this->slSetD3DDevice) {
++		sl::Result result = this->slSetD3DDevice(d3d12_device);
++		if (!check(result, true)) { return; }
++	}
++}
++#endif
++
++#define STREAMLINE_GAME_ONLY \
++	if (!is_game || !initialized) \
++		return;
++
++void StreamlineContext::dlssg_disable() {
++	STREAMLINE_GAME_ONLY; // Disable DLSS-G for editor or project settings.
++
++	if (slDLSSGSetOptions && (uint32_t)dlssg_viewport != UINT_MAX) {
++		dlssg_delay = 10;
++		fg_active.set(0);
++
++		sl::DLSSGOptions dlssGOptions{};
++		dlssGOptions.mode = sl::DLSSGMode::eOff;
++		slDLSSGSetOptions(dlssg_viewport, dlssGOptions);
++
++		dlssg_viewport = sl::ViewportHandle(-1);
++	}
++}
++
++void StreamlineContext::reflex_set_options(const sl::ReflexOptions &opts) {
++	STREAMLINE_GAME_ONLY; // Disable reflex for editor or project settings.
++
++	reflex_options = opts;
++	reflex_options_dirty = false;
++	sl::Result result = this->slReflexSetOptions ? this->slReflexSetOptions(opts) : sl::Result::eOk;
++	if (!check(result, true)) { return; }
++}
++
++void StreamlineContext::pcl_set_options(const sl::PCLOptions &opts) {
++	STREAMLINE_GAME_ONLY; // Disable PCL for editor or project settings.
++
++	pcl_options = opts;
++	pcl_options_dirty = false;
++	sl::Result result = this->slPCLSetOptions ? this->slPCLSetOptions(opts) : sl::Result::eOk;
++	if (!check(result, true)) { return; }
++}
++
++void StreamlineContext::pcl_marker(sl::FrameToken *frameToken, sl::PCLMarker marker) {
++	STREAMLINE_GAME_ONLY; // Disable PCL for editor or project settings.
++
++	sl::Result result = this->slPCLSetMarker ? this->slPCLSetMarker(marker, *frameToken) : sl::Result::eOk;
++	if (!check(result, true)) { return; }
++}
++
++void StreamlineContext::reflex_sleep(sl::FrameToken *frameToken) {
++	STREAMLINE_GAME_ONLY; // Disable reflex for editor or project settings.
++
++	if (frameToken == nullptr) {
++		return;
++	}
++
++	sl::Result result = this->slReflexSleep ? this->slReflexSleep(*frameToken) : sl::Result::eOk;
++	if (!check(result, true)) { return; }
++}
++
++void StreamlineContext::reflex_get_state(sl::ReflexState &reflexState) {
++	STREAMLINE_GAME_ONLY; // Disable reflex for editor or project settings.
++
++	sl::Result result = this->slReflexGetState ? this->slReflexGetState(reflexState) : sl::Result::eOk;
++	if (!check(result, true)) { return; }
++}
++
++sl::FrameToken *StreamlineContext::get_new_frame_token() {
++	if (!initialized) { return nullptr; }
++	sl::Result result = this->slGetNewFrameToken ? this->slGetNewFrameToken(last_token, nullptr) : sl::Result::eOk;
++	ERR_FAIL_COND_V_MSG(result != sl::Result::eOk, nullptr, StreamlineContext::result_to_string(result));
++	frame_token_rendered = false;
++	return last_token;
++}
++
++const char *StreamlineContext::result_to_string(sl::Result result) {
++	switch (result) {
++		case sl::Result::eOk:
++			return "sl::eOk";
++		case sl::Result::eErrorIO:
++			return "sl::eErrorIO";
++		case sl::Result::eErrorDriverOutOfDate:
++			return "sl::eErrorDriverOutOfDate";
++		case sl::Result::eErrorOSOutOfDate:
++			return "sl::eErrorOSOutOfDate";
++		case sl::Result::eErrorOSDisabledHWS:
++			return "sl::eErrorOSDisabledHWS";
++		case sl::Result::eErrorDeviceNotCreated:
++			return "sl::eErrorDeviceNotCreated";
++		case sl::Result::eErrorNoSupportedAdapterFound:
++			return "sl::eErrorNoSupportedAdapterFound";
++		case sl::Result::eErrorAdapterNotSupported:
++			return "sl::eErrorAdapterNotSupported";
++		case sl::Result::eErrorNoPlugins:
++			return "sl::eErrorNoPlugins";
++		case sl::Result::eErrorVulkanAPI:
++			return "sl::eErrorVulkanAPI";
++		case sl::Result::eErrorDXGIAPI:
++			return "sl::eErrorDXGIAPI";
++		case sl::Result::eErrorD3DAPI:
++			return "sl::eErrorD3DAPI";
++		case sl::Result::eErrorNRDAPI:
++			return "sl::eErrorNRDAPI";
++		case sl::Result::eErrorNVAPI:
++			return "sl::eErrorNVAPI";
++		case sl::Result::eErrorReflexAPI:
++			return "sl::eErrorReflexAPI";
++		case sl::Result::eErrorNGXFailed:
++			return "sl::eErrorNGXFailed";
++		case sl::Result::eErrorJSONParsing:
++			return "sl::eErrorJSONParsing";
++		case sl::Result::eErrorMissingProxy:
++			return "sl::eErrorMissingProxy";
++		case sl::Result::eErrorMissingResourceState:
++			return "sl::eErrorMissingResourceState";
++		case sl::Result::eErrorInvalidIntegration:
++			return "sl::eErrorInvalidIntegration";
++		case sl::Result::eErrorMissingInputParameter:
++			return "sl::eErrorMissingInputParameter";
++		case sl::Result::eErrorNotInitialized:
++			return "sl::eErrorNotInitialized";
++		case sl::Result::eErrorComputeFailed:
++			return "sl::eErrorComputeFailed";
++		case sl::Result::eErrorInitNotCalled:
++			return "sl::eErrorInitNotCalled";
++		case sl::Result::eErrorExceptionHandler:
++			return "sl::eErrorExceptionHandler";
++		case sl::Result::eErrorInvalidParameter:
++			return "sl::eErrorInvalidParameter";
++		case sl::Result::eErrorMissingConstants:
++			return "sl::eErrorMissingConstants";
++		case sl::Result::eErrorDuplicatedConstants:
++			return "sl::eErrorDuplicatedConstants";
++		case sl::Result::eErrorMissingOrInvalidAPI:
++			return "sl::eErrorMissingOrInvalidAPI";
++		case sl::Result::eErrorCommonConstantsMissing:
++			return "sl::eErrorCommonConstantsMissing";
++		case sl::Result::eErrorUnsupportedInterface:
++			return "sl::eErrorUnsupportedInterface";
++		case sl::Result::eErrorFeatureMissing:
++			return "sl::eErrorFeatureMissing";
++		case sl::Result::eErrorFeatureNotSupported:
++			return "sl::eErrorFeatureNotSupported";
++		case sl::Result::eErrorFeatureMissingHooks:
++			return "sl::eErrorFeatureMissingHooks";
++		case sl::Result::eErrorFeatureFailedToLoad:
++			return "sl::eErrorFeatureFailedToLoad";
++		case sl::Result::eErrorFeatureWrongPriority:
++			return "sl::eErrorFeatureWrongPriority";
++		case sl::Result::eErrorFeatureMissingDependency:
++			return "sl::eErrorFeatureMissingDependency";
++		case sl::Result::eErrorFeatureManagerInvalidState:
++			return "sl::eErrorFeatureManagerInvalidState";
++		case sl::Result::eErrorInvalidState:
++			return "sl::eErrorInvalidState";
++		case sl::Result::eWarnOutOfVRAM:
++			return "sl::eWarnOutOfVRAM";
++		default:
++			return "sl::eUnknown";
++	}
++}
++
++void StreamlineContext::initialize(bool d3d12) {
++	StreamlineContext::get().is_game = true;
++	if (Engine::get_singleton()->is_editor_hint() || Engine::get_singleton()->is_project_manager_hint()) {
++		StreamlineContext::get().is_game = false;
++	}
++
++	if (StreamlineContext::get().slInit != nullptr) {
++		return; // already initialized.
++	}
++
++	StreamlineContext::get().load_functions(d3d12);
++	if (StreamlineContext::get().slInit == nullptr) {
++		return;
++	}
++
++	sl::Preferences pref;
++
++	sl::Feature features[] = { sl::kFeatureDLSS, sl::kFeatureDLSS_G, sl::kFeatureReflex, sl::kFeaturePCL };
++	pref.featuresToLoad = features;
++	pref.numFeaturesToLoad = 4;
++	pref.renderAPI = sl::RenderAPI::eD3D12;
++	pref.applicationId = 0;
++	pref.engine = sl::EngineType::eCustom;
++	pref.engineVersion = "Godot 4.7 / Cursed Lands";
++	pref.projectId = "ad1270d1-4d98-4b22-9a20-3098d2c800c7";
++	pref.flags = sl::PreferenceFlags::eDisableCLStateTracking | sl::PreferenceFlags::eUseFrameBasedResourceTagging;
++
++	if (bool(GLOBAL_GET("rendering/streamline/streamline_log")) || OS::get_singleton()->is_stdout_verbose()) {
++		pref.logLevel = sl::LogLevel::eVerbose;
++		pref.showConsole = false;
++		pref.logMessageCallback = [](sl::LogType p_type, const char *p_message) {
++			print_line("Streamline: " + String::utf8(p_message));
++		};
++	} else {
++		pref.logLevel = sl::LogLevel::eOff;
++		pref.showConsole = false;
++	}
++	auto &context = StreamlineContext::get();
++	if (!context.slShutdown || !context.slIsFeatureSupported || !context.slGetFeatureFunction ||
++			!context.slSetConstants || !context.slSetTagForFrame || !context.slEvaluateFeature ||
++			!context.slGetNewFrameToken || !context.slFreeResources || !context.slSetD3DDevice) {
++		return;
++	}
++	sl::Result result = context.slInit(pref, sl::kSDKVersion);
++	context.initialized = result == sl::Result::eOk;
++	context.last_error.set((uint32_t)result);
++}
++
++bool StreamlineContext::check(sl::Result result, bool frame_generation) {
++	if (result == sl::Result::eOk) { return true; }
++	last_error.set((uint32_t)result);
++	if (frame_generation) { fg_failed.set(1); } else { sr_failed.set(1); }
++	dlssg_disable();
++	WARN_PRINT("NVIDIA experiment disabled after SDK error: " + String(result_to_string(result)));
++	return false;
++}
++
++void StreamlineContext::poll_presented_frames() {
++	if (!initialized || !slDLSSGGetState || (uint32_t)dlssg_viewport == UINT_MAX) { return; }
++	sl::DLSSGState state;
++	if (!check(slDLSSGGetState(dlssg_viewport, state, nullptr), true)) { return; }
++	presented_frames.add(state.numFramesActuallyPresented);
++	fg_status.set((uint32_t)state.status);
++	if (state.status != sl::DLSSGStatus::eOk) {
++		fg_failed.set(1);
++		dlssg_disable();
++	}
++}
++
++#endif
+diff --git a/drivers/streamline/streamline_context.h b/drivers/streamline/streamline_context.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline_context.h
+@@ -0,0 +1,148 @@
++/**************************************************************************/
++/*  streamline_context.h                                                  */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#pragma once
++
++#include "core/templates/safe_refcount.h"
++#include "streamline_data.h"
++#include "streamline_headers.h"
++
++#ifdef STREAMLINE_ENABLED
++class StreamlineContext {
++public:
++	bool initialized = false;
++	bool enhanced_barriers = false;
++	SafeNumeric<uint64_t> dlss_evaluations{ 0 };
++	SafeNumeric<uint64_t> ui_alpha_frames{ 0 };
++	SafeNumeric<uint64_t> ui_alpha_texture{ 0 };
++	SafeNumeric<uint32_t> fg_input_width{ 0 }, fg_input_height{ 0 }, fg_output_width{ 0 }, fg_output_height{ 0 }, fg_size_supported{ 0 };
++	SafeNumeric<uint64_t> game_presents;
++	SafeNumeric<uint64_t> presented_frames{ 0 };
++	SafeNumeric<uint32_t> last_error{ 0 };
++	sl::Result sr_support_result = sl::Result::eErrorNotInitialized;
++	sl::Result fg_support_result = sl::Result::eErrorNotInitialized;
++	SafeNumeric<uint32_t> fg_status{ 0 };
++	SafeNumeric<uint32_t> fg_active{ 0 };
++	SafeNumeric<uint32_t> sr_failed{ 0 };
++	SafeNumeric<uint32_t> fg_failed{ 0 };
++	bool frame_token_rendered = false;
++	bool fg_tagged_this_frame = false; // Render/present thread only.
++	bool check(sl::Result result, bool frame_generation = false);
++	void poll_presented_frames();
++	// Interposer
++	PFun_slUpgradeInterface *slUpgradeInterface = nullptr;
++	PFun_slInit *slInit = nullptr;
++	PFun_slShutdown *slShutdown = nullptr;
++	PFun_slIsFeatureSupported *slIsFeatureSupported = nullptr;
++	PFun_slGetFeatureFunction *slGetFeatureFunction = nullptr;
++
++	PFun_slGetNewFrameToken *slGetNewFrameToken = nullptr;
++	PFun_slAllocateResources *slAllocateResources = nullptr;
++	PFun_slFreeResources *slFreeResources = nullptr;
++	PFun_slEvaluateFeature *slEvaluateFeature = nullptr;
++	PFun_slSetTagForFrame *slSetTagForFrame = nullptr;
++	PFun_slSetConstants *slSetConstants = nullptr;
++	PFun_slSetFeatureLoaded *slSetFeatureLoaded = nullptr;
++	PFun_slSetD3DDevice *slSetD3DDevice = nullptr;
++
++	// Reflex
++	sl::ReflexOptions reflex_options = {};
++	bool reflex_options_dirty = true;
++	PFun_slReflexGetState *slReflexGetState = nullptr;
++	PFun_slReflexSetOptions *slReflexSetOptions = nullptr;
++	PFun_slReflexSleep *slReflexSleep = nullptr;
++
++	// PCL
++	sl::PCLOptions pcl_options = {};
++	bool pcl_options_dirty = true;
++	PFun_slPCLSetMarker *slPCLSetMarker = nullptr;
++	PFun_slPCLSetOptions *slPCLSetOptions = nullptr;
++
++	// DLSS Super Resolution
++	PFun_slDLSSGetOptimalSettings *slDLSSGetOptimalSettings = nullptr;
++	PFun_slDLSSGetState *slDLSSGetState = nullptr;
++	PFun_slDLSSSetOptions *slDLSSSetOptions = nullptr;
++	char dlss_default_preset = '?';
++	char dlss_rr_default_preset = '?';
++
++	// DLSS Ray Reconstruction (DLSS-D / DLSS-RR)
++	PFun_slDLSSDGetOptimalSettings *slDLSSDGetOptimalSettings = nullptr;
++	PFun_slDLSSDGetState *slDLSSDGetState = nullptr;
++	PFun_slDLSSDSetOptions *slDLSSDSetOptions = nullptr;
++
++	// DLSS Frame Generation
++	PFun_slDLSSGGetState *slDLSSGGetState = nullptr;
++	PFun_slDLSSGSetOptions *slDLSSGSetOptions = nullptr;
++
++	// NIS
++	PFun_slNISSetOptions *slNISSetOptions = nullptr;
++
++	// D3D12
++	void *func_D3D12GetInterface = nullptr;
++	void *func_D3D12CreateDevice = nullptr;
++	void *func_DXGIGetDebugInterface1 = nullptr;
++	void *func_CreateDXGIFactory = nullptr;
++	void *func_CreateDXGIFactory1 = nullptr;
++	void *func_CreateDXGIFactory2 = nullptr;
++
++	void load_functions(bool d3d12);
++	void load_functions_post_init();
++	static const char *result_to_string(sl::Result result);
++
++	void reflex_set_options(const sl::ReflexOptions &opts);
++	void reflex_sleep(sl::FrameToken *frameToken);
++	void reflex_get_state(sl::ReflexState &reflexState);
++	void pcl_set_options(const sl::PCLOptions &opts);
++	void pcl_marker(sl::FrameToken *frameToken, sl::PCLMarker marker);
++	sl::FrameToken *get_new_frame_token();
++
++	void dlssg_disable();
++
++	static void initialize(bool d3d12);
++
++	static StreamlineContext &get();
++
++	sl::FrameToken *last_token = nullptr;
++	bool is_game = false;
++
++	sl::ViewportHandle dlssg_viewport{ UINT_MAX };
++	int dlssg_delay = 0;
++
++#if STREAMLINE_ENABLED_VULKAN
++	StreamlineCapabilities enumerate_support_vulkan(void *vk_physical_device);
++#endif
++#if STREAMLINE_ENABLED_D3D12
++	void init_device_d3d12(void *d3d_device);
++	StreamlineCapabilities enumerate_support_d3d12(void *d3d_adapter_luid);
++#endif
++
++	StreamlineCapabilities streamline_capabilities;
++};
++#endif
+diff --git a/drivers/streamline/streamline_data.h b/drivers/streamline/streamline_data.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline_data.h
+@@ -0,0 +1,82 @@
++/**************************************************************************/
++/*  streamline_data.h                                                     */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#pragma once
++
++enum StreamlineMarkerType {
++	STREAMLINE_MARKER_INITIALIZE_VULKAN,
++	STREAMLINE_MARKER_INITIALIZE_D3D12,
++	STREAMLINE_MARKER_BEFORE_MESSAGE_LOOP,
++	STREAMLINE_MARKER_BEFORE_DEVICE_DESTROY,
++	STREAMLINE_MARKER_AFTER_DEVICE_CREATION,
++	STREAMLINE_MARKER_MODIFY_SWAPCHAIN,
++	STREAMLINE_MARKER_BEGIN_SIMULATION,
++	STREAMLINE_MARKER_END_SIMULATION,
++	STREAMLINE_MARKER_BEGIN_RENDER,
++	STREAMLINE_MARKER_END_RENDER,
++	STREAMLINE_MARKER_BEGIN_PRESENT,
++	STREAMLINE_MARKER_END_PRESENT,
++	STREAMLINE_MARKER_PC_PING
++};
++
++enum StreamlineCapabilityType {
++	STREAMLINE_CAPABILITY_DLSS,
++	STREAMLINE_CAPABILITY_DLSS_G,
++	STREAMLINE_CAPABILITY_DLSS_RR,
++	STREAMLINE_CAPABILITY_REFLEX,
++	STREAMLINE_CAPABILITY_PCL,
++	STREAMLINE_CAPABILITY_NIS
++};
++
++enum StreamlineInternalParameterType {
++	STREAMLINE_INTERNAL_PARAMETER_FUNC_D3D12GetInterface,
++	STREAMLINE_INTERNAL_PARAMETER_FUNC_D3D12CreateDevice,
++	STREAMLINE_INTERNAL_PARAMETER_FUNC_DXGIGetDebugInterface1,
++	STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory,
++	STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory1,
++	STREAMLINE_INTERNAL_PARAMETER_FUNC_CreateDXGIFactory2,
++};
++
++struct StreamlineCapabilities {
++	bool dlss_available = false;
++	bool dlss_g_available = false;
++	bool dlss_rr_available = false;
++	bool reflex_available = false;
++	bool pcl_available = false;
++	bool nis_available = false;
++};
++
++enum StreamlineParameterType {
++	STREAMLINE_PARAM_REFLEX_MODE, // [double] 0.0 = off, 1.0 = on, 2.0 = on with boost
++	STREAMLINE_PARAM_REFLEX_FRAME_LIMIT_US, // [double] frame limit in microseconds
++	STREAMLINE_PARAM_DLSS_PRESET, // [string] DLSS preset. Defaults to "?" (auto). Can be overridden to "J" or "K" for transformer models.
++	STREAMLINE_PARAM_DLSS_RR_PRESET, // [string] DLSS RR preset. Defaults to "?" (auto). Can be overridden to "D" or "E" for transformer models.
++	STREAMLINE_PARAM_COUNT,
++};
+diff --git a/drivers/streamline/streamline_headers.h b/drivers/streamline/streamline_headers.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline_headers.h
+@@ -0,0 +1,67 @@
++/**************************************************************************/
++/*  streamline_headers.h                                                  */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#pragma once
++#ifdef STREAMLINE_ENABLED
++
++#if defined(__clang__)
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wnon-virtual-dtor"
++#pragma clang diagnostic ignored "-Wshadow"
++#pragma clang diagnostic ignored "-Wdeprecated-declarations"
++#elif defined(__GNUC__)
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wshadow"
++#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
++#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++#elif defined(_MSC_VER)
++#pragma warning(push)
++#pragma warning(disable : 5257)
++#pragma warning(disable : 4471)
++#endif
++
++#include "../../thirdparty/streamline/include/sl.h"
++#include "../../thirdparty/streamline/include/sl_consts.h"
++#include "../../thirdparty/streamline/include/sl_dlss.h"
++#include "../../thirdparty/streamline/include/sl_dlss_d.h"
++#include "../../thirdparty/streamline/include/sl_dlss_g.h"
++#include "../../thirdparty/streamline/include/sl_nis.h"
++#include "../../thirdparty/streamline/include/sl_pcl.h"
++#include "../../thirdparty/streamline/include/sl_reflex.h"
++
++#if defined(__clang__)
++#pragma clang diagnostic pop
++#elif defined(__GNUC__)
++#pragma GCC diagnostic pop
++#elif defined(_MSC_VER)
++#pragma warning(pop)
++#endif
++
++#endif
+diff --git a/drivers/streamline/streamline_security.h b/drivers/streamline/streamline_security.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/streamline/streamline_security.h
+@@ -0,0 +1,478 @@
++/*
++* Copyright (c) 2022-2023 NVIDIA CORPORATION. All rights reserved
++*
++* Permission is hereby granted, free of charge, to any person obtaining a copy
++* of this software and associated documentation files (the "Software"), to deal
++* in the Software without restriction, including without limitation the rights
++* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++* copies of the Software, and to permit persons to whom the Software is
++* furnished to do so, subject to the following conditions:
++*
++* The above copyright notice and this permission notice shall be included in all
++* copies or substantial portions of the Software.
++*
++* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++* SOFTWARE.
++*/
++
++#pragma once
++
++#define _UNICODE 1
++#define UNICODE 1
++
++#include <tchar.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <windows.h>
++#include <softpub.h>
++#include <wincrypt.h>
++#include <wintrust.h>
++#include <inttypes.h>
++
++// MinGW 12 predates the Windows 8 signature extensions. Match the public ABI.
++#ifndef WSS_VERIFY_SPECIFIC
++#define WSS_VERIFY_SPECIFIC 0x00000001
++#define WSS_GET_SECONDARY_SIG_COUNT 0x00000002
++struct WINTRUST_SIGNATURE_SETTINGS {
++    DWORD cbStruct, dwIndex, dwFlags, cSecondarySigs, dwVerifiedSigIndex;
++    PCERT_STRONG_SIGN_PARA pCryptoPolicy;
++};
++struct StreamlineWinTrustData : WINTRUST_DATA {
++    WINTRUST_SIGNATURE_SETTINGS *pSignatureSettings;
++};
++#else
++using StreamlineWinTrustData = WINTRUST_DATA;
++#endif
++
++
++#define GetProc(hModule, procName, proc) ((proc || (proc = reinterpret_cast<decltype(proc)>(GetProcAddress(hModule, procName)))) ? TRUE : FALSE)
++
++typedef BOOL(WINAPI* PfnCryptMsgClose)(IN HCRYPTMSG hCryptMsg);
++static PfnCryptMsgClose pfnCryptMsgClose = NULL;
++
++typedef BOOL(WINAPI* PfnCertCloseStore)(IN HCERTSTORE hCertStore, DWORD dwFlags);
++static PfnCertCloseStore pfnCertCloseStore = NULL;
++
++typedef HCERTSTORE (WINAPI* PfnCertOpenStore)(
++    _In_ LPCSTR lpszStoreProvider,
++    _In_ DWORD dwEncodingType,
++    _In_opt_ HCRYPTPROV_LEGACY hCryptProv,
++    _In_ DWORD dwFlags,
++    _In_opt_ const void* pvPara
++);
++static PfnCertOpenStore pfnCertOpenStore = NULL;
++
++typedef BOOL(WINAPI* PfnCertFreeCertificateContext)(IN PCCERT_CONTEXT pCertContext);
++static PfnCertFreeCertificateContext pfnCertFreeCertificateContext = NULL;
++
++typedef PCCERT_CONTEXT(WINAPI* PfnCertFindCertificateInStore)(
++    IN HCERTSTORE hCertStore,
++    IN DWORD dwCertEncodingType,
++    IN DWORD dwFindFlags,
++    IN DWORD dwFindType,
++    IN const void* pvFindPara,
++    IN PCCERT_CONTEXT pPrevCertContext
++    );
++static PfnCertFindCertificateInStore pfnCertFindCertificateInStore = NULL;
++
++typedef BOOL(WINAPI* PfnCryptMsgGetParam)(
++    IN HCRYPTMSG hCryptMsg,
++    IN DWORD dwParamType,
++    IN DWORD dwIndex,
++    OUT void* pvData,
++    IN OUT DWORD* pcbData
++    );
++static PfnCryptMsgGetParam pfnCryptMsgGetParam = NULL;
++
++typedef HCRYPTMSG (WINAPI* PfnCryptMsgOpenToDecode)(
++    _In_ DWORD dwMsgEncodingType,
++    _In_ DWORD dwFlags,
++    _In_ DWORD dwMsgType,
++    _In_opt_ HCRYPTPROV_LEGACY hCryptProv,
++    _Reserved_ PCERT_INFO pRecipientInfo,
++    _In_opt_ PCMSG_STREAM_INFO pStreamInfo
++);
++PfnCryptMsgOpenToDecode pfnCryptMsgOpenToDecode = {};
++
++typedef BOOL (WINAPI* PfnCryptMsgUpdate)(
++    _In_ HCRYPTMSG hCryptMsg,
++    _In_reads_bytes_opt_(cbData) const BYTE* pbData,
++    _In_ DWORD cbData,
++    _In_ BOOL fFinal
++);
++PfnCryptMsgUpdate pfnCryptMsgUpdate = {};
++
++typedef BOOL(WINAPI* PfnCryptQueryObject)(
++    DWORD            dwObjectType,
++    const void* pvObject,
++    DWORD            dwExpectedContentTypeFlags,
++    DWORD            dwExpectedFormatTypeFlags,
++    DWORD            dwFlags,
++    DWORD* pdwMsgAndCertEncodingType,
++    DWORD* pdwContentType,
++    DWORD* pdwFormatType,
++    HCERTSTORE* phCertStore,
++    HCRYPTMSG* phMsg,
++    const void** ppvContext
++    );
++static PfnCryptQueryObject pfnCryptQueryObject = NULL;
++
++typedef BOOL(WINAPI* PfnCryptDecodeObjectEx)(
++    IN DWORD              dwCertEncodingType,
++    IN LPCSTR             lpszStructType,
++    IN const BYTE* pbEncoded,
++    IN DWORD              cbEncoded,
++    IN DWORD              dwFlags,
++    IN PCRYPT_DECODE_PARA pDecodePara,
++    OUT void* pvStructInfo,
++    IN OUT DWORD* pcbStructInfo
++    );
++static PfnCryptDecodeObjectEx pfnCryptDecodeObjectEx = NULL;
++
++typedef LONG(WINAPI* PfnWinVerifyTrust)(
++    IN HWND   hwnd,
++    IN GUID* pgActionID,
++    IN LPVOID pWVTData
++    );
++static PfnWinVerifyTrust pfnWinVerifyTrust = NULL;
++
++namespace sl
++{
++
++namespace security
++{
++
++bool isSignedByNVIDIA(const wchar_t* pathToFile)
++{
++    bool valid = false;
++
++    // Now let's make sure this is actually signed by NVIDIA
++
++    DWORD dwEncoding, dwContentType, dwFormatType;
++    HCERTSTORE hStore = NULL;
++    HCRYPTMSG hMsg = NULL;
++    PCMSG_SIGNER_INFO pSignerInfo = NULL;
++    DWORD dwSignerInfo;
++
++    if (!pfnCertOpenStore)
++    {
++        // We only support Win10+ so we can search for module in system32 directly
++        auto hModCrypt32 = LoadLibraryExW(L"crypt32.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
++        if (!hModCrypt32 ||
++            !GetProc(hModCrypt32, "CryptMsgClose", pfnCryptMsgClose) ||
++            !GetProc(hModCrypt32, "CertOpenStore", pfnCertOpenStore) ||
++            !GetProc(hModCrypt32, "CertCloseStore", pfnCertCloseStore) ||
++            !GetProc(hModCrypt32, "CertFreeCertificateContext", pfnCertFreeCertificateContext) ||
++            !GetProc(hModCrypt32, "CertFindCertificateInStore", pfnCertFindCertificateInStore) ||
++            !GetProc(hModCrypt32, "CryptMsgGetParam", pfnCryptMsgGetParam) ||
++            !GetProc(hModCrypt32, "CryptMsgUpdate", pfnCryptMsgUpdate) ||
++            !GetProc(hModCrypt32, "CryptMsgOpenToDecode", pfnCryptMsgOpenToDecode) ||
++            !GetProc(hModCrypt32, "CryptQueryObject", pfnCryptQueryObject) ||
++            !GetProc(hModCrypt32, "CryptDecodeObjectEx", pfnCryptDecodeObjectEx))
++        {
++            return false;
++        }
++    }
++
++    // Get message handle and store handle from the signed file.
++    auto bResult = pfnCryptQueryObject(CERT_QUERY_OBJECT_FILE,
++        pathToFile,
++        CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED,
++        CERT_QUERY_FORMAT_FLAG_BINARY,
++        0,
++        &dwEncoding,
++        &dwContentType,
++        &dwFormatType,
++        &hStore,
++        &hMsg,
++        NULL);
++    if (!bResult)
++    {
++        return false;
++    }
++
++    // Get signer information size.
++    bResult = pfnCryptMsgGetParam(hMsg,
++        CMSG_SIGNER_INFO_PARAM,
++        0,
++        NULL,
++        &dwSignerInfo);
++    if (!bResult)
++    {
++        return false;
++    }
++
++    // Allocate memory for signer information.
++    pSignerInfo = (PCMSG_SIGNER_INFO)LocalAlloc(LPTR, dwSignerInfo);
++    if (!pSignerInfo)
++    {
++        return false;
++    }
++
++    // Get Signer Information.
++    bResult = pfnCryptMsgGetParam(hMsg,
++        CMSG_SIGNER_INFO_PARAM,
++        0,
++        (PVOID)pSignerInfo,
++        &dwSignerInfo);
++    if (!bResult)
++    {
++        LocalFree(pSignerInfo);
++        return false;
++    }
++
++    // Look for nested signature
++    constexpr const char* kOID_NESTED_SIGNATURE = "1.3.6.1.4.1.311.2.4.1";
++    for (DWORD i = 0; i < pSignerInfo->UnauthAttrs.cAttr; i++)
++    {
++        if (strcmp(kOID_NESTED_SIGNATURE, pSignerInfo->UnauthAttrs.rgAttr[i].pszObjId) == 0)
++        {
++            HCRYPTMSG hMsg2 = pfnCryptMsgOpenToDecode(X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, 0, 0, NULL, NULL, NULL);
++            if (hMsg2)
++            {
++                if (pfnCryptMsgUpdate(hMsg2,pSignerInfo->UnauthAttrs.rgAttr[i].rgValue->pbData,pSignerInfo->UnauthAttrs.rgAttr[i].rgValue->cbData,TRUE))
++                {
++                    dwSignerInfo = 0;
++                    pfnCryptMsgGetParam(hMsg2, CMSG_SIGNER_INFO_PARAM, 0, NULL, &dwSignerInfo);
++                    if (dwSignerInfo != 0)
++                    {
++                        PCMSG_SIGNER_INFO pSignerInfo2 = (PCMSG_SIGNER_INFO)LocalAlloc(LPTR, dwSignerInfo);
++                        if (pSignerInfo2)
++                        {
++                            if (pfnCryptMsgGetParam(hMsg2, CMSG_SIGNER_INFO_PARAM, 0, (PVOID)pSignerInfo2, &dwSignerInfo))
++                            {
++                                CRYPT_DATA_BLOB c7Data;
++                                c7Data.pbData = pSignerInfo->UnauthAttrs.rgAttr[i].rgValue->pbData;
++                                c7Data.cbData = pSignerInfo->UnauthAttrs.rgAttr[i].rgValue->cbData;
++
++                                auto hStore2 = pfnCertOpenStore(CERT_STORE_PROV_PKCS7, X509_ASN_ENCODING | PKCS_7_ASN_ENCODING, NULL, 0, &c7Data);
++                                if (!hStore2)
++                                {
++                                    LocalFree(pSignerInfo2);
++                                    return false;
++                                }
++
++                                CERT_INFO CertInfo{};
++                                PCCERT_CONTEXT pCertContext = NULL;
++
++                                // Search for the signer certificate in the temporary certificate store.
++                                CertInfo.Issuer = pSignerInfo2->Issuer;
++                                CertInfo.SerialNumber = pSignerInfo2->SerialNumber;
++                                pCertContext = pfnCertFindCertificateInStore(hStore2,
++                                    (X509_ASN_ENCODING | PKCS_7_ASN_ENCODING),
++                                    0,
++                                    CERT_FIND_SUBJECT_CERT,
++                                    (PVOID)&CertInfo,
++                                    NULL);
++                                if (!pCertContext)
++                                {
++                                    LocalFree(pSignerInfo2);
++                                    pfnCertCloseStore(hStore2, CERT_CLOSE_STORE_FORCE_FLAG);
++                                    return false;
++                                }
++
++                                void* decodedPublicKey{};
++                                DWORD decodedPublicLength{};
++                                if (pfnCryptDecodeObjectEx((PKCS_7_ASN_ENCODING | X509_ASN_ENCODING),
++                                    CNG_RSA_PUBLIC_KEY_BLOB,
++                                    pCertContext->pCertInfo->SubjectPublicKeyInfo.PublicKey.pbData,
++                                    pCertContext->pCertInfo->SubjectPublicKeyInfo.PublicKey.cbData,
++                                    CRYPT_ENCODE_ALLOC_FLAG,
++                                    NULL,
++                                    &decodedPublicKey,
++                                    &decodedPublicLength))
++                                {
++                                    static uint8_t s_rsaStreamlinePublicKey[] =
++                                    {
++                                        0x52, 0x53, 0x41, 0x31, 0x00, 0x0c, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x80, 0x01, 0x00, 0x00,
++                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0xc1, 0x8e, 0x40, 0xc3, 0xf5,
++                                        0xa7, 0x01, 0x9a, 0x37, 0x6b, 0x47, 0xa8, 0x58, 0xe8, 0xbe, 0xe3, 0x55, 0x0a, 0xee, 0x0f, 0x0d,
++                                        0x32, 0xaa, 0x12, 0xf9, 0x56, 0x7f, 0x5d, 0xfd, 0x82, 0x09, 0x33, 0x21, 0x42, 0xf2, 0xe8, 0x74,
++                                        0x98, 0x51, 0xb3, 0x88, 0x74, 0xcd, 0x00, 0x6e, 0xb1, 0x08, 0x10, 0x4b, 0xf1, 0xda, 0xd6, 0x97,
++                                        0x87, 0xd4, 0x9c, 0xb1, 0x13, 0xa8, 0xa2, 0x86, 0x15, 0x0e, 0xc1, 0xa5, 0x9c, 0xe5, 0x90, 0x9b,
++                                        0xbe, 0x69, 0xdc, 0x6a, 0x82, 0xbe, 0xb4, 0x4b, 0x4b, 0xfa, 0x95, 0x8e, 0xc1, 0xfc, 0x2b, 0x61,
++                                        0x95, 0xd1, 0x91, 0xed, 0xeb, 0x87, 0xe7, 0x09, 0x84, 0x05, 0x41, 0x03, 0xb0, 0x2d, 0xd4, 0x39,
++                                        0x7f, 0x62, 0x06, 0x56, 0x33, 0x93, 0x7e, 0x77, 0x54, 0x06, 0x77, 0x2b, 0x75, 0x05, 0xbc, 0xeb,
++                                        0x98, 0xea, 0xc0, 0xa2, 0xca, 0x98, 0x86, 0x0f, 0x10, 0x65, 0xde, 0x19, 0x2c, 0xa6, 0x1e, 0x93,
++                                        0xb0, 0x92, 0x5d, 0x5f, 0x5b, 0x6f, 0x79, 0x6d, 0x2c, 0x76, 0xa6, 0x67, 0x50, 0xaa, 0x8f, 0xc2,
++                                        0x4c, 0xf1, 0x08, 0xf7, 0xc0, 0x27, 0x29, 0xf0, 0x68, 0xf4, 0x64, 0x00, 0x1c, 0xb6, 0x28, 0x1e,
++                                        0x25, 0xb8, 0xf3, 0x8a, 0xd1, 0x6e, 0x65, 0xa3, 0x61, 0x9d, 0xf8, 0xca, 0x4a, 0x41, 0x60, 0x80,
++                                        0x62, 0xdf, 0x41, 0xa4, 0x8b, 0xdc, 0x97, 0xee, 0xeb, 0x64, 0x6f, 0xe4, 0x8f, 0x4b, 0xdf, 0x24,
++                                        0x01, 0x80, 0xd9, 0xb4, 0x0a, 0xec, 0x0d, 0x3e, 0xb7, 0x76, 0xba, 0xe9, 0xe7, 0xde, 0x07, 0xdd,
++                                        0x30, 0xc8, 0x4a, 0x14, 0x79, 0xec, 0x15, 0xed, 0x5c, 0xc6, 0xcc, 0xd4, 0xe6, 0x06, 0x3c, 0x42,
++                                        0x92, 0x10, 0xf7, 0x7c, 0x80, 0x1e, 0x78, 0xd3, 0xb4, 0x9f, 0xc2, 0x3b, 0xa8, 0x7b, 0xa0, 0xe3,
++                                        0x0c, 0xd9, 0xad, 0x2e, 0x09, 0x72, 0xe2, 0x8f, 0x54, 0x28, 0x87, 0x3c, 0xba, 0x7c, 0x97, 0x80,
++                                        0xdc, 0x09, 0xb5, 0x12, 0x34, 0x78, 0x9a, 0x26, 0xd0, 0xa3, 0xa7, 0xa7, 0x1b, 0x25, 0x19, 0xe5,
++                                        0x6e, 0xbe, 0xd7, 0x5a, 0x91, 0x32, 0xc4, 0xa9, 0x2f, 0xcc, 0xd5, 0x82, 0x4b, 0x5b, 0x9f, 0xad,
++                                        0xf3, 0x2f, 0xed, 0x4f, 0x33, 0xe1, 0x50, 0x33, 0xd6, 0x90, 0x79, 0x22, 0xe5, 0x1c, 0xc7, 0x35,
++                                        0xe7, 0x58, 0xe6, 0xb4, 0x8b, 0xc4, 0x28, 0x20, 0xec, 0xca, 0x70, 0xbb, 0x02, 0x1b, 0x48, 0xd8,
++                                        0x84, 0x51, 0x24, 0x33, 0x2a, 0x08, 0xb1, 0x15, 0x4e, 0xbc, 0x88, 0xa5, 0xe1, 0x37, 0x76, 0x70,
++                                        0xe6, 0xdf, 0x3f, 0x73, 0xfd, 0x0d, 0x8a, 0xd9, 0x0d, 0xa5, 0x35, 0xb2, 0xb4, 0x01, 0x42, 0x96,
++                                        0xc4, 0xaa, 0x1c, 0xeb, 0x68, 0x62, 0x36, 0xbf, 0xef, 0x5e, 0x2a, 0x3d, 0x18, 0x91, 0x8b, 0x92,
++                                        0x0a, 0x1e, 0xce, 0x98, 0x5b, 0x7b, 0x64, 0x42, 0x09, 0xb0, 0x1d
++                                    };
++
++                                    valid = decodedPublicLength == sizeof(s_rsaStreamlinePublicKey) && memcmp(s_rsaStreamlinePublicKey, decodedPublicKey, decodedPublicLength) == 0;
++                                    LocalFree(decodedPublicKey);
++                                }
++
++                                pfnCertFreeCertificateContext(pCertContext);
++                                pfnCertCloseStore(hStore2, CERT_CLOSE_STORE_FORCE_FLAG);
++                            }
++                            LocalFree(pSignerInfo2);
++                        }
++                    }
++                }
++                pfnCryptMsgClose(hMsg2);
++            }
++            break;
++        }
++    }
++
++    LocalFree(pSignerInfo);
++    pfnCryptMsgClose(hMsg);
++    pfnCertCloseStore(hStore, CERT_CLOSE_STORE_FORCE_FLAG);
++
++    return valid;
++}
++
++//! See https://docs.microsoft.com/en-us/windows/win32/seccrypto/example-c-program--verifying-the-signature-of-a-pe-file
++//!
++//! IMPORTANT: Always pass in the FULL PATH to the file, relative paths are NOT allowed!
++bool verifyEmbeddedSignature(const wchar_t* pathToFile)
++{
++    bool valid = true;
++
++    LONG lStatus = {};
++
++    // Initialize the WINTRUST_FILE_INFO structure.
++
++    WINTRUST_FILE_INFO FileData;
++    memset(&FileData, 0, sizeof(FileData));
++    FileData.cbStruct = sizeof(WINTRUST_FILE_INFO);
++    FileData.pcwszFilePath = pathToFile;
++    FileData.hFile = NULL;
++    FileData.pgKnownSubject = NULL;
++
++    if (!pfnWinVerifyTrust)
++    {
++        // We only support Win10+ so we can search for module in system32 directly
++        auto hModWintrust = LoadLibraryExW(L"wintrust.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
++        if (!hModWintrust || !GetProc(hModWintrust, "WinVerifyTrust", pfnWinVerifyTrust))
++        {
++            return false;
++        }
++    }
++
++    /*
++    WVTPolicyGUID specifies the policy to apply on the file
++    WINTRUST_ACTION_GENERIC_VERIFY_V2 policy checks:
++
++    1) The certificate used to sign the file chains up to a root
++    certificate located in the trusted root certificate store. This
++    implies that the identity of the publisher has been verified by
++    a certification authority.
++
++    2) In cases where user interface is displayed (which this example
++    does not do), WinVerifyTrust will check for whether the
++    end entity certificate is stored in the trusted publisher store,
++    implying that the user trusts content from this publisher.
++
++    3) The end entity certificate has sufficient permission to sign
++    code, as indicated by the presence of a code signing EKU or no
++    EKU.
++    */
++
++    GUID WVTPolicyGUID = WINTRUST_ACTION_GENERIC_VERIFY_V2;
++    StreamlineWinTrustData WinTrustData;
++
++    // Initialize the WinVerifyTrust input data structure.
++
++    // Default all fields to 0.
++    memset(&WinTrustData, 0, sizeof(WinTrustData));
++
++    WinTrustData.cbStruct = sizeof(WinTrustData);
++    // Use default code signing EKU.
++    WinTrustData.pPolicyCallbackData = NULL;
++    // No data to pass to SIP.
++    WinTrustData.pSIPClientData = NULL;
++    // Disable WVT UI.
++    WinTrustData.dwUIChoice = WTD_UI_NONE;
++    // No revocation checking.
++    WinTrustData.fdwRevocationChecks = WTD_REVOKE_NONE;
++    // Verify an embedded signature on a file.
++    WinTrustData.dwUnionChoice = WTD_CHOICE_FILE;
++    // Verify action.
++    WinTrustData.dwStateAction = WTD_STATEACTION_VERIFY;
++    // Verification sets this value.
++    WinTrustData.hWVTStateData = NULL;
++    // Not used.
++    WinTrustData.pwszURLReference = NULL;
++    // This is not applicable if there is no UI because it changes
++    // the UI to accommodate running applications instead of
++    // installing applications.
++    WinTrustData.dwUIContext = 0;
++    // Set pFile.
++    WinTrustData.pFile = &FileData;
++
++    // First verify the primary signature (index 0) to determine how many secondary signatures
++    // are present. We use WSS_VERIFY_SPECIFIC and dwIndex to do this, also setting
++    // WSS_GET_SECONDARY_SIG_COUNT to have the number of secondary signatures returned.
++    WINTRUST_SIGNATURE_SETTINGS SignatureSettings = {};
++    CERT_STRONG_SIGN_PARA StrongSigPolicy = {};
++    SignatureSettings.cbStruct = sizeof(WINTRUST_SIGNATURE_SETTINGS);
++    SignatureSettings.dwFlags = WSS_GET_SECONDARY_SIG_COUNT | WSS_VERIFY_SPECIFIC;
++    SignatureSettings.dwIndex = 0;
++    WinTrustData.pSignatureSettings = &SignatureSettings;
++
++    StrongSigPolicy.cbSize = sizeof(CERT_STRONG_SIGN_PARA);
++    StrongSigPolicy.dwInfoChoice = CERT_STRONG_SIGN_OID_INFO_CHOICE;
++    StrongSigPolicy.pszOID = (LPSTR)szOID_CERT_STRONG_SIGN_OS_CURRENT;
++    WinTrustData.pSignatureSettings->pCryptoPolicy = &StrongSigPolicy;
++
++    // WinVerifyTrust verifies signatures as specified by the GUID  and Wintrust_Data.
++    lStatus = pfnWinVerifyTrust(NULL, &WVTPolicyGUID, &WinTrustData);
++
++    // First signature must be validated by the OS
++    valid = lStatus == ERROR_SUCCESS;
++    if (!valid)
++    {
++        printf("File '%S' is NOT correctly signed - Streamline will not load unsecured modules\n", pathToFile);
++    }
++    else
++    {
++        // Now there has to be a secondary one
++        valid &= WinTrustData.pSignatureSettings->cSecondarySigs == 1;
++        if (!valid)
++        {
++            printf("File '%S' does not have the secondary NVIDIA signature - Streamline will not load unsecured modules\n", pathToFile);
++        }
++        else
++        {
++            // The secondary signature must be from NVIDIA
++            valid &= isSignedByNVIDIA(pathToFile);
++            if (valid)
++            {
++                printf("File '%S' is signed by NVIDIA and the signature was verified.\n", pathToFile);
++            }
++            else
++            {
++                printf("File '%S' is NOT correctly signed - Streamline will not load unsecured modules\n", pathToFile);
++            }
++        }
++    }
++
++    // Any hWVTStateData must be released by a call with close.
++    WinTrustData.dwStateAction = WTD_STATEACTION_CLOSE;
++    lStatus = pfnWinVerifyTrust(NULL, &WVTPolicyGUID, &WinTrustData);
++
++    return valid;
++}
++
++}
++}
+diff --git a/main/main.cpp b/main/main.cpp
+--- a/main/main.cpp
++++ b/main/main.cpp
+@@ -156,6 +156,8 @@
+ #endif // TOOLS_ENABLED && !GDSCRIPT_NO_LSP
+ #endif // MODULE_GDSCRIPT_ENABLED
+ 
++#include "core/io/config_file.h"
++#include "drivers/streamline/streamline.h"
+ #include "drivers/fsr_sdk/fsr_sdk.h"
+ 
+ /* Static members */
+@@ -198,6 +200,7 @@
+ #ifndef XR_DISABLED
+ static XRServer *xr_server = nullptr;
+ #endif // XR_DISABLED
++static Streamline *streamline = nullptr;
+ static FidelityFX *fidelityfx = nullptr;
+ // We error out if setup2() doesn't turn this true
+ static bool _start_success = false;
+@@ -1084,6 +1087,9 @@
+ 
+ 	MAIN_PRINT("Main: Parse CMDLine");
+ 
++	/* create streamline and register singleton */
++	streamline = memnew(Streamline);
++	Streamline::register_singleton();
+ 	fidelityfx = memnew(FidelityFX);
+ 	FidelityFX::register_singleton();
+ 
+@@ -2682,6 +2688,17 @@
+ 	}
+ #endif
+ 
++	{
++	// The SDK presentation owner is selected at startup from saved options.
++	ConfigFile graphics_settings;
++	graphics_settings.load("user://settings.cfg");
++	bool request_dlss = int(graphics_settings.get_value("options", "rtx_upscaling", 0)) > 0 ||
++			OS::get_singleton()->get_cmdline_user_args().find("--experimental-rtx");
++	if (display_driver != "headless" && rendering_method == "forward_plus" && rendering_driver == "d3d12" && request_dlss) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_INITIALIZE_D3D12);
++	}
++	}
++
+ 
+ 	if (use_custom_res) {
+ 		if (!force_res) {
+@@ -2969,6 +2986,10 @@
+ 	if (fidelityfx) {
+ 		memdelete(fidelityfx);
+ 		fidelityfx = nullptr;
++	}
++	if (streamline) {
++		memdelete(streamline);
++		streamline = nullptr;
+ 	}
+ 
+ 	EngineDebugger::deinitialize();
+@@ -4939,6 +4960,9 @@
+ 	GodotProfileZone("Main::iteration");
+ 	GodotProfileZoneGroupedFirst(_profile_zone, "prepare");
+ 
++	if (Streamline::get_singleton()) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEGIN_SIMULATION);
++	}
+ 
+ 	iterating++;
+ 
+@@ -5092,6 +5116,9 @@
+ 	NavigationServer3D::get_singleton()->process(process_step * time_scale);
+ #endif // NAVIGATION_3D_DISABLED
+ 
++	if (Streamline::get_singleton()) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_END_SIMULATION);
++	}
+ 
+ 	GodotProfileZoneGrouped(_profile_zone, "RenderingServer::sync");
+ 	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
+@@ -5220,6 +5247,9 @@
+ 	}
+ #endif
+ 
++	if (Streamline::get_singleton()) {
++		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEFORE_MESSAGE_LOOP);
++	}
+ 
+ 	return exit;
+ }
+@@ -5360,6 +5390,10 @@
+ 		memdelete(fidelityfx);
+ 		fidelityfx = nullptr;
+ 	}
++	if (streamline) {
++		memdelete(streamline);
++		streamline = nullptr;
++	}
+ 	if (input) {
+ 		memdelete(input);
+ 	}
+diff --git a/scene/main/viewport.cpp b/scene/main/viewport.cpp
+--- a/scene/main/viewport.cpp
++++ b/scene/main/viewport.cpp
+@@ -5454,6 +5454,7 @@
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_METALFX_SPATIAL);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_METALFX_TEMPORAL);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_NEAREST);
++	BIND_ENUM_CONSTANT(SCALING_3D_MODE_DLSS);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_FSR_SDK);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_MAX);
+ 
+diff --git a/scene/main/viewport.h b/scene/main/viewport.h
+--- a/scene/main/viewport.h
++++ b/scene/main/viewport.h
+@@ -105,6 +105,7 @@
+ 		SCALING_3D_MODE_METALFX_TEMPORAL,
+ 		SCALING_3D_MODE_NEAREST,
+ 		SCALING_3D_MODE_FSR_SDK,
++		SCALING_3D_MODE_DLSS,
+ 		SCALING_3D_MODE_MAX
+ 	};
+ 
+diff --git a/servers/rendering/renderer_rd/effects/dlss.cpp b/servers/rendering/renderer_rd/effects/dlss.cpp
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/effects/dlss.cpp
+@@ -0,0 +1,625 @@
++/**************************************************************************/
++/*  dlss.cpp                                                              */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#include "dlss.h"
++
++#include "../storage_rd/material_storage.h"
++#include "../uniform_set_cache_rd.h"
++
++#ifdef STREAMLINE_ENABLED
++#define ENABLE_DLSS 1
++#endif
++
++#ifdef ENABLE_DLSS
++#include "drivers/streamline/streamline_context.h"
++#endif
++
++using namespace RendererRD;
++
++#ifdef ENABLE_DLSS
++
++// Texture layout/state constants (avoid including Vulkan/D3D12 headers here).
++static constexpr float DLSS_OPTIMAL_MODE_MAX_DISTANCE = 1000000.0f;
++namespace RendererRD {
++class DLSSContextInner : public DLSSContext {
++public:
++	sl::ViewportHandle viewport;
++	sl::Constants constants;
++	sl::DLSSOptions currentDlssOptions;
++	sl::DLSSOptimalSettings currentOptimalSettings;
++	bool evaluated = false;
++	bool first_frame = true;
++	RID hudless;
++	RID ui_alpha;
++	RID presented_hudless;
++	RID presented_alpha;
++	RID frame_color;
++	RID frame_alpha;
++	Size2i present_size;
++	RID prepared_color;
++
++	DLSSContextInner();
++	virtual ~DLSSContextInner();
++
++	sl::DLSSMode find_optimal_mode(uint32_t outputWidth, uint32_t outputHeight, uint32_t desiredWidth, uint32_t desiredHeight, sl::DLSSOptimalSettings &out_optimalSettings, bool use_dlss_rr = false) {
++		if (!StreamlineContext::get().slDLSSGetOptimalSettings) { return sl::DLSSMode::eOff; }
++
++		sl::DLSSMode modes[] = { sl::DLSSMode::eDLAA, sl::DLSSMode::eMaxQuality, sl::DLSSMode::eBalanced, sl::DLSSMode::eMaxPerformance, sl::DLSSMode::eUltraPerformance };
++		sl::DLSSOptimalSettings settings[sizeof(modes) / sizeof(modes[0])];
++		bool validSettings[sizeof(modes) / sizeof(modes[0])];
++		Vector2 distance[sizeof(modes) / sizeof(modes[0])];
++		memset(validSettings, 0, sizeof(validSettings));
++
++		for (size_t i = 0; i < sizeof(modes) / sizeof(modes[0]); i++) {
++			sl::Result result;
++
++			sl::DLSSOptions options;
++			options.outputWidth = outputWidth;
++			options.outputHeight = outputHeight;
++			options.mode = modes[i];
++			result = StreamlineContext::get().slDLSSGetOptimalSettings(options, settings[i]);
++
++			if (result != sl::Result::eOk) {
++				continue;
++			}
++
++			sl::DLSSOptimalSettings &optimalSettings = settings[i];
++			if (desiredWidth >= optimalSettings.renderWidthMin &&
++					desiredWidth <= optimalSettings.renderWidthMax &&
++					desiredHeight >= optimalSettings.renderHeightMin &&
++					desiredHeight <= optimalSettings.renderHeightMax) {
++				validSettings[i] = true;
++				distance[i] = Vector2(fabsf((float)optimalSettings.optimalRenderWidth - (float)desiredWidth), fabsf((float)optimalSettings.optimalRenderHeight - (float)desiredHeight));
++			}
++		}
++
++		// now select the closest match
++		Vector2 closestDistance(DLSS_OPTIMAL_MODE_MAX_DISTANCE, DLSS_OPTIMAL_MODE_MAX_DISTANCE);
++		int closestDistanceMatch = -1;
++		for (size_t i = 0; i < sizeof(modes) / sizeof(modes[0]); i++) {
++			if (validSettings[i]) {
++				if (distance[i].length_squared() < closestDistance.length_squared()) {
++					closestDistanceMatch = i;
++					closestDistance = distance[i];
++				}
++			}
++		}
++
++		if (closestDistanceMatch != -1) {
++			out_optimalSettings = settings[closestDistanceMatch];
++			return modes[closestDistanceMatch];
++		}
++
++		ERR_FAIL_V_MSG(sl::DLSSMode::eOff, "Couldn't find an appropriate DLSS mode.");
++	}
++}; // end class
++}; // end namespace RendererRD
++
++static HashMap<RID, DLSSContextInner *> g_dlss_prepared;
++static Vector<unsigned int> g_dlss_freeViewportIndices;
++static unsigned int g_dlss_viewportIndex = 1;
++
++DLSSContextInner::~DLSSContextInner() {
++	// Drain queued callbacks before their userdata or tagged textures disappear.
++	RD::get_singleton()->_flush_and_stall_for_all_frames();
++	auto &ctx = StreamlineContext::get();
++	if (ctx.initialized) {
++		if (ctx.dlssg_viewport == viewport) {
++			ctx.dlssg_disable();
++		}
++		ctx.slFreeResources(sl::kFeatureDLSS_G, viewport);
++		ctx.slFreeResources(sl::kFeatureDLSS, viewport);
++	}
++	if (prepared_color.is_valid()) {
++		g_dlss_prepared.erase(prepared_color);
++	}
++	if (ctx.ui_alpha_texture.get() == frame_alpha.get_id()) {
++		ctx.ui_alpha_texture.set(0);
++	}
++	for (RID texture : { hudless, ui_alpha, presented_hudless, presented_alpha }) {
++		if (texture.is_valid()) {
++			RD::get_singleton()->free_rid(texture);
++		}
++	}
++	g_dlss_freeViewportIndices.push_back((unsigned int)viewport);
++}
++
++DLSSContextInner::DLSSContextInner() {
++	if (g_dlss_freeViewportIndices.size() == 0) {
++		g_dlss_freeViewportIndices.push_back(g_dlss_viewportIndex++);
++	}
++	viewport = g_dlss_freeViewportIndices[g_dlss_freeViewportIndices.size() - 1];
++	g_dlss_freeViewportIndices.remove_at(g_dlss_freeViewportIndices.size() - 1);
++}
++
++DLSSEffect::DLSSEffect() {
++	// Initialize motion vector decode shader
++	Vector<String> modes;
++	modes.push_back("\n");
++	shaders.mvec_decode_shader.initialize(modes, "");
++	shaders.mvec_decode_version = shaders.mvec_decode_shader.version_create();
++	shaders.mvec_decode_pipeline = RD::get_singleton()->compute_pipeline_create(shaders.mvec_decode_shader.version_get_shader(shaders.mvec_decode_version, 0));
++	Vector<String> ui_modes;
++	ui_modes.push_back("\n");
++	ui_modes.push_back("\n#define USE_HDR\n");
++	shaders.ui_alpha_shader.initialize(ui_modes, "");
++	shaders.present_inputs_shader.initialize(ui_modes, "");
++	shaders.ui_alpha_version = shaders.ui_alpha_shader.version_create();
++	shaders.present_inputs_version = shaders.present_inputs_shader.version_create();
++	for (int i = 0; i < 2; i++) {
++		shaders.ui_alpha_pipeline[i] = RD::get_singleton()->compute_pipeline_create(shaders.ui_alpha_shader.version_get_shader(shaders.ui_alpha_version, i));
++		shaders.present_inputs_pipeline[i] = RD::get_singleton()->compute_pipeline_create(shaders.present_inputs_shader.version_get_shader(shaders.present_inputs_version, i));
++	}
++	RD::SamplerState sampler;
++	sampler.min_filter = RD::SAMPLER_FILTER_LINEAR;
++	sampler.mag_filter = RD::SAMPLER_FILTER_LINEAR;
++	sampler.repeat_u = RD::SAMPLER_REPEAT_MODE_CLAMP_TO_EDGE;
++	sampler.repeat_v = RD::SAMPLER_REPEAT_MODE_CLAMP_TO_EDGE;
++	shaders.ui_sampler = RD::get_singleton()->sampler_create(sampler);
++}
++
++DLSSEffect::~DLSSEffect() {
++	// Deinitialize motion vector decode
++	shaders.mvec_decode_shader.version_free(shaders.mvec_decode_version);
++	shaders.ui_alpha_shader.version_free(shaders.ui_alpha_version);
++	shaders.present_inputs_shader.version_free(shaders.present_inputs_version);
++	RD::get_singleton()->free_rid(shaders.ui_sampler);
++}
++
++DLSSContext *DLSSEffect::create_context(Size2i p_internal_size, Size2i p_target_size) {
++	DLSSContextInner *context = memnew(RendererRD::DLSSContextInner);
++
++	context->currentDlssOptions.mode = context->find_optimal_mode(p_target_size.width, p_target_size.height, p_internal_size.width, p_internal_size.height, context->currentOptimalSettings);
++	if (context->currentDlssOptions.mode == sl::DLSSMode::eOff) { StreamlineContext::get().sr_failed.set(1); }
++	context->currentDlssOptions.outputWidth = p_target_size.width;
++	context->currentDlssOptions.outputHeight = p_target_size.height;
++
++	context->is_d3d12 = (RD::get_singleton()->get_device_api_name().to_lower() == "d3d12");
++
++	return context;
++}
++
++static sl::float4x4 sl_make_identity_matrix() {
++	sl::float4x4 ret;
++	ret.setRow(0, sl::float4(1.0f, 0.0f, 0.0f, 0.0f));
++	ret.setRow(1, sl::float4(0.0f, 1.0f, 0.0f, 0.0f));
++	ret.setRow(2, sl::float4(0.0f, 0.0f, 1.0f, 0.0f));
++	ret.setRow(3, sl::float4(0.0f, 0.0f, 0.0f, 1.0f));
++	return ret;
++}
++
++static sl::float4x4 sl_convert_matrix(const Projection &mtx) {
++	sl::float4x4 ret;
++	ret.setRow(0, sl::float4(mtx.columns[0].x, mtx.columns[1].x, mtx.columns[2].x, mtx.columns[3].x));
++	ret.setRow(1, sl::float4(mtx.columns[0].y, mtx.columns[1].y, mtx.columns[2].y, mtx.columns[3].y));
++	ret.setRow(2, sl::float4(mtx.columns[0].z, mtx.columns[1].z, mtx.columns[2].z, mtx.columns[3].z));
++	ret.setRow(3, sl::float4(mtx.columns[0].w, mtx.columns[1].w, mtx.columns[2].w, mtx.columns[3].w));
++	return ret;
++}
++
++static sl::float3 sl_convert_vector(const Vector3 &vec) {
++	return sl::float3(vec.x, vec.y, vec.z);
++}
++
++void DLSSEffect::upscale(const DLSSContext::Parameters &p_params) {
++	DLSSContextInner *context = (DLSSContextInner *)p_params.context;
++
++	// Delay enablement
++	if (context->delay > 0) {
++		--context->delay;
++		return;
++	}
++
++	// If DLSS is not loaded, escape early
++	if (!StreamlineContext::get().initialized || !StreamlineContext::get().slDLSSSetOptions ||
++			StreamlineContext::get().sr_failed.get() || !is_ready(context)) {
++		return;
++	}
++
++	// Begin frame if needed.
++	if (StreamlineContext::get().last_token == nullptr) {
++		StreamlineContext::get().get_new_frame_token();
++	}
++
++	if (!StreamlineContext::get().last_token) { return; }
++	context->evaluated = false;
++	context->last_parameters = p_params;
++	context->last_effect = this;
++
++	// Decode mvecs
++	{
++		RD::get_singleton()->draw_command_begin_label("Decode Invalid Motion Vectors");
++		UniformSetCacheRD *uniform_set_cache = UniformSetCacheRD::get_singleton();
++		ERR_FAIL_NULL(uniform_set_cache);
++		MaterialStorage *material_storage = MaterialStorage::get_singleton();
++		ERR_FAIL_NULL(material_storage);
++
++		// setup our uniforms
++		RD::Uniform u_velocity_image(RD::UNIFORM_TYPE_IMAGE, 0, p_params.velocity);
++		RD::Uniform u_depth_texture(RD::UNIFORM_TYPE_TEXTURE, 0, p_params.depth);
++
++		RD::ComputeListID compute_list = RD::get_singleton()->compute_list_begin();
++
++		RID shader = shaders.mvec_decode_shader.version_get_shader(shaders.mvec_decode_version, 0);
++		ERR_FAIL_COND(shader.is_null());
++
++		RD::get_singleton()->compute_list_bind_compute_pipeline(compute_list, shaders.mvec_decode_pipeline);
++		RD::get_singleton()->compute_list_bind_uniform_set(compute_list, uniform_set_cache->get_cache(shader, 0, u_velocity_image), 0);
++		RD::get_singleton()->compute_list_bind_uniform_set(compute_list, uniform_set_cache->get_cache(shader, 1, u_depth_texture), 1);
++
++		auto texture_format = RD::get_singleton()->texture_get_format(p_params.velocity);
++
++		float push_constants[20];
++		push_constants[0] = texture_format.width;
++		push_constants[1] = texture_format.height;
++		push_constants[2] = 0.0f;
++		push_constants[3] = 0.0f;
++		memcpy(push_constants + 4, &p_params.reprojection.columns[0].x, sizeof(float) * 16);
++		RD::get_singleton()->compute_list_set_push_constant(compute_list, push_constants, sizeof(push_constants));
++
++		RD::get_singleton()->compute_list_dispatch_threads(compute_list, texture_format.width, texture_format.height, 1);
++		RD::get_singleton()->compute_list_add_barrier(compute_list);
++
++		RD::get_singleton()->compute_list_end();
++		RD::get_singleton()->draw_command_end_label();
++	}
++
++	// Inject DLSS into the render graph
++	RD::CallbackResource res[4];
++	int num_resources = 0;
++	res[num_resources++].rid = p_params.color;
++	res[num_resources++].rid = p_params.output;
++	res[num_resources++].rid = p_params.depth;
++	res[num_resources++].rid = p_params.velocity;
++
++
++	for (int i = 0; i < num_resources; i++) {
++		res[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL;
++	}
++	RD::get_singleton()->driver_callback_add((RDD::DriverCallback)DLSSEffect::_upscale_internal_graph_callback, p_params.context, VectorView<RD::CallbackResource>(res, num_resources));
++}
++
++void DLSSEffect::_upscale_internal(RDD::CommandBufferID cmdid, const DLSSContext::Parameters &p_params) {
++	DLSSContextInner *context = (DLSSContextInner *)p_params.context;
++
++	void *nativeCmdlist = RD::get_singleton()->get_device_driver()->command_buffer_get_native_handle(cmdid);
++
++	// Helper function for tagging resources.
++	auto assignResource = [context](sl::Resource *resources, sl::ResourceTag *resourceTags, int &numResources, RID textureRID, sl::BufferType bufferType, sl::ResourceLifecycle lifecycle) {
++		if (!textureRID.is_valid() || textureRID.is_null()) {
++			return;
++		}
++
++		RD::TextureFormat texture_format = RD::get_singleton()->texture_get_format(textureRID);
++		uint64_t native = RD::get_singleton()->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE, textureRID);
++		// GENERAL in the render graph maps to COMMON in D3D12.
++		resources[numResources] = sl::Resource(sl::ResourceType::eTex2d, (void *)native, 0);
++		resources[numResources].width = texture_format.width;
++		resources[numResources].height = texture_format.height;
++		resources[numResources].nativeFormat = RD::get_singleton()->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE_DATA_FORMAT, textureRID);
++
++		resourceTags[numResources] = sl::ResourceTag(resources + numResources, bufferType, lifecycle, nullptr);
++		++numResources;
++	};
++
++	if (StreamlineContext::get().slDLSSSetOptions && !StreamlineContext::get().sr_failed.get()) {
++		// Set regular DLSS options
++		context->currentDlssOptions.useAutoExposure = sl::Boolean::eTrue;
++
++		context->currentDlssOptions.colorBuffersHDR = sl::Boolean::eTrue;
++
++		sl::Result result = StreamlineContext::get().slDLSSSetOptions(context->viewport, context->currentDlssOptions);
++		if (!StreamlineContext::get().check(result)) { return; }
++	}
++
++	// Set SL Options
++	if (StreamlineContext::get().slSetConstants != nullptr) {
++		sl::float4x4 mtxIdentity = sl_make_identity_matrix();
++		context->constants.cameraViewToClip = sl_convert_matrix(p_params.cam_projection); // projection mtx (unjittered)
++		context->constants.clipToCameraView = sl_convert_matrix(p_params.cam_projection.inverse()); // projection mtx (unjittered, inverted)
++		context->constants.clipToLensClip = mtxIdentity; // keep identity unless some lens distortion is applied
++		context->constants.clipToPrevClip = sl_convert_matrix(p_params.reprojection); // reprojection matrix
++		context->constants.prevClipToClip = sl_convert_matrix(p_params.reprojection.inverse()); // inverted reprojection matrix
++
++		context->constants.cameraPos = sl_convert_vector(p_params.cam_transform.get_origin());
++		context->constants.cameraFwd = sl_convert_vector(-p_params.cam_transform.basis.get_column(2));
++		context->constants.cameraUp = sl_convert_vector(p_params.cam_transform.basis.get_column(1));
++		context->constants.cameraRight = sl_convert_vector(p_params.cam_transform.basis.get_column(0));
++
++		context->constants.cameraNear = p_params.z_near;
++		context->constants.cameraFar = p_params.z_far;
++		context->constants.cameraFOV = Math::deg_to_rad(p_params.fovy);
++		context->constants.cameraMotionIncluded = sl::Boolean::eTrue;
++		context->constants.cameraAspectRatio = static_cast<float>(context->currentDlssOptions.outputWidth) / static_cast<float>(context->currentDlssOptions.outputHeight);
++		context->constants.cameraPinholeOffset = sl::float2(0.0f, 0.0f);
++		context->constants.depthInverted = p_params.reverse_depth ? sl::Boolean::eTrue : sl::Boolean::eFalse;
++		context->constants.motionVectors3D = sl::Boolean::eFalse;
++		context->constants.motionVectorsDilated = sl::Boolean::eFalse;
++		context->constants.motionVectorsJittered = sl::Boolean::eFalse;
++		context->constants.jitterOffset = sl::float2(p_params.jitter.x, p_params.jitter.y);
++		context->constants.mvecScale = sl::float2(1.0f, 1.0f);
++		context->constants.orthographicProjection = sl::Boolean::eFalse;
++		context->constants.reset = (p_params.reset_accumulation || context->first_frame) ? sl::Boolean::eTrue : sl::Boolean::eFalse;
++		sl::Result result = StreamlineContext::get().slSetConstants(context->constants, *StreamlineContext::get().last_token, context->viewport);
++		if (!StreamlineContext::get().check(result)) { return; }
++	}
++
++	// Tag resources
++	if (StreamlineContext::get().slSetTagForFrame != nullptr) {
++		sl::Resource resources[10];
++		sl::ResourceTag resourceTags[10];
++		int numResources = 0;
++
++		assignResource(resources, resourceTags, numResources, p_params.color, sl::kBufferTypeScalingInputColor, sl::ResourceLifecycle::eOnlyValidNow);
++		assignResource(resources, resourceTags, numResources, p_params.output, sl::kBufferTypeScalingOutputColor, sl::ResourceLifecycle::eOnlyValidNow);
++		assignResource(resources, resourceTags, numResources, p_params.depth, sl::kBufferTypeDepth, sl::ResourceLifecycle::eOnlyValidNow);
++		assignResource(resources, resourceTags, numResources, p_params.velocity, sl::kBufferTypeMotionVectors, sl::ResourceLifecycle::eOnlyValidNow);
++
++
++		sl::Result result = StreamlineContext::get().slSetTagForFrame(*StreamlineContext::get().last_token, context->viewport, resourceTags, numResources, nativeCmdlist);
++		if (!StreamlineContext::get().check(result)) { return; }
++	}
++
++	const sl::BaseStructure *inputs[] = { &context->viewport };
++	auto &ctx = StreamlineContext::get();
++	if (!ctx.check(ctx.slEvaluateFeature(sl::kFeatureDLSS, *ctx.last_token, inputs, 1, nativeCmdlist))) { return; }
++	context->evaluated = true;
++	context->first_frame = false;
++	ctx.dlss_evaluations.increment();
++}
++
++// Called after tonemapping, before the canvas/HUD compositor.
++void DLSSEffect::prepare_frame_generation(DLSSContext *p_context, RID p_color) {
++	auto *context = static_cast<DLSSContextInner *>(p_context);
++	auto &ctx = StreamlineContext::get();
++	if (!context || !context->last_parameters.dlss_g || ctx.fg_failed.get() ||
++			!ctx.streamline_capabilities.dlss_g_available || !ctx.streamline_capabilities.reflex_available) {
++		return;
++	}
++	RD *rd = RD::get_singleton();
++	if (!context->hudless.is_valid()) {
++		RD::TextureFormat format = rd->texture_get_format(p_color);
++		format.usage_bits = RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_TO_BIT;
++		context->hudless = rd->texture_create(format, RD::TextureView());
++	}
++	RD::TextureFormat format = rd->texture_get_format(p_color);
++	rd->texture_copy(p_color, context->hudless, Vector3(), Vector3(), Vector3(format.width, format.height, 1), 0, 0, 0, 0);
++	if (!context->ui_alpha.is_valid()) {
++		format.format = RD::DATA_FORMAT_R8_UNORM;
++		format.shareable_formats.clear();
++		format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
++		context->ui_alpha = rd->texture_create(format, RD::TextureView());
++	}
++	if (!context->hudless.is_valid() || !context->ui_alpha.is_valid()) {
++		ctx.dlssg_disable();
++		ctx.fg_failed.set(1);
++		return;
++	}
++	context->prepared_color = p_color;
++	g_dlss_prepared[p_color] = context;
++	_ui_alpha(context, p_color, true);
++}
++
++void DLSSEffect::_ui_alpha(DLSSContext *p_context, RID p_color, bool p_clear) {
++	auto *context = static_cast<DLSSContextInner *>(p_context);
++	RD *rd = RD::get_singleton();
++	auto format = rd->texture_get_format(p_color);
++	int mode = format.format == RD::DATA_FORMAT_R16G16B16A16_SFLOAT ? 1 : 0;
++	RID shader = shaders.ui_alpha_shader.version_get_shader(shaders.ui_alpha_version, mode);
++	RD::Uniform color(RD::UNIFORM_TYPE_IMAGE, 0, p_color);
++	RD::Uniform alpha(RD::UNIFORM_TYPE_IMAGE, 1, context->ui_alpha);
++	RID set = UniformSetCacheRD::get_singleton()->get_cache(shader, 0, color, alpha);
++	struct {
++		int32_t width, height, clear, pad;
++	} params{ int32_t(format.width), int32_t(format.height), p_clear ? 1 : 0, 0 };
++	auto list = rd->compute_list_begin();
++	rd->compute_list_bind_compute_pipeline(list, shaders.ui_alpha_pipeline[mode]);
++	rd->compute_list_bind_uniform_set(list, set, 0);
++	rd->compute_list_set_push_constant(list, &params, sizeof(params));
++	rd->compute_list_dispatch(list, (format.width + 7) / 8, (format.height + 7) / 8, 1);
++	rd->compute_list_end();
++}
++
++void DLSSEffect::_present_inputs(DLSSContext *p_context) {
++	auto *context = static_cast<DLSSContextInner *>(p_context);
++	RD *rd = RD::get_singleton();
++	int mode = rd->texture_get_format(context->hudless).format == RD::DATA_FORMAT_R16G16B16A16_SFLOAT ? 1 : 0;
++	RID shader = shaders.present_inputs_shader.version_get_shader(shaders.present_inputs_version, mode);
++	RD::Uniform color(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 0, shaders.ui_sampler);
++	color.append_id(context->hudless);
++	RD::Uniform alpha(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 1, shaders.ui_sampler);
++	alpha.append_id(context->ui_alpha);
++	RD::Uniform out_color(RD::UNIFORM_TYPE_IMAGE, 2, context->presented_hudless);
++	RD::Uniform out_alpha(RD::UNIFORM_TYPE_IMAGE, 3, context->presented_alpha);
++	RID set = UniformSetCacheRD::get_singleton()->get_cache(shader, 0, color, alpha, out_color, out_alpha);
++	struct {
++		int32_t width, height, pad0, pad1;
++	} params{ context->present_size.x, context->present_size.y, 0, 0 };
++	auto list = rd->compute_list_begin();
++	rd->compute_list_bind_compute_pipeline(list, shaders.present_inputs_pipeline[mode]);
++	rd->compute_list_bind_uniform_set(list, set, 0);
++	rd->compute_list_set_push_constant(list, &params, sizeof(params));
++	rd->compute_list_dispatch(list, (params.width + 7) / 8, (params.height + 7) / 8, 1);
++	rd->compute_list_end();
++}
++
++// The final compositor knows the actual swapchain extent. Capture alpha only
++// after every CanvasLayer, restore the opaque window, and tag at this boundary.
++void DLSSEffect::finish_frame_generation(RID p_color, Size2i p_size, Rect2 p_src, Rect2 p_dst) {
++	auto found = g_dlss_prepared.find(p_color);
++	if (found == g_dlss_prepared.end()) {
++		return;
++	}
++	auto *context = found->value;
++	g_dlss_prepared.erase(p_color);
++	context->prepared_color = RID();
++	auto *effect = context->last_effect;
++	auto &ctx = StreamlineContext::get();
++	RD *rd = RD::get_singleton();
++	effect->_ui_alpha(context, p_color, false);
++	auto format = rd->texture_get_format(context->hudless);
++	ctx.fg_input_width.set(format.width);
++	ctx.fg_input_height.set(format.height);
++	ctx.fg_output_width.set(p_size.x);
++	ctx.fg_output_height.set(p_size.y);
++	bool full = p_size.x > 0 && p_size.y > 0 && p_dst == Rect2(Vector2(), p_size) && p_src == Rect2(0, 0, 1, 1);
++	ctx.fg_size_supported.set(full ? 1 : 0);
++	if (!full) {
++		ctx.dlssg_disable();
++		return;
++	}
++	context->frame_color = context->hudless;
++	context->frame_alpha = context->ui_alpha;
++	if (p_size != Size2i(format.width, format.height)) {
++		if (context->present_size != p_size) {
++			ctx.dlssg_disable();
++			rd->_flush_and_stall_for_all_frames();
++			for (RID texture : { context->presented_hudless, context->presented_alpha }) {
++				if (texture.is_valid()) {
++					rd->free_rid(texture);
++				}
++			}
++			format.width = p_size.x;
++			format.height = p_size.y;
++			format.shareable_formats.clear();
++			format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
++			context->presented_hudless = rd->texture_create(format, RD::TextureView());
++			format.format = RD::DATA_FORMAT_R8_UNORM;
++			context->presented_alpha = rd->texture_create(format, RD::TextureView());
++			context->present_size = p_size;
++		}
++		if (!context->presented_hudless.is_valid() || !context->presented_alpha.is_valid()) {
++			ctx.dlssg_disable();
++			ctx.fg_failed.set(1);
++			return;
++		}
++		effect->_present_inputs(context);
++		context->frame_color = context->presented_hudless;
++		context->frame_alpha = context->presented_alpha;
++	}
++	RD::CallbackResource resources[4];
++	RID inputs[] = { context->frame_color, context->last_parameters.depth, context->last_parameters.velocity, context->frame_alpha };
++	for (int i = 0; i < 4; i++) {
++		resources[i].rid = inputs[i];
++		resources[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL;
++	}
++	rd->driver_callback_add(_frame_generation_graph_callback, context, VectorView<RD::CallbackResource>(resources, 4));
++	ctx.ui_alpha_texture.set(context->frame_alpha.get_id());
++	ctx.ui_alpha_frames.increment();
++}
++
++void DLSSEffect::_frame_generation_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata) {
++	auto *context = static_cast<DLSSContextInner *>(p_userdata);
++	auto &ctx = StreamlineContext::get();
++	if (!context->evaluated || !ctx.last_token || !ctx.slDLSSGSetOptions || !ctx.slDLSSGGetState ||
++			ctx.sr_failed.get() || ctx.fg_failed.get() || ctx.dlssg_delay > 0) {
++		return;
++	}
++	RD *rd = RD::get_singleton();
++	if (ctx.dlssg_viewport != context->viewport) {
++		// Check limits only when enabling a viewport. During active generation,
++		// GetState is sampled once at the real present boundary for telemetry.
++		sl::DLSSGState state;
++		if (!ctx.check(ctx.slDLSSGGetState(context->viewport, state, nullptr), true)) {
++			return;
++		}
++		RD::TextureFormat size = rd->texture_get_format(context->frame_color);
++		if (state.numFramesToGenerateMax < 1 || size.width < state.minWidthOrHeight || size.height < state.minWidthOrHeight) {
++			ctx.dlssg_disable();
++			return;
++		}
++	}
++	// Set Reflex on the render thread before enabling FG, including its first frame.
++	if (ctx.reflex_options.mode == sl::ReflexMode::eOff || ctx.reflex_options_dirty) {
++		sl::ReflexOptions reflex = ctx.reflex_options;
++		reflex.mode = sl::ReflexMode::eLowLatency;
++		ctx.reflex_set_options(reflex);
++	}
++	void *commands = p_driver->command_buffer_get_native_handle(p_command_buffer);
++	RID textures[] = { context->frame_color, context->last_parameters.depth, context->last_parameters.velocity, context->frame_alpha };
++	sl::BufferType types[] = { sl::kBufferTypeHUDLessColor, sl::kBufferTypeDepth, sl::kBufferTypeMotionVectors, sl::kBufferTypeUIAlpha };
++	sl::Resource resources[4];
++	sl::ResourceTag tags[4];
++	sl::Extent extents[4];
++	for (int i = 0; i < 4; i++) {
++		RD::TextureFormat format = rd->texture_get_format(textures[i]);
++		resources[i] = sl::Resource(sl::ResourceType::eTex2d, (void *)rd->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE, textures[i]), 0);
++		resources[i].width = format.width;
++		resources[i].height = format.height;
++		resources[i].nativeFormat = rd->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE_DATA_FORMAT, textures[i]);
++		extents[i] = { 0, 0, format.width, format.height };
++		tags[i] = sl::ResourceTag(&resources[i], types[i], sl::ResourceLifecycle::eValidUntilPresent, &extents[i]);
++	}
++	if (!ctx.check(ctx.slSetTagForFrame(*ctx.last_token, context->viewport, tags, 4, commands), true)) { return; }
++	if (ctx.dlssg_viewport != context->viewport) {
++		ctx.dlssg_disable();
++		sl::DLSSGOptions options;
++		options.mode = sl::DLSSGMode::eOn;
++		options.numFramesToGenerate = 1;
++		options.enableUserInterfaceRecomposition = sl::Boolean::eTrue;
++		options.flags = sl::DLSSGFlags::eEnableFullscreenMenuDetection;
++		if (!ctx.check(ctx.slDLSSGSetOptions(context->viewport, options), true)) { return; }
++		ctx.dlssg_viewport = context->viewport;
++		ctx.dlssg_delay = 0;
++	}
++	ctx.fg_tagged_this_frame = true;
++	ctx.fg_active.set(1);
++}
++
++void RendererRD::DLSSEffect::_upscale_internal_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata) {
++	DLSSContextInner *self = (DLSSContextInner *)p_userdata;
++	self->last_effect->_upscale_internal(p_command_buffer, self->last_parameters);
++}
++
++bool DLSSEffect::is_ready(DLSSContext *p_context) {
++	DLSSContextInner *context = (DLSSContextInner *)p_context;
++	if (context->currentDlssOptions.mode == sl::DLSSMode::eOff) {
++		return false; // unsupported mode.
++	}
++	if (context->delay > 0) {
++		return false; // still in delay mode
++	}
++	return true;
++}
++#else
++DLSSEffect::DLSSEffect() {}
++DLSSEffect::~DLSSEffect() {}
++DLSSContext *DLSSEffect::create_context(Size2i p_internal_size, Size2i p_target_size) {
++	return nullptr;
++}
++void DLSSEffect::upscale(const DLSSContext::Parameters &p_params) {}
++void DLSSEffect::prepare_frame_generation(DLSSContext *p_context, RID p_color) {}
++void DLSSEffect::finish_frame_generation(RID, Size2i, Rect2, Rect2) {}
++bool DLSSEffect::is_ready(DLSSContext *p_context) {
++	return false;
++}
++void DLSSEffect::_upscale_internal(RDD::CommandBufferID cmdid, const DLSSContext::Parameters &p_params) {}
++void DLSSEffect::_upscale_internal_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata) {}
++#endif
+diff --git a/servers/rendering/renderer_rd/effects/dlss.h b/servers/rendering/renderer_rd/effects/dlss.h
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/effects/dlss.h
+@@ -0,0 +1,111 @@
++/**************************************************************************/
++/*  dlss.h                                                                */
++/**************************************************************************/
++/*                         This file is part of:                          */
++/*                             GODOT ENGINE                               */
++/*                        https://godotengine.org                         */
++/**************************************************************************/
++/* Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md). */
++/* Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.                  */
++/*                                                                        */
++/* Permission is hereby granted, free of charge, to any person obtaining  */
++/* a copy of this software and associated documentation files (the        */
++/* "Software"), to deal in the Software without restriction, including    */
++/* without limitation the rights to use, copy, modify, merge, publish,    */
++/* distribute, sublicense, and/or sell copies of the Software, and to     */
++/* permit persons to whom the Software is furnished to do so, subject to  */
++/* the following conditions:                                              */
++/*                                                                        */
++/* The above copyright notice and this permission notice shall be         */
++/* included in all copies or substantial portions of the Software.        */
++/*                                                                        */
++/* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,        */
++/* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF     */
++/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. */
++/* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY   */
++/* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,   */
++/* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE      */
++/* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
++/**************************************************************************/
++
++#pragma once
++
++#include "servers/rendering/renderer_rd/shader_rd.h"
++#include "servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl.gen.h"
++#include "servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl.gen.h"
++#include "servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl.gen.h"
++
++namespace RendererRD {
++
++class DLSSEffect;
++class DLSSContext {
++public:
++	struct Parameters {
++		DLSSContext *context;
++		Size2i internal_size;
++		RID color;
++		RID depth;
++		RID velocity;
++		RID reactive;
++		RID exposure;
++		RID output;
++		float z_near = 0.0f;
++		float z_far = 0.0f;
++		float fovy = 0.0f;
++		bool reverse_depth = true;
++		Vector2 jitter;
++		float delta_time = 0.0f;
++		float sharpness = 0.0f;
++		char preset = '?';
++		bool reset_accumulation = false;
++		Projection reprojection;
++		Projection cam_projection;
++		Transform3D cam_transform;
++		bool dlss_g = false;
++
++		// DLSS Ray Reconstruction buffers
++		bool dlss_rr = false; // Enable DLSS-RR mode instead of regular DLSS
++		RID dlss_rr_diffuse_albedo; // Diffuse albedo buffer (RGB)
++		RID dlss_rr_specular_albedo; // Specular albedo buffer (RGB)
++		RID dlss_rr_normal_roughness; // World-space normal (XYZ) + roughness (W)
++		RID dlss_rr_specular_hit_dist; // Specular hit distance (R16F, -1 = sky)
++	} last_parameters;
++	DLSSEffect *last_effect = nullptr;
++	bool is_d3d12 = false;
++	int delay = 0;
++
++	virtual ~DLSSContext() {}
++};
++
++class DLSSEffect {
++public:
++	struct Shaders {
++		MotionVectorDecodeShaderRD mvec_decode_shader;
++		RID mvec_decode_version;
++		RID mvec_decode_pipeline;
++		DlssUiAlphaShaderRD ui_alpha_shader;
++		DlssPresentInputsShaderRD present_inputs_shader;
++		RID ui_alpha_version;
++		RID present_inputs_version;
++		RID ui_alpha_pipeline[2];
++		RID present_inputs_pipeline[2];
++		RID ui_sampler;
++	} shaders;
++
++	DLSSEffect();
++	~DLSSEffect();
++	DLSSContext *create_context(Size2i p_internal_size, Size2i p_target_size);
++	void upscale(const DLSSContext::Parameters &p_params);
++	void prepare_frame_generation(DLSSContext *p_context, RID p_color);
++	static void finish_frame_generation(RID p_color, Size2i p_size, Rect2 p_src, Rect2 p_dst);
++	bool is_ready(DLSSContext *context);
++
++private:
++	static void _frame_generation_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata);
++	void _upscale_internal(RDD::CommandBufferID cmdid, const DLSSContext::Parameters &p_params);
++	void _ui_alpha(DLSSContext *p_context, RID p_color, bool p_clear);
++	void _present_inputs(DLSSContext *p_context);
++	static void _upscale_internal_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata);
++};
++
++} // namespace RendererRD
+diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
+@@ -91,6 +91,11 @@
+ 	if (!fsr_sdk_context) { fsr_sdk_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size(), upscaling); }
+ }
+ 
++void RenderForwardClustered::RenderBufferDataForwardClustered::ensure_dlss(RendererRD::DLSSEffect *p_effect) {
++	if (!dlss_context) {
++		dlss_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size());
++	}
++}
+ 
+ void RenderForwardClustered::RenderBufferDataForwardClustered::ensure_fsr2(RendererRD::FSR2Effect *p_effect) {
+ 	if (fsr2_context == nullptr) {
+@@ -121,6 +126,10 @@
+ 	fsr_pipelines_queued = false;
+ 	fsr_scene_prepared = false;
+ 	if (fsr_sdk_context) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
++	if (dlss_context) {
++		memdelete(dlss_context);
++		dlss_context = nullptr;
++	}
+ 	// JIC, should already have been cleared
+ 	if (render_buffers) {
+ 		render_buffers->clear_context(RB_SCOPE_FORWARD_CLUSTERED);
+@@ -1796,6 +1805,7 @@
+ 		SCALE_NONE,
+ 		SCALE_FSR2,
+ 		SCALE_MFX,
++		SCALE_DLSS,
+ 		SCALE_FSR_SDK,
+ 	} scale_type = SCALE_NONE;
+ 
+@@ -1805,6 +1815,9 @@
+ 			break;
+ 		case RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK:
+ 			scale_type = SCALE_FSR_SDK;
++			break;
++		case RSE::VIEWPORT_SCALING_3D_MODE_DLSS:
++			scale_type = SCALE_DLSS;
+ 			break;
+ 		case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL:
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+@@ -1817,7 +1830,7 @@
+ 			break;
+ 	}
+ 
+-	bool using_frame_generation = !is_reflection_probe && rb->get_frame_generation() && rb->get_view_count() == 1;
++	bool using_frame_generation = scale_type != SCALE_DLSS && !is_reflection_probe && rb->get_frame_generation() && rb->get_view_count() == 1;
+ 	bool fsr_preparing = false;
+ 	// Cancellation does not cancel shared compiler jobs. Keep material
+ 	// validation on the base group until the optional group actually finishes.
+@@ -2609,6 +2622,56 @@
+ 			}
+ 
+ 			RD::get_singleton()->draw_command_end_label();
++		} else if (scale_type == SCALE_DLSS) {
++			RENDER_TIMESTAMP("DLSS");
++			rb_data->ensure_dlss(dlss_effect);
++
++			RID exposure;
++			if (RSG::camera_attributes->camera_attributes_uses_auto_exposure(p_render_data->camera_attributes)) {
++				exposure = luminance->get_current_luminance_buffer(rb);
++			}
++
++			const bool cur_camera_reset = p_render_data->scene_data->cam_transform.origin.distance_to(p_render_data->scene_data->prev_cam_transform.origin) > 5.0f ||
++					p_render_data->scene_data->cam_transform.basis.get_column(2).dot(p_render_data->scene_data->prev_cam_transform.basis.get_column(2)) < 0.8f ||
++					Math::abs(p_render_data->scene_data->cam_projection.get_fov() - p_render_data->scene_data->prev_cam_projection.get_fov()) > 1.0f;
++			for (uint32_t v = 0; v < rb->get_view_count(); v++) {
++				real_t fov = p_render_data->scene_data->cam_projection.get_fov();
++				real_t aspect = p_render_data->scene_data->cam_projection.get_aspect();
++				real_t fovy = p_render_data->scene_data->cam_projection.get_fovy(fov, 1.0 / aspect);
++				Vector2 jitter = p_render_data->scene_data->taa_jitter * Vector2(rb->get_internal_size()) * 0.5f;
++				RendererRD::DLSSContext::Parameters params;
++				params.context = rb_data->get_dlss_context();
++				params.internal_size = rb->get_internal_size();
++				params.sharpness = CLAMP((rb->get_fsr_sharpness() / 2.0f), 0.0f, 1.0f);
++				params.color = rb->get_internal_texture(v);
++				params.depth = rb->get_depth_texture(v);
++				params.velocity = rb->get_velocity_buffer(false, v);
++				params.reactive = rb->get_internal_texture_reactive(v);
++				params.exposure = exposure;
++				params.output = rb->get_upscaled_texture(v);
++				params.dlss_g = rb->get_frame_generation();
++				params.preset = '?'; // FIXME: Unique preset per viewport? Does anyone need this?
++				params.z_near = p_render_data->scene_data->z_near;
++				params.z_far = p_render_data->scene_data->z_far;
++				params.fovy = fovy;
++				params.jitter = jitter;
++				params.delta_time = float(time_step);
++				params.reset_accumulation = cur_camera_reset;
++
++				Projection correction;
++				correction.set_depth_correction(true, true, false);
++
++				const Projection &prev_proj = p_render_data->scene_data->prev_cam_projection;
++				const Projection &cur_proj = p_render_data->scene_data->cam_projection;
++				const Transform3D &prev_transform = p_render_data->scene_data->prev_cam_transform;
++				const Transform3D &cur_transform = p_render_data->scene_data->cam_transform;
++				params.reprojection = (correction * prev_proj) * prev_transform.affine_inverse() * cur_transform * (correction * cur_proj).inverse();
++				params.cam_projection = correction * cur_proj;
++				params.cam_transform = cur_transform;
++
++				copy_effects->copy_to_rect(params.color, params.output, Rect2i(Point2i(), rb->get_target_size()), false, false, true);
++				dlss_effect->upscale(params);
++			}
+ 		} else if (scale_type == SCALE_MFX) {
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+ 			bool reset = rb_data->ensure_mfx_temporal(mfx_temporal_effect);
+@@ -2654,6 +2717,9 @@
+ 		_render_buffers_post_process_and_tonemap(p_render_data);
+ 		if (using_frame_generation) {
+ 			fsr_sdk_effect->prepare_frame_generation(rb_data->get_fsr_sdk_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
++		}
++		if (scale_type == SCALE_DLSS && rb->get_frame_generation() && rb->get_view_count() == 1) {
++			dlss_effect->prepare_frame_generation(rb_data->get_dlss_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
+ 		}
+ 	}
+ 
+@@ -5344,6 +5410,7 @@
+ 	_update_global_pipeline_data_requirements_from_project();
+ 
+ 	taa = memnew(RendererRD::TAA);
++	dlss_effect = memnew(RendererRD::DLSSEffect);
+ 	fsr_sdk_effect = memnew(RendererRD::FSRSDKEffect);
+ 	fsr2_effect = memnew(RendererRD::FSR2Effect);
+ 	ss_effects = memnew(RendererRD::SSEffects);
+@@ -5354,6 +5421,7 @@
+ }
+ 
+ RenderForwardClustered::~RenderForwardClustered() {
++	memdelete(dlss_effect);
+ 	memdelete(fsr_sdk_effect);
+ 	if (ss_effects != nullptr) {
+ 		memdelete(ss_effects);
+diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
+@@ -34,6 +34,7 @@
+ #include "servers/rendering/multi_uma_buffer.h"
+ #include "servers/rendering/renderer_rd/cluster_builder_rd.h"
+ #include "servers/rendering/renderer_rd/effects/fsr2.h"
++#include "servers/rendering/renderer_rd/effects/dlss.h"
+ #include "servers/rendering/renderer_rd/effects/fsr_sdk.h"
+ #include "servers/rendering/renderer_rd/effects/motion_vectors_store.h"
+ #include "servers/rendering/renderer_rd/effects/ss_effects.h"
+@@ -97,6 +98,7 @@
+ 	private:
+ 		RenderSceneBuffersRD *render_buffers = nullptr;
+ 		RendererRD::FSR2Context *fsr2_context = nullptr;
++		RendererRD::DLSSContext *dlss_context = nullptr;
+ 		RendererRD::FSRSDKContext *fsr_sdk_context = nullptr;
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+ 		RendererRD::MFXTemporalContext *mfx_temporal_context = nullptr;
+@@ -146,8 +148,10 @@
+ 		RID get_voxelgi(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_FORWARD_CLUSTERED, RB_TEX_VOXEL_GI, p_layer, 0); }
+ 		RID get_voxelgi_msaa(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_FORWARD_CLUSTERED, RB_TEX_VOXEL_GI_MSAA, p_layer, 0); }
+ 
++		void ensure_dlss(RendererRD::DLSSEffect *p_effect);
+ 		void ensure_fsr_sdk(RendererRD::FSRSDKEffect *p_effect);
+ 		RendererRD::FSRSDKContext *get_fsr_sdk_context() const { return fsr_sdk_context; }
++		RendererRD::DLSSContext *get_dlss_context() const { return dlss_context; }
+ 		void ensure_fsr2(RendererRD::FSR2Effect *p_effect);
+ 		RendererRD::FSR2Context *get_fsr2_context() const { return fsr2_context; }
+ 
+@@ -750,6 +754,7 @@
+ 
+ 	RendererRD::TAA *taa = nullptr;
+ 	RendererRD::FSR2Effect *fsr2_effect = nullptr;
++	RendererRD::DLSSEffect *dlss_effect = nullptr;
+ 	RendererRD::FSRSDKEffect *fsr_sdk_effect = nullptr;
+ 	RendererRD::SSEffects *ss_effects = nullptr;
+ 
+diff --git a/servers/rendering/renderer_rd/renderer_compositor_rd.cpp b/servers/rendering/renderer_rd/renderer_compositor_rd.cpp
+--- a/servers/rendering/renderer_rd/renderer_compositor_rd.cpp
++++ b/servers/rendering/renderer_rd/renderer_compositor_rd.cpp
+@@ -35,9 +35,16 @@
+ #include "core/io/dir_access.h"
+ #include "core/os/os.h"
+ #include "servers/display/display_server.h"
++
++#include "drivers/streamline/streamline.h"
++
+ #include "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h"
+ #include "servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h"
+ #include "servers/rendering/rendering_server_types.h"
++
++#ifdef STREAMLINE_ENABLED
++#include "effects/dlss.h"
++#endif
+ 
+ void RendererCompositorRD::blit_render_targets_to_screen(DisplayServerEnums::WindowID p_screen, const RenderingServerTypes::BlitToScreen *p_render_targets, int p_amount) {
+ 	Error err = RD::get_singleton()->screen_prepare_for_drawing(p_screen);
+@@ -46,6 +53,13 @@
+ 		return;
+ 	}
+ 
++#ifdef STREAMLINE_ENABLED
++	for (int i = 0; i < p_amount; i++) {
++		RendererRD::DLSSEffect::finish_frame_generation(texture_storage->render_target_get_rd_texture(p_render_targets[i].render_target),
++				Size2i(RD::get_singleton()->screen_get_width(p_screen), RD::get_singleton()->screen_get_height(p_screen)),
++				p_render_targets[i].src_rect, p_render_targets[i].dst_rect);
++	}
++#endif
+ 	BlitPipelines blit_pipelines = _get_blit_pipelines_for_format(RD::get_singleton()->screen_get_framebuffer_format(p_screen));
+ 
+ 	RD::DrawListID draw_list = RD::get_singleton()->draw_list_begin_for_screen(p_screen);
+@@ -130,9 +144,12 @@
+ 
+ 	canvas->set_time(time);
+ 	scene->set_time(time, frame_step);
++
++	Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_BEGIN_RENDER);
+ }
+ 
+ void RendererCompositorRD::end_frame(bool p_present) {
++	Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_END_RENDER);
+ 	RD::get_singleton()->swap_buffers(p_present);
+ }
+ 
+diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+--- a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
++++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+@@ -470,7 +470,7 @@
+ 	bool can_use_storage = _render_buffers_can_be_storage();
+ 
+ 	RSE::ViewportScaling3DMode scale_mode = rb->get_scaling_3d_mode();
+-	bool use_upscaled_texture = rb->has_upscaled_texture() && (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR2 || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK);
++	bool use_upscaled_texture = rb->has_upscaled_texture() && (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR2 || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_DLSS || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK);
+ 	SpatialUpscaler *spatial_upscaler = nullptr;
+ 	if (can_use_effects) {
+ 		if (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR) {
+diff --git a/servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl b/servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl
+@@ -0,0 +1,26 @@
++#[compute]
++#version 450
++#VERSION_DEFINES
++layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
++layout(set = 0, binding = 0) uniform sampler2D hudless;
++layout(set = 0, binding = 1) uniform sampler2D ui_alpha;
++#ifdef USE_HDR
++layout(rgba16f, set = 0, binding = 2) uniform restrict writeonly image2D result_hudless;
++#else
++layout(rgba8, set = 0, binding = 2) uniform restrict writeonly image2D result_hudless;
++#endif
++layout(r8, set = 0, binding = 3) uniform restrict writeonly image2D result_alpha;
++layout(push_constant, std430) uniform Params {
++	ivec2 size;
++	ivec2 pad;
++}
++params;
++void main() {
++	ivec2 p = ivec2(gl_GlobalInvocationID.xy);
++	if (any(greaterThanEqual(p, params.size))) {
++		return;
++	}
++	vec2 uv = (vec2(p) + 0.5) / vec2(params.size);
++	imageStore(result_hudless, p, textureLod(hudless, uv, 0.0));
++	imageStore(result_alpha, p, vec4(textureLod(ui_alpha, uv, 0.0).r));
++}
+diff --git a/servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl b/servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl
+@@ -0,0 +1,28 @@
++#[compute]
++#version 450
++#VERSION_DEFINES
++layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
++#ifdef USE_HDR
++layout(rgba16f, set = 0, binding = 0) uniform restrict image2D composed;
++#else
++layout(rgba8, set = 0, binding = 0) uniform restrict image2D composed;
++#endif
++layout(r8, set = 0, binding = 1) uniform restrict writeonly image2D ui_alpha;
++layout(push_constant, std430) uniform Params {
++	ivec2 size;
++	int clear;
++	int pad;
++}
++params;
++void main() {
++	ivec2 p = ivec2(gl_GlobalInvocationID.xy);
++	if (any(greaterThanEqual(p, params.size))) {
++		return;
++	}
++	vec4 c = imageLoad(composed, p);
++	imageStore(ui_alpha, p, vec4(params.clear != 0 ? 0.0 : clamp(c.a, 0.0, 1.0)));
++	// RGB is bit-preserved through the same UNORM/FP16 representation. Canvas
++	// blending accumulates real coverage in alpha; restore opaque output after.
++	c.a = params.clear != 0 ? 0.0 : 1.0;
++	imageStore(composed, p, c);
++}
+diff --git a/servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl b/servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl
+@@ -0,0 +1,35 @@
++#[compute]
++
++#version 450
++
++#VERSION_DEFINES
++
++#extension GL_EXT_samplerless_texture_functions : require
++
++#include "motion_vector_inc.glsl"
++
++layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
++
++layout(rg16f, set = 0, binding = 0) uniform restrict image2D velocity_buffer;
++layout(set = 1, binding = 0) uniform texture2D depth_buffer;
++
++layout(push_constant, std430) uniform Params {
++	vec4 resolution;
++	mat4 reprojection;
++}
++params;
++
++void main() {
++	const ivec2 screen_pos = ivec2(gl_GlobalInvocationID.xy);
++	if (any(greaterThanEqual(screen_pos, ivec2(params.resolution.xy)))) { return; }
++	vec2 velocity = imageLoad(velocity_buffer, screen_pos).rg;
++
++	bool is_invalid_motion_vector = all(lessThanEqual(velocity, vec2(-1.0f, -1.0f)));
++	if (is_invalid_motion_vector) {
++		float depth_value = texelFetch(depth_buffer, screen_pos, 0).r;
++		vec2 uv = (vec2(screen_pos) + float(0.5)) / params.resolution.xy;
++		velocity = derive_motion_vector(uv, depth_value, params.reprojection);
++	}
++
++	imageStore(velocity_buffer, screen_pos, vec4(velocity, 0.0f, 0.0f));
++}
+diff --git a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
+@@ -107,7 +107,7 @@
+ 	float computed_mipmap_bias = texture_mipmap_bias;
+ 
+ 	if (use_taa || (RSE::scaling_3d_mode_type(scaling_3d_mode) == RSE::VIEWPORT_SCALING_3D_TYPE_TEMPORAL)) {
+-		// Use negative mipmap LOD bias when TAA or temporal upscaling is enabled to compensate for loss of sharpness.
++		// Use negative mipmap LOD bias when TAA, FSR2 or DLSS is enabled to compensate for loss of sharpness.
+ 		// This restores sharpness in still images to be roughly at the same level as without TAA,
+ 		// but moving scenes will still be blurrier.
+ 		computed_mipmap_bias -= 0.5;
+diff --git a/servers/rendering/renderer_viewport.cpp b/servers/rendering/renderer_viewport.cpp
+--- a/servers/rendering/renderer_viewport.cpp
++++ b/servers/rendering/renderer_viewport.cpp
+@@ -31,6 +31,7 @@
+ #include "renderer_viewport.h"
+ 
+ #include "core/config/engine.h"
++#include "drivers/streamline/streamline.h"
+ #include "drivers/fsr_sdk/fsr_sdk.h"
+ #include "core/config/project_settings.h"
+ #include "core/math/transform_interpolator.h"
+@@ -143,6 +144,10 @@
+ 			float scaling_3d_scale = p_viewport->scaling_3d_scale;
+ 			RSE::ViewportScaling3DMode scaling_3d_mode = p_viewport->scaling_3d_mode;
+ 			bool upscaler_available = p_viewport->fsr_enabled;
++			if (scaling_3d_mode == RSE::VIEWPORT_SCALING_3D_MODE_DLSS &&
++					!Streamline::get_singleton()->get_capability(STREAMLINE_CAPABILITY_DLSS)) {
++				scaling_3d_mode = p_viewport->fsr_enabled ? RSE::VIEWPORT_SCALING_3D_MODE_FSR2 : RSE::VIEWPORT_SCALING_3D_MODE_BILINEAR;
++			}
+ 			if (scaling_3d_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK && !FidelityFX::get_singleton()->sr_available()) {
+ 				scaling_3d_mode = p_viewport->fsr_enabled ? RSE::VIEWPORT_SCALING_3D_MODE_FSR2 : RSE::VIEWPORT_SCALING_3D_MODE_BILINEAR;
+ 			}
+@@ -246,6 +251,7 @@
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_FSR:
++				case RSE::VIEWPORT_SCALING_3D_MODE_DLSS:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_FSR2:
+ 					target_width = p_viewport->size.width;
+diff --git a/servers/rendering/renderer_viewport.h b/servers/rendering/renderer_viewport.h
+--- a/servers/rendering/renderer_viewport.h
++++ b/servers/rendering/renderer_viewport.h
+@@ -61,6 +61,7 @@
+ 		float texture_mipmap_bias = 0.0f;
+ 		RSE::ViewportAnisotropicFiltering anisotropic_filtering_level = RSE::VIEWPORT_ANISOTROPY_4X;
+ 		bool fsr_enabled = false;
++		bool dlss_enabled = false;
+ 		bool frame_generation = false;
+ 		uint32_t jitter_phase_count = 0;
+ 		RSE::ViewportUpdateMode update_mode = RSE::VIEWPORT_UPDATE_WHEN_VISIBLE;
+diff --git a/servers/rendering/rendering_server.cpp b/servers/rendering/rendering_server.cpp
+--- a/servers/rendering/rendering_server.cpp
++++ b/servers/rendering/rendering_server.cpp
+@@ -2921,6 +2921,7 @@
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_NEAREST);
++	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_DLSS);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_MAX);
+ 
+diff --git a/servers/rendering/rendering_server_enums.h b/servers/rendering/rendering_server_enums.h
+--- a/servers/rendering/rendering_server_enums.h
++++ b/servers/rendering/rendering_server_enums.h
+@@ -461,6 +461,7 @@
+ 	VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL,
+ 	VIEWPORT_SCALING_3D_MODE_NEAREST,
+ 	VIEWPORT_SCALING_3D_MODE_FSR_SDK,
++	VIEWPORT_SCALING_3D_MODE_DLSS,
+ 	VIEWPORT_SCALING_3D_MODE_MAX,
+ 	VIEWPORT_SCALING_3D_MODE_OFF = 255, // for internal use only
+ };
+@@ -475,7 +476,7 @@
+ inline ViewportScaling3DType scaling_3d_mode_type(ViewportScaling3DMode p_mode) {
+ 	if (p_mode == VIEWPORT_SCALING_3D_MODE_NEAREST || p_mode == VIEWPORT_SCALING_3D_MODE_BILINEAR || p_mode == VIEWPORT_SCALING_3D_MODE_FSR || p_mode == VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL) {
+ 		return VIEWPORT_SCALING_3D_TYPE_SPATIAL;
+-	} else if (p_mode == VIEWPORT_SCALING_3D_MODE_FSR2 || p_mode == VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL || p_mode == VIEWPORT_SCALING_3D_MODE_FSR_SDK) {
++	} else if (p_mode == VIEWPORT_SCALING_3D_MODE_FSR2 || p_mode == VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL || p_mode == VIEWPORT_SCALING_3D_MODE_DLSS || p_mode == VIEWPORT_SCALING_3D_MODE_FSR_SDK) {
+ 		return VIEWPORT_SCALING_3D_TYPE_TEMPORAL;
+ 	}
+ 	return VIEWPORT_SCALING_3D_TYPE_NONE;

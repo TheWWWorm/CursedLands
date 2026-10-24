@@ -1194,7 +1194,7 @@ static func setup_original_env(env: Environment) -> void:
 
 ## Per-frame: light colours and fog of the hour. `env` ambient / sun are for
 ## materials that do not use the original model (e.g. the menu signpost).
-static func update_original(env: Environment, sun_light: DirectionalLight3D, lights: EILights, hour: float, cave: bool) -> void:
+static func update_original(env: Environment, sun_light: DirectionalLight3D, lights: EILights, hour: float, cave: bool, overcast := 0.0) -> void:
 	var sun := lights.sample("sunlight", hour) if lights else Color.WHITE
 	var amb := lights.sample("ambient", hour) if lights else Color(0.506, 0.529, 0.49)
 	var sky := lights.sample("sky", hour) if lights else Color(0.18, 0.71, 0.85)
@@ -1206,6 +1206,8 @@ static func update_original(env: Environment, sun_light: DirectionalLight3D, lig
 	if amb.r == 0.0 and amb.g == 0.0 and amb.b == 0.0:
 		amb = sun * 0.8
 	amb.a = 1.0
+	var weather_light := preload("res://src/game/fx/path_trace_sky.gd").overcast(amb,sun,overcast,cave)
+	amb=weather_light[0];sun=weather_light[1]
 	set_light(amb, sun)
 	if sun_light:
 		sun_light.light_color = sun
@@ -1290,7 +1292,7 @@ static func setup_sun_casters(sun: DirectionalLight3D) -> void:
 static func apply_quality(vp: Viewport) -> void:
 	apply_effect_quality()
 	var aa := GameData.option("q_aa")
-	if vp != GameData.get_tree().root or not FsrGraphics.sr_active():
+	if vp != GameData.get_tree().root or (not FsrGraphics.sr_active() and not RtxGraphics.sr_active()):
 		vp.msaa_3d = Viewport.MSAA_4X if aa == 2 or aa == 3 else Viewport.MSAA_DISABLED
 		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if (aa == 1 or aa == 3) and not Portability.compatibility() else Viewport.SCREEN_SPACE_AA_DISABLED
 		vp.use_taa = aa == 4 and RenderingServer.get_current_rendering_method() == "forward_plus"
@@ -1310,6 +1312,7 @@ static func apply_quality(vp: Viewport) -> void:
 	RenderingServer.directional_shadow_atlas_set_size(atlas, true)
 	vp.positional_shadow_atlas_size = atlas
 	FsrGraphics.apply_upscaling(vp)
+	RtxGraphics.apply_upscaling(vp)
 
 
 ## Option q_shadow_fit: the sun's four cascades span what can be seen, the

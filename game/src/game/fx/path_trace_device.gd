@@ -4,6 +4,15 @@ extends "res://src/game/fx/scene_raytrace_device.gd"
 const PATH_FILTER = preload("res://src/game/fx/shaders/path_trace_filter.glsl")
 const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
 const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
+const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
+var nrd := Nrd.new()
+var nrd_active := false
+var direct_sun := Texture2DRD.new()
+var _nrd_failed := false
+var defer_nrd := false
+var history_handoffs := 0
+var history_matched_surfaces := 0
+var _history_reject := PackedInt32Array()
 const SPATIAL = preload("res://src/game/fx/shaders/path_trace_spatial.glsl")
 var _spatial_shader := RID()
 var _spatial_pipeline := RID()
@@ -15,6 +24,10 @@ var _spatial_enabled := not OS.get_cmdline_user_args().has("--ei-pt-no-spatial")
 var terrain := Terrain.new()
 var _terrain_data := RID()
 var _terrain_atlas := RID()
+var _cloud_texture: Texture2D
+var _cloud_image := RID()
+var _clear_cloud := RID()
+var _cloud_sampler := RID()
 signal emitter_stats(count: int, candidates: int)
 var emitters := Emitters.new()
 var _instance_geometry := RID()
@@ -41,8 +54,24 @@ func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
 		return shader_prefix()+"raygen"+("_deep" if _deep_paths else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
-func frame_bytes() -> int: return 704
+func frame_bytes() -> int: return 752
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
+func raw_formats() -> Array[int]:
+	var formats := super.raw_formats();formats.append(RenderingDevice.DATA_FORMAT_R16G16_SFLOAT)
+	formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT)
+	formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT);return formats
+func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
+	var bindings := super._ray_bindings(raw,sampler)
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,18,[raw[4]]))
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,19,[raw[5]]))
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,20,[raw[6]]));return bindings
+func published_targets() -> Array[RID]:
+	var result := super.published_targets();result.append(direct_sun.texture_rd_rid);return result
+func _publish_targets() -> void:
+	# The base transaction retains the previous published raw AOV on resize
+	# until this complete frame has safely replaced every public image.
+	if direct_sun.texture_rd_rid!=_raw[6]:direct_sun.texture_rd_rid=_raw[6]
+	super._publish_targets()
 func filter_auxiliary_formats() -> Array[int]:
 	return [RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,
 		RenderingDevice.DATA_FORMAT_R16_SFLOAT,RenderingDevice.DATA_FORMAT_R16_SFLOAT]
@@ -60,6 +89,18 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	# Synthetic/non-terrain scenes bind the existing array as an unused dummy.
 	_terrain_atlas = RenderingServer.texture_get_rd_texture(terrain.atlas.get_rid(),true) if terrain.atlas else _colours
 	if not _terrain_data.is_valid() or not _terrain_atlas.is_valid(): return false
+	var cloud_format := RDTextureFormat.new()
+	cloud_format.width=1;cloud_format.height=1
+	cloud_format.format=RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
+	cloud_format.usage_bits=RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
+	_clear_cloud=_own(_rd.texture_create(cloud_format,RDTextureView.new(),[PackedByteArray([255,255,255,255])]))
+	var cloud_sampler := RDSamplerState.new()
+	cloud_sampler.mag_filter=RenderingDevice.SAMPLER_FILTER_LINEAR;cloud_sampler.min_filter=RenderingDevice.SAMPLER_FILTER_LINEAR
+	cloud_sampler.mip_filter=RenderingDevice.SAMPLER_FILTER_LINEAR
+	cloud_sampler.repeat_u=RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT;cloud_sampler.repeat_v=RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
+	_cloud_sampler=_own(_rd.sampler_create(cloud_sampler))
+	if not _clear_cloud.is_valid() or not _cloud_sampler.is_valid():return false
+	_cloud_image=_clear_cloud
 	_variants[0] = {"shader":_shader,"pipeline":_pipeline}
 	var mapping := _placement_geometry.to_byte_array()
 	_instance_geometry = _own(_rd.storage_buffer_create(mapping.size(),mapping))
@@ -89,14 +130,13 @@ func _select_pipeline(enabled: bool,deep: bool) -> bool:
 		var shader := _shader
 		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader
 		if program==null: return false
-		var group := RDHitGroup.new();group.closest_hit_shader=program;group.any_hit_shader=program
-		var pipeline := _own(_rd.raytracing_pipeline_create([program],[program],[group],1))
+		var pipeline := _create_pipeline(program)
 		if not pipeline.is_valid(): return false
 		_variants[key] = {"shader":shader,"pipeline":pipeline}
 	if _rd.hit_sbt_set_pipeline(_sbt,_variants[key].pipeline)!=OK: return false
 	_shader=_variants[key].shader;_pipeline=_variants[key].pipeline
 	_uses_emitters=enabled;_deep_paths=deep
-	if _set.is_valid(): _rd.free_rid(_set);_set=RID()
+	_release_ray_set()
 	_history_valid = false
 	return true
 
@@ -106,10 +146,30 @@ func _upload_emitters() -> bool:
 	_notify(&"emitter_stats",[emitters.count,emitters.candidates])
 	return true
 
+## Runs on the render thread before the frame. Retain the RS texture owner
+## while its view is bound; all scene generations may share the cloud field.
+func set_cloud_texture(texture: Texture2D) -> void:
+	if _rd==null or _closed:return
+	# Deleting a cloud viewport also invalidates its dependent RD uniform
+	# sets. A nonzero RID alone does not mean the descriptor still exists.
+	if _set.is_valid() and not _rd.uniform_set_is_valid(_set):_set=RID()
+	var rid := RenderingServer.texture_get_rd_texture(texture.get_rid()) if texture!=null else RID()
+	if not rid.is_valid():rid=_clear_cloud
+	_cloud_texture=texture
+	if rid==_cloud_image:return
+	_release_ray_set()
+	_cloud_image=rid
+
+func _release_ray_set() -> void:
+	if _set.is_valid() and _rd.uniform_set_is_valid(_set):_rd.free_rid(_set)
+	_set=RID()
+
 func extra_ray_uniforms() -> Array[RDUniform]:
 	var uniforms: Array[RDUniform] = [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,10,[_instance_geometry]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,13,[_terrain_data]),
-		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,[_terrain_atlas])]
+		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,[_terrain_atlas]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,15,[_cloud_image]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,16,[_cloud_sampler])]
 	if _uses_emitters:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
@@ -125,6 +185,27 @@ func update_scene(changes: Dictionary) -> bool:
 		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths):
 			_render_failed();return false
 	return true
+
+func adopt_history(previous: RefCounted,matches: PackedInt32Array) -> void:
+	defer_nrd=false
+	if _closed or previous==null or previous._closed or not previous.nrd_active \
+		or _size!=previous._size or _uses_emitters!=previous._uses_emitters or _deep_paths!=previous._deep_paths:return
+	if matches.size()!=_instances.size():return
+	var unused := nrd
+	nrd=previous.nrd;previous.nrd=unused;previous.nrd_active=false
+	if not nrd.rebind(_raw,_history,_frame,_motion):
+		_nrd_failed=true;nrd.dispose();return
+	for i in matches.size():
+		var old := matches[i]
+		if old>=0 and old<previous._instances.size() and (previous._instances[old].mask&1)!=0:
+			# The first update now computes motion from the actual last visible
+			# frame, not from the replacement's private preparation frame.
+			_instances[i].transform=previous._instances[old].transform
+			_instances[i].mask=previous._instances[old].mask
+			history_matched_surfaces+=1
+		else:_history_reject.append(i)
+	nrd_active=true;_history_valid=true
+	history_handoffs=previous.history_handoffs+1
 
 func _write_motion(index: int,position: Transform3D,normal: Basis,valid: bool,moving: bool) -> void:
 	var offset := index*MOTION_STRIDE
@@ -166,6 +247,10 @@ func _update_motion(changes: Dictionary) -> bool:
 				normal = (current*previous.affine_inverse()).basis.transposed()
 		_write_motion(index,position,normal,valid,moving)
 		dirty[index] = true;_motion_pending[index] = true
+	for index in _history_reject:
+		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
+		dirty[index]=true;_motion_pending[index]=true
+	_history_reject.clear()
 	if dirty.is_empty(): return true
 	# One bounded upload avoids an API call for every articulated body part.
 	var indices := dirty.keys();indices.sort()
@@ -186,8 +271,27 @@ func _release_spatial() -> void:
 
 func _targets(size: Vector2i,sampler: RID) -> bool:
 	# Descriptors must retire before the textures they refer to during resize.
-	if size!=_size:_release_spatial()
+	if size!=_size:_release_spatial();nrd.release_targets()
 	return super._targets(size,sampler)
+
+func reconstruct(frame: PackedByteArray) -> bool:
+	var previous := nrd_active
+	var failed_now := false
+	nrd_active=false
+	if not defer_nrd and nrd.available and not _nrd_failed and frame.decode_float(145*4)<=8.0:
+		if not previous:nrd.reset()
+		if nrd.configure(_rd,_size,_raw,_history,_frame,_motion) and nrd.render(frame):
+			nrd_active=true
+			if _profile_stages:_rd.capture_timestamp("Scene RT reconstruct")
+			return true
+		# Disable only this device's NRD session. Reset the custom history before
+		# using its output; never interpret NRD's private history as custom history.
+		_nrd_failed=true;failed_now=true;nrd.dispose()
+		print("PT NRD unavailable; using custom reconstruction")
+	if previous or failed_now:
+		frame.encode_float(82*4,0.0)
+		if not _upload_frame(frame):return false
+	return super.reconstruct(frame)
 
 func filter_presented(frame_data: PackedByteArray) -> bool:
 	# Still-scene convergence uses the exact temporal estimate. Responsive
@@ -228,10 +332,12 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 	return true
 
 func dispose() -> void:
-	if _rd!=null:_release_spatial()
+	direct_sun.texture_rd_rid=RID()
+	if _rd!=null:_release_ray_set();_release_spatial();nrd.dispose()
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
 	emitters = Emitters.new()
 	terrain = Terrain.new();_terrain_atlas=RID()
+	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()
 	_variants.clear()
 	_motion=RID();_motion_data.clear();_motion_pending.clear();_geometry_placements.clear()
