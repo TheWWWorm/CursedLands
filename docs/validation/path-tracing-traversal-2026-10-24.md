@@ -85,7 +85,31 @@ combat, 16.655 ms at the beach after combat and 16.645 ms after five kills.
 The same late camera paused measured 16.273 ms. Thus the sustained collapse and
 large pause/unpause difference were absent in this reproduction.
 
-<!-- FINAL_COMPARISON -->
+The final exported previews ran consecutively on the same **NVIDIA GeForce RTX 3090 Ti**,
+using identical fixture source (verified after normalizing per-run absolute
+paths). Both completed all 25 route checks with zero inactive PT or
+responsive-NRD frames during measured stages. The previous preview covered
+139.23 metres; the fixed preview covered 115.73 metres. NPC movement and
+combat account for the different path lengths. Both defeated and looted all
+five targets.
+
+| Stage | Experimental.1 median / p95 (ms) | Experimental.2 median / p95 (ms) |
+| --- | ---: | ---: |
+| Starting ruins | 16.909 / 18.925 | 17.171 / 19.149 |
+| Slope boar fight | 188.440 / 214.801 | 15.054 / 18.345 |
+| Slope boar loot | 203.498 / 229.702 | 15.031 / 20.896 |
+| Slope after combat | 322.296 / 385.966 | 14.690 / 16.747 |
+| Beach boar fight | 220.965 / 296.138 | 18.409 / 23.840 |
+| Beach after combat | 195.242 / 348.793 | 17.746 / 20.928 |
+| Shore after five kills | 78.702 / 113.064 | 16.487 / 18.760 |
+| Same late camera, paused | 15.153 / 17.000 | 16.080 / 17.870 |
+
+The slope fight ended with 11 active blood marks in each run, and the following
+loot ended with 12 in each. The gain is present while blood is still active,
+not only after marks expire. Counts and positions for every stage are in the
+reports. Slow-frame catch-up limits also affect local mark ageing, so later
+held stages can have different numbers of marks.
+
 
 Readbacks for evidence screenshots occur outside measured stages. Their stalls
 can remain in Godot's rolling `TIME_PROCESS` monitor after capture; the tables
@@ -142,3 +166,5 @@ preview and final preview consecutively in one heavy job on the same GPU.
 ![Blood projection using reusable geometry](path-tracing-traversal-2026-10-24/blood-animated.png)
 
 ![CPU-clipped reference](path-tracing-traversal-2026-10-24/blood-reference.png)
+
+![Completed route on the beach](path-tracing-traversal-2026-10-24/route-beach.png)
