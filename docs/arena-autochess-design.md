@@ -212,10 +212,35 @@ blue, purple and gold, shared with creature rarity.
 
 Each creature has one equipment slot, with free reassignment during preparation
 and a shared stash. Selling or consuming a creature in evolution returns its
-item. Bonuses on the same stat add to alliance bonuses. Native healing, shield,
-poison and spell particles communicate triggered effects. The original victory
-music plays once when the local player wins the whole game. See the
+item. Equipment adds fixed amounts after alliance bonuses, so a higher-star
+carrier does not multiply an item's budget. Health, damage, armor and action
+speed update during preparation as equipment moves. Unequipped items pulse
+until assigned. Reward cards show at most two concise effects and fit at 720p
+without scrolling in English, Russian and German. Native healing, shield,
+poison and spell particles communicate triggered effects. Battles immediately
+use the original fighting tracks; the victory theme plays once when the local
+player wins the whole game. See the
 [item catalog and current rules](design/autochess-equipment-alliances.md).
+
+Before starting, players choose Zak or one of nine original companions. This
+identity is cosmetic, saved with the run and sent through the online lobby.
+Computer opponents use distinct characters from the same roster. The viewed
+board's owner appears as a large transparent native bust, cropped at the
+collarbones, turned inward in three-quarter view and flush with the screen's
+bottom edge. A shorter reserve strip leaves room for the portrait and controls.
+Gold, health and battle controls sit between the shop and round status at the
+top; the shop narrows on smaller windows to keep these groups separate. Gold,
+income and health use the Army label's white fill and dark outline.
+Upgrading a creature or company level produces a brief smile and nod. Battle
+and match victories smile and nod; defeats frown and shake the head. New battles
+restore neutral expression unless the owner has already been eliminated. The
+nine-board overview hides this single-owner portrait. Local elimination plays
+the original hero-death cue once, including results received over the network.
+
+The snow surround meets the courtyard at exactly the same quantized vertices,
+including the full overview boundary. Deformable snow tapers to zero at the join.
+The Curse retains its original airborne death cycle, then topples and settles
+onto the snow; quiet snapshots show the settled corpse immediately.
 
 Creep accuracy, avoidance and exceptional boss armor are capped
 by wave, while their native bodies, damage and spells remain. These changes apply

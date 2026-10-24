@@ -84,7 +84,7 @@ func host(port := PORT, use_websocket := false) -> Error:
 	if error != OK: peer = null; return error
 	if peer is ENetMultiplayerPeer: peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 	is_host = true; my_seat = 0; host_port = peer.get_host().get_local_port() if peer is ENetMultiplayerPeer else port
-	members[1] = {"seat":0,"name":clean_name(player_name),"ready":true}
+	members[1] = {"seat":0,"name":clean_name(player_name),"ready":true,"commander":GameData.arena_character}
 	_views[1] = 0
 	peer.peer_connected.connect(_peer_connected); peer.peer_disconnected.connect(_peer_disconnected)
 	if not local_host.solo_combat and not websocket and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")): upnp.open(port)
@@ -155,7 +155,7 @@ func _process(dt: float) -> void:
 		if connection == MultiplayerPeer.CONNECTION_CONNECTED and not _connected:
 			_connected = true
 			_loading_timeout(1)
-			var hello := {"t":"hello","protocol":PROTOCOL,"version":ProjectSettings.get_setting("application/config/version"),"hash":NetStatus.world_hash(),"name":clean_name(player_name),"password":password.left(64)}
+			var hello := {"t":"hello","protocol":PROTOCOL,"version":ProjectSettings.get_setting("application/config/version"),"hash":NetStatus.world_hash(),"name":clean_name(player_name),"commander":GameData.arena_character,"password":password.left(64)}
 			local_host.hello(hello)
 			_send(1, hello)
 		elif connection == MultiplayerPeer.CONNECTION_DISCONNECTED or (_elapsed > HELLO_TIMEOUT and my_seat < 0):
@@ -231,7 +231,7 @@ func _from_client(id: int, data: Dictionary) -> void:
 		var seats := members.values().map(func(member): return int(member.seat))
 		var seat := 0
 		while seat in seats: seat += 1
-		members[id] = {"seat":seat,"name":clean_name(data.name),"ready":false}
+		members[id] = {"seat":seat,"name":clean_name(data.name),"ready":false,"commander":ArenaCommanders.valid(str(data.get("commander", "hero")))}
 		_views[id] = seat; _pending.erase(id); _send_lobby()
 		return
 	if not members.has(id): return
@@ -299,6 +299,12 @@ func start_game(seed_value := 0) -> String:
 	for member: Dictionary in members.values(): humans[int(member.seat)] = member.name
 	game.updated.connect(func(): _dirty = true)
 	game.begin(randi_range(1,99999999) if seed_value == 0 else seed_value, humans)
+	for member: Dictionary in members.values():
+		game.run.company(int(member.seat)).commander = ArenaCommanders.valid(str(member.get("commander", "hero")))
+	var chosen := members.values().map(func(member): return ArenaCommanders.valid(str(member.get("commander", "hero"))))
+	var companions := ArenaCommanders.IDS.filter(func(id): return id not in chosen)
+	for seat in ArenaTournamentRun.PLAYER_COUNT:
+		if not humans.has(seat): game.run.company(seat).commander = companions.pop_front()
 	_dirty = true; _send_left = 0
 	_send_lobby()
 	return ""

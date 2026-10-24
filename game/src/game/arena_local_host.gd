@@ -38,7 +38,7 @@ func start(port: int, use_websocket: bool, solo := false) -> Error:
 	DirAccess.make_dir_recursive_absolute(directory)
 	_config = directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
 	var config := {"token":_token, "parent":OS.get_process_id(), "port":port, "websocket":use_websocket,
-		"solo_combat":solo, "password":session.password, "name":session.player_name, "language":RemakeText.lang,
+		"solo_combat":solo, "commander":GameData.arena_character, "password":session.password, "name":session.player_name, "language":RemakeText.lang,
 		"options":GameData.options.duplicate(true)}
 	# The visible process owns router mapping and its existing status UI.
 	config.options.net_upnp = 0
@@ -97,6 +97,7 @@ func configure(path: String) -> Dictionary:
 	solo_combat = bool(config.get("solo_combat", false))
 	worker = true; _config = path; _token = config.token
 	parent_id = int(config.get("parent", -1)); _owner_seen = Time.get_ticks_msec()
+	GameData.arena_character = ArenaCommanders.valid(str(config.get("commander", "hero")))
 	session.player_name = String(config.get("name", "")); session.password = String(config.get("password", ""))
 	GameData.options.merge(config.options, true)
 	RemakeText.lang = String(config.get("language", "en"))

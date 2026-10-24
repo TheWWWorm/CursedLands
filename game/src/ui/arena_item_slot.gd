@@ -20,6 +20,12 @@ var equipped := false:
 	set(value):
 		equipped = value
 		queue_redraw()
+var attention := false:
+	set(value):
+		attention = value
+		set_process(value)
+		queue_redraw()
+var _pulse := 0.0
 var target_hover := false:
 	set(value):
 		target_hover = value
@@ -34,6 +40,7 @@ func _init() -> void:
 	custom_minimum_size = Vector2.ONE * TRAY_SIZE
 
 func _ready() -> void:
+	set_process(attention)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
 		add_theme_stylebox_override(state, StyleBoxEmpty.new())
@@ -51,10 +58,20 @@ func _ready() -> void:
 	for sig in [mouse_entered, mouse_exited, focus_entered, focus_exited]: sig.connect(queue_redraw)
 	resized.connect(queue_redraw)
 
+func _process(dt: float) -> void:
+	if not is_visible_in_tree(): return
+	_pulse += dt / maxf(Engine.time_scale, 0.001)
+	queue_redraw()
+
 func _draw() -> void:
 	var radius := minf(size.x, size.y) * 0.5 - 2
 	var active := selected or target_hover or has_focus() or is_hovered()
 	draw_circle(size * 0.5, radius, Color("344744") if active else Color("111b20"), true, -1, true)
+	if attention and not equipped:
+		# Match the mint upgrade cue in the shop; rarity keeps its own rim.
+		var strength := 0.5 + 0.5 * sin(_pulse * TAU * 0.65)
+		for ring in range(5, 0, -1):
+			draw_circle(size * 0.5, radius + ring, Color(Color("9bfff0"), (0.04 + strength * 0.05) * (6 - ring)), false, 2, true)
 	if ArenaItems.tier(kind) > 1:
 		draw_circle(size * 0.5, radius, ArenaItemEmblem.color_for(kind), false, 2.5 if active else 2.0, true)
 	elif kind.is_empty():

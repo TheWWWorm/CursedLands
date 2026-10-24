@@ -104,6 +104,7 @@ func synchronize() -> void:
 		button.kind = String(item.kind)
 		button.selected = selected_uid == uid
 		button.equipped = int(item.unit_uid) > 0
+		button.attention = editable and not button.equipped
 		var holder := run.unit(int(item.unit_uid))
 		var carrier := RemakeText.t("In inventory") if holder.is_empty() else RemakeText.t("Equipped by %s") % ArenaRules.title(holder.prototype, int(holder.family), int(holder.rank))
 		button.accessibility_name = ArenaItems.title(button.kind) + ", " + carrier

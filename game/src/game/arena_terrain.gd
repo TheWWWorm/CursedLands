@@ -69,7 +69,9 @@ static func snow_height(x: float, y: float) -> float:
 	var rim := maxf(absf(x - 32), absf(y - 32))
 	var edge := maxf(0, rim - 15.5)
 	var drift := 0.65 + 0.25 * sin(x * 0.31 + y * 0.17) + 0.10 * cos(y * 0.55)
-	return minf(3.2, edge * edge * 0.032 * drift)
+	# Every board meets the surround (and its neighbours in overview) at the
+	# same height. Different samples of the drift wave used to leave open edges.
+	return lerpf(minf(3.2, edge * edge * 0.032 * drift), 3.2, smoothstep(29.0, 32.0, rim))
 
 
 static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:

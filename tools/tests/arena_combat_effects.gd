@@ -10,7 +10,7 @@ func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok: failures.append(label); printerr("FAIL ", label)
 
-func setup(families: Array, foes: Array, items: Array = [], enemy_items: Array = [], rank_value := 0) -> void:
+func setup(families: Array, foes: Array, items: Array = [], enemy_items: Array = [], rank_value := 0, begin_combat := true) -> void:
 	if is_instance_valid(battle):
 		battle.world.free(); battle.free()
 	var run := Duel.new(); run.auto_save = false; run.begin(15877)
@@ -30,7 +30,8 @@ func setup(families: Array, foes: Array, items: Array = [], enemy_items: Array =
 	run.opposing.assign(other.army.duplicate(true))
 	battle = ArenaPveMatch.new(); battle.run = run; battle.rendered = false; battle.drives_clock = false
 	add_child(battle); battle.set_process(false); battle.set_physics_process(false); battle._world_parent = self
-	battle.prepare(); battle.start()
+	battle.prepare()
+	if begin_combat: battle.start()
 	own.assign(battle.world.unit_rows().filter(func(u): return u.faction == 1))
 	enemies.assign(battle.world.unit_rows().filter(func(u): return u.faction == 2))
 	for team in [own, enemies]:
@@ -48,7 +49,7 @@ func _ready() -> void:
 	hit(own[0], enemies[0], 8.0, false)
 	check(is_equal_approx(own[0].hp, before), "miss cannot steal life")
 	hit(own[0], enemies[0])
-	check(own[0].hp > before and own[0].hp - before <= own[0].max_hp * 0.0201, "native landed hit steals bounded life")
+	check(own[0].hp > before and is_equal_approx(own[0].hp - before, 4.0), "native landed hit restores four health")
 	setup([0], [0,0], ["storm"])
 	before = enemies[1].hp
 	hit(own[0], enemies[0]); hit(own[0], enemies[0])
@@ -86,7 +87,7 @@ func _ready() -> void:
 		timers._tick(0.055, false)
 	check(battle.world.arena_effects.rows[own[0].uid].casts == 3 and battle.world.arena_effects.totals.get("echo",0) == 1, "three multi-target spell dispatches produce exactly one echo")
 	setup([3], [0], ["berserker"])
-	check(own[0].cannot_cast() and own[0].actions() > float(own[0].stats.actions), "berserker trades native casting for faster actions")
+	check(own[0].cannot_cast() and is_equal_approx(own[0].actions(), float(own[0].get_meta("arena_combat_base").stats.actions) + 10), "berserker trades native casting for faster actions")
 	battle.world.arena_effects.stop()
 	check(not own[0].cannot_cast() and is_equal_approx(own[0].actions(), own[0].stats.actions), "battle stop removes berserker effects")
 	setup([0,1], [24])
@@ -121,7 +122,7 @@ func _ready() -> void:
 	var incoming := own[0].max_hp * 0.10 / scale
 	before = own[0].hp
 	own[0].take_damage(incoming, enemies[0], 0, PackedFloat32Array(), 0, Callable(), false, {"kind":"attack"})
-	check(absf(before - own[0].hp) < 0.001 and absf(float(battle.world.arena_effects.shields[own[0].uid].amount) - own[0].max_hp * 0.60) < 0.001,
+	check(absf(before - own[0].hp) < 0.001 and absf(float(battle.world.arena_effects.shields[own[0].uid].amount) - (60.0 - own[0].max_hp * 0.10)) < 0.001,
 		"a head impact spends shield strength in whole HP rather than raw part damage")
 	setup([6,11,12,19], [24])
 	own[1].hp *= 0.5; own[2].hp *= 0.5; before = own[1].hp

@@ -28,7 +28,7 @@
 			"wiki_turn_radians": 0
 		},
 		"archmage": {
-			"authored_title": "Wand 6",
+			"authored_title": "Wand 6 (Obsidian)",
 			"camera_position": [
 				0.0,
 				-2.22609996795654,
@@ -40,7 +40,7 @@
 				0.0
 			],
 			"camera_size": 1.80297005176544,
-			"item_id": "wand 6",
+			"item_id": "wand 6.malachite",
 			"look": {
 				"model": "initqi39item",
 				"texture": "qitem0039"
@@ -352,7 +352,7 @@
 			"wiki_turn_radians": 0
 		},
 		"focus": {
-			"authored_title": "Wand 3",
+			"authored_title": "Iron wand",
 			"camera_position": [
 				0.0,
 				-2.17379999160767,
@@ -364,10 +364,10 @@
 				0.0
 			],
 			"camera_size": 1.75294494628906,
-			"item_id": "wand 3",
+			"item_id": "wand 3.iron",
 			"look": {
 				"model": "initqi28item",
-				"texture": "qitem0028"
+				"texture": "qitem0028.ir"
 			},
 			"model_quaternion_xyzw": [
 				1.0,
@@ -703,7 +703,7 @@
 			"wiki_turn_radians": 0
 		},
 		"staff": {
-			"authored_title": "Wand 4",
+			"authored_title": "Decorative steel wand",
 			"camera_position": [
 				0.0,
 				-2.28854990005493,
@@ -715,10 +715,10 @@
 				0.0
 			],
 			"camera_size": 1.60758483409882,
-			"item_id": "wand 4",
+			"item_id": "wand 4.steel",
 			"look": {
 				"model": "initqi29item",
-				"texture": "qitem0029"
+				"texture": "qitem0029.st"
 			},
 			"model_quaternion_xyzw": [
 				1.0,

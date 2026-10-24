@@ -51,7 +51,24 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"+%d health.": ["+%d к здоровью.", "+%d Leben."],
+	"+%d attack damage.": ["+%d к урону атак.", "+%d Angriffsschaden."],
+	"+%d action speed.": ["+%d к скорости действий.", "+%d Aktionsgeschwindigkeit."],
+	"+%d physical armor.": ["+%d к физической броне.", "+%d physische Rüstung."],
+	"+%d fire, acid and lightning armor.": ["+%d к защите от огня, кислоты и молнии.", "+%d Rüstung gegen Feuer, Säure und Blitz."],
+	"+%d spell damage.": ["+%d к урону заклинаний.", "+%d Zauberschaden."],
+	"Attacks restore %d health.": ["Атаки восстанавливают %d здоровья.", "Angriffe stellen %d Leben wieder her."],
+	"Every third hit deals %d lightning damage to another enemy within 4 m.": ["Каждый третий удар наносит %d урона молнией другому врагу в радиусе 4 м.", "Jeder dritte Treffer fügt einem weiteren Gegner im Umkreis von 4 m %d Blitzschaden zu."],
+	"Every third hit deals %d lightning damage to %d other enemies within 4 m.": ["Каждый третий удар наносит %d урона молнией другим врагам в радиусе 4 м (до %d целей).", "Jeder dritte Treffer fügt %d Blitzschaden an %d weiteren Gegnern im Umkreis von 4 m zu."],
+	"Attacks reduce healing received by %d%% for 5 s.": ["Атаки снижают получаемое целью лечение на %d%% на 5 с.", "Angriffe verringern erhaltene Heilung 5 s lang um %d%%."],
+	"Below 35%% health: gain a %d-point shield for 5 s. Once per battle.": ["При здоровье ниже 35%%: щит на %d урона на 5 с. Один раз за бой.", "Unter 35%% Leben: 5 s lang ein Schild gegen %d Schaden. Einmal pro Kampf."],
+	"An ally within 5 m falls below 35%% health: shield it for %d damage for 5 s. Once per battle.": ["У союзника в радиусе 5 м здоровье падает ниже 35%%: щит на %d урона на 5 с. Один раз за бой.", "Ein Verbündeter im Umkreis von 5 m fällt unter 35%% Leben: 5 s lang ein Schild gegen %d Schaden. Einmal pro Kampf."],
+	"Every %d offensive spells: deal %d extra damage in the spell's element.": ["Каждые %d боевых заклинания: ещё %d урона той же стихией.", "Nach jeweils %d Angriffszaubern: %d zusätzlicher Schaden im Element des Zaubers."],
+	"Retaliate for %d damage against melee hits. Once per second.": ["Ответ на удар в ближнем бою: %d урона. Не чаще раза в секунду.", "Vergilt Nahkampftreffer mit %d Schaden. Einmal pro Sekunde."],
+	"+%d action speed. Cannot cast spells.": ["+%d к скорости действий. Не может колдовать.", "+%d Aktionsgeschwindigkeit. Kann keine Zauber wirken."],
 	# Autochess item tiers and generated stat/effect descriptions.
+	"Choose your character": ["Выберите персонажа", "Charakter wählen"],
+	"Your character represents you on the board. This choice does not change your army.": ["Персонаж представляет вас на поле. Этот выбор не влияет на армию.", "Dein Charakter vertritt dich auf dem Spielfeld. Die Wahl verändert deine Armee nicht."],
 	"Steel Saber": ["Стальная сабля", "Stahlsäbel"],
 	"Amber Heart": ["Янтарное сердце", "Bernsteinherz"],
 	"Mercury Gloves": ["Ртутные перчатки", "Quecksilberhandschuhe"],
@@ -156,7 +173,7 @@ const TEXTS := {
 	"Warriors block 40% of attack damage to another ally within 3 m, spending a guard pool equal to 12/20% of their own maximum health. At 4 Warriors, guard also blocks spell damage. Only one guard protects each hit.": ["Воины блокируют 40% урона атак по другому союзнику в радиусе 3 м, расходуя запас защиты в размере 12/20% собственного максимального здоровья. При 4 Воинах защита также блокирует урон заклинаний. Каждый удар защищает только один Воин.", "Krieger blockieren 40% des Angriffsschadens gegen einen anderen Verbündeten innerhalb von 3 m. Ihr Schutzvorrat beträgt 12/20% ihrer eigenen maximalen Gesundheit. Bei 4 Kriegern wird auch Zauberschaden blockiert. Pro Treffer schützt nur ein Krieger."],
 	"When a Horde member falls, Horde allies within 5 m retaliate against an enemy in attack range for 45% attack damage. Triggers on the first 1/2 distinct Horde family deaths per battle.": ["Когда член Орды погибает, союзники Орды в радиусе 5 м отвечают ударом по врагу в пределах дальности атаки с 45% урона атаки. Срабатывает при первых 1/2 смертях разных видов Орды за бой.", "Fällt ein Hordenmitglied, vergelten Hordenverbündete innerhalb von 5 m dies mit einem Schlag gegen einen Gegner in Angriffsreichweite für 45% Angriffsschaden. Wird bei den ersten 1/2 Todesfällen verschiedener Hordenarten pro Kampf ausgelöst."],
 	"Two different Beast families hitting the same enemy within 2 seconds trigger a pack strike for 45% attack damage, once per target every 2 seconds. At 4 Beasts, focus passes to a nearby enemy after a kill. At 6, the strike also hits one enemy within 3 m.": ["Удары двух разных видов Зверей по одному врагу в течение 2 секунд вызывают удар стаи с 45% урона атаки, не чаще раза в 2 секунды для каждой цели. При 4 Зверях после убийства внимание переходит к ближайшему врагу. При 6 удар также поражает ещё одного врага в радиусе 3 м.", "Treffen zwei verschiedene Bestienarten denselben Gegner innerhalb von 2 Sekunden, folgt ein Rudelschlag mit 45% Angriffsschaden, höchstens einmal alle 2 Sekunden je Ziel. Bei 4 Bestien geht der Fokus nach einem Kill auf einen nahen Gegner über. Bei 6 trifft der Schlag einen weiteren Gegner innerhalb von 3 m."],
-	"Equipment and alliance effects activate during battle.": ["Эффекты снаряжения и союзов срабатывают во время боя.", "Ausrüstungs- und Allianzeffekte werden im Kampf ausgelöst."],
+	"Stats include equipment and alliances. Triggered effects activate in battle.": ["Характеристики учитывают снаряжение и союзы. Особые эффекты срабатывают в бою.", "Werte enthalten Ausrüstungs- und Allianzboni. Bedingte Effekte werden im Kampf ausgelöst."],
 	"Spirit echo": ["Эхо духа", "Geisterecho"],
 	"Spirit aid": ["Помощь духов", "Geisterhilfe"],
 	"Spell reaction": ["Реакция заклинаний", "Zauberreaktion"],

@@ -136,6 +136,7 @@ func prepare_owned_models(limit := 1) -> bool:
 			_entrants.erase(unit)
 	if _queued_formation.is_empty():
 		ArenaAlliances.apply(world, run.army, run.enemy_army())
+		ArenaCombatEffects.preview(world, run.army, run.enemy_army())
 		changed.emit()
 	return _queued_formation.is_empty()
 
@@ -292,6 +293,7 @@ func prepare() -> void:
 	world.combat.difficulty_override = 0
 	world.combat.rng.seed = run.battle_seed()
 	ArenaAlliances.apply(world, run.army, run.enemy_army())
+	ArenaCombatEffects.preview(world, run.army, run.enemy_army())
 	contributions.clear()
 	friendly_damage.clear()
 	_round_key = round_key
@@ -534,9 +536,9 @@ func _process(dt: float) -> void:
 	if settle_remaining == 0: presentation_finished.emit()
 
 
-## Horror's authored cdeath is a hovering cycle, without a descent track.
-## Supply the fall in Trials presentation, including after the combat clock
-## stops. Navigation, unit positions and the authority's combat stay untouched.
+## Horror's only authored death clip is an airborne cycle. Supply its descent
+## and a brief topple into a grounded corpse, including after combat stops.
+## This changes only the figure: navigation and authoritative combat stay put.
 func _update_corpse_falls(dt: float) -> void:
 	var present := {}
 	for unit: GameUnit in world.unit_rows():
@@ -545,27 +547,29 @@ func _update_corpse_falls(dt: float) -> void:
 		if not unit.dead or unit.model.template != "unmocu":
 			if _corpse_falls.has(key):
 				if _corpse_falls[key].model.get_ref() == unit.model:
-					unit.model.position.y = float(_corpse_falls[key].base)
+					unit.model.transform = _corpse_falls[key].base
 				_corpse_falls.erase(key)
 			continue
 		present[key] = true
 		if not _corpse_falls.has(key) or _corpse_falls[key].model.get_ref() != unit.model:
-			_corpse_falls[key] = {"model":weakref(unit.model),"base":unit.model.position.y,
-				"age":0.0,"drop":0.0,"landed":false}
+			_corpse_falls[key] = {"model":weakref(unit.model),"base":unit.model.transform,
+				"pivot":_corpse_bounds(unit).get_center(), "quiet":unit.is_frozen(),
+				"age":0.0,"landed":false}
 		var fall: Dictionary = _corpse_falls[key]
 		if fall.landed: continue
 		fall.age += maxf(0,dt)
-		var drop := 4.9 * float(fall.age) * float(fall.age)
-		# A corpse received by scouting/late join is already in its last pose.
-		# Fit that pose to the snow immediately instead of replaying the fall.
-		var clearance := _corpse_clearance(unit)
-		if unit.is_frozen() or drop >= clearance + float(fall.drop):
+		var age: float = maxf(fall.age, 0.8) if fall.quiet else float(fall.age)
+		var tilt := Basis(Vector3.RIGHT, PI * 0.5 * smoothstep(0, 0.8, age))
+		var base: Transform3D = fall.base
+		# Turn about the body, not the elevated rig origin, so the corpse
+		# stays at its battlefield position as the hovering figure collapses.
+		unit.model.transform = Transform3D(tilt, fall.pivot - tilt * fall.pivot) * base
+		if age >= 0.8:
 			unit.freeze_pose(true)
-			fall.drop = float(fall.drop) + _corpse_clearance(unit)
+			unit.model.position.y -= _corpse_clearance(unit)
 			fall.landed = true
 		else:
-			fall.drop = drop
-		unit.model.position.y = float(fall.base) - float(fall.drop)
+			unit.model.position.y -= minf(4.9 * age * age, _corpse_clearance(unit))
 	for key in _corpse_falls.keys():
 		if not present.has(key): _corpse_falls.erase(key)
 
@@ -573,16 +577,24 @@ func _update_corpse_falls(dt: float) -> void:
 ## Exact rigid mesh vertices avoid leaving wing/foot bounding-box padding
 ## between the corpse and the floor. Horror has no vertex-morph meshes.
 static func _corpse_clearance(unit: GameUnit) -> float:
+	return _corpse_bounds(unit).position.y
+
+
+static func _corpse_bounds(unit: GameUnit) -> AABB:
 	unit.model.flush_pending_pose()
-	var bottom := INF
+	var bounds := AABB()
+	var first := true
 	var inverse := unit.global_transform.affine_inverse()
 	for mesh: MeshInstance3D in unit.model.find_children("*","MeshInstance3D",true,false):
 		if mesh.mesh == null or not mesh.visible: continue
 		var transform := inverse * mesh.global_transform
 		for surface in mesh.mesh.get_surface_count():
 			var vertices: PackedVector3Array = mesh.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]
-			for vertex in vertices: bottom = minf(bottom,(transform * vertex).y)
-	return bottom if is_finite(bottom) else 0.0
+			for vertex in vertices:
+				var point := transform * vertex
+				if first: bounds = AABB(point, Vector3.ZERO); first = false
+				else: bounds = bounds.expand(point)
+	return bounds
 
 
 ## Fixed-step native combat for research, including projectiles and world spell

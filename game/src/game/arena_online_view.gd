@@ -66,6 +66,7 @@ func apply_state(data: Dictionary) -> void:
 static func _copy_company(target: ArenaRun, data: Dictionary) -> void:
 	for key in ["gold", "training", "battle_savings", "wave", "next_uid"]:
 		target.set(key, int(data[key]))
+	target.commander = ArenaCommanders.valid(str(data.get("commander", "hero")))
 	target.run_seed = int(data.seed)
 	target.army.assign(data.army.duplicate(true)); target.shop.assign(data.shop.duplicate(true))
 	target.history.assign(data.history.duplicate(true)); target.last_result = data.last_result.duplicate(true)
@@ -78,9 +79,8 @@ static func _copy_company(target: ArenaRun, data: Dictionary) -> void:
 	target._sync_items()
 
 func player_title(player: int) -> String:
-	var server := seats[player]
 	if not names[player].is_empty(): return names[player]
-	return super.player_title(server) if server > 0 else RemakeText.t("Computer")
+	return ArenaCommanders.title(company(player).commander)
 
 func player_fighting(player: int) -> bool:
 	return global_stage == "fight" and seats[player] in fighting_seats

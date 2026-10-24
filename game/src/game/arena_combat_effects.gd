@@ -17,8 +17,9 @@ var notices := {}
 ## Useful to native combat tests/benchmarks; not persisted or sent to clients.
 var totals := {}
 
-func _init(battle_world: GameWorld, army: Array, opponents: Array) -> void:
+func _init(battle_world: GameWorld, army: Array, opponents: Array, preview := false) -> void:
 	world = battle_world
+	active = not preview
 	for company in [army, opponents]:
 		var count := ArenaAlliances.counts(company)
 		var ranks := {}
@@ -33,34 +34,41 @@ func _init(battle_world: GameWorld, army: Array, opponents: Array) -> void:
 		rows[u.uid] = {"team": team, "family": family, "traits": ArenaAlliances.traits(family),
 			"item": item, "hits": 0, "casts": 0, "used": false, "thorn_at": 0.0}
 		_apply_stats(u)
-		if ArenaItems.effect(item) == "berserker":
-			u.buffs["arena_berserker"] = {"until": INF, "actions_add": float(u.stats.get("actions", 15.0)) * float(ArenaItems.RULES[item].frenzy), "no_cast": true}
+		if not preview and ArenaItems.effect(item) == "berserker":
+			u.buffs["arena_berserker"] = {"until": INF, "no_cast": true}
 			_notice("berserker", u)
 
-## Stats activate once at the bell, from a fresh recruit budget. Keep them for
-## result inspection; preparation restores the original budget and clears the cache.
-## Bonuses on the same statistic add, so overlapping traits cannot multiply gear.
+## Preparation and the bell use the same budget. Reapplying is idempotent.
+## Alliances scale recruit stats; equipment adds a fixed amount afterwards.
 func _apply_stats(u: GameUnit) -> void:
 	if not u.has_meta("arena_combat_base"):
 		u.set_meta("arena_combat_base", {"stats": u.stats.duplicate(true), "hp": u.max_hp})
 	var base: Dictionary = u.get_meta("arena_combat_base")
 	var stats: Dictionary = base.stats.duplicate(true)
 	var gear: Dictionary = ArenaItems.RULES.get(_item(u), {})
-	var damage := _member(u, "beast") * 0.10 + float(gear.get("damage", 0.0))
-	stats.dmg_min = float(stats.dmg_min) * (1.0 + damage)
-	stats.dmg_max = float(stats.dmg_max) * (1.0 + damage)
-	stats.actions = float(stats.get("actions", 15.0)) * (1.0 + float(gear.get("actions", 0.0)))
+	var damage := _member(u, "beast") * 0.10
+	stats.dmg_min = float(stats.dmg_min) * (1.0 + damage) + float(gear.get("damage", 0.0))
+	stats.dmg_max = float(stats.dmg_max) * (1.0 + damage) + float(gear.get("damage", 0.0))
+	stats.actions = float(stats.get("actions", 15.0)) + float(gear.get("actions", 0.0)) + float(gear.get("frenzy", 0.0))
 	var armor: PackedFloat32Array = stats.armor
-	for type in 3: armor[type] *= 1.0 + _member(u, "warrior") * 0.30 + float(gear.get("physical_armor", 0.0))
-	for type in range(3, 6): armor[type] *= 1.0 + float(gear.get("elemental_armor", 0.0))
+	for type in 3: armor[type] = armor[type] * (1.0 + _member(u, "warrior") * 0.30) + float(gear.get("physical_armor", 0.0))
+	for type in range(3, 6): armor[type] += float(gear.get("elemental_armor", 0.0))
 	stats.armor = armor
 	u.stats = stats
-	u.max_hp = float(base.hp) * (1.0 + _member(u, "horde") * 0.15 + float(gear.get("health", 0.0)))
+	u.max_hp = float(base.hp) * (1.0 + _member(u, "horde") * 0.15) + float(gear.get("health", 0.0))
 	u.hp = u.max_hp
 
 func spell_damage_multiplier(caster: GameUnit) -> float:
 	if not active or not is_instance_valid(caster) or not rows.has(caster.uid): return 1.0
-	return 1.0 + _member(caster, "mage") * 0.15 + float(ArenaItems.RULES.get(_item(caster), {}).get("spell", 0.0))
+	return 1.0 + _member(caster, "mage") * 0.15
+
+func spell_damage_bonus(caster: GameUnit) -> float:
+	if not active or not is_instance_valid(caster) or not rows.has(caster.uid): return 0.0
+	return float(_gear(caster).get("spell", 0.0))
+
+## A preview applies stats without registering procs, buffs or combat timers.
+static func preview(battle_world: GameWorld, army: Array, opponents: Array) -> void:
+	ArenaCombatEffects.new(battle_world, army, opponents, true)
 
 func stop() -> void:
 	for uid: int in shields.keys(): _end_shield(uid)
@@ -152,15 +160,15 @@ func before_damage(target: GameUnit, source: GameUnit, amount: float, context: D
 	var left := amount * health_scale
 	var exposed := maxf(0.0, left - _shield_left(target))
 	if exposed > 0.0 and target.hp - minf(exposed, part_cap) <= target.max_hp * 0.35:
-		if _effect(target) == "ward" and not rows[target.uid].used and target.max_hp * float(_gear(target).shield) > _shield_left(target):
+		if _effect(target) == "ward" and not rows[target.uid].used and float(_gear(target).shield) > _shield_left(target):
 			rows[target.uid].used = true
-			_shield(target, target.max_hp * float(_gear(target).shield), "ward")
+			_shield(target, float(_gear(target).shield), "ward")
 		for ally: GameUnit in _near(target, true, 5.0):
 			exposed = maxf(0.0, left - _shield_left(target))
 			if exposed <= 0.0 or target.hp - minf(exposed, part_cap) > target.max_hp * 0.35: break
-			if _effect(ally) == "guardian" and not rows[ally.uid].used and ally.max_hp * float(_gear(ally).shield) > _shield_left(target):
+			if _effect(ally) == "guardian" and not rows[ally.uid].used and float(_gear(ally).shield) > _shield_left(target):
 				rows[ally.uid].used = true
-				_shield(target, ally.max_hp * float(_gear(ally).shield), "guardian")
+				_shield(target, float(_gear(ally).shield), "guardian")
 				break
 	if shields.has(target.uid):
 		var shield: Dictionary = shields[target.uid]
@@ -189,13 +197,13 @@ func after_damage(target: GameUnit, source: GameUnit, actual: float, context: Di
 		match _effect(source):
 			"fang":
 				var before := source.hp
-				source.heal(minf(actual * float(gear.leech), source.max_hp * float(gear.leech_cap)))
+				source.heal(float(gear.leech))
 				if source.hp > before: _notice("fang", source, source.hp - before)
 			"storm":
 				if int(r.hits) % 3 == 0:
 					var nearby := _near(source, false, 4.0, target)
 					for victim: GameUnit in nearby.slice(0, int(gear.storm_targets)):
-						_packet(source, victim, source.max_hp * float(gear.storm_damage), 5, "storm")
+						_packet(source, victim, float(gear.storm_damage), 5, "storm")
 			"venom":
 				if not venom.has(target.uid): venom[target.uid] = {}
 				venom[target.uid][1.0 - float(gear.healing_reduction)] = world.time + 5.0
@@ -204,7 +212,7 @@ func after_damage(target: GameUnit, source: GameUnit, actual: float, context: Di
 		var r: Dictionary = rows[target.uid]
 		if world.time >= float(r.thorn_at):
 			r.thorn_at = world.time + 1.0
-			_packet(target, source, minf(actual * float(_gear(target).reflect), target.max_hp * float(_gear(target).reflect_cap)), 2, "thorn")
+			_packet(target, source, float(_gear(target).reflect), 2, "thorn")
 
 func _packet(source: GameUnit, target: GameUnit, amount: float, school: int, effect: String) -> void:
 	if not alive(source) or not alive(target) or amount <= 0.0: return
@@ -221,9 +229,6 @@ func _packet(source: GameUnit, target: GameUnit, amount: float, school: int, eff
 		reduced = maxf(Combat.armor_minimum(target, amount), reduced - protection * world.combat.difficulty(target, "Absorption"))
 	_notice(effect, target, reduced, source)
 	target.take_damage(reduced, source, -1, PackedFloat32Array(), 4 if school == 5 else 0, Callable(), false, PROC)
-
-func _budget(u: GameUnit) -> float:
-	return (float(u.stats.get("dmg_min", 1.0)) + float(u.stats.get("dmg_max", 1.0))) * 0.5
 
 func on_cast(caster: GameUnit, spell: String, target: GameUnit, point: Vector2) -> void:
 	if not active or not alive(caster): return
@@ -246,7 +251,7 @@ func on_cast(caster: GameUnit, spell: String, target: GameUnit, point: Vector2) 
 	if _effect(caster) == "echo":
 		var r: Dictionary = rows[caster.uid]
 		r.casts += 1
-		if int(r.casts) % int(_gear(caster).echo_every) == 0: _packet(caster, target, _budget(caster) * float(_gear(caster).echo_damage), school, "echo")
+		if int(r.casts) % int(_gear(caster).echo_every) == 0: _packet(caster, target, float(_gear(caster).echo_damage), school, "echo")
 
 func _team(u: GameUnit) -> int:
 	return int(rows[u.uid].team) if rows.has(u.uid) else int(u.get_meta("arena_placement", {}).get("team", 1))

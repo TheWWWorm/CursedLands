@@ -53,15 +53,18 @@ func _ready() -> void:
 	var body_before:=ArenaOnlineGame.exact_body(horror)
 	battle.phase=ArenaMatch.Phase.PAUSED
 	var initial:=horror.model.position.y
+	var floating_center := ArenaPveMatch._corpse_bounds(horror).get_center().y
+	var living_basis := horror.model.basis
 	battle._process(0.5)
 	check(horror.model.position.y==initial,"paused combat holds the corpse's fall")
 	battle.phase=ArenaMatch.Phase.FIGHT
 	for i in 20:
 		horror._anim_acc+=GameUnit.TICK; horror.anim_flush()
 		battle._update_corpse_falls(GameUnit.TICK)
-	check(horror.model.position.y<initial-0.5,"Horror falls out of its authored hovering death cycle")
+	check(ArenaPveMatch._corpse_bounds(horror).get_center().y<floating_center-0.5,"Horror falls out of its authored hovering death cycle")
 	check(absf(ArenaPveMatch._corpse_clearance(horror))<0.001,"Horror's visible corpse touches the ground")
 	check(horror.is_frozen(),"landed Horror holds its final death pose")
+	check(absf(horror.model.basis.y.normalized().dot(living_basis.y.normalized())) < 0.001,"landed Horror lies flat instead of freezing upright")
 	check(horror.pos==position_before and ArenaOnlineGame.exact_body(horror)==body_before,"presentation fall preserves authoritative placement and health")
 	battle.phase=ArenaMatch.Phase.FINISHED; battle._process(1.0)
 	check(absf(ArenaPveMatch._corpse_clearance(horror))<0.001,"finished combat keeps the corpse on the snow")
@@ -69,15 +72,17 @@ func _ready() -> void:
 	# ground them immediately, independently of the board's display offset.
 	var snap:=horror.snapshot()
 	var corpse:=fighter("AncientCurseM25"); corpse.apply_snapshot(snap,true)
+	var living_transform := corpse.model.transform
 	world.position=Vector3(64,3,-64)
 	battle._update_corpse_falls(0)
 	check(absf(ArenaPveMatch._corpse_clearance(corpse))<0.001,"quiet scouted corpse grounds immediately on an offset board")
 	var online:=ArenaOnlineMatch.new(); add_child(online); online.set_process(false); online.world=world
-	corpse.model.position.y=0
+	corpse.model.transform=living_transform
 	online.phase=ArenaMatch.Phase.FINISHED; online._process(0)
 	check(absf(ArenaPveMatch._corpse_clearance(corpse))<0.001,"online replica dispatch grounds a finished scouted corpse")
 	corpse.revive(); battle._update_corpse_falls(0); online._update_corpse_falls(0)
 	check(is_zero_approx(corpse.model.position.y) and not corpse.is_frozen(),"revival restores the figure's living transform and playback")
+	check(corpse.model.transform.is_equal_approx(living_transform),"revival restores the living orientation as well as height")
 	world.erase_unit(corpse.uid); corpse.free()
 	online.world=null; online.queue_free()
 	battle.world=null; battle.queue_free(); world.queue_free(); await get_tree().process_frame

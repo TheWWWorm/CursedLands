@@ -51,6 +51,7 @@ func _addr_hint() -> String:
 func _rows() -> Array:
 	var locked := hosting or joining
 	var rows := [{"id":"name","kind":"edit","label":RemakeText.t("Your name"),"value":player_name,"on":not locked,"hint":RemakeText.t("Your name in the autochess tournament.")}]
+	rows.append({"id":"commander","kind":"choice","label":RemakeText.t("Choose your character"),"value":ArenaCommanders.title(GameData.arena_character),"on":not locked,"hint":RemakeText.t("Your character represents you on the board. This choice does not change your army.")})
 	if page == JOIN_COOP:
 		rows.append({"id":"addr","kind":"edit","label":RemakeText.t("Host's address"),"value":address,"on":not locked,"hint":_addr_hint()})
 	rows.append({"id":"password","kind":"edit","label":pw_label(),"value":password if page == HOST_COOP else join_password,"on":not locked,"hint":_pw_hint(page == HOST_COOP)})
@@ -61,6 +62,13 @@ func _rows() -> Array:
 	return rows
 
 func _activate(id: String, dir := 0) -> void:
+	if id == "commander":
+		if not _row_on(id): return
+		var index := ArenaCommanders.IDS.find(ArenaCommanders.valid(GameData.arena_character))
+		GameData.arena_character = ArenaCommanders.IDS[posmod(index + (-1 if dir < 0 else 1), ArenaCommanders.IDS.size())]
+		GameData.save_settings()
+		queue_redraw()
+		return
 	if id == "port":
 		_focus = "port"; _caret_t = 0
 		if TouchInput.enabled: TouchTextEdit.open(self,port_text,5,func(value): port_text=value; queue_redraw(),"Port")

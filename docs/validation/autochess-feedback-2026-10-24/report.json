@@ -1,0 +1,414 @@
+{
+  "date": "2026-10-24",
+  "branch": "fix/autochess-portraits-seams-20261024",
+  "base": "44d99daa691f9c7ecdfa7255431e0164507bea63",
+  "engine": "Godot 4.7 stable official 5b4e0cb0f",
+  "scope": "Local implementation; no release or public deployment",
+  "headless": [
+    {
+      "name": "arena_flat_equipment",
+      "status": "passed",
+      "summary": [
+        "ARENA_FLAT_EQUIPMENT 180 failures=[]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_flat_equipment.log",
+      "log_sha256": "16c56e8a680370045acc0532f58211193bde05c90252469303e326712cebead1"
+    },
+    {
+      "name": "arena_combat_effects",
+      "status": "passed",
+      "summary": [
+        "ARENA_COMBAT_EFFECTS checks=31 failures=[] battle=[0,20.6799999999999,[379.766451250358,358.393905646052],{\"echo\":2,\"guardian\":2,\"spirit\":4,\"spirit_echo\":2,\"storm\":2,\"ward\":2}]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_combat_effects.log",
+      "log_sha256": "d72ba6ccc2ade6f2d6ae78f49cceb97306940c79493feaf7fd4be0212461a2a6"
+    },
+    {
+      "name": "arena_item_tiers",
+      "status": "passed",
+      "summary": [
+        "ARENA_ITEM_TIERS checks=166 failures=[]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_item_tiers.log",
+      "log_sha256": "b36de6ced2a600b8216f87a16396f46e2ba2a323964115a023cc3af082b9413b"
+    },
+    {
+      "name": "arena_equipment_localization",
+      "status": "passed",
+      "summary": [
+        "ARENA_EQUIPMENT_LOCALIZATION checks=1068 failures=[]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_equipment_localization.log",
+      "log_sha256": "146cea41c9814c2f54e2844602c0b103d48881e599797c55c340d987f2e69c37"
+    },
+    {
+      "name": "arena_creature_feedback",
+      "status": "passed",
+      "summary": [
+        "ARENA_CREATURE_FEEDBACK 67 checks; failures=[]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_creature_feedback.log",
+      "log_sha256": "d7188d28852f52482504c853eb64b85ca6efcf902580caaf0e949975c1f89453"
+    },
+    {
+      "name": "arena_equipment",
+      "status": "passed",
+      "summary": [
+        "ARENA_EQUIPMENT {\"checks\":51,\"failures\":[]}"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_equipment.log",
+      "log_sha256": "d2f14c81fafc96f8800e00f00a6669138677a0647f9cf6c749c0d9bb67cc4532"
+    },
+    {
+      "name": "arena_bot_equipment_formation",
+      "status": "passed",
+      "summary": [
+        "ARENA_BOT_EQUIPMENT_FORMATION {\"checks\":108,\"failures\":[]}"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_bot_equipment_formation.log",
+      "log_sha256": "d52133c63798f21f7fa7e09294194c166710277c98f27e2507d210f278acaa51"
+    },
+    {
+      "name": "arena_online_lobby",
+      "status": "passed",
+      "summary": [
+        "ARENA_ONLINE_LOBBY 80 checks; failures=[]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_online_lobby.log",
+      "log_sha256": "463164ea04a3d9c7eebeb481050fe6fb5bade5fd11d3528fe2c212a9ea72fae6"
+    },
+    {
+      "name": "arena_snow_edges",
+      "status": "passed",
+      "summary": [
+        "ARENA_SNOW_EDGES 1090 checks; failures=[]"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/evidence/arena_snow_edges.log",
+      "log_sha256": "5b874e08052b1ba414b53b3258bad499e5faa3114b8ec6e77280870c82cd3c8f"
+    }
+  ],
+  "graphical": [
+    {
+      "id": "48219e087e644d82",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "Final all-item reward layout and battle music en",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/repo/../runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/tests/arena_item_tiers_ui.gd",
+        "--tier-lang=en"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/48219e087e644d82",
+      "summary": [
+        "ARENA_ITEM_TIERS_UI en checks=322 failures=[]"
+      ]
+    },
+    {
+      "id": "951e1fbeeacf4038",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "Final all-item reward layout and battle music ru",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/repo/../runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--tool=res://tools/tests/arena_item_tiers_ui.gd",
+        "--tier-lang=ru"
+      ],
+      "gpu_slot": "0",
+      "log_directory": "/var/lib/gpu-lab-gpu0/jobs/951e1fbeeacf4038",
+      "summary": [
+        "ARENA_ITEM_TIERS_UI ru checks=322 failures=[]"
+      ]
+    },
+    {
+      "id": "d576ee0062f94dce",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "Final all-item reward layout and battle music de",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/repo/../runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=res://tools/tests/arena_item_tiers_ui.gd",
+        "--tier-lang=de"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/d576ee0062f94dce",
+      "summary": [
+        "ARENA_ITEM_TIERS_UI de checks=322 failures=[]"
+      ]
+    },
+    {
+      "id": "f94066e5c8e34fa8",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "Final Curse landing with torso grounded",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/repo/../runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/tests/arena_curse_death_ui.gd"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/f94066e5c8e34fa8",
+      "summary": [
+        "ARENA_CURSE_DEATH_UI 5 failures=[]"
+      ]
+    },
+    {
+      "id": "5afbea8af9644c7e",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "Final portrait HUD and elimination audio ordering EN",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1600x900",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/tests/arena_portrait_feedback_ui.gd",
+        "--lang=en"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/5afbea8af9644c7e",
+      "summary": [
+        "ARENA_COMMANDER_UI 99 failures=[]"
+      ]
+    },
+    {
+      "id": "0b2485020c3343c9",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "White outlined top HUD and final animated portraits ru",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1600x900",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/in-game-wiki-20261015/data/ru",
+        "--tool=res://tools/tests/arena_portrait_feedback_ui.gd",
+        "--lang=ru"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/0b2485020c3343c9",
+      "summary": [
+        "ARENA_COMMANDER_UI 98 failures=[]"
+      ]
+    },
+    {
+      "id": "73d135b6ac684d9d",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "White outlined top HUD and final animated portraits de",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1600x900",
+        "--",
+        "--no-movies",
+        "--ei-inline-host",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=res://tools/tests/arena_portrait_feedback_ui.gd",
+        "--lang=de"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/73d135b6ac684d9d",
+      "summary": [
+        "ARENA_COMMANDER_UI 98 failures=[]"
+      ]
+    },
+    {
+      "id": "e8c57bab14ac44d3",
+      "status": "completed",
+      "exit_code": 0,
+      "label": "Final white HUD online authority and scouting DE",
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-portraits-seams-20261024/runtime",
+        "--display-driver",
+        "x11",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--windowed",
+        "--resolution",
+        "1280x800",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/visuals-aim-localization-20261013/german/app",
+        "--tool=res://tools/tests/arena_online_ui.gd",
+        "--online-ui=de,1280,800"
+      ],
+      "gpu_slot": "1",
+      "log_directory": "/var/lib/gpu-lab/jobs/e8c57bab14ac44d3",
+      "summary": [
+        "ARENA_ONLINE_UI 45 checks; failures=[]"
+      ]
+    }
+  ],
+  "test_preferences": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0,
+    "fps_limit": 1
+  },
+  "source_sha256": {
+    "game/assets/arena/company.svg": "dacb0a2250609a21880374d9606550b15e3b8987c737275bfc7cfb2620280041",
+    "game/assets/arena/items/focus.png": "b4ac214a10727cb9267517b953036b60bfa3b4436ff289b64189140fb7729c5c",
+    "game/assets/arena/items/manifest.json": "fba30be33e56597e42ba8e1914937208e0f1c0e029fd58e546e371d4bd2c6558",
+    "game/assets/arena/items/staff.png": "a6f2c31046ab42557c02c34559a7f5856938fda47fc05b0559d1305604c89664",
+    "game/src/ei/game_data.gd": "0a6402e79fb8ba12650baf65d3387d5c504ebf9fcde6aa19ab65292301c265b3",
+    "game/src/ei/remake_text.gd": "9afa742cec37b6b14e8a7c47e2759e9c6f643aa206127a46de315411e74615b2",
+    "game/src/game/arena_bot_planner.gd": "498dbd64e8350e6e9690fb226b667c61744bc7b2d730240372b6f40e3d7d3baf",
+    "game/src/game/arena_combat_effects.gd": "70cc9044bb1586c9638c71350d6de9e4b3357bf1c3e1b7376c0f4c70a67120fe",
+    "game/src/game/arena_commanders.gd": "69f697c6d3ec9d566990c9bdb42149d04fac535a626869846be8770c623ab18a",
+    "game/src/game/arena_commanders.gd.uid": "ddda8b5d8a114f9f2f80385a4df9880f2642e621f4d61cf97ba9292b184daa4c",
+    "game/src/game/arena_items.gd": "97f54e311c88f7d5fdf445e64a426c64f25393308783da90f407360e98c0f3fc",
+    "game/src/game/arena_local_host.gd": "e1e5588799ddafe0fe5c98a2d31b8d68735092c1aa0ac5325c1a32477ebc21cb",
+    "game/src/game/arena_online_session.gd": "6c6fc2358a9e67f24f8c56196f00333879a843751633c53b024f6057e21fb81a",
+    "game/src/game/arena_online_view.gd": "d426ccba91fb8377be387b7f525813292c9a679a76c9cd98d48a430aadc6163a",
+    "game/src/game/arena_pve_match.gd": "54dd74d9488084135dd56a27c198a1ac18df73d5a1ac527d1b83134ada03cfd8",
+    "game/src/game/arena_run.gd": "e678e317007604cd98520b74d8bee17f566b64150d6783f323d8fde5c50659c4",
+    "game/src/game/arena_terrain.gd": "f7b8e048e4e5535d6bd889970200acec918bf3662f99bba2259623a5e0facdcc",
+    "game/src/game/arena_tournament_run.gd": "8cee608d4e91c7f3196beb1ac7d848c3ccc2e04d69736be45408a51608a92e73",
+    "game/src/game/arena_winter_terrain.gd": "4a10d92e542423f4a7373bf7ecea03fa159e812e1cd8254e8116c822bbcd4898",
+    "game/src/game/music_system.gd": "647578f375eda0192d4adf7e8420c5235411c44d356c0cb996d787695b2023d1",
+    "game/src/game/spells.gd": "9b305e1e3224b30f697e5a834a901794c54ac9cbd5a5cb2c5f6f60d1c920fb7f",
+    "game/src/ui/arena_commander_portrait.gd": "9d2934bd7b44473168ec364bf8831fecdab10e7d22e2c4c76db95f529b2d793d",
+    "game/src/ui/arena_commander_portrait.gd.uid": "6188b34e4c4ebb94c24bffca8058d97adbd000f695db7d661202f8b56038dfac",
+    "game/src/ui/arena_creature_card.gd": "c92846168909023ecb5a823e89f83bf8071a57f2ec118dcdd7ae0c89e1dab984",
+    "game/src/ui/arena_equipment_reward.gd": "2feb3271f662fd595942ab8f8212ffd282a4239c6bcfeedd267a0a921c5ad140",
+    "game/src/ui/arena_item_slot.gd": "849ac446e1e74dd60e044e18c813b7018231f6fa0ddd7d2d4b62f00286b2f280",
+    "game/src/ui/arena_item_tray.gd": "f3f1ba15995719d474a54acf1b9525445393d9e5ed25c1f5bd974e482a7ff0bd",
+    "game/src/ui/arena_online_panel.gd": "b6595f80939c94274477d4f028e31186c90c1d709c8dc3783a9a681ca2bd1bef",
+    "game/src/ui/arena_pve_screen.gd": "280391a5e976415f737428380ee64c16bb1b2460e56cb7a64fdb3c348dda5454",
+    "game/src/ui/arena_snow_surround.gd": "23fbba0c359948fced07f98b63b00ba7d0e94e994559ea29b66883bb7567cb69",
+    "tools/benchmarks/arena_stat_item_art_export.gd": "b4dfda4519b8a62c0b392198451ccf6b06e432b66f5f92ded8566325180f52da",
+    "tools/tests/arena_combat_effects.gd": "d8cce652d804c4ff5dd1f4c18793275e7e5ceeb4815c3fc645c58e41e924cc78",
+    "tools/tests/arena_creature_feedback.gd": "41b1fcc84a027893f4e88541de4a2c02bbb88d528296959ae6cdbac6f9c0e302",
+    "tools/tests/arena_curse_death_ui.gd": "141b4594f24297db2c194b33bd1ffeedce4680a5f1438fe0656f7e6095142da3",
+    "tools/tests/arena_equipment_localization.gd": "dabab339f9e1bdf190a95ee6dfeb92eb170bb6dab45c181557fa088ddd1d907f",
+    "tools/tests/arena_flat_equipment.gd": "6d5e3b2ba8d13fd9df5dc31a50dd7c587cb93886a06793edf0c161cc3f081b4b",
+    "tools/tests/arena_item_tiers.gd": "aed78d91eb6ed4ac3c0bb672d451da63409d145533b69bf983d5602837e5dd4e",
+    "tools/tests/arena_item_tiers_ui.gd": "c7f340bb4633e149290ce8d94ea4899c349ea2f9bd4b0236fe5182c6fc66086a",
+    "tools/tests/arena_online_lobby.gd": "38790662adeb36292fa3c6f5493149675c34e164f608922846c4b941916d4a21",
+    "tools/tests/arena_online_ui.gd": "d6972cfc6d3d5996c7c04802e1fb2adf156acbb80af32cc0a2d3218f032f6efa",
+    "tools/tests/arena_portrait_feedback_ui.gd": "0063381c9c84f7dee9e0ef0eabd263bd040e1b58b8e7a7531831bdece4dd2d3c",
+    "tools/tests/arena_snow_edges.gd": "031caa7f3a9401ff8c9988c1d517a80ac4cb0cf28ec0ad06341e6b91fd365fcd"
+  },
+  "screenshot_sha256": {
+    "character-choice-de.png": "b4f2a08935edd436dc7e8f7a4ef7904d3c2d838335eb8f94bfa17a0a497f2607",
+    "curse-falling.png": "b98188898d37f455751e51bf2753c6d4de0ade8ca9dd111b7bc259fc193fa3f8",
+    "curse-landed.png": "1adf548ee3c5d467cfaf3c77bdf3336f50179fc56cb990e0def4fe460dc02d10",
+    "equipment-reminder.png": "4d5beec6e16472c764e74326e684e3b4a52891a639e1aae8b31454e9f4b6a869",
+    "online-scout-de.png": "fdfaed29cf1a0182f69c85d06a9ca974d9700352b703637a002c9e11b6e796bd",
+    "portrait-720.png": "547f4f95019d26078702940a5c7aef88bc77f862d3bed0b43e18e97ddbfeffd4",
+    "portrait-board.png": "22c36a16e2bfaa06ce61ec093f628cdfb4d772d6b0047fd5ba903407e1b4e765",
+    "portrait-details-ru.png": "766dd07ad7ea8e2f5fd1a0654e25f43bc38f611e01f4db1c57ffd9419e92f632",
+    "portrait-frowns.png": "5f81c24efcca433c75775cc6ed9069dad652284142ca1c49ae0e6d5165c44f98",
+    "portrait-smiles.png": "f19323bf2edfc20bb1e0747ee16f81331eb8895318efb47d6f5766dfdef7a5c7",
+    "portrait-upgrade.png": "aa797883e715f1eb32c4f67a3917f0baacbb8b4b12bf34ed7cc0b0fccb6ec1d5",
+    "reward-tier1-ru.png": "3777af70a66c70012946dc6b3f98e8c5c2dd208365bd0f3b329dfc0fe9efd9b7",
+    "reward-tier5-de.png": "7d75098d211b7549f936e759d40f944cac5c2d1933e97861b8db0f10bb9cdbab",
+    "snow-boundary.png": "c5cbd2a7984384c5ba7419a01266e79ad39f1d2e085a9ba095417ab79fc355e4",
+    "snow-overview.png": "99e030c6b3af29da4cdeaffe90ec4a69cb67c29bb1c670be1a4a9862123c9035"
+  },
+  "known_diagnostic": "Existing official Godot 4.7 TexUpscaleTexture compute push-constant diagnostic; ignored by the existing UI test logger, other errors fail.",
+  "limits": [
+    "Music and original hero-death cue routing/lifecycle verified with muted audio.",
+    "Curse final topple is a presentation adjustment; exact original runtime orientation was not established.",
+    "Fixed item values are initial tuning, not a competitive balance claim."
+  ],
+  "validation_note": "EN includes one additional test for an elimination state arriving after its board result. RU/DE layout and reaction checks use identical HUD styling; reward and corpse captures predate the final HUD positioning."
+}

@@ -18,7 +18,6 @@ var live_boards := false
 var board_results := {}
 var _round_health: Array[int] = []
 var bot_plans: Array[Dictionary] = []
-const NPCS := ["elder", "witch", "smith", "kapitan", "huber", "magess", "orcc", "karh"]
 
 func arrivals_at_start() -> bool: return true
 
@@ -48,9 +47,11 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	_human_result.clear(); previous_opponent = -1
 	super.begin(seed_value, chosen_starter, 0)
 	placements.resize(PLAYER_COUNT); placements.fill(0)
+	var identities := ArenaCommanders.opponents(commander)
 	for index in PLAYER_COUNT - 1:
 		var rival := ArenaRun.new()
 		rival.auto_save = false
+		rival.commander = identities[index]
 		rival.begin(1 + (run_seed * 37 + index * 7919) % 99999998)
 		rivals.append(rival); rival_health.append(100)
 	_share_pool()
@@ -92,8 +93,7 @@ func company(player: int) -> ArenaRun:
 
 func player_title(player: int) -> String:
 	if player == 0: return GameData.player_name
-	var row: Dictionary = WikiLoreData.DATA.campaigns.cursed_lands["character/" + NPCS[player - 1]]
-	return WikiLore.new().character_name(row)
+	return ArenaCommanders.title(company(player).commander)
 
 func player_fighting(player: int) -> bool:
 	return stage == "fight" and health(player) > 0 and not board_results.has(player)
@@ -414,6 +414,8 @@ func _restore_companies(data: Dictionary, seats: int) -> bool:
 		if not _integer(data.rival_health[index],0,100) or not data.rivals[index] is Dictionary: return false
 		var bot := ArenaRun.new(); bot.auto_save = false
 		if not bot.restore(data.rivals[index]) or bot.stage != "prepare": return false
+		if not data.rivals[index].has("commander"):
+			bot.commander = ArenaCommanders.opponents(String(data.get("commander", "hero")))[index % 8]
 		# Company waves cap at the expedition limit; migration must use the
 		# actual tournament round for its no-retroactive-rewards watermark.
 		if int(data.rivals[index].version) < 14 and not data.rivals[index].has("items"):

@@ -104,6 +104,7 @@ var _rail_box: VBoxContainer
 var _shop_panel: PanelContainer
 var _bench_panel: PanelContainer
 var _fight_panel: PanelContainer
+var _actions_panel: PanelContainer
 var _bench_bar: HBoxContainer
 var _bench_scroll: ScrollContainer
 var _landing_layer: Control
@@ -139,6 +140,15 @@ var _clock_pulse := 0.0
 var _clock_urgency := -1
 var _camera_keys := {}
 var _cursor: GameCursor
+var _commander_portrait: ArenaCommanderPortrait
+var _character_picker: OptionButton
+var _character_preview: ArenaCommanderPortrait
+var _portrait_subject := ""
+var _portrait_ranks := {}
+var _portrait_level := 0
+var _defeat_session := ""
+var _defeat_played := false
+var _round_loss_cue := -1
 
 
 func _ready() -> void:
@@ -313,8 +323,9 @@ func _ready() -> void:
 	_standing_scroll.add_child(_standing_rows)
 	_bench_panel = _unframed(_hud)
 	_bench_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_bench_panel.offset_left = 24; _bench_panel.offset_right = -24
-	_bench_panel.offset_top = -188; _bench_panel.offset_bottom = -14
+	_bench_panel.offset_left = 24; _bench_panel.offset_right = -330
+	_bench_panel.offset_top = -218; _bench_panel.offset_bottom = -44
+	_bench_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_bench_bar = HBoxContainer.new()
 	_bench_bar.add_theme_constant_override("separation", 20)
 	var bench_column := VBoxContainer.new()
@@ -387,23 +398,28 @@ func _ready() -> void:
 	_bench_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	_bench_scroll.resized.connect(_fit_reserve_slots)
 	bench_column.add_child(_bench_scroll)
+	_commander_portrait = ArenaCommanderPortrait.new()
+	_hud.add_child(_commander_portrait)
+	_commander_portrait.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_commander_portrait.offset_left = -312; _commander_portrait.offset_right = -12
+	_commander_portrait.offset_top = -300; _commander_portrait.offset_bottom = 0
 	_army_row = HBoxContainer.new()
 	_army_row.add_theme_constant_override("separation", 8)
 	_bench_scroll.add_child(_army_row)
 	_army_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_army_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	var actions := HBoxContainer.new()
-	actions.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	actions.alignment = BoxContainer.ALIGNMENT_END
-	actions.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	actions.add_theme_constant_override("separation", 18)
-	_bench_bar.add_child(actions)
+	_actions_panel = _unframed(_hud)
+	_actions_panel.custom_minimum_size.x = 196
+	_actions_panel.minimum_size_changed.connect(_layout_top_controls.call_deferred)
+	var actions := VBoxContainer.new()
+	actions.add_theme_constant_override("separation", 10)
+	_actions_panel.add_child(actions)
 	var purse := HBoxContainer.new()
 	purse.alignment = BoxContainer.ALIGNMENT_CENTER
 	purse.add_theme_constant_override("separation", 10)
 	purse.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	actions.add_child(purse)
-	ArenaCreatureCard.ink_icon(_icon(purse, preload("res://assets/arena/coin.svg")), ArenaCreatureCard.SNOW_INK)
+	ArenaCreatureCard.ink_icon(_icon(purse, preload("res://assets/arena/coin.svg")), PAPER)
 	var treasury := VBoxContainer.new()
 	treasury.add_theme_constant_override("separation", 0)
 	purse.add_child(treasury)
@@ -412,7 +428,7 @@ func _ready() -> void:
 	var gap := Control.new()
 	gap.custom_minimum_size.x = 2
 	purse.add_child(gap)
-	ArenaCreatureCard.ink_icon(_icon(purse, preload("res://assets/arena/life.svg")), ArenaCreatureCard.SNOW_INK)
+	ArenaCreatureCard.ink_icon(_icon(purse, preload("res://assets/arena/life.svg")), PAPER)
 	_lives = _label(purse, "", 17, PAPER)
 	_start = _button(actions, RemakeText.t("Start battle"), _fight, "", true)
 	_start.custom_minimum_size = Vector2(152, 44)
@@ -432,8 +448,8 @@ func _ready() -> void:
 	_sell_target.icon = preload("res://assets/arena/sell.svg")
 	_sell_target.add_theme_constant_override("icon_max_width", 20)
 	_sell_target.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_sell_target.offset_left = -218; _sell_target.offset_right = -24
-	_sell_target.offset_top = -298; _sell_target.offset_bottom = -254
+	_sell_target.offset_left = -524; _sell_target.offset_right = -330
+	_sell_target.offset_top = -274; _sell_target.offset_bottom = -230
 	_sell_target.hide()
 	_outcome_shade = ColorRect.new()
 	_outcome_shade.color = Color(0.02, 0.025, 0.02, 0.32)
@@ -449,7 +465,7 @@ func _ready() -> void:
 	_outcome.add_child(_dock)
 	_message = _label(_hud, "", 13, PAPER)
 	_message.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_message.offset_left = 24; _message.offset_right = -24
+	_message.offset_left = 24; _message.offset_right = -330
 	_message.offset_top = -26; _message.offset_bottom = -6
 	_message.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_message.add_theme_color_override("font_shadow_color", Color.BLACK)
@@ -467,7 +483,7 @@ func _ready() -> void:
 	_scout_return.add_theme_constant_override("icon_max_width", 16)
 	_scout_return.name = "ReturnToBoard"
 	for label in [_scout_name, _scout_details]: _standing_ink(label)
-	for label in [_gold, _income, _lives]: ArenaCreatureCard.snow_ink(label)
+	for label in [_gold, _income, _lives]: ArenaCreatureCard.snow_ink(label, PAPER)
 	for label in [_army_title, _reserve_count]:
 		label.add_theme_color_override("font_color", PAPER)
 		ArenaCreatureCard.outline(label)
@@ -517,6 +533,10 @@ func _ready() -> void:
 	_layout_hud()
 	_sound = GameSound.new()
 	add_child(_sound)
+	# Reserve the authored victory theme for winning the tournament. Short
+	# arena battles start their fighting track at the bell, without a calm intro.
+	for track: String in ["rage", "enemies", "atwar", "battle", "combat", "attack", "blood", "clash", "murder", "fight"]:
+		if not EIAudio.music_path(track).is_empty(): _sound.music.combat_tracks.append(track)
 	_sound.set_process(false)
 	battle.world_replacing.connect(func():
 		_sound.on_world(null)
@@ -530,7 +550,7 @@ func _ready() -> void:
 	battle.presentation_finished.connect(_refresh)
 	if not ArenaRules.available():
 		_rail.hide(); _shop_section.hide(); _pause.hide(); _speed.hide(); _bench_bar.hide()
-		_shop_panel.hide(); _bench_panel.hide(); _fight_panel.hide(); _round_panel.hide()
+		_shop_panel.hide(); _bench_panel.hide(); _actions_panel.hide(); _fight_panel.hide(); _round_panel.hide()
 		_outcome.show()
 		_layout_outcome()
 		_wrap(_dock, RemakeText.t("This expedition needs the original Evil Islands game files. Choose the original campaign in the main menu."), 18)
@@ -581,6 +601,7 @@ func _sync_victory_music() -> void:
 
 func _refresh() -> void:
 	_sync_victory_music()
+	_sync_defeat_sound()
 	_capture_health_changes()
 	_encounter_key = 0
 	_header.visible = false # The opening composition carries the expedition title.
@@ -606,6 +627,7 @@ func _refresh() -> void:
 		_result_remaining = 4.0
 	_bench_panel.visible = not landing
 	_bench_bar.visible = not landing
+	_actions_panel.visible = not landing
 	_shop_toggle.visible = not landing
 	_shop_toggle.set_pressed_no_signal(_shop_open)
 	_shop_toggle.tooltip_text = RemakeText.t("Close shop" if _shop_open else "Open shop")
@@ -685,7 +707,7 @@ func _refresh() -> void:
 	_army_title.text = RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()]
 	_army_title.tooltip_text = ""
 	_army_title.remove_meta("arena_help")
-	_army_title.add_theme_color_override("icon_normal_color", MUTED)
+	_army_title.add_theme_color_override("icon_normal_color", Color.WHITE)
 	_army_title.disabled = landing
 
 	if _army_title.disabled:
@@ -969,30 +991,29 @@ func _build_landing() -> void:
 	if run is ArenaTournamentRun:
 		_button(choices, RemakeText.t("Play online"), func():
 			if get_parent().has_method("open_arena_online"): get_parent().open_arena_online(), RemakeText.t("Host or join a nine-player tournament. Computers fill empty seats."))
-	# Original models form one scene, rather than three starter-choice cards.
 	var showcase := VBoxContainer.new()
-	showcase.custom_minimum_size.x = 430
+	showcase.custom_minimum_size.x = 330
 	showcase.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	showcase.size_flags_stretch_ratio = 1.25
+	showcase.add_theme_constant_override("separation", 8)
 	columns.add_child(showcase)
-	var stage := Control.new()
-	stage.custom_minimum_size.y = 260
-	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	showcase.add_child(stage)
-	# The flying figure uses a wider frame above and beside the grounded pair.
-	# Its transparent viewport overlaps the stage edge, keeping the wings large.
-	for spec in [["boarredf3", 0.0, 0.39, 0.4, 1.0], ["trollbluef12", 0.23, 0.8, 0.2, 1.0], ["succubgreym13", 0.2, 1.2, -0.25, 0.6]]:
-		var preview := WikiPreview.new()
-		preview.fit_slot = true
-		stage.add_child(preview)
-		preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		preview.anchor_left = spec[1]; preview.anchor_right = spec[2]
-		preview.anchor_top = spec[3]; preview.anchor_bottom = spec[4]
-		preview.show_model(ArenaAppearance.preview(spec[0]))
-		preview.turn_by(-0.25)
-		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var character_heading := _label(showcase, RemakeText.t("Choose your character"), 24, GOLD)
+	character_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	character_heading.add_theme_font_override("font", _heading_font)
+	_character_preview = ArenaCommanderPortrait.new()
+	_character_preview.custom_minimum_size = Vector2(240, 220)
+	_character_preview.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	showcase.add_child(_character_preview)
+	_character_preview.show_character(GameData.arena_character)
+	_character_picker = OptionButton.new()
+	_character_picker.custom_minimum_size.y = 40
+	_character_picker.tooltip_text = RemakeText.t("Your character represents you on the board. This choice does not change your army.")
+	for id: String in ArenaCommanders.IDS: _character_picker.add_item(ArenaCommanders.title(id))
+	_character_picker.select(ArenaCommanders.IDS.find(ArenaCommanders.valid(GameData.arena_character)))
+	_character_picker.item_selected.connect(func(index):
+		GameData.arena_character = ArenaCommanders.IDS[index]
+		GameData.save_settings()
+		_character_preview.show_character(GameData.arena_character))
+	showcase.add_child(_character_picker)
 	var regions := _wrap(showcase, " · ".join([ArenaRules.region_name(0), ArenaRules.region_name(1), ArenaRules.region_name(2)]), 15, GOLD)
 	regions.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_rule(showcase)
@@ -1028,6 +1049,7 @@ func _begin() -> void:
 	_equipment_reward_seen = ""
 	_clear_selection()
 	run.auto_save = true
+	run.commander = GameData.arena_character
 	run.begin(chosen, 0, challenge_index)
 	_setup_tournament_battles()
 	_hint("")
@@ -1305,7 +1327,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if family >= 0: _wrap(_inspect_box, RemakeText.t(ArenaRules.FAMILIES[family].hook), 13, accent)
 	_live_health = _wrap(_inspect_box, ArenaUnitInfo.summary(id, _inspected_unit, family, rank), 13)
 	if is_instance_valid(_inspected_unit) and family >= 0 and (not String(_inspected_unit.get_meta("arena_placement", {}).get("item", "")).is_empty() or ArenaAlliances.counts(_field_army()).values().any(func(n): return int(n) >= 2)):
-		_wrap(_inspect_box, RemakeText.t("Equipment and alliance effects activate during battle."), 12, MUTED)
+		_wrap(_inspect_box, RemakeText.t("Stats include equipment and alliances. Triggered effects activate in battle."), 12, MUTED)
 
 	var spells := _spell_titles(ArenaRules.recruit_prototype(family,rank,GameData.db.find("monster_prototypes", id)))
 	if not spells.is_empty(): _wrap(_inspect_box, spells, 13, GOLD)
@@ -1449,7 +1471,6 @@ func _battle_changed() -> void:
 		_pause.tooltip_text = RemakeText.t("Resume" if battle.phase == ArenaMatch.Phase.PAUSED or _league_paused else "Pause") + " · " + RemakeText.t("Space")
 		if _tooltips: _tooltips.capture(_pause)
 	_update_encounter_status()
-	if _sound and not _victory_played: _sound.music.tick(2 if battle.phase == ArenaMatch.Phase.FIGHT else 0)
 
 
 func _viewed_battle() -> ArenaPveMatch:
@@ -1481,6 +1502,7 @@ func _update_encounter_status() -> void:
 
 
 func _process(dt: float) -> void:
+	_update_commander()
 	_update_item_targets()
 	_cursor.set_kind("cursor_camera" if field._right_dragged or field._orbit else "cursor_default")
 	if _camera_input_allowed():
@@ -1520,7 +1542,7 @@ func _process(dt: float) -> void:
 	_hit_numbers.visible = not field.showing_boards()
 	_vignette.visible = not field.showing_boards()
 	if field.showing_boards():
-		for control in [_shop_panel, _bench_panel, _round_panel, _fight_panel, _shop_toggle, _start, _battle_sidebar, _alliance_panel, _scout_bar, _standings, _rail, _message]: control.hide()
+		for control in [_shop_panel, _bench_panel, _actions_panel, _round_panel, _fight_panel, _shop_toggle, _start, _battle_sidebar, _alliance_panel, _scout_bar, _standings, _rail, _message]: control.hide()
 	if not network_play and not landing and run.stage == "result" and battle.settle_remaining <= 0 and not _modal_layer.visible:
 		_result_remaining = maxf(0.0, _result_remaining - dt / maxf(Engine.time_scale, 0.001))
 		_update_result_countdown()
@@ -1562,6 +1584,7 @@ func _process(dt: float) -> void:
 
 	if _sound and watched and is_instance_valid(watched.world):
 		_listen_to(watched.world)
+		if not _victory_played: _sound.music.tick(2 if watched.phase in [ArenaMatch.Phase.FIGHT, ArenaMatch.Phase.PAUSED] else 0)
 		_sound.mixer.set_listener(Vector3(32, 32, 2), Vector2(0, 1).rotated(field.yaw), Vector2(1, 0).rotated(field.yaw))
 		if watched.phase == ArenaMatch.Phase.FIGHT:
 			if _sound.mixer.suspended: _sound.mixer.resume()
@@ -1817,7 +1840,16 @@ func _layout_round_badge() -> void:
 	_round_panel.offset_left = -116 - maxf(160, minimum.x)
 	_round_panel.offset_right = -116
 	_round_panel.offset_bottom = 16 + maxf(44, minimum.y)
+	_layout_top_controls()
 	_layout_standings.call_deferred()
+
+
+func _layout_top_controls() -> void:
+	if not is_instance_valid(_actions_panel) or not is_instance_valid(_round_panel): return
+	var width := maxf(196, _actions_panel.get_combined_minimum_size().x)
+	_actions_panel.size = Vector2(width, 0)
+	_actions_panel.position = Vector2(_round_panel.position.x - width - 16, 18)
+	_shop_panel.offset_right = minf(960, _actions_panel.position.x - 16)
 
 
 func _layout_outcome() -> void:
@@ -1848,7 +1880,7 @@ func _layout_hud() -> void:
 	_hud.size = size / _ui_scale
 	field.ui_scale = _ui_scale
 	field._update_camera()
-	_shop_panel.offset_right = minf(960, _hud.size.x - 300)
+	_layout_top_controls()
 	_layout_battle_sidebar.call_deferred()
 	if _army_row and not run.army.is_empty(): _build_army()
 	_layout_outcome()
@@ -1860,9 +1892,10 @@ func _layout_hud() -> void:
 
 func _layout_inspector() -> void:
 	if not _inspect_box or not _hud: return
-	# Use the real free space above the reserve/actions row. A fixed 240-pixel
-	# bottom margin clipped the upgrade strip even with empty space below it.
+	# Keep the scrollable details above both the reserve strip and the bust.
 	var bottom := _bench_panel.position.y - 8 if is_instance_valid(_bench_panel) else _hud.size.y - 188
+	if is_instance_valid(_commander_portrait) and _commander_portrait.visible:
+		bottom = minf(bottom, _commander_portrait.position.y - 8)
 	var maximum := maxf(120, bottom - _rail.offset_top)
 	var content := _inspect_box.get_combined_minimum_size().y + 20
 	_rail.offset_bottom = _rail.offset_top + clampf(content, 80, maximum)
@@ -1904,7 +1937,7 @@ func _layout_modal() -> void:
 	if is_instance_valid(_guide_scroll): _guide_scroll.custom_minimum_size.y = minf(440, _hud.size.y - 220)
 	if is_instance_valid(_equipment_scroll):
 		var content_height := _equipment_panel.get_combined_minimum_size().y if is_instance_valid(_equipment_panel) else 320.0
-		_equipment_scroll.custom_minimum_size.y = minf(maxf(320, content_height), minf(540, _hud.size.y - 160))
+		_equipment_scroll.custom_minimum_size.y = content_height
 		_modal_panel.custom_minimum_size.x = minf(960, _hud.size.x - 48)
 	_modal_panel.size = Vector2(_modal_panel.custom_minimum_size.x, 0)
 	_modal_panel.position = (_hud.size - _modal_panel.size) / 2
@@ -1996,6 +2029,7 @@ func _show_equipment() -> void:
 	_equipment_scroll = ScrollContainer.new()
 	_equipment_scroll.name = "EquipmentScroll"
 	_equipment_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_equipment_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_equipment_scroll.custom_minimum_size.y = minf(540, _hud.size.y - 160)
 	_equipment_scroll.follow_focus = true
 	_modal_box.add_child(_equipment_scroll)
@@ -2386,10 +2420,34 @@ func _play_cue(kind: String) -> void:
 
 
 func _round_finished(side: int) -> void:
+	if run.lives <= 0 or run.stage == "lost":
+		_sync_defeat_sound()
+		return
 	# Stop the battle mix before starting the result cue. Suspending it on
 	# the following frame would cut off this one-shot along with combat SFX.
 	if _sound: _sound.mixer.suspend()
 	_play_cue("win" if side == 0 else "lose")
+	if side != 0: _round_loss_cue = run.wave
+
+
+func _sync_defeat_sound() -> void:
+	var session := "%d:%d" % [run.get_instance_id(), run.run_seed]
+	if landing or session != _defeat_session:
+		_defeat_session = session
+		_defeat_played = false
+		_round_loss_cue = -1
+	var defeated: bool = run.stage == "lost" or (run is ArenaTournamentRun and int(run.placements[0]) > 1)
+	if not defeated and run.lives > 0: _defeat_played = false
+	if run.stage == "prepare" and run.lives > 0: _round_loss_cue = -1
+	if landing or _defeat_played or not defeated: return
+	_defeat_played = true
+	# A finished board can arrive before its authoritative elimination state.
+	# Its loss cue is already the same original game-over sound.
+	if _round_loss_cue == run.wave: return
+	# The original hero-death cue must also run for elimination delivered by
+	# an authority snapshot, even while watching somebody else's board.
+	if _sound: _sound.mixer.suspend()
+	_play_cue("lose")
 
 
 func _fit_reserve_slots() -> void:
@@ -2801,3 +2859,39 @@ func _update_name_flashes(dt: float) -> void:
 			color = color.lerp(Color("ff6e69"), pulse)
 		if button.get_theme_color("font_color") != color: _standing_ink(button,color)
 		button.set_meta("loss_flash", flashing)
+
+
+func _update_commander() -> void:
+	if not is_instance_valid(_commander_portrait): return
+	_commander_portrait.visible = not landing and not field.showing_boards()
+	if not _commander_portrait.visible:
+		_portrait_subject = ""
+		return
+	var player := _tournament_battles.viewed_player if is_instance_valid(_tournament_battles) else 0
+	var company: ArenaRun = run.company(player) if run is ArenaTournamentRun else run
+	_commander_portrait.show_character(company.commander)
+	var result: Dictionary = company.last_result
+	# Preparation retains the previous result; starting a new battle returns
+	# the watched player's expression to neutral until that board resolves.
+	var fighting: bool = run.player_fighting(player) if run is ArenaTournamentRun else run.stage == "fight"
+	var winner := -2 if fighting else int(result.get("winner", -2))
+	var event := "battle:%d" % int(result.get("wave", run.wave))
+	var place := int(run.placements[player]) if run is ArenaTournamentRun else 0
+	var eliminated: bool = run.health(player) <= 0 if run is ArenaTournamentRun else run.stage == "lost"
+	var champion := place == 1 if run is ArenaTournamentRun else run.stage == "won"
+	if eliminated or place > 1:
+		winner = 1; event = "match:lost"
+	elif champion:
+		winner = 0; event = "match:won"
+	_commander_portrait.set_result(winner, event)
+	# Compare acknowledged rosters, so solo purchases, online replies and
+	# computer companies use the same feedback without replaying on scouting.
+	var subject := "%d:%d:%d" % [run.get_instance_id(), run.run_seed, player]
+	var ranks := {}; var upgraded := false
+	for entry: Dictionary in company.army:
+		var uid := int(entry.uid); var rank := int(entry.rank)
+		ranks[uid] = rank
+		if _portrait_ranks.has(uid) and rank > int(_portrait_ranks[uid]): upgraded = true
+	if subject == _portrait_subject and not eliminated and not champion and (upgraded or company.capacity() > _portrait_level):
+		_commander_portrait.celebrate_upgrade()
+	_portrait_subject = subject; _portrait_ranks = ranks; _portrait_level = company.capacity()

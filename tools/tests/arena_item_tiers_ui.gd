@@ -21,6 +21,11 @@ func _ready() -> void:
 		screen.run.items.append({"uid":screen.run.next_item_uid,"kind":kind,"unit_uid":0})
 		screen.run.next_item_uid += 1
 	screen.run._touch(); await frames(12)
+	while ShaderCompilationScreen.active(): await frames(2)
+	check(screen._item_tray.buttons.values().all(func(slot): return slot.attention), "unused items glow during preparation")
+	var first_uid := int(screen.run.army[0].uid)
+	screen.run.equip_item(1, first_uid); await frames(8)
+	check(not screen._item_tray.buttons[1].attention and screen._item_tray.buttons[2].attention, "equipped item stops shining while inventory reminder remains")
 	await shot("item-tiers-" + language + "-tray")
 	for level in range(1, 6):
 		var kinds := ArenaItems.RULES.keys().filter(func(k): return ArenaItems.tier(k) == level)
@@ -32,6 +37,7 @@ func _ready() -> void:
 			screen.run.item_offers = choices
 			screen.run.item_reward_round = [3,5,10,15,20][level - 1]
 			screen.run._touch(); await frames(12)
+			check(not screen._equipment_scroll.get_v_scroll_bar().visible, "reward chooser has no scrollbar")
 			check(screen._equipment_panel._offer_row.get_child_count() == 3, "three choices at tier %d" % level)
 			bounded(screen._modal_panel,"tier %d modal" % level)
 			for card: ArenaEquipmentReward in screen._equipment_panel._offer_row.get_children():
@@ -42,6 +48,11 @@ func _ready() -> void:
 				check(card._accent == ArenaCreatureCard.cost_accent(level), "shared tier palette " + card.kind)
 			if page == 2: await shot("item-tiers-%s-%d" % [language,level])
 	screen._close_modal(); screen.run.item_offers.clear()
+	var music := screen._sound.music
+	music.set_zone("ingos",false);music.hold=false
+	music.request("cool",MusicSystem.NOW);music.tick(2)
+	check(music._cur in music.combat_tracks and music._cur != "victory", "bell immediately replaces calm music with a fighting track")
+	for index in 40: check(music._random("ingos", "Combat") in music.combat_tracks, "arena uses only fighting tracks")
 	# A local final win gets one original victory track, independent of world changes.
 	screen.run.stage = "won"
 	screen._sync_victory_music()

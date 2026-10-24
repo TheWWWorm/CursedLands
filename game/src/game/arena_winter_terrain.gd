@@ -250,6 +250,10 @@ static func _treat(material: ShaderMaterial, color: Texture2DArray = null) -> vo
 	if not shaders.has(kind):
 		var variant := source.duplicate() as Shader
 		variant.code = source.code.replace("shader_type spatial;", "shader_type spatial;\nuniform bool arena_ink_enabled = false;\nuniform sampler2D arena_ink : source_color, filter_linear, repeat_disable;\n" + DEPLOY_GUIDE_UNIFORMS)
+		# The native snow layer is raised above the base mesh. Bring that layer
+		# down gently at the distant boundary where the surround joins it;
+		# the playable field and its deformable footprints retain full depth.
+		variant.code = variant.code.replace("soft_profile = soft_profile_grid(grid);", "soft_profile = soft_profile_grid(grid);\n\t\tsoft_profile *= smoothstep(0.0, 2.0, min(min(grid.x, grid.y), min(64.0 - grid.x, 64.0 - grid.y))); ")
 		variant.code = variant.code.replace("ALBEDO = c;", "if (arena_ink_enabled) { vec4 ink = texture(arena_ink, vec2(wpos.x, -wpos.z) / 64.0); c = c * (1.0 - ink.a) + ink.rgb; }\n\tALBEDO = c;")
 		variant.code = variant.code.replace(
 			"// Rain affects exposed ground", WINTER_COLOR + DEPLOY_GUIDE_COLOR + "\n\t// Rain affects exposed ground")

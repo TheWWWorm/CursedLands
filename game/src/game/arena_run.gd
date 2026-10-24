@@ -7,6 +7,7 @@ signal changed
 const SAVE_PATH := "user://arena-expedition.json"
 const PROFILE_PATH := "user://arena-profile.json"
 const DEPLOY := Rect2(20, 20, 10.5, 24)
+var commander := "hero"
 var run_seed := 1
 var challenge := 0
 var starter := 0 # Legacy save/policy metadata; never grants creatures.
@@ -724,7 +725,7 @@ func can_shop() -> bool:
 func snapshot() -> Dictionary:
 	_sync_items()
 	return {"version": ArenaRules.VERSION, "seed": str(run_seed), "rng": str(rng.state),
-		"challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
+		"commander": commander, "challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
 		"stage": stage, "preparation_left": preparation_left, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
 		"free_refresh": free_refresh,
@@ -883,6 +884,7 @@ func restore(data: Dictionary) -> bool:
 	if int(data.wave) > int(saved_limit): return false
 	if not valid_terminal(data, int(saved_limit)): return false
 	run_seed = int(data.seed); rng.seed = run_seed; rng.state = int(data.rng)
+	commander = ArenaCommanders.valid(str(data.get("commander", "hero")))
 	challenge = int(data.challenge); starter = int(data.starter)
 	wave = int(data.wave); wave_limit = int(saved_limit); gold = int(data.gold); lives = int(data.lives)
 	stage = "prepare" if data.stage == "fight" else String(data.stage)

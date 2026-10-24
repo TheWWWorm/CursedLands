@@ -268,19 +268,19 @@ static func item_value(kind: String, entry: Dictionary) -> float:
 	var basic := int(proto.get("weapon_type_id", 0)) != 16
 	var spells := not Array(proto.get("spells", [])).is_empty()
 	var gear: Dictionary = ArenaItems.RULES[kind]
-	var weight := float(gear.get("health", 0.0)) * (1.2 if melee else 0.8)
-	weight += float(gear.get("damage", 0.0)) * (0.35 if caster else 1.3) if basic else 0.0
-	weight += float(gear.get("actions", 0.0)) * 1.6
-	weight += float(gear.get("physical_armor", 0.0)) * (0.6 if melee else 0.3)
-	weight += float(gear.get("elemental_armor", 0.0)) * 0.45
-	weight += float(gear.get("spell", 0.0)) * (1.4 if caster else 0.5) if spells else 0.0
+	var weight := float(gear.get("health", 0.0)) / 160.0 * (1.2 if melee else 0.8)
+	weight += float(gear.get("damage", 0.0)) / 25.0 * (0.35 if caster else 1.3) if basic else 0.0
+	weight += float(gear.get("actions", 0.0)) / 15.0 * 1.6
+	weight += float(gear.get("physical_armor", 0.0)) / 12.0 * (0.6 if melee else 0.3)
+	weight += float(gear.get("elemental_armor", 0.0)) / 12.0 * 0.45
+	weight += float(gear.get("spell", 0.0)) / 30.0 * (1.4 if caster else 0.5) if spells else 0.0
 	match ArenaItems.effect(kind):
-		"fang": weight += float(gear.leech) * (2.0 if melee else 1.3) if basic else 0.0
-		"storm": weight += float(gear.storm_damage) * int(gear.storm_targets) * (0.7 if caster else 3.2) if basic else 0.0
+		"fang": weight += float(gear.leech) / 20.0 * (2.0 if melee else 1.3) if basic else 0.0
+		"storm": weight += float(gear.storm_damage) / 100.0 * int(gear.storm_targets) * (0.7 if caster else 3.2) if basic else 0.0
 		"venom": weight += float(gear.healing_reduction) * (0.4 if caster else 0.9) if basic else 0.0
-		"ward": weight += float(gear.shield) * (0.8 if melee else 0.5)
-		"guardian": weight += float(gear.shield) * 1.2
-		"echo": weight += float(gear.echo_damage) / int(gear.echo_every) * (2.0 if caster else 0.5) if spells else 0.0
-		"thorn": weight += float(gear.reflect) * (1.6 if melee else 0.3)
-		"berserker": weight += float(gear.frenzy) * 2.0 if basic and not spells else 0.0
-	return entry_power(entry) * weight
+		"ward": weight += float(gear.shield) / 120.0 * (0.8 if melee else 0.5)
+		"guardian": weight += float(gear.shield) / 120.0 * 1.2
+		"echo": weight += float(gear.echo_damage) / 30.0 / int(gear.echo_every) * (2.0 if caster else 0.5) if spells else 0.0
+		"thorn": weight += float(gear.reflect) / 20.0 * (1.6 if melee else 0.3)
+		"berserker": weight += float(gear.frenzy) / 15.0 * 2.0 if basic and not spells else 0.0
+	return weight

@@ -538,6 +538,7 @@ var graphics_revision := 0
 ## A player preference, independent of expedition saves and undo.
 var arena_speed := 1
 var arena_mode := 0
+var arena_character := "hero"
 
 var _texture_cache := {}
 var _text_cache := {}
@@ -608,6 +609,7 @@ func _ready() -> void:
 		difficulty = cfg.get_value("game", "difficulty", 0)
 		resolution_size = String(cfg.get_value("display", "resolution", "native"))
 	arena_mode = 1 if cfg.get_value("arena", "mode", 0) == 1 else 0
+	arena_character = ArenaCommanders.valid(str(cfg.get_value("arena", "character", "hero")))
 	arena_speed = 2 if cfg.get_value("arena", "battle_speed", 1) == 2 else 1
 	for o: Array in OPTIONS:
 		options[o[0]] = cfg.get_value("options", o[0], o[5]) if cfg.has_section("options") else o[5]
@@ -873,6 +875,7 @@ func save_settings() -> void:
 	cfg.set_value("display", "resolution", resolution_size)
 	cfg.set_value("arena", "battle_speed", arena_speed)
 	cfg.set_value("arena", "mode", arena_mode)
+	cfg.set_value("arena", "character", arena_character)
 	var old := ConfigFile.new()   # hand-edited [debug] keys (FlashLog) and GfxDetect's record survive
 	if old.load(CONFIG_PATH) == OK:
 		for sec in ["debug", "gfx_detect"]:   # GfxDetect.SECTION

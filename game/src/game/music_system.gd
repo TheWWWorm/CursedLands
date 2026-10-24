@@ -32,6 +32,8 @@ var dungeon := false
 ## earlier while the combat flag is 2).
 var hold := false
 var combat := false
+## Optional scene playlist. Campaign music retains its original registry rules.
+var combat_tracks := PackedStringArray()
 var _last_combat := ""
 var _forced := ""            # script PlayMusic
 var _forced_on := false
@@ -89,7 +91,7 @@ func _table(section: String, key: String) -> PackedStringArray:
 
 
 func _random(section: String, key: String) -> String:
-	var l := _table(section, key)
+	var l := combat_tracks if key == "Combat" and not combat_tracks.is_empty() else _table(section, key)
 	return l[randi() % l.size()] if not l.is_empty() else ""
 
 
@@ -201,7 +203,7 @@ func tick(combat_flag: int) -> void:
 		if c:
 			if _cur != _last_combat or _last_combat == "":
 				_last_combat = _random(allod, "Combat")
-			request(_last_combat, AT_MARKER)
+			request(_last_combat, NOW if not combat_tracks.is_empty() else AT_MARKER)
 		elif _cur == "":
 			if _next_calm == 0:
 				_next_calm = now + 120000 + randi() % 60001
