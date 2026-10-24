@@ -538,7 +538,7 @@ func screen_tutorial(forced := false) -> void:
 
 
 func tutorial_visible() -> bool:
-	return _tutorial != null and _tutorial.visible
+	return _tutorial != null and _tutorial.blocks_input()
 
 
 func _key_shown(k: String) -> bool:

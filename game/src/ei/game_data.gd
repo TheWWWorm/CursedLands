@@ -316,6 +316,7 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad", "r_fsr", "r_scene_rt"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"show_tutorial": ["Contextual hints", "Show brief hints when useful. They fade after a few seconds or the relevant action, without pausing. The guide stays available when hints are off."],
 	"r_scene_rt": ["Ray-traced lighting", "Experimental shadows and indirect light for terrain, objects and characters. Requires a ray-tracing GPU with DX12 or Vulkan Forward+. Conventional lighting is used while loading and outside the nearby RT scene."],
 	"rt_shadows": ["RT shadows (test)", "Trace soft sun shadows and shadows from up to seven nearby point lights. Respects the character and object shadow switches. Other lights keep conventional shadows. Costs additional GPU time."],
 	"rt_gi": ["RT indirect light (test)", "Trace one diffuse bounce from the sun, nearby lights and emissive surfaces, with sky visibility. Replaces flat ambient light on supported nearby surfaces. Experimental: moving light can be noisy. This is not multi-bounce path tracing."],

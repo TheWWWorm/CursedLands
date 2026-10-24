@@ -31,10 +31,10 @@ func _ready() -> void:
 		if c.g > 0.5 and c.g > c.r*2 and c.g > c.b*2:green+=1
 	check(green<5,"HD panel border does not sample the green health-bar region")
 	g.hud._tutorial.show_screen("options",true)
-	check(g.hud._tutorial.visible,"actual tutorial is visible for button inspection")
+	check(g.hud._wiki.visible,"explicit tutorial help opens the guide")
 	await shot("hd-tutorial")
-	check(g.hud._tutorial._atlas.get_width()==1024,"tutorial keeps HD atlas")
-	g.hud._tutorial.close()
+	check(g.hud._wiki.current=="guide/options","tutorial help has its own guide article")
+	g.hud._wiki.close()
 	for act:String in ["walk","attack"]:
 		hero.action=act;hero.model.act(act,1,0)
 		var clip:=hero.model.player.get_animation(hero.model.player.current_animation)

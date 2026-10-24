@@ -1,4 +1,4 @@
-const TYPES={Characters:'character',Allods:'allod',Items:'item',Spells:'spell',Creatures:'creature',Materials:'material',Runes:'rune',Maps:'map',Quests:'quest','Cut content':'book'};
+const TYPES={Characters:'character',Allods:'allod',Items:'item',Spells:'spell',Creatures:'creature',Materials:'material',Runes:'rune',Maps:'map',Quests:'quest','Cut content':'book','Getting started':'book'};
 export function art(row,size=40){
   const img=document.createElement('img');img.alt='';img.width=size;img.height=size;img.loading='lazy';
   const fallback='./icon-'+(TYPES[row.category]||row.kind||'book')+'.svg';

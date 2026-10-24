@@ -238,6 +238,11 @@ func _on_action(a: String, phase: String) -> void:
 	if PadInput.route_of(a) != "ui":
 		return
 	var panel := top_panel()
+	if a == "system" and phase == "down" and panel:
+		for hint in get_tree().get_nodes_in_group("context_help"):
+			if hint is TutorialPanel and not hint._screen_id.is_empty() and hint.get_parent().is_visible_in_tree() and (panel == hint.get_parent() or panel.is_ancestor_of(hint)):
+				hint.show_last()
+				return
 	if panel and panel.has_method("pad_press") and panel.call("pad_press", a, phase):
 		return
 	if phase == "up" and a == "interact":

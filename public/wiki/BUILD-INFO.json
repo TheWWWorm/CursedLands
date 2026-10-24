@@ -26,7 +26,7 @@
       "normalized_equipment_links": 125
     }
   },
-  "translation_keys": 216,
+  "translation_keys": 218,
   "requires_game_files": false,
   "requires_game_engine": false,
   "requires_account": false,
@@ -108,8 +108,8 @@
       "sha256": "705903ae1382f0150f115d6f10a30f5b2f3d6ade649c474afe6366c39174fb65"
     },
     "art.mjs": {
-      "bytes": 632,
-      "sha256": "5af15ff5f58159897893e216baf3a093d5850793693bf8eb0791f78d779f4718"
+      "bytes": 657,
+      "sha256": "d774d0180aaee9d6271122f80f422f80898d8bc79712707c4ccdabfdcc290adb"
     },
     "camp-bag.webp": {
       "bytes": 1816,
@@ -36860,8 +36860,8 @@
       "sha256": "a7534ab3d64d63085a89265c2ecafd5688fc240c479cbd07fe11e2c8baaf0991"
     },
     "i18n.json": {
-      "bytes": 42320,
-      "sha256": "5c1b970ccfb0b3fe50174cd62625df39f50877301282f3a3db414c59b675e77c"
+      "bytes": 42757,
+      "sha256": "28ba0806464cb3aa6028ac22df37446a39ad2d2681aa6043bfee29436c8a5aab"
     },
     "icon-allod.svg": {
       "bytes": 256,
@@ -54580,8 +54580,8 @@
       "sha256": "5f8fffb08694e78f11a619214ec10fbfd4e53b930af0ef87eeede57ec36f53eb"
     },
     "wiki.js": {
-      "bytes": 25625,
-      "sha256": "4ef3ac44a822ef139bb5eb2495b88bd0282b7552a35ad78eda5bf52530703eb6"
+      "bytes": 25929,
+      "sha256": "c8bce7a953f4e5c65bbc5e7686cb82b30db766e508f93ccd411c24e970b2cf69"
     },
     "workbench-camp.webp": {
       "bytes": 12950,
@@ -54596,5 +54596,5 @@
       "sha256": "29aec0935f5d56923fe3c1a66f35e4965ab6eda83b3eaabd8b673a828109e313"
     }
   },
-  "bytes": 204411367
+  "bytes": 204412133
 }

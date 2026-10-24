@@ -280,8 +280,7 @@ func _close() -> void:
 	if is_instance_valid(_box):
 		_box.queue_free()
 	_box = null
-	if _tutorial.visible:
-		_tutorial.visible = false
+	_tutorial.close(false)
 	_drag = -1
 	_hold = -1
 	closed.emit()
@@ -1023,7 +1022,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if not visible or MessageBox.is_up(_box) or _tutorial.visible or ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile)):
+	if not visible or MessageBox.is_up(_box) or _tutorial.blocks_input() or ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile)):
 		return
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
 		if not e.pressed:
@@ -1100,7 +1099,7 @@ func _process(dt: float) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or not (e is InputEventKey and e.pressed):
 		return
-	if MessageBox.is_up(_box) or _tutorial.visible or ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile)):
+	if MessageBox.is_up(_box) or _tutorial.blocks_input() or ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile)):
 		return
 	if _waiting:
 		_key_pressed(e)
@@ -1243,7 +1242,7 @@ func pad_capture(button: String) -> bool:
 ## PadUI: Y is ✓; Menu closes from any page as ✗ (B, the key bridge's Esc,
 ## goes back one level on a sub-page). The rest through the key bridge.
 func pad_press(action: String, phase: String) -> bool:
-	if phase != "down" or not visible or _waiting or MessageBox.is_up(_box) or _tutorial.visible:
+	if phase != "down" or not visible or _waiting or MessageBox.is_up(_box) or _tutorial.blocks_input():
 		return false
 	if action == "pause":
 		_accept()

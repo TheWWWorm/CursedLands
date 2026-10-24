@@ -5328,7 +5328,6 @@ func saved_play_clock() -> Dictionary:
 	if ShaderCompilationScreen.owns_pause(get_tree()): paused = false
 	if game and game.hud:
 		if game.hud._pause_before != null: paused = bool(game.hud._pause_before)
-		elif game.hud._tutorial and game.hud._tutorial._paused: paused = false
 	return _play_clock(paused, game.speed if game else int(Engine.time_scale > 1.0))
 
 

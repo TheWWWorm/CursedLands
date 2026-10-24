@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-24",
+  "base_commit": "44d99daa691f9c7ecdfa7255431e0164507bea63",
+  "native": {
+    "test": "tools/tests/contextual_tutorials.gd",
+    "checks": 391,
+    "failures": [],
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "resolutions": [
+      "800x600",
+      "1280x720",
+      "1920x1080",
+      "2560x1080",
+      "600x960"
+    ],
+    "input": [
+      "keyboard/mouse",
+      "simulated gamepad"
+    ],
+    "scope": "Prepared native game contexts and synthetic input; no physical controller or novice playtest.",
+    "gpu_lab_job": "80fed17424b64d8e",
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "captures": [
+      "shop-hint-en.png",
+      "shop-hint-ru.png",
+      "shop-hint-de.png",
+      "guide-de-pad.png",
+      "hint-en-800x600-mouse.png",
+      "hint-en-800x600-pad.png",
+      "hint-en-1920x1080-mouse.png",
+      "hint-en-1920x1080-pad.png",
+      "hint-en-600x960-mouse.png",
+      "hint-en-600x960-pad.png",
+      "hint-ru-800x600-mouse.png",
+      "hint-ru-800x600-pad.png",
+      "hint-ru-1920x1080-mouse.png",
+      "hint-ru-1920x1080-pad.png",
+      "hint-ru-600x960-mouse.png",
+      "hint-ru-600x960-pad.png",
+      "hint-de-800x600-mouse.png",
+      "hint-de-800x600-pad.png",
+      "hint-de-1920x1080-mouse.png",
+      "hint-de-1920x1080-pad.png",
+      "hint-de-600x960-mouse.png",
+      "hint-de-600x960-pad.png"
+    ]
+  },
+  "standalone_wiki": {
+    "test": "tools/tests/tutorial_wiki.mjs",
+    "checks": [
+      "en: home entry",
+      "en: opens tutorial",
+      "en: reload",
+      "en: Back restores article",
+      "en: browse category",
+      "en: tutorial icons load",
+      "ru: home entry",
+      "ru: opens tutorial",
+      "ru: reload",
+      "ru: Back restores article",
+      "ru: browse category",
+      "ru: tutorial icons load",
+      "de: home entry",
+      "de: opens tutorial",
+      "de: reload",
+      "de: Back restores article",
+      "de: browse category",
+      "de: tutorial icons load"
+    ],
+    "errors": [],
+    "scope": "Current standalone frontend with freshly generated public tutorial catalog. No publication.",
+    "gpu_lab_job": "553875dac8e94da0"
+  },
+  "translations": {
+    "entries": 3429,
+    "dynamic_wiki_keys": 171,
+    "dynamic_arena_keys": 183,
+    "errors": 0
+  },
+  "wiki_package": {
+    "files": 13626,
+    "article_version": "1.25.0",
+    "frontend_version": "1.27.0",
+    "refreshed_frontend": true,
+    "published": false
+  },
+  "limits": [
+    "Native contexts are prepared fixtures; no physical gamepad or novice playtest.",
+    "New copy is checked in EN/RU/DE; original reference prose follows the installed English archive in these captures.",
+    "Sound asset and single-dispatch behavior are checked while the required test audio volumes remain zero.",
+    "The GPU display reports an existing null monitor refresh-rate query in CrashReport and a Compatibility renderer screen-space AA warning. No tutorial script errors occurred."
+  ]
+}

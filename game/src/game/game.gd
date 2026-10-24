@@ -831,10 +831,8 @@ func _unhandled_input(e: InputEvent) -> void:
 		# the original's key switch and its click handler
 		# have no pause test: during the active pause (Space) every key works
 		# and orders are given (the units carry them out when the game runs
-		# on); only accel / decel refuse while paused (cases 2 / 3). A
-		# tutorial window (which pauses the single player game) keeps the keys.
-		if hud._tutorial.visible and not act in ["pause", "quickload"] and e.keycode != KEY_ESCAPE:
-			return
+		# on); only accel / decel refuse while paused (cases 2 / 3).
+		# Contextual tutorial hints never take gameplay keys.
 		if act:
 			_key_action(act, e.ctrl_pressed or e.alt_pressed, true)
 			return
