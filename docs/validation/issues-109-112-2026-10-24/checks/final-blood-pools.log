@@ -1,0 +1,21 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS actual death queue creates one blood pool
+PASS full Session save succeeds
+PASS save contains the living pool at its current age
+PASS full Session load succeeds
+PASS reload keeps the same death pose above the pool
+PASS reload recreates exactly one pool
+PASS reload retains pool growth and rotation
+PASS reload retains remaining life and opacity
+PASS reload retains pool position
+PASS late/repeated replay cannot duplicate the pool
+PASS previous-world event cannot recreate a pool
+PASS save/load after removing the corpse succeeds
+PASS pool survives removal of the original body
+PASS save/load after natural expiry succeeds
+PASS expired pools are not resurrected by loading
+PASS malformed pool rejected
+PASS malformed pool rejected
+PASS malformed pool rejected
+BLOOD_POOL_SAVE 18 checks 0 failures

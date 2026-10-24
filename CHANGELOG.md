@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Preserve NPC corpse memory, pending discoveries and ongoing investigations through saves and reloads. ([#112](https://github.com/TheWWWorm/CursedLands/issues/112))
+- Restore magic-trap casts with target masks derived from the owner’s map diplomacy, retaining activation and cooldown state. ([#110](https://github.com/TheWWWorm/CursedLands/issues/110), [#106](https://github.com/TheWWWorm/CursedLands/issues/106))
+- Play the requested posture transition after a spell finishes casting. ([#109](https://github.com/TheWWWorm/CursedLands/issues/109))
+- Move Load, Save and Options boards in screen space so delayed viewport rendering cannot expose a previous settled position during the slide. ([#111](https://github.com/TheWWWorm/CursedLands/issues/111), [#105](https://github.com/TheWWWorm/CursedLands/issues/105))
+
 ## 1.28.0 — 2026-10-24
 
 **Download withdrawn (2026-10-24):** The optional RTX 30 / dlssg_for_sm86 package has been removed because its redistribution rights are unresolved. It will not be published again. The original SHA256SUMS.txt is retained for historical integrity; its RTX 30 entry refers to the withdrawn archive.

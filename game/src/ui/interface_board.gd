@@ -21,6 +21,8 @@ var _cam: Camera3D
 var _fig: Node3D
 var _shown_at := Vector3.INF   # a board position its bound viewport picture has rendered
 var _reveal_serial := 0
+var _canvas_slide := false
+var _slide_y := 0.0
 
 
 static func create(model: String, skin: String, labels: String, parts: PackedStringArray,
@@ -78,6 +80,16 @@ func place(at: Vector3) -> void:
 	_fig.position = Vector3((at.x * 0.0025 - 1.0) * TAN * d, -(at.y * 0.0025 - 0.75) * TAN * d, -d)
 
 
+## Translation at a fixed depth has exactly the same screen-space projection.
+## Keep the viewport's picture at rest and move its canvas instead: an old
+## texture is then safe even when the rendering thread is several frames late.
+func slide(at: Vector3, offset_y: float) -> void:
+	_canvas_slide = true
+	_slide_y = offset_y
+	place(at)
+	_layout()
+
+
 static func texture_name(s: String) -> String:
 	return s.to_lower()
 
@@ -99,7 +111,7 @@ func _notification(what: int) -> void:
 		texture = null
 		self_modulate.a = 1.0
 		_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
-	elif DisplayServer.get_name() == "headless" or _fig.position == _shown_at:
+	elif _canvas_slide or DisplayServer.get_name() == "headless" or _fig.position == _shown_at:
 		texture = _vp.get_texture()
 	else:
 		_reveal()
@@ -136,6 +148,14 @@ func _process(_dt: float) -> void:
 		return
 	if texture != null and _fig != null and not _owns_reveal():
 		_shown_at = _fig.position
+	_layout()
+	var h := maxi(60, int(Interface800.fit_rect(Rect2(Vector2.ZERO, size)).size.y))
+	var want := Vector2i(int(round(h * 4.0 / 3.0)), h)
+	if _vp and _vp.size != want:
+		_vp.size = want
+
+
+func _layout() -> void:
 	# Normal interface boards follow the parent's safe-area and touch-zoom
 	# mapping. The standalone Esc signpost fills its parent but fits its 4:3
 	# texture inside it; its pointer and gamepad targets use the same frame.
@@ -145,7 +165,4 @@ func _process(_dt: float) -> void:
 		var rect := screen.r8(Rect2(0, 0, 800, 600))
 		position = rect.position
 		size = rect.size
-	var h := maxi(60, int(Interface800.fit_rect(Rect2(Vector2.ZERO, size)).size.y))
-	var want := Vector2i(int(round(h * 4.0 / 3.0)), h)
-	if _vp and _vp.size != want:
-		_vp.size = want
+		position.y += _slide_y * rect.size.y / 600.0

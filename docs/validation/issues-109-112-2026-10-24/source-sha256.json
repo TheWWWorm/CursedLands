@@ -1,0 +1,19 @@
+{
+  "game/src/ei/mob_reader.gd": "53034996fcc2eceeda17a9c93122d86e4157a514d29345a5e71d5276f78b411b",
+  "game/src/game/corpse_pools.gd": "4f295b4e386e222e31432760fe2e5e5d064ceecd3e77c9cf7012ad31a936f2c2",
+  "game/src/game/traps.gd": "c00b5b4bb3c7a3ca5492d6b81d82ad46344b0490a3bee7cec403b1937e274913",
+  "game/src/game/unit.gd": "f0dd8f386769f7f1213a437b1206cd613b8bdefbe1de372e367a655a7fbc241b",
+  "game/src/game/world.gd": "cbdcf4bf01d94ffbe3d7723dff48f365e46cda2829a01cc9c1b1478b2271341c",
+  "game/src/ui/interface_board.gd": "ed7413e29548524afa1620a874e2ecba2291c78f27f64144a1afaffb153fa474",
+  "game/src/ui/load_panel.gd": "84552fed66c27ab3e6edc01c3445739851f28034a97fa2c2dd63ddcd1a861085",
+  "game/src/ui/options_panel.gd": "296ac3b5751e45ff05b33d80c44299a76892b81d3f48aa5a7c9b736764843223",
+  "tools/tests/esc_board_frames.gd": "e083e26c53aa12d530bca9f19151ec60053306b27624f272a2c1544d765434b3",
+  "tools/tests/object_activity.gd": "141473da4f4c53acdb49c5b879fae43c62673a5d79fdc972fce3eb41cdbb5537",
+  "tools/tests/script_perception.gd": "34d0f3b63a17012adf46ddd0b030f7c4afe771b5ba87a0eb7df38f04aea28313",
+  "tools/tests/cast_posture_queue.gd": "60da326114ad24d2ea93c08791c6615a09b8a948293201805177453527d00092",
+  "tools/tests/corpse_memory_save.gd": "7acd2e4bf17f6e9194a616ac8da56bcd8d07e928f12e3f9352ca4d501387b0e3",
+  "tools/tests/worker_corpse_memory.gd": "e3087f517512f2cec3824d90709d752ae389c4a158b18506d50028128e41823b",
+  "tools/tests/magic_trap_targets.gd": "5ee4ad0c0abee5548ef6ac75984466e6b9353c4e18c85d5b111a1879ce76f85f",
+  "tools/tests/board_render_latency.gd": "ac3fdaf2f5a9f57785e8afcf46c0be8dbf6b9ba828dc7b0adcf5efa2df1e1a40",
+  "tools/tests/original_magic_trap_mask.py": "92b123f8388f51b5addc0ea8256ba65dea5e60e8d60a539a6737bb56e40f9664"
+}

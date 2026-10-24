@@ -1,0 +1,54 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS moving sword: loaded scene accepts third-person keyboard input
+PASS moving sword: open original terrain for movement
+PASS moving sword: weapon comes from original database
+PASS moving sword: direct movement starts before spell selection
+PASS moving sword: self-cast preserves held movement and queues one spell
+PASS moving sword: moving self-cast starts on authority
+PASS moving sword: self-cast retains facing away from world east
+PASS moving sword: moving spell pays exactly one native spell cost
+PASS moving sword: moving spell schedules one effect
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: movement does not release healing early
+PASS moving sword: healing releases once on the original effect tick
+PASS moving sword: caster travels during the committed animation
+PASS moving sword: casting uses the moving-attack speed reduction
+PASS moving sword: steering does not charge the spell again
+PASS moving sword: release stops movement during cast recovery
+PASS moving sword: starting and restarting movement preserves a buffered cast
+PASS moving sword: buffered cast executes after recovery without another click
+PASS moving sword: learned targeted spell is accepted by authority
+PASS moving sword: moving targeted cast turns and commits without chasing
+PASS moving sword: targeted direct cast retains independent steering
+PASS moving sword: aimed fire handler keeps movement during a spell
+PASS moving sword: out-of-range spell neither queues nor stops held movement
+PASS moving sword: ground spell retains its chosen point and held movement
+PASS moving sword: moving ground cast executes without an approach route
+PASS moving sword: scripted animation still locks movement
+PASS moving sword: tactical cast still replaces direct steering
+PASS moving sword: direct cast stands up before composing the moving body
+CAST_PLAN {"fire":15.0,"hold":0}
+PASS moving sword: repeated moving native casts start
+PASS moving sword: authority moves throughout committed casts
+PASS moving sword: forward, backward and both strafe directions move during casts
+PASS moving sword: legs continue animating beneath the native casting pose
+PASS moving sword: moving cast preserves authored upper-body orientation
+PASS moving sword: body and attachments share the final casting pose
+PASS moving sword: casting and recovery have no abrupt body position reset
+PASS moving sword: movement does not shorten casting recovery
+PASS moving sword: movement does not shorten casting recovery
+PASS moving sword: releasing movement clears independent input
+MOVING_CASTS {"aligned_frames":0,"camera_motion":0.0,"cast_starts":[{"action":"cast","clip":"ucast03","remaining":2.64,"time":3.465},{"action":"cast","clip":"ucast04","remaining":2.64,"time":7.47999999999999},{"action":"cast","clip":"ucast03","remaining":2.64,"time":11.55}],"checks":50,"collar_error":0.0,"collar_failures":[],"direction_frames":[48,34,28,34],"distance":7.56530724465847,"failures":[],"finished_clip_frames":0,"first_person":false,"held":false,"held_moving_frames":0,"joint_angle_error":0.0,"joint_position_error":0.0,"leg_changes":237,"logic":[{"effect_ticks":15,"speed_error":0.0000171408717090094,"travel":0.779685974121094}],"maximum_cast_body_speed":0.257301118636051,"maximum_cast_body_step":0.00849093683063984,"maximum_recovery_step":0.00849093683063984,"moving_frames":144,"moving_seconds":4.81038044444444,"observer":false,"run":false,"torso_error":0.000690533954184502}

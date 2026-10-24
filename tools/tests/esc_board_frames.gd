@@ -6,6 +6,7 @@ extends Node
 ## closing a board closes the menu, so it is reopened with Esc again.
 var checks := 0
 var failures := 0
+var delayed_viewport := false
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -62,6 +63,11 @@ func opening(hud: GameHUD, action: String, id: String, panel: Control, close: Ca
 		# sync_visibility, a relayout): its notifications reach the board too.
 		hud.visible = false
 		hud.visible = true
+	# Simulate an old texture surviving more than the two draw notifications
+	# used by the earlier reveal barrier. Screen-space movement must be safe
+	# regardless of when this particular viewport gets its next render.
+	var board: InterfaceBoard = panel._board if action == "options" else panel._boards[action == "save"]
+	if delayed_viewport: board._vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	var tops: Array = []
 	var stale := -1
 	var start := Time.get_ticks_usec()
@@ -72,6 +78,7 @@ func opening(hud: GameHUD, action: String, id: String, panel: Control, close: Ca
 			img.save_png(OS.get_environment("ESC_BOARD_SHOTS") + "/%s-open%d.png" % [id.replace(" ", "-"), tops.size()])
 		tops.append(top_row(img))
 		if stale < 0 and same_picture(img, shot): stale = tops.size() - 1
+	if delayed_viewport: board._vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	var h := get_viewport().get_visible_rect().size.y
 	var first := -1
 	for t: int in tops:
@@ -120,7 +127,7 @@ func _ready() -> void:
 				if not hud._esc_open: menu(hud)
 				var panel: Control = hud._options if id == "options" else hud._save_load
 				await opening(hud, id, id + (" flip" if flip else "") + " %d" % fps, panel, func(): panel._close(), flip)
-	Engine.max_fps = 0
+	Engine.max_fps = 30
 	hud._close_menu()
 	print("ESC_BOARD_FRAMES ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)

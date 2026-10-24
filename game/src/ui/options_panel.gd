@@ -271,7 +271,7 @@ func open(frame: Image = null, slide := false) -> void:
 func _place_board() -> void:
 	var t := clampf(_slide, 0.0, 1.0)
 	var e := 2.0 * t * t if t < 0.5 else 1.0 - 2.0 * (1.0 - t) * (1.0 - t)
-	_board.place(Vector3(400, 700.0 - 220.0 * e, 4.8))
+	_board.slide(Vector3(400, 480, 4.8), 220.0 * (1.0 - e))
 
 
 func _close() -> void:

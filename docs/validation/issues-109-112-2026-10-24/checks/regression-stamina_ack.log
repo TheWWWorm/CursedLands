@@ -1,0 +1,8 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS the hero spends stamina when running
+PASS no line while stamina remains
+PASS the run uses up the last stamina
+PASS the hero says it is out of stamina
+PASS the line is not repeated while stamina stays at 0
+RESULT failures=0 checks=5

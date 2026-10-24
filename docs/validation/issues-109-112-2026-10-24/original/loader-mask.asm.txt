@@ -1,0 +1,42 @@
+
+original-1.06/game.exe:     file format pei-i386
+
+
+Disassembly of section .text:
+
+00481c31 <.text+0x80c31>:
+  481c31:	83 7e 48 07          	cmp    DWORD PTR [esi+0x48],0x7
+  481c35:	75 49                	jne    0x481c80
+  481c37:	8d 46 20             	lea    eax,[esi+0x20]
+  481c3a:	8d 8e 94 00 00 00    	lea    ecx,[esi+0x94]
+  481c40:	89 9e 8c 00 00 00    	mov    DWORD PTR [esi+0x8c],ebx
+  481c46:	8b 10                	mov    edx,DWORD PTR [eax]
+  481c48:	89 11                	mov    DWORD PTR [ecx],edx
+  481c4a:	8b 50 04             	mov    edx,DWORD PTR [eax+0x4]
+  481c4d:	89 51 04             	mov    DWORD PTR [ecx+0x4],edx
+  481c50:	33 d2                	xor    edx,edx
+  481c52:	8b 40 08             	mov    eax,DWORD PTR [eax+0x8]
+  481c55:	8a 56 6e             	mov    dl,BYTE PTR [esi+0x6e]
+  481c58:	89 41 08             	mov    DWORD PTR [ecx+0x8],eax
+  481c5b:	33 c9                	xor    ecx,ecx
+  481c5d:	c1 e2 07             	shl    edx,0x7
+  481c60:	8d 84 14 bc 00 00 00 	lea    eax,[esp+edx*1+0xbc]
+  481c67:	33 d2                	xor    edx,edx
+  481c69:	83 38 02             	cmp    DWORD PTR [eax],0x2
+  481c6c:	0f 94 c2             	sete   dl
+  481c6f:	d3 e2                	shl    edx,cl
+  481c71:	83 c0 04             	add    eax,0x4
+  481c74:	09 96 8c 00 00 00    	or     DWORD PTR [esi+0x8c],edx
+  481c7a:	41                   	inc    ecx
+  481c7b:	83 f9 20             	cmp    ecx,0x20
+  481c7e:	7c e7                	jl     0x481c67
+
+
+original-1.06/game.exe:     file format pei-i386
+
+
+Disassembly of section .text:
+
+00446880 <.text+0x45880>:
+  446880:	8b 81 74 02 00 00    	mov    eax,DWORD PTR [ecx+0x274]
+  446886:	c3                   	ret

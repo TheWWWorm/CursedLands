@@ -1,0 +1,33 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS authored wolf remembers its dead packmate
+PASS wolf is investigating before the save
+PASS corpse-mid: save succeeds
+PASS corpse-mid: load succeeds
+PASS load creates a new corpse instance
+PASS NPC memory resolves the new corpse instance before perception
+PASS load preserves suspicion decay instead of restarting it
+PASS active investigation resolves its corpse identity
+PASS investigation finishes naturally
+PASS corpse-finished-0: save succeeds
+PASS corpse-finished-0: load succeeds
+PASS finished memory survives load 0
+PASS load 0 does not rediscover the same corpse
+PASS corpse-finished-1: save succeeds
+PASS corpse-finished-1: load succeeds
+PASS finished memory survives load 1
+PASS load 1 does not rediscover the same corpse
+PASS corpse-finished-2: save succeeds
+PASS corpse-finished-2: load succeeds
+PASS finished memory survives load 2
+PASS load 2 does not rediscover the same corpse
+PASS a different corpse can still be discovered
+PASS corpse-pending: save succeeds
+PASS corpse-pending: load succeeds
+PASS pending discovery survives stronger suspicion
+PASS pending load retains the stronger alert
+PASS removed corpse is not restored into the pending queue
+PASS absent co-op participant cannot fall back to its old runtime id
+PASS returning co-op participant resolves its adopted solo roster
+PASS older party references remain readable
+CORPSE_MEMORY_SAVE 30 checks 0 failures

@@ -255,7 +255,7 @@ func visible_units() -> Array[GameUnit]:
 	return _visible_units
 
 
-func _register_object(node: Node3D) -> void:
+func _register_object(node: Node3D, map_diplomacy := PackedInt32Array()) -> void:
 	var o: Dictionary = node.get_meta("ei")
 	objects[int(o.get("nid", 0))] = node
 	objects_revision += 1
@@ -264,7 +264,7 @@ func _register_object(node: Node3D) -> void:
 			"cycled": int(o.get("lever_cycled", 0)), "door": int(o.get("lever_door", 0)), "enabled": true,
 			"science": Array(o.get("lever_science", PackedInt32Array([1, 0, 0])))}
 	elif o.kind == "MAGIC_TRAP":
-		traps.add(o)
+		traps.add(o, map_diplomacy)
 	# Walkable parts are authored BASE figures, classified by NavGrid.
 	# Parent names miss LiA's lifts (whose parent is a chest) and retain
 	# stale mesh heights after movement, morphing or removal.
@@ -325,7 +325,7 @@ func add_mob_objects(file: String) -> void:
 			node = _trap_marker(o, root if root else map)
 		if node == null:
 			continue
-		_register_object(node)
+		_register_object(node, extra.diplomacy)
 		nav.add_object(node)
 		if lever_sys and levers.has(nid):
 			lever_sys.add(nid)

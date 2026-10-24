@@ -1,0 +1,27 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS goblin 3379 is in gz3g
+PASS gz3g (a game zone) updates only its active objects
+PASS the goblin is beyond the party's wake cells (192 m)
+PASS the far goblin is frozen at its spawn
+PASS the party is updated
+PASS the trap near the patrol sleeps
+PASS a unit spawned during play is awake
+PASS a wake around its cell wakes it
+PASS it is still awake 120 ticks later
+PASS it sleeps again after its counter runs out
+PASS the goblin wakes when the party comes near
+PASS the woken goblin moves
+PASS the trap near the patrol wakes with it
+PASS the woken trap does not kill the allied patrol goblin
+PASS the goblin sleeps again after the party left (122 ticks)
+PASS a sleeping goblin stands (idle)
+PASS a sleeping goblin does not move
+PASS woken again, it walks on
+PASS it sleeps again
+PASS an attack wakes a frozen unit
+PASS it sleeps again
+PASS fireworks nearby wake it
+PASS it sleeps again after the fireworks
+PASS clairvoyance nearby wakes it
+RESULT failures=0

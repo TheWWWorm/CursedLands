@@ -1,0 +1,73 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:665)
+PASS the Esc menu is shown
+PASS options 60: settled board is rendered
+PASS options 60: the board closes
+options 60 rest=12 tops=[98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 94, 82]
+PASS options 60: no frame repeats the settled picture (frame -1)
+PASS options 60: no settled board flashes before the slide (first top 98, rest 12)
+PASS load 60: settled board is rendered
+PASS load 60: the board closes
+load 60 rest=10 tops=[98, 98, 98, 98, 98, 98, 98, 86, 74, 66, 52, 42]
+PASS load 60: no frame repeats the settled picture (frame -1)
+PASS load 60: no settled board flashes before the slide (first top 98, rest 10)
+PASS save 60: settled board is rendered
+PASS save 60: the board closes
+save 60 rest=8 tops=[86, 84, 80, 74, 66, 58, 50, 42, 32]
+PASS save 60: no frame repeats the settled picture (frame -1)
+PASS save 60: no settled board flashes before the slide (first top 86, rest 8)
+PASS options 20: settled board is rendered
+PASS options 20: the board closes
+options 20 rest=12 tops=[98, 98, 98, 98, 98, 82]
+PASS options 20: no frame repeats the settled picture (frame -1)
+PASS options 20: no settled board flashes before the slide (first top 98, rest 12)
+PASS load 20: settled board is rendered
+PASS load 20: the board closes
+load 20 rest=10 tops=[98, 98, 98, 98, 84, 58]
+PASS load 20: no frame repeats the settled picture (frame -1)
+PASS load 20: no settled board flashes before the slide (first top 98, rest 10)
+PASS save 20: settled board is rendered
+PASS save 20: the board closes
+save 20 rest=8 tops=[86, 82, 74, 62, 48, 34]
+PASS save 20: no frame repeats the settled picture (frame -1)
+PASS save 20: no settled board flashes before the slide (first top 86, rest 8)
+PASS options flip 60: settled board is rendered
+PASS options flip 60: the board closes
+options flip 60 rest=12 tops=[98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 94, 82]
+PASS options flip 60: no frame repeats the settled picture (frame -1)
+PASS options flip 60: no settled board flashes before the slide (first top 98, rest 12)
+PASS load flip 60: settled board is rendered
+PASS load flip 60: the board closes
+load flip 60 rest=10 tops=[98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 98, 94, 84, 74, 66, 58]
+PASS load flip 60: no frame repeats the settled picture (frame -1)
+PASS load flip 60: no settled board flashes before the slide (first top 98, rest 10)
+PASS save flip 60: settled board is rendered
+PASS save flip 60: the board closes
+save flip 60 rest=8 tops=[88, 86, 86, 84, 84, 82, 78, 76, 74, 70, 66, 62, 58, 52, 48, 44, 38, 34]
+PASS save flip 60: no frame repeats the settled picture (frame -1)
+PASS save flip 60: no settled board flashes before the slide (first top 88, rest 8)
+PASS options flip 20: settled board is rendered
+PASS options flip 20: the board closes
+options flip 20 rest=12 tops=[98, 98, 98, 98, 98, 82]
+PASS options flip 20: no frame repeats the settled picture (frame -1)
+PASS options flip 20: no settled board flashes before the slide (first top 98, rest 12)
+PASS load flip 20: settled board is rendered
+PASS load flip 20: the board closes
+load flip 20 rest=10 tops=[98, 98, 98, 98, 84, 58, 36]
+PASS load flip 20: no frame repeats the settled picture (frame -1)
+PASS load flip 20: no settled board flashes before the slide (first top 98, rest 10)
+PASS save flip 20: settled board is rendered
+PASS save flip 20: the board closes
+save flip 20 rest=8 tops=[86, 82, 74, 62, 48, 34]
+PASS save flip 20: no frame repeats the settled picture (frame -1)
+PASS save flip 20: no settled board flashes before the slide (first top 86, rest 8)
+ESC_BOARD_FRAMES 49 checks 0 failures

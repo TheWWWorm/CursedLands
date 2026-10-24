@@ -4371,11 +4371,15 @@ func _update_pose(movement_start := true) -> bool:
 		return false
 	if st == model.pose_state and md == model.pose_mod:
 		return false
+	# The requested stance may change during a cast/strike, but pose_state
+	# describes the posture actually displayed. Consume the change only when
+	# that one-shot releases the figure, so its following idle can cross from
+	# the casting posture instead of snapping straight to the requested one.
+	if dead or not action in ["idle", "walk", "run", "crawl"]:
+		return false
 	var old := model.pose_state
 	model.pose_state = st
 	model.pose_mod = md
-	if dead or not action in ["idle", "walk", "run", "crawl"]:
-		return false
 	if st != old and action == "idle":
 		var l := model.cross(old, st, "idle")
 		if l > 0.0:

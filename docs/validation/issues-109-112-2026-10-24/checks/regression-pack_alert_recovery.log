@@ -1,0 +1,17 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS wolf really sees the body during a higher-priority alert
+PASS body does not override an urgent threat
+PASS wolf returns to the previously seen body after the urgent alert
+PASS wolf issues an approach order to the body
+PASS pack listener cannot acquire this enemy through its own sight
+PASS ally waits the original warning delay
+PASS nearby packmate learns which hostile was detected
+PASS warning respects the authored help radius
+PASS alerted packmate issues an attack order
+PASS ongoing combat warns an ally that has just come within range
+PASS stealth control remains inside the victim's help radius
+PASS stealth control cannot see victim or killer
+PASS one-hit kill cannot warn the unaware packmate
+PASS an unseen kill does not reveal the killer to a packmate
+PACK_ALERT_RECOVERY 14 checks 0 failures

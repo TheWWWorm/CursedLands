@@ -114,7 +114,7 @@ func _ready() -> void:
 	for save: bool in [false, true]:
 		var parts := PackedStringArray(["save", "savelabel"] if save else ["load", "loadlabel"])
 		var b := InterfaceBoard.create("unmoco1", "escmenu00", "escmenu00labels", parts,
-			PI * 0.5, Vector3(400, 550, 4.8))
+			PI * 0.5, Vector3(400, 620 if save else 550, 4.8))
 		b.show_behind_parent = true
 		b.visible = false
 		add_child(b)
@@ -237,7 +237,8 @@ func _place_board() -> void:
 	var t := clampf(_slide, 0.0, 1.0)
 	var e := 2.0 * t * t if t < 0.5 else 1.0 - 2.0 * (1.0 - t) * (1.0 - t)
 	var b: InterfaceBoard = _boards[save_mode]
-	b.place(Vector3(400, 700.0 - (80.0 if save_mode else 150.0) * e, 4.8))
+	var distance := 80.0 if save_mode else 150.0
+	b.slide(Vector3(400, 700.0 - distance, 4.8), distance * (1.0 - e))
 
 
 func _single() -> bool:

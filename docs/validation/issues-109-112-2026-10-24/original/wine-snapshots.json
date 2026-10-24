@@ -1,0 +1,102 @@
+{
+  "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "method": "Read-only memory of the isolated Wine process; corpse-list nodes contain actor pointers, actors carry authored uid at +0xc. Filtered to valid controller rows for wolves 3327\u20133329 and trap 4515.",
+  "frames": [
+    {
+      "source_snapshot": "memory-corpse-reloaded.json",
+      "raw_snapshot_sha256": "7a505d54d0cc2f8a8f3f70e3b9ef8cd7d0b610df7d9c6c218af13b713f18ca7e",
+      "corpse_observers": [
+        {
+          "address": "0x10de2620",
+          "vtable": "0x73ea8c",
+          "uid": 3327,
+          "controller": "0x10de33d0",
+          "noticed": [],
+          "corpses": [
+            3326
+          ],
+          "pending": []
+        },
+        {
+          "address": "0x10de3ef8",
+          "vtable": "0x73ea8c",
+          "uid": 3328,
+          "controller": "0x10de4ca8",
+          "noticed": [],
+          "corpses": [
+            3326
+          ],
+          "pending": []
+        },
+        {
+          "address": "0x10de57d0",
+          "vtable": "0x73ea8c",
+          "uid": 3329,
+          "controller": "0x10de6580",
+          "noticed": [],
+          "corpses": [
+            3326
+          ],
+          "pending": []
+        }
+      ],
+      "traps": [
+        {
+          "address": "0x10cdd340",
+          "vtable": "0x73e63c",
+          "uid": 4515,
+          "mask_at_0x238": 1,
+          "interval_at_0x284": 100
+        }
+      ]
+    },
+    {
+      "source_snapshot": "memory-corpse-second-load-settled.json",
+      "raw_snapshot_sha256": "ce193e39fced02f50bc0e4a1a07c9c64b87bcb93e4a8fd94ca8147b5ff975da8",
+      "corpse_observers": [
+        {
+          "address": "0x10de2620",
+          "vtable": "0x73ea8c",
+          "uid": 3327,
+          "controller": "0x10de1af8",
+          "noticed": [],
+          "corpses": [
+            3326
+          ],
+          "pending": []
+        },
+        {
+          "address": "0x10de3ef8",
+          "vtable": "0x73ea8c",
+          "uid": 3328,
+          "controller": "0x10de33d0",
+          "noticed": [],
+          "corpses": [
+            3326
+          ],
+          "pending": []
+        },
+        {
+          "address": "0x10de57d0",
+          "vtable": "0x73ea8c",
+          "uid": 3329,
+          "controller": "0x10de4ca8",
+          "noticed": [],
+          "corpses": [
+            3326
+          ],
+          "pending": []
+        }
+      ],
+      "traps": [
+        {
+          "address": "0x10cdd340",
+          "vtable": "0x73e63c",
+          "uid": 4515,
+          "mask_at_0x238": 1,
+          "interval_at_0x284": 100
+        }
+      ]
+    }
+  ]
+}

@@ -53,7 +53,8 @@ const LEVER_IS_CYCLED := 0xBBAC0004
 const LEVER_IS_DOOR := 0xBBAC0007
 const LEVER_SCIENCE_STATS := 0xBBAC0006   # 3 ints (the Use-skill lock)
 ## MAGIC_TRAP fields (the original record, written):
-## the players it fires at (a bit mask, default -1 = all), its spell, the
+## the raw player mask (overwritten from owner diplomacy by the map loader),
+## its spell, the
 ## areas that trigger it (x, y, radius), fixed target points (x, y), the cast
 ## interval in 55 ms ticks (default 15) and LEVER_CAST_ONCE (a byte).
 const MT_DIPLOMACY := 0xBBAB0001

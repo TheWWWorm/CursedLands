@@ -1,0 +1,12 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS UiTime.real undoes the game speed
+PASS the use cursor is animated (12 frames)
+PASS on Fast the cursor moves 2 frames in 0.25 s
+PASS on Normal the cursor moves 2 frames in 0.25 s
+PASS the briefing plays its first phrase
+PASS Space advances one phrase
+PASS a held Space's repeat advances the next phrase
+PASS the repeat stops at the last phrase (3/4)
+PASS a new press goes past the last phrase
+RESULT failures=0 checks=9

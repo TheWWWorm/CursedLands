@@ -1,8 +1,8 @@
 extends RefCounted
 ## A death's pool uses the previous completed world's noticed/corpse union.
 ## The renderer's visible flag and the player's relevant-object list are
-## separate. Only the authority keeps this cache and the persistent pool
-## recipes, which are shared with clients at creation and after a load/join.
+## separate. The authority persists each observer's perception history and
+## NPC investigation, as well as pool recipes shared with clients.
 
 var world: GameWorld
 var _members := {}                 # uid -> WeakRef, current world only
@@ -127,7 +127,10 @@ func pool_events() -> Array:
 
 
 func _ref(u: GameUnit) -> Array:
-	return [u.uid, CampaignState.party_ref(u)]
+	var party := CampaignState.party_ref(u)
+	# Co-op projection can remove an absent player's roster reference. A
+	# zero fallback prevents that empty reference from naming a recycled uid.
+	return [u.uid if party.is_empty() else 0, party]
 
 
 static func _uid(value: Variant) -> int:
@@ -138,7 +141,7 @@ static func _uid(value: Variant) -> int:
 
 
 func _resolve(row: Variant) -> GameUnit:
-	if not (row is Array) or row.size() != 2 or _uid(row[0]) < 0 or not (row[1] is Array):
+	if not (row is Array) or row.size() != 2 or not (row[1] is Array):
 		return null
 	var party: Array = row[1]
 	var value: Variant
@@ -155,6 +158,7 @@ func _resolve(row: Variant) -> GameUnit:
 		else:
 			return null
 	else:
+		if _uid(row[0]) < 0: return null
 		value = world.units.get(_uid(row[0]))
 	return value if _valid(value) else null
 
@@ -195,7 +199,7 @@ func prepare_restore() -> void:
 			if not (row is Dictionary) or not (row.get("noticed") is Array) or not (row.get("corpses") is Array):
 				continue
 			var u := _resolve(row.get("unit"))
-			if not u or not _owner_here(u.controller):
+			if not u or (u.controller >= 0 and not _owner_here(u.controller)):
 				continue
 			for pair: Array in [["noticed", row.noticed], ["seen_corpses", row.corpses]]:
 				var history := _restore_history(pair[1])
@@ -204,6 +208,8 @@ func prepare_restore() -> void:
 				else:
 					u.set_meta(pair[0], history)
 			u.remove_meta("perceived")
+			if u.controller < 0 and not u.dead:
+				_restore_investigation(u, row)
 	var members: Variant = saved.get("members")
 	if members is Array:
 		for row: Variant in members:
@@ -213,6 +219,7 @@ func prepare_restore() -> void:
 func save_state() -> Dictionary:
 	prepare_restore()
 	_prune_pools()
+	# Keep the legacy key for compatibility; it now contains all observers.
 	var saved := {"members": [], "controllers": [], "pools": []}
 	for row in _pools:
 		saved.pools.append({"id":int(row.id), "mark":_aged_pool(row)})
@@ -221,11 +228,64 @@ func save_state() -> Dictionary:
 		if _valid(value):
 			saved.members.append(_ref(value))
 	for value: Variant in world.units.values():
-		if not _valid(value) or not _owner_here(value.controller):
+		if not _valid(value) or (value.controller >= 0 and not _owner_here(value.controller)):
 			continue
 		var row := {"unit": _ref(value), "noticed": [], "corpses": []}
 		for pair: Array in [["noticed", "noticed"], ["seen_corpses", "corpses"]]:
 			for u: GameUnit in _history(value, pair[0]).values():
 				row[pair[1]].append(_ref(u))
+		if value.controller < 0 and not value.dead:
+			_save_investigation(value, row)
 		saved.controllers.append(row)
 	return saved
+
+
+## CorpseWatcher consumes a discovery once, but can defer it while another
+## motivation wins. Save both the queue and the current investigation so a
+## checkpoint neither rediscovers a finished body nor drops an unfinished one.
+func _save_investigation(u: GameUnit, row: Dictionary) -> void:
+	row.pending = []
+	for ref: WeakRef in u.get_meta("pending_corpses", {}).values():
+		var body: Variant = ref.get_ref()
+		if _valid(body) and body.dead: row.pending.append(_ref(body))
+	if not u.has_meta("suspect"): return
+	var s: Dictionary = u.get_meta("suspect").duplicate(true)
+	# World time starts afresh on load and on a zone revisit.
+	s.t0 = world.time - float(s.t0)
+	s.last = world.time - float(s.last)
+	if s.has("corpse"):
+		var body: Variant = _history(u, "seen_corpses").get(s.corpse)
+		s.corpse = _ref(body) if _valid(body) else []
+	row.suspicion = s
+	var order := u.order
+	if order.is_empty() and not u.orders.is_empty(): order = u.orders[0]
+	if order.get("susp", false) and order.get("type") in ["move", "wait"]:
+		row.investigation_order = order.duplicate(true)
+	row.order_failed = u.order_failed
+
+
+func _restore_investigation(u: GameUnit, row: Dictionary) -> void:
+	u.remove_meta("pending_corpses")
+	var pending := {}
+	for body: GameUnit in _restore_history(row.get("pending", [])).values():
+		if body.dead: pending[body.get_instance_id()] = weakref(body)
+	if not pending.is_empty(): u.set_meta("pending_corpses", pending)
+	u.remove_meta("suspect")
+	var raw: Variant = row.get("suspicion")
+	if not raw is Dictionary or not raw.get("pos") is Vector2 or not raw.get("look") is Array: return
+	for key: String in ["t0", "last", "l0", "d", "m"]:
+		if not (raw.get(key) is float or raw.get(key) is int) or not is_finite(float(raw[key])): return
+	var s: Dictionary = raw.duplicate(true)
+	s.t0 = world.time - float(s.t0)
+	s.last = world.time - float(s.last)
+	if s.has("corpse"):
+		var body := _resolve(s.corpse)
+		if body and body.dead: s.corpse = body.get_instance_id()
+		else: s.erase("corpse")
+	u.set_meta("suspect", s)
+	if s.get("active", false): u.alert = true
+	var order: Variant = row.get("investigation_order")
+	if order is Dictionary and order.get("susp", false) and order.get("type") in ["move", "wait"]:
+		u.command(order.duplicate(true))
+	u.order_failed = bool(row.get("order_failed", false))
+	world.active_set.wake_unit(u)

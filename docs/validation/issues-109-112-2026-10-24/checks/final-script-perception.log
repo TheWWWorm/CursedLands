@@ -1,0 +1,10 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS a retained hero stays seen beyond sight range
+PASS GroupHas(UnitSee) reads the same list
+PASS a dead watcher keeps the list it had
+PASS GroupSee reads dead watchers too
+PASS PlayerSee leaves out the corpse list
+PASS IsUnitVisible includes the corpse list
+PASS single player has no player 1
+SCRIPT_PERCEPTION 7 checks 0 failures

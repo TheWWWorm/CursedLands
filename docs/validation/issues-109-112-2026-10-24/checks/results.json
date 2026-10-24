@@ -1,0 +1,183 @@
+{
+  "base_commit": "bab580bd43e7d146c341904c3413bcfb471e5d22",
+  "test_runs": 25,
+  "assertions": 3446,
+  "native_x86_cases": 7,
+  "tests": [
+    {
+      "test": "cast_posture_queue",
+      "mode": "headless",
+      "checks": 12,
+      "failures": 0,
+      "log": "checks/after-posture.log"
+    },
+    {
+      "test": "corpse_memory_save",
+      "mode": "headless",
+      "checks": 30,
+      "failures": 0,
+      "log": "checks/final-corpses.log"
+    },
+    {
+      "test": "worker_corpse_memory",
+      "mode": "headless, separate authority",
+      "checks": 23,
+      "failures": 0,
+      "log": "checks/final-worker-corpses.log"
+    },
+    {
+      "test": "magic_trap_targets",
+      "mode": "headless",
+      "checks": 17,
+      "failures": 0,
+      "log": "checks/final-traps.log"
+    },
+    {
+      "test": "board_render_latency",
+      "mode": "OpenGL",
+      "checks": 49,
+      "failures": 0,
+      "log": "checks/final-board-latency-gl.log"
+    },
+    {
+      "test": "board_render_latency",
+      "mode": "Vulkan, standard Linux engine",
+      "checks": 49,
+      "failures": 0,
+      "log": "checks/final-board-latency-vulkan.log"
+    },
+    {
+      "test": "posture_presentation",
+      "mode": "headless",
+      "checks": 19,
+      "failures": 0,
+      "log": "checks/regression-posture_presentation.log"
+    },
+    {
+      "test": "replica_action_clips",
+      "mode": "headless",
+      "checks": 43,
+      "failures": 0,
+      "log": "checks/regression-replica_action_clips.log"
+    },
+    {
+      "test": "pack_alert_recovery",
+      "mode": "headless",
+      "checks": 14,
+      "failures": 0,
+      "log": "checks/regression-pack_alert_recovery.log"
+    },
+    {
+      "test": "authored_wolf_corpse",
+      "mode": "headless",
+      "checks": 4,
+      "failures": 0,
+      "log": "checks/regression-authored_wolf_corpse.log"
+    },
+    {
+      "test": "blood_pool_save",
+      "mode": "headless",
+      "checks": 18,
+      "failures": 0,
+      "log": "checks/final-blood-pools.log"
+    },
+    {
+      "test": "worker_blood_pool_save",
+      "mode": "headless, separate authority",
+      "checks": 10,
+      "failures": 0,
+      "log": "checks/final-worker-blood.log"
+    },
+    {
+      "test": "creature_alerts",
+      "mode": "headless",
+      "checks": 20,
+      "failures": 0,
+      "log": "checks/regression-creature_alerts.log"
+    },
+    {
+      "test": "stamina_ack",
+      "mode": "headless",
+      "checks": 5,
+      "failures": 0,
+      "log": "checks/regression-stamina_ack.log"
+    },
+    {
+      "test": "script_perception",
+      "mode": "headless",
+      "checks": 7,
+      "failures": 0,
+      "log": "checks/final-script-perception.log"
+    },
+    {
+      "test": "paused_spawn_pose",
+      "mode": "headless",
+      "checks": 42,
+      "failures": 0,
+      "log": "checks/regression-paused_spawn_pose.log"
+    },
+    {
+      "test": "equipment_animation_continuity",
+      "mode": "headless",
+      "checks": 56,
+      "failures": 0,
+      "log": "checks/regression-equipment_animation_continuity.log"
+    },
+    {
+      "test": "object_activity",
+      "mode": "headless",
+      "checks": 24,
+      "failures": 0,
+      "log": "checks/regression-object_activity.log"
+    },
+    {
+      "test": "object_activity_absence",
+      "mode": "headless",
+      "checks": 6,
+      "failures": 0,
+      "log": "checks/regression-object_activity_absence.log"
+    },
+    {
+      "test": "perception_batch",
+      "mode": "headless",
+      "checks": 2857,
+      "failures": 0,
+      "log": "checks/regression-perception_batch.log"
+    },
+    {
+      "test": "spell_alert_encounter",
+      "mode": "headless",
+      "checks": 8,
+      "failures": 0,
+      "log": "checks/regression-spell_alert_encounter.log"
+    },
+    {
+      "test": "direct_moving_casts",
+      "mode": "headless",
+      "checks": 50,
+      "failures": 0,
+      "log": "checks/regression-direct_moving_casts.log"
+    },
+    {
+      "test": "ui_real_time",
+      "mode": "headless",
+      "checks": 9,
+      "failures": 0,
+      "log": "checks/regression-ui_real_time.log"
+    },
+    {
+      "test": "esc_board_frames",
+      "mode": "Vulkan, standard Linux engine",
+      "checks": 49,
+      "failures": 0,
+      "log": "checks/regression-esc-boards-pack.log"
+    },
+    {
+      "test": "pause_menu_clock",
+      "mode": "OpenGL",
+      "checks": 25,
+      "failures": 0,
+      "log": "checks/regression-pause-clock-gl.log"
+    }
+  ]
+}

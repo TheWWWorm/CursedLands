@@ -1,0 +1,51 @@
+{
+  "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "mask_slice": [
+    "0x481c31",
+    "0x481c80"
+  ],
+  "dead_getter": "0x446880",
+  "scope": "Actual x86 loader mask conversion and unit dead getter; supplied records/stack, no full-world replay claim.",
+  "masks": [
+    {
+      "case": "gz3g shrine",
+      "owner": 2,
+      "raw_mask": 4294967295,
+      "effective_mask": 1
+    },
+    {
+      "case": "owner 0, sparse enemies",
+      "owner": 0,
+      "raw_mask": 0,
+      "effective_mask": 2147483657
+    },
+    {
+      "case": "owner 7, sparse enemies",
+      "owner": 7,
+      "raw_mask": 0,
+      "effective_mask": 2147483657
+    },
+    {
+      "case": "owner 31, sparse enemies",
+      "owner": 31,
+      "raw_mask": 0,
+      "effective_mask": 2147483657
+    },
+    {
+      "case": "no enemies",
+      "owner": 4,
+      "raw_mask": 4294967295,
+      "effective_mask": 0
+    }
+  ],
+  "dead_getter_cases": [
+    {
+      "dead": 0,
+      "virtual_dc_result": 0
+    },
+    {
+      "dead": 1,
+      "virtual_dc_result": 1
+    }
+  ]
+}

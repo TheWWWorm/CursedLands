@@ -80,7 +80,7 @@ func _ready() -> void:
 
 	session.free()
 	for u: GameUnit in [hero, guard, corpse, bystander]:
-		world.units.erase(u.uid)
+		world.erase_unit(u.uid)
 		u.free()
 	world.free()
 	print("SCRIPT_PERCEPTION ", checks, " checks ", failures, " failures")

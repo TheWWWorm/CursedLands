@@ -1,0 +1,9 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS leaving gz3g records the campaign clock
+PASS the clock does not run during the catch-up
+PASS 3 hours away are 300 steps
+PASS the zone ran its absence steps (300)
+PASS units near the entrance moved meanwhile (7 of 7)
+PASS units far from the entrance stayed put (0 moved)
+RESULT failures=0

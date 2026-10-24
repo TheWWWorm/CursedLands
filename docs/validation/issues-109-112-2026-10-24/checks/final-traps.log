@@ -1,0 +1,20 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS gz3g owner 2's map diplomacy selects faction 0
+PASS the raw all-player mask is superseded by map diplomacy
+PASS the party wakes the shrine
+PASS Zak and a companion are both selected
+PASS goblin and orc in the same circle are excluded
+PASS disabled shrine cannot damage the party
+PASS runtime diplomacy does not rewrite the captured mask
+PASS active shrine actually damages both party targets
+PASS actual lightning leaves both creatures unharmed
+PASS a successful cast starts the authored 100-tick countdown
+PASS the next tick counts down without another immediate cast
+PASS full trap checkpoint reloads
+PASS save/load preserves disabled state, cooldown and captured mask
+PASS older two-field trap saves keep the authored target mask
+PASS generic trap mask follows owner-to-target hostility
+PASS AddMob trap uses its source map's diplomacy row
+PASS a removed trap cannot continue casting
+MAGIC_TRAP_TARGETS 17 checks 0 failures

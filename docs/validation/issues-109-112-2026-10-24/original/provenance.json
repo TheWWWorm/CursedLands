@@ -1,0 +1,32 @@
+{
+  "evidence_id": "ev_6ea8b3911ae1cbe14ef0eff2d05a3fe1c2887bacc892e91da8cb14129ef58878",
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x481660"
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit."
+  ],
+  "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "reviewed_procedures": [
+    "0x481660",
+    "0x52a920",
+    "0x52a4b0",
+    "0x52ab30",
+    "0x52ac20",
+    "0x446880",
+    "0x5caa00"
+  ]
+}

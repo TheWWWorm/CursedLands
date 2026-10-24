@@ -1,0 +1,15 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS spell begins from gait 2
+PASS gait 0 request keeps the displayed casting posture
+PASS authority plays the queued posture transition 2 -> 0
+PASS replica plays the queued posture transition 2 -> 0
+PASS spell begins from gait 2
+PASS gait 1 request keeps the displayed casting posture
+PASS authority plays the queued posture transition 2 -> 1
+PASS replica plays the queued posture transition 2 -> 1
+PASS spell begins from gait 1
+PASS gait 2 request keeps the displayed casting posture
+PASS authority plays the queued posture transition 1 -> 2
+PASS replica plays the queued posture transition 1 -> 2
+CAST_POSTURE_QUEUE 12 checks 0 failures
