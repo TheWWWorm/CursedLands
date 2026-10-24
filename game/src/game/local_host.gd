@@ -502,6 +502,13 @@ func _owner_gone() -> bool:
 	if parent_id > 0 and (OS.has_feature("linuxbsd") or
 			(OS.has_feature("android") and Engine.has_singleton("EISimulation"))):
 		return not CrashReport.alive(parent_id)
+	# Windows cannot query an arbitrary parent's liveness through Godot's
+	# child-process API. The authenticated local owner still answers ENet's
+	# keep-alive packets during synchronous loading. A disconnected owner is
+	# handled by Session._on_peer_disconnected; retain the timeout for startup
+	# before ownership has been established.
+	if owner_peer > 1 and CoopProgress.peer_alive(multiplayer, owner_peer):
+		return false
 	return Time.get_ticks_msec() - _owner_seen > 120000
 
 

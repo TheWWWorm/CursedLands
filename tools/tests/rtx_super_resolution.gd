@@ -112,6 +112,13 @@ func _run() -> void:
 	await sample("off", 0)
 	await sample("dlaa", 1)
 	await sample("quality", 2)
+	# Reproduce the campaign loader's forced redraws inside one simulation tick.
+	var forced_before := int(status().get("dlss_evaluations",0))
+	for i in 12:
+		RenderingServer.force_draw(false)
+	check(int(status().get("dlss_evaluations",0))-forced_before == 12,"forced loading draws each evaluate DLSS")
+	check(int(status().get("last_error",-1)) == 0 and RtxGraphics.sr_active(),"forced loading draws retain valid SDK frame tokens")
+
 	await sample("balanced", 3)
 	await sample("performance", 4)
 	await sample("quality-motion", 2, true)

@@ -65,6 +65,10 @@ func run() -> void:
 	g.direct._set_view_mode(3);g.direct.heading=0;g.direct.tilt=-0.12;g.direct.apply_camera()
 	rt=g.get_node("SceneRaytrace")
 	check(await ready_scene(rt),"recording route prepares PT")
+	check(s.local_host._process_alive(),"simulation process survives cold shader loading")
+	if dlss:
+		check(RtxGraphics.sr_active(),"DLSS survives campaign loading and forced redraws")
+	if not failures.is_empty():await finish();return
 	get_window().size=resolution;await frames(20)
 	check(rt.stats.get("display_size",[])==[3840,2160],"route renders at recorded 4K resolution")
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED);Engine.max_fps=0

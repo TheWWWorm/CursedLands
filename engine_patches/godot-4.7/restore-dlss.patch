@@ -277,7 +277,7 @@ diff --git a/drivers/streamline/streamline.cpp b/drivers/streamline/streamline.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline.cpp
-@@ -0,0 +1,359 @@
+@@ -0,0 +1,373 @@
 +/**************************************************************************/
 +/*  streamline.cpp                                                        */
 +/**************************************************************************/
@@ -414,7 +414,21 @@ new file mode 100644
 +	}
 +
 +	if (!sl_context.initialized) { return; }
-+	if (marker == STREAMLINE_MARKER_BEGIN_RENDER) { sl_context.fg_tagged_this_frame = false; }
++	if (marker == STREAMLINE_MARKER_BEGIN_RENDER) {
++		// Loading and shader warm-up may force multiple draws within one
++		// simulation iteration. Each submission needs a fresh SDK frame token;
++		// reusing it rejects constants and permanently disables SR.
++		if (sl_context.frame_token_rendered || !sl_context.last_token) {
++			sl_context.get_new_frame_token();
++			if (sl_context.last_token && sl_context.is_game && sl_context.streamline_capabilities.reflex_available) {
++				// A forced draw has no additional simulation work.
++				sl_context.pcl_marker(sl_context.last_token, sl::PCLMarker::eSimulationStart);
++				sl_context.pcl_marker(sl_context.last_token, sl::PCLMarker::eSimulationEnd);
++			}
++		}
++		sl_context.frame_token_rendered = true;
++		sl_context.fg_tagged_this_frame = false;
++	}
 +	if (marker == STREAMLINE_MARKER_BEGIN_SIMULATION && !sl_context.last_token) { sl_context.get_new_frame_token(); }
 +	if (marker == STREAMLINE_MARKER_BEGIN_PRESENT && !sl_context.fg_tagged_this_frame) { sl_context.dlssg_disable(); }
 +	if (marker == STREAMLINE_MARKER_END_PRESENT) { sl_context.game_presents.increment(); sl_context.poll_presented_frames(); }
@@ -714,7 +728,7 @@ diff --git a/drivers/streamline/streamline_context.cpp b/drivers/streamline/stre
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline_context.cpp
-@@ -0,0 +1,409 @@
+@@ -0,0 +1,410 @@
 +/**************************************************************************/
 +/*  streamline_context.cpp                                                */
 +/**************************************************************************/
@@ -964,6 +978,7 @@ new file mode 100644
 +	if (!initialized) { return nullptr; }
 +	sl::Result result = this->slGetNewFrameToken ? this->slGetNewFrameToken(last_token, nullptr) : sl::Result::eOk;
 +	ERR_FAIL_COND_V_MSG(result != sl::Result::eOk, nullptr, StreamlineContext::result_to_string(result));
++	frame_token_rendered = false;
 +	return last_token;
 +}
 +
@@ -1128,7 +1143,7 @@ diff --git a/drivers/streamline/streamline_context.h b/drivers/streamline/stream
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline_context.h
-@@ -0,0 +1,144 @@
+@@ -0,0 +1,145 @@
 +/**************************************************************************/
 +/*  streamline_context.h                                                  */
 +/**************************************************************************/
@@ -1180,6 +1195,7 @@ new file mode 100644
 +	SafeNumeric<uint32_t> fg_active{ 0 };
 +	SafeNumeric<uint32_t> sr_failed{ 0 };
 +	SafeNumeric<uint32_t> fg_failed{ 0 };
++	bool frame_token_rendered = false;
 +	bool fg_tagged_this_frame = false; // Render/present thread only.
 +	bool check(sl::Result result, bool frame_generation = false);
 +	void poll_presented_frames();
