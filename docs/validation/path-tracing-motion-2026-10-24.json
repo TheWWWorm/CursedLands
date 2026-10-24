@@ -1,0 +1,320 @@
+{
+  "base_commit": "96aaeb78",
+  "production_code_commit": "c3b2bc182e9c393b6399e5a5b9d83805220d848e",
+  "qualification_commit": "a08372a6e5f5da8c4003e6bb44c737823fbcf332",
+  "game_tree": "6d4c97911bc859ac670272f64ffb5a773092f20b",
+  "measurements": {
+    "noise": {
+      "all_matched_nearby": {
+        "pixels": 1296189,
+        "before_temporal_variance": 0.001929607824422419,
+        "after_temporal_variance": 0.00017911790928337723,
+        "variance_reduction": 0.9071739315986633,
+        "before_mean": 0.8399738669395447,
+        "after_mean": 0.8397014141082764
+      },
+      "snow_slope": {
+        "pixels": 379182,
+        "before_temporal_variance": 0.0012607356766238809,
+        "after_temporal_variance": 3.5882010706700385e-05,
+        "variance_reduction": 0.9715388417243958,
+        "before_mean": 0.9388375878334045,
+        "after_mean": 0.9391944408416748
+      }
+    },
+    "coverage": {
+      "baseline3-ingos-coverage": {
+        "accepted": 214292,
+        "rejected": 4160296,
+        "fraction": 0.048985641619279346
+      },
+      "candidate2-ingos-dx12": {
+        "accepted": 4348403,
+        "rejected": 24951,
+        "fraction": 0.9942947678143594
+      },
+      "candidate2-gipath-vulkan": {
+        "accepted": 677593,
+        "rejected": 10345,
+        "fraction": 0.9849623076498173
+      },
+      "candidate2-suslanger-dx12": {
+        "accepted": 1962089,
+        "rejected": 5617,
+        "fraction": 0.9971454068849717
+      }
+    },
+    "note": "Eight held DX12 4K frames, Low/50%, 2 bounces, fast response, controlled advancing daylight. Variance is temporal linear diffuse irradiance variance; geometry/normal/depth overlap mask. Different driver-scheduled stochastic frame seeds. Coverage uses relative red/green thresholds after tone mapping."
+  },
+  "windows": {
+    "qualification_manifest_sha256": "0b308176d456b81827f27e8f1786dd4d3db10ae213d862941f51f6cd75b644c4",
+    "passed": true,
+    "inputs_unchanged": true,
+    "native_windows_tested": false,
+    "backend": "Windows DX12 executable under Wine/VKD3D on Linux",
+    "gpu": {
+      "index": "0",
+      "uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "pci_bus_id": "00000000:0A:00.0",
+      "driver": "580.178.04"
+    },
+    "runs": [
+      {
+        "suite": "spatial",
+        "passed": true,
+        "checks": 21,
+        "wall_seconds": 13.636380736999854,
+        "validation_errors": []
+      },
+      {
+        "suite": "light_history",
+        "passed": true,
+        "checks": 49,
+        "wall_seconds": 12.832958043996769,
+        "validation_errors": []
+      },
+      {
+        "suite": "camera_routes",
+        "passed": true,
+        "checks": 5,
+        "wall_seconds": 110.13524482699722,
+        "validation_errors": []
+      },
+      {
+        "suite": "camera_modes",
+        "passed": true,
+        "checks": 5,
+        "wall_seconds": 83.7725597259996,
+        "validation_errors": []
+      },
+      {
+        "suite": "snow_tracks",
+        "passed": true,
+        "checks": 5,
+        "wall_seconds": 57.791297326999484,
+        "validation_errors": []
+      },
+      {
+        "suite": "lifecycle",
+        "passed": true,
+        "checks": 167,
+        "wall_seconds": 22.702125151001383,
+        "validation_errors": []
+      },
+      {
+        "suite": "motion",
+        "passed": true,
+        "checks": 55,
+        "wall_seconds": 12.998922645005223,
+        "validation_errors": []
+      }
+    ],
+    "runtime_files": {
+      "CursedLands.exe": {
+        "sha256": "3703c35f5a05fc8eeb31ea0b4ea720d7f428d898b07bedc30d274beaae64d5de",
+        "bytes": 94122496
+      },
+      "CursedLands.pck": {
+        "sha256": "728ff7c9bce3e4ca119922ac3029776760724c0b035595fa98ec1098a9fe807b",
+        "bytes": 20690024
+      },
+      "amd_fidelityfx_framegeneration_dx12.dll": {
+        "sha256": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "bytes": 40085776
+      },
+      "amd_fidelityfx_loader_dx12.dll": {
+        "sha256": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "bytes": 26376
+      },
+      "amd_fidelityfx_upscaler_dx12.dll": {
+        "sha256": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "bytes": 28761864
+      },
+      "libinstaller_lzma.dll": {
+        "sha256": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "bytes": 81920
+      },
+      "libmod_archive.dll": {
+        "sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "bytes": 656896
+      },
+      "libterrain_search.dll": {
+        "sha256": "195615273fcdce04331d3631c62d3da75bd79c689e261c7c1fc73ae98236e63d",
+        "bytes": 2637824
+      },
+      "libmod_lua.dll": {
+        "sha256": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "bytes": 755712
+      },
+      "D3D12Core.dll": {
+        "sha256": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "bytes": 4821064
+      }
+    },
+    "camera_routes": {
+      "samples": 408,
+      "inactive_frames": 0,
+      "terrain_receivers": {
+        "accepted": 1086670,
+        "fraction": 0.994318675717989,
+        "rejected": 6209
+      }
+    },
+    "camera_modes": {
+      "samples": 360,
+      "inactive_frames": 0
+    },
+    "snow_tracks": {
+      "samples": 24,
+      "inactive_frames": 0,
+      "before": {
+        "accepted": 517911,
+        "fraction": 1.0,
+        "rejected": 0
+      },
+      "after": {
+        "accepted": 512810,
+        "fraction": 0.990179495497165,
+        "rejected": 5086
+      }
+    }
+  },
+  "linux_regression": {
+    "water_raytrace_live": {
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "5637ecb19b1b81f3f9e08c1e77ace1524a9c49ce35b91ab180bad74864ea122b",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-motion-20261024/candidate/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-motion-20261024/candidate/CursedLands-1.26.0-linux-x86_64/CursedLands.pck": "7f74969b7b79d5db65acbac885638b3f955375ac3db992acd4caef20c2170c31"
+      },
+      "repository_commit": "a08372a6e5f5da8c4003e6bb44c737823fbcf332"
+    },
+    "path_trace_motion": {
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "2789de1b7df9f3e392492f845c7b818457116bf97bc3ada74d1d1b9a2755b933",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-motion-20261024/candidate/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-motion-20261024/candidate/CursedLands-1.26.0-linux-x86_64/CursedLands.pck": "7f74969b7b79d5db65acbac885638b3f955375ac3db992acd4caef20c2170c31"
+      },
+      "repository_commit": "a08372a6e5f5da8c4003e6bb44c737823fbcf332"
+    },
+    "path_trace_lifecycle": {
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "dd4dab2c35c23088fc970157ed718716dcb8b28bca24b2142248fc1da0cfa2c2",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-motion-20261024/candidate/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-motion-20261024/candidate/CursedLands-1.26.0-linux-x86_64/CursedLands.pck": "7f74969b7b79d5db65acbac885638b3f955375ac3db992acd4caef20c2170c31"
+      },
+      "repository_commit": "a08372a6e5f5da8c4003e6bb44c737823fbcf332"
+    }
+  },
+  "performance": {
+    "checks": 6,
+    "device": "NVIDIA GeForce RTX 3090",
+    "failures": [],
+    "resolution": [
+      3840,
+      2160
+    ],
+    "runs": [
+      {
+        "frame_ms": {
+          "median": 15.163,
+          "n": 120,
+          "p95": 17.564
+        },
+        "rt_gpu_ms": {
+          "median": 3.912704,
+          "n": 120,
+          "p95": 4.854272
+        },
+        "spatial": false
+      },
+      {
+        "frame_ms": {
+          "median": 14.442,
+          "n": 120,
+          "p95": 17.573
+        },
+        "rt_gpu_ms": {
+          "median": 5.34912,
+          "n": 120,
+          "p95": 6.197504
+        },
+        "spatial": true
+      },
+      {
+        "frame_ms": {
+          "median": 14.897,
+          "n": 120,
+          "p95": 17.882
+        },
+        "rt_gpu_ms": {
+          "median": 5.36704,
+          "n": 120,
+          "p95": 6.197504
+        },
+        "spatial": true
+      },
+      {
+        "frame_ms": {
+          "median": 15.22,
+          "n": 120,
+          "p95": 20.93
+        },
+        "rt_gpu_ms": {
+          "median": 3.943936,
+          "n": 120,
+          "p95": 4.999168
+        },
+        "spatial": false
+      }
+    ],
+    "stats": {
+      "accumulation_frames": 8.0,
+      "active": true,
+      "display_size": [
+        3840,
+        2160
+      ],
+      "emissive_candidates": 0,
+      "emissive_triangles": 0,
+      "geometries": 1606,
+      "gi_samples": 0,
+      "history_limit": 8.0,
+      "history_reused": true,
+      "instances": 1923,
+      "light_history_limited": false,
+      "lights": 1,
+      "path_bounces": 2,
+      "path_samples": 1,
+      "path_tracing": true,
+      "quality": 0,
+      "rebuilding": false,
+      "render_scale": 1.0,
+      "render_size": [
+        3840,
+        2160
+      ],
+      "shadow_samples": 0,
+      "size": [
+        1920,
+        1080
+      ],
+      "snapshot_generation": 1,
+      "supported": true,
+      "terrain_material_build_us": 23605,
+      "terrain_material_bytes": 933200,
+      "terrain_material_triangles": 56533,
+      "trace_render_scale": 1.0,
+      "triangles": 134755,
+      "updated_instances": 0,
+      "updated_poses": 0,
+      "window_resolution_reference": false
+    }
+  }
+}

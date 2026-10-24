@@ -131,6 +131,16 @@ helper now waits for explicit GPU texture readback instead of a presentation
 event from its empty viewport. Ordinary qualification launches are capped at
 30 FPS; performance suites retain their intended uncapped behavior.
 
+The final `qualification-final-windows` run passed **307 checks** across
+`motion_quality` and `motion`, with unchanged executable, pack and runtime
+library hashes. Its 4K route recorded 408 active frames without a dropout; the
+actual camera-mode test recorded another 360. The revised GPU-readback helper
+also passed native Vulkan motion (55) and separate-thread lifecycle (168).
+The shared water collector passed all 15 live reflection checks. Compact
+[measurements and artifact hashes](../validation/path-tracing-motion-2026-10-24.json)
+are retained in the repository; complete manifests, logs and captures remain in
+the local evidence directories.
+
 ## Remaining limits and repeatable checks
 
 Dynamic footprint depressions are still approximated in ray geometry. Four real
