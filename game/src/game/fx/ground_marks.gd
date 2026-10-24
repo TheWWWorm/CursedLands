@@ -7,18 +7,17 @@ extends Node3D
 ## on every peer and visual only: footprints come from each unit's walk / run
 ## clip step frames as this peer animates it, blood marks from the broadcast
 ## "blood" hit event and the authoritative "blood_pool" UID event, scorch
-## marks from the effects ParticleFx creates here. Only creation events are
-## replicated. The original does not keep marks
-## in a savegame (loading empties the three lists), nor does the
-## remake. The heavy-monster step shake is
+## marks from the effects ParticleFx creates here. Creation events are
+## replicated; death pools also retain their shape and age across saves.
+## The heavy-monster step shake is
 ## made here too, from the same step frames.
 ##
 ## Each mark is a rectangle (centre, half-extents a / b, angle) projected
 ## straight down onto the ground (clips it to the
 ## terrain triangles, +0.01 m), with one atlas cell of its texture and alpha
 ## base × min(1, life / fade); prints.db gives base alpha, life and fade per
-## ground type (EIDatabase "blood_prints" / "foot_prints"). Drawn here as
-## Decal nodes culled to EITerrain.DECAL_LAYER (terrain and bridges).
+## ground type (EIDatabase "blood_prints" / "foot_prints"). Campaign marks
+## use clipped surface geometry; Arena retains its existing decal/ink path.
 
 const TICK := 0.055
 ## Remake caps (the original keeps every mark until its life ends).
@@ -51,6 +50,7 @@ class Mark:
 	var blood := -1             # blood type - 1, footprints' blood (-1 none)
 	var splash := false         # hit splatter: not picked up by feet
 	var decal: Decal
+	var projection: MeshInstance3D
 
 
 ## Persistent typed state avoids rebuilding a set and looking up dictionary fields for
@@ -82,11 +82,12 @@ var _images := {}               # texture name -> Image
 var _steps := {}                # template -> {clip: {act, steps, hit}}
 var _pending_units := {}        # units whose animation advanced since the last draw
 var _units := {}                # unit instance id -> per-unit step state
-var _ext := {}                  # "<instance id>:<part>" -> Vector2 half-extents
 var _sole_meshes := {}          # weak mesh reference + its immutable local vertices
 var _sole_sweep := 0
 var _rng := RandomNumberGenerator.new()
 static var _dbres: EIResArchive
+var _projection: GroundMarkProjection
+var _pool_ids := {}
 
 
 static func of(w: GameWorld) -> GroundMarks:
@@ -167,6 +168,7 @@ func _apply_options() -> void:
 # ------------------------------------------------------------------ tick
 
 func _process(dt: float) -> void:
+	if _projection: _projection.sync([foot_marks,blood_marks,fire_marks])
 	acc += dt
 	var n := 0
 	while acc >= TICK and n < 8:
@@ -210,6 +212,7 @@ func _update(m: Mark) -> int:
 		_place(m)
 	if m.decal.modulate.a != alpha:
 		m.decal.modulate.a = alpha
+		if m.projection: m.projection.material_override.set_shader_parameter("opacity",alpha)
 	return m.life
 
 
@@ -345,6 +348,12 @@ func _add(m: Mark, tex: Texture2D, list: Array[Mark], cap: int, shown: bool) -> 
 	m.decal = d
 	add_child(d)
 	_place(m)
+	if not world.terrain is ArenaWinterTerrain and DisplayServer.get_name() != "headless":
+		if _projection == null: _projection = GroundMarkProjection.new(world)
+		_projection.create(m)
+		# Geometry is the sole pigment receiver. Keep the Decal as the shared
+		# transform/lifetime/visibility owner, without painting a second copy.
+		d.cull_mask = 0
 	list.append(m)
 	while list.size() > cap:
 		list[0].decal.queue_free()
@@ -360,6 +369,7 @@ func _place(m: Mark) -> void:
 	var ground := world.ground_at(m.x, m.y)
 	m.decal.transform = Transform3D(Basis(x_axis, Vector3.UP, z_axis), EISpace.pos(m.x, m.y, ground))
 	m.decal.size = Vector3(maxf(m.a, 0.01) * 2.0, DEPTH, maxf(m.b, 0.01) * 2.0)
+	if m.projection: _projection.place(m)
 
 
 ## One atlas cell as its own texture (Decal has no UV rect), turned `turn` × 90°.
@@ -411,10 +421,18 @@ func hit(ev: Dictionary) -> void:
 ##  (unit controller): a pool of (w + h) / 2 of the
 ## body ("bd"; else 0.75 × the smaller horizontal unit extent) growing to 3×, cell
 ## 2 + rand(2). Called by the authoritative death-queue UID event.
-func pool(u: GameUnit) -> void:
+static func pool_record(u: GameUnit) -> Dictionary:
 	var bt := int(u.race.get("blood_type", 0))
 	if bt < 1 or bt > 4:
-		return
+		return {}
+	# The death queue has finished. Resolve its final pose even in a worker
+	# with deferred/off-screen animation, before recording the body position.
+	if u.dead:
+		if u.model and u.model.player and u.model.player.assigned_animation != "":
+			# Several logic ticks can finish before the next presentation frame.
+			# Cancel its old blend as well as seeking the death clip's end.
+			u.model.player.play(u.model.player.assigned_animation, 0.0)
+		u.freeze_pose(true)
 	var r: float
 	var p: Vector3
 	var n := _part(u, "bd")
@@ -425,7 +443,53 @@ func pool(u: GameUnit) -> void:
 	else:
 		r = _unit_size(u, true) * 0.75
 		p = ParticleFx.ei(u.global_position)
-	add_blood(p.x, p.y, r, r * 3.0, (_rng.randi() % 2 + 2) | ((bt - 1) << 16), false)
+	var ground := u.world.terrain.mark_ground(p.x, p.y) if u.world and u.world.terrain else -1
+	var rows := GameData.db.table("blood_prints")
+	if ground < 0 or ground >= rows.size(): return {}
+	var row: Array = Array(rows[ground].get("normal", []))
+	if row.size() < 3 or float(row[0]) <= 0 or int(row[1]) <= 0 or int(row[2]) <= 0: return {}
+	# Visual randomness has its own generator; saving a pool never consumes
+	# combat/script random numbers. The authority sends this exact recipe.
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	return {"x":p.x, "y":p.y, "r":r, "life":int(row[1]), "fade":int(row[2]), "alpha":float(row[0]),
+		"code":(rng.randi() % 2 + 2) | ((bt - 1) << 16), "turn":rng.randi() % 4,
+		"angle":float(rng.randi() % roundi(TAU * 1000.0)) * 0.001, "age":0}
+
+
+static func valid_pool(row: Variant) -> bool:
+	if not row is Dictionary: return false
+	for key in ["x", "y", "r", "life", "fade", "alpha", "code", "turn", "angle", "age"]:
+		if not (row.get(key) is float or row.get(key) is int) or not is_finite(float(row[key])): return false
+	return row.r > 0 and row.r < 100 and row.life > 0 and row.life <= 0x7fffffff \
+		and row.fade > 0 and row.fade <= 0x7fffffff and row.age >= 0 and row.age < row.life \
+		and row.alpha > 0 and row.alpha <= 1 and int(row.turn) in range(4) \
+		and (int(row.code) >> 16) in range(4) and (int(row.code) & 0xffff) in [2, 3]
+
+
+func restore_pool(row: Dictionary, id := 0) -> void:
+	if not valid_pool(row) or id > 0 and _pool_ids.has(id): return
+	if id > 0: _pool_ids[id] = true
+	var m := Mark.new()
+	var age := int(row.age)
+	m.x = float(row.x); m.y = float(row.y)
+	m.life = int(row.life) - age; m.fade = int(row.fade); m.alpha0 = float(row.alpha)
+	var growth := maxi(mini(int(row.life) / 2, 45), 1)
+	m.grow = float(row.r) * 2.0 / growth
+	m.a = float(row.r) + m.grow * mini(age, growth); m.b = m.a
+	m.grow_left = growth - age
+	if m.grow_left < 0: m.grow = 0.0
+	m.spin = PI / 180.0 * (30.0 / float(row.life))
+	m.angle = float(row.angle) + m.spin * age
+	var code := int(row.code)
+	m.blood = code >> 16
+	var uv := Rect2(float((code >> 16) & 1) * 0.5 + float(code & 1) * 0.25,
+		float(code >> 17) * 0.5 + float((code & 0xffff) >> 1) * 0.25, 0.25, 0.25)
+	_add(m, _cell("bloodprints", uv, int(row.turn)), blood_marks, MAX_BLOOD, GameData.option("marks") != 0)
+
+
+func pool(u: GameUnit) -> void:
+	restore_pool(pool_record(u))
 
 
 ## Explicit resynchronization after attaching the effect system. Normal
@@ -736,7 +800,7 @@ func _unit(uid) -> GameUnit:
 	return u if is_instance_valid(u) else null
 
 
-func _part(u: GameUnit, name: String) -> Node3D:
+static func _part(u: GameUnit, name: String) -> Node3D:
 	if u.model:
 		u.model.flush_pending_pose()
 	return u.model.find_child(name, true, false) as Node3D if u.model else null
@@ -748,14 +812,11 @@ func _part(u: GameUnit, name: String) -> Node3D:
 ## Authored FIG max is independent of the rendered vertex bounds. Read it
 ## on each call, so complexion/redressing cannot retain an old part's size.
 ## Mesh bounds below are only the fallback for custom parts without FIG data.
-func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
+static func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
 	if n.has_meta(EIFigureGeometry.META):
 		var g: Dictionary = n.get_meta(EIFigureGeometry.META)
 		var maximum: Vector3 = g.max
 		return Vector2(maximum.x, maximum.y)
-	var key := "%d:%s:%d" % [u.get_instance_id(), name, n.get_instance_id()]
-	if _ext.has(key):
-		return _ext[key]
 	var box := AABB()
 	var first := true
 	for mi: MeshInstance3D in n.find_children("*", "MeshInstance3D", false, false):
@@ -767,15 +828,14 @@ func _extent(u: GameUnit, name: String, n: Node3D, kind := "") -> Vector2:
 	var e: Vector2 = FALLBACK_EXT.get(kind if kind != "" else name, FALLBACK_EXT[""])
 	if not first and box.size.x > 0.001 and box.size.z > 0.001:
 		e = Vector2(box.size.x, box.size.z) * 0.5
-	_ext[key] = e
 	return e
 
 
 ## The hit-jitter radius takes max; the body-less pool takes
 ## min of the same extents (executed, despite its misleading
 ## ). Both use the raw unrotated FIG union.
-func _unit_size(u: GameUnit, smaller := false) -> float:
-	var b := ParticleFx.of(world)._box(u)
+static func _unit_size(u: GameUnit, smaller := false) -> float:
+	var b := ParticleFx.of(u.world)._box(u)
 	return (minf(b.size.x, b.size.z) if smaller else maxf(b.size.x, b.size.z)) * 0.5
 
 

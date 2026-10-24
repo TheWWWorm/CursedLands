@@ -1,0 +1,36 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 02:56:20 +5976ms] session 02246b973169: 1.26.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS a retained hero stays seen beyond sight range
+PASS GroupHas(UnitSee) reads the same list
+PASS a dead watcher keeps the list it had
+PASS GroupSee reads dead watchers too
+PASS PlayerSee leaves out the corpse list
+PASS IsUnitVisible includes the corpse list
+PASS single player has no player 1
+ERROR: Dictionary is in read-only state.
+   at: erase (core/variant/dictionary.cpp:251)
+   GDScript backtrace (most recent call first):
+       [0] _ready (/home/llm2x/Documents/EI/local/scratchpad/remaining-issues-20261024/repo/tools/tests/script_perception.gd:83)
+       [1] _start (res://src/main.gd:119)
+       [2] _ready (res://src/main.gd:69)
+ERROR: Dictionary is in read-only state.
+   at: erase (core/variant/dictionary.cpp:251)
+   GDScript backtrace (most recent call first):
+       [0] _ready (/home/llm2x/Documents/EI/local/scratchpad/remaining-issues-20261024/repo/tools/tests/script_perception.gd:83)
+       [1] _start (res://src/main.gd:119)
+       [2] _ready (res://src/main.gd:69)
+ERROR: Dictionary is in read-only state.
+   at: erase (core/variant/dictionary.cpp:251)
+   GDScript backtrace (most recent call first):
+       [0] _ready (/home/llm2x/Documents/EI/local/scratchpad/remaining-issues-20261024/repo/tools/tests/script_perception.gd:83)
+       [1] _start (res://src/main.gd:119)
+       [2] _ready (res://src/main.gd:69)
+ERROR: Dictionary is in read-only state.
+   at: erase (core/variant/dictionary.cpp:251)
+   GDScript backtrace (most recent call first):
+       [0] _ready (/home/llm2x/Documents/EI/local/scratchpad/remaining-issues-20261024/repo/tools/tests/script_perception.gd:83)
+       [1] _start (res://src/main.gd:119)
+       [2] _ready (res://src/main.gd:69)
+SCRIPT_PERCEPTION 7 checks 0 failures
+[trace 02:56:20 +6232ms] clean exit

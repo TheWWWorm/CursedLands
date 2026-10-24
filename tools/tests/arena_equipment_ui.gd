@@ -258,28 +258,46 @@ func _ready() -> void:
 	check(screen._item_tray.scroll.get_v_scroll_bar().value > 0, "tray scroll follows keyboard focus")
 	bounded(screen._item_tray, "full item tray")
 	check(screen._battle_sidebar.get_global_rect().end.y <= screen._bench_panel.get_global_rect().position.y, "sidebar stays above reserves")
-	# A real start locks all mutations, but focus still exposes item detail.
+	# A real start hides equipment controls and releases their keyboard focus.
 	screen._pick_item(item_uid)
 	screen._fight()
 	await frames(12)
 	check(screen._item_uid == 0 and not screen._can_edit_equipment(), "starting combat cancels assignment and locks equipment")
+	check(not screen._item_tray.is_visible_in_tree(), "combat hides the item tray")
+	check(screen._item_targets.values().all(func(slot): return not slot.is_visible_in_tree()), "combat hides field item badges")
+	for button in screen._army_row.get_children():
+		var slot := button.get_node_or_null("CreatureItemTarget") as Control
+		check(slot == null or not slot.is_visible_in_tree(), "combat hides reserve item badges")
+	var combat_focus := get_viewport().gui_get_focus_owner()
+	check(combat_focus == null or combat_focus.is_visible_in_tree(), "combat leaves no focus on hidden equipment")
 	var carrier := int(screen._owned_item(item_uid).unit_uid)
 	var snapshot_kind := String(body(carrier).get_meta("arena_placement").item)
 	var actual_kind := String(screen._owned_item(item_uid).kind)
 	screen._owned_item(item_uid).kind = "storm" if actual_kind != "storm" else "ward"
 	screen.run._touch()
 	await frames(4)
-	check(screen._item_targets[carrier].kind == snapshot_kind, "combat badge reads frozen placement equipment")
+	check(String(body(carrier).get_meta("arena_placement").item) == snapshot_kind, "hiding equipment preserves the frozen combat item")
 	screen._owned_item(item_uid).kind = actual_kind
 	screen.run._touch()
-	screen._item_tray.focus_item(item_uid)
-	await key(KEY_TAB)
-	await get_tree().create_timer(0.5).timeout
-	check(screen._tooltips.visible, "keyboard item inspection remains available during combat")
-	await shot("tray-%s-%d-combat-tooltip" % [lang, dimensions.x])
 	var owned := screen.run.items.duplicate(true)
-	await key(KEY_ENTER)
+	screen._pick_item(item_uid)
 	check(screen._item_uid == 0 and screen.run.items == owned, "combat activation cannot change equipment")
+	screen._toggle_pause()
+	await frames(8)
+	check(screen.battle.phase == ArenaMatch.Phase.PAUSED and not screen._item_tray.visible, "paused combat keeps equipment hidden")
+	await shot("tray-%s-%d-combat-hidden" % [lang, dimensions.x])
+	screen._toggle_pause()
+	screen.battle.winner = 0
+	screen.battle.phase = ArenaMatch.Phase.FINISHED
+	screen.battle.finished.emit(0)
+	await frames(8)
+	screen.run.advance()
+	await frames(15)
+	check(screen.run.stage == "prepare" and screen._item_tray.is_visible_in_tree() and screen._item_tray.editable, "next preparation restores the item tray")
+	check(screen._item_targets[carrier].is_visible_in_tree() and screen._item_targets[carrier].kind == actual_kind, "next preparation restores the equipped field badge")
+	check(screen.run.items == owned, "battle visibility transitions preserve all equipment")
+	bounded(screen._item_tray, "restored item tray")
+	await shot("tray-%s-%d-restored" % [lang, dimensions.x])
 	# Existing alliance help retains bounded localized wrapping.
 	for alliance: String in ArenaAlliances.RULES:
 		screen._show_alliance(alliance)

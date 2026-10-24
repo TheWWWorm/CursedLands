@@ -1,0 +1,102 @@
+{
+  "checks": 25,
+  "failures": 0,
+  "samples": [
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.646239,
+      "longest_frame": 0.033371,
+      "paused": false,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.1665,
+      "longest_frame": 0.033342,
+      "paused": false,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666526,
+      "longest_frame": 0.033344,
+      "paused": true,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166521,
+      "longest_frame": 0.033338,
+      "paused": true,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666498,
+      "longest_frame": 0.033341,
+      "paused": false,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166509,
+      "longest_frame": 0.033338,
+      "paused": false,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666504,
+      "longest_frame": 0.033347,
+      "paused": true,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166523,
+      "longest_frame": 0.033338,
+      "paused": true,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666459,
+      "longest_frame": 0.033359,
+      "paused": false,
+      "scale": 2.03703703703704
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166556,
+      "longest_frame": 0.033353,
+      "paused": false,
+      "scale": 2.03703703703704
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666512,
+      "longest_frame": 0.033347,
+      "paused": true,
+      "scale": 2.03703703703704
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166525,
+      "longest_frame": 0.033338,
+      "paused": true,
+      "scale": 2.03703703703704
+    }
+  ]
+}

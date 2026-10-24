@@ -31,13 +31,13 @@ func _ready() -> void:
 	w.retain_logic_debt = true
 	w._sample_frame(1000,2.0)
 	w._sample_frame(2500,2.0)
-	check(w._logic_step == 5,"long stall delivers at most five ticks")
+	check(w._logic_step == 10,"fast-mode stall delivers at most ten ticks")
 	check(is_equal_approx(total(w),3.0),"elapsed time retained after stall")
 	check(w.logic_fraction() >= 0.0 and w.logic_fraction() < 1.0,"backlog never extrapolates a spline")
 	for i in range(1,21):
 		var before := w._logic_step
 		w._sample_frame(2500+i*10,2.0)
-		check(w._logic_step-before <= 5,"bounded repayment")
+		check(w._logic_step-before <= 10,"bounded repayment at selected rate")
 		check(absf(total(w)-(3.0+i*0.02)) < 1e-8,"conserved elapsed time")
 	check(w._logic_debt == 0.0 and absf(w.time-3.4) < GameWorld.TICK,"worker catches up")
 	# No queued tick executes during a movie; its wall duration is excluded.
@@ -56,7 +56,7 @@ func _ready() -> void:
 	s._movie_ev = {}
 	w.stop_at = -1
 	w._sample_frame(13010,2.0)
-	check(w._logic_step-steps <= 5 and absf(total(w)-before-0.02) < 1e-8,"movie resumes bounded pending work")
+	check(w._logic_step-steps <= 10 and absf(total(w)-before-0.02) < 1e-8,"movie resumes bounded pending work")
 	# Notifications reset raw timestamp, preserving only time already owed.
 	before = total(w)
 	w._notification(Node.NOTIFICATION_PAUSED)
@@ -89,6 +89,22 @@ func _ready() -> void:
 		w._advance(dt)
 		check(absf(total(w)-before) < 1e-8,"invalid elapsed never adds time")
 	check(w.intervals.all(func(dt): return dt == GameWorld.TICK),"all ticks retain55ms")
+	# Reporter #98: sustained slow callbacks used to saturate both speeds at
+	# the identical five-tick cap. Exercise the real timestamp path in both
+	# worker and inline worlds, not just a faster front-end animation clock.
+	for worker in [false, true]:
+		for frame_ms in [125, 200, 250, 500]:
+			var rates := []
+			for rate in [1.0, 55.0 / 27.0]:
+				var slow := ClockWorld.new()
+				slow.retain_logic_debt = worker
+				slow._sample_frame(1000, rate)
+				for frame in 40: slow._sample_frame(1000 + (frame + 1) * frame_ms, rate)
+				rates.append(slow.time)
+				check(slow.intervals.all(func(dt): return dt == GameWorld.TICK), "slow callbacks preserve tick duration")
+				slow.free()
+			check(rates[1] / rates[0] > 1.95, "fast stays faster with %dms callbacks, worker=%s" % [frame_ms, worker])
+			print("SLOW_CLOCK frame_ms=", frame_ms, " worker=", worker, " fast/normal=", rates[1]/rates[0])
 	w.session = null
 	w.free(); s.free()
 	print("WORKER_CLOCK ",checks," checks ",failures," failures")

@@ -1,0 +1,90 @@
+{
+	"checks": 15,
+	"failures": 0,
+	"samples": [
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 1.01608683187754,
+			"seconds": 3.031237,
+			"shop_available": false,
+			"simulation_seconds": 3.07999999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 2.04756613078527,
+			"seconds": 3.035311,
+			"shop_available": false,
+			"simulation_seconds": 6.21499999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 0.997308092372154,
+			"seconds": 3.033165,
+			"shop_available": false,
+			"simulation_seconds": 3.02499999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 1.00462584536981,
+			"seconds": 3.065818,
+			"shop_available": false,
+			"simulation_seconds": 3.07999999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 2.06343370375094,
+			"seconds": 3.065279,
+			"shop_available": false,
+			"simulation_seconds": 6.32499999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 0.997069740183624,
+			"seconds": 3.199375,
+			"shop_available": false,
+			"simulation_seconds": 3.18999999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 2.04456623332483,
+			"seconds": 3.201168,
+			"shop_available": false,
+			"simulation_seconds": 6.54499999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		}
+	]
+}

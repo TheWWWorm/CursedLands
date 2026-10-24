@@ -1600,8 +1600,10 @@ static func replay_spell(event: Dictionary, age: int) -> Dictionary:
 ## own freshly built world: only what CampaignState.restore_zone does not do).
 func _replay_events(local := false) -> Array:
 	var out := []
-	if world == null or not world.has_meta("replay"):
+	if world == null:
 		return out
+	out.append_array(world.corpse_pools.pool_events())
+	if not world.has_meta("replay"): return out
 	var rs := _replay_state()
 	if not local:
 		for nid in rs.objs:
@@ -1702,7 +1704,8 @@ func _replay_local() -> void:
 	if not world.presentation:
 		return
 	for ev: Dictionary in _replay_events(true):
-		ParticleFx.of(world).on_event(ev)
+		if ev.get("t") == "blood_pool": _on_event(ev)
+		else: ParticleFx.of(world).on_event(ev)
 
 
 ## Extra .mob files merged into the current zone (AddMob, side quest maps).
@@ -4760,6 +4763,9 @@ func _on_event(event: Dictionary) -> void:
 		if String(event.get("zone", "")) != String(world.zone.get("id", "")):
 			return
 		if lmp.is_empty() and event.get("pool_epoch") != (_load_serial if is_host else _pool_epoch):
+			return
+		if event.get("mark") is Dictionary:
+			GroundMarks.of(world).restore_pool(event.mark, int(event.get("pool_id", 0)))
 			return
 		var uid: Variant = event.get("uid")
 		if not (uid is int or uid is float) or not is_finite(float(uid)) \

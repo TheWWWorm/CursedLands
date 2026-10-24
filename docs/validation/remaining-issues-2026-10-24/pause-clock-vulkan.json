@@ -1,0 +1,102 @@
+{
+  "checks": 25,
+  "failures": 0,
+  "samples": [
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.645339,
+      "longest_frame": 0.033358,
+      "paused": false,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166544,
+      "longest_frame": 0.03336,
+      "paused": false,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.66645,
+      "longest_frame": 0.033361,
+      "paused": true,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166536,
+      "longest_frame": 0.033343,
+      "paused": true,
+      "scale": 0.5
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666552,
+      "longest_frame": 0.033386,
+      "paused": false,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166518,
+      "longest_frame": 0.033342,
+      "paused": false,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666465,
+      "longest_frame": 0.033357,
+      "paused": true,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166509,
+      "longest_frame": 0.03334,
+      "paused": true,
+      "scale": 1.0
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.66645,
+      "longest_frame": 0.033354,
+      "paused": false,
+      "scale": 2.03703703703704
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.16654,
+      "longest_frame": 0.033339,
+      "paused": false,
+      "scale": 2.03703703703704
+    },
+    {
+      "clip": "uspecial02",
+      "duration": 0.605,
+      "elapsed": 0.666546,
+      "longest_frame": 0.03337,
+      "paused": true,
+      "scale": 2.03703703703704
+    },
+    {
+      "clip": "uspecial03",
+      "duration": 0.11,
+      "elapsed": 0.166468,
+      "longest_frame": 0.033354,
+      "paused": true,
+      "scale": 2.03703703703704
+    }
+  ]
+}

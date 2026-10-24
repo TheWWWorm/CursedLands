@@ -79,12 +79,13 @@ var _trap_t := 0.0
 var diplomacy := PackedInt32Array()
 var time := 0.0
 ##  accumulates elapsed time and dispatches the entire server
-## world once per55ms. Its clock cap is five logic ticks per incoming frame.
+## world once per55ms. Its clock cap is five wall-clock ticks per incoming
+## frame, scaled by the selected game speed.
 ## The remainder belongs to this world, including a retained LMP world.
 var _logic_accumulator := 0.0
 var _logic_step := 0
 ## A separate simulation process can repay a transient stall without blocking
-## the owner's renderer. Keep the same five-tick callback budget, retaining
+## the owner's renderer. Keep a bounded callback budget at each speed, retaining
 ## the excess outside the fractional presentation clock. Inline worlds keep
 ## the original cap; paused/loading intervals are excluded by _sample_frame.
 var retain_logic_debt := false
@@ -791,7 +792,11 @@ func _sample_frame(now_ms: int, rate: float, active := true) -> void:
 	var elapsed := (now_ms - before) & 0xffffffff
 	if elapsed > 0x80000000:
 		return   # the original DWORD clock's backwards-time guard
-	_deliver(float(elapsed) / 1000.0 * rate)
+	# Bound wall time before applying the selected speed. A fixed five-tick
+	# limit after scaling made fast and normal converge on slow frames.
+	var seconds := float(elapsed) / 1000.0
+	if not retain_logic_debt: seconds = minf(seconds, TICK * 5.0)
+	_deliver(seconds * rate, rate)
 
 
 func _physics_process(dt: float) -> void:
@@ -840,30 +845,31 @@ func _advance_client_effects(dt: float) -> void:
 			u.client_tick_effects()
 
 
-func _deliver(dt: float) -> void:
+func _deliver(dt: float, rate := 1.0) -> void:
 	if session != null and session.mod_script_failed: return
 	if not authority or (session and (session.movie_active() or session.ending_active)):
 		return
 	if session and session.lmp_travel:
 		if session.lmp_travel.can_tick(self):
-			session.lmp_travel.with_world(self, _advance.bind(dt))
+			session.lmp_travel.with_world(self, _advance.bind(dt, rate))
 		return
-	_advance(dt)
+	_advance(dt, rate)
 
 
 ## Keep network / session processing at its existing physics cadence; only
 ## the authoritative world consumes completed native logic intervals here.
 ## Direct _tick calls remain available to bounded simulation tools.
-func _advance(dt: float) -> void:
-	if not is_finite(dt):
+func _advance(dt: float, rate := 1.0) -> void:
+	if not is_finite(dt) or not is_finite(rate):
 		return
+	var budget := maxi(ceili(5.0 * clampf(rate, 0.0, 8.0)), 1)
 	if retain_logic_debt:
 		_logic_debt += maxf(dt, 0.0)
-		var incoming := minf(_logic_debt, TICK * 5.0)
+		var incoming := minf(_logic_debt, TICK * budget)
 		_logic_debt -= incoming
 		_logic_accumulator += incoming
 	else:
-		_logic_accumulator += clampf(dt, 0.0, TICK * 5.0)
+		_logic_accumulator += clampf(dt, 0.0, TICK * budget)
 	var steps := 0
 	while _logic_accumulator + 0.000000001 >= TICK:
 		_logic_accumulator = maxf(_logic_accumulator - TICK, 0.0)
@@ -871,7 +877,7 @@ func _advance(dt: float) -> void:
 		steps += 1
 		if is_queued_for_deletion() or (session and (session.movie_active() or session.ending_active)):
 			break
-		if retain_logic_debt and steps >= 5:
+		if retain_logic_debt and steps >= budget:
 			break
 	if retain_logic_debt and _logic_accumulator + 0.000000001 >= TICK:
 		# A movie may interrupt a batch. Its undelivered whole ticks remain

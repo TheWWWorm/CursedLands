@@ -1,11 +1,14 @@
 extends RefCounted
 ## A death's pool uses the previous completed world's noticed/corpse union.
 ## The renderer's visible flag and the player's relevant-object list are
-## separate. Only the authority keeps this cache and sends the UID event.
+## separate. Only the authority keeps this cache and the persistent pool
+## recipes, which are shared with clients at creation and after a load/join.
 
 var world: GameWorld
 var _members := {}                 # uid -> WeakRef, current world only
 var _restore := {}                 # saved references, resolved after deployment
+var _pools: Array[Dictionary] = []  # visual recipes, independent of corpse lifetime
+var _next_pool := 1
 
 
 func _init(w: GameWorld) -> void:
@@ -87,10 +90,40 @@ func emit_pool(u: GameUnit) -> void:
 	if not recipient:
 		return
 	var event := {"t": "blood_pool", "uid": u.uid, "zone": String(world.zone.get("id", ""))}
+	var mark := GroundMarks.pool_record(u)
+	if not mark.is_empty():
+		_prune_pools()
+		event.mark = mark
+		event.pool_id = _next_pool
+		_pools.append({"id":_next_pool, "mark":mark.duplicate(), "time":world.time})
+		_next_pool += 1
+		while _pools.size() > GroundMarks.MAX_BLOOD: _pools.pop_front()
 	# LMP's existing event wrapper already supplies the owner's generation.
 	if s.lmp_travel == null:
 		event.pool_epoch = s._load_serial
 	s.broadcast(event)
+
+
+func _aged_pool(row: Dictionary) -> Dictionary:
+	var mark: Dictionary = row.mark.duplicate()
+	mark.age = int(mark.age) + maxi(floori((world.time - float(row.time)) / GameUnit.TICK + 0.000001), 0)
+	return mark
+
+
+func _prune_pools() -> void:
+	_pools = _pools.filter(func(row): return GroundMarks.valid_pool(_aged_pool(row)))
+
+
+## Load and late join replay only living pools, at their saved growth/fade
+## age. Geometry survives looting/removal of the original corpse.
+func pool_events() -> Array:
+	_prune_pools()
+	var out := []
+	for row in _pools:
+		out.append({"t":"blood_pool", "zone":String(world.zone.get("id", "")),
+			"pool_epoch":world.session._load_serial if world.session else 0,
+			"pool_id":int(row.id), "mark":_aged_pool(row)})
+	return out
 
 
 func _ref(u: GameUnit) -> Array:
@@ -141,6 +174,14 @@ func _restore_history(rows: Variant) -> Dictionary:
 func restore_state(value: Variant) -> void:
 	_members.clear()
 	_restore = value.duplicate(true) if value is Dictionary else {}
+	_pools.clear()
+	_next_pool = 1
+	var pools: Variant = _restore.get("pools", [])
+	if pools is Array:
+		for row: Variant in pools.slice(-GroundMarks.MAX_BLOOD):
+			if not row is Dictionary or _uid(row.get("id")) < 0 or not GroundMarks.valid_pool(row.get("mark")): continue
+			_pools.append({"id":int(row.id), "mark":row.mark.duplicate(), "time":world.time})
+			_next_pool = maxi(_next_pool, int(row.id) + 1)
 
 
 func prepare_restore() -> void:
@@ -171,7 +212,10 @@ func prepare_restore() -> void:
 
 func save_state() -> Dictionary:
 	prepare_restore()
-	var saved := {"members": [], "controllers": []}
+	_prune_pools()
+	var saved := {"members": [], "controllers": [], "pools": []}
+	for row in _pools:
+		saved.pools.append({"id":int(row.id), "mark":_aged_pool(row)})
 	for member: WeakRef in _members.values():
 		var value: Variant = member.get_ref()
 		if _valid(value):

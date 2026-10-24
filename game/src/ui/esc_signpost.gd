@@ -75,12 +75,14 @@ func _ready() -> void:
 	# The figure's root part is escmenu00 (unmoco1.lnk); only the root's
 	# translation keys move it, which is the open slide.
 	_player.add_animation_library("ei", EIAnim.library("unmoco1", paths, "escmenu00"))
-	_play("cidle")
+	_play("uspecial02")
 	# This UI camera is positioned outside physics ticks, including while the
 	# game is paused. Picking must use that same pose rather than an old
 	# interpolated transform cached by the SubViewport.
 	_cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_frame()
+	if is_visible_in_tree(): _on_open()
+	else: texture = null
 
 
 ## Native placement; animation keys move only the figure's root part.
@@ -97,6 +99,7 @@ func _process(dt: float) -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
+	if _opening_pending: return
 	if e is InputEventMouseMotion:
 		if _player and _player.is_playing() and _player.current_animation == "ei/uspecial02": return
 		# a newly hovered board sounds buttons\menu\stone.wav and
@@ -121,11 +124,18 @@ var _hover_board := ""
 
 
 func _visibility_changed() -> void:
+	if _player == null: return # The first visibility notification can precede _ready.
 	if is_visible_in_tree():
 		_on_open()
 	else:
 		_open_serial += 1
 		_opening_pending = false
+		# Unbind the completed picture, rather than relying on alpha alone.
+		# Ancestor visibility/layout notifications also run InterfaceBoard's
+		# reveal logic and can reset its modulation before the next draw.
+		texture = null
+		_player.stop()
+		_play("uspecial02")
 		if _vp:
 			_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 
@@ -134,6 +144,7 @@ func _visibility_changed() -> void:
 ## (1), uspecial02 (the post rises from below, 12 frames).
 func _on_open() -> void:
 	GameData.trace("esc menu open")
+	texture = null
 	_frame()
 	_hover_board = ""
 	_sfx("buttons\\menu\\shift.wav")
@@ -141,7 +152,9 @@ func _on_open() -> void:
 	# through this same clip. Every opening starts from its first frame.
 	if _player: _player.stop()
 	_play("uspecial02")
-	if DisplayServer.get_name() == "headless": return
+	if DisplayServer.get_name() == "headless":
+		texture = _vp.get_texture()
+		return
 	# The SubViewport still holds its last picture (the rest pose) on the
 	# first visible frame; keep it transparent until the slide has rendered.
 	_open_serial += 1
@@ -160,6 +173,7 @@ func _on_open() -> void:
 		if serial != _open_serial or not is_visible_in_tree(): return
 	_opening_pending = false
 	_animation_usec = Time.get_ticks_usec()
+	texture = _vp.get_texture()
 	self_modulate.a = 1.0
 	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 

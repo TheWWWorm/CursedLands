@@ -187,6 +187,7 @@ func think(u: GameUnit) -> void:
 				u.remove_meta("calm")
 				_act(u, ch)
 				return
+	if ms.corpse and ms.susp and foes.is_empty(): _investigate_corpses(u)
 	if ms.susp and _investigate(u):
 		u.remove_meta("calm")
 		return
@@ -346,7 +347,7 @@ func _fear_tick(u: GameUnit, flag := 0) -> void:
 	var th := _nearest_noticed(u)
 	if th:
 		pt = th.pos
-		call_for_help(u, th.pos)
+		call_for_help(u, th.pos, th)
 	elif danger_at(u.pos):
 		pt = u.pos
 	elif s.has("danger") and danger_at(s.danger):
@@ -688,7 +689,7 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 			if is_instance_valid(o):
 				corpses[id] = o
 				if world.relation(u.faction, o.faction) == 0:
-					suspect(u, o.pos, 800.0, -3.0)
+					_notice_corpse(u, o)
 			keep.erase(id)
 			continue
 		# Original 5caa00 / 5cac76: living hostiles remain known to NPCs.
@@ -735,11 +736,11 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 		if o.dead:
 			corpses[id] = o
 			if world.relation(u.faction, o.faction) == 0 and _read_mots(u).corpse:
-				suspect(u, o.pos, 800.0, -3.0)
+				_notice_corpse(u, o)
 		else:
 			keep[id] = o
 			if u.controller < 0 and world.zone.get("type", "") != "arena" and world.is_enemy(u, o):
-				call_for_help(u, o.pos)
+				call_for_help(u, o.pos, o)
 	if keep.is_empty():
 		u.remove_meta("noticed")
 	else:
@@ -1400,6 +1401,12 @@ func rechoose(u: GameUnit) -> bool:
 	var foes := enemies(u)
 	if foes.is_empty():
 		return false
+	# Moving combatants can reach allies who were outside the first call.
+	# Re-announce at the warning cadence, rather than on every AI tick.
+	if now >= float(u.get_meta("help_next", -1.0)) and world.zone.get("type", "") != "arena":
+		var threat := _nearest_noticed(u, foes)
+		if threat: call_for_help(u, threat.pos, threat)
+		u.set_meta("help_next", now + 26 * GameUnit.TICK)
 	var ch := choose(u, foes)
 	if ch.is_empty():
 		return false
@@ -1521,6 +1528,41 @@ func suspect(u: GameUnit, at: Vector2, level: float, delta := -2.0) -> void:
 		return
 	u.set_meta("suspect", {"pos": at, "l0": level, "d": delta, "t0": world.time, "last": world.time,
 		"m": level, "active": old.get("active", false), "look": [], "busy": false})
+	world.active_set.wake_unit(u)
+	u.ai_next = minf(u.ai_next, world.time)
+
+
+func _notice_corpse(u: GameUnit, corpse: GameUnit) -> void:
+	if u.controller >= 0 or not _read_mots(u).corpse: return
+	var pending: Dictionary = u.get_meta("pending_corpses", {})
+	pending[corpse.get_instance_id()] = weakref(corpse)
+	u.set_meta("pending_corpses", pending)
+	# Preserve the immediate suspicion cue, but do not consume the discovery
+	# until the unit can actually investigate instead of fighting/fleeing.
+	suspect(u, corpse.pos, 800.0, -3.0)
+
+
+func _investigate_corpses(u: GameUnit) -> void:
+	var pending: Dictionary = u.get_meta("pending_corpses", {})
+	if pending.is_empty(): return
+	var current: Dictionary = u.get_meta("suspect", {})
+	if not current.is_empty() and _susp_level(current) > 800.0: return
+	# Finish approaching and looking around one body before taking another.
+	if current.has("corpse") and current.get("active", false): return
+	for id in pending.keys():
+		var corpse: GameUnit = pending[id].get_ref()
+		if corpse == null or world.units.get(corpse.uid) != corpse or not corpse.dead or corpse.hidden \
+				or world.relation(u.faction, corpse.faction) != 0:
+			pending.erase(id)
+			continue
+		suspect(u, corpse.pos, 800.0, -3.0)
+		current = u.get_meta("suspect", {})
+		if current.get("pos") == corpse.pos:
+			current.corpse = id
+			current.active = false
+			pending.erase(id)
+		break
+	if pending.is_empty(): u.remove_meta("pending_corpses")
 
 
 ## The perception's level now (: +delta per 55 ms tick).
@@ -1633,7 +1675,7 @@ func hit_hook(u: GameUnit, by: GameUnit) -> void:
 		world.active_set.wake_unit(u)
 	if by and is_instance_valid(by):
 		if world.relation(u.faction, by.faction) != 0:
-			call_for_help(u, by.pos)
+			call_for_help(u, by.pos, by)
 	else:
 		call_for_help(u, u.pos)
 
@@ -1646,7 +1688,8 @@ func hit_hook(u: GameUnit, by: GameUnit) -> void:
 ## new one counts 26)., every AI tick: -1, and below 0 the unit
 ## becomes suspicious of the spot (900, -3 a tick) unless its level is 900
 ## or more.
-func call_for_help(u: GameUnit, at: Vector2) -> void:
+func call_for_help(u: GameUnit, at: Vector2, threat: GameUnit = null) -> void:
+	if u.dead: return
 	var r := float(logic(u).get("help_radius", GameData.ai_value("Logic", "CallForHelpRadius", 7.0)))
 	if r == GameData.ai_value("Logic", "CallForHelpRadiusDefault", 7.0):
 		r = GameData.ai_value("Logic", "CallForHelpRadius", 7.0)
@@ -1654,7 +1697,7 @@ func call_for_help(u: GameUnit, at: Vector2) -> void:
 		if o == u or o.controller >= 0 or world.relation(u.faction, o.faction) != 0:
 			continue
 		_help = _help.filter(func(e: Array): return not (e[0] == o and int(e[2]) >= 26))
-		_help.append([o, at, 26])
+		_help.append([o, at, 26, weakref(threat) if is_instance_valid(threat) else null])
 
 
 var _help := []   # delayed sounds: [unit, spot, ticks left]
@@ -1710,7 +1753,17 @@ func tick() -> void:
 		if int(e[2]) >= 0:
 			keep.append(e)
 		elif is_instance_valid(e[0]) and not e[0].dead:
-			suspect(e[0], e[1], 900.0, -3.0)
+			var receiver: GameUnit = e[0]
+			suspect(receiver, e[1], 900.0, -3.0)
+			# A warning about a known enemy conveys who attacked. Unidentified
+			# noise still supplies only a point; neutral allies gain no new hate.
+			var threat: GameUnit = e[3].get_ref() if e.size() > 3 and e[3] is WeakRef else null
+			if is_instance_valid(threat) and not threat.dead and not threat.hidden \
+					and world.units.get(threat.uid) == threat and world.is_enemy(receiver, threat):
+				var noticed: Dictionary = receiver.get_meta("noticed", {})
+				noticed[threat.get_instance_id()] = threat
+				receiver.set_meta("noticed", noticed)
+				receiver.remove_meta("perceived")
 	_help = keep
 
 
@@ -1750,7 +1803,7 @@ func seen_assault(victim: GameUnit, attacker: GameUnit) -> void:
 		var noticed := player_perceive(observer, true)
 		if noticed.has(victim.get_instance_id()) and noticed.has(attacker.get_instance_id()):
 			_hate(observer, attacker.faction)
-			call_for_help(observer, attacker.pos)
+			call_for_help(observer, attacker.pos, attacker)
 
 
 ## "Has seen murder" (twice, for a creature killer): friends among the
@@ -1761,7 +1814,11 @@ func seen_murder(dead: GameUnit, killer: GameUnit) -> void:
 		return
 	for watched: GameUnit in [dead, killer]:
 		for o in _notice_candidates(watched):
-			if not is_instance_valid(o) or not o is GameUnit or world.relation(o.faction, dead.faction) != 0:
+			# die() runs this before setting dead=true. The victim cannot
+			# witness its own murder: perceiving here would let an unseen
+			# one-hit victim discover the killer and send a delayed warning.
+			if not is_instance_valid(o) or not o is GameUnit or o == dead or o.dead \
+					or world.relation(o.faction, dead.faction) != 0:
 				continue
 			var keep := player_perceive(o, true)
 			if not keep.has(watched.get_instance_id()):

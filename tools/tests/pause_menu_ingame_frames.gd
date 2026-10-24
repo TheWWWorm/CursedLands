@@ -41,6 +41,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if DisplayServer.get_name() == "headless":
 		printerr("Run with a rendering display"); get_tree().quit(2); return
+	GameData.options.merge(GfxDetect.original_look_values(true,{},-1),true)
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"auto_graphics":0,"net_lan":0,"net_upnp":0,"net_directory":0,
 		"ssao":0,"volumetric":0,"water_reflections":0,"grass":0,"bloom":0,"far_view":0,"q_shadows":0,"contact_shadows":0,"heat_haze":0,"sky":0}, true)
 	var s := Session.new(); get_parent().add_child(s)
@@ -90,5 +91,9 @@ func _ready() -> void:
 		print("open %d first=%.2f seq=%s live=%s" % [trial, first, str(seq.slice(0, 8)), str(live.slice(0, 8))])
 		hud.toggle_menu()
 	check(flashes == 0, "no opening shows the settled signpost before its slide (%d of 10)" % flashes)
+	await s.local_host.stop()
+	g.queue_free(); s.queue_free()
+	for i in 6: await get_tree().process_frame
+	TexUpscale.shutdown()
 	print("PAUSE_MENU_INGAME ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)

@@ -776,7 +776,7 @@ func _build_army() -> void:
 				item_slot.accept_drop = _can_drop_item_on_creature.bind(uid)
 				item_slot.receive_drop = _drop_item_on_creature.bind(uid)
 			item_slot.kind = run.item_for(uid)
-			item_slot.visible = _item_uid > 0 or not item_slot.kind.is_empty()
+			item_slot.visible = run.stage != "fight" and (_item_uid > 0 or not item_slot.kind.is_empty())
 			item_slot.custom_minimum_size = Vector2.ONE * (ArenaItemSlot.TARGET_SIZE if _item_uid > 0 else ArenaItemSlot.BADGE_SIZE)
 			item_slot.set_anchors_and_offsets_preset(Control.PRESET_CENTER if _item_uid > 0 else Control.PRESET_TOP_RIGHT)
 			if _item_uid > 0:
@@ -1496,10 +1496,10 @@ func _process(dt: float) -> void:
 		var alliance_height := _alliance_panel.get_combined_minimum_size().y if _alliance_panel.visible else 0.0
 		var scout_height := _scout_bar.size.y + 12 if _scout_bar.visible else 0.0
 		var available := _bench_panel.position.y - _battle_sidebar.position.y - alliance_height - scout_height - 40
-		var tray_minimum := _item_tray.minimum_height()
+		var tray_minimum := _item_tray.minimum_height() if _item_tray.visible else 0.0
 		var reserve_damage := 92.0 if available >= tray_minimum + 92 else 0.0
-		_item_tray.limit_height(clampf(available - reserve_damage, tray_minimum, 150))
-		var tray_height := _item_tray.get_combined_minimum_size().y + 12
+		if _item_tray.visible: _item_tray.limit_height(clampf(available - reserve_damage, tray_minimum, 150))
+		var tray_height := _item_tray.get_combined_minimum_size().y + 12 if _item_tray.visible else 0.0
 		_damage_panel.update_damage(_viewed_battle(), _field_army(), maxf(32, available - tray_height))
 		_damage_panel.visible = _damage_panel.visible and reserve_damage > 0
 	_round_banner.size = Vector2(maxf(240, minf(460, _hud.size.x - 580)), 0)
@@ -2056,6 +2056,7 @@ func _owned_item(uid: int) -> Dictionary:
 
 func _sync_item_tray() -> void:
 	if not is_instance_valid(_item_tray): return
+	_item_tray.visible = not landing and run.stage != "fight"
 	_item_tray.run = run
 	_item_tray.selected_uid = _item_uid
 	_item_tray.editable = _can_edit_equipment()
@@ -2189,7 +2190,7 @@ func _update_item_targets() -> void:
 		_cancel_item()
 	if is_instance_valid(_tooltips): _tooltips.suspended = _item_uid > 0
 	var live := {}
-	var own_board := not landing and field.match_state == battle and not field.showing_boards() and not _modal_layer.visible
+	var own_board := not landing and run.stage != "fight" and field.match_state == battle and not field.showing_boards() and not _modal_layer.visible
 	var hovered_uid := _item_target_uid(field._pick(field.pointer_position())) if _item_uid > 0 else 0
 	var occupied: Array[Rect2] = []
 	if own_board:

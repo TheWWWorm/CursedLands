@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 03:05:34 +5387ms] session 323401493297: 1.26.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PAUSED_SPAWN_POSE checks=42 failures=0
+[trace 03:05:35 +6263ms] clean exit

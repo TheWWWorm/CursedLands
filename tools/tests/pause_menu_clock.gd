@@ -55,6 +55,12 @@ func _ready() -> void:
 		var rest := opaque_pixels(menu._vp.get_texture().get_image())
 		menu.hide(); menu.show()
 		check(menu.self_modulate.a == 0.0, "stale rest texture is hidden on opening")
+		check(menu.texture == null, "opening cannot sample the previous viewport picture")
+		# The shared board's reveal/visibility handlers may reset modulation.
+		# A pending opening must remain blank even if that happens.
+		menu.self_modulate.a = 1.0
+		check(menu.texture == null, "viewport stays unbound if an ancestor resets opacity")
+		menu.self_modulate.a = 0.0
 		while menu.self_modulate.a == 0.0: await RenderingServer.frame_post_draw
 		var opening := opaque_pixels(menu._vp.get_texture().get_image())
 		print("PAUSE_MENU_OPENING_PIXELS rest=", rest, " opening=", opening)
@@ -83,6 +89,7 @@ func _ready() -> void:
 		Engine.time_scale = scale
 		menu._player.stop(); menu._play("uspecial02"); menu._player.advance(0.2)
 		menu.hide()
+		check(menu.texture == null, "closing releases the last presented signpost image")
 		await get_tree().create_timer(0.15, true, false, true).timeout
 		menu.show()
 		check(is_zero_approx(menu._player.current_animation_position),

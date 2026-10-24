@@ -1,0 +1,27 @@
+{
+  "base_commit": "96aaeb782fb023b7d536ca415a7507892121495f",
+  "files": {
+    "game/src/game/ai.gd": "40485cb243eb20862ec343b317b707562708dcdaea310b5a821c25865102a896",
+    "game/src/game/corpse_pools.gd": "bf720bec67140bb592e7c54edc1931efe670321e651c5dcb5037086cac423f6e",
+    "game/src/game/fx/ground_mark_projection.gd": "78434658e756581b521d42f395234596c405676314679baaca0cb01ed1e4c173",
+    "game/src/game/fx/ground_mark_projection.gd.uid": "7566b3fa450e32658ae9ea616042d78a23b8ee32525dbe76ff383cd04e79b490",
+    "game/src/game/fx/ground_marks.gd": "46c68ba2f26703e381db6d563d1751151ea3baff6c373f708b7e58fee69ca661",
+    "game/src/game/session.gd": "29126a5aa9648c88e00db69c50a804976879448e0e421323a6406db5904f139f",
+    "game/src/game/unit.gd": "335ef126defaf7417367c3ab28e715279103e0c9f4a5cae36681bc99b90dc2b1",
+    "game/src/game/world.gd": "a46f2b7e3743ccf0e88106ea1faa137b455a6e4545ce531ee978778b86e48e1d",
+    "game/src/ui/arena_pve_screen.gd": "d0b964c8880f16b0da33f183969ce6b7e904fcc44eff7db3bf4f879b72643979",
+    "game/src/ui/esc_signpost.gd": "3c0c2d0c51da5d99a09caa5f2fe69dae6cbb1c6e6ecefb839144812698cea86e",
+    "tools/tests/arena_equipment_ui.gd": "3c19765bfe4b170dc7e7483269375d384efd099d801a40f8b4799858e7c79ad2",
+    "tools/tests/authored_wolf_corpse.gd": "bb1fe422d9997970a2c696b8ecdd47b68364660050740f6a4b1c78e9ce38ea96",
+    "tools/tests/blood_pool_save.gd": "a86bdcf3b808131149c1b46666b4cbd753cee4e0ff23ea9b9ab858cf15e4da33",
+    "tools/tests/ground_mark_receivers.gd": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67",
+    "tools/tests/ground_mark_soft_surface.gd": "dcdbc2f020b814daa47512fbfe5adbd37823cbb14f22eed29e5ad1cfb13cda9f",
+    "tools/tests/local_host_resume_rate.gd": "f5767583cb4466de25750f64d7251daab181d666fc6f41eab59e3d814c03b416",
+    "tools/tests/pack_alert_recovery.gd": "197f1ccaf127b8aa00af66d94b734e04bcf2dd20170a34a0def915dc7fd484ec",
+    "tools/tests/pause_menu_clock.gd": "8474a19f74f4c4644b592e770dc2ac4d5b8282c86fea8fc7ce710cce51621352",
+    "tools/tests/pause_menu_ingame_frames.gd": "027d33daf9bba5a443ff790edc1f8f82ce493340040b261db49dbb2329dcde00",
+    "tools/tests/pause_menu_presented.gd": "642d9e27e76232475e945a30b3423ca6c27b8d6d438ece6dad920caba774522b",
+    "tools/tests/worker_blood_pool_save.gd": "e1e1609d67b2ba66cc86aa243827424afaf87479f425a7df39ca912c5668be4e",
+    "tools/tests/worker_clock.gd": "c36fc1a5fbbd5e71b42aa1055c7496d48e0d06809398637c4c279a675968e74e"
+  }
+}

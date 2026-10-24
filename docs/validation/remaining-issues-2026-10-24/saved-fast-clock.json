@@ -1,0 +1,90 @@
+{
+	"checks": 15,
+	"failures": 0,
+	"samples": [
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 0.99750738567658,
+			"seconds": 3.032559,
+			"shop_available": false,
+			"simulation_seconds": 3.02499999999999,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 2.01433826101072,
+			"seconds": 3.030772,
+			"shop_available": false,
+			"simulation_seconds": 6.10499999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 0.979394140848744,
+			"seconds": 3.032487,
+			"shop_available": false,
+			"simulation_seconds": 2.96999999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 1.03987683164198,
+			"seconds": 3.067671,
+			"shop_available": false,
+			"simulation_seconds": 3.18999999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 1.97088626357427,
+			"seconds": 3.069685,
+			"shop_available": false,
+			"simulation_seconds": 6.04999999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 0.979521899578847,
+			"seconds": 3.200541,
+			"shop_available": false,
+			"simulation_seconds": 3.13499999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 2.06305122149823,
+			"seconds": 3.199145,
+			"shop_available": false,
+			"simulation_seconds": 6.59999999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		}
+	]
+}

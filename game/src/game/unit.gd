@@ -3666,7 +3666,9 @@ func _tick_blood_pool() -> void:
 
 
 func blood_pool_state() -> Dictionary:
-	return {"left": _pool_left, "sent": _pool_sent}
+	var value := {"left": _pool_left, "sent": _pool_sent}
+	if dead and model: value.clip = model._current
+	return value
 
 
 func restore_blood_pool(value: Variant) -> void:
@@ -3674,6 +3676,7 @@ func restore_blood_pool(value: Variant) -> void:
 	_pool_sent = true
 	_pool_step = world._logic_step if world else -1
 	_pool_checked_step = -1
+	if dead: action = "death"
 	if not (value is Dictionary) or not (value.get("sent") is bool) or not (value.get("left") is int):
 		return
 	var left: int = value.left
@@ -3681,6 +3684,12 @@ func restore_blood_pool(value: Variant) -> void:
 		return
 	_pool_left = left
 	_pool_sent = value.sent
+	# A different randomly selected death clip moves the body away from its
+	# saved pool. Older saves keep their existing fallback pose.
+	var clip: Variant = value.get("clip")
+	if dead and model and clip is String and model.has_anim(clip):
+		model.play(clip, 0.0, true)
+		freeze_pose(true)
 
 
 ## Holds a corpse in its current (death) pose. The clip stays the player's
@@ -4748,7 +4757,8 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 		_settle_action = ""
 		action = "death"
 		if quiet:   # as CampaignState.restore_zone poses the zone's dead
-			model.act("death", 1, 0.0)
+			if visual.is_empty(): model.act("death", 1, 0.0)
+			else: model.play(visual[0], 0.0, true)
 			freeze_pose(true)
 		else:
 			if visual.is_empty(): model.act("death", 1, 0.05)
