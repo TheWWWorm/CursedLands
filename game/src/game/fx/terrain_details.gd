@@ -642,6 +642,27 @@ func prepare_grass() -> void:
 		_apply_grass_material()
 
 
+## Cover arrives from streaming workers after the loading screen closes.
+## Prepare its real vertex layouts too: stones add CUSTOM2, while sea maps
+## add CUSTOM1 to every chunk. Zero-scale records use the same mesh builder
+## as the streamed chunks without generating or installing those chunks.
+func cover_warmup_variants() -> Array:
+	prepare_grass()
+	var variants := []
+	if _cover_material == null or _cover_field == null: return variants
+	var sea: RefCounted = _cover_field.sea if not _cover_field.sea.tiles.is_empty() else null
+	var regional: RefCounted = _cover_field if _cover_field.regions.cave else null
+	for kind in [BiomeCover.Kind.LEAF, BiomeCover.Kind.STONE]:
+		var records: Array[Dictionary] = [{"kind":kind,"p":Vector2.ZERO,"height":-0.008,
+			"seed":0.0,"angle":0.0,"scale":0.0,"normal":Vector3.UP,"colour":Color.WHITE}]
+		var geometry := BiomeCover.Geometry.new()
+		var arrays := geometry.build(records,Vector2i.ZERO,sea,regional)
+		var mesh := ArrayMesh.new()
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,[],{},BiomeCover.Geometry.FORMAT)
+		variants.append([_cover_material,mesh])
+	return variants
+
+
 func _grass_job(key: Vector2i) -> RefCounted:
 	var job: RefCounted = ClassDB.instantiate("GrassChunkJob")
 	if not job.configure(_grass_field, key, hash("%s:%d:%d" % [terrain.map_name, key.x, key.y]),

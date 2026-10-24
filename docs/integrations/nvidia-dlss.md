@@ -1,6 +1,6 @@
 # Restored NVIDIA DLSS
 
-The local `1.28.0-experimental.5` preview restores the prior Streamline 2.14.16
+The local `1.28.0-experimental.6` preview restores the prior Streamline 2.14.16
 integration onto the current patched Godot 4.7 renderer. It retains NRD 4.18
 REBLUR, the DXR barrier fixes, scene caching, terrain-sector tracing, grass
 lighting and the animated blood-mark performance fix. DLSS Super Resolution

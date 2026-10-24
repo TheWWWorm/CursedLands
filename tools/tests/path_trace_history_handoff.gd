@@ -27,7 +27,13 @@ func run() -> void:
 	var compiled := cache.compilations
 	device=make_device(true);await frames(2)
 	check(not device.output_ready() and device._building,"staged replacement remains private")
-	PathDevice.dispatch(device,&"build_step");check(await device.prepared,"bounded preparation finishes the replacement")
+	var preparation := []
+	device.prepared.connect(func(ok: bool):preparation.append(ok))
+	for i in 120:
+		PathDevice.dispatch(device,&"build_step");await frames(1)
+		if not preparation.is_empty():break
+	check(preparation==[true],"bounded preparation finishes the replacement")
+	if preparation!=[true]:finish();return
 	await render_many(1)
 	check(device.output_ready() and not device.nrd_active,"private candidate validates its output without allocating a second NRD pool")
 	check(cache.compilations==compiled and cache.hits>0,"replacement reuses immutable ray pipelines")

@@ -40,6 +40,8 @@ var programs: Programs
 var incremental_build := false
 var _building := false
 var _build_cursor := 0
+var _pending_images: Array[Image] = []
+var _texture_cursor := 0
 var build_timings := {}
 var initial_poses: Array = []
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
@@ -147,6 +149,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	if not _pipeline.is_valid():
 		_notify(&"prepared",[false])
 		return
+	var stage_started := Time.get_ticks_usec()
 	_vertices = _own(_rd.vertex_buffer_create(data.size(),data,
 		RenderingDevice.BUFFER_CREATION_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT |
 		RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT | RenderingDevice.BUFFER_CREATION_AS_STORAGE_BIT))
@@ -158,6 +161,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	for pose: Dictionary in initial_poses:
 		if not _upload_pose(pose):_notify(&"prepared",[false]);return
 	initial_poses.clear()
+	build_timings["vertices_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	var material_data := PackedByteArray(); material_data.resize(_geometry.size()*16)
 	for i in _geometry.size():
 		var description: Dictionary = _geometry[i]
@@ -183,6 +187,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 			| (roundi(clampf(surface.y,0.0,1.0)*255.0)<<8) | (roundi(clampf(surface.z,0.0,1.0)*255.0)<<16) | (relief<<24))
 	_materials = _own(_rd.storage_buffer_create(material_data.size(),material_data))
 	if not _materials.is_valid(): _notify(&"prepared",[false]); return
+	build_timings["materials_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	_blases.resize(_geometry.size())
 	if placements.is_empty(): placements = [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
 	_tlas = _own(_rd.tlas_create(placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
@@ -206,6 +211,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		_instances.append(instance)
 	if not incremental_build and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
 		_notify(&"prepared",[false]); return
+	build_timings["placements_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	var format := RDTextureFormat.new()
 	format.texture_type = RenderingDevice.TEXTURE_TYPE_2D_ARRAY
 	format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
@@ -215,8 +221,13 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	format.mipmaps = images[0].get_mipmap_count()+1
 	format.usage_bits = RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
 	var layers: Array[PackedByteArray] = []
-	for im in images: layers.append(im.get_data())
-	_colours = _own(_rd.texture_create(format,RDTextureView.new(),layers))
+	if incremental_build:
+		format.usage_bits |= RenderingDevice.TEXTURE_USAGE_CAN_UPDATE_BIT
+		_pending_images.assign(images)
+	else:
+		for im in images: layers.append(im.get_data())
+	_colours = _own(_create_colour_array(format,layers))
+	build_timings["textures_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	# Small immutable samplers let the existing Texture filtering option
 	# change live without rebuilding the RT scene or reallocating its image.
 	for quality in 5:
@@ -233,6 +244,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	_frame = _own(_rd.uniform_buffer_create(frame_bytes()))
 	_ready = _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid())
 	if _ready: _ready = build_extra(data,placements)
+	build_timings["extra_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0
 	build_timings["resources_ms"]=(Time.get_ticks_usec()-started)/1000.0
 	_building=_ready and incremental_build
 	if _building:_ready=false
@@ -243,6 +255,22 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 func build_step() -> void:
 	if _closed or not _building:return
 	var started := Time.get_ticks_usec();var built := 0
+	# Retain the private CPU snapshots until each array layer and all its mips
+	# have been uploaded. The controller keeps displaying the old scene and
+	# cannot promote this candidate before both uploads and AS builds finish.
+	if not _pending_images.is_empty():
+		while _texture_cursor < _pending_images.size():
+			if not _upload_colour_layer(_texture_cursor,_pending_images[_texture_cursor].get_data()):
+				_building=false;_pending_images.clear();_notify(&"prepared",[false]);return
+			_pending_images[_texture_cursor]=null
+			_texture_cursor+=1;built+=1
+			if built>=4 or Time.get_ticks_usec()-started>=1500:break
+		if _texture_cursor==_pending_images.size():_pending_images.clear()
+		var elapsed := (Time.get_ticks_usec()-started)/1000.0
+		build_timings["texture_upload_ms"]=build_timings.get("texture_upload_ms",0.0)+elapsed
+		build_timings["texture_upload_step_ms"]=maxf(build_timings.get("texture_upload_step_ms",0.0),elapsed)
+		build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),elapsed)
+		return
 	while _build_cursor<_instances.size():
 		var instance := _instances[_build_cursor]
 		if instance.mask!=0:
@@ -257,6 +285,12 @@ func build_step() -> void:
 		_ready=_rd.tlas_build(_tlas,_active_instances.values())==OK
 		_notify(&"prepared",[_ready])
 	build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),(Time.get_ticks_usec()-started)/1000.0)
+
+func _upload_colour_layer(layer: int, data: PackedByteArray) -> bool:
+	return _rd.texture_update(_colours,layer,data)==OK
+
+func _create_colour_array(format: RDTextureFormat, layers: Array[PackedByteArray]) -> RID:
+	return _rd.texture_create(format,RDTextureView.new(),layers)
 
 ## Hidden meshes keep CPU/vertex data, but acquire a BLAS only when first
 ## revealed. Reuse it afterward; movement needs only a compact TLAS rebuild.
@@ -366,6 +400,7 @@ func dispose() -> void:
 	_closed = true
 	_building = false
 	_ready = false
+	_pending_images.clear()
 	output.texture_rd_rid = RID()
 	_samplers.clear()
 	if _rd == null: return

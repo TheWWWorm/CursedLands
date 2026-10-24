@@ -1,0 +1,1106 @@
+{
+	"cases": [
+		{
+			"case": "initial-mirror",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 1,
+			"start": {
+				"case": "initial-mirror",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 1,
+				"screen_active": false,
+				"serial": -1,
+				"stats": {},
+				"time_ms": 12739,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "mirror-explicit-settings",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 7,
+			"start": {
+				"case": "mirror-explicit-settings",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 6,
+				"scene_draws": 7,
+				"screen_active": false,
+				"serial": 1,
+				"stats": {},
+				"time_ms": 12862,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "initial-rt",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 17,
+			"start": {
+				"case": "initial-rt",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 12,
+				"scene_draws": 17,
+				"screen_active": false,
+				"serial": -1,
+				"stats": {},
+				"time_ms": 13076,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "rt-quality-settings",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 96,
+			"start": {
+				"case": "rt-quality-settings",
+				"completed_renders": 5,
+				"device_id": -9223370749354400227,
+				"reflection_draws": 74,
+				"scene_draws": 96,
+				"screen_active": false,
+				"serial": 1,
+				"stats": {
+					"active": true,
+					"geometries": 2040,
+					"instances": 2171,
+					"lights": 1,
+					"native_scene": true,
+					"opaque_geometries": 1393,
+					"quality": 0,
+					"radius": 96.0,
+					"samples_per_pixel": 4,
+					"size": [
+						640,
+						360
+					],
+					"supported": true,
+					"texture_anisotropy": 1,
+					"textures": 46,
+					"triangles": 147395,
+					"updated_instances": 0,
+					"updated_morphs": 0
+				},
+				"time_ms": 14502,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "ordinary-recenter",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 101,
+			"start": {
+				"case": "ordinary-recenter",
+				"completed_renders": 11,
+				"device_id": -9223370749354400227,
+				"reflection_draws": 74,
+				"scene_draws": 101,
+				"screen_active": false,
+				"serial": 2,
+				"stats": {
+					"active": true,
+					"geometries": 2040,
+					"instances": 2171,
+					"lights": 1,
+					"native_scene": true,
+					"opaque_geometries": 1393,
+					"quality": 1,
+					"radius": 96.0,
+					"samples_per_pixel": 4,
+					"size": [
+						960,
+						540
+					],
+					"supported": true,
+					"texture_anisotropy": 1,
+					"textures": 46,
+					"triangles": 147395,
+					"updated_instances": 0,
+					"updated_morphs": 0
+				},
+				"time_ms": 14635,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "ordinary-plane-change",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 172,
+			"start": {
+				"case": "ordinary-plane-change",
+				"completed_renders": 1,
+				"device_id": -9223370550913494644,
+				"reflection_draws": 144,
+				"scene_draws": 172,
+				"screen_active": false,
+				"serial": 2,
+				"stats": {
+					"active": true,
+					"geometries": 1983,
+					"instances": 2116,
+					"lights": 2,
+					"native_scene": true,
+					"opaque_geometries": 1344,
+					"quality": 1,
+					"radius": 96.0,
+					"samples_per_pixel": 4,
+					"size": [
+						960,
+						540
+					],
+					"supported": true,
+					"texture_anisotropy": 1,
+					"textures": 44,
+					"triangles": 146870,
+					"updated_instances": 2116,
+					"updated_morphs": 0
+				},
+				"time_ms": 15875,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "snapshot-fallback-injected",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 260,
+			"start": {
+				"case": "snapshot-fallback-injected",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 227,
+				"scene_draws": 260,
+				"screen_active": false,
+				"serial": -1,
+				"stats": {},
+				"time_ms": 17383,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "no-water",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 269,
+			"start": {
+				"case": "no-water",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 5,
+				"scene_draws": 269,
+				"screen_active": false,
+				"serial": -1,
+				"stats": {},
+				"time_ms": 17535,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "off-before-first-draw",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 274,
+			"start": {
+				"case": "off-before-first-draw",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 274,
+				"screen_active": false,
+				"serial": -1,
+				"stats": {},
+				"time_ms": 17620,
+				"water_owner": false
+			}
+		},
+		{
+			"case": "scene-exit",
+			"prior_draws_drained": 0,
+			"scene_draws_before_sync": 279,
+			"start": {
+				"case": "scene-exit",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 279,
+				"screen_active": false,
+				"serial": -1,
+				"stats": {},
+				"time_ms": 17704,
+				"water_owner": false
+			}
+		}
+	],
+	"checks": 68,
+	"cover_clock": "visual cases advance the cover clock past SHOW_DELAY_MS before synchronous capture",
+	"cover_draws": [
+		{
+			"baseline": 1,
+			"case": "initial-mirror",
+			"observed": 1,
+			"state": {
+				"case": "initial-mirror",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 1,
+				"screen_active": true,
+				"serial": 1,
+				"stats": {},
+				"time_ms": 12752,
+				"water_owner": true
+			}
+		},
+		{
+			"baseline": 7,
+			"case": "mirror-explicit-settings",
+			"observed": 7,
+			"state": {
+				"case": "mirror-explicit-settings",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 6,
+				"scene_draws": 7,
+				"screen_active": true,
+				"serial": 2,
+				"stats": {},
+				"time_ms": 12896,
+				"water_owner": true
+			}
+		},
+		{
+			"baseline": 17,
+			"case": "initial-rt",
+			"observed": 17,
+			"state": {
+				"case": "initial-rt",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 17,
+				"screen_active": true,
+				"serial": 1,
+				"stats": {
+					"active": false
+				},
+				"time_ms": 13107,
+				"water_owner": true
+			}
+		},
+		{
+			"baseline": 96,
+			"case": "rt-quality-settings",
+			"observed": 96,
+			"state": {
+				"case": "rt-quality-settings",
+				"completed_renders": 6,
+				"device_id": -9223370749354400227,
+				"reflection_draws": 74,
+				"scene_draws": 96,
+				"screen_active": true,
+				"serial": 2,
+				"stats": {
+					"active": true,
+					"geometries": 2040,
+					"instances": 2171,
+					"lights": 1,
+					"native_scene": true,
+					"opaque_geometries": 1393,
+					"quality": 1,
+					"radius": 96.0,
+					"samples_per_pixel": 4,
+					"size": [
+						960,
+						540
+					],
+					"supported": true,
+					"texture_anisotropy": 1,
+					"textures": 46,
+					"triangles": 147395,
+					"updated_instances": 0,
+					"updated_morphs": 0
+				},
+				"time_ms": 14544,
+				"water_owner": true
+			}
+		}
+	],
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "d3d12",
+	"failures": [],
+	"injected_failure": "snapshot failed after real gather began",
+	"last_state": {
+		"case": "scene-exit",
+		"completed_renders": 0,
+		"device_id": 0,
+		"reflection_draws": 0,
+		"scene_draws": 279,
+		"screen_active": false,
+		"serial": -1,
+		"stats": {},
+		"time_ms": 18006,
+		"water_owner": false
+	},
+	"owner_releases": [
+		{
+			"case": "initial-mirror",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 560,
+			"phase": "Finishing preparation…",
+			"presentations": 2,
+			"reflection_draws": 1,
+			"scene_draws": 2,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {},
+			"time_ms": 12801,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		},
+		{
+			"case": "mirror-explicit-settings",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 592,
+			"phase": "Finishing preparation…",
+			"presentations": 2,
+			"reflection_draws": 7,
+			"scene_draws": 8,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {},
+			"time_ms": 12953,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 1,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 1873,
+			"phase": "Finishing preparation…",
+			"presentations": 75,
+			"reflection_draws": 74,
+			"scene_draws": 91,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 0,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 2171,
+				"updated_morphs": 0
+			},
+			"time_ms": 14452,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		},
+		{
+			"case": "rt-quality-settings",
+			"completed": 0,
+			"completed_renders": 6,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 573,
+			"phase": "Finishing preparation…",
+			"presentations": 1,
+			"reflection_draws": 74,
+			"scene_draws": 96,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 1,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			},
+			"time_ms": 14574,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		}
+	],
+	"profile": "C:/users/steamuser/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+	"progress": [
+		{
+			"case": "initial-mirror",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 503,
+			"phase": "Preparing water reflections…",
+			"presentations": 0,
+			"reflection_draws": 0,
+			"scene_draws": 1,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {},
+			"time_ms": 12744,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-mirror",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 560,
+			"phase": "Finishing preparation…",
+			"presentations": 2,
+			"reflection_draws": 1,
+			"scene_draws": 2,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {},
+			"time_ms": 12801,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		},
+		{
+			"case": "mirror-explicit-settings",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 524,
+			"phase": "Preparing water reflections…",
+			"presentations": 0,
+			"reflection_draws": 6,
+			"scene_draws": 7,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {},
+			"time_ms": 12885,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "mirror-explicit-settings",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 592,
+			"phase": "Finishing preparation…",
+			"presentations": 2,
+			"reflection_draws": 7,
+			"scene_draws": 8,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {},
+			"time_ms": 12953,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 520,
+			"phase": "Preparing water reflections…",
+			"presentations": 0,
+			"reflection_draws": 0,
+			"scene_draws": 17,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13099,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 622,
+			"phase": "Preparing water reflections…",
+			"presentations": 4,
+			"reflection_draws": 3,
+			"scene_draws": 20,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13201,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 736,
+			"phase": "Preparing water reflections…",
+			"presentations": 12,
+			"reflection_draws": 11,
+			"scene_draws": 28,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13315,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 852,
+			"phase": "Preparing water reflections…",
+			"presentations": 19,
+			"reflection_draws": 18,
+			"scene_draws": 35,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13431,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 953,
+			"phase": "Preparing water reflections…",
+			"presentations": 25,
+			"reflection_draws": 24,
+			"scene_draws": 41,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13532,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1057,
+			"phase": "Preparing water reflections…",
+			"presentations": 31,
+			"reflection_draws": 30,
+			"scene_draws": 47,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13636,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1156,
+			"phase": "Preparing water reflections…",
+			"presentations": 37,
+			"reflection_draws": 36,
+			"scene_draws": 53,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13735,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1272,
+			"phase": "Preparing water reflections…",
+			"presentations": 44,
+			"reflection_draws": 43,
+			"scene_draws": 60,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13851,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1387,
+			"phase": "Preparing water reflections…",
+			"presentations": 51,
+			"reflection_draws": 50,
+			"scene_draws": 67,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 13966,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1490,
+			"phase": "Preparing water reflections…",
+			"presentations": 57,
+			"reflection_draws": 56,
+			"scene_draws": 73,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 14069,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1607,
+			"phase": "Preparing water reflections…",
+			"presentations": 64,
+			"reflection_draws": 63,
+			"scene_draws": 80,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 14186,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": 0,
+			"elapsed_ms": 1721,
+			"phase": "Preparing water reflections…",
+			"presentations": 71,
+			"reflection_draws": 70,
+			"scene_draws": 87,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": false
+			},
+			"time_ms": 14300,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 1848,
+			"phase": "Preparing water reflections…",
+			"presentations": 74,
+			"reflection_draws": 73,
+			"scene_draws": 90,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"geometries": 2040,
+				"instances": 2171,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"radius": 96.0,
+				"supported": true,
+				"textures": 46,
+				"triangles": 147395
+			},
+			"time_ms": 14427,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 0,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 1869,
+			"phase": "Preparing the first frame…",
+			"presentations": 75,
+			"reflection_draws": 74,
+			"scene_draws": 91,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"geometries": 2040,
+				"instances": 2171,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"radius": 96.0,
+				"supported": true,
+				"textures": 46,
+				"triangles": 147395
+			},
+			"time_ms": 14448,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "initial-rt",
+			"completed": 0,
+			"completed_renders": 1,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 1873,
+			"phase": "Finishing preparation…",
+			"presentations": 75,
+			"reflection_draws": 74,
+			"scene_draws": 91,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 0,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 2171,
+				"updated_morphs": 0
+			},
+			"time_ms": 14452,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		},
+		{
+			"case": "rt-quality-settings",
+			"completed": 0,
+			"completed_renders": 6,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 532,
+			"phase": "Preparing the first frame…",
+			"presentations": 0,
+			"reflection_draws": 74,
+			"scene_draws": 96,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 1,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			},
+			"time_ms": 14533,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": true
+		},
+		{
+			"case": "rt-quality-settings",
+			"completed": 0,
+			"completed_renders": 6,
+			"device_id": -9223370749354400227,
+			"elapsed_ms": 573,
+			"phase": "Finishing preparation…",
+			"presentations": 1,
+			"reflection_draws": 74,
+			"scene_draws": 96,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 1,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			},
+			"time_ms": 14574,
+			"title": "Compiling shaders",
+			"total": 0,
+			"water_owner": false
+		}
+	],
+	"raytracing_supported": true,
+	"render_acknowledgements": [
+		{
+			"ack_device_id": -9223370749354400227,
+			"ack_serial": 1,
+			"case": "initial-rt",
+			"completed_renders": 1,
+			"device_id": -9223370749354400227,
+			"ok": true,
+			"reflection_draws": 74,
+			"scene_draws": 91,
+			"screen_active": true,
+			"serial": 1,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 0,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 2171,
+				"updated_morphs": 0
+			},
+			"time_ms": 14452,
+			"water_owner": false
+		},
+		{
+			"ack_device_id": -9223370749354400227,
+			"ack_serial": 2,
+			"case": "rt-quality-settings",
+			"completed_renders": 6,
+			"device_id": -9223370749354400227,
+			"ok": true,
+			"reflection_draws": 74,
+			"scene_draws": 96,
+			"screen_active": true,
+			"serial": 2,
+			"stats": {
+				"active": true,
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"opaque_geometries": 1393,
+				"quality": 1,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"texture_anisotropy": 1,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			},
+			"time_ms": 14574,
+			"water_owner": false
+		}
+	],
+	"screenshots": [
+		{
+			"background_max_error": 0.0,
+			"file": "initial-mirror.png",
+			"state": {
+				"case": "initial-mirror",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 1,
+				"screen_active": true,
+				"serial": 1,
+				"stats": {},
+				"time_ms": 12779,
+				"water_owner": true
+			},
+			"text_bar_samples": 343
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "mirror-explicit-settings.png",
+			"state": {
+				"case": "mirror-explicit-settings",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 6,
+				"scene_draws": 7,
+				"screen_active": true,
+				"serial": 2,
+				"stats": {},
+				"time_ms": 12920,
+				"water_owner": true
+			},
+			"text_bar_samples": 343
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "initial-rt.png",
+			"state": {
+				"case": "initial-rt",
+				"completed_renders": 0,
+				"device_id": 0,
+				"reflection_draws": 0,
+				"scene_draws": 17,
+				"screen_active": true,
+				"serial": 1,
+				"stats": {
+					"active": false
+				},
+				"time_ms": 13129,
+				"water_owner": true
+			},
+			"text_bar_samples": 343
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "rt-quality-settings.png",
+			"state": {
+				"case": "rt-quality-settings",
+				"completed_renders": 6,
+				"device_id": -9223370749354400227,
+				"reflection_draws": 74,
+				"scene_draws": 96,
+				"screen_active": true,
+				"serial": 2,
+				"stats": {
+					"active": true,
+					"geometries": 2040,
+					"instances": 2171,
+					"lights": 1,
+					"native_scene": true,
+					"opaque_geometries": 1393,
+					"quality": 1,
+					"radius": 96.0,
+					"samples_per_pixel": 4,
+					"size": [
+						960,
+						540
+					],
+					"supported": true,
+					"texture_anisotropy": 1,
+					"textures": 46,
+					"triangles": 147395,
+					"updated_instances": 0,
+					"updated_morphs": 0
+				},
+				"time_ms": 14567,
+				"water_owner": true
+			},
+			"text_bar_samples": 332
+		}
+	]
+}

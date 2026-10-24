@@ -376,27 +376,38 @@ static func reflection_mask(source_mask: int) -> int:
 func _create_view() -> void:
 	viewport = SubViewport.new()
 	viewport.name = "WaterReflectionView"
-	# SubViewports default to interpolation ON even when the main viewport
-	# is OFF. This camera follows the render-frame pose; interpolating it
-	# again makes the rendered bank lag behind planar_view during fast turns.
-	viewport.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
-	viewport.world_3d = terrain.get_world_3d()
-	viewport.transparent_bg = true
-	viewport.gui_disable_input = true
-	viewport.positional_shadow_atlas_size = 0
-	viewport.msaa_3d = Viewport.MSAA_2X
+	configure_viewport(viewport,terrain.get_world_3d())
 	add_child(viewport)
 	camera = Camera3D.new()
-	# The water shader already supplies sky/cloud colour. Avoid a second sky,
-	# post-process stack and depth-of-field pass in this small geometry view.
-	camera.environment = Environment.new()
-	camera.environment.background_mode = Environment.BG_COLOR
-	camera.environment.background_color = Color(0, 0, 0, 0)
-	camera.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	camera.environment.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
+	camera.environment = reflection_environment()
 	viewport.add_child(camera)
 	camera.current = true
 	terrain._water_mat.set_shader_parameter("planar_texture", viewport.get_texture())
+
+
+## Shader preparation uses these exact framebuffer/environment settings;
+## the main viewport's DLSS, MSAA and fog pipelines cannot stand in for them.
+static func configure_viewport(view: SubViewport, world: World3D) -> void:
+	# SubViewports default to interpolation ON even when the main viewport
+	# is OFF. This camera follows the render-frame pose; interpolating it
+	# again makes the rendered bank lag behind planar_view during fast turns.
+	view.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	view.world_3d = world
+	view.transparent_bg = true
+	view.gui_disable_input = true
+	view.positional_shadow_atlas_size = 0
+	view.msaa_3d = Viewport.MSAA_2X
+
+
+static func reflection_environment() -> Environment:
+	# The water shader already supplies sky/cloud colour. Avoid a second sky,
+	# post-process stack and depth-of-field pass in this small geometry view.
+	var environment := Environment.new()
+	environment.background_mode = Environment.BG_COLOR
+	environment.background_color = Color(0, 0, 0, 0)
+	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	environment.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
+	return environment
 
 
 func _disable() -> void:

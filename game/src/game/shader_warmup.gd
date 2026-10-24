@@ -39,6 +39,8 @@ const BATCH := 2
 const DIST := 0.5         # metres in front of the camera (near plane 0.05..0.1)
 const LIGHT_RANGE := 0.03
 const GROUP_GAP := 0.08
+const REFLECTION_WARMUP_LAYER := 1 << 13
+const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
 enum {MESH, PARTICLE, INSTANCED, GRASS, REGIONAL, COLORED}
 
 static var _warmed := {}   # key -> true
@@ -49,6 +51,8 @@ static var _mms := {}   # kind -> MultiMesh
 static var _formats := {} # vertex format -> zero-area mesh of that exact format
 static var _progress_serial := 0
 var _progress_owner: StringName
+var _reflection_view: SubViewport
+var _reflection_camera: Camera3D
 
 
 static func active() -> bool:
@@ -133,6 +137,8 @@ static func run(game: Game) -> void:
 			# Far tiles stream in a few seconds after play starts.
 			var far: Array = grass._far_grass.prepare()
 			_add(items, seen, far[1], env, GRASS, far[0])
+		for variant: Array in grass.cover_warmup_variants():
+			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]))
 	# VisionFog: its overlay is a MultiMesh of plain transforms.
 	_add(items, seen, VisionFog.material(), env, INSTANCED)
 	if items.is_empty():
@@ -145,6 +151,7 @@ static func run(game: Game) -> void:
 	cam.add_child(w)
 	w.position = Vector3(0, 0, -maxf(DIST, cam.near * 4.0))
 	w._make_groups()
+	if _warm_reflections(): w._make_reflection_view(cam)
 	# Under the loading screen: draw batch by batch, stop at the budget.
 	if forced:
 		# The zone's first picture, under the loading screen: its programs
@@ -166,10 +173,15 @@ static func run(game: Game) -> void:
 		i = n
 		if forced:
 			_push(cam, w)
-			RenderingServer.force_draw(true, 0.0)
-			# With a rendering worker, queue submission alone does not measure
-			# compilation time or honor the loading budget. Wait only here.
-			RenderingServer.force_sync()
+			# Newly placed geometry enters Forward+'s motion-vector pass for
+			# several draws. Keep it still long enough to prepare the stationary
+			# color pass too; streamed far grass otherwise first builds that
+			# pipeline after play starts. Do not push transforms between draws.
+			for settle in (4 if RenderingServer.get_current_rendering_method()=="forward_plus" else 1):
+				RenderingServer.force_draw(true, 0.0)
+				# Queue submission alone is not compilation completion with a
+				# rendering worker. Wait only under the loading screen.
+				RenderingServer.force_sync()
 			# Count only batches whose draw has completed. A submitted shader
 			# or a pipeline-counter increment is not compilation completion.
 			for j in range(start, n): _warmed[items[j][0]] = true
@@ -195,7 +207,7 @@ static func run(game: Game) -> void:
 
 
 func _finish_deferred(items: Array) -> void:
-	for i in 2:
+	for i in (4 if RenderingServer.get_current_rendering_method()=="forward_plus" else 2):
 		await get_tree().process_frame
 		await RenderingServer.frame_post_draw
 	for item: Array in items: _warmed[item[0]] = true
@@ -207,6 +219,7 @@ func _finish_deferred(items: Array) -> void:
 
 func _exit_tree() -> void:
 	if not _progress_owner.is_empty(): ShaderCompilationScreen.end(_progress_owner)
+	if is_instance_valid(_reflection_view): _reflection_view.queue_free()
 
 
 ## QuestBird.prepare at the local hero (the bird's first flight is there),
@@ -259,6 +272,9 @@ static func _stand_in() -> ImageTexture:
 ## are drawn where they are.
 static func _push(cam: Camera3D, w: Node3D) -> void:
 	cam.force_update_transform()
+	if is_instance_valid(w._reflection_camera):
+		w._reflection_camera.global_transform = cam.global_transform
+		w._reflection_camera.force_update_transform()
 	w.force_update_transform()
 	for g in w.get_children():
 		(g as Node3D).force_update_transform()
@@ -314,7 +330,33 @@ static func _env_key(game: Game) -> String:
 	if sun:
 		k += "%d%d" % [int(sun.shadow_enabled and sun.visible), sun.directional_shadow_mode]
 	k += "%d" % int(_shadowed_points())
+	k += ":mirror%d" % int(_warm_reflections())
 	return k
+
+
+static func _warm_reflections() -> bool:
+	return WaterReflection.supported() and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
+
+
+func _make_reflection_view(source: Camera3D) -> void:
+	_reflection_view = SubViewport.new()
+	_reflection_view.name = "ReflectionShaderWarmup"
+	WaterReflection.configure_viewport(_reflection_view,source.get_world_3d())
+	_reflection_view.size = Vector2i(32,32)
+	_reflection_view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	# A sibling keeps the normal light groups unchanged. Only the collapsed
+	# warm-up geometry uses this otherwise unassigned layer, so this view
+	# never renders a second copy of the map while preparing each batch.
+	source.add_child(_reflection_view)
+	_reflection_camera = Camera3D.new()
+	_reflection_camera.environment = WaterReflection.reflection_environment()
+	_reflection_camera.cull_mask = REFLECTION_WARMUP_LAYER | WaterReflection.CAMERA_MARKER
+	_reflection_camera.near = source.near
+	_reflection_camera.far = source.far
+	_reflection_camera.fov = source.fov
+	_reflection_view.add_child(_reflection_camera)
+	_reflection_camera.global_transform = source.global_transform
+	_reflection_camera.current = true
 
 
 ## LocalLighting gives fire, spell and lava lights shadows with these options.
@@ -457,6 +499,7 @@ func _show(m: Material, kind: int, source: Mesh = null) -> Array[Node]:
 			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED if kind == GRASS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			gi = mmi
 		gi.material_override = m
+		gi.layers |= REFLECTION_WARMUP_LAYER
 		gi.custom_aabb = AABB(Vector3(-0.01, -0.01, -0.01), Vector3(0.02, 0.02, 0.02))
 		g.add_child(gi)
 		out.append(gi)

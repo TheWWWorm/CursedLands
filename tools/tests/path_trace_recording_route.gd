@@ -100,6 +100,8 @@ func run() -> void:
 	if OS.get_cmdline_user_args().has("--route-opening-only"):
 		await finish();return
 	await walk("downhill-path",Vector2(66,125),25)
+	if OS.get_cmdline_user_args().has("--route-rebuild-only"):
+		await finish();return
 	g.set_speed(2)
 	await encounter(1804,"wolf",true)
 	g.sound.weather.on_event({"w":1,"fade":0.0},g.sound._ticks);g._update_daylight(false)

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.28.0-experimental.6 (local preview)
+
+- Prepare streamed biome-cover vertex layouts and Mirror-water shader variants during zone loading.
+- Upload replacement ray-tracing texture arrays in bounded batches while retaining the previous scene and its lighting.
+- Record separate resource-creation and texture-upload timings for traversal diagnostics.
+
 ## 1.28.0-experimental.5 (local preview)
 
 - Warm projected ground-mark materials during loading and reuse immutable ray pipelines across region replacements. Prepare replacement acceleration structures in bounded steps.
