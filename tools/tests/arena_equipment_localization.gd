@@ -3,7 +3,7 @@ extends Node
 func _ready() -> void:
 	var keys := {}
 	for rule: Dictionary in ArenaItems.RULES.values():
-		keys[rule.name] = true; keys[rule.help] = true
+		keys[rule.name] = true
 	for rule: Dictionary in ArenaAlliances.RULES.values():
 		keys[rule.name] = true; keys[rule.help] = true
 	for tiers: Array in ArenaAlliances.EFFECTS.values():

@@ -39,6 +39,7 @@ func _ready() -> void:
 		add_theme_stylebox_override(state, StyleBoxEmpty.new())
 	_art = ArenaItemEmblem.new()
 	_art.kind = kind
+	_art.framed = false
 	_art.custom_minimum_size = Vector2.ONE
 	add_child(_art)
 	_art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -53,8 +54,14 @@ func _ready() -> void:
 func _draw() -> void:
 	var radius := minf(size.x, size.y) * 0.5 - 2
 	var active := selected or target_hover or has_focus() or is_hovered()
-	draw_circle(size * 0.5, radius, Color("111b20"), true, -1, true)
-	draw_circle(size * 0.5, radius, ArenaCreatureCard.GOLD if active else Color("687b80"), false, 2.5 if active else 1.5, true)
+	draw_circle(size * 0.5, radius, Color("344744") if active else Color("111b20"), true, -1, true)
+	if ArenaItems.tier(kind) > 1:
+		draw_circle(size * 0.5, radius, ArenaItemEmblem.color_for(kind), false, 2.5 if active else 2.0, true)
+	elif kind.is_empty():
+		draw_circle(size * 0.5, radius, Color("a0b5b7") if active else Color("687b80"), false, 1.5, true)
+	# Focus and selection use a small pointer, keeping the rarity rim unchanged.
+	if selected or has_focus() or target_hover:
+		draw_colored_polygon(PackedVector2Array([Vector2(1, 1), Vector2(9, 1), Vector2(1, 9)]), ArenaCreatureCard.PAPER)
 	if is_instance_valid(_art): _art.visible = not kind.is_empty()
 	if kind.is_empty():
 		var center := size * 0.5

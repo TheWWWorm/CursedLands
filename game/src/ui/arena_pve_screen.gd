@@ -95,6 +95,8 @@ var _speed: Button
 var _shop_toggle: Button
 var _shop_open := true
 var _shown_stage := ""
+var _victory_music: MusicSystem
+var _victory_played := false
 var _sound: GameSound
 var _sound_world: GameWorld
 var _rail: PanelContainer
@@ -557,7 +559,28 @@ func _exit_tree() -> void:
 	Gfx.set_border(_previous_border, _previous_border_dist)
 
 
+## The authored victory track plays once for the local champion. A dedicated
+## MusicSystem keeps scouting and repeated UI refreshes from restarting it.
+func _sync_victory_music() -> void:
+	if landing or run.stage not in ["won", "lost"]:
+		if _victory_played:
+			_victory_played = false
+			if is_instance_valid(_victory_music): _victory_music.set_none()
+		return
+	var champion := run.stage == "won"
+	if run is ArenaTournamentRun: champion = run.placements[0] == 1
+	if not champion or _victory_played: return
+	_victory_played = true
+	_sound.music.set_none()
+	if not is_instance_valid(_victory_music):
+		_victory_music = MusicSystem.new()
+		add_child(_victory_music)
+	_victory_music.set_zone("gipat", false)
+	_victory_music.hold = false
+	_victory_music.play_forced("victory")
+
 func _refresh() -> void:
+	_sync_victory_music()
 	_capture_health_changes()
 	_encounter_key = 0
 	_header.visible = false # The opening composition carries the expedition title.
@@ -1129,7 +1152,7 @@ func _show_company() -> void:
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	_wrap(_inspect_box, RemakeText.t("Level %d") % run.capacity(), 22, GOLD)
-	_wrap(_inspect_box, RemakeText.t("%d recruit lines cost 1–5 gold. Each line has one shop entry and equal odds within its tier.") % ArenaRules.FAMILIES.size(), 13, PAPER)
+	_wrap(_inspect_box, RemakeText.t("%d recruit lines cost 1–5 gold. Each line has one shop entry and equal odds within its tier.") % ArenaRules.ACTIVE_FAMILIES.size(), 13, PAPER)
 	_wrap(_inspect_box, RemakeText.t("Three identical one-star creatures make a two-star creature. Three two-star creatures make a three-star creature of the same species."), 13, PAPER)
 	_wrap(_inspect_box, RemakeText.t("Stars strengthen health, attacks and spells. The strongest forms are evolution-only."), 13, GOLD)
 	_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 14, PAPER)
@@ -1268,7 +1291,9 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if family >= 0:
 		ArenaCreatureCard.tribe_names(details, family, 13)
 		_wrap(details, RemakeText.t("Tier %d · %d gold") % [int(ArenaRules.FAMILIES[family].tier), int(ArenaRules.FAMILIES[family].cost)], 12, MUTED)
-		if run.shares_pool():
+		if ArenaRules.FAMILIES[family].get("retired", false):
+			_wrap(details, RemakeText.t("Retired from recruitment"), 12, MUTED)
+		elif run.shares_pool():
 			_wrap(details, RemakeText.t("Shared pool: %d/%d left") % [maxi(0, int(run.pool_left()[family])), ArenaRules.pool_size(family)], 12, MUTED)
 		if ArenaRules.FAMILIES[family].has("region"):
 			_wrap(details, ArenaRules.region_name(int(ArenaRules.FAMILIES[family].region)), 12, MUTED)
@@ -1424,7 +1449,7 @@ func _battle_changed() -> void:
 		_pause.tooltip_text = RemakeText.t("Resume" if battle.phase == ArenaMatch.Phase.PAUSED or _league_paused else "Pause") + " · " + RemakeText.t("Space")
 		if _tooltips: _tooltips.capture(_pause)
 	_update_encounter_status()
-	if _sound: _sound.music.tick(2 if battle.phase == ArenaMatch.Phase.FIGHT else 0)
+	if _sound and not _victory_played: _sound.music.tick(2 if battle.phase == ArenaMatch.Phase.FIGHT else 0)
 
 
 func _viewed_battle() -> ArenaPveMatch:
@@ -1552,6 +1577,7 @@ func _listen_to(world: GameWorld) -> void:
 	if _sound_world != world:
 		_sound_world = world
 		_sound.on_world(world)
+		if _victory_played: _sound.music.set_none()
 	# Campaign zone entry mutes SFX for ten ticks. Arena spectators have no
 	# campaign audio clock, so every event-driven world switch must unmute.
 	_sound.mixer.sfx_on = true

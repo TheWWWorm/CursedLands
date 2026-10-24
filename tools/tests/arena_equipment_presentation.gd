@@ -11,6 +11,7 @@ func _ready() -> void:
 	OS.add_logger(errors)
 	await frames(24)
 	GameData._window_gen += 1
+	Engine.max_fps = 30
 	GameData.arena_mode = 0
 	get_tree().root.mode = Window.MODE_WINDOWED
 	var lang := "en"
@@ -36,6 +37,7 @@ func _ready() -> void:
 		screen.run.items.append({"uid":screen.run.next_item_uid, "kind":kind, "unit_uid":0})
 		screen.run.next_item_uid += 1
 	screen.run.equip_item(1, int(screen.run.army[0].uid))
+	var dragged_kind := screen.run.item_for(int(screen.run.army[0].uid))
 	screen.run._touch()
 	await frames(20)
 	var tag := "equipment-tray-%s-%d" % [lang, dimensions.x]
@@ -52,7 +54,7 @@ func _ready() -> void:
 		bounded(card, "reward card " + card.kind)
 		check(screen._equipment_scroll.get_global_rect().grow(1).encloses(card.get_global_rect()), "whole reward and choose action visible without scrolling " + card.kind)
 		check(card.description.get_content_height() <= card.description.size.y + 1, "complete effect visible " + card.kind)
-		check(card.description.get_parsed_text() == ArenaItems.description(card.kind), "emphasis preserves translated effect " + card.kind)
+		check(card.description.get_parsed_text() == ArenaItems.description(card.kind, false), "emphasis preserves translated effect " + card.kind)
 		check(ArenaItemEmblem.ART[card.kind].resource_path.ends_with(".png") and not card.art.framed, "native item picture without icon medallion " + card.kind)
 	await shot(tag + "-rewards")
 	screen._choose_item(1)
@@ -86,7 +88,7 @@ func _ready() -> void:
 	release.position = end; release.button_index = MOUSE_BUTTON_LEFT; release.pressed = false
 	Input.parse_input_event(release)
 	await frames(12)
-	check(screen.run.item_for(int(screen.run.army[1].uid)) == "fang" and screen._item_uid == 0, "drop transfers equipped relic once")
+	check(screen.run.item_for(int(screen.run.army[1].uid)) == dragged_kind and screen._item_uid == 0, "drop transfers equipped relic once")
 	for slot: Control in screen._item_targets.values():
 		if not slot.visible: continue
 		for unit: GameUnit in screen.battle.world.unit_rows():

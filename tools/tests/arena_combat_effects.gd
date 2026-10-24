@@ -90,17 +90,14 @@ func _ready() -> void:
 	battle.world.arena_effects.stop()
 	check(not own[0].cannot_cast() and is_equal_approx(own[0].actions(), own[0].stats.actions), "battle stop removes berserker effects")
 	setup([0,1], [24])
-	hit(own[0], enemies[0]); hit(own[0], enemies[0])
-	check(battle.world.arena_effects.totals.get("pack",0) == 0, "one Beast cannot trigger a pack alone")
-	hit(own[1], enemies[0])
-	check(battle.world.arena_effects.totals.get("pack",0) == 1, "different Beast families combine native landed attacks")
+	var base := ArenaUnitInfo.values(own[0].info.prototype, null, 0, 0)
+	check(is_equal_approx(own[0].stats.dmg_min, base.min * 1.1), "two different Beasts grant unconditional attack damage")
 	setup([4,28], [0])
-	own[0].die(enemies[0])
-	check(battle.world.arena_effects.totals.get("rally",0) == 1, "Horde death causes reachable retaliation")
+	base = ArenaUnitInfo.values(own[0].info.prototype, null, 4, 0)
+	check(is_equal_approx(own[0].max_hp, base.max_hp * 1.15), "two different Horde members grant maximum health")
 	setup([0,6], [0])
-	var guard := own[1]
-	hit(enemies[0], own[0], 20.0)
-	check(battle.world.arena_effects.totals.get("guard",0) == 1 and battle.world.arena_effects.rows[guard.uid].guard < guard.max_hp * 0.12, "Warrior spends finite pool guarding an ally")
+	base = ArenaUnitInfo.values(own[1].info.prototype, null, 6, 0)
+	check(is_equal_approx(own[1].stats.armor[0], base.armor[0] * 1.3) and is_equal_approx(own[1].stats.armor[3], base.armor[3]), "Warriors gain physical armor without elemental protection")
 	setup([1,4], [3])
 	Spells.cast_after(battle.world, enemies[0], "arrow{}", own[0], own[0].pos, 0.0)
 	(battle.world.get_node("SpellTimers") as Spells.WorldTimers)._tick(0.055, false)
@@ -111,42 +108,12 @@ func _ready() -> void:
 	enemies[0].pos += Vector2(20, 0)
 	check(battle.world.arena_effects.target_bonus(own[1], enemies[0], {"range": 10.0}) == 0.0, "Hunter mark does not grant out-of-range attacks")
 	setup([3,5], [24], [], [], 1)
-	for caster: GameUnit in own:
-		Spells.cast_after(battle.world, caster, "arrow{}", enemies[0], enemies[0].pos, 0.0)
-		(battle.world.get_node("SpellTimers") as Spells.WorldTimers)._tick(0.055, false)
-	check(battle.world.arena_effects.totals.get("reaction",0) == 1, "two real Mage casts produce one bounded reaction")
-	setup([0,6], [3])
-	before = own[0].hp
-	own[0].take_damage(10, enemies[0], -1, PackedFloat32Array(), 0, Callable(), false, {"kind":"spell"})
-	check(absf(before - own[0].hp - 10.0) < 0.001, "two Warriors cannot guard spell damage")
-	own[1].pos += Vector2(10,0); before = own[0].hp
-	own[0].take_damage(10, enemies[0], -1, PackedFloat32Array(), 0, Callable(), false, {"kind":"attack"})
-	check(absf(before - own[0].hp - 10.0) < 0.001, "guard has a real proximity limit")
-	setup([0,6,12,14], [3])
-	before = own[0].hp
-	own[0].take_damage(10, enemies[0], -1, PackedFloat32Array(), 0, Callable(), false, {"kind":"spell"})
-	check(absf(before - own[0].hp - 6.0) < 0.001, "four Warriors block spell damage once, without stacking guards")
-	setup([4,10,14,15], [24])
-	for i in 3: own[i].die(enemies[0])
-	check(battle.world.arena_effects.rallies[0].size() == 2, "deep Horde stops after two distinct family casualties")
-	setup([0,1,2,3,5,7], [24,24])
-	hit(own[0], enemies[0]); hit(own[1], enemies[0])
-	check(battle.world.arena_effects.totals.get("pack",0) == 2, "six Beasts strike one additional nearby enemy")
-	enemies[0].hp = 1.0; hit(own[0], enemies[0])
-	check(battle.world.arena_effects.target_bonus(own[0], enemies[1], {"range":10.0}) > 0.0, "deep pack pursues a nearby survivor after a kill")
-	setup([0,1,2,3], [24,24])
-	hit(own[0], enemies[0]); battle.world.time += 2.1; enemies[0].die(own[0])
-	check(battle.world.arena_effects.target_bonus(own[0], enemies[1], {"type":1,"range":10.0}) == 0.0, "an expired prey mark cannot start a new pursuit")
+	check(is_equal_approx(battle.world.arena_effects.spell_damage_multiplier(own[0]), 1.15), "two Mages gain spell damage without coordinating casts")
 	setup([1,4,7,10,0], [3])
 	enemies[0].pos = own[4].pos + Vector2(1,0)
 	Spells.cast_after(battle.world, enemies[0], "prot_fire{}", enemies[0], enemies[0].pos, 0.0)
 	(battle.world.get_node("SpellTimers") as Spells.WorldTimers)._tick(0.055, false)
 	check(battle.world.arena_effects.target_bonus(own[4], enemies[0], {"range":10.0}) > 0.0, "deep Hunters direct other allies even after an enemy support cast")
-	setup([3,5,13,19], [24,24], [], [], 1)
-	for i in 2:
-		Spells.cast_after(battle.world, own[i], "arrow{}", enemies[0], enemies[0].pos, 0.0)
-		(battle.world.get_node("SpellTimers") as Spells.WorldTimers)._tick(0.055, false)
-	check(battle.world.arena_effects.totals.get("reaction",0) == 2, "deep Mage reaction hits just one additional nearby enemy")
 	setup([0], [0], ["ward"])
 	own[0].hp = own[0].max_hp * 0.36
 	var head: UnitBodyPart = own[0].parts[0]
@@ -154,7 +121,7 @@ func _ready() -> void:
 	var incoming := own[0].max_hp * 0.10 / scale
 	before = own[0].hp
 	own[0].take_damage(incoming, enemies[0], 0, PackedFloat32Array(), 0, Callable(), false, {"kind":"attack"})
-	check(absf(before - own[0].hp) < 0.001 and absf(float(battle.world.arena_effects.shields[own[0].uid].amount) - own[0].max_hp * 0.15) < 0.001,
+	check(absf(before - own[0].hp) < 0.001 and absf(float(battle.world.arena_effects.shields[own[0].uid].amount) - own[0].max_hp * 0.60) < 0.001,
 		"a head impact spends shield strength in whole HP rather than raw part damage")
 	setup([6,11,12,19], [24])
 	own[1].hp *= 0.5; own[2].hp *= 0.5; before = own[1].hp

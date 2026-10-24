@@ -48,7 +48,7 @@ resistances, armor reduction, attack/cast cadence and alliances. Raw health and
 damage totals alone are not a balance verdict. Use mirrored native fights in
 both duels and supported teams, including equal-investment alternatives.
 
-The roster has **28 species with three star ranks each**. A species has one shop
+The roster has **29 recruit lines with three star ranks each**. A line has one shop
 price and stays that species through both upgrades. Different age variants are
 rank appearances, never separate offers. Five original species have one model
 reused at higher ranks; their stars and combat values identify the upgrade.
@@ -66,13 +66,13 @@ effects. Original localized names follow the visible colour or clan.
 | Cost | Species |
 | --- | --- |
 | 1 | Boars, wolves, rats, bats, goblins, toads, skeletons |
-| 2 | Tigers, spiders, armadillos, lizardmen, woodsfolk, zombies |
+| 2 | Tigers, spiders, armadillos, lizardmen, Woodsfolk archers, zombies, orc warriors |
 | 3 | Orc shamans, trolls, ogres, harpies, hyenas |
 | 4 | Evileyes, banshees, unicorns, wisps, elementals |
 | 5 | Dragons, golems, horrors, wormheads, cyclopes |
 
 Only one-star recruits appear in the shop. Three matching copies form two stars,
-and three two-star copies form three stars: nine base copies in total. Thirteen
+and three two-star copies form three stars: nine base copies in total. Fourteen
 species can appear at the opening; its six offers are distinct and include melee
 and ranged/magic choices. Later offers roll a tier with the existing level table
 and choose uniformly within it. Ownership does not increase duplicate odds.
@@ -86,6 +86,10 @@ reserved for longer company/alliance help. Upgrade-ready offers pulse
 cyan and carry an arrow separated from the lock; four- and five-gold rarity glows
 remain steady. One owned copy plus two matching shop offers marks both offers.
 Inspector accents and stars use the species' price-tier color.
+
+Woodsfolk archers are the only recruitable Woodsfolk line. The visually similar
+Woodsfolk seers are retired from recruitment; existing owned seers remain valid
+in old saves. Family IDs remain stable.
 
 Reserves retain individual slot positions through purchases, swaps and saves.
 Selecting a field creature and then an empty reserve slot withdraws it there.
@@ -187,12 +191,31 @@ reserves do not increase the count; most benefits apply only to members.
 
 | Alliance | Thresholds | Benefit |
 | --- | --- | --- |
-| Beasts | 2/4/6 | +8/16/24% physical attack damage |
-| Horde | 2/4 | +12/24% maximum health |
-| Warriors | 2/4 | +2/4 flat physical armor |
-| Hunters | 2/4 | +10/20% accuracy and +8/16% action speed |
-| Mages | 2/4 | Opponents lose 15/30% elemental armor |
-| Spirits | 2/4 | +3/6 flat fire, acid and lightning armor |
+| Beasts | 2/4/6 | Members gain 10/20/30% attack damage |
+| Horde | 2/4 | Members gain 15/30% maximum health |
+| Warriors | 2/4 | Members gain 30/60% physical armor |
+| Hunters | 2/4 | Completed enemy casts mark the caster for 3 seconds. Hunters prioritize it within reach; at four Hunters, all allies do. |
+| Mages | 2/4 | Members gain 15/30% spell damage |
+| Spirits | 2/4 | The first Spirit death heals the nearest 1/2 wounded allies within 5 m for 12% of the fallen Spirit's maximum health. At four Spirits, it also leaves one wisp with 20% health for 6 seconds. |
+
+Four alliances give straightforward stats; Hunters and Spirits retain tactical
+behavior. Membership freezes at the bell. Temporary echoes carry no equipment,
+do not count toward alliances and cannot repeat death effects.
+
+Equipment provides 40 items, eight in each of five tiers. Twenty-three give only
+raw stats; the others add lifesteal, shields, lightning, healing suppression,
+spell echoes, retaliation or frenzy. Each surviving player chooses one of three
+equally tiered items after rounds 3, 5, 10, 15 and subsequent multiples of five.
+Those milestones unlock tiers 1, 2, 3, 4 and 5 respectively. Item choices use a
+separate random stream from the shop. Tier 1 has no border; tiers 2–5 use green,
+blue, purple and gold, shared with creature rarity.
+
+Each creature has one equipment slot, with free reassignment during preparation
+and a shared stash. Selling or consuming a creature in evolution returns its
+item. Bonuses on the same stat add to alliance bonuses. Native healing, shield,
+poison and spell particles communicate triggered effects. The original victory
+music plays once when the local player wins the whole game. See the
+[item catalog and current rules](design/autochess-equipment-alliances.md).
 
 Creep accuracy, avoidance and exceptional boss armor are capped
 by wave, while their native bodies, damage and spells remain. These changes apply
@@ -228,6 +251,12 @@ paid investment. Retired human forms map to a creature with a corresponding
 combat role. Exact old prototype IDs are validated before conversion. Migration
 copies its input and combines newly matching triples. Current companies keep
 stable reserve slots through round trips, including CPU reserves.
+
+Schema 15 preserves already-owned Woodsfolk seers while clearing their old shop
+offers. Pending equipment rewards from schema 14 keep their original eight-item
+choices across reload and undo; subsequent rewards use the tiered catalog.
+Online protocol 3 requires matching builds and replicates item feedback, including
+remaining shield duration when changing viewed boards.
 
 A first-form sale returns its recorded investment; evolved sales return the
 lesser of the full copy cost and two thirds of investment. Online previews use

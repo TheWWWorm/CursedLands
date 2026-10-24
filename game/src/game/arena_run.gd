@@ -25,6 +25,7 @@ var item_offers: Array[String] = []
 var next_item_uid := 1
 # A watermark also records skipped milestones when migrating an older save.
 var item_reward_round := 0
+var item_offer_version := ArenaItems.OFFER_VERSION
 var boons: Array[String] = []
 var free_refresh := false
 var training := 0
@@ -52,7 +53,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	challenge = clampi(difficulty, 0, 2)
 	wave = 1; wave_limit = round_limit(); gold = ArenaRules.OPENING_GOLD; lives = life_limit(); stage = "prepare"; next_uid = 1
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
-	items.clear(); item_offers.clear(); next_item_uid = 1; item_reward_round = 0
+	items.clear(); item_offers.clear(); next_item_uid = 1; item_reward_round = 0; item_offer_version = ArenaItems.OFFER_VERSION
 	last_result = {}
 	free_refresh = false
 	training = 0; battle_savings = 0
@@ -239,6 +240,7 @@ func offer_items_after(completed_round: int) -> void:
 	if completed_round <= item_reward_round or completed_round > ArenaItems.MAX_REWARD_ROUND or not ArenaItems.reward_round(completed_round): return
 	if not item_offers.is_empty(): _claim_item(0)
 	item_reward_round = completed_round
+	item_offer_version = ArenaItems.OFFER_VERSION
 	item_offers = ArenaItems.offers(run_seed, completed_round)
 
 
@@ -275,6 +277,7 @@ func purchase_error(index: int) -> String:
 	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
 	if index < 0 or index >= shop.size() or int(shop[index].family) < 0: return RemakeText.t("This offer has already been recruited.")
 	var family := int(shop[index].family)
+	if family not in ArenaRules.ACTIVE_FAMILIES: return RemakeText.t("Retired from recruitment")
 	var rank := int(shop[index].get("rank", 0))
 	var cost := offer_cost(shop[index])
 	if gold < cost: return RemakeText.t("Not enough gold.")
@@ -697,7 +700,7 @@ func _checkpoint() -> void:
 	# those purchases undoable after its income/result has already resolved.
 	if stage != "prepare": return
 	_undo.append({"army": army.duplicate(true), "shop": shop.duplicate(true), "gold": gold, "next_uid": next_uid, "training": training,
-		"items":items.duplicate(true), "item_offers":item_offers.duplicate(), "next_item_uid":next_item_uid})
+		"items":items.duplicate(true), "item_offers":item_offers.duplicate(), "next_item_uid":next_item_uid, "item_offer_version":item_offer_version})
 	if _undo.size() > 30: _undo.pop_front()
 
 
@@ -706,7 +709,7 @@ func undo() -> void:
 	var previous: Dictionary = _undo.pop_back()
 	army.assign(previous.army); shop.assign(previous.shop)
 	gold = previous.gold; next_uid = previous.next_uid; training = previous.training
-	items.assign(previous.items); item_offers.assign(previous.item_offers); next_item_uid = int(previous.next_item_uid)
+	items.assign(previous.items); item_offers.assign(previous.item_offers); next_item_uid = int(previous.next_item_uid); item_offer_version = int(previous.item_offer_version)
 	_touch()
 
 
@@ -728,7 +731,7 @@ func snapshot() -> Dictionary:
 		"training": training, "battle_savings": battle_savings,
 		"last_result": last_result.duplicate(true), "next_uid": next_uid,
 		"items":items.duplicate(true), "item_offers":item_offers.duplicate(),
-		"next_item_uid":next_item_uid, "item_reward_round":item_reward_round}
+		"next_item_uid":next_item_uid, "item_reward_round":item_reward_round, "item_offer_version":item_offer_version}
 
 
 func restore(data: Dictionary) -> bool:
@@ -781,7 +784,7 @@ func restore(data: Dictionary) -> bool:
 				family = ArenaRules.migrated_family(entry.prototype)
 				entry.family = family
 				entry.prototype = ArenaRules.prototype(family, rank)
-			elif family not in ArenaRules.ACTIVE_FAMILIES: return false
+			elif family not in ArenaRules.ACTIVE_FAMILIES and not ArenaRules.FAMILIES[family].get("retired", false): return false
 		if family < 0:
 			if entry.prototype not in ArenaRules.COMPANIONS or rank != 0: return false
 			entry.family = ArenaRules.migrated_family(entry.prototype); entry.prototype = ArenaRules.prototype(int(entry.family), 0)
@@ -818,9 +821,11 @@ func restore(data: Dictionary) -> bool:
 			carriers[carrier] = true
 		item_ids[int(item.uid)] = true
 		item.uid = int(item.uid); item.unit_uid = carrier
+	var offer_version = data.get("item_offer_version", 1 if int(data.version) < 15 else 0)
+	if not _integer(offer_version, 1, ArenaItems.OFFER_VERSION): return false
 	if not data.item_offers.is_empty():
 		if data.item_offers.size() != 3 or not ArenaItems.reward_round(int(data.item_reward_round)): return false
-		if data.item_offers != ArenaItems.offers(int(data.seed), int(data.item_reward_round)): return false
+		if data.item_offers != ArenaItems.offers(int(data.seed), int(data.item_reward_round), int(offer_version)): return false
 	var capacity_at_wave := ArenaRules.level_for_xp(int(data.wave) - 1 + int(data.get("training", 0))) if int(data.version) >= 8 else mini(ArenaRules.MAX_ARMY, 3 + (int(data.wave) - 1 + int(data.get("training", 0))) / 3)
 	if deployed > capacity_at_wave: return false
 	var saved_boons := {}
@@ -839,7 +844,10 @@ func restore(data: Dictionary) -> bool:
 		if int(offer.family)>=0:
 			if int(data.version) < 13:
 				offer.family = ArenaRules.migrated_family(ArenaRules.saved_prototype(int(data.version), int(offer.family), 0))
-			elif int(offer.family) not in ArenaRules.ACTIVE_FAMILIES: return false
+			elif int(offer.family) not in ArenaRules.ACTIVE_FAMILIES:
+				if int(data.version) < 15 and ArenaRules.FAMILIES[int(offer.family)].get("retired", false):
+					offer.family = -1; offer.locked = false
+				else: return false
 		if offer.locked:
 			if int(offer.family) < 0: return false
 			locks += 1
@@ -881,7 +889,7 @@ func restore(data: Dictionary) -> bool:
 	preparation_left = ArenaRules.preparation_seconds(challenge) if data.stage == "fight" else float(data.get("preparation_left", saved_preparation))
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
 	items.assign(data.items.duplicate(true)); item_offers.assign(data.item_offers)
-	next_item_uid = int(data.next_item_uid); item_reward_round = int(data.item_reward_round)
+	next_item_uid = int(data.next_item_uid); item_reward_round = int(data.item_reward_round); item_offer_version = int(offer_version)
 	for id in item_ids: next_item_uid = maxi(next_item_uid, int(id) + 1)
 	free_refresh = bool(data.get("free_refresh", false))
 	training = int(data.get("training", 0)); battle_savings = int(data.get("battle_savings", 0))

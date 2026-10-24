@@ -221,6 +221,7 @@ func board_frame(player: int, full: bool) -> Dictionary:
 	data["friendly_damage"] = []
 	for uid in battle.friendly_damage: data.friendly_damage.append([int(uid),float(battle.friendly_damage[uid])])
 	if full:
+		data["item_shields"] = battle.world.arena_effects.shield_visual_state() if battle.world.arena_effects else []
 		data["previous_damage"] = battle.previous_damage.duplicate(true)
 		var records := []
 		for unit: GameUnit in battle.world.unit_rows():

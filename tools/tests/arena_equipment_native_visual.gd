@@ -74,7 +74,7 @@ func _ready() -> void:
 	RemakeText.lang = lang
 	GameData.arena_mode = 0
 	GameData.arena_speed = requested_speed
-	Engine.max_fps = 60
+	Engine.max_fps = 30
 	tag = "%s-%dx" % [lang, requested_speed] if visible_run else "headless"
 	var native_hash := hash(GameData.db.tables)
 	var run := VisualDuel.new()
@@ -83,6 +83,7 @@ func _ready() -> void:
 	if visible_run:
 		await frames(24)
 		GameData._window_gen += 1
+		Engine.max_fps = 30
 		get_tree().root.mode = Window.MODE_WINDOWED
 		get_tree().root.size = Vector2i(1280, 720)
 		get_tree().root.position = Vector2i.ZERO
@@ -166,7 +167,7 @@ func _ready() -> void:
 	check(battle.phase == ArenaMatch.Phase.FINISHED, "native battle finishes")
 	check(battle.world.time <= ArenaRules.BATTLE_SECONDS + GameUnit.TICK, "battle respects simulation time limit")
 	check(notices.any(func(e): return e.effect in ITEMS), "real equipment emits named feedback")
-	check(notices.any(func(e): return e.effect in ["pack", "guard", "reaction", "spirit"]), "real alliance emits named feedback")
+	check(notices.any(func(e): return e.effect in ["marked", "spirit", "spirit_echo"]), "real alliance emits named feedback")
 	check(not echo_rows.is_empty(), "native Spirit death creates an echo")
 	for row in echo_rows:
 		check(row.name == RemakeText.t("Spirit echo") and row.hp > 0 and row.visible and row.model, "echo has localized name, health and visible model")

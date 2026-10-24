@@ -977,6 +977,7 @@ static func _flyer(u: GameUnit) -> bool:
 ## caster's weapon in hand wears by what the armour absorbed, as a striker's.
 static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: GameUnit, owner_only := false) -> void:
 	var power := float(p.effect)
+	if world.arena_effects: power *= world.arena_effects.spell_damage_multiplier(caster)
 	var af := 1.0
 	if int(p.duration) > 1:
 		af = 4.0 / float(p.duration)

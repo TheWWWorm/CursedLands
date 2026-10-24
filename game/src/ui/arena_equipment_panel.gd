@@ -23,6 +23,8 @@ func _ready() -> void:
 	add_child(_offer_row)
 	var fallback := _label(self, RemakeText.t("If you do not choose, the first reward goes to your inventory when battle starts."), 13, ArenaCreatureCard.MUTED)
 	fallback.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var tiers := _label(self, RemakeText.t("Item tiers 1–5 unlock after rounds 3, 5, 10, 15 and 20. Each reward offers three items of the same tier."), 12, ArenaCreatureCard.MUTED)
+	tiers.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_message = _label(self, "", 14, Color("efbf87"))
 	_message.hide()
 	synchronize()

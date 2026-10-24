@@ -160,11 +160,11 @@ static func arrange(bot: ArenaRun, style: String) -> void:
 		if not families.has(best.family):
 			families[best.family]=true
 			for trait_key in ArenaAlliances.traits(int(best.family)):counts[trait_key]=int(counts.get(trait_key,0))+1
-	var compact := ["beast", "horde", "warrior", "spirit"].any(func(key): return ArenaAlliances.rank(key, int(counts.get(key,0))) > 0)
-	compact = compact or chosen.any(func(entry): return bot.item_for(int(entry.uid)) == "guardian")
+	var compact := ["spirit"].any(func(key): return ArenaAlliances.rank(key, int(counts.get(key,0))) > 0)
+	compact = compact or chosen.any(func(entry): return ArenaItems.effect(bot.item_for(int(entry.uid))) == "guardian")
 	var guards := ArenaAlliances.rank("warrior", int(counts.get("warrior",0))) > 0
-	# Put real protectors in central frontline slots before placing the carry
-	# behind them. Clustering trades area vulnerability for proximity effects.
+	# Put armored Warriors in frontline slots before placing the carry.
+	# Only Spirit aid and Guardian items reward a compact formation.
 	chosen.sort_custom(func(a: Dictionary, b: Dictionary):
 		var a_front := ArenaRules.recruit_role(int(a.family), int(a.rank)) == "Melee"
 		var b_front := ArenaRules.recruit_role(int(b.family), int(b.rank)) == "Melee"
@@ -261,19 +261,26 @@ static func equip(bot: ArenaRun) -> void:
 
 static func item_value(kind: String, entry: Dictionary) -> float:
 	var family := int(entry.family); var rank := int(entry.rank)
-	if family < 0: return 0.0
+	if family < 0 or not ArenaItems.RULES.has(kind): return 0.0
 	var role := ArenaRules.recruit_role(family, rank)
 	var melee := role == "Melee"; var caster := role == "Magic"
 	var proto := ArenaRules.recruit_prototype(family, rank, GameData.db.find("monster_prototypes", ArenaRules.prototype(family, rank)))
-	if int(proto.get("weapon_type_id",0)) == 16 and kind in ["fang","storm","venom","berserker"]: return 0.0
-	var weight := 1.0
-	match kind:
-		"fang": weight = 1.4 if melee else 0.4 if caster else 1.1
-		"storm": weight = 0.35 if caster else 1.35
-		"venom": weight = 0.35 if caster else 1.4 if role == "Ranged" else 1.0
-		"ward": weight = 1.3 if melee else 0.9
-		"guardian": weight = 1.2 if melee else 1.0
-		"echo": weight = 1.8 if caster else 0.0
-		"thorn": weight = 1.6 if melee else 0.3
-		"berserker": weight = 1.6 if Array(proto.get("spells", [])).is_empty() else 0.0
+	var basic := int(proto.get("weapon_type_id", 0)) != 16
+	var spells := not Array(proto.get("spells", [])).is_empty()
+	var gear: Dictionary = ArenaItems.RULES[kind]
+	var weight := float(gear.get("health", 0.0)) * (1.2 if melee else 0.8)
+	weight += float(gear.get("damage", 0.0)) * (0.35 if caster else 1.3) if basic else 0.0
+	weight += float(gear.get("actions", 0.0)) * 1.6
+	weight += float(gear.get("physical_armor", 0.0)) * (0.6 if melee else 0.3)
+	weight += float(gear.get("elemental_armor", 0.0)) * 0.45
+	weight += float(gear.get("spell", 0.0)) * (1.4 if caster else 0.5) if spells else 0.0
+	match ArenaItems.effect(kind):
+		"fang": weight += float(gear.leech) * (2.0 if melee else 1.3) if basic else 0.0
+		"storm": weight += float(gear.storm_damage) * int(gear.storm_targets) * (0.7 if caster else 3.2) if basic else 0.0
+		"venom": weight += float(gear.healing_reduction) * (0.4 if caster else 0.9) if basic else 0.0
+		"ward": weight += float(gear.shield) * (0.8 if melee else 0.5)
+		"guardian": weight += float(gear.shield) * 1.2
+		"echo": weight += float(gear.echo_damage) / int(gear.echo_every) * (2.0 if caster else 0.5) if spells else 0.0
+		"thorn": weight += float(gear.reflect) * (1.6 if melee else 0.3)
+		"berserker": weight += float(gear.frenzy) * 2.0 if basic and not spells else 0.0
 	return entry_power(entry) * weight

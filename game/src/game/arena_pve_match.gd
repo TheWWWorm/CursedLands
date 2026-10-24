@@ -668,6 +668,7 @@ func apply_board(data: Dictionary) -> void:
 		_apply_snap(snapshots, float(data.time), int(data.serial),true)
 	serial = int(data.serial)
 	world.time = float(data.time)
+	if data.full: ArenaItemFx.sync_shields(world, data.get("item_shields", []))
 	damage = data.damage.duplicate()
 	friendly_damage.clear()
 	for row: Array in data.get("friendly_damage",[]):

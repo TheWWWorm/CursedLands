@@ -1,11 +1,65 @@
 {
 	"items": {
+		"aegis": {
+			"authored_title": "Key for altar",
+			"camera_position": [
+				0.0,
+				-2.49765014648438,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.95200979709625,
+			"item_id": "golemcenterkey00",
+			"look": {
+				"model": "initqu19item",
+				"texture": "quitem0019"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"archmage": {
+			"authored_title": "Wand 6",
+			"camera_position": [
+				0.0,
+				-2.22609996795654,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.80297005176544,
+			"item_id": "wand 6",
+			"look": {
+				"model": "initqi39item",
+				"texture": "qitem0039"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
 		"berserker": {
 			"authored_title": "ogre's necklace",
 			"camera_position": [
 				0.0,
 				-2.41914987564087,
-				-0.0000000596046447753906
+				-5.96046447753906e-08
 			],
 			"camera_rotation_degrees": [
 				90.0,
@@ -22,7 +76,223 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"blade": {
+			"authored_title": "Iron long sword",
+			"camera_position": [
+				0.0,
+				-2.08855009078979,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.19960498809814,
+			"item_id": "long sword.iron",
+			"look": {
+				"layer": "sw_02.ir.0",
+				"model": "initwesw2weapon"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"bloodblade": {
+			"authored_title": "Claw",
+			"camera_position": [
+				0.0,
+				-2.3610999584198,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.88346993923187,
+			"item_id": "lizardclaw00",
+			"look": {
+				"model": "initqu28item",
+				"texture": "quitem0028"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"bloodmoon": {
+			"authored_title": "Simple ominous amulet",
+			"camera_position": [
+				0.0,
+				-2.04999995231628,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.87058985233307,
+			"item_id": "zombie00",
+			"look": {
+				"model": "initlitr38item",
+				"texture": "litem0038"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"bulwark": {
+			"authored_title": "Canian heavy steel cuirass",
+			"camera_position": [
+				0.0,
+				-2.38525009155273,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.15958499908447,
+			"item_id": "kania highest plate.steel",
+			"look": {
+				"layer": "pl_03.st.0",
+				"model": "initarpl3armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"chronicle": {
+			"authored_title": "Orcs' records",
+			"camera_position": [
+				0.0,
+				-2.77049994468689,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.02859997749329,
+			"item_id": "orcannals00",
+			"look": {
+				"model": "initqu31item",
+				"texture": "quitem0031"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"covenant": {
+			"authored_title": "Horn of young Black Unicorn",
+			"camera_position": [
+				0.0,
+				-2.12999987602234,
+				-5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.67221486568451,
+			"item_id": "unicornhorn00",
+			"look": {
+				"model": "initlitr22item",
+				"texture": "litem0022"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"crown": {
+			"authored_title": "[Must be, but needs no translation]",
+			"camera_position": [
+				0.0,
+				-2.51749992370605,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.83654999732971,
+			"item_id": "dragonwand",
+			"look": {
+				"model": "initqu71item",
+				"texture": "quitem0071"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"duelist": {
+			"authored_title": "Ancient sword",
+			"camera_position": [
+				0.0,
+				-2.05050015449524,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.14015007019043,
+			"item_id": "unique sword.steel",
+			"look": {
+				"layer": "sw_05.st.0",
+				"model": "initwesw5weapon"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -49,7 +319,7 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -59,7 +329,7 @@
 			"camera_position": [
 				0.0,
 				-2.20869994163513,
-				0.0000000596046447753906
+				5.96046447753906e-08
 			],
 			"camera_rotation_degrees": [
 				90.0,
@@ -76,7 +346,61 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"focus": {
+			"authored_title": "Wand 3",
+			"camera_position": [
+				0.0,
+				-2.17379999160767,
+				-5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.75294494628906,
+			"item_id": "wand 3",
+			"look": {
+				"model": "initqi28item",
+				"texture": "qitem0028"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"greatblade": {
+			"authored_title": "Steel sabre",
+			"camera_position": [
+				0.0,
+				-2.11470007896423,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.15418004989624,
+			"item_id": "saber.steel",
+			"look": {
+				"layer": "sw_03.st.0",
+				"model": "initwesw3weapon"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -103,7 +427,331 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"haste": {
+			"authored_title": "Gipath stitched boots of thin leather",
+			"camera_position": [
+				0.0,
+				-2.45945000648499,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.63357508182526,
+			"item_id": "gipat high boots.thin",
+			"look": {
+				"layer": "bt_01.le.0",
+				"model": "initarbt1armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"ironheart": {
+			"authored_title": "Small crystal of warmth",
+			"camera_position": [
+				0.0,
+				-2.45599985122681,
+				-5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.8020498752594,
+			"item_id": "elementallava00",
+			"look": {
+				"model": "initlitr32item",
+				"texture": "litem0032"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"mail": {
+			"authored_title": "Canian iron chainmail shirt",
+			"camera_position": [
+				0.0,
+				-2.37169981002808,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.94488000869751,
+			"item_id": "kania highest shirt.iron",
+			"look": {
+				"layer": "sh_08.ir.0",
+				"model": "initarsh8armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"mirror": {
+			"authored_title": "Black banshee cloak",
+			"camera_position": [
+				0.0,
+				-2.49059987068176,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.91153001785278,
+			"item_id": "bansheerobe01",
+			"look": {
+				"model": "initlitr29item",
+				"texture": "litem0029"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"opal": {
+			"authored_title": "Small luminous stone",
+			"camera_position": [
+				0.0,
+				-2.36080002784729,
+				-2.98023223876953e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.06213998794556,
+			"item_id": "willowisp00",
+			"look": {
+				"model": "initlitr37item",
+				"texture": "litem0037"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"plague": {
+			"authored_title": "Sting of young spider",
+			"camera_position": [
+				-5.96046447753906e-08,
+				-2.56414985656738,
+				-5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.66335988044739,
+			"item_id": "spidersting",
+			"look": {
+				"model": "initlitr20item",
+				"texture": "litem0020"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"prism": {
+			"authored_title": "Crystal",
+			"camera_position": [
+				0.0,
+				-2.73580002784729,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.63874995708466,
+			"item_id": "rightcrystal",
+			"look": {
+				"model": "initqu13item",
+				"texture": "quitem0013"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"quicksilver": {
+			"authored_title": "Gipath stitched gauntlets of thin leather",
+			"camera_position": [
+				0.0,
+				-2.27705001831055,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.52558994293213,
+			"item_id": "gipat high gloves.thin",
+			"look": {
+				"layer": "gl_01.le.0",
+				"model": "initargl1armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"runemail": {
+			"authored_title": "Canian light steel cuirass",
+			"camera_position": [
+				0.0,
+				-2.3336501121521,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.22916007041931,
+			"item_id": "kania high plate.steel",
+			"look": {
+				"layer": "pl_09.st.0",
+				"model": "initarpl9armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"sage": {
+			"authored_title": "Book from observatory",
+			"camera_position": [
+				0.0,
+				-2.707200050354,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.87104988098145,
+			"item_id": "dcbook",
+			"look": {
+				"model": "initqu35item",
+				"texture": "quitem0035"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"staff": {
+			"authored_title": "Wand 4",
+			"camera_position": [
+				0.0,
+				-2.28854990005493,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.60758483409882,
+			"item_id": "wand 4",
+			"look": {
+				"model": "initqi29item",
+				"texture": "qitem0029"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"starweave": {
+			"authored_title": "Banshee cloak",
+			"camera_position": [
+				0.0,
+				-2.49059987068176,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.91153001785278,
+			"item_id": "bansheerobe00",
+			"look": {
+				"model": "initlitr27item",
+				"texture": "litem0027"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -113,7 +761,7 @@
 			"camera_position": [
 				0.0,
 				-2.58340001106262,
-				-0.0000000596046447753906
+				-5.96046447753906e-08
 			],
 			"camera_rotation_degrees": [
 				90.0,
@@ -130,7 +778,61 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"stormheart": {
+			"authored_title": "Eye of small green evileye",
+			"camera_position": [
+				0.0,
+				-2.53410005569458,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.2284300327301,
+			"item_id": "beholderbigeye",
+			"look": {
+				"model": "initlitr15item",
+				"texture": "litem0015"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"sunblade": {
+			"authored_title": "Rusty sword",
+			"camera_position": [
+				0.0,
+				-2.05049991607666,
+				-5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.14014983177185,
+			"item_id": "ancientsword",
+			"look": {
+				"model": "initqu72item",
+				"texture": "quitem0072"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -157,7 +859,61 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"thunderbolt": {
+			"authored_title": "Magic orb",
+			"camera_position": [
+				0.0,
+				-2.66370010375977,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.76134014129639,
+			"item_id": "palantir",
+			"look": {
+				"model": "initqu7item",
+				"texture": "quitem0007"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"titan": {
+			"authored_title": "Khadaganian reinforced steel chainmail",
+			"camera_position": [
+				0.0,
+				-2.37169981002808,
+				5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.94488000869751,
+			"item_id": "hadagan highest shirt.steel",
+			"look": {
+				"layer": "sh_15.st.0",
+				"model": "initarsh15armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -167,7 +923,7 @@
 			"camera_position": [
 				0.0,
 				-2.58745002746582,
-				0.0000000596046447753906
+				5.96046447753906e-08
 			],
 			"camera_rotation_degrees": [
 				90.0,
@@ -184,7 +940,34 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"vitality": {
+			"authored_title": "Dragon amulet",
+			"camera_position": [
+				0.0,
+				-2.39299988746643,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.90094995498657,
+			"item_id": "dragonamulet",
+			"look": {
+				"model": "initqu61item",
+				"texture": "quitem0061"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0
@@ -211,7 +994,88 @@
 				1.0,
 				0.0,
 				0.0,
-				-0.0000000437113882867379
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"warhammer": {
+			"authored_title": "Stone axe",
+			"camera_position": [
+				1.19209289550781e-07,
+				-2.13359999656677,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 2.07218527793884,
+			"item_id": "stone axe.rock",
+			"look": {
+				"layer": "ax_01.rc.0",
+				"model": "initweax1weapon"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"windrunner": {
+			"authored_title": "Khadaganian boots of blue Troll hide",
+			"camera_position": [
+				0.0,
+				-2.46354985237122,
+				-5.96046447753906e-08
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.64818000793457,
+			"item_id": "hadagan high boots.troll blue",
+			"look": {
+				"layer": "bt_17.tb.0",
+				"model": "initarbt17armor"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"worldheart": {
+			"authored_title": "Sacred flower",
+			"camera_position": [
+				0.0,
+				-2.60774993896484,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.92440986633301,
+			"item_id": "driadidol00",
+			"look": {
+				"model": "initqu10item",
+				"texture": "quitem0010"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-4.37113882867379e-08
 			],
 			"transparent": true,
 			"wiki_turn_radians": 0

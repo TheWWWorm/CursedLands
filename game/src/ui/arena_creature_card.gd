@@ -227,8 +227,8 @@ func update_offer() -> void:
 static func cost_accent(price: int) -> Color:
 	# The price stays explicit. Color only helps scan the available price bands.
 	if price <= 1: return PAPER
-	if price == 2: return Color("8fc8ee")
-	if price == 3: return Color("a6d5b0")
+	if price == 2: return Color("a6d5b0")
+	if price == 3: return Color("8fc8ee")
 	if price == 4: return Color("c9afe6")
 	return GOLD
 

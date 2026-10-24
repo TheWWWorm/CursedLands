@@ -1297,11 +1297,12 @@ func _apply_material_options() -> void:
 # ------------------------------------------------------------------ game events
 
 ## Broadcast events handled here (Session._on_event, every peer).
-const EVENTS := ["castfx", "magicfx", "blood", "fxcmd", "tornado"]
+const EVENTS := ["castfx", "magicfx", "blood", "fxcmd", "tornado", "arena_proc"]
 
 
 func on_event(ev: Dictionary) -> void:
 	match String(ev.get("t", "")):
+		"arena_proc": ArenaItemFx.play(self, ev)
 		"castfx": cast_fx(ev)
 		"magicfx": magic_fx(ev)
 		"blood": blood(ev)

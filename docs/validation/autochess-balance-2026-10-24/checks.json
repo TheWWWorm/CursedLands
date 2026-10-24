@@ -1,0 +1,177 @@
+{
+  "checks": [
+    {
+      "tag": "equipment-v2",
+      "exit_code": 0,
+      "checks": 51,
+      "failures": [],
+      "receipt": "ARENA_EQUIPMENT {\"checks\":51,\"failures\":[]}",
+      "startup_diagnostics": [],
+      "log_sha256": "8ef93aed811dd19af15bf94cfc3d13f692af6ecbf518eedcd313fa595e4b4f45"
+    },
+    {
+      "tag": "localization-v2",
+      "exit_code": 0,
+      "checks": 951,
+      "failures": [],
+      "receipt": "ARENA_EQUIPMENT_LOCALIZATION checks=951 failures=[]",
+      "startup_diagnostics": [],
+      "log_sha256": "7298ecde631a9e70bc52ffe44107fd088d57b2e0fb4a8fcce893f68e39b81eef"
+    },
+    {
+      "tag": "combat-final",
+      "exit_code": 0,
+      "checks": 31,
+      "failures": [],
+      "receipt": "ARENA_COMBAT_EFFECTS checks=31 failures=[] battle=[0,18.3699999999999,[393.728587120056,336.485323127747],{\"echo\":3,\"guardian\":2,\"spirit\":4,\"spirit_echo\":2,\"storm\":1,\"ward\":2}]",
+      "startup_diagnostics": [],
+      "log_sha256": "3dfc2b9f87d73e24fe8e636ef8ce490242b3544ad070719d0eae89b692d3ebe8"
+    },
+    {
+      "tag": "alliances-final",
+      "exit_code": 0,
+      "checks": 616,
+      "failures": [],
+      "receipt": "ARENA_ALLIANCES {\"checks\":616,\"failures\":[]}",
+      "startup_diagnostics": [],
+      "log_sha256": "4710408dd159d30dcacb11a891effc76c17b71d26d90212a7ae235e0a7b1847c"
+    },
+    {
+      "tag": "tiers-final",
+      "exit_code": 0,
+      "checks": 165,
+      "failures": [],
+      "receipt": "ARENA_ITEM_TIERS checks=165 failures=[]",
+      "startup_diagnostics": [],
+      "log_sha256": "8c8b6b0b163c657d81234cab52ad1c796bd79c812fafba75034b73b671e071b7"
+    },
+    {
+      "tag": "formation-final",
+      "exit_code": 0,
+      "checks": 108,
+      "failures": [],
+      "receipt": "ARENA_BOT_EQUIPMENT_FORMATION {\"checks\":108,\"failures\":[]}",
+      "startup_diagnostics": [],
+      "log_sha256": "9184d77aa1624795774fea9a9a7df5b4512357af7fde8a2a72311f972676fcd8"
+    },
+    {
+      "tag": "roster-final",
+      "exit_code": 0,
+      "checks": 1548,
+      "failures": [],
+      "receipt": "ARENA_ROSTER {\"checks\":1548,\"failures\":[]}",
+      "startup_diagnostics": [],
+      "log_sha256": "5c833a1ea1fc12f8ee47205a8cecf0eda0bd4796e8a5c9628e82c8064b074b71"
+    },
+    {
+      "tag": "opponent-final",
+      "exit_code": 0,
+      "checks": 12,
+      "failures": [],
+      "receipt": "ARENA_OPPONENT_ALLIANCES 12 checks; failures=[]",
+      "startup_diagnostics": [],
+      "log_sha256": "6b579020302e3823278ea763410a4a45cbf9fd12106231db04c850fae32356c5"
+    },
+    {
+      "tag": "equipment-online-final",
+      "exit_code": 0,
+      "checks": 29,
+      "failures": [],
+      "receipt": "ARENA_EQUIPMENT_ONLINE {\"checks\":29,\"failures\":[]}",
+      "startup_diagnostics": [],
+      "log_sha256": "2d501b2d3ee12d223f3ff98f83c4c6ff69d58eb37f892b95bd7c9feab2e04720"
+    },
+    {
+      "tag": "native-final-headless",
+      "exit_code": 0,
+      "checks": 13,
+      "failures": [],
+      "receipt": "ARENA_EQUIPMENT_NATIVE_VISUAL {\"battle_seed\":125834692,\"captures\":[],\"checks\":13,\"damage\":[384.564480083466,324.610407814026],\"echo_marker\":false,\"echoes\":[{\"hp\":9.39999961853027,\"max_hp\":9.39999961853027,\"model\":true,\"name\":\"Spirit echo\",\"placement\":{\"echo\":true,\"family\":-1,\"id\":\"willowispm1\",\"item\":\"\",\"point\":\"(31.60623, 30.0)\",\"rank\":0,\"team\":0},\"uid\":100013,\"visible\":true},{\"hp\":9.39999961853027,\"max_hp\":9.39999961853027,\"model\":true,\"name\":\"Spirit echo\",\"placement\":{\"echo\":true,\"family\":-1,\"id\":\"willowispm1\",\"item\":\"\",\"point\":\"(32.77762, 30.0)\",\"rank\":0,\"team\":1},\"uid\":100014,\"visible\":true}],\"effects\":{\"echo\":3,\"guardian\":2,\"spirit\":3,\"spirit_echo\":2,\"ward\":2},\"failures\":[],\"live_markers\":false,\"notices\":[{\"amount\":42.5,\"effect\":\"guardian\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.135,\"uid\":100004},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.135,\"uid\":100004},{\"amount\":42.5,\"effect\":\"guardian\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.19,\"uid\":100010},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.19,\"uid\":100010},{\"amount\":43.4,\"effect\":\"ward\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.465,\"uid\":100006},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.465,\"uid\":100006},{\"amount\":43.4,\"effect\":\"ward\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.52,\"uid\":100012},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.52,\"uid\":100012},{\"amount\":5.64000511169434,\"effect\":\"spirit\",\"source\":100003,\"t\":\"arena_proc\",\"time\":4.235,\"uid\":100002},{\"amount\":4.12750625610352,\"effect\":\"spirit\",\"source\":100003,\"t\":\"arena_proc\",\"time\":4.235,\"uid\":100004},{\"amount\":0.0,\"effect\":\"spirit_echo\",\"source\":0,\"t\":\"arena_proc\",\"time\":4.235,\"uid\":100013},{\"amount\":4.12750625610352,\"effect\":\"spirit\",\"source\":100009,\"t\":\"arena_proc\",\"time\":4.785,\"uid\":100010},{\"amount\":0.0,\"effect\":\"spirit_echo\",\"source\":0,\"t\":\"arena_proc\",\"time\":4.785,\"uid\":100014},{\"amount\":13.1340000953674,\"effect\":\"echo\",\"source\":100002,\"t\":\"arena_proc\",\"time\":7.20499999999999,\"uid\":100014},{\"amount\":12.0839999046326,\"effect\":\"echo\",\"source\":100008,\"t\":\"arena_proc\",\"time\":9.73499999999998,\"uid\":100002},{\"amount\":14.484,\"effect\":\"echo\",\"source\":100002,\"t\":\"arena_proc\",\"time\":15.8399999999999,\"uid\":100010}],\"renderer\":\"headless\",\"seconds\":20.5699999999999,\"seed\":15877,\"speed\":1,\"survivors\":[4,0],\"wall_seconds\":0.229,\"winner\":0}",
+      "startup_diagnostics": [],
+      "log_sha256": "78f18b003a91ddabdcd58bf6c552967b95389a7d2d896b04560a13cf21f201b4"
+    },
+    {
+      "tag": "tiers-ui-en",
+      "exit_code": 0,
+      "checks": 264,
+      "failures": [],
+      "receipt": "ARENA_ITEM_TIERS_UI en checks=264 failures=[]",
+      "startup_diagnostics": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "log_sha256": "e470a032deee3d9b8c3b9d9399490c26175f69ca180ae1c3193536da6effab82"
+    },
+    {
+      "tag": "tiers-ui-ru",
+      "exit_code": 0,
+      "checks": 264,
+      "failures": [],
+      "receipt": "ARENA_ITEM_TIERS_UI ru checks=264 failures=[]",
+      "startup_diagnostics": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "log_sha256": "5469a2a5f6235253d7bf035c8c37b4fcbd20b25e8c6ee3c700ecec27cc4f062e"
+    },
+    {
+      "tag": "tiers-ui-de",
+      "exit_code": 0,
+      "checks": 264,
+      "failures": [],
+      "receipt": "ARENA_ITEM_TIERS_UI de checks=264 failures=[]",
+      "startup_diagnostics": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "log_sha256": "bddf282ba8576fb9added77dfced7c1bf2aad77d5e2f2016a4c7e238ae74d327"
+    },
+    {
+      "tag": "native-clean-rendered",
+      "exit_code": 0,
+      "checks": 23,
+      "failures": [],
+      "receipt": "ARENA_EQUIPMENT_NATIVE_VISUAL {\"battle_seed\":125834692,\"captures\":[\"user://native-en-1x-effects.png\",\"user://native-en-1x-echo.png\",\"user://native-en-1x-echo-inspector.png\",\"user://native-en-1x-finished.png\"],\"checks\":23,\"damage\":[373.260911529541,306.489037689209],\"echo_marker\":true,\"echoes\":[{\"hp\":9.39999961853027,\"max_hp\":9.39999961853027,\"model\":true,\"name\":\"Spirit echo\",\"placement\":{\"echo\":true,\"family\":-1,\"id\":\"willowispm1\",\"item\":\"\",\"point\":\"(32.77762, 30.0)\",\"rank\":0,\"team\":1},\"uid\":100013,\"visible\":true},{\"hp\":9.39999961853027,\"max_hp\":9.39999961853027,\"model\":true,\"name\":\"Spirit echo\",\"placement\":{\"echo\":true,\"family\":-1,\"id\":\"willowispm1\",\"item\":\"\",\"point\":\"(31.60623, 30.0)\",\"rank\":0,\"team\":0},\"uid\":100014,\"visible\":true}],\"effects\":{\"echo\":3,\"guardian\":2,\"spirit\":3,\"spirit_echo\":2,\"ward\":2},\"failures\":[],\"live_markers\":true,\"notices\":[{\"amount\":42.5,\"effect\":\"guardian\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.135,\"uid\":100004},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.135,\"uid\":100004},{\"amount\":42.5,\"effect\":\"guardian\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.19,\"uid\":100010},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.19,\"uid\":100010},{\"amount\":43.4,\"effect\":\"ward\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.465,\"uid\":100006},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.465,\"uid\":100006},{\"amount\":43.4,\"effect\":\"ward\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.52,\"uid\":100012},{\"broken\":true,\"effect\":\"shield_end\",\"t\":\"arena_proc\",\"time\":3.52,\"uid\":100012},{\"amount\":4.18875503540039,\"effect\":\"spirit\",\"source\":100009,\"t\":\"arena_proc\",\"time\":3.795,\"uid\":100010},{\"amount\":0.0,\"effect\":\"spirit_echo\",\"source\":0,\"t\":\"arena_proc\",\"time\":3.795,\"uid\":100013},{\"amount\":5.64000511169434,\"effect\":\"spirit\",\"source\":100003,\"t\":\"arena_proc\",\"time\":4.675,\"uid\":100002},{\"amount\":4.12750625610352,\"effect\":\"spirit\",\"source\":100003,\"t\":\"arena_proc\",\"time\":4.675,\"uid\":100004},{\"amount\":0.0,\"effect\":\"spirit_echo\",\"source\":0,\"t\":\"arena_proc\",\"time\":4.675,\"uid\":100014},{\"amount\":13.1340000953674,\"effect\":\"echo\",\"source\":100008,\"t\":\"arena_proc\",\"time\":6.98499999999999,\"uid\":100014},{\"amount\":12.0839999046326,\"effect\":\"echo\",\"source\":100002,\"t\":\"arena_proc\",\"time\":10.01,\"uid\":100008},{\"amount\":10.3839996185303,\"effect\":\"echo\",\"source\":100002,\"t\":\"arena_proc\",\"time\":18.6999999999999,\"uid\":100011}],\"renderer\":\"X11\",\"seconds\":19.3049999999999,\"seed\":15877,\"speed\":1,\"survivors\":[4,0],\"wall_seconds\":19.804,\"winner\":0}",
+      "startup_diagnostics": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "log_sha256": "57a67a686fff40b33c69f11b94ec5605bf418cfc46f395d0c51fd674d0060ad0"
+    },
+    {
+      "tag": "feedback-clean",
+      "exit_code": 0,
+      "checks": 21,
+      "failures": [],
+      "receipt": "ARENA_ITEM_FEEDBACK checks=21 failures=[]",
+      "startup_diagnostics": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "log_sha256": "05ee760431f8d13faf9483d1fc27fdb5f3ca9c3af66228fcf7c2e0d7ff6c77ea"
+    },
+    {
+      "tag": "drag-clean",
+      "exit_code": 0,
+      "checks": 28,
+      "failures": [],
+      "receipt": "ARENA_EQUIPMENT_PRESENTATION equipment-tray-en-1280 28 checks; failures=[]",
+      "startup_diagnostics": [
+        "WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.",
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "log_sha256": "3fe57856d764f5e87ed8eb1810ad0942bdb2f1d4b78d7fb67b7b35f0e3a913d2"
+    }
+  ],
+  "total": 4388,
+  "translation_scan": {
+    "entries": 3288,
+    "dynamic_arena_keys": 183,
+    "errors": 0
+  },
+  "notes": [
+    "Graphical startup can report Parameter monitors is null on the isolated X11 display before fixtures attach their runtime error logger.",
+    "All fixture checks and runtime error assertions passed.",
+    "Native rendered and headless combat timings differ; this does not claim exact replay parity."
+  ]
+}

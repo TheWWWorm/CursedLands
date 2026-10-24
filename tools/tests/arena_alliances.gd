@@ -75,7 +75,7 @@ func _ready() -> void:
 			var recruit:=ArenaUnitInfo.values(unit.info.prototype,null,family,0)
 			check(is_equal_approx(unit.stats.dmg_min,recruit.min),"Beasts keep their own attack budgets")
 			check(is_equal_approx(unit.max_hp,recruit.max_hp),"Horde keeps recruit health budgets")
-			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]),"Warriors protect through guarding, not flat armor")
+			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]),"Warrior armor activates at the bell")
 			check(is_equal_approx(unit.stats.to_hit,recruit.attack),"Hunters keep native accuracy")
 			check(is_equal_approx(unit.stats.armor[3],recruit.armor[3]),"Spirits keep recruit resistance budgets")
 	for repeat in 4: battle.prepare()
@@ -90,7 +90,7 @@ func _ready() -> void:
 		check(unit.stats == expected and is_equal_approx(unit.max_hp,base.hp),"withdrawing traits restores base values while preserving encounter limits")
 	battle.queue_free()
 	# Every recipe works from wave one; all resulting forms remain native.
-	for family in ArenaRules.FAMILIES.size():
+	for family in ArenaRules.ACTIVE_FAMILIES:
 		for rank in ArenaRules.FAMILIES[family].forms.size() - 1:
 			run = fresh(); run.gold=100
 			var needed := ArenaRules.evolution_copies(family,rank)

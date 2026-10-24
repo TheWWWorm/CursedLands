@@ -35,7 +35,7 @@ func _ready() -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 10)
 	_content.add_child(column)
-	var role := _label(column, role_name(kind).to_upper(), 12, _accent)
+	var role := _label(column, (ArenaItems.tier_label(kind) + " · " + role_name(kind)).to_upper(), 12, _accent)
 	role.add_theme_font_override("font", BOLD)
 	role.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	art = ArenaItemEmblem.new()
@@ -108,7 +108,7 @@ func _state_changed() -> void:
 
 func _effect_text() -> String:
 	# Emphasize the actual translated values, keeping one source of mechanics.
-	var text := ArenaItems.description(kind)
+	var text := ArenaItems.description(kind, false)
 	var numbers := RegEx.new()
 	numbers.compile("[0-9]+(?:[.,][0-9]+)?%?")
 	var matches := numbers.search_all(text)
@@ -136,25 +136,20 @@ func _draw() -> void:
 	var centre := Vector2(size.x * 0.5, 111)
 	for radius in range(115, 12, -4):
 		draw_circle(centre, float(radius), Color(_accent, 0.004 + _light * 0.003))
-	ArenaHudPanel.draw_frame(self, bounds, 4)
-	draw_rect(bounds.grow(-7), Color(ArenaCreatureCard.GOLD, 0.2 + _light * 0.4), false, 1)
-	var edge := ArenaCreatureCard.GOLD.lerp(Color("fff0c7"), _light)
-	for x in [12.0, size.x - 12.0]:
-		for y in [12.0, size.y - 12.0]:
-			var corner := Vector2(x, y)
-			var direction := Vector2(1 if x < size.x * 0.5 else -1, 1 if y < size.y * 0.5 else -1)
-			draw_line(corner, corner + Vector2(21 * direction.x, 0), edge, 2, true)
-			draw_line(corner, corner + Vector2(0, 21 * direction.y), edge, 2, true)
+	var edge := _accent.lerp(Color.WHITE, _light * 0.25)
+	if ArenaItems.tier(kind) > 1:
+		draw_rect(bounds.grow(-2), edge, false, 3)
+		draw_rect(bounds.grow(-7), Color(_accent, 0.25 + _light * 0.25), false, 1)
 	if is_instance_valid(_action):
 		var action := Rect2(get_global_transform().affine_inverse() * _action.global_position, _action.size)
 		draw_rect(action, Color(edge, 0.07 + _light * 0.1))
 		draw_line(action.position, Vector2(action.end.x, action.position.y), Color(edge, 0.4 + _light * 0.45), 1, true)
-	if has_focus(): draw_rect(bounds.grow(-1), Color("f7e1a0"), false, 2)
+	if has_focus(): draw_line(Vector2(28, size.y - 12), Vector2(size.x - 28, size.y - 12), ArenaCreatureCard.PAPER, 3)
 	if is_pressed(): draw_rect(bounds.grow(-5), Color(0, 0, 0, 0.14))
 
 
 static func role_name(item_kind: String) -> String:
-	match item_kind:
+	match ArenaItems.effect(item_kind):
 		"fang": return RemakeText.t("Life steal")
 		"storm": return RemakeText.t("Chain lightning")
 		"venom": return RemakeText.t("Healing suppression")
@@ -163,6 +158,13 @@ static func role_name(item_kind: String) -> String:
 		"echo": return RemakeText.t("Spell echo")
 		"thorn": return RemakeText.t("Melee retaliation")
 		"berserker": return RemakeText.t("Battle frenzy")
+	var rule: Dictionary = ArenaItems.RULES.get(item_kind, {})
+	if rule.has("damage"): return RemakeText.t("Attack damage")
+	if rule.has("spell"): return RemakeText.t("Spell damage")
+	if rule.has("health"): return RemakeText.t("Health bonus")
+	if rule.has("actions"): return RemakeText.t("Action speed")
+	if rule.has("physical_armor"): return RemakeText.t("Physical armor")
+	if rule.has("elemental_armor"): return RemakeText.t("Elemental armor")
 	return ""
 
 

@@ -1,155 +1,166 @@
-# Autochess equipment and alliance improvement plan
+# Autochess items and alliances
 
-Implementation starts from stable 1.24.0 and the following commit
-`5521491c6980669f1ed46ed18aa70a3af259cd40`. This document records the plan
-presented on 23 October 2026 and the requirements for its playable implementation.
+Updated 24 October 2026 from stable 1.26.0 (`96aaeb78`). This describes the playable
+revision on `fix/autochess-balance-20261024`. It supersedes the earlier eight-item,
+six-trigger-alliance design; the dated reports below retain that historical evidence.
 
-## Player experience
+## Design intent and references
 
-Choosing the carrier of an item changes a creature's role. Positioning and team
-composition change what an alliance can do. Upgrades keep each recruit recognizable
-while giving its three star ranks visibly different stages. Several compositions
-must have useful counters, and supports must be evaluated by their contribution.
+An item should offer an understandable improvement or a deliberate change in how
+a creature fights. The pool mixes raw statistics with conditional effects. Early
+rewards establish a role; later rewards give that role enough power to matter
+against evolved armies. Four alliances provide simple stat benefits, leaving two
+tactical alliances for players who want more conditions to build around. One
+recruitable Woodsfolk line removes the confusing duplicate silhouette from the shop.
 
-## Reference designs
+The loop stays recruit → arrange → equip → watch combat → choose a reward.
+One item per creature makes carrier selection meaningful without components,
+crafting or another currency.
 
-- [Drodo's introduction](https://ac.dragonest.com/en/gameIntroduction) describes
-  three-copy evolution and overlapping race/class synergies from distinct pieces.
-- [Auto Chess equipment](https://ac.dragonest.com/en/equipment) illustrates
-  on-hit effects, support ranges and power with drawbacks. Its component recipes
-  add a separate learning and balance cost.
-- [Underlords hands-on](https://www.oneesports.gg/dota2/dota-underlords-is-plenty-of-auto-chess-fun/)
-  documents one item slot per hero. This is a contemporary secondary source.
-- [Valve's Season One notes](https://store.steampowered.com/news/posts/?appgroupname=Dota+Underlords&appids=1046930&enddate=1588974336)
-  document scheduled item choices and the Vigilant alliance's reaction to enemy
-  casting. Knights reward proximity and protection from appropriate directions.
+[Drodo's introduction](https://ac.dragonest.com/en/gameIntroduction) uses distinct
+pieces and overlapping race/class thresholds. Its
+[equipment catalog](https://ac.dragonest.com/en/equipment) mixes attack speed,
+armor, health and spell power with triggered effects. Both patterns inform this revision.
 
-These are structural references and dated examples, not claims about the current
-competitive meta or numeric targets for Cursed Lands.
+[Valve's dated alliance notes](https://store.steampowered.com/news/posts/?appids=1046930&enddate=1575328116)
+include simple Warrior/Scaled defenses alongside tactical Spirit behavior.
+[Valve's item reward notes](https://store.steampowered.com/news/posts/?appids=1046930&enddate=1578361897)
+describe regular item choices of equal quality independent of the round result.
+These are structural references, not present-day competitive balance targets.
 
-### Item interface reference
+The user's [Underlords item reference](https://dotaunderlords.fandom.com/wiki/Items)
+provides the five-tier model. Its indexed catalog was available; direct retrieval
+was blocked, and the indexed odds table contained corrupted values. No odds from
+that table were copied. Cursed Lands uses the explicit milestones below.
 
-The supplied Goonikon recording, *Let`s play Dota Underlords Top Meta Build!*,
-provides the direct visual and interaction reference for the equipment UI:
+## Rewards and rarity
 
-- **04:40**: three centered reward cards over the dimmed board. Circular item art
-  overlaps the card header; the name and readable effect description form the
-  decision. Choosing a card returns to the board.
-- **04:46**: owned item icons remain in a compact tray beneath the alliances.
-  Hovering enlarges the item and exposes a nearby, dark description panel.
-- **04:48**: an item follows the pointer onto a creature. All friendly field and
-  reserve creatures show circular equipment slots while assigning the item.
-  Empty and occupied slots make the available destinations visible.
+There are **40 items: eight per tier, 23 with only raw stats and 17 with a
+triggered effect or a mixture of stats and effects**. Names, generated descriptions,
+tier labels, roles and help are localized in English, Russian and German.
+Descriptions read their percentages from the gameplay definitions.
 
-Replace the initial modal inventory and recipient dropdown with this direct
-board interaction. Retain the existing HUD's alliance position and place the
-tray beneath it. Use direct renders of existing game items for the eight Cursed
-Lands rewards, shared by the tray, creature slots and descriptions. Reward cards
-use the original stone and metal materials, larger object pictures, serif names,
-short effect roles, left-aligned descriptions with emphasized values, and a
-visible Choose action. Hover and keyboard focus illuminate the frame and artwork.
-Equipped items
-remain visible in the tray with their carrier identified. Dragging or selecting
-an icon then clicking a creature assigns it; moving an item between carriers,
-replacing an occupied slot and returning to the stash use the same ownership
-rules. Invalid targets and cancellation preserve inventory and formation.
-
-Provide keyboard access to the same creature targets. Combat and scouted boards
-allow inspection but never change equipment. Tooltip, carry and reward states
-must remain distinct, and a phase/board change cancels assignment. Check actual
-press/move/release input and all three languages at both desktop resolutions.
-The reference's item tiers and reward reroll are separate economy mechanics;
-the existing eight-item reward rules remain the implemented design.
-
-## Equipment requirements
-
-Eight items: Vampiric Fang, Storm Shard, Venom Seal, Ward Stone, Guardian Knot,
-Echo Rune, Thorn Shell and Berserker Charm. One slot per recruit and a shared stash.
-Preparation permits free reassignment; combat freezes assignments. Selling returns
-equipment, and evolution preserves the retained creature's item while returning
-items from consumed copies. All inventory survives saves and undo safely.
-
-Each surviving player gets three deterministic choices after rounds 3, 5, 10, 15
-and subsequent multiples of five, independent of victory. Unchosen offers settle
-to the first displayed item in the stash when preparation ends. Bots follow the
-same ownership and reward rules. A separate random stream keeps item choices from
-changing shop results. Existing saves start with an empty inventory and do not
-receive accumulated historical awards. Equipment uses arena effects and keeps
-native monster weapons, spell cadence and campaign equipment unchanged.
-
-## Alliance requirements
-
-Keep distinct deployed family counting and frozen start-of-battle membership.
-Replace the six static alliance bonuses with bounded tactical behaviors:
-
-| Alliance | Behavior | Counterplay |
+| Completed round | Tier | Border on cards, tray, equipment slots and drag previews |
 | --- | --- | --- |
-| Beasts | Different members attacking the same prey trigger a pack attack; deeper investment transfers prey marks. | Screening and separated threats. |
-| Horde | A fallen member triggers limited retaliation from survivors. | Control the first casualty and disrupt retaliation. |
-| Warriors | Guard nearby allies against a limited amount of incoming damage. | Separate protectors and targets; punish clustering. |
-| Hunters | Prioritize reachable enemies that cast spells. | Protect casters with screens and positioning. |
-| Mages | Spells from different members combine into a bounded reaction. | Interrupt casting and spread targets. |
-| Spirits | Fallen members release nearby aid; deeper investment creates one temporary echo. | Control recipient position and prevent repetition. |
+| 3 | 1 | None |
+| 5 | 2 | Green |
+| 10 | 3 | Blue |
+| 15 | 4 | Purple |
+| 20 and subsequent multiples of five | 5 | Gold |
 
-Show triggers, range, recipients and limits in localized help. Generated damage
-cannot trigger on-hit or on-cast bonuses. Death effects on original recruits
-retain their separate per-battle limits. Summons cannot multiply rewards, alliance counts,
-death procs or carried equipment. All durations advance on simulation ticks.
+Creatures and items share the same palette. Tier text identifies rarity without
+relying on color. Focus uses an underline or corner pointer, preserving the border.
+Pictures are transparent renders of original game models and materials. The 32 new
+pictures have source model, texture and camera provenance in the asset manifest.
 
-## Roster and balance requirements
+Every surviving player receives three distinct choices of the same tier,
+independent of winning the fight. Reward RNG leaves shop results unchanged.
+An unresolved choice becomes the first displayed item in the stash when preparation
+ends. Old saves receive no retroactive awards. Tier 5 continues through the existing
+maximum reward round of 100.
 
-Append Orc warriors and Woodsfolk seers as distinct recruit roles, preserving
-existing family IDs and saves. Native paths are orcmalef3/f5/f7 and
-driadgreenm7/driadsnowm9/driaddarkm11. Verify three outfit/palette stages in field
-models, previews and portraits at actual camera sizes. These retain existing rigs.
-Preserve the bat palette/name correction from commit 47b7a868.
+## Item catalog
 
-Rerun native combat before tuning. Historical supported-team fixtures flag
-three-star Banshees, Cyclopes and Skeletons for possible buffs, and Dragons and
-Elementals for possible nerfs. Those contextual scores are not human win rates.
-Compare useful damage, healing, survival, casts, range, armor, counters and cost;
-evaluate no-item baseline and intended combinations separately. Retain multiple
-viable economy and composition policies. Adding recruit roles also requires
-checking acquisition and promotion cost rather than combat alone.
+| Tier | Raw-stat items | Effect or mixed items |
+| --- | --- | --- |
+| 1 | Vitality Amulet, Iron Sword, Swift Boots, Iron Mail, Prismatic Gem, Sage's Wand | Vampiric Fang, Venom Seal |
+| 2 | Steel Saber, Amber Heart, Mercury Gloves, Runic Mail, Wisp Stone, Seer Staff | Ward Stone, Thorn Shell |
+| 3 | Stone Cleaver, Sentinel Plate, Sage Tome, Windrunner Boots | Storm Shard, Guardian Knot, Echo Rune, Berserker Charm |
+| 4 | Archmage Scepter, Titan Plate, Duelist Blade | Bloodfang, Storm Heart, Plague Sting, Ancient Aegis, Spiked Mantle |
+| 5 | Sunblade, Heart of the World, Dragon Scepter, Starweave | Blood Moon, Tempest Orb, Sacred Covenant, Echo Chronicle |
 
-## Delivery and validation requirements
+Raw attack items progress from +20% on Iron Sword to +120% on Sunblade; health
+ranges from +25% on Vitality Amulet to +150% on Heart of the World. Mixed items
+trade some of that dedicated power for flexibility. All bonuses use the recruit's
+normalized arena budget. Percentages on the same statistic add to alliance bonuses.
+Physical armor covers the three physical damage types; elemental armor covers
+fire, acid and lightning. Action speed affects attacks and casting. Spell bonuses
+increase offensive spell damage. Exact values live in `ArenaItems.RULES`.
 
-- Item conservation, invalid input, old saves, undo, sale, both merge stages,
-  full reserves, combat shopping and pending choices.
-- Actual combat triggers on both teams, correct damage source types, once-per-cast
-  semantics, cooldowns, recursion protection and no campaign effects.
-- Playable preparation UI, inventory, reward choice, creature/scouting details,
-  keyboard focus, and visible feedback explaining alliance/item outcomes.
-- Bots purchase, assign, position and use the same items and alliance rules.
-- Solo worker and online commands/snapshots preserve round equipment; host validates
-  choices and assignments. Ghost armies copy equipment without granting ownership.
-- Native matched-seed combat and complete tournaments, 1x/2x and rendered/headless
-  behavior, duration/timeouts, and performance on nine boards.
-- EN/RU/DE coverage includes all names, help, errors, status and dynamic strings;
-  inspect layouts at 1280x720 and 1920x1080.
-- Development profiles set confine_mouse=0, show_fps=1, volume_sfx=0,
-  volume_stream=0, volume_voice=0 before launch. Original preferences stay intact.
-- Save compatibility and immutable published artifacts remain required. Any future
-  release with these compatible features uses a new minor version based on the
-  latest published stable release at publication time.
+Lifesteal heals a portion of actual basic-attack damage, with a per-hit maximum-health
+cap. Venom reduces healing for five seconds. Each suppression strength retains its
+own duration; a weaker application cannot overwrite or extend a stronger one.
 
-## Implemented result
+Shields trigger once per battle when a hit would take the recipient below 35%
+health. They last five seconds; Guardian items protect another ally within 5 m.
+Only the strongest remaining shield applies, and sufficient personal protection
+preserves an ally's unused Guardian effect. Absorption uses whole-creature health
+even when native damage hits a head or limb. Ward/Guardian effects grow substantially
+at tiers 4–5 to compete with passive health bonuses.
 
-The equipment, six behavioral alliances, two recruit lines, targeted balance
-adjustments, bot planning and localized controls are implemented on
-`feature/autochess-equipment-alliances-20261023`. The item inventory uses schema 14;
-online autochess uses protocol 2 and matching builds. Shields share one remaining
-pool per carrier, measured in whole-creature health even for native head/limb
-hits. Item and cast effects use native impact/dispatch hooks and simulation time.
-Temporary spirit echoes use the same actor factory and replication as recruits.
+Every third basic hit triggers Storm items against other enemies within 4 m of
+the wearer; the tier-5 orb hits two. Echo items repeat every third offensive cast,
+or every second at tier 5, using the spell's element. Retaliation has a one-second
+cooldown. Berserker accelerates actions while preventing casting. Generated damage
+respects armor and cannot recursively trigger item hits or casts.
 
-Validation and the remaining limits of the balance sample are recorded in
-[the implementation check](../validation/autochess-equipment-alliances-2026-10-23.md),
-[the roster comparison](../validation/autochess-roster-2026-10-23.md) and
-[the interface check](../validation/autochess-equipment-ui-2026-10-23.md).
-This is an unpublished feature branch. A future release containing these
-compatible features needs the next minor version, chosen from the then-current
-published stable release.
+Preparation permits free reassignment between deployed creatures, reserves and
+stash. Combat freezes equipment. Selling returns the item; evolution retains the
+surviving creature's item and returns items from consumed copies. Dragging,
+click-to-assign and keyboard targets use the same ownership actions. Scouted boards
+permit inspection. Cancellation preserves inventory and formation.
 
-The goal is complete only after these behaviors and evidence are present. A small
-playable slice is an intermediate milestone, not a reduction of the requested scope.
+## Alliances and roster
+
+Unique deployed families count once, regardless of copies or stars. Membership
+and thresholds freeze at the bell. Stat bonuses activate from a fresh recruit
+budget and cannot compound when the board is refreshed.
+
+| Alliance | Thresholds | Benefit |
+| --- | --- | --- |
+| Beasts | 2/4/6 | Members gain 10/20/30% attack damage |
+| Horde | 2/4 | Members gain 15/30% maximum health |
+| Warriors | 2/4 | Members gain 30/60% physical armor |
+| Mages | 2/4 | Members gain 15/30% spell damage |
+| Hunters | 2/4 | Completed enemy casts mark the caster for 3 seconds. Hunters prioritize it within reach; at four Hunters, all allies do. |
+| Spirits | 2/4 | The first Spirit death heals the nearest 1/2 wounded allies within 5 m for 12% of the fallen unit's maximum health. At four Spirits, it also leaves one wisp with 20% health for 6 seconds. |
+
+Spirit echoes have no items, do not count toward alliances and cannot repeat death
+effects. Hunter preference does not grant extra range or bypass screening. The old
+pack, retaliation-on-death, neighboring guard and combined-cast reaction rules
+are removed. Bots value the new stats, place armored Warriors in front and use
+close formations for Spirit aid or Guardian equipment.
+
+The shop has **29 recruit lines**. Woodsfolk archers (family 11) are its only
+Woodsfolk line; visually similar seers (family 29) are retired. Orc warriors remain
+available. Old owned seers retain their identity, equipment and position. Their
+family ID stays reserved for compatibility.
+
+## Combat feedback and victory
+
+Lifesteal and Spirit healing use the original healing particles. Shields use the
+native lightning-protection sphere for their lifetime, with a short impact flash
+on depletion. Storm effects draw source-to-target lightning bolts. Echo, venom,
+thorns, frenzy, Hunter marks and Spirit arrivals reuse native spell effects.
+Repeated healing or poison notices cannot pile up identical emitters.
+
+These presentation events do not alter health, stats or combat random streams.
+Online and solo-worker replicas receive the same events. Full board snapshots
+restore shields with their remaining duration when scouting or reconnecting.
+
+The local champion hears the original **`stream/victory.mp3`** once at the end of
+the game. It replaces background music, follows the music-volume setting and does
+not restart on UI refresh or board changes. Individual round wins, defeats and
+watching another player's championship do not trigger it. Starting a new game
+resets the cue. No additional music file is bundled.
+
+## Compatibility and validation
+
+Arena save schema is 15. Pending rewards from schema 14 preserve their original
+eight-item pool and exact choices, including saving again or undoing a choice.
+Future milestones use the tiered pool. Old shop offers for the retired seer become
+empty and unlocked; owned seers survive. Current saves and commands cannot create
+new retired offers. Online protocol is 3 and requires matching builds. Campaign
+equipment and monster data are untouched.
+
+[Validation for this revision](../validation/autochess-balance-2026-10-24.md)
+records state, migration, combat, localization, UI, native feedback, victory audio
+and complete tournament checks. These values are an initial tuning pass, not a
+claim of solved competitive balance. Further player feedback should compare
+conditional items with passive alternatives and assess late-tier power.
+
+Earlier reports remain historical evidence for the
+[first equipment implementation](../validation/autochess-equipment-alliances-2026-10-23.md),
+[roster comparison](../validation/autochess-roster-2026-10-23.md) and
+[equipment interface](../validation/autochess-equipment-ui-2026-10-23.md).
+No release or version tag is created by this change.

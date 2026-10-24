@@ -1,0 +1,324 @@
+[
+  {
+    "seed": 7319,
+    "strategy_offset": 0,
+    "rounds": 29,
+    "winner": 2,
+    "placements": [
+      9,
+      6,
+      1,
+      8,
+      4,
+      3,
+      7,
+      5,
+      2
+    ],
+    "encounters": 226,
+    "outcomes": {
+      "defeated": 226
+    },
+    "longest_seconds": 56.76,
+    "first_inventory_round_per_tier": {
+      "1": 4,
+      "2": 6,
+      "3": 11,
+      "4": 16,
+      "5": 21
+    },
+    "chosen_item_kinds": [
+      "aegis",
+      "archmage",
+      "berserker",
+      "bulwark",
+      "chronicle",
+      "covenant",
+      "crown",
+      "echo",
+      "fang",
+      "greatblade",
+      "haste",
+      "ironheart",
+      "plague",
+      "prism",
+      "quicksilver",
+      "stormheart",
+      "sunblade",
+      "thorn",
+      "thunderbolt",
+      "venom",
+      "ward",
+      "warhammer"
+    ],
+    "final_inventory_tiers": {
+      "1": 9,
+      "2": 9,
+      "3": 9,
+      "4": 9,
+      "5": 13
+    },
+    "final_equipped_tiers": {
+      "1": 8,
+      "2": 9,
+      "3": 8,
+      "4": 9,
+      "5": 13
+    },
+    "effect_counts": {
+      "marked": 3288,
+      "venom": 231,
+      "fang": 70,
+      "spirit": 138,
+      "ward": 142,
+      "thorn": 52,
+      "echo": 145,
+      "berserker": 21,
+      "spirit_echo": 84,
+      "storm": 6,
+      "guardian": 39
+    },
+    "winner_preparation": {
+      "alliances": {
+        "beast": 4,
+        "horde": 1,
+        "hunter": 0,
+        "mage": 6,
+        "spirit": 2,
+        "warrior": 1
+      },
+      "capacity": 9,
+      "families": [
+        3,
+        5,
+        0,
+        16,
+        13,
+        19,
+        18,
+        25,
+        18
+      ],
+      "field": 9,
+      "gold": 0,
+      "hp": 66,
+      "interest": 0,
+      "items": [
+        {
+          "kind": "venom",
+          "uid": 1,
+          "unit_uid": 31
+        },
+        {
+          "kind": "quicksilver",
+          "uid": 2,
+          "unit_uid": 1
+        },
+        {
+          "kind": "berserker",
+          "uid": 3,
+          "unit_uid": 0
+        },
+        {
+          "kind": "aegis",
+          "uid": 4,
+          "unit_uid": 3
+        },
+        {
+          "kind": "chronicle",
+          "uid": 5,
+          "unit_uid": 33
+        },
+        {
+          "kind": "covenant",
+          "uid": 6,
+          "unit_uid": 2
+        }
+      ],
+      "new": true,
+      "round": 29,
+      "seat": 2,
+      "spending": {
+        "recruits": 11,
+        "refreshes": 8,
+        "sales": 0,
+        "training": 0
+      },
+      "stars": [
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "strategy": 2
+    }
+  },
+  {
+    "seed": 7319,
+    "strategy_offset": 1,
+    "rounds": 29,
+    "winner": 6,
+    "placements": [
+      6,
+      5,
+      3,
+      4,
+      7,
+      9,
+      1,
+      8,
+      2
+    ],
+    "encounters": 230,
+    "outcomes": {
+      "defeated": 230
+    },
+    "longest_seconds": 48.895,
+    "first_inventory_round_per_tier": {
+      "1": 4,
+      "2": 6,
+      "3": 11,
+      "4": 16,
+      "5": 21
+    },
+    "chosen_item_kinds": [
+      "aegis",
+      "archmage",
+      "berserker",
+      "bulwark",
+      "chronicle",
+      "covenant",
+      "crown",
+      "echo",
+      "fang",
+      "focus",
+      "greatblade",
+      "haste",
+      "ironheart",
+      "opal",
+      "plague",
+      "prism",
+      "quicksilver",
+      "sage",
+      "staff",
+      "storm",
+      "stormheart",
+      "thunderbolt",
+      "titan",
+      "venom",
+      "ward",
+      "warhammer",
+      "worldheart"
+    ],
+    "final_inventory_tiers": {
+      "1": 9,
+      "2": 9,
+      "3": 9,
+      "4": 9,
+      "5": 14
+    },
+    "final_equipped_tiers": {
+      "1": 7,
+      "2": 9,
+      "3": 9,
+      "4": 9,
+      "5": 14
+    },
+    "effect_counts": {
+      "marked": 4261,
+      "venom": 321,
+      "fang": 102,
+      "spirit": 94,
+      "ward": 115,
+      "echo": 145,
+      "berserker": 34,
+      "spirit_echo": 35,
+      "storm": 5,
+      "guardian": 28
+    },
+    "winner_preparation": {
+      "alliances": {
+        "beast": 2,
+        "horde": 3,
+        "hunter": 2,
+        "mage": 4,
+        "spirit": 3,
+        "warrior": 2
+      },
+      "capacity": 9,
+      "families": [
+        4,
+        5,
+        11,
+        14,
+        13,
+        16,
+        19,
+        24,
+        19
+      ],
+      "field": 9,
+      "gold": 0,
+      "hp": 7,
+      "interest": 0,
+      "items": [
+        {
+          "kind": "fang",
+          "uid": 1,
+          "unit_uid": 19
+        },
+        {
+          "kind": "greatblade",
+          "uid": 2,
+          "unit_uid": 17
+        },
+        {
+          "kind": "echo",
+          "uid": 3,
+          "unit_uid": 27
+        },
+        {
+          "kind": "plague",
+          "uid": 4,
+          "unit_uid": 2
+        },
+        {
+          "kind": "worldheart",
+          "uid": 5,
+          "unit_uid": 34
+        },
+        {
+          "kind": "crown",
+          "uid": 6,
+          "unit_uid": 23
+        }
+      ],
+      "new": true,
+      "round": 29,
+      "seat": 6,
+      "spending": {
+        "recruits": 9,
+        "refreshes": 0,
+        "sales": 0,
+        "training": 0
+      },
+      "stars": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "strategy": 3
+    }
+  }
+]
