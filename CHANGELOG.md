@@ -1,61 +1,12 @@
 # Changelog
 
-## 1.28.0-experimental.6 (local preview)
+## 1.28.0 — 2026-10-24
 
-- Prepare streamed biome-cover vertex layouts and Mirror-water shader variants during zone loading.
-- Upload replacement ray-tracing texture arrays in bounded batches while retaining the previous scene and its lighting.
-- Record separate resource-creation and texture-upload timings for traversal diagnostics.
-
-## 1.28.0-experimental.5 (local preview)
-
-- Warm projected ground-mark materials during loading and reuse immutable ray pipelines across region replacements. Prepare replacement acceleration structures in bounded steps.
-- Transfer NRD history between compatible regions and reject changed or deformed surfaces independently.
-- Add an optional rendered-frame target for responsive PT with gradual, bounded resolution changes and EN/RU/DE controls.
-- Apply nearby grass shadow-map occlusion to traced direct sunlight while retaining indirect illumination.
-- Supply DLSS-G with actual HUD opacity and presentation-sized inputs; retain normal rendering for unsupported cropped mappings.
-
-## 1.28.0-experimental.4 (local preview)
-
-- Add an optional dlssg_for_sm86 0.4.0 package for native NVIDIA frame
-  generation on Ampere, with pinned files and complete upstream notices.
-- Restrict Reflex presentation markers to real presents and sample NVIDIA
-  frame-generation presentation telemetry once per present.
-- Describe GPU capability requirements consistently in EN/RU/DE.
-
-## 1.28.0-experimental.3 (local preview)
-
-- Restore NVIDIA DLSS/DLAA and the hardware-gated 2× frame-generation path in
-  the normal Screen controls, with exclusive SDK presentation ownership.
-- Preserve NRD, traversal/blood-mark performance fixes and current DXR barriers.
-- Restore NVIDIA/AMD SDK splash and credits; add missing NRD credits on both
-  desktop platforms, with EN/RU/DE text and pinned production-file notices.
-- Keep NVIDIA mark-placement approval explicitly pending for local review.
-- Retain DLSS through forced shader warm-up draws and the local simulation
-  connection through long Windows loads.
-
-
-## 1.28.0-experimental.2 — unreleased
-
-- Reuse projected blood-mark geometry while animating its growth and rotation, reducing CPU work after combat. Preserve surface placement, fading and lifetime.
-
-## 1.28.0-experimental.1 — unreleased
-
-- Integrate NVIDIA NRD 4.18.0 REBLUR for responsive path-traced lighting on Windows DX12 and Linux Vulkan. Preserve sharp direct highlights and retain custom reconstruction as a fallback.
-- Reuse CPU mesh and texture sources and lifted terrain sectors across nearby ray-traced scene snapshots, reducing GPU readbacks during travel.
-- Apply traced ground lighting and shadows to procedural grass and ground cover.
-- Move ray tracing and path tracing options into a direct Remake submenu, with English, Russian and German labels and help.
-- Reduce overbright rainy daylight and improve path-traced surface reconstruction.
-## Unreleased
-
-- Keep magic traps from striking units, as in the original 1.06, whose trap object never selects a unit. Traps such as the gz3g idol's lightning no longer kill the party or creatures walking past. ([#106](https://github.com/TheWWWorm/CursedLands/issues/106))
-- Give creatures and NPCs the original combat flag: becoming aggressive, suspicious or afraid sets it, and returning to guard, patrol, sentry or follow clears it. While it is set they run instead of walking, so a wolf runs to a pack mate's corpse, looks round there for the original time, and crouches into its combat stance again when it next becomes alert. ([#103](https://github.com/TheWWWorm/CursedLands/issues/103))
-- Have a hero say the out-of-stamina line when running uses up the last stamina; the run request is still kept for when stamina returns. ([#104](https://github.com/TheWWWorm/CursedLands/issues/104))
-- Keep the Load, Save and Options boards from flashing their previous opening's picture when opened from the Esc menu. ([#105](https://github.com/TheWWWorm/CursedLands/issues/105))
-- Keep the cursor, portraits, dialogue, quest list, message log, minimap and menu panels at real-time speed on the Fast game speed, as in the original, which speeds up only the game itself. ([#107](https://github.com/TheWWWorm/CursedLands/issues/107))
-- Let the party escape Suslanger's gate guards again: the pursuit now ends once no guard can see the party, rather than following the guards' memory of enemies they have already met, which never fades.
-- Let zone scripts tell the party's heroes apart again. Script values hold 32-bit floating-point numbers, which rounded consecutive hero IDs to one value, so a script comparing two heroes took them for the same unit. In the prison, this broke guard roles and which hero the guards were sent after. Runtime IDs are now distinct script values.
-- Keep zone scripts unchanged while the game runs. The check that skips repeated script conditions no longer writes into the loaded scripts, so saves and joining co-op players see the authored scripts.
-- Fast-forward dialogue phrases while Space is held, as in the original. The repeat stops at the last phrase so its rewards stay readable. ([#108](https://github.com/TheWWWorm/CursedLands/issues/108))
+- Contextual hints teach one action at a time, fade after nine seconds or the relevant action, and leave gameplay running. Healing guidance follows a won fight with new damage and remaining wounds. Relevant controls are highlighted; gamepad prompts respect remapping. Full guidance and recent hints remain available in the in-game guide and the web wiki.
+- Autochess adds animated commander portraits, character and skin selection, short blended reactions, clearer equipment effects and rarity, and corrected snow boundaries. An optional Lost in Astral mode adds eight creature families and expansion commanders; all players need matching expansion data. Existing character selections migrate to distinct skins.
+- Experimental path tracing adds NRD reconstruction, history retention across compatible scene changes, staged texture uploads, shader preparation, optional 30/45/60 rendered-FPS targets, grass shadows and less bright rainy daylight. DLSS/DLAA controls and DLSS-G presentation support are integrated into the Windows renderer. The optional RTX 30-series package uses dlssg_for_sm86 0.4.0.
+- Restore creature combat movement and corpse-investigation behavior ([#103](https://github.com/TheWWWorm/CursedLands/issues/103)), the exhausted-running voice line ([#104](https://github.com/TheWWWorm/CursedLands/issues/104)), clean Esc-menu board openings ([#105](https://github.com/TheWWWorm/CursedLands/issues/105)), original magic-trap targeting ([#106](https://github.com/TheWWWorm/CursedLands/issues/106)), real-time UI animation at Fast speed ([#107](https://github.com/TheWWWorm/CursedLands/issues/107)), and held-Space dialogue fast-forward ([#108](https://github.com/TheWWWorm/CursedLands/issues/108)).
+- Preserve distinct script-visible runtime IDs, keep condition-cache bookkeeping out of saved scripts, handle older LiA saves without a parsed script, and allow Suslanger guard pursuit to end when the party is out of sight.
 
 ## 1.27.0 — 2026-10-24
 
