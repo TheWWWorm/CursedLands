@@ -8,6 +8,8 @@
 - Restore NVIDIA/AMD SDK splash and credits; add missing NRD credits on both
   desktop platforms, with EN/RU/DE text and pinned production-file notices.
 - Keep NVIDIA mark-placement approval explicitly pending for local review.
+- Retain DLSS through forced shader warm-up draws and the local simulation
+  connection through long Windows loads.
 
 
 ## 1.28.0-experimental.2 — unreleased

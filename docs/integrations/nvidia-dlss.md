@@ -45,6 +45,12 @@ factory; the old system-runtime bypass is removed. SDK functions remain
 behind native capability checks. Only the signed production DLLs beside the
 executable are loaded; automatic SDK downloads are disabled.
 
+Forced loading/warm-up draws receive separate frame tokens even when they run
+inside one simulation tick. This prevents `eErrorDuplicatedConstants` from
+disabling DLSS during campaign loading. The Windows local simulation also
+retains its authenticated owner while ENet keep-alives continue through a
+long synchronous load; its existing disconnect handling remains active.
+
 The original port derives from [NVIDIA's Godot fork](https://github.com/NVIDIA-RTX/godot),
 commit `54c99593e0abd3126eb6974abc2d843f015b288a`. The pinned
 [Streamline release](https://github.com/NVIDIA-RTX/Streamline/releases/tag/v2.14.16)
@@ -57,6 +63,13 @@ Fetch with `tools/prepare_rtx_sdk.py`; the archive SHA-256 is pinned in that
 script and `engine_patches/godot-4.7/streamline-sdk.json`. The latter also pins
 every shipped production DLL and notice. Add `use_streamline=yes` to the
 current Windows FSR/DXR build command; no Linux engine change is needed.
+Install the matching headers into the patched engine with:
+
+```sh
+python3 tools/prepare_rtx_sdk.py --archive /build/streamline-sdk-v2.14.16.zip \
+  --output /build/streamline-sdk --engine /build/godot
+```
+
 The Windows exporter `tools/build_fsr_preview.py` accepts `--rtx-sdk` to include
 DLSS in a local review export. Audit with:
 
@@ -72,3 +85,7 @@ remains pending: see [SDK attribution](../branding/graphics-sdk-attribution.md).
 No NVIDIA notification or approval request is sent by these build tools.
 The package is local and unpublished; native Windows, RTX 40/50 frame
 generation, HDR, XR and multi-window output remain separate qualification.
+
+The [validation report](../validation/dlss-restoration-2026-10-24.md) records
+the exported binary hashes, actual SDK evaluations, traversal measurements,
+settings checks and attribution captures.

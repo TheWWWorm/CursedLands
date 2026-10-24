@@ -1,0 +1,19 @@
+{
+	"checks": 93,
+	"failures": [],
+	"languages": [
+		"en",
+		"ru",
+		"de"
+	],
+	"resolutions": [
+		[
+			800,
+			600
+		],
+		[
+			1280,
+			720
+		]
+	]
+}
