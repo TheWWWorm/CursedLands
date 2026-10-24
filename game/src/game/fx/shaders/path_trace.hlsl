@@ -384,8 +384,9 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         RayDesc ray={surface_origin(current,direction),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         float segment=hit.hit>0.5?length(hit.position-current.position):60000.0;
-        hit_distance.x=min(hit_distance.x+segment,60000.0);
-        if(depth==0)hit_distance.y=segment;
+        // NRD reconstructs the first secondary surface, not total path length.
+        // A later sky escape must not turn a nearby diffuse hit into infinity.
+        if(depth==0)hit_distance=float2(segment,segment);
         if(hit.hit<0.5) {
             float3 environment=sky_radiance(direction);
             diffuse+=weight_d*environment;specular+=weight_s*environment;break;
@@ -986,7 +987,12 @@ void main(inout Surface result,Attributes attributes) {
     // rays along the actual triangle and keep the shading hemisphere outside
     // it, rather than flipping the smooth normal beneath the triangle.
     if(dot(result.normal,result.geometric_normal)<0.0)result.normal=-result.normal;
-    if(dot(result.normal,WorldRayDirection())>=0.0)result.normal=result.geometric_normal;
+    // Smooth hill/branch normals can cross the view horizon while the actual
+    // facet stays visible. Replacing them with the face normal at zero causes
+    // a large lighting jump during a tiny camera turn. Project continuously
+    // into the visible hemisphere; the geometric hemisphere stays positive.
+    float3 view=-WorldRayDirection();
+    result.normal=normalize(result.normal+view*max(0.05-dot(result.normal,view),0.0));
     float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge1)),0.001),
                       length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge2)),0.001));
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);

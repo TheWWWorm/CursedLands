@@ -32,6 +32,9 @@ varying vec4 ei_rt_visibility1;
 #ifdef EI_GRASS_LIGHT
 varying vec3 ei_rt_ground;
 #endif
+#ifdef EI_FOLIAGE_WIND
+varying vec3 ei_rt_rest;
+#endif
 
 vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
@@ -106,7 +109,7 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         vec3 view=parallel?vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]):normalize(ei_rt_eye-world);
         if(dot(plane,view)<0.0)plane=-plane;
         if(dot(normal,plane)<0.0)normal=-normal;
-        if(dot(normal,view)<=0.0)normal=plane;
+        normal=normalize(normal+view*max(0.05-dot(normal,view),0.0));
     }
     float footprint=max(length(dx)/max(length(dFdx(uv)*vec2(size)),0.001),
                         length(dy)/max(length(dFdy(uv)*vec2(size)),0.001));
@@ -151,7 +154,10 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
             a+=texelFetch(ei_rt_shadow0,p,0)*w;total+=w;
         }
     }
-    if(total<0.01)return false;
+    // Ring samples have Gaussian weights, unlike the bilinear fast path.
+    // A valid diagonal tap can weigh exp(-8); its absolute weight must not
+    // turn an otherwise compatible receiver into conventional-lighting holes.
+    if(total<(ei_pt_active>0.5?0.000001:0.01))return false;
     float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);
     if(ei_pt_active>0.5) {
         gi/=total;visibility0=a/total;visibility1=b/total;
@@ -188,7 +194,14 @@ const CAPTURE := """
 #ifdef EI_GRASS_LIGHT
         bool matched=ei_rt_ground_sample(indirect,a,b);
 #else
+#ifdef EI_FOLIAGE_WIND
+        // The acceleration structure contains the undeformed tree. Follow
+        // that same surface as its visible vertices sway, instead of switching
+        // between unrelated background light and conventional shading.
+        bool matched=ei_rt_sample(ei_rt_rest,normal,indirect,a,b);
+#else
         bool matched=ei_rt_sample(world,normal,indirect,a,b);
+#endif
 #endif
         if(matched) {
             if(ei_pt_active>0.5) {
@@ -266,6 +279,8 @@ static func applicable(code: String,lit: bool) -> bool:
 		and not code.contains("#define EI_WATER_FX") and not code.contains("#define EI_WATER_WAVES")
 
 static func inject(code: String,clouds: bool) -> String:
+	if code.contains("#define EI_FOLIAGE_WIND"):
+		code = code.replace("void vertex() {", "void vertex() {\n    ei_rt_rest=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;\n")
 	var at := code.find("\nvoid ")
 	code = code.insert(at+1,COMMON)
 	if code.contains("#define EI_GRASS_LIGHT"):
