@@ -1,0 +1,4820 @@
+{
+	"authority": false,
+	"checks": 24,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"distance": 121.368076382205,
+	"failures": [],
+	"host_process": true,
+	"inactive_frames": 0,
+	"runs": [
+		{
+			"distance": 0.0,
+			"frame_ms": {
+				"max": 115.009,
+				"median": 16.989,
+				"n": 576,
+				"p95": 18.728,
+				"p99": 22.587
+			},
+			"generation": 1,
+			"hp": 38.6875,
+			"nrd": true,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"process_ms": {
+				"max": 157.755,
+				"median": 19.682,
+				"n": 576,
+				"p95": 157.755,
+				"p99": 157.755
+			},
+			"rt_gpu_ms": {
+				"max": 12.893184,
+				"median": 7.3984,
+				"n": 576,
+				"p95": 7.70816,
+				"p99": 8.905216
+			},
+			"seconds": 10.011,
+			"vram": 2162522112.0,
+			"world_time": 11.22,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"distance": 7.60068758204579,
+			"frame_ms": {
+				"max": 917.923,
+				"median": 18.058,
+				"n": 232,
+				"p95": 20.039,
+				"p99": 21.437
+			},
+			"generation": 1,
+			"hp": 38.6875,
+			"nrd": true,
+			"phase": "east-opening",
+			"pos": [
+				59.4375,
+				139.140625
+			],
+			"process_ms": {
+				"max": 911.548,
+				"median": 19.189,
+				"n": 232,
+				"p95": 911.548,
+				"p99": 911.548
+			},
+			"rt_gpu_ms": {
+				"max": 8.810496,
+				"median": 8.10624,
+				"n": 232,
+				"p95": 8.406016,
+				"p99": 8.559872
+			},
+			"seconds": 5.096,
+			"vram": 2162129152.0,
+			"world_time": 16.3349999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"distance": 39.3903053086251,
+			"frame_ms": {
+				"max": 163.251,
+				"median": 17.681,
+				"n": 1187,
+				"p95": 23.164,
+				"p99": 27.204
+			},
+			"generation": 2,
+			"hp": 38.6875,
+			"nrd": true,
+			"phase": "downhill-path",
+			"pos": [
+				66.515625,
+				125.265625
+			],
+			"process_ms": {
+				"max": 161.272,
+				"median": 21.048,
+				"n": 1187,
+				"p95": 66.325,
+				"p99": 161.272
+			},
+			"rt_gpu_ms": {
+				"max": 11.126272,
+				"median": 8.534528,
+				"n": 1188,
+				"p95": 9.966592,
+				"p99": 10.990336
+			},
+			"seconds": 21.957,
+			"vram": 2188322304.0,
+			"world_time": 38.2799999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"distance": 41.9370395820588,
+			"frame_ms": {
+				"max": 24.492,
+				"median": 19.903,
+				"n": 284,
+				"p95": 22.427,
+				"p99": 23.418
+			},
+			"generation": 2,
+			"hp": 29.7364635467529,
+			"nrd": true,
+			"phase": "fight-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"process_ms": {
+				"max": 22.145,
+				"median": 19.881,
+				"n": 284,
+				"p95": 20.621,
+				"p99": 22.145
+			},
+			"rt_gpu_ms": {
+				"max": 10.959872,
+				"median": 10.3424,
+				"n": 284,
+				"p95": 10.567936,
+				"p99": 10.8672
+			},
+			"seconds": 5.671,
+			"vram": 2189066240.0,
+			"world_time": 49.7749999999998,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"distance": 43.143678618595,
+			"frame_ms": {
+				"max": 50.527,
+				"median": 20.215,
+				"n": 50,
+				"p95": 23.146,
+				"p99": 50.527
+			},
+			"generation": 2,
+			"hp": 30.1443748474121,
+			"nrd": true,
+			"phase": "loot-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"process_ms": {
+				"max": 45.371,
+				"median": 22.145,
+				"n": 50,
+				"p95": 45.371,
+				"p99": 45.371
+			},
+			"rt_gpu_ms": {
+				"max": 10.807296,
+				"median": 10.506496,
+				"n": 50,
+				"p95": 10.750208,
+				"p99": 10.807296
+			},
+			"seconds": 1.039,
+			"vram": 2189427968.0,
+			"world_time": 51.9199999999998,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"distance": 43.143678618595,
+			"frame_ms": {
+				"max": 160.932,
+				"median": 20.751,
+				"n": 649,
+				"p95": 23.133,
+				"p99": 29.663
+			},
+			"generation": 3,
+			"hp": 36.8749198913574,
+			"nrd": true,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"process_ms": {
+				"max": 157.116,
+				"median": 20.659,
+				"n": 649,
+				"p95": 157.116,
+				"p99": 157.116
+			},
+			"rt_gpu_ms": {
+				"max": 11.575296,
+				"median": 11.03232,
+				"n": 650,
+				"p95": 11.236352,
+				"p99": 11.315968
+			},
+			"seconds": 13.796,
+			"vram": 2188181248.0,
+			"world_time": 80.0250000000017,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"distance": 63.4426934700459,
+			"frame_ms": {
+				"max": 164.625,
+				"median": 19.702,
+				"n": 313,
+				"p95": 23.205,
+				"p99": 31.82
+			},
+			"generation": 4,
+			"hp": 38.8125,
+			"nrd": true,
+			"phase": "slope-to-boar",
+			"pos": [
+				57.75,
+				105.515625
+			],
+			"process_ms": {
+				"max": 75.865,
+				"median": 20.347,
+				"n": 313,
+				"p95": 24.457,
+				"p99": 24.457
+			},
+			"rt_gpu_ms": {
+				"max": 11.235584,
+				"median": 9.598464,
+				"n": 313,
+				"p95": 10.865152,
+				"p99": 11.08992
+			},
+			"seconds": 6.368,
+			"vram": 2835736832.0,
+			"world_time": 93.0050000000033,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"distance": 69.9498669244349,
+			"frame_ms": {
+				"max": 28.769,
+				"median": 15.014,
+				"n": 363,
+				"p95": 18.972,
+				"p99": 21.337
+			},
+			"generation": 4,
+			"hp": 27.7719955444336,
+			"nrd": true,
+			"phase": "fight-slope-boar",
+			"pos": [
+				53.71875,
+				100.703125
+			],
+			"process_ms": {
+				"max": 160.526,
+				"median": 20.446,
+				"n": 363,
+				"p95": 160.526,
+				"p99": 160.526
+			},
+			"rt_gpu_ms": {
+				"max": 9.561344,
+				"median": 5.2544,
+				"n": 364,
+				"p95": 5.68064,
+				"p99": 8.027648
+			},
+			"seconds": 5.598,
+			"vram": 2192711936.0,
+			"world_time": 104.335000000005,
+			"wound_jobs": 0,
+			"wound_layers": 7
+		},
+		{
+			"distance": 71.3536214120686,
+			"frame_ms": {
+				"max": 52.947,
+				"median": 14.893,
+				"n": 65,
+				"p95": 18.623,
+				"p99": 52.947
+			},
+			"generation": 4,
+			"hp": 28.5403480529785,
+			"nrd": true,
+			"phase": "loot-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"process_ms": {
+				"max": 20.341,
+				"median": 18.618,
+				"n": 65,
+				"p95": 20.341,
+				"p99": 20.341
+			},
+			"rt_gpu_ms": {
+				"max": 5.86496,
+				"median": 5.338624,
+				"n": 65,
+				"p95": 5.616128,
+				"p99": 5.86496
+			},
+			"seconds": 1.027,
+			"vram": 2193177344.0,
+			"world_time": 106.535000000005,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"distance": 71.3536214120686,
+			"frame_ms": {
+				"max": 150.711,
+				"median": 14.676,
+				"n": 1188,
+				"p95": 16.805,
+				"p99": 19.491
+			},
+			"generation": 5,
+			"hp": 37.0364418029785,
+			"nrd": true,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"process_ms": {
+				"max": 146.516,
+				"median": 17.004,
+				"n": 1188,
+				"p95": 52.521,
+				"p99": 146.516
+			},
+			"rt_gpu_ms": {
+				"max": 6.008832,
+				"median": 5.466112,
+				"n": 1189,
+				"p95": 5.763584,
+				"p99": 5.83936
+			},
+			"seconds": 17.764,
+			"vram": 2191326720.0,
+			"world_time": 142.725000000009,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"distance": 71.3536214120686,
+			"frame_ms": {
+				"max": 26.774,
+				"median": 14.482,
+				"n": 1707,
+				"p95": 16.727,
+				"p99": 18.851
+			},
+			"generation": 5,
+			"hp": 38.875,
+			"nrd": true,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"process_ms": {
+				"max": 24.669,
+				"median": 17.365,
+				"n": 1707,
+				"p95": 21.063,
+				"p99": 24.669
+			},
+			"rt_gpu_ms": {
+				"max": 6.142976,
+				"median": 5.49248,
+				"n": 1707,
+				"p95": 5.79584,
+				"p99": 5.895424
+			},
+			"seconds": 25.006,
+			"vram": 2191130624.0,
+			"world_time": 193.600000000016,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"distance": 89.5214942060411,
+			"frame_ms": {
+				"max": 167.798,
+				"median": 19.484,
+				"n": 287,
+				"p95": 27.146,
+				"p99": 58.652
+			},
+			"generation": 6,
+			"hp": 38.875,
+			"nrd": true,
+			"phase": "down-to-beach",
+			"pos": [
+				48.0625,
+				82.546875
+			],
+			"process_ms": {
+				"max": 2559.341,
+				"median": 34.061,
+				"n": 287,
+				"p95": 164.445,
+				"p99": 2559.341
+			},
+			"rt_gpu_ms": {
+				"max": 8.050688,
+				"median": 7.025664,
+				"n": 288,
+				"p95": 7.580416,
+				"p99": 7.67488
+			},
+			"seconds": 6.077,
+			"vram": 2182811392.0,
+			"world_time": 212.410000000018,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"distance": 96.6378789581358,
+			"frame_ms": {
+				"max": 179.548,
+				"median": 19.814,
+				"n": 281,
+				"p95": 26.393,
+				"p99": 76.25
+			},
+			"generation": 8,
+			"hp": 35.3842620849609,
+			"nrd": true,
+			"phase": "fight-beach-boar",
+			"pos": [
+				43.921875,
+				76.921875
+			],
+			"process_ms": {
+				"max": 175.421,
+				"median": 30.762,
+				"n": 281,
+				"p95": 175.421,
+				"p99": 175.421
+			},
+			"rt_gpu_ms": {
+				"max": 7.049216,
+				"median": 6.221824,
+				"n": 283,
+				"p95": 6.536192,
+				"p99": 6.738176
+			},
+			"seconds": 6.18,
+			"vram": 2172535808.0,
+			"world_time": 224.95000000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"distance": 97.9584694895893,
+			"frame_ms": {
+				"max": 61.738,
+				"median": 19.347,
+				"n": 66,
+				"p95": 24.496,
+				"p99": 61.738
+			},
+			"generation": 8,
+			"hp": 33.6847534179688,
+			"nrd": true,
+			"phase": "loot-beach-boar",
+			"pos": [
+				43.046875,
+				76.0
+			],
+			"process_ms": {
+				"max": 62.946,
+				"median": 24.219,
+				"n": 66,
+				"p95": 62.946,
+				"p99": 62.946
+			},
+			"rt_gpu_ms": {
+				"max": 6.408192,
+				"median": 6.15936,
+				"n": 66,
+				"p95": 6.375424,
+				"p99": 6.408192
+			},
+			"seconds": 1.343,
+			"vram": 2173166080.0,
+			"world_time": 227.75500000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"distance": 110.317284217104,
+			"frame_ms": {
+				"max": 169.217,
+				"median": 18.196,
+				"n": 1042,
+				"p95": 24.241,
+				"p99": 32.929
+			},
+			"generation": 10,
+			"hp": 22.0511569976807,
+			"nrd": true,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"process_ms": {
+				"max": 166.202,
+				"median": 26.976,
+				"n": 1042,
+				"p95": 166.202,
+				"p99": 166.202
+			},
+			"rt_gpu_ms": {
+				"max": 10.108928,
+				"median": 5.334016,
+				"n": 1044,
+				"p95": 6.177792,
+				"p99": 6.321152
+			},
+			"seconds": 20.001,
+			"vram": 2173111552.0,
+			"world_time": 268.345000000025,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 110.317284217104,
+			"frame_ms": {
+				"max": 25.8,
+				"median": 16.655,
+				"n": 1482,
+				"p95": 19.002,
+				"p99": 20.399
+			},
+			"generation": 10,
+			"hp": 34.1660995483398,
+			"nrd": true,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"process_ms": {
+				"max": 24.081,
+				"median": 19.166,
+				"n": 1482,
+				"p95": 21.572,
+				"p99": 24.081
+			},
+			"rt_gpu_ms": {
+				"max": 5.387264,
+				"median": 4.947712,
+				"n": 1482,
+				"p95": 5.168128,
+				"p99": 5.254912
+			},
+			"seconds": 25.009,
+			"vram": 2172139264.0,
+			"world_time": 319.385000000031,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 110.317284217104,
+			"frame_ms": {
+				"max": 18.316,
+				"median": 18.316,
+				"n": 1,
+				"p95": 18.316,
+				"p99": 18.316
+			},
+			"generation": 10,
+			"hp": 35.7157554626465,
+			"nrd": true,
+			"phase": "fight-shore-toad",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"process_ms": {
+				"max": 2633.985,
+				"median": 2633.985,
+				"n": 1,
+				"p95": 2633.985,
+				"p99": 2633.985
+			},
+			"rt_gpu_ms": {
+				"max": 4.9472,
+				"median": 4.9472,
+				"n": 1,
+				"p95": 4.9472,
+				"p99": 4.9472
+			},
+			"seconds": 0.018,
+			"vram": 2172146432.0,
+			"world_time": 326.260000000032,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 114.610595373437,
+			"frame_ms": {
+				"max": 27.542,
+				"median": 17.081,
+				"n": 106,
+				"p95": 22.276,
+				"p99": 23.491
+			},
+			"generation": 10,
+			"hp": 36.6455497741699,
+			"nrd": true,
+			"phase": "loot-shore-toad",
+			"pos": [
+				45.390625,
+				68.484375
+			],
+			"process_ms": {
+				"max": 2633.985,
+				"median": 70.09,
+				"n": 106,
+				"p95": 2633.985,
+				"p99": 2633.985
+			},
+			"rt_gpu_ms": {
+				"max": 5.8944,
+				"median": 5.611264,
+				"n": 106,
+				"p95": 5.80096,
+				"p99": 5.867264
+			},
+			"seconds": 1.88,
+			"vram": 2171601408.0,
+			"world_time": 330.220000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 114.610595373437,
+			"frame_ms": {
+				"max": 19.116,
+				"median": 19.116,
+				"n": 1,
+				"p95": 19.116,
+				"p99": 19.116
+			},
+			"generation": 10,
+			"hp": 36.6455497741699,
+			"nrd": true,
+			"phase": "fight-south-toad",
+			"pos": [
+				45.390625,
+				68.484375
+			],
+			"process_ms": {
+				"max": 27.101,
+				"median": 27.101,
+				"n": 1,
+				"p95": 27.101,
+				"p99": 27.101
+			},
+			"rt_gpu_ms": {
+				"max": 5.123584,
+				"median": 5.123584,
+				"n": 1,
+				"p95": 5.123584,
+				"p99": 5.123584
+			},
+			"seconds": 0.019,
+			"vram": 2171607808.0,
+			"world_time": 330.220000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 119.914951382205,
+			"frame_ms": {
+				"max": 166.147,
+				"median": 17.452,
+				"n": 131,
+				"p95": 24.119,
+				"p99": 64.441
+			},
+			"generation": 11,
+			"hp": 37.8852729797363,
+			"nrd": true,
+			"phase": "loot-south-toad",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"process_ms": {
+				"max": 162.346,
+				"median": 27.101,
+				"n": 131,
+				"p95": 162.346,
+				"p99": 162.346
+			},
+			"rt_gpu_ms": {
+				"max": 6.552576,
+				"median": 5.63968,
+				"n": 132,
+				"p95": 5.926656,
+				"p99": 6.23104
+			},
+			"seconds": 2.575,
+			"vram": 2174586368.0,
+			"world_time": 335.500000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 119.914951382205,
+			"frame_ms": {
+				"max": 145.103,
+				"median": 16.645,
+				"n": 1175,
+				"p95": 18.975,
+				"p99": 21.842
+			},
+			"generation": 12,
+			"hp": 39.125,
+			"nrd": true,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"process_ms": {
+				"max": 142.282,
+				"median": 19.485,
+				"n": 1175,
+				"p95": 142.282,
+				"p99": 142.282
+			},
+			"rt_gpu_ms": {
+				"max": 8.946944,
+				"median": 5.073408,
+				"n": 1176,
+				"p95": 5.3248,
+				"p99": 5.432832
+			},
+			"seconds": 20.004,
+			"vram": 2171029248.0,
+			"world_time": 376.145000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 119.914951382205,
+			"frame_ms": {
+				"max": 18.885,
+				"median": 16.273,
+				"n": 490,
+				"p95": 18.136,
+				"p99": 18.273
+			},
+			"generation": 12,
+			"hp": 39.125,
+			"nrd": true,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"process_ms": {
+				"max": 18.36,
+				"median": 16.688,
+				"n": 490,
+				"p95": 18.36,
+				"p99": 18.36
+			},
+			"rt_gpu_ms": {
+				"max": 5.32224,
+				"median": 4.944128,
+				"n": 490,
+				"p95": 5.225216,
+				"p99": 5.257728
+			},
+			"seconds": 8.012,
+			"vram": 2171028224.0,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"distance": 121.368076382205,
+			"frame_ms": {
+				"max": 24.084,
+				"median": 15.43,
+				"n": 956,
+				"p95": 17.998,
+				"p99": 20.615
+			},
+			"generation": 12,
+			"hp": 24.5275402069092,
+			"nrd": false,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"process_ms": {
+				"max": 23.048,
+				"median": 18.267,
+				"n": 956,
+				"p95": 23.048,
+				"p99": 23.048
+			},
+			"rt_gpu_ms": {
+				"max": 5.04576,
+				"median": 3.741696,
+				"n": 956,
+				"p95": 3.966208,
+				"p99": 4.04992
+			},
+			"seconds": 15.006,
+			"vram": 2171172096.0,
+			"world_time": 406.505000000042,
+			"wound_jobs": 0,
+			"wound_layers": 15
+		},
+		{
+			"distance": 121.368076382205,
+			"frame_ms": {
+				"max": 75.024,
+				"median": 13.902,
+				"n": 1022,
+				"p95": 18.635,
+				"p99": 23.813
+			},
+			"generation": 13,
+			"hp": 28.3763618469238,
+			"nrd": false,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"process_ms": {
+				"max": 73.156,
+				"median": 18.971,
+				"n": 1022,
+				"p95": 73.156,
+				"p99": 73.156
+			},
+			"rt_gpu_ms": {
+				"max": 5.525504,
+				"median": 3.49056,
+				"n": 1023,
+				"p95": 3.733248,
+				"p99": 4.25856
+			},
+			"seconds": 15.005,
+			"vram": 1905225472.0,
+			"world_time": 437.085000000046,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		}
+	],
+	"stats": {
+		"accumulation_frames": 1.0,
+		"active": true,
+		"cpu_gather_ms": 0.0,
+		"cpu_snapshot_ms": 0.002,
+		"cpu_topology_ms": 0.029,
+		"cpu_total_ms": 1.472,
+		"cpu_update_ms": 0.556,
+		"display_size": [
+			3840,
+			2160
+		],
+		"emissive_candidates": 0,
+		"emissive_triangles": 0,
+		"geometries": 912,
+		"gi_samples": 0,
+		"history_limit": 256.0,
+		"history_reused": false,
+		"instances": 1017,
+		"light_history_limited": false,
+		"lights": 0,
+		"path_bounces": 2,
+		"path_samples": 1,
+		"path_tracing": true,
+		"quality": 0,
+		"rebuilding": false,
+		"render_scale": 1.0,
+		"render_size": [
+			3840,
+			2160
+		],
+		"shadow_samples": 0,
+		"size": [
+			1920,
+			1080
+		],
+		"snapshot_generation": 13,
+		"supported": true,
+		"terrain_material_build_us": 6477,
+		"terrain_material_bytes": 436824,
+		"terrain_material_triangles": 40607,
+		"trace_render_scale": 1.0,
+		"triangles": 84501,
+		"updated_instances": 47,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	},
+	"track": [
+		{
+			"fps": 39.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 16,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 1.1,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 63.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 1016,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 2.145,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 47.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 2028,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 3.245,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 60.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 3042,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 4.235,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 56.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 4054,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 5.225,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 59.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 5054,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 6.21499999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 59.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 6063,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 7.20499999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 58.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 7071,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 8.30499999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 59.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 8083,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 9.23999999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 58.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 9087,
+			"phase": "ruins-held",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 10.23,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 58.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 10028,
+			"phase": "east-opening",
+			"pos": [
+				52.5,
+				138.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 11.22,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 58.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 11219,
+			"phase": "east-opening",
+			"pos": [
+				53.953125,
+				138.6875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 12.43,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 24.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 12233,
+			"phase": "east-opening",
+			"pos": [
+				55.4375,
+				138.875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 13.475,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 55.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 13244,
+			"phase": "east-opening",
+			"pos": [
+				56.796875,
+				139.296875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 14.465,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 55.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 14244,
+			"phase": "east-opening",
+			"pos": [
+				58.203125,
+				139.453125
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 15.4549999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 55.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 15125,
+			"phase": "downhill-path",
+			"pos": [
+				59.4375,
+				139.140625
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 16.3349999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 16141,
+			"phase": "downhill-path",
+			"pos": [
+				60.453125,
+				138.046875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 17.3799999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 59.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 17150,
+			"phase": "downhill-path",
+			"pos": [
+				61.484375,
+				137.015625
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 18.3699999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 56.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 18160,
+			"phase": "downhill-path",
+			"pos": [
+				62.546875,
+				136.046875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 19.3599999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 19160,
+			"phase": "downhill-path",
+			"pos": [
+				63.984375,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 20.3499999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 20173,
+			"phase": "downhill-path",
+			"pos": [
+				65.5,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 21.3949999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 21189,
+			"phase": "downhill-path",
+			"pos": [
+				66.953125,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 22.3849999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 58.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 22203,
+			"phase": "downhill-path",
+			"pos": [
+				68.453125,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 23.4299999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 55.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 23216,
+			"phase": "downhill-path",
+			"pos": [
+				69.890625,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 24.4199999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 44.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 24233,
+			"phase": "downhill-path",
+			"pos": [
+				71.34375,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 25.4649999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 44.0,
+			"generation": 1,
+			"hp": 38.6875,
+			"ms": 25345,
+			"phase": "downhill-path",
+			"pos": [
+				72.921875,
+				136.0
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 26.5649999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 38.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 26357,
+			"phase": "downhill-path",
+			"pos": [
+				74.359375,
+				135.984375
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 27.5549999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 56.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 27374,
+			"phase": "downhill-path",
+			"pos": [
+				75.453125,
+				134.96875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 28.5999999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 28383,
+			"phase": "downhill-path",
+			"pos": [
+				75.28125,
+				133.5625
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 29.5899999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 56.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 29390,
+			"phase": "downhill-path",
+			"pos": [
+				74.765625,
+				132.296875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 30.5799999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 50.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 30393,
+			"phase": "downhill-path",
+			"pos": [
+				74.078125,
+				131.078125
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 31.5699999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 31396,
+			"phase": "downhill-path",
+			"pos": [
+				73.015625,
+				130.015625
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 32.6149999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 58.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 32410,
+			"phase": "downhill-path",
+			"pos": [
+				71.984375,
+				128.984375
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 33.6049999999999,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 57.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 33416,
+			"phase": "downhill-path",
+			"pos": [
+				70.921875,
+				127.921875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 34.6499999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 56.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 34432,
+			"phase": "downhill-path",
+			"pos": [
+				69.71875,
+				127.109375
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 35.6399999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 56.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 35441,
+			"phase": "downhill-path",
+			"pos": [
+				68.46875,
+				126.484375
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 36.6849999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 54.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 36448,
+			"phase": "downhill-path",
+			"pos": [
+				67.265625,
+				125.765625
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 37.6749999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 52.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 37086,
+			"phase": "fight-wolf",
+			"pos": [
+				66.515625,
+				125.265625
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 38.2799999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 50.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 38092,
+			"phase": "fight-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 40.2049999999998,
+			"wound_jobs": 0,
+			"wound_layers": 0
+		},
+		{
+			"fps": 50.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 39107,
+			"phase": "fight-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 42.3499999999998,
+			"wound_jobs": 1,
+			"wound_layers": 0
+		},
+		{
+			"fps": 50.0,
+			"generation": 2,
+			"hp": 38.6875,
+			"ms": 40122,
+			"phase": "fight-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 44.2749999999998,
+			"wound_jobs": 2,
+			"wound_layers": 0
+		},
+		{
+			"fps": 51.0,
+			"generation": 2,
+			"hp": 35.5363655090332,
+			"ms": 41141,
+			"phase": "fight-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 46.5299999999998,
+			"wound_jobs": 1,
+			"wound_layers": 1
+		},
+		{
+			"fps": 50.0,
+			"generation": 2,
+			"hp": 35.9429626464844,
+			"ms": 42156,
+			"phase": "fight-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 48.5649999999998,
+			"wound_jobs": 0,
+			"wound_layers": 3
+		},
+		{
+			"fps": 50.0,
+			"generation": 2,
+			"hp": 29.7364635467529,
+			"ms": 42759,
+			"phase": "loot-wolf",
+			"pos": [
+				66.546875,
+				122.796875
+			],
+			"units": 48,
+			"view": 3,
+			"world_time": 49.7749999999998,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 2,
+			"hp": 30.1443748474121,
+			"ms": 43777,
+			"phase": "loot-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 51.9199999999998,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 2,
+			"hp": 30.1443748474121,
+			"ms": 43795,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 51.9199999999998,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 43.0,
+			"generation": 2,
+			"hp": 30.7562427520752,
+			"ms": 44796,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 53.8449999999998,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 38.0,
+			"generation": 3,
+			"hp": 31.1641540527344,
+			"ms": 45796,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 55.9349999999997,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 31.6740436553955,
+			"ms": 46811,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 58.1349999999997,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 49.0,
+			"generation": 3,
+			"hp": 32.0819549560547,
+			"ms": 47827,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 59.9499999999997,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 32.6938247680664,
+			"ms": 48842,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 62.2049999999997,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 32.999755859375,
+			"ms": 49842,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 64.2399999999997,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 33.6116256713867,
+			"ms": 50860,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 66.275,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 34.0195388793945,
+			"ms": 51861,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 68.3100000000002,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 34.631404876709,
+			"ms": 52876,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 70.3450000000005,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 34.9373397827148,
+			"ms": 53880,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 72.3800000000007,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 35.5492057800293,
+			"ms": 54894,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 74.415000000001,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 49.0,
+			"generation": 3,
+			"hp": 35.8551406860352,
+			"ms": 55908,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 76.6150000000013,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 36.4670066833496,
+			"ms": 56927,
+			"phase": "heal-wolf",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 78.4850000000015,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 36.8749198913574,
+			"ms": 57593,
+			"phase": "slope-to-boar",
+			"pos": [
+				66.5,
+				121.59375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 80.0250000000017,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 48.0,
+			"generation": 3,
+			"hp": 37.282829284668,
+			"ms": 58607,
+			"phase": "slope-to-boar",
+			"pos": [
+				66.25,
+				118.5
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 82.1700000000019,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 46.0,
+			"generation": 3,
+			"hp": 37.7927207946777,
+			"ms": 59620,
+			"phase": "slope-to-boar",
+			"pos": [
+				64.921875,
+				115.84375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 84.2050000000022,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 49.0,
+			"generation": 3,
+			"hp": 38.2006340026855,
+			"ms": 60623,
+			"phase": "slope-to-boar",
+			"pos": [
+				63.578125,
+				113.171875
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 86.2400000000025,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 50.0,
+			"generation": 3,
+			"hp": 38.8125,
+			"ms": 61627,
+			"phase": "slope-to-boar",
+			"pos": [
+				62.09375,
+				110.203125
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 88.2750000000027,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 49.0,
+			"generation": 3,
+			"hp": 38.8125,
+			"ms": 62643,
+			"phase": "slope-to-boar",
+			"pos": [
+				60.578125,
+				107.140625
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 90.365000000003,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 58.0,
+			"generation": 3,
+			"hp": 38.8125,
+			"ms": 63650,
+			"phase": "slope-to-boar",
+			"pos": [
+				58.34375,
+				104.90625
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 92.4000000000032,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 54.0,
+			"generation": 4,
+			"hp": 38.8125,
+			"ms": 63971,
+			"phase": "fight-slope-boar",
+			"pos": [
+				57.625,
+				105.375
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 93.1150000000033,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 49.0,
+			"generation": 4,
+			"hp": 38.8125,
+			"ms": 64975,
+			"phase": "fight-slope-boar",
+			"pos": [
+				55.15625,
+				102.65625
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 95.1500000000036,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 63.0,
+			"generation": 4,
+			"hp": 33.2782936096191,
+			"ms": 65986,
+			"phase": "fight-slope-boar",
+			"pos": [
+				53.71875,
+				100.703125
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 97.0200000000038,
+			"wound_jobs": 0,
+			"wound_layers": 4
+		},
+		{
+			"fps": 64.0,
+			"generation": 4,
+			"hp": 33.8932075500488,
+			"ms": 66987,
+			"phase": "fight-slope-boar",
+			"pos": [
+				53.71875,
+				100.703125
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 99.055000000004,
+			"wound_jobs": 1,
+			"wound_layers": 4
+		},
+		{
+			"fps": 65.0,
+			"generation": 4,
+			"hp": 34.2006607055664,
+			"ms": 67992,
+			"phase": "fight-slope-boar",
+			"pos": [
+				53.71875,
+				100.703125
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 101.090000000004,
+			"wound_jobs": 2,
+			"wound_layers": 4
+		},
+		{
+			"fps": 66.0,
+			"generation": 4,
+			"hp": 27.7273464202881,
+			"ms": 68997,
+			"phase": "fight-slope-boar",
+			"pos": [
+				53.71875,
+				100.703125
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 103.180000000005,
+			"wound_jobs": 0,
+			"wound_layers": 7
+		},
+		{
+			"fps": 66.0,
+			"generation": 4,
+			"hp": 27.7719955444336,
+			"ms": 69555,
+			"phase": "loot-slope-boar",
+			"pos": [
+				53.71875,
+				100.703125
+			],
+			"units": 47,
+			"view": 3,
+			"world_time": 104.335000000005,
+			"wound_jobs": 1,
+			"wound_layers": 7
+		},
+		{
+			"fps": 66.0,
+			"generation": 4,
+			"hp": 28.5403480529785,
+			"ms": 70568,
+			"phase": "loot-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 106.535000000005,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 66.0,
+			"generation": 4,
+			"hp": 28.5403480529785,
+			"ms": 70581,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 106.535000000005,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 63.0,
+			"generation": 4,
+			"hp": 28.7964668273926,
+			"ms": 71615,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 108.625000000005,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 59.0,
+			"generation": 5,
+			"hp": 29.4626770019531,
+			"ms": 72626,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 110.550000000005,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 58.0,
+			"generation": 5,
+			"hp": 29.8209362030029,
+			"ms": 73636,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 112.695000000006,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 30.3331718444824,
+			"ms": 74644,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 114.675000000006,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 30.8454074859619,
+			"ms": 75658,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 116.765000000006,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 31.3576431274414,
+			"ms": 76671,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 118.965000000007,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 31.7677364349365,
+			"ms": 77683,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 120.945000000007,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 32.3821144104004,
+			"ms": 78692,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 122.980000000007,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 32.6382293701172,
+			"ms": 79699,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 125.015000000007,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 33.4065818786621,
+			"ms": 80708,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 127.105000000008,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 33.6627006530762,
+			"ms": 81716,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 129.085000000008,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 34.3289108276367,
+			"ms": 82725,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 131.175000000008,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 34.6871719360352,
+			"ms": 83735,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 133.155000000008,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 70.0,
+			"generation": 5,
+			"hp": 35.3000259399414,
+			"ms": 84740,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 135.300000000009,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 35.6064529418945,
+			"ms": 85749,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 137.445000000009,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 70.0,
+			"generation": 5,
+			"hp": 36.2193031311035,
+			"ms": 86755,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 139.480000000009,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 36.627872467041,
+			"ms": 87765,
+			"phase": "heal-slope-boar",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 141.515000000009,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 37.0364418029785,
+			"ms": 88347,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 142.725000000009,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 37.3428688049316,
+			"ms": 89352,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 144.54000000001,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 70.0,
+			"generation": 5,
+			"hp": 37.7514381408691,
+			"ms": 90363,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 146.79500000001,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.3642883300781,
+			"ms": 91370,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 148.83000000001,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.7728576660156,
+			"ms": 92375,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 150.86500000001,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 93380,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 152.900000000011,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 94382,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 154.935000000011,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 95395,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 156.970000000011,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 96396,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 159.005000000011,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 97400,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 161.040000000012,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 98414,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 163.075000000012,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 99426,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 165.110000000012,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 100436,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 167.310000000013,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 101446,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 169.180000000013,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 102459,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 171.270000000013,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 103468,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 173.470000000013,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 104480,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 175.505000000014,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 69.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 105492,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 177.650000000014,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 106495,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 179.575000000014,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 107495,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 181.610000000014,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 67.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 108509,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 183.645000000015,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 109517,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 185.790000000015,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 110532,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 187.935000000015,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 111540,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 189.915000000015,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 68.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 112552,
+			"phase": "slope-after-combat",
+			"pos": [
+				53.0,
+				99.75
+			],
+			"units": 46,
+			"view": 3,
+			"world_time": 191.950000000016,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 47.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 116504,
+			"phase": "down-to-beach",
+			"pos": [
+				52.96875,
+				99.609375
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 200.090000000017,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 37.0,
+			"generation": 5,
+			"hp": 38.875,
+			"ms": 117596,
+			"phase": "down-to-beach",
+			"pos": [
+				51.796875,
+				96.59375
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 202.290000000017,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 34.0,
+			"generation": 6,
+			"hp": 38.875,
+			"ms": 118599,
+			"phase": "down-to-beach",
+			"pos": [
+				50.4375,
+				93.828125
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 204.380000000017,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 51.0,
+			"generation": 6,
+			"hp": 38.875,
+			"ms": 119606,
+			"phase": "down-to-beach",
+			"pos": [
+				49.3125,
+				91.140625
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 206.415000000017,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 51.0,
+			"generation": 6,
+			"hp": 38.875,
+			"ms": 120612,
+			"phase": "down-to-beach",
+			"pos": [
+				48.796875,
+				88.21875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 208.450000000018,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 51.0,
+			"generation": 6,
+			"hp": 38.875,
+			"ms": 121636,
+			"phase": "down-to-beach",
+			"pos": [
+				48.515625,
+				85.171875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 210.540000000018,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 51.0,
+			"generation": 6,
+			"hp": 38.875,
+			"ms": 122578,
+			"phase": "fight-beach-boar",
+			"pos": [
+				48.046875,
+				82.453125
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 212.465000000018,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 45.0,
+			"generation": 7,
+			"hp": 38.875,
+			"ms": 123600,
+			"phase": "fight-beach-boar",
+			"pos": [
+				46.421875,
+				79.84375
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 214.555000000018,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 35.0,
+			"generation": 7,
+			"hp": 38.875,
+			"ms": 124609,
+			"phase": "fight-beach-boar",
+			"pos": [
+				44.5625,
+				77.5625
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 216.590000000019,
+			"wound_jobs": 0,
+			"wound_layers": 8
+		},
+		{
+			"fps": 47.0,
+			"generation": 7,
+			"hp": 38.875,
+			"ms": 125621,
+			"phase": "fight-beach-boar",
+			"pos": [
+				43.921875,
+				76.921875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 218.460000000019,
+			"wound_jobs": 0,
+			"wound_layers": 9
+		},
+		{
+			"fps": 49.0,
+			"generation": 7,
+			"hp": 36.5623168945313,
+			"ms": 126644,
+			"phase": "fight-beach-boar",
+			"pos": [
+				43.921875,
+				76.921875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 220.660000000019,
+			"wound_jobs": 0,
+			"wound_layers": 9
+		},
+		{
+			"fps": 39.0,
+			"generation": 8,
+			"hp": 34.8655395507813,
+			"ms": 127660,
+			"phase": "fight-beach-boar",
+			"pos": [
+				43.921875,
+				76.921875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 222.805000000019,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 51.0,
+			"generation": 8,
+			"hp": 35.3842620849609,
+			"ms": 128663,
+			"phase": "fight-beach-boar",
+			"pos": [
+				43.921875,
+				76.921875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 224.84000000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 52.0,
+			"generation": 8,
+			"hp": 35.3842620849609,
+			"ms": 128757,
+			"phase": "loot-beach-boar",
+			"pos": [
+				43.921875,
+				76.921875
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 224.95000000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 48.0,
+			"generation": 8,
+			"hp": 33.6847534179688,
+			"ms": 129773,
+			"phase": "loot-beach-boar",
+			"pos": [
+				43.046875,
+				76.0
+			],
+			"units": 46,
+			"view": 1,
+			"world_time": 227.04000000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 48.0,
+			"generation": 8,
+			"hp": 33.6847534179688,
+			"ms": 130104,
+			"phase": "heal-beach-boar",
+			"pos": [
+				43.046875,
+				76.0
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 227.75500000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 48.0,
+			"generation": 8,
+			"hp": 31.9852466583252,
+			"ms": 131164,
+			"phase": "heal-beach-boar",
+			"pos": [
+				43.90625,
+				74.671875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 229.90000000002,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 35.0,
+			"generation": 9,
+			"hp": 30.1315174102783,
+			"ms": 132170,
+			"phase": "heal-beach-boar",
+			"pos": [
+				44.65625,
+				71.875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 231.990000000021,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 50.0,
+			"generation": 9,
+			"hp": 27.9693412780762,
+			"ms": 133174,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.0,
+				70.5
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 233.915000000021,
+			"wound_jobs": 0,
+			"wound_layers": 10
+		},
+		{
+			"fps": 51.0,
+			"generation": 9,
+			"hp": 28.5862331390381,
+			"ms": 134194,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.0,
+				70.5
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 235.950000000021,
+			"wound_jobs": 0,
+			"wound_layers": 11
+		},
+		{
+			"fps": 52.0,
+			"generation": 9,
+			"hp": 26.7325019836426,
+			"ms": 135209,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.0,
+				70.5
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 237.985000000021,
+			"wound_jobs": 0,
+			"wound_layers": 11
+		},
+		{
+			"fps": 54.0,
+			"generation": 9,
+			"hp": 25.1133575439453,
+			"ms": 136218,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.0,
+				70.5
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 240.075000000022,
+			"wound_jobs": 0,
+			"wound_layers": 12
+		},
+		{
+			"fps": 51.0,
+			"generation": 9,
+			"hp": 22.7895221710205,
+			"ms": 137238,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.265625,
+				68.671875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 242.275000000022,
+			"wound_jobs": 0,
+			"wound_layers": 12
+		},
+		{
+			"fps": 48.0,
+			"generation": 9,
+			"hp": 23.4083938598633,
+			"ms": 138255,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.546875,
+				66.0
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 244.365000000022,
+			"wound_jobs": 0,
+			"wound_layers": 12
+		},
+		{
+			"fps": 50.0,
+			"generation": 9,
+			"hp": 21.7034320831299,
+			"ms": 139268,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 246.345000000022,
+			"wound_jobs": 0,
+			"wound_layers": 12
+		},
+		{
+			"fps": 49.0,
+			"generation": 9,
+			"hp": 19.84375,
+			"ms": 140275,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 248.380000000023,
+			"wound_jobs": 1,
+			"wound_layers": 12
+		},
+		{
+			"fps": 53.0,
+			"generation": 9,
+			"hp": 17.7029113769531,
+			"ms": 141291,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 250.525000000023,
+			"wound_jobs": 2,
+			"wound_layers": 12
+		},
+		{
+			"fps": 53.0,
+			"generation": 9,
+			"hp": 18.322774887085,
+			"ms": 142304,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 252.560000000023,
+			"wound_jobs": 2,
+			"wound_layers": 12
+		},
+		{
+			"fps": 54.0,
+			"generation": 9,
+			"hp": 18.73703956604,
+			"ms": 143311,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 254.485000000023,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 43.0,
+			"generation": 10,
+			"hp": 19.4106025695801,
+			"ms": 144319,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 256.575000000024,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 58.0,
+			"generation": 10,
+			"hp": 19.8248672485352,
+			"ms": 145333,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 258.775000000024,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 20.3940982818604,
+			"ms": 146336,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 260.810000000024,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 58.0,
+			"generation": 10,
+			"hp": 20.6533966064453,
+			"ms": 147352,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 262.900000000024,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 57.0,
+			"generation": 10,
+			"hp": 21.4819259643555,
+			"ms": 148358,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 264.880000000025,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 56.0,
+			"generation": 10,
+			"hp": 21.8961906433105,
+			"ms": 149363,
+			"phase": "heal-beach-boar",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 266.915000000025,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 22.0511569976807,
+			"ms": 150099,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 268.345000000025,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 22.7247200012207,
+			"ms": 151099,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 270.600000000025,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 23.1389846801758,
+			"ms": 152107,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 272.415000000026,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 23.5532493591309,
+			"ms": 153113,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 274.450000000026,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 24.1224803924561,
+			"ms": 154120,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 276.485000000026,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 58.0,
+			"generation": 10,
+			"hp": 24.381778717041,
+			"ms": 155134,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 278.740000000026,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 25.2103080749512,
+			"ms": 156137,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 280.830000000027,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 25.3652744293213,
+			"ms": 157142,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 282.810000000027,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 58.0,
+			"generation": 10,
+			"hp": 26.0388374328613,
+			"ms": 158153,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 284.845000000027,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 26.4531021118164,
+			"ms": 159162,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 286.880000000027,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 27.0223331451416,
+			"ms": 160168,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 288.970000000028,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 27.4365978240967,
+			"ms": 161174,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 290.950000000028,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 28.1101627349854,
+			"ms": 162182,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 292.985000000028,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 28.5244274139404,
+			"ms": 163185,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 295.020000000028,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 28.9386920928955,
+			"ms": 164197,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 297.110000000029,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 29.3529567718506,
+			"ms": 165202,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 299.310000000029,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 29.9221858978271,
+			"ms": 166209,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 301.125000000029,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 30.3364505767822,
+			"ms": 167217,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 303.160000000029,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 31.0100154876709,
+			"ms": 168219,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 305.30500000003,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 58.0,
+			"generation": 10,
+			"hp": 31.424280166626,
+			"ms": 169231,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 307.45000000003,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 31.8385448455811,
+			"ms": 170247,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 309.48500000003,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 32.2528076171875,
+			"ms": 171257,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 311.52000000003,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 32.8220405578613,
+			"ms": 172268,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 313.555000000031,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 10,
+			"hp": 33.2363052368164,
+			"ms": 173277,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 315.590000000031,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 10,
+			"hp": 33.7012023925781,
+			"ms": 174288,
+			"phase": "beach-after-combat",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 317.790000000031,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 27.0,
+			"generation": 10,
+			"hp": 35.7157554626465,
+			"ms": 178496,
+			"phase": "fight-shore-toad",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 326.260000000032,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 27.0,
+			"generation": 10,
+			"hp": 35.7157554626465,
+			"ms": 178512,
+			"phase": "loot-shore-toad",
+			"pos": [
+				45.625,
+				64.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 326.260000000032,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 39.0,
+			"generation": 10,
+			"hp": 36.3356170654297,
+			"ms": 179519,
+			"phase": "loot-shore-toad",
+			"pos": [
+				45.421875,
+				67.21875
+			],
+			"units": 45,
+			"view": 1,
+			"world_time": 328.405000000032,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 55.0,
+			"generation": 10,
+			"hp": 36.6455497741699,
+			"ms": 180395,
+			"phase": "fight-south-toad",
+			"pos": [
+				45.390625,
+				68.484375
+			],
+			"units": 44,
+			"view": 1,
+			"world_time": 330.220000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 55.0,
+			"generation": 10,
+			"hp": 36.6455497741699,
+			"ms": 180410,
+			"phase": "loot-south-toad",
+			"pos": [
+				45.390625,
+				68.484375
+			],
+			"units": 44,
+			"view": 1,
+			"world_time": 330.275000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 57.0,
+			"generation": 11,
+			"hp": 37.1104469299316,
+			"ms": 181411,
+			"phase": "loot-south-toad",
+			"pos": [
+				45.546875,
+				66.71875
+			],
+			"units": 44,
+			"view": 1,
+			"world_time": 332.310000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 42.0,
+			"generation": 11,
+			"hp": 37.7303085327148,
+			"ms": 182420,
+			"phase": "loot-south-toad",
+			"pos": [
+				45.65625,
+				63.75
+			],
+			"units": 44,
+			"view": 1,
+			"world_time": 334.345000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 56.0,
+			"generation": 11,
+			"hp": 37.8852729797363,
+			"ms": 182986,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 335.500000000033,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 57.0,
+			"generation": 11,
+			"hp": 38.5051383972168,
+			"ms": 184026,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 337.480000000034,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 47.0,
+			"generation": 12,
+			"hp": 38.8150672912598,
+			"ms": 185029,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 339.515000000034,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 186033,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 341.660000000034,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 187044,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 343.585000000034,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 188057,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 345.620000000035,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 189058,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 347.655000000035,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 190067,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 349.910000000035,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 191075,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 352.000000000035,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 192077,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 353.980000000036,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 193087,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 356.015000000036,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 194093,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 358.050000000036,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 195095,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 360.140000000036,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 196110,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 362.120000000037,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 197111,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 364.155000000037,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 198114,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 366.190000000037,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 199122,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 368.280000000037,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 200132,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 370.480000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 201146,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 372.295000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 59.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 202150,
+			"phase": "shore-after-five-kills",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 374.330000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 202992,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.145000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 204007,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 62.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 205018,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 206032,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 207046,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 208059,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 209066,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 210078,
+			"phase": "shore-paused",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 211011,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 376.255000000038,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 63.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 212011,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 378.015000000039,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 64.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 213017,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 380.050000000039,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 65.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 214019,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 382.140000000039,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 64.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 215033,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 384.120000000039,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 65.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 216038,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 386.15500000004,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 64.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 217044,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 388.19000000004,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 63.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 218049,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 390.28000000004,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 65.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 219055,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 392.26000000004,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 64.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 220065,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 394.295000000041,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 63.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 221066,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 396.330000000041,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 65.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 222074,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				45.671875,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 398.420000000041,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 61.0,
+			"generation": 12,
+			"hp": 39.125,
+			"ms": 223080,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				46.890625,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 400.620000000041,
+			"wound_jobs": 0,
+			"wound_layers": 14
+		},
+		{
+			"fps": 60.0,
+			"generation": 12,
+			"hp": 32.8542594909668,
+			"ms": 224088,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 402.600000000042,
+			"wound_jobs": 0,
+			"wound_layers": 15
+		},
+		{
+			"fps": 64.0,
+			"generation": 12,
+			"hp": 33.2654571533203,
+			"ms": 225099,
+			"phase": "shore-still-scene-filter",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 1,
+			"world_time": 404.690000000042,
+			"wound_jobs": 0,
+			"wound_layers": 15
+		},
+		{
+			"fps": 65.0,
+			"generation": 12,
+			"hp": 24.5275402069092,
+			"ms": 226055,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 406.560000000042,
+			"wound_jobs": 0,
+			"wound_layers": 15
+		},
+		{
+			"fps": 54.0,
+			"generation": 13,
+			"hp": 25.1443347930908,
+			"ms": 227070,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 408.760000000042,
+			"wound_jobs": 1,
+			"wound_layers": 15
+		},
+		{
+			"fps": 56.0,
+			"generation": 13,
+			"hp": 22.0603637695313,
+			"ms": 228071,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 410.685000000043,
+			"wound_jobs": 1,
+			"wound_layers": 15
+		},
+		{
+			"fps": 68.0,
+			"generation": 13,
+			"hp": 22.7133827209473,
+			"ms": 229084,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 412.610000000043,
+			"wound_jobs": 1,
+			"wound_layers": 15
+		},
+		{
+			"fps": 67.0,
+			"generation": 13,
+			"hp": 23.022274017334,
+			"ms": 230086,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 414.755000000043,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 70.0,
+			"generation": 13,
+			"hp": 23.6400527954102,
+			"ms": 231099,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 416.900000000043,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 72.0,
+			"generation": 13,
+			"hp": 24.0519046783447,
+			"ms": 232106,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 418.935000000044,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 71.0,
+			"generation": 13,
+			"hp": 24.6696853637695,
+			"ms": 233115,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 420.970000000044,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 71.0,
+			"generation": 13,
+			"hp": 24.9785747528076,
+			"ms": 234115,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 423.005000000044,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 66.0,
+			"generation": 13,
+			"hp": 25.5963535308838,
+			"ms": 235122,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 425.040000000044,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 72.0,
+			"generation": 13,
+			"hp": 26.008207321167,
+			"ms": 236130,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 427.240000000045,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 72.0,
+			"generation": 13,
+			"hp": 26.6259860992432,
+			"ms": 237141,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 429.110000000045,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 72.0,
+			"generation": 13,
+			"hp": 26.9348754882813,
+			"ms": 238153,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 431.145000000045,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 71.0,
+			"generation": 13,
+			"hp": 27.5526542663574,
+			"ms": 239167,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 433.180000000045,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		},
+		{
+			"fps": 71.0,
+			"generation": 13,
+			"hp": 27.9645080566406,
+			"ms": 240168,
+			"phase": "look-back-uphill",
+			"pos": [
+				47.03125,
+				63.296875
+			],
+			"units": 43,
+			"view": 3,
+			"world_time": 435.380000000046,
+			"wound_jobs": 0,
+			"wound_layers": 16
+		}
+	]
+}

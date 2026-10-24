@@ -1,0 +1,62 @@
+{
+  "suite": "ground_mark_animation",
+  "platform": "windows",
+  "renderer": "d3d12",
+  "exit": 0,
+  "seconds": 15.44,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/marks-candidate/CursedLands-1.27.0-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/blood-animation-dx12/fixtures/ground_mark_animation.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/checks/blood-animation-dx12",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/marks-candidate/CursedLands-1.27.0-windows-x86_64/mods",
+    "--enhanced"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "GROUND_MARK_ANIMATION 24 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [],
+  "bundle_declared_source": {
+    "source_commit": "4f31af72c3505c35c9bae651c68357bd75a21bca",
+    "game_tree": "666af4ee5fe4897d7e2e4f28620c119ab3260fb5",
+    "build_type": null
+  },
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/marks-candidate/CursedLands-1.27.0-windows-x86_64/CursedLands.exe": "6d85d58bad5b10fd39b8ef9b6a1d789921f579f89319fec2f4f1390a0fa2d878",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-nrd-20261024/marks-candidate/CursedLands-1.27.0-windows-x86_64/CursedLands.pck": "5cf5e17915158c1c7b820d595b47aa4fe400c22eb78ad7117508beac7e745431"
+  },
+  "repository_commit": "ba5ce2cd4fe434d69439e0aa2393ef0e650ee1b7",
+  "repository_status": " M game/src/game/fx/ground_mark_projection.gd\n M game/src/game/fx/ground_marks.gd\n?? tools/tests/ground_mark_animation.gd\n?? tools/tests/path_trace_recording_profile.gd\n?? tools/tests/path_trace_recording_route.gd\n?? tools/tests/path_trace_route_marks_profile.gd\n?? tools/tests/path_trace_route_rain_profile.gd\n?? tools/tests/path_trace_route_snapshot_profile.gd\n?? tools/tests/path_trace_traversal_profile.gd\n",
+  "fixture_hashes": {
+    "footprint_surface_scene.gd": "eb5e6e3eaac7044d04604e2d2f96da10435fc732e48f8a444a20fe5b99b76f7a",
+    "ground_mark_animation.gd": "da00cc3b843e73b8e89ec7c64edc250501fd65cfdc1b59297f855f95d3b7351e",
+    "ground_mark_receivers.gd": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67"
+  },
+  "fixture_sha256": "da00cc3b843e73b8e89ec7c64edc250501fd65cfdc1b59297f855f95d3b7351e",
+  "full_result_sha256": "ac2f17c08d2604c4436ee17d1e54aaef1d2e361f21c49213305ea6b61b43b073"
+}

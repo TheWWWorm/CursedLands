@@ -24,6 +24,12 @@ RTX 4090 Laptop qualification.
 
 ## Performance
 
+Follow-up: the later [campaign traversal qualification](path-tracing-traversal-2026-10-24.md)
+reproduces the sustained collapse in this preview and identifies repeated
+blood-mark geometry reconstruction. Experimental.2 addresses that separate
+cost. The controlled routes below did not include the representative downhill
+combat sequence and must not be read as verification of that sequence.
+
 The supplied 1.27.0 report shows a single retained world, nearly steady memory,
 and frame rate falling toward 6 FPS during play. The late paused sample recovers
 to about 50 FPS. Its clock scale is 55/27. The older report segment involving
