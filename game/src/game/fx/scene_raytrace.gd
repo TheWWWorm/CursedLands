@@ -547,7 +547,9 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 		data.append_array(environment)
 		data.append_array(clouds)
-		data.append_array(PackedFloat32Array([mini(_lights.size(),PATH_LIGHT_LIMIT),0,0,1]))
+		# Weather changes every receiver; local flutter only needs a fast
+		# response where those lights contribute to the visible surface.
+		data.append_array(PackedFloat32Array([mini(_lights.size(),PATH_LIGHT_LIMIT),float(gentle_change and weather_fading),0,1]))
 		data.append_array(local_positions);data.append_array(local_colours)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000

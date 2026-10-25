@@ -179,7 +179,10 @@ func _setup_env() -> void:
 	if Portability.held_sun():
 		sun_aim_mode = 0
 		sun_grid_lock = true
-		sun.light_specular = Gfx.SUN_MARK
+	# All world shaders identify sunlight by this marker, including PT grass
+	# which reapplies only the sun component through the native shadow map.
+	# Desktop's continuously aimed sun needs the same identity as a held sun.
+	sun.light_specular = Gfx.SUN_MARK
 	sun.shadow_enabled = true
 	# Out-of-view figures cast nothing. Land and visible figures share the sun.
 	sun.shadow_caster_mask = 0xFFFFFFFF & ~GameUnit.OFFSCREEN_LAYER

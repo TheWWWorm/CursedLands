@@ -2,6 +2,9 @@ extends "res://tools/tests/path_trace_quality.gd"
 ## Execute NRD's real native planner + GPU passes, including cold/steady state,
 ## resize, light reset and return from progressive accumulation.
 var progressive := false
+var lighting_limit := 8.0
+var local_light := Vector4(100,0,0,4)
+var weather_change := false
 class FailingNrd extends "res://src/game/fx/path_trace_nrd.gd":
 	var attempts := 0
 	var freed := true
@@ -17,7 +20,13 @@ func replace_nrd(replacement: RefCounted) -> void:
 	replaced.emit.call_deferred()
 func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 	var bytes:=super.frame(history,gi,shadows)
-	bytes.encode_float(145*4,256.0 if progressive else 8.0)
+	bytes.encode_float(145*4,256.0 if progressive else lighting_limit)
+	# Same extended light table as the production controller. Start with a
+	# remote fluttering light that must not disturb this receiver's history.
+	bytes.encode_float(188*4,1.0);bytes.encode_float(189*4,float(weather_change));bytes.encode_float(191*4,1.0)
+	for i in 4:bytes.encode_float((192+i)*4,local_light[i])
+	for i in 3:bytes.encode_float((448+i)*4,1.0)
+	bytes.encode_float(451*4,0.1)
 	return bytes
 
 func run() -> void:
@@ -49,6 +58,25 @@ func run() -> void:
 	var backing:=device.output.texture_rd_rid
 	await render_many(2)
 	check(device.output.texture_rd_rid==backing,"NRD presents stable public texture handles")
+	# Real NRD output history, not just the controller's float budget. A
+	# fractional window must retain temporal samples at 30/20/12 Hz.
+	for hz in [30.0,20.0,12.0]:
+		lighting_limit=1.0/(1.0-pow(2.0/3.0,60.0/hz))
+		await render_many(16)
+		var age:=mean(device.output).a
+		check(device.nrd_active and age>=6.0,
+			"fractional flame response preserves the slow denoising history at %d Hz (%.3f)"%[hz,age])
+	local_light=Vector4(0,0.7,0,6);lighting_limit=3.0
+	await render_many(24)
+	check(mean(device.output).a>=1.5 and mean(device.output).a<5.0,"nearby changing light retains short history at 60 Hz (%.3f)"%mean(device.output).a)
+	lighting_limit=1.8;await render_many(24)
+	check(mean(device.output).a>=0.99 and mean(device.output).a<2.0,"nearby light response accelerates at 30 Hz (%.3f)"%mean(device.output).a)
+	local_light=Vector4(100,0,0,4);await render_many(24)
+	check(mean(device.output).a>=6.0,"distant light restores the unaffected receiver's long history")
+	weather_change=true;await render_many(24)
+	check(mean(device.output).a>=1.5 and mean(device.output).a<5.0,"weather transition responds across the whole visible surface (%.3f)"%mean(device.output).a)
+	weather_change=false
+	lighting_limit=8.0
 	progressive=true;await render_many(12)
 	check(not device.nrd_active and mean(device.output).a>=11.0,"progressive mode keeps exact long accumulation")
 	progressive=false;await render_many(8)

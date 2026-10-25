@@ -184,6 +184,20 @@ func first_person_presentation() -> void:
 		check(native._instance_updates(false).is_empty() and script._instance_updates(false).is_empty(),
 			"stationary presented instances avoid redundant updates")
 	model._view_shift=Vector3(0.3,0,0); native._instance_updates(false); script._instance_updates(false)
+	model.remove_child(body)
+	native._instance_updates(false);script._instance_updates(false)
+	# A masked native entry retains its authored transform; the script entry
+	# may retain its last presented shift. Only visibility matters while absent.
+	check(native.instances[0].mask==0 and script.instances[0].mask==0,
+		"detached first-person part is masked without reading its global transform")
+	model.add_child(body)
+	check(native._instance_updates(false)==script._instance_updates(false) and native.instances[0].mask==1,
+		"reattached first-person part restores its presented transform")
+	unit.remove_child(model)
+	native._instance_updates(false);script._instance_updates(false)
+	check(native.instances.all(func(e):return e.mask==0) and script.instances.all(func(e):return e.mask==0),
+		"detached active first-person model masks its retained parts safely")
+	unit.add_child(model);native._instance_updates(false);script._instance_updates(false)
 	model._view_active=false; body.layers=1
 	check(native._instance_updates(false)==script._instance_updates(false) and native.instances[0].transform==body.global_transform,
 		"leaving first person restores authored camera placement")

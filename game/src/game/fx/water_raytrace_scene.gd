@@ -73,7 +73,7 @@ func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
 			if root is Node3D and world.is_ancestor_of(root) and root.get_world_3d()==world.get_world_3d() and not roots.has(root):
 				roots.append(root)
 	for root: Node3D in roots:
-		if not is_instance_valid(root): continue
+		if not is_instance_valid(root) or not root.is_inside_tree(): continue
 		var dynamic := root is GameUnit or root.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
 		var radius := RADIUS+24.0
 		if dynamic and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
@@ -168,7 +168,9 @@ func step(budget_us := 6000) -> bool:
 	while _cursor < pending.size() and not failed:
 		var entry: Dictionary = pending[_cursor]; _cursor += 1
 		var node: Node3D = entry.node.get_ref()
-		if is_instance_valid(node):
+		# Gathering spans frames. Equipment/body parts can leave the tree or
+		# lose their mesh before this queued entry reaches the packing budget.
+		if is_instance_valid(node) and node.is_inside_tree() and (entry.land or (node as MeshInstance3D).mesh != null):
 			if entry.land:
 				var arrays: Array = _ground.arrays(node.deformation_arrays(),node.get_instance_id())
 				var geometry := _append(arrays,node.global_transform,null,true)
@@ -355,12 +357,12 @@ func _instance_updates(force: bool) -> Array:
 	if lighting_camera_mask >= 0:
 		for group: Dictionary in _view_models.values():
 			var model: EIUnitModel = group.model.get_ref()
-			if not is_instance_valid(model) or not model._view_active: continue
+			if not is_instance_valid(model) or not model.is_inside_tree() or not model._view_active: continue
 			model._align_first_person_body()
 			for i: int in group.indices:
 				var entry: Dictionary = instances[i]
 				var mesh: MeshInstance3D = entry.node.get_ref()
-				if not is_instance_valid(mesh) or not model._view_meshes.has(mesh): continue
+				if not is_instance_valid(mesh) or not mesh.is_inside_tree() or not model._view_meshes.has(mesh): continue
 				presented[i] = {"before":entry.transform,"mask":entry.mask,
 					"transform":model.presented_mesh_transform(mesh)}
 	var changes := _tracked_instance_updates(force)
@@ -395,14 +397,14 @@ func _tracked_instance_updates(force: bool) -> Array:
 	var transforms := []
 	for group: Dictionary in _groups.values():
 		var root: Node3D = group.node.get_ref()
-		var visible := is_instance_valid(root) and root.is_visible_in_tree()
+		var visible := is_instance_valid(root) and root.is_inside_tree() and root.is_visible_in_tree()
 		if root is GameUnit and root.is_invisible(): visible = false
 		if not force and not visible and group.visible == 0: continue
 		group.visible = 1 if visible else 0
 		for i: int in group.indices:
 			var entry: Dictionary = instances[i]; var node: Node3D = entry.node.get_ref()
 			var mask := 0; var transform: Transform3D = entry.transform
-			if visible and is_instance_valid(node) and (entry.terrain or node.mesh == entry.mesh) and node.is_visible_in_tree():
+			if visible and is_instance_valid(node) and node.is_inside_tree() and (entry.terrain or node.mesh == entry.mesh) and node.is_visible_in_tree():
 				mask = 255
 				if not entry.terrain: transform = node.global_transform
 				if node is MeshInstance3D:

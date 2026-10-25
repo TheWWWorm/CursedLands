@@ -1,6 +1,9 @@
 // Application/NRD boundary. Compile against the pinned SDK; use its actual
 // packing and material-factor helpers for both ends of the denoiser.
 #include "NRD.hlsli"
+// Keep the application boundary on the same unmodified SPIR-V path as the
+// SDK passes; Godot's re-optimization can corrupt the dynamic light table.
+[[vk::constant_id(0)]] const bool ei_nrd_dispatch = true;
 [[vk::binding(0,0)]] Texture2D<float4> raw_diffuse : register(t0);
 [[vk::binding(1,0)]] Texture2D<float4> raw_guide : register(t1);
 [[vk::binding(2,0)]] Texture2D<float4> raw_specular : register(t2);
@@ -17,6 +20,11 @@ struct Frame {
     column_major float4x4 previous_view;
     float4 sun;float4 sun_direction;float4 sky;float4 settings;float4 camera;float4 center_radius;
     float4 point_position[7];float4 point_colour[7];float4 path;
+    column_major float4x4 previous_inverse_view_projection;
+    float4 sky_zenith;float4 sky_horizon;float4 sky_ground;
+    float4 cloud_state;float4 cloud_phases;float4 cloud_domain;
+    float4 local_state;
+    float4 local_position[64];float4 local_colour[64];
 };
 [[vk::binding(6,0)]] ConstantBuffer<Frame> frame : register(b6);
 
@@ -38,6 +46,30 @@ void factors(uint2 pixel,float3 world,float3 normal,out float roughness,out floa
 }
 
 #ifdef NRD_PACK
+// A distant flame must not shorten history across the whole view. Estimate
+// its local contribution with the integrator's finite-range falloff. This
+// controls history confidence only: it never adds unoccluded lighting.
+float lighting_confidence(float3 world) {
+    if(frame.path.y>=8.0)return 1.0;
+    float affected=frame.local_state.y;
+    if(affected<1.0) {
+        float local=0.0;
+        uint count=frame.local_state.w>0.5?min(uint(frame.local_state.x),64u):7u;
+        for(uint i=0;i<count;i++) {
+            float4 lamp=frame.local_state.w>0.5?frame.local_position[i]:frame.point_position[i];
+            float3 colour=frame.local_state.w>0.5?frame.local_colour[i].rgb:frame.point_colour[i].rgb;
+            float3 delta=lamp.xyz-world;
+            if(lamp.w>0.0)local+=dot(colour,float3(0.2126,0.7152,0.0722))*max(1.0-dot(delta,delta)/(lamp.w*lamp.w),0.0);
+        }
+        float background=dot(frame.sun.rgb+frame.sky.rgb,float3(0.2126,0.7152,0.0722));
+        affected=saturate(local/max(local+background,0.0001));
+    }
+    // REBLUR rounds history length twice. Two thirds retains two samples at
+    // 60 Hz; lower frame rates need faster local response to flame flutter.
+    // Weather fades are slower, so preserve two samples there at any rate.
+    float response_confidence=frame.local_state.y>0.5?2.0/3.0:1.0-1.0/max(frame.path.y,2.0);
+    return lerp(1.0,response_confidence,affected);
+}
 [[vk::binding(7,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_motion : register(u7);
 [[vk::binding(8,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_normal : register(u8);
 [[vk::binding(9,0),vk::image_format("r32f")]] RWTexture2D<float> out_depth : register(u9);
@@ -46,6 +78,7 @@ void factors(uint2 pixel,float3 world,float3 normal,out float roughness,out floa
 [[vk::binding(12,0),vk::image_format("r16f")]] RWTexture2D<float> out_confidence : register(u12);
 [numthreads(8,8,1)]
 void main(uint2 pixel:SV_DispatchThreadID) {
+    if(!ei_nrd_dispatch)return;
     uint2 size;raw_guide.GetDimensions(size.x,size.y);if(any(pixel>=size))return;
     float4 guide=raw_guide[pixel];
     if(guide.w<=0.0) {
@@ -62,7 +95,7 @@ void main(uint2 pixel:SV_DispatchThreadID) {
         float3 previous=float3(dot(asfloat(motions.Load4(offset)),world_h),dot(asfloat(motions.Load4(offset+16)),world_h),dot(asfloat(motions.Load4(offset+32)),world_h));
         motion=previous-world;
     }
-    out_motion[pixel]=float4(motion,0.0);out_confidence[pixel]=valid;
+    out_motion[pixel]=float4(motion,0.0);out_confidence[pixel]=valid*lighting_confidence(world);
     out_normal[pixel]=NRD_FrontEnd_PackNormalAndRoughness(normal,roughness,0.0);
     out_depth[pixel]=guide.w;
     float2 distance=raw_distance[pixel];
@@ -80,6 +113,7 @@ void main(uint2 pixel:SV_DispatchThreadID) {
 [[vk::binding(12,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_material : register(u12);
 [numthreads(8,8,1)]
 void main(uint2 pixel:SV_DispatchThreadID) {
+    if(!ei_nrd_dispatch)return;
     uint2 size;raw_guide.GetDimensions(size.x,size.y);if(any(pixel>=size))return;
     float4 guide=raw_guide[pixel];out_guide[pixel]=guide;out_material[pixel]=raw_material[pixel];
     // NRD deliberately doesn't touch out-of-range pixels; never present old

@@ -146,9 +146,10 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y)*ei_pt_material_weight(p,surface);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
         a+=texelFetch(ei_rt_shadow0,p,0)*w;
-        // PT's second shadow channel is the reconstruction material guide;
-        // the raster receiver only consumes diffuse and glossy radiance.
         if(ei_pt_active<=0.5)b+=texelFetch(ei_rt_shadow1,p,0)*w;
+#ifdef EI_TERRAIN_LIGHT
+        else b.rgb+=texelFetch(ei_pt_direct_sun,p,0).rgb*w;
+#endif
         total+=w;
     }
     if(total<0.01 && ei_pt_active>0.5) {
@@ -167,6 +168,9 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
             float w=exp(-dot(offset,offset))*ei_pt_material_weight(p,surface);
             gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
             a+=texelFetch(ei_rt_shadow0,p,0)*w;total+=w;
+#ifdef EI_TERRAIN_LIGHT
+            b.rgb+=texelFetch(ei_pt_direct_sun,p,0).rgb*w;
+#endif
         }
     }
     // Ring samples have Gaussian weights, unlike the bilinear fast path.
@@ -176,6 +180,12 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
     float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);
     if(ei_pt_active>0.5) {
         gi/=total;visibility0=a/total;visibility1=b/total;
+#ifdef EI_TERRAIN_LIGHT
+        // Procedural grass is absent from the acceleration structure. Keep
+        // its nearby native shadows on the ground as well as on the blades.
+        float nearby=ei_pt_grass_shadows*(1.0-smoothstep(18.0,24.0,length(world-ei_rt_eye)));
+        visibility1.rgb=clamp(visibility1.rgb*nearby,vec3(0.0),gi);
+#endif
     } else {
         gi=mix(ei_lin(ei_ambient),gi/total,fade);
         visibility0=mix(vec4(1.0),a/total,fade);visibility1=mix(vec4(1.0),b/total,fade);
@@ -240,7 +250,12 @@ const CAPTURE := """
                 ei_rt_visibility0=a;
                 vec3 reflected=ALBEDO*ei_material_diffuse.rgb*(indirect-a.rgb)*max(1.0-ei_k,0.0);
 #else
+#ifdef EI_TERRAIN_LIGHT
+                ei_rt_visibility0=b;
+                vec3 reflected=(ALBEDO*ei_material_diffuse.rgb*(indirect-b.rgb)+a.rgb)*max(1.0-ei_k,0.0);
+#else
                 vec3 reflected=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb)*max(1.0-ei_k,0.0);
+#endif
 #endif
                 EMISSION+=(reflected+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
             } else {
@@ -253,7 +268,7 @@ const CAPTURE := """
 """
 
 const LIGHT := """
-#ifdef EI_GRASS_LIGHT
+#ifdef EI_PT_NATIVE_SUN
     if(ei_pt_blend>0.0 && LIGHT_IS_DIRECTIONAL && abs(SPECULAR_AMOUNT-0.371)<0.002) {
         DIFFUSE_LIGHT+=ei_rt_visibility0.rgb*ei_material_diffuse.rgb*ATTENUATION*ei_pt_blend*max(1.0-ei_k,0.0);
     }
@@ -304,6 +319,8 @@ static func applicable(code: String,lit: bool) -> bool:
 		and not code.contains("#define EI_WATER_FX") and not code.contains("#define EI_WATER_WAVES")
 
 static func inject(code: String,clouds: bool) -> String:
+	if code.contains("#define EI_GRASS_LIGHT") or code.contains("#define EI_TERRAIN_LIGHT"):
+		code = code.replace("shader_type spatial;","shader_type spatial;\n#define EI_PT_NATIVE_SUN\n")
 	if code.contains("#define EI_FOLIAGE_WIND"):
 		var capture := "ei_rt_rest=(MODEL_MATRIX*vec4(VERTEX,1.0)).xyz;"
 		if code.contains("varying float contact_band;"):
