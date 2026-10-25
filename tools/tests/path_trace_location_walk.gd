@@ -22,6 +22,7 @@ var nrd_inactive_frames := 0
 var shifted_frames := 0
 var transform_mismatches := 0
 var maximum_transform_error := 0.0
+var missing_torso_frames := 0
 var mismatch_examples := []
 var in_flight_reads := 0
 var world_start := 0.0
@@ -201,6 +202,9 @@ func run() -> void:
 		await stage("look-%02d"%leg,60,Vector2.INF,leg)
 		if leg==route_legs/2:
 			g.direct._set_view_mode(2); await stage("third-person-held",90)
+			if OS.get_cmdline_user_args().has("--pt-back-audit"):
+				await load("res://tools/tests/path_trace_character_lighting.gd").new().run(self)
+				await finish();return
 			g.direct._set_view_mode(3); await stage("first-person-restored",60)
 			if direct_input:
 				for gait in [1,0,2]:
@@ -310,6 +314,12 @@ func sample_body_pose() -> void:
 	# CPU tick starts. Compare the presentation and submitted RT transforms at
 	# frame_pre_draw, after the model's final alignment callback, without an
 	# asynchronous readback crossing into a different process frame.
+	if rt._scene!=null and is_instance_valid(h.model._view_torso):
+		var torso: MeshInstance3D=h.model._view_torso
+		var receivers:=0
+		for entry: Dictionary in rt._scene.instances:
+			if entry.node.get_ref()==torso and entry.mesh==torso.mesh and (entry.mask&1)!=0:receivers+=1
+		if receivers!=torso.mesh.get_surface_count():missing_torso_frames+=1
 	if h.model._view_active and rt._scene!=null:
 		if h.model._view_shift.length()>0.001: shifted_frames+=1
 		for entry: Dictionary in rt._scene.instances:
@@ -330,6 +340,7 @@ func persist() -> void:
 		"final_stats":rt.stats if is_instance_valid(rt) else {},
 		"distance":total_distance,"inactive_frames":inactive_frames,"nrd_inactive_frames":nrd_inactive_frames,
 		"shifted_frames":shifted_frames,"transform_mismatches":transform_mismatches,"max_transform_error":maximum_transform_error,
+		"missing_torso_frames":missing_torso_frames,
 		"mismatch_examples":mismatch_examples,
 		"scenery_placements":scenery_placements,
 		"in_flight_reads":in_flight_reads,"dlss":status,"weather_transition":storm,"world_start":world_start,"direct_input":direct_input,"peaceful":peaceful,
@@ -337,6 +348,7 @@ func persist() -> void:
 	},"\t"))
 
 func finish() -> void:
+	check(missing_torso_frames==0,"camera movement and mode changes retain every torso PT receiver")
 	persist()
 	if is_instance_valid(g): g.queue_free()
 	if is_instance_valid(s): s.queue_free()

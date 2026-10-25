@@ -35,6 +35,7 @@ const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
 const WispGlow = preload("res://src/ei/wisp_glow.gd")
 const Mouth = preload("res://src/ei/dialogue_mouth.gd")
+const VIEW_MESH_VARIANTS_META := &"first_person_mesh_variants"
 
 ## Remake option gfx_sharp_units ("Sharp character textures"; default on,
 ## off under "Original look"): the unit texture fetch of every unit material
@@ -1563,6 +1564,10 @@ func set_first_person_view(on: bool) -> void:
 		for i in before.size():
 			if before[i] != after[i]: _view_rim.append(after[i] - rest)
 	if _view_body_closed == null: return
+	# Both are immutable presentation variants of the same surface. Keep them
+	# in a ray scene together so changing camera mode only switches masks;
+	# otherwise the restored torso loses PT until the world finishes rebuilding.
+	_view_torso.set_meta(VIEW_MESH_VARIANTS_META,[_view_body_original,_view_body_closed])
 	_view_torso.mesh = _view_body_closed if on else _view_body_original
 	if on and _view_meshes.is_empty():
 		# Move renderer instances only. Materials can be shared by heads,

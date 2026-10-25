@@ -132,8 +132,14 @@ static func surface_relief(material: Material, land: bool) -> float:
 	var profile: Variant = material.get_shader_parameter("surface_profile")
 	return clampf(profile.w,0.0,1.0) if profile is Vector4 and GameData.option("gfx_materials")>0 else 0.0
 
+func _mesh_variants(mesh: MeshInstance3D) -> Array:
+	var variants: Array=mesh.get_meta(EIUnitModel.VIEW_MESH_VARIANTS_META,[])
+	# An equipment replacement is still a real topology change. Only the two
+	# registered, immutable camera meshes can share this retained membership.
+	return variants if variants.has(mesh.mesh) else [mesh.mesh]
+
 func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
-	var version := [mesh.mesh.get_instance_id()]
+	var version := [_mesh_variants(mesh).map(func(source: Mesh):return source.get_instance_id())]
 	for surface in mesh.mesh.get_surface_count():
 		var material := mesh.get_active_material(surface)
 		var key := material.get_instance_id() if material else 0
@@ -186,31 +192,35 @@ func step(budget_us := 6000) -> bool:
 				_add_instance(node,geometry,Transform3D.IDENTITY)
 			else:
 				var mesh := node as MeshInstance3D
-				for surface in mesh.mesh.get_surface_count():
-					# Only ArrayMesh exposes this query to scripts. PrimitiveMesh
-					# uses triangles except PointMesh, which has no ray surface.
-					if mesh.mesh is ArrayMesh:
-						if mesh.mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
-					elif not mesh.mesh is PrimitiveMesh or mesh.mesh is PointMesh: continue
-					var material := mesh.get_active_material(surface)
-					var key := "%s:%s:%s"%[mesh.mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
-					var morph: bool = mesh.get_blend_shape_count() > 0
-					if morph: key += ":"+str(node.get_instance_id())
-					var geometry: int = _mesh_cache.get(key,-1)
-					if geometry < 0:
-						var source: Dictionary=_sources.surface(mesh.mesh,surface)
-						geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
-						if geometry >= 0:
-							_mesh_cache[key] = geometry
-							if morph:
-								_morph_geometries.append(geometry)
-								geometries[geometry].morph = {"node":weakref(node),"mesh":mesh.mesh,"surface":surface,
-									"arrays":source.arrays,"shapes":source.shapes,"weights":[]}
-					_add_instance(node,geometry,node.global_transform,surface)
+				for source_mesh: Mesh in _mesh_variants(mesh):
+					_pack_mesh(mesh,source_mesh)
 		if Time.get_ticks_usec() >= deadline: break
 	return failed or _cursor >= pending.size()
 
-func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface := -1) -> void:
+func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
+	for surface in source_mesh.get_surface_count():
+		# Only ArrayMesh exposes this query to scripts. PrimitiveMesh
+		# uses triangles except PointMesh, which has no ray surface.
+		if source_mesh is ArrayMesh:
+			if source_mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
+		elif not source_mesh is PrimitiveMesh or source_mesh is PointMesh: continue
+		var material := mesh.get_active_material(surface)
+		var key := "%s:%s:%s"%[source_mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
+		var morph: bool = source_mesh is ArrayMesh and source_mesh.get_blend_shape_count() > 0
+		if morph: key += ":"+str(mesh.get_instance_id())
+		var geometry: int = _mesh_cache.get(key,-1)
+		if geometry < 0:
+			var source: Dictionary=_sources.surface(source_mesh,surface)
+			geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
+			if geometry >= 0:
+				_mesh_cache[key] = geometry
+				if morph:
+					_morph_geometries.append(geometry)
+					geometries[geometry].morph = {"node":weakref(mesh),"mesh":source_mesh,"surface":surface,
+						"arrays":source.arrays,"shapes":source.shapes,"weights":[]}
+		_add_instance(mesh,geometry,mesh.global_transform,surface,source_mesh)
+
+func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface := -1, source_mesh: Mesh = null) -> void:
 	if geometry < 0: return
 	_watching = false
 	if instances.size() >= MAX_INSTANCES: failed = true; return
@@ -222,7 +232,7 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 		var model_key: int = root.model.get_instance_id()
 		if not _view_models.has(model_key): _view_models[model_key] = {"model":weakref(root.model),"indices":[]}
 		_view_models[model_key].indices.append(instances.size())
-	instances.append({"geometry":geometry,"node":weakref(node),"mesh":node.mesh if node is MeshInstance3D else null,
+	instances.append({"geometry":geometry,"node":weakref(node),"mesh":source_mesh if source_mesh else node.mesh if node is MeshInstance3D else null,
 		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
 
 func history_matches(previous: RefCounted) -> PackedInt32Array:
@@ -231,17 +241,20 @@ func history_matches(previous: RefCounted) -> PackedInt32Array:
 	var old := {}
 	for i in previous.instances.size():
 		var entry: Dictionary=previous.instances[i];var node: Node3D=entry.node.get_ref()
-		if is_instance_valid(node):old["%d:%d"%[node.get_instance_id(),entry.surface]]=i
+		if is_instance_valid(node):old[_history_key(entry,node)]=i
 	for i in instances.size():
 		var entry: Dictionary=instances[i];var node: Node3D=entry.node.get_ref()
 		if not is_instance_valid(node) or geometries[entry.geometry].has("morph"):continue
-		var key := "%d:%d"%[node.get_instance_id(),entry.surface]
+		var key := _history_key(entry,node)
 		if not old.has(key):continue
 		var before: Dictionary=previous.instances[old[key]]
 		if entry.mesh!=before.mesh:continue
 		if _nodes.get(node.get_instance_id())!=previous._nodes.get(node.get_instance_id()):continue
 		matches[i]=old[key]
 	return matches
+
+func _history_key(entry: Dictionary,node: Node3D) -> String:
+	return "%d:%d:%d"%[node.get_instance_id(),entry.surface,entry.mesh.get_instance_id() if entry.mesh else 0]
 
 func _layer(texture: Texture2D, atlas := -1) -> int:
 	var key := "terrain:%d"%atlas if atlas >= 0 else str(texture.get_instance_id()) if texture else "white"
@@ -374,6 +387,10 @@ func _instance_updates(force: bool) -> Array:
 	for i: int in _view_offsets:
 		if presented.has(i): continue
 		var entry: Dictionary = instances[i]
+		var mesh: MeshInstance3D = entry.node.get_ref()
+		# The native tracker caches the authored transform, so an idle body
+		# need not emit a transform change when its renderer-only shift ends.
+		if is_instance_valid(mesh) and mesh.is_inside_tree():entry.transform=mesh.global_transform
 		entry.lighting_offset = Vector3.ZERO
 		changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask,"lighting_offset":Vector3.ZERO}
 	_view_offsets.clear()
