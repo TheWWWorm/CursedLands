@@ -1,0 +1,22 @@
+[
+  "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.x86_64",
+  "--render-thread",
+  "safe",
+  "--audio-driver",
+  "Dummy",
+  "--max-fps",
+  "30",
+  "--display-driver",
+  "x11",
+  "--rendering-method",
+  "forward_plus",
+  "--rendering-driver",
+  "vulkan",
+  "--windowed",
+  "--resolution",
+  "1280x720",
+  "--",
+  "--no-movies",
+  "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+  "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ground_mark_animation.gd"
+]

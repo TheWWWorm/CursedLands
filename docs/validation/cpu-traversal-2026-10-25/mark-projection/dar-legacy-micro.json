@@ -1,0 +1,56 @@
+{
+  "gpu_job": "d4145b84f5574445",
+  "baseline_commit": "3c0e375d070593d52b0b112f54d2946114130687",
+  "baseline_method_exact": true,
+  "baseline_method_sha256": "7f7113d35f7f4eb59641fb3601fb0e560f8216443ffeff974dc48b32ee2e3e53",
+  "method": "Untouched previous place() in a separate projector over the same live world and marks; legacy/native/native/legacy synchronous blocks after the route. All five geometry channels verified before and after each block.",
+  "checks": 317,
+  "failures": 0,
+  "legacy_us_per_query": 346.990625,
+  "native_us_per_query": 105.7328125,
+  "saving_us_per_query": 241.25781250000003,
+  "saving_percent": 69.5286255932707,
+  "raw": [
+    {
+      "marks": 32,
+      "native": false,
+      "queries": 1280,
+      "soft_ground": true,
+      "usec": 449385,
+      "vertices": 1974,
+      "visible_actors": 32,
+      "world_actors": 334
+    },
+    {
+      "marks": 32,
+      "native": true,
+      "queries": 1280,
+      "soft_ground": true,
+      "usec": 135447,
+      "vertices": 1974,
+      "visible_actors": 32,
+      "world_actors": 334
+    },
+    {
+      "marks": 32,
+      "native": true,
+      "queries": 1280,
+      "soft_ground": true,
+      "usec": 135229,
+      "vertices": 1974,
+      "visible_actors": 32,
+      "world_actors": 334
+    },
+    {
+      "marks": 32,
+      "native": false,
+      "queries": 1280,
+      "soft_ground": true,
+      "usec": 438911,
+      "vertices": 1974,
+      "visible_actors": 32,
+      "world_actors": 334
+    }
+  ],
+  "limits": "Forced geometry rebuilds only. Ordinary animated blood reuses its patch. This is not whole-game FPS."
+}

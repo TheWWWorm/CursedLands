@@ -37,6 +37,7 @@
 #include "direct_pose.h"
 #include "vegetation_contacts.h"
 #include "ground_contact.h"
+#include "ground_mark_projection.h"
 #include "motion_spline.h"
 #include "mmp_texture.h"
 #include "audio_decode.h"
@@ -591,6 +592,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(DirectPoseKernel);
         GDREGISTER_CLASS(VegetationContactKernel);
         GDREGISTER_CLASS(GroundContactKernel);
+        GDREGISTER_CLASS(GroundMarkProjectionKernel);
         GDREGISTER_CLASS(NetSmoothKernel);
     }
 }

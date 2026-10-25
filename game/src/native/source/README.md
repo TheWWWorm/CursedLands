@@ -71,6 +71,16 @@ older libraries and `-- --ei-script-ground-contact` preserve scalar geometry.
 The registered `ground_contact_native` test checks exact geometry and terrain
 admission for synthetic vertices and authored rigid/smoothed animated feet.
 
+`GroundMarkProjectionKernel` subdivides and clips a complete batch of ground
+mark triangles in native code. Source order, vertices, normals, UVs, terrain
+coordinates and colors match the scalar projector exactly. Current terrain
+and floor geometry are passed on each rebuild; no scene or geometry is cached.
+Receiver selection, soft-ground shaders, animated blood-patch reuse, material
+updates and mark lifetime remain in script. Derived projectors, unsupported
+inputs, older libraries and `-- --ei-script-mark-projection` keep scalar
+clipping. The registered `ground_mark_projection_native` regression covers
+clipping boundaries, subdivision, live terrain/floors and complete fallback.
+
 The terrain instance also owns persistent static block topology: representatives,
 weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
 floor and object changes invalidate it through the existing map revision.

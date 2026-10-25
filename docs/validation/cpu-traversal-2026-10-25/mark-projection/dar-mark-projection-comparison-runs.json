@@ -1,0 +1,45 @@
+[
+  {
+    "name": "dar-mark-projection-profile-script",
+    "pack": "mark-projection-profile",
+    "script_control": true,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-mark-projection-profile-script",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording",
+      "--ei-script-mark-projection"
+    ],
+    "start": 1792952388.7104611,
+    "finish": 1792952496.7296793,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-mark-projection-profile-native",
+    "pack": "mark-projection-profile",
+    "script_control": false,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-mark-projection-profile-native",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording"
+    ],
+    "start": 1792952496.7299786,
+    "finish": 1792952605.1257915,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  }
+]

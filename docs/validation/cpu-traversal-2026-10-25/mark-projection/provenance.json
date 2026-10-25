@@ -1,0 +1,53 @@
+{
+  "base_commit": "3c0e375d070593d52b0b112f54d2946114130687",
+  "source_sha256": {
+    "game/src/game/fx/ground_mark_projection.gd": "31ca16fc601a8009068878d4168c7a6e74e99a0efabd264ee79251e1a70cb55a",
+    "game/src/native/source/ground_mark_projection.h": "bfc52da8d1b1216d2076698a6e798067c375e2c1f9d6b67141023a5047746187",
+    "game/src/native/source/nav_kernel.cpp": "6d2bead56df6ff25b174a833b13fb32d633b02e255e8f560793025fc510f8728",
+    "tools/tests/ground_mark_projection_native.gd": "61eedbbe3e6fc5925cc71dd18ebb9f82197c55b442733fd8e6ed8129c347fce8",
+    "tools/regressions.json": "94ae39b68d44e0a172694a1edbf7cce51b9e0fb1fd8e416eb76c36c8f56579bc"
+  },
+  "packs": {
+    "mark-projection-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "868480d0f9dcb3eec912a61975a33cbc6a85ed2ef851ef63d86137c0ebfebd7e",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "mark-projection-final-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "436517b46973c46a7c75a68296c0e56df9326e746662ad12e9c4452ea182a5c8",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "mark-projection-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "b80fc37b161e364e47461844737c7c2e3c97aa766af80031f5fd9bdb670dc844",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    }
+  },
+  "runtime_files_compared": 461,
+  "runtime_snapshot": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-game",
+  "differences": [],
+  "android": "ARM64 rebuilt, not executed on device.",
+  "original_sources": [
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/002cf/6cfb60_FUN_006cfb60.c",
+      "sha256": "cb64fcb1db42d93a778607648ee647ca41a8ec8a95bc71f554c451e7b77a72f4"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/002cf/6cf620_FUN_006cf620.c",
+      "sha256": "1f579e77e21dd36c925730c35b59b1b1850120a65434d47998f8187c42126f3e"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/002cf/6cf9e0_FUN_006cf9e0.c",
+      "sha256": "b92b3642af67933d6a6eb22ef482b035bd58635a687eeffe8389d3695dcc55a0"
+    }
+  ],
+  "original_comparison": "0x6cfb60 constructs authored footprint atlas/orientation fields; 0x6cf620 selects blood atlas, growth and rotation; 0x6cf9e0 advances growth, rotation and fade. Those paths remain in script and are unchanged. Existing original GOG 1.06 Wine blood captures are referenced in the report. The exact modern terrain/floor mesh and soft-ground clipping API is remake-specific, so no identical original Wine geometry or FPS comparison is claimed. Windows/Wine checks execute the remake.",
+  "initial_failure": "The first test retained shared packed output arrays, then place() cleared those references. Its 145 live comparison failures were corrected by duplicating all five expected channels. Native output did not change; the first failed log is retained."
+}

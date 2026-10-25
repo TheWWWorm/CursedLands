@@ -1,0 +1,91 @@
+{
+  "mark-projection-before": [
+    "FAIL native ground mark projector is available",
+    "GROUND_MARK_PROJECTION_NATIVE checks=1 failures=1"
+  ],
+  "mark-projection-first": [
+    "FAIL authored terrain soft=0 pose=0 exact live geometry 0",
+    "FAIL authored terrain soft=0 pose=0 exact live geometry 1",
+    "FAIL authored terrain soft=0 pose=0 exact live geometry 2",
+    "FAIL authored terrain soft=0 pose=0 exact live geometry 3",
+    "FAIL authored terrain soft=0 pose=0 exact live geometry 4",
+    "FAIL authored terrain soft=0 pose=1 exact live geometry 0",
+    "FAIL authored terrain soft=0 pose=1 exact live geometry 1",
+    "FAIL authored terrain soft=0 pose=1 exact live geometry 2",
+    "FAIL authored terrain soft=0 pose=1 exact live geometry 3",
+    "FAIL authored terrain soft=0 pose=1 exact live geometry 4",
+    "FAIL authored terrain soft=0 pose=2 exact live geometry 0",
+    "FAIL authored terrain soft=0 pose=2 exact live geometry 1",
+    "FAIL authored terrain soft=0 pose=2 exact live geometry 2",
+    "FAIL authored terrain soft=0 pose=2 exact live geometry 3",
+    "GROUND_MARK_PROJECTION_NATIVE_TIMING [{\"marks\":60,\"native\":false,\"usec\":311113,\"vertices\":1233},{\"marks\":60,\"native\":true,\"usec\":17826,\"vertices\":1233},{\"marks\":60,\"native\":true,\"usec\":17115,\"vertices\":1233},{\"marks\":60,\"native\":false,\"usec\":310039,\"vertices\":1233}]",
+    "GROUND_MARK_PROJECTION_NATIVE checks=1338 failures=145"
+  ],
+  "mark-projection-snapshot": [
+    "GROUND_MARK_PROJECTION_NATIVE_TIMING [{\"marks\":60,\"native\":false,\"usec\":319682,\"vertices\":1233},{\"marks\":60,\"native\":true,\"usec\":17829,\"vertices\":1233},{\"marks\":60,\"native\":true,\"usec\":17687,\"vertices\":1233},{\"marks\":60,\"native\":false,\"usec\":322430,\"vertices\":1233}]",
+    "GROUND_MARK_PROJECTION_NATIVE checks=1338 failures=0"
+  ],
+  "dar-mark-projection-legacy-micro": [
+    "MARK_PROJECTION_LIVE_MICRO [{\"marks\":32,\"native\":false,\"queries\":1280,\"soft_ground\":true,\"usec\":449385,\"vertices\":1974,\"visible_actors\":32,\"world_actors\":334},{\"marks\":32,\"native\":true,\"queries\":1280,\"soft_ground\":true,\"usec\":135447,\"vertices\":1974,\"visible_actors\":32,\"world_actors\":334},{\"marks\":32,\"native\":true,\"queries\":1280,\"soft_ground\":true,\"usec\":135229,\"vertices\":1974,\"visible_actors\":32,\"world_actors\":334},{\"marks\":32,\"native\":false,\"queries\":1280,\"soft_ground\":true,\"usec\":438911,\"vertices\":1974,\"visible_actors\":32,\"world_actors\":334}]",
+    "STANDARD_ZONE_TRAVERSAL 317 checks 0 failures"
+  ],
+  "mark-projection-footprint_running_scene-forward_plus": [
+    "FOOTPRINT_RUNNING_SCENE checks=14 failures=0 generated=93"
+  ],
+  "mark-projection-footprint_running_scene-gl_compatibility": [
+    "FOOTPRINT_RUNNING_SCENE checks=14 failures=0 generated=93"
+  ],
+  "mark-projection-footprint_surface_scene-forward_plus": [
+    "FOOTPRINT_SURFACE_SCENE checks=687 failures=0"
+  ],
+  "mark-projection-ground_mark_receivers-forward_plus": [
+    "GROUND_MARK_RECEIVERS checks=13 failures=0"
+  ],
+  "mark-projection-ground_mark_animation-forward_plus": [
+    "GROUND_MARK_ANIMATION 24 checks 0 failures"
+  ],
+  "mark-projection-registered-direct_pose_native": {
+    "checks": 7470,
+    "failures": 0
+  },
+  "mark-projection-registered-vegetation_contacts_native": {
+    "checks": 1027,
+    "failures": 0
+  },
+  "mark-projection-registered-ground_contact_native": {
+    "checks": 2086,
+    "failures": 0
+  },
+  "mark-projection-registered-ground_mark_projection_native": {
+    "checks": 1338,
+    "failures": 0
+  },
+  "mark-projection-final-registered-ground_mark_projection_native": {
+    "checks": 1338,
+    "failures": 0
+  },
+  "mark-projection-rendered-registered-ground_mark_receivers": {
+    "checks": 13,
+    "failures": 0
+  },
+  "mark-projection-rendered-registered-ground_mark_animation": {
+    "checks": 24,
+    "failures": 0
+  },
+  "mark-projection-windows-build": [],
+  "mark-projection-windows-vegetation_contacts_native": [
+    "VEGETATION_CONTACTS_NATIVE checks=1027 failures=0"
+  ],
+  "mark-projection-windows-direct_pose_native": [
+    "DIRECT_POSE_NATIVE checks=7470 failures=0"
+  ],
+  "mark-projection-windows-final-ground_mark_projection_native": [
+    "GROUND_MARK_PROJECTION_NATIVE checks=1338 failures=0"
+  ],
+  "mark-projection-windows-ground_mark_projection_native": [
+    "GROUND_MARK_PROJECTION_NATIVE checks=1338 failures=0"
+  ],
+  "mark-projection-windows-ground_contact_native": [
+    "GROUND_CONTACT_NATIVE checks=2086 failures=0"
+  ]
+}

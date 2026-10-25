@@ -953,3 +953,79 @@ and lifetime paths are unchanged. The Wine checks above execute the remake;
 this does not establish original Dar FPS or original foot-contact equivalence.
 Surface projection, mark ageing and first-visible mirror preparation remain
 separate investigation targets.
+
+## Ground-mark surface projection in native code
+
+The Dar profile after the foot-contact pass still spent about 0.10 ms per
+walking frame in `GroundMarkProjection.place`, roughly 0.4 ms whenever it
+created or rebuilt a mark. Its ordered subdivision and clipping loop now runs
+as one native batch over the current terrain and receiving-floor triangles.
+The five output channels retain the previous vertex order and exact values.
+Receiver discovery, material updates, animated blood-patch reuse, visibility
+and lifetime remain in script. The helper retains no scene or geometry cache.
+Derived projectors, unsupported inputs, older libraries and the diagnostic
+`--ei-script-mark-projection` keep the complete scalar path.
+
+GPU Lab heavy job `d4145b84f5574445` compares the **untouched `place()` from
+`3c0e375d`** with the native implementation in one live Dar scene. All four
+legacy/native/native/legacy blocks use the same 32 actual footprints, with
+1,974 output vertices and soft ground enabled. Each block performs 1,280
+forced rebuilds. Exact positions, normals, both UV channels and colors are
+checked before and after every block. All **317 route/comparison checks pass**.
+No own CPU builds or other tests run during the measurements.
+
+| Implementation | First block µs/rebuild | Second block µs/rebuild | Mean µs/rebuild |
+|---|---:|---:|---:|
+| Previous method | 351.08 | 342.90 | 346.99 |
+| Native clipping | 105.82 | 105.65 | 105.73 |
+
+This saves **241.26 µs per rebuild, or 69.53% of the callback's CPU time**.
+Ordinary animated blood already reuses its receiving patch; this percentage
+is not a whole-game FPS gain. The shared projector is used in campaign zones
+with footprints, blood and scorch marks. Arena retains its existing ink path.
+See [the exact baseline comparison](mark-projection/dar-legacy-micro.json).
+
+The same heavy job also profiles the fixed route with scalar/native clipping
+in one instrumented export; both runs pass **54 checks**. Projection scopes
+measure **441.05 → 164.79 µs per call** and **0.103 → 0.047 ms per walking frame**.
+The runs generate 478 versus 610 projection calls over 2,052 versus 2,127 frames,
+so live actor/mark variation prevents attributing the entire frame-time change
+to this helper. The full ground-mark callback measures 0.841 → 0.813 ms/frame.
+See [the per-leg scopes](mark-projection/dar-profile-comparison.json); nested
+scopes must not be added together.
+
+The new registered regression passes **1,338 checks** on Linux and Windows
+under Wine. An independent copy of the previous clipping routine checks
+seeded rotated triangles, subdivision depths, clipping boundaries, degenerate
+receivers and all five ordered geometry channels. Live authored terrain,
+raised/moving/replaced/hidden floors, terrain edits, animated blood patches,
+custom triangle hooks and full missing/declined-helper fallback also pass.
+The old library fails the new availability contract. The first test mistakenly
+retained shared packed arrays, which the next `place()` cleared; duplicating
+the snapshots fixed its 145 failures without changing native output. Both
+initial failure logs are archived with the accepted results.
+
+Related foot-contact (2,086), vegetation-contact (1,027) and direct-pose (7,470)
+checks pass on both platforms. Rendered running trails pass **14 checks each
+on Vulkan and OpenGL**, producing 93 marks each. The moving-camera terrain
+sweep passes **687**; floor/mark lifecycle passes **13 per renderer**; animated
+blood image comparisons pass **24 per renderer**. Captures show the running
+trail, raised bridge and blood patch. Virtual-monitor and Compatibility-AA
+messages are existing test-environment diagnostics. See
+[check summaries](mark-projection/checks.json) and the
+[registered results](mark-projection/mark-projection-registered.json).
+
+Linux, Windows and Android ARM64 helpers were rebuilt from the same source;
+Android was not executed on a device. The final runtime files are compared
+against the exported snapshot in [provenance](mark-projection/provenance.json).
+No player-visible option or text was added.
+
+Original-code comparison identifies footprint atlas/orientation construction
+at `0x6cfb60`, blood atlas/growth/rotation at `0x6cf620`, and growth/rotation/fade
+updates at `0x6cf9e0`. Those original-derived behaviors remain unchanged.
+The [existing original GOG 1.06 Wine blood comparison](../outstanding-issues-2026-10-23/README.md)
+records visible ground pigment and reload behavior. This pass does not repeat
+that fixture: the modern terrain/floor mesh and soft-ground clipping API being
+optimized is remake-specific, and an identical original geometry fixture is
+not available. The exact geometry comparison is against the previous remake;
+Windows/Wine checks here execute the remake, with no original Dar FPS claim.

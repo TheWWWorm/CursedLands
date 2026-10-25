@@ -63,6 +63,10 @@ var _along := Vector2.ZERO
 var _half := Vector2.ZERO
 var _bounds := Rect2()
 var _height := 0.0
+static var _kernel: RefCounted = _make_kernel()
+
+static func _make_kernel() -> RefCounted:
+	return ClassDB.instantiate("GroundMarkProjectionKernel") if ClassDB.class_exists("GroundMarkProjectionKernel") and not OS.get_cmdline_user_args().has("--ei-script-mark-projection") else null
 
 func _init(w: GameWorld) -> void:
 	world = w
@@ -171,6 +175,8 @@ func place(mark: GroundMarks.Mark, rebuild := false) -> void:
 		_across = Vector2.RIGHT; _along = Vector2.DOWN
 		_half = Vector2.ONE * radius
 	_verts.clear(); _uvs.clear(); _grids.clear(); _normals.clear(); _colors.clear()
+	var kernel := _kernel if get_script().get_base_script() == null else null
+	var triangles := []
 	var radius := _across.abs() * _half.x + _along.abs() * _half.y
 	_bounds = Rect2(_centre - radius, radius * 2.0)
 	var terrain := world.terrain
@@ -185,8 +191,11 @@ func place(mark: GroundMarks.Mark, rebuild := false) -> void:
 				var xy := grid + terrain.land_xy[i]
 				points.append(Vector3(xy.x,terrain.heights[i],-xy.y))
 			for ids: Array in [[2,1,0],[1,2,3]]:
-				triangle([points[ids[0]],points[ids[1]],points[ids[2]]],
-					[corners[ids[0]],corners[ids[1]],corners[ids[2]]], 4 if Gfx.on("gfx_soft_ground") else 0, true)
+				var p := [points[ids[0]],points[ids[1]],points[ids[2]]]
+				var grid := [corners[ids[0]],corners[ids[1]],corners[ids[2]]]
+				var depth := 4 if Gfx.on("gfx_soft_ground") else 0
+				if kernel: triangles.append([p,grid,depth,true])
+				else: triangle(p,grid,depth,true)
 	for ref in receivers:
 		var receiver := ref.get_ref() as MeshInstance3D
 		if receiver == null or receiver.mesh == null or not receiver.is_visible_in_tree(): continue
@@ -200,7 +209,15 @@ func place(mark: GroundMarks.Mark, rebuild := false) -> void:
 			for j in range(0,count-2,3):
 				var p: Array[Vector3] = []
 				for k in 3: p.append(xf * vertices[indices[j+k] if not indices.is_empty() else j+k])
-				triangle(p,[Vector2.ZERO,Vector2.ZERO,Vector2.ZERO],0,false)
+				var grid := [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
+				if kernel: triangles.append([p,grid,0,false])
+				else: triangle(p,grid,0,false)
+	if kernel:
+		var result: Variant = kernel.project(triangles,_centre,_across,_along,_half,_bounds,_height,GroundMarks.DEPTH)
+		if result != null:
+			_verts=result[0];_normals=result[1];_uvs=result[2];_grids=result[3];_colors=result[4]
+		else:
+			for row: Array in triangles: triangle(row[0],row[1],row[2],row[3])
 	var mesh := ArrayMesh.new()
 	if not _verts.is_empty():
 		var arrays := []; arrays.resize(Mesh.ARRAY_MAX)

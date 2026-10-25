@@ -1418,6 +1418,17 @@
       "mode": "headless",
       "args": [],
       "min_checks": 2086
+    },
+    {
+      "id": "ground_mark_projection_native",
+      "script": "tools/tests/ground_mark_projection_native.gd",
+      "summary": "GROUND_MARK_PROJECTION_NATIVE",
+      "contract": "Native ground-mark subdivision and clipping preserve exact ordered terrain/floor geometry, live changes, animated patches and complete scalar/custom fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1338
     }
   ]
 }

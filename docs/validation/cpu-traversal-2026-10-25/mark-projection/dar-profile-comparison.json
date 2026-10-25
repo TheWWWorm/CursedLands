@@ -1,0 +1,434 @@
+{
+  "gpu_job": "d4145b84f5574445",
+  "profiles": {
+    "script": {
+      "checks": 54,
+      "failures": 0,
+      "legs": [
+        {
+          "leg": 0,
+          "frames": 472,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 119,
+              "inclusive_us": 54300,
+              "max_us": 1220,
+              "ms_per_frame": 0.11504237288135594,
+              "us_per_call": 456.30252100840335
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 472,
+              "inclusive_us": 11579,
+              "max_us": 39,
+              "ms_per_frame": 0.02453177966101695,
+              "us_per_call": 24.531779661016948
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 472,
+              "inclusive_us": 421589,
+              "max_us": 3108,
+              "ms_per_frame": 0.8931970338983051,
+              "us_per_call": 893.1970338983051
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 38397,
+              "inclusive_us": 94725,
+              "max_us": 47,
+              "ms_per_frame": 0.20068855932203392,
+              "us_per_call": 2.466989608563169
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 150,
+              "inclusive_us": 138761,
+              "max_us": 1403,
+              "ms_per_frame": 0.2939851694915254,
+              "us_per_call": 925.0733333333334
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 472,
+              "inclusive_us": 267706,
+              "max_us": 3070,
+              "ms_per_frame": 0.5671737288135593,
+              "us_per_call": 567.1737288135594
+            }
+          }
+        },
+        {
+          "leg": 1,
+          "frames": 582,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 169,
+              "inclusive_us": 73505,
+              "max_us": 924,
+              "ms_per_frame": 0.12629725085910654,
+              "us_per_call": 434.9408284023669
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 582,
+              "inclusive_us": 13038,
+              "max_us": 55,
+              "ms_per_frame": 0.0224020618556701,
+              "us_per_call": 22.4020618556701
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 582,
+              "inclusive_us": 481460,
+              "max_us": 3199,
+              "ms_per_frame": 0.8272508591065292,
+              "us_per_call": 827.2508591065292
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 38573,
+              "inclusive_us": 97497,
+              "max_us": 31,
+              "ms_per_frame": 0.16752061855670103,
+              "us_per_call": 2.5275970238249554
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 151,
+              "inclusive_us": 142973,
+              "max_us": 1497,
+              "ms_per_frame": 0.24565807560137456,
+              "us_per_call": 946.841059602649
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 582,
+              "inclusive_us": 321566,
+              "max_us": 2129,
+              "ms_per_frame": 0.5525189003436426,
+              "us_per_call": 552.5189003436426
+            }
+          }
+        },
+        {
+          "leg": 2,
+          "frames": 579,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 131,
+              "inclusive_us": 54469,
+              "max_us": 908,
+              "ms_per_frame": 0.09407426597582039,
+              "us_per_call": 415.793893129771
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 579,
+              "inclusive_us": 13373,
+              "max_us": 37,
+              "ms_per_frame": 0.023096718480138168,
+              "us_per_call": 23.09671848013817
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 579,
+              "inclusive_us": 459863,
+              "max_us": 2788,
+              "ms_per_frame": 0.7942366148531952,
+              "us_per_call": 794.2366148531952
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 37888,
+              "inclusive_us": 95698,
+              "max_us": 187,
+              "ms_per_frame": 0.16528151986183073,
+              "us_per_call": 2.5258129222972974
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 148,
+              "inclusive_us": 139859,
+              "max_us": 1255,
+              "ms_per_frame": 0.24155267702936098,
+              "us_per_call": 944.9932432432432
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 579,
+              "inclusive_us": 302706,
+              "max_us": 2347,
+              "ms_per_frame": 0.5228082901554404,
+              "us_per_call": 522.8082901554404
+            }
+          }
+        },
+        {
+          "leg": 3,
+          "frames": 419,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 59,
+              "inclusive_us": 28546,
+              "max_us": 1047,
+              "ms_per_frame": 0.06812887828162292,
+              "us_per_call": 483.8305084745763
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 419,
+              "inclusive_us": 10782,
+              "max_us": 94,
+              "ms_per_frame": 0.0257326968973747,
+              "us_per_call": 25.7326968973747
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 419,
+              "inclusive_us": 361905,
+              "max_us": 2975,
+              "ms_per_frame": 0.8637350835322196,
+              "us_per_call": 863.7350835322196
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 37376,
+              "inclusive_us": 95328,
+              "max_us": 58,
+              "ms_per_frame": 0.22751312649164676,
+              "us_per_call": 2.550513698630137
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 146,
+              "inclusive_us": 139289,
+              "max_us": 1442,
+              "ms_per_frame": 0.3324319809069212,
+              "us_per_call": 954.0342465753424
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 419,
+              "inclusive_us": 208477,
+              "max_us": 1756,
+              "ms_per_frame": 0.4975584725536993,
+              "us_per_call": 497.5584725536993
+            }
+          }
+        }
+      ],
+      "weighted_ms_per_frame": {
+        "game/fx/ground_mark_projection.gd:place": 0.10273879142300196,
+        "game/fx/ground_mark_projection.gd:sync": 0.02376803118908382,
+        "game/fx/ground_marks.gd:_process": 0.8405540935672515,
+        "game/fx/ground_marks.gd:_update": 0.1867680311890838,
+        "game/fx/ground_marks.gd:_tick": 0.27333430799220276,
+        "game/fx/ground_marks.gd:_drain_units": 0.5362841130604288
+      },
+      "weighted_us_per_call": {
+        "game/fx/ground_mark_projection.gd:place": 441.0460251046025,
+        "game/fx/ground_mark_projection.gd:sync": 23.76803118908382,
+        "game/fx/ground_marks.gd:_process": 840.5540935672515,
+        "game/fx/ground_marks.gd:_update": 2.517492807125872,
+        "game/fx/ground_marks.gd:_tick": 942.6588235294117,
+        "game/fx/ground_marks.gd:_drain_units": 536.2841130604288
+      }
+    },
+    "native": {
+      "checks": 54,
+      "failures": 0,
+      "legs": [
+        {
+          "leg": 0,
+          "frames": 489,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 175,
+              "inclusive_us": 27909,
+              "max_us": 266,
+              "ms_per_frame": 0.05707361963190184,
+              "us_per_call": 159.48
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 489,
+              "inclusive_us": 11607,
+              "max_us": 40,
+              "ms_per_frame": 0.023736196319018403,
+              "us_per_call": 23.736196319018404
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 489,
+              "inclusive_us": 404221,
+              "max_us": 2678,
+              "ms_per_frame": 0.8266278118609407,
+              "us_per_call": 826.6278118609407
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 38391,
+              "inclusive_us": 93829,
+              "max_us": 36,
+              "ms_per_frame": 0.191879345603272,
+              "us_per_call": 2.444036362689172
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 150,
+              "inclusive_us": 137691,
+              "max_us": 1350,
+              "ms_per_frame": 0.2815766871165644,
+              "us_per_call": 917.94
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 489,
+              "inclusive_us": 251311,
+              "max_us": 2489,
+              "ms_per_frame": 0.5139284253578733,
+              "us_per_call": 513.9284253578733
+            }
+          }
+        },
+        {
+          "leg": 1,
+          "frames": 655,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 155,
+              "inclusive_us": 25310,
+              "max_us": 243,
+              "ms_per_frame": 0.0386412213740458,
+              "us_per_call": 163.29032258064515
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 655,
+              "inclusive_us": 14851,
+              "max_us": 44,
+              "ms_per_frame": 0.02267328244274809,
+              "us_per_call": 22.673282442748093
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 655,
+              "inclusive_us": 501471,
+              "max_us": 2403,
+              "ms_per_frame": 0.7656045801526717,
+              "us_per_call": 765.6045801526717
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 42496,
+              "inclusive_us": 101945,
+              "max_us": 33,
+              "ms_per_frame": 0.15564122137404582,
+              "us_per_call": 2.3989316641566263
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 166,
+              "inclusive_us": 147721,
+              "max_us": 1409,
+              "ms_per_frame": 0.22552824427480916,
+              "us_per_call": 889.8855421686746
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 655,
+              "inclusive_us": 334543,
+              "max_us": 1700,
+              "ms_per_frame": 0.5107526717557253,
+              "us_per_call": 510.7526717557252
+            }
+          }
+        },
+        {
+          "leg": 2,
+          "frames": 580,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 171,
+              "inclusive_us": 28228,
+              "max_us": 244,
+              "ms_per_frame": 0.04866896551724138,
+              "us_per_call": 165.07602339181287
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 580,
+              "inclusive_us": 13344,
+              "max_us": 38,
+              "ms_per_frame": 0.02300689655172414,
+              "us_per_call": 23.00689655172414
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 580,
+              "inclusive_us": 468053,
+              "max_us": 2748,
+              "ms_per_frame": 0.8069879310344829,
+              "us_per_call": 806.9879310344828
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 37632,
+              "inclusive_us": 93196,
+              "max_us": 31,
+              "ms_per_frame": 0.16068275862068968,
+              "us_per_call": 2.4765093537414966
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 147,
+              "inclusive_us": 135251,
+              "max_us": 1769,
+              "ms_per_frame": 0.2331913793103448,
+              "us_per_call": 920.0748299319728
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 580,
+              "inclusive_us": 315499,
+              "max_us": 1499,
+              "ms_per_frame": 0.5439637931034483,
+              "us_per_call": 543.9637931034483
+            }
+          }
+        },
+        {
+          "leg": 3,
+          "frames": 403,
+          "scopes": {
+            "game/fx/ground_mark_projection.gd:place": {
+              "calls": 109,
+              "inclusive_us": 19072,
+              "max_us": 284,
+              "ms_per_frame": 0.047325062034739455,
+              "us_per_call": 174.9724770642202
+            },
+            "game/fx/ground_mark_projection.gd:sync": {
+              "calls": 403,
+              "inclusive_us": 10621,
+              "max_us": 68,
+              "ms_per_frame": 0.02635483870967742,
+              "us_per_call": 26.35483870967742
+            },
+            "game/fx/ground_marks.gd:_process": {
+              "calls": 403,
+              "inclusive_us": 355107,
+              "max_us": 2742,
+              "ms_per_frame": 0.8811588089330025,
+              "us_per_call": 881.1588089330024
+            },
+            "game/fx/ground_marks.gd:_update": {
+              "calls": 37376,
+              "inclusive_us": 94752,
+              "max_us": 34,
+              "ms_per_frame": 0.23511662531017372,
+              "us_per_call": 2.5351027397260273
+            },
+            "game/fx/ground_marks.gd:_tick": {
+              "calls": 146,
+              "inclusive_us": 137388,
+              "max_us": 1708,
+              "ms_per_frame": 0.34091315136476424,
+              "us_per_call": 941.013698630137
+            },
+            "game/fx/ground_marks.gd:_drain_units": {
+              "calls": 403,
+              "inclusive_us": 203785,
+              "max_us": 1327,
+              "ms_per_frame": 0.5056699751861042,
+              "us_per_call": 505.66997518610424
+            }
+          }
+        }
+      ],
+      "weighted_ms_per_frame": {
+        "game/fx/ground_mark_projection.gd:place": 0.04725858015984955,
+        "game/fx/ground_mark_projection.gd:sync": 0.02370615890926187,
+        "game/fx/ground_marks.gd:_process": 0.8128124118476728,
+        "game/fx/ground_marks.gd:_update": 0.18040526563234602,
+        "game/fx/ground_marks.gd:_tick": 0.26236530324400564,
+        "game/fx/ground_marks.gd:_drain_units": 0.5195759285378467
+      },
+      "weighted_us_per_call": {
+        "game/fx/ground_mark_projection.gd:place": 164.78524590163934,
+        "game/fx/ground_mark_projection.gd:sync": 23.70615890926187,
+        "game/fx/ground_marks.gd:_process": 812.8124118476728,
+        "game/fx/ground_marks.gd:_update": 2.4614131306327978,
+        "game/fx/ground_marks.gd:_tick": 916.3399014778325,
+        "game/fx/ground_marks.gd:_drain_units": 519.5759285378467
+      }
+    }
+  },
+  "limits": "Inclusive scope comparison; do not sum nested scopes or infer whole-game FPS. Both modes use one instrumented export. Live actor counts/mark generation can vary. No own CPU builds or tests during measurement."
+}

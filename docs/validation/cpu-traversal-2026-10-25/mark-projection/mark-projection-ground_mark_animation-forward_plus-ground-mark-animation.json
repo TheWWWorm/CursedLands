@@ -1,0 +1,70 @@
+{
+	"animation_70_ticks_ms": 0.413,
+	"checks": 24,
+	"comparisons": [
+		{
+			"angle": 0.2,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.000147983712970086,
+			"ink_pixels": 53,
+			"size": 0.15
+		},
+		{
+			"angle": 1.3,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.000163398683071136,
+			"ink_pixels": 48,
+			"size": 0.15
+		},
+		{
+			"angle": 2.7,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.000150829553604126,
+			"ink_pixels": 52,
+			"size": 0.15
+		},
+		{
+			"angle": 0.2,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.0000636618245731701,
+			"ink_pixels": 308,
+			"size": 0.4
+		},
+		{
+			"angle": 1.3,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.00012732364914634,
+			"ink_pixels": 308,
+			"size": 0.4
+		},
+		{
+			"angle": 2.7,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.0000248988469441732,
+			"ink_pixels": 315,
+			"size": 0.4
+		},
+		{
+			"angle": 0.2,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.000048534271519373,
+			"ink_pixels": 808,
+			"size": 0.65
+		},
+		{
+			"angle": 1.3,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.0000239704760624902,
+			"ink_pixels": 818,
+			"size": 0.65
+		},
+		{
+			"angle": 2.7,
+			"different_pixels": 0,
+			"error_per_ink_pixel": 0.0000427289534423311,
+			"ink_pixels": 826,
+			"size": 0.65
+		}
+	],
+	"failures": 0
+}

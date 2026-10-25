@@ -1,0 +1,149 @@
+{
+  "git_head": "3c0e375d070593d52b0b112f54d2946114130687",
+  "game_source_sha256": "e89995d7544b87208bf5a46642763d2d1bcc7520cef64e35445ad5dc480abe2a",
+  "manifest_sha256": "94ae39b68d44e0a172694a1edbf7cce51b9e0fb1fd8e416eb76c36c8f56579bc",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "direct_pose_native",
+      "script": "tools/tests/direct_pose_native.gd",
+      "script_sha256": "7c699727e33ccae19bca0624ad37b64a1330ef5834205d619d599f828d21f153",
+      "contract": "Native first-person pose sampling preserves exact ordered values, quaternion conventions, same-frame track and node edits, bounded weak metadata lifetime, and complete unsupported/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.77,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/direct_pose_native/fixtures/direct_pose_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/direct_pose_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "direct_pose_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 7470,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "vegetation_contacts_native",
+      "script": "tools/tests/vegetation_contacts_native.gd",
+      "script_sha256": "e89b29ee116936c06a3c36031f965f1a8270510284e7399ebbd7d37a82d3967c",
+      "contract": "Native vegetation contacts preserve exact ordering, nearest-before-admission budget, live interpolated geometry and visibility, and complete custom/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 5.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/vegetation_contacts_native/fixtures/vegetation_contacts_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/vegetation_contacts_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "vegetation_contacts_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1027,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "ground_contact_native",
+      "script": "tools/tests/ground_contact_native.gd",
+      "script_sha256": "68fef4416dbbccf7a0872373168d75b087abadf2f64be3b0d8e7fbc8e4ee43c4",
+      "contract": "Native sole geometry preserves exact authored and smoothed foot contacts, live transforms, visibility, terrain admission and custom/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.67,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/ground_contact_native/fixtures/ground_contact_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/ground_contact_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "ground_contact_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 2086,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "ground_mark_projection_native",
+      "script": "tools/tests/ground_mark_projection_native.gd",
+      "script_sha256": "883685bec7c439b917228847c180939ebb3b936a386a1cd3233ecb6db98b0eb4",
+      "contract": "Native ground-mark subdivision and clipping preserve exact ordered terrain/floor geometry, live changes, animated patches and complete scalar/custom fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.07,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/ground_mark_projection_native/fixtures/ground_mark_projection_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-registered/ground_mark_projection_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "ground_mark_projection_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1338,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-projection-final-linux/runtime.pck",
+    "sha256": "868480d0f9dcb3eec912a61975a33cbc6a85ed2ef851ef63d86137c0ebfebd7e"
+  },
+  "passed": true
+}
