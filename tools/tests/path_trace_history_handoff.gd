@@ -38,6 +38,8 @@ func run() -> void:
 	check(device.output_ready() and not device.nrd_active,"private candidate validates its output without allocating a second NRD pool")
 	check(cache.compilations==compiled and cache.hits>0,"replacement reuses immutable ray pipelines")
 	PathDevice.dispatch(device,&"adopt_history",[previous,PackedInt32Array([0,-1])])
+	await frames(2)
+	check(not device._direct_valid,"private direct-light history resets when adopting a different scene's motion and identities")
 	var updates := []
 	for i in 2:updates.append({"index":i,"transform":Transform3D.IDENTITY,"mask":7})
 	PathDevice.dispatch(device,&"render",[size,frame(true),{"instances":updates}])

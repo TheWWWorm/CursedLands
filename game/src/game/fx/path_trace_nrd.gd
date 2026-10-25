@@ -132,6 +132,7 @@ func rebind(raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,motion))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,6,frame))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,13,raw[5]))
+	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,raw[6]))
 	var packed: Array[RDUniform]=inputs.duplicate()
 	var names := ["motion","normal","depth","diffuse","specular","confidence_diffuse"]
 	for i in names.size():packed.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+7,_external[types[names[i]]]))

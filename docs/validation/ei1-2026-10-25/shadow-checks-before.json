@@ -1,0 +1,81 @@
+{
+  "git_head": "7f2f23bd316b9a2706c6abb4d4e5321da38b3825",
+  "game_source_sha256": "3bc30dc2ef7b511f9f994c76efba22f320df3fca94cdac102614f69e8aabf043",
+  "manifest_sha256": "7410c3891e7ecde4860e68852086928e07bb5d431d2b7509115c7ba8b5453c22",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/baseline-runtime/godot",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "path_trace_shadow_motion",
+      "script": "tools/tests/path_trace_shadow_motion.gd",
+      "script_sha256": "9a286c899c3ab880c3254d70148b68814201d66f331e903146a4c13dca264907",
+      "contract": "Small moving sun casters preserve their umbra and update old/new shadows without resetting receiver history.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 15.64,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo",
+        "--timeout",
+        "180",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/checks-shadow-before/path_trace_shadow_motion/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/checks-shadow-before/path_trace_shadow_motion/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/checks-shadow-before/path_trace_shadow_motion/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/baseline-runtime/godot",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/checks-shadow-before/path_trace_shadow_motion/fixtures/path_trace_shadow_motion.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/checks-shadow-before/path_trace_shadow_motion/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "path_trace_shadow_motion/run.log",
+      "passed": false,
+      "result": {
+        "checks": 12,
+        "failures": 7
+      },
+      "errors": [
+        "FAIL small stationary shadow retains its umbra",
+        "FAIL move 0 clears the previous shadow within three frames",
+        "FAIL move 0 places the new shadow within three frames",
+        "FAIL move 0 full light and terrain sun use consistent shadow history",
+        "FAIL move 1 clears the previous shadow within three frames",
+        "FAIL move 1 places the new shadow within three frames",
+        "FAIL move 1 full light and terrain sun use consistent shadow history",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/baseline-runtime/godot.pck",
+    "sha256": "00e2dfd2a59b6731cc7d5ba01548fad93b2a0ec12c8c4e83d6f90836f8a63526"
+  },
+  "passed": false
+}

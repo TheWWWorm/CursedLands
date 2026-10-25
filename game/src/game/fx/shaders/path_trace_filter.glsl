@@ -21,6 +21,8 @@ layout(r16f,set=0,binding=15) uniform readonly image2D previous_identity;
 layout(r16f,set=0,binding=16) uniform writeonly image2D result_identity;
 struct Motion {vec4 position[3];vec4 normal[3];};
 layout(std430,set=0,binding=17) readonly buffer MotionBuffer {Motion motion[];};
+// Direct sunlight and glossy AOVs do not carry placement identity in alpha.
+layout(rgba16f,set=0,binding=18) uniform readonly image2D raw_identity;
 layout(std140,set=0,binding=12) uniform Frame {
     mat4 inv_projection;mat4 camera_world;mat4 previous_view_projection;mat4 previous_view;
     vec4 sun;vec4 sun_direction;vec4 sky;vec4 settings;vec4 camera;vec4 center_radius;
@@ -104,6 +106,10 @@ vec3 previous_position(ivec2 p,float depth,ivec2 size) {
 void main() {
     ivec2 p=ivec2(gl_GlobalInvocationID.xy),size=imageSize(raw_diffuse);
     bool progressive=frame.path.y>8.0;
+    // Direct AOVs already have low-frequency analytic lighting. A 3x3
+    // neighbourhood plus validated temporal history removes sample shimmer
+    // without repeating the full indirect-light 5x5 reconstruction cost.
+    bool direct_aov=frame.path.w>1.5;
     if(!progressive) {
         ivec2 origin=ivec2(gl_WorkGroupID.xy)*8-2;
         for(uint i=gl_LocalInvocationIndex;i<144u;i+=64u) {
@@ -123,7 +129,7 @@ void main() {
     int centre=(int(gl_LocalInvocationID.y)+2)*12+int(gl_LocalInvocationID.x)+2;
     vec4 guide=progressive?imageLoad(raw_guide,p):tile_guide[centre];
     vec4 material=progressive?imageLoad(raw_material,p):tile_material[centre];
-    float identity=imageLoad(raw_diffuse,p).a;
+    float identity=imageLoad(raw_identity,p).a;
     imageStore(result_identity,p,vec4(identity,0.0,0.0,0.0));
     imageStore(result_guide,p,guide);imageStore(result_material,p,material);
     if(guide.w<=0.0) {
@@ -140,7 +146,7 @@ void main() {
     // RGBA16F view depth has a relative quantization error. Include it in
     // geometry checks so distant or grazing surfaces do not flicker in/out.
     float plane_tolerance=max(max(0.025,footprint*0.5),guide.w*0.00075);
-    int radius=progressive?0:2;
+    int radius=progressive?0:(direct_aov?1:2);
     vec3 dlo=vec3(1e20),dhi=vec3(0.0),slo=vec3(1e20),shi=vec3(0.0);
     vec3 centre_d=progressive?finite_signal(imageLoad(raw_diffuse,p).rgb):tile_diffuse[centre];
     vec3 centre_s=progressive?finite_signal(imageLoad(raw_specular,p).rgb):tile_specular[centre];
@@ -181,7 +187,8 @@ void main() {
     // Two consecutive dark neighbourhoods provide stronger evidence of a
     // lighting change than one missing Monte Carlo sample. Small/edge kernels
     // cannot trigger this, and the previous sign travels through guide checks.
-    bool ddark=dcount>=20&&dpeak<0.00001,sdark=scount>=20&&speak<0.00001;
+    int dark_support=direct_aov?8:20;
+    bool ddark=dcount>=dark_support&&dpeak<0.00001,sdark=scount>=dark_support&&speak<0.00001;
     float age=1.0,specular_age=1.0;
     uint instance=(packHalf2x16(vec2(identity,0.0))&65535u)-0x3c00u;
     bool valid_instance=identity>=1.0&&instance<uint(motion.length());

@@ -7,6 +7,14 @@
 - Rename existing manual saves with F2 in Load and Save screens; Enter applies and Esc cancels. Preserve the saved world, preview and date ([#114](https://github.com/TheWWWorm/CursedLands/issues/114)).
 - Deliver every explicit single-player speed selection to the simulation authority, including when its restored clock differs from the owner’s last-sent cache ([#116](https://github.com/TheWWWorm/CursedLands/issues/116)).
 
+- Keep moving sun shadows responsive by separating their reconstruction from indirect-light history.
+- Handle unindexed scenery when building weather cover, preventing Lost in Astral load crashes.
+- Reconstruct path-traced direct highlights and soft sunlight shadows alongside native NRD.
+- Preserve water reflections while replacement geometry builds incrementally and reuse compiled ray programs.
+- Clear inactive crash-report row highlights when hovering Accept and align keyboard selection with activation.
+- Preserve the solo simulation connection through blocking shader compilation.
+- Arm renderer recovery before intro movies.
+
 ## 1.29.0 — 2026-10-25
 
 - Move reserve units into empty bench slots or swap occupied slots with mouse, drag or keyboard controls, including multiplayer. Preserve each unit’s equipment and saved identity.

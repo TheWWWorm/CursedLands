@@ -1,0 +1,66 @@
+extends "local_host_campaign.gd"
+## LiA's bz5h contains unindexed procedural geometry. Load through the same
+## frontend/worker route as the menu, then let weather cover rasterization run.
+## Optional --save-fixture copies a reporter save into the disposable profile.
+var traced := false
+var framegen := false
+func _ready() -> void:
+	process_mode=Node.PROCESS_MODE_ALWAYS
+	var fixture := ""
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--save-fixture="):fixture=arg.trim_prefix("--save-fixture=")
+		if arg=="--lia-pt":traced=true
+		if arg=="--lia-fg":framegen=true
+	GameData.options.merge(GfxPresets.values(GfxPresets.ULTRA),true)
+	GameData.options.merge({"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,
+		"volume_voice":0,"auto_graphics":0,"display_mode":0,"vsync":0,"fps_limit":0,
+		"q_aa":0,"gfx_soft_ground":0,"gfx_ground_contact":0,"gfx_depth_of_field":0,
+		"gfx_weather_surfaces":1,"gfx_water_reflections":3 if traced else 2,
+		"pt_mode":1 if traced else 0,"q_rt_lighting":0,"pt_accumulation":0,
+		"rtx_upscaling":1 if framegen else 0,"rtx_frame_generation":1 if framegen else 0,"fsr_upscaling":0,"fsr_frame_generation":0,
+		"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
+	GameData.resolution_size="1920x1080"
+	GameData.options.resolution=maxi(0,GameData.resolutions().find(Vector2i(1920,1080)))
+	GameData._window_state.clear();GameData._apply_window()
+	await get_tree().create_timer(0.5,true,false,true).timeout
+	GameData._window_gen+=1
+	get_window().wrap_controls=false;get_window().min_size=Vector2i.ONE
+	get_window().mode=Window.MODE_WINDOWED;get_window().borderless=true
+	get_window().size=Vector2i(1920,1080);get_window().position=Vector2i.ZERO
+	var s:=Session.new();get_parent().add_child(s)
+	var g:=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
+	check(GameData.campaign_id==CampaignProfile.ASTRAL,"test uses LiA data")
+	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
+	if fixture.is_empty():
+		s.state.ensure_hero(0,s._hero_proto(0));s.state.current_zone="bz5h"
+		check(s.state.save(SaveInfo.path("weather-load"))==OK,"seed saved in isolated profile")
+	else:
+		check(DirAccess.copy_absolute(fixture,SaveInfo.path("weather-load"))==OK,"supplied save copied without modification")
+	var expected:=CampaignState.load_from(SaveInfo.path("weather-load"))
+	check(expected!=null,"saved campaign is readable")
+	if expected==null:get_tree().quit(1);return
+	var rt:Node=g.get_node("SceneRaytrace")
+	for cycle in 2:
+		check(await s.load_game_shown("weather-load"),"save load completes, cycle %d"%cycle)
+		check(s.local_host.frontend and s.zone_id==expected.current_zone,"worker presents saved zone")
+		check(await until(func():return LoadingScreen._current==null and ShaderCompilationScreen._current==null,90),"load presentation completes")
+		if traced:
+			check(await until(func():return rt.stats.get("active",false) and rt.device!=null and rt.device.nrd_active,90),"NRD presents actual PT output")
+		var start:=s.world.time
+		g.set_speed(1)
+		check(await until(func():return s.world.time>start+0.5,15),"simulation continues after first visible frames")
+		await get_tree().create_timer(3.0,true,false,true).timeout
+		check(s.local_host._process_alive() and not g.my_units().is_empty(),"authority and party survive weather processing")
+		if traced:check(rt.stats.get("active",false) and rt.device.output_ready(),"PT remains available after load")
+		if framegen:
+			check(await until(func():return RtxGraphics.bridge()!=null and RtxGraphics.bridge().call("get_status").get("frame_generation_active",false),15),"NVIDIA FG activates after save load")
+			var before:Dictionary=RtxGraphics.bridge().call("get_status")
+			for frame in 60:await RenderingServer.frame_post_draw
+			var after:Dictionary=RtxGraphics.bridge().call("get_status")
+			check(int(after.get("presented_frames",0))-int(before.get("presented_frames",0))>=110,"SDK confirms generated frames in loaded LiA")
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://lia-weather-load-%d.png"%cycle)
+	await s.local_host.stop();g.queue_free();s.queue_free()
+	for i in 12:await get_tree().process_frame
+	print("LIA_WEATHER_SAVE_LOAD ",checks," checks ",failures," failures")
+	get_tree().quit(1 if failures else 0)

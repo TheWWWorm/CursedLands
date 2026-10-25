@@ -1,0 +1,106 @@
+{
+  "lia-windows-final-raster-fg": {
+    "exit": 0,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/proton/GE-Proton11-11-x86_64/files/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/windows-runtime/CursedLands.exe",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "forward_plus",
+      "--rendering-driver",
+      "d3d12",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/lia-windows-final-raster-fg/fixtures/lia_weather_save_load.gd",
+      "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/lia-windows-final-raster-fg",
+      "--lia-fg",
+      "--save-fixture=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/user-saves/lost_in_astral/coop__3_20261025_002628.sav"
+    ],
+    "summary": [
+      "LIA_WEATHER_SAVE_LOAD 17 checks 0 failures"
+    ],
+    "hashes": {
+      "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "CursedLands.pck": "b1ccde0afb8db31e207ecae73b141ed746606ed8045074bf406c45c0e45ba6e7"
+    }
+  },
+  "lia-windows-final-pt-fg": {
+    "exit": 0,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/proton/GE-Proton11-11-x86_64/files/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/windows-runtime/CursedLands.exe",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "forward_plus",
+      "--rendering-driver",
+      "d3d12",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/lia-windows-final-pt-fg/fixtures/lia_weather_save_load.gd",
+      "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/lia-windows-final-pt-fg",
+      "--lia-pt",
+      "--lia-fg",
+      "--save-fixture=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/user-saves/lost_in_astral/coop__3_20261025_002628.sav"
+    ],
+    "summary": [
+      "LIA_WEATHER_SAVE_LOAD 21 checks 0 failures"
+    ],
+    "hashes": {
+      "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "CursedLands.pck": "b1ccde0afb8db31e207ecae73b141ed746606ed8045074bf406c45c0e45ba6e7"
+    }
+  },
+  "lia-windows-sun-pt-fg": {
+    "exit": 0,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/proton/GE-Proton11-11-x86_64/files/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/windows-runtime/CursedLands.exe",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "forward_plus",
+      "--rendering-driver",
+      "d3d12",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/lia-windows-sun-pt-fg/fixtures/lia_weather_save_load.gd",
+      "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/lia-windows-sun-pt-fg",
+      "--lia-pt",
+      "--lia-fg",
+      "--save-fixture=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/user-saves/lost_in_astral/coop__3_20261025_002628.sav"
+    ],
+    "summary": [
+      "LIA_WEATHER_SAVE_LOAD 21 checks 0 failures"
+    ],
+    "hashes": {
+      "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "CursedLands.pck": "d3bd8656be0f16de0cf57edd91d37da81332d8a73a4a9825e7d5702e9c28d5c3"
+    }
+  }
+}

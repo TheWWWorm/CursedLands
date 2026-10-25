@@ -39,6 +39,14 @@ var _rows_terrain: EITerrain
 var _rt: RayDevice
 var _rt_scene: RayScene
 var _rt_live: RayScene
+var _rt_pending: RayDevice
+var _rt_pending_scene: RayScene
+var _rt_pending_ready := false
+var _rt_pending_plane := INF
+var _rt_build_stage := -1
+var _rt_geometries := []
+var _rt_placements := []
+var _rt_programs := RayDevice.Programs.new()
 var _rt_topology_poll := 0.0
 var _rt_lights: Array[WeakRef] = []
 var _rt_ready := false
@@ -117,7 +125,7 @@ func _process(dt: float) -> void:
 		_rt_failed = false
 		# A settings request cannot acknowledge geometry gathered under the
 		# previous materials, nor wait for the ordinary topology poll interval.
-		if _rt_scene != null or (_rt != null and not _rt_ready): _release_raytrace()
+		if _rt_scene != null or _rt_pending != null: _cancel_raytrace_candidate()
 		_needs_preparation = Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
 	_rt_topology_poll -= dt
 	if not _active():
@@ -166,7 +174,7 @@ func _process(dt: float) -> void:
 	if GameData.option("gfx_water_reflections") == 3:
 		_update_raytrace(source)
 	else:
-		if _rt != null or _rt_scene != null:
+		if _rt != null or _rt_scene != null or _rt_pending != null:
 			_release_raytrace()
 			material.set_shader_parameter("planar_texture",viewport.get_texture())
 		_rt_failed = false
@@ -217,7 +225,9 @@ static func _mirror_draw_finished(owner: WeakRef, serial: int) -> void:
 
 
 func _preparation_rendered(serial: int, _ok: bool, device_id: int) -> void:
-	if _preparing and serial == _preparation_serial and _rt != null and _rt.get_instance_id() == device_id:
+	var pending := _rt_pending != null and _rt_pending.get_instance_id() == device_id
+	var active := _rt != null and _rt.get_instance_id() == device_id
+	if _preparing and serial == _preparation_serial and (pending or active):
 		# Failure also releases the cover; the existing planar fallback remains.
 		_finish_preparation()
 
@@ -233,56 +243,93 @@ func _finish_preparation(clear_intent := true) -> void:
 
 
 func _update_raytrace(source: Camera3D) -> void:
-	if _rt_failed:
-		_finish_preparation()
-		return
 	if not RayDevice.supported():
 		_rt_failed = true
 		rt_stats = {"supported":false,"fallback":"planar"}
 		_finish_preparation()
 		return
 	if ShaderCompilationScreen.terrain_pending(terrain): return
+	var changed := false
 	if _rt_ready and _rt_live != null and _rt_topology_poll <= 0.0:
 		_rt_topology_poll = 1.0
 		_collect_raytrace_lights(source.global_position)
-		if _rt_live.topology_changed():
-			_release_raytrace()
-			terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
-	# Recenter when travelling or changing pools. While gathering a new
-	# snapshot the normal planar view remains complete and current.
-	if source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25:
-		_release_raytrace()
-		terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
-		_rt_center = source.global_position
-		_rt_plane = plane
+		changed = _rt_live.topology_changed()
+	# Keep the complete reflection while gathering and building a replacement.
+	# Recompiling pipelines and revealing every initially masked BLAS on its
+	# first render used to turn each recenter into an unbounded frame spike.
+	if not _rt_failed and _rt_scene == null and _rt_pending == null and (changed \
+			or source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25):
+		_rt_pending_plane = plane
 		_rt_scene = RayScene.new()
-		_rt_scene.begin(terrain,_rt_center,plane)
-	if _rt_scene != null:
-		if not _rt_scene.step(): return
-		rt_stats = {"supported":true,"triangles":_rt_scene.triangles,"textures":_rt_scene.images.size(),"radius":RayScene.RADIUS,"geometries":_rt_scene.geometries.size(),"instances":_rt_scene.instances.size(),"native_scene":_rt_scene._kernel != null}
-		if _rt_scene.failed or _rt_scene.triangles == 0:
-			_rt_failed = true
-			rt_stats["fallback"] = "snapshot_budget"
-			_rt_scene = null
-			_finish_preparation()
-			return
-		_rt = RayDevice.new()
-		_rt.prepared.connect(_raytrace_prepared)
-		_rt.rendered.connect(_preparation_rendered.bind(_rt.get_instance_id()))
-		var geometries := []; var placements := []
-		var opaque := 0
-		for geometry: Dictionary in _rt_scene.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,
+		_rt_scene.begin(terrain,source.global_position,plane)
+	if _rt_scene != null and _rt_scene.step(1500 if _rt != null else 6000):
+		_queue_raytrace_candidate()
+	elif _rt_pending != null and _rt_build_stage >= 0:
+		_prepare_raytrace_candidate()
+	elif _rt_pending != null and not _rt_pending_ready:
+		RayDevice.dispatch(_rt_pending,&"build_step")
+	if _rt_pending_ready and _rt_pending.output_ready():
+		if absf(plane-_rt_pending_plane)>0.25 or _rt_pending_scene.topology_changed():
+			_cancel_raytrace_candidate()
+		else:
+			_promote_raytrace_candidate()
+	if _rt_ready:
+		_render_raytrace(source,_rt,_rt_live,_rt_center)
+		terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
+		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		rt_stats["active"] = true
+	if _rt_pending_ready:
+		_render_raytrace(source,_rt_pending,_rt_pending_scene,_rt_pending_scene.center)
+	if _rt_failed: _finish_preparation()
+	rt_stats["rebuilding"] = _rt_scene != null or _rt_pending != null
+
+
+func _queue_raytrace_candidate() -> void:
+	_rt_pending_scene = _rt_scene
+	_rt_scene = null
+	if _rt_pending_scene.failed or _rt_pending_scene.triangles == 0:
+		_rt_failed = true
+		rt_stats["replacement_failure"] = "snapshot_budget"
+		_cancel_raytrace_candidate()
+		return
+	_rt_pending = RayDevice.new()
+	_rt_pending.programs = _rt_programs
+	_rt_pending.incremental_build = true
+	_rt_pending.prepared.connect(_raytrace_prepared.bind(_rt_pending.get_instance_id()))
+	_rt_pending.rendered.connect(_preparation_rendered.bind(_rt_pending.get_instance_id()))
+	_rt_build_stage = 0
+
+
+func _prepare_raytrace_candidate() -> void:
+	if _rt_build_stage == 0:
+		var initial := _rt_pending_scene.updates(true)
+		_rt_pending.initial_poses = initial.poses
+		for geometry: Dictionary in _rt_pending_scene.geometries:
+			_rt_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,
 				"cutoff":geometry.cutoff,"standard":geometry.standard})
-			if geometry.opaque: opaque += 1
-		rt_stats["opaque_geometries"] = opaque
-		for entry: Dictionary in _rt_scene.instances:
-			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
-		RayDevice.dispatch(_rt,&"build",[_rt_scene.vertices.to_byte_array(),_rt_scene.images,geometries,placements])
-		_rt_live = _rt_scene
-		_rt_scene = null
-		_collect_raytrace_lights(source.global_position)
-	if not _rt_ready: return
+		for entry: Dictionary in _rt_pending_scene.instances:
+			_rt_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask})
+		_rt_build_stage = 1
+	else:
+		RayDevice.dispatch(_rt_pending,&"build",[_rt_pending_scene.vertices.to_byte_array(),_rt_pending_scene.images,_rt_geometries,_rt_placements])
+		_rt_geometries = []; _rt_placements = []; _rt_build_stage = -1
+		_collect_raytrace_lights(_rt_pending_scene.center)
+
+
+func _promote_raytrace_candidate() -> void:
+	var previous := _rt
+	_rt = _rt_pending; _rt_live = _rt_pending_scene
+	_rt_center = _rt_live.center; _rt_plane = _rt_pending_plane; _rt_ready = true
+	_rt_pending = null; _rt_pending_scene = null; _rt_pending_ready = false
+	rt_stats.merge({"supported":true,"triangles":_rt_live.triangles,"textures":_rt_live.images.size(),
+		"radius":RayScene.RADIUS,"geometries":_rt_live.geometries.size(),"instances":_rt_live.instances.size(),
+		"native_scene":_rt_live._kernel != null,"build":_rt.build_timings},true)
+	# Rebind before retiring the device that owns the sampled output.
+	terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
+	if previous != null: RayDevice.dispatch(previous,&"dispose")
+
+
+func _render_raytrace(source: Camera3D, target_device: RayDevice, scene: RayScene, center: Vector3) -> void:
 	var size := source.get_viewport().get_visible_rect().size
 	var quality := clampi(GameData.option("q_water_rt_quality"), 0, RT_RESOLUTION_SCALES.size() - 1)
 	var target := raytrace_target_size(size, quality)
@@ -298,7 +345,7 @@ func _update_raytrace(source: Camera3D) -> void:
 		Gfx.sun.r,Gfx.sun.g,Gfx.sun.b,1,sun_direction.x,sun_direction.y,sun_direction.z,plane,
 		Gfx.fog_depth.x,Gfx.fog_depth.y,source.far,1.0 if source.projection == Camera3D.PROJECTION_ORTHOGONAL else 0.0,Gfx.fog_sky.r,Gfx.fog_sky.g,Gfx.fog_sky.b,
 		2.0/absf(camera.get_camera_projection().y.y)/target.y,
-		_rt_center.x,_rt_center.y,_rt_center.z,RayScene.RADIUS]))
+		center.x,center.y,center.z,RayScene.RADIUS]))
 	var colours := PackedFloat32Array()
 	for i in 4:
 		var light: OmniLight3D = _rt_lights[i].get_ref() if i < _rt_lights.size() else null
@@ -311,20 +358,18 @@ func _update_raytrace(source: Camera3D) -> void:
 		else:
 			frame.append_array(PackedFloat32Array([0,0,0,0])); colours.append_array(PackedFloat32Array([0,0,0,0]))
 	frame.append_array(colours)
-	var changes := _rt_live.updates()
+	var changes := scene.updates()
 	var filtering := clampi(GameData.option("q_aniso"),0,4)
-	if _preparing and not _preparation_submitted:
+	if _preparing and not _preparation_submitted and (target_device == _rt_pending \
+			or (target_device == _rt and _rt_scene == null and _rt_pending == null)):
 		_preparation_submitted = true
 		ShaderCompilationScreen.update(_preparation_owner, ShaderCompilationScreen.FIRST_FRAME)
-		RayDevice.dispatch(_rt,&"render_preparation",[_preparation_serial,target,frame.to_byte_array(),changes,filtering])
+		RayDevice.dispatch(target_device,&"render_preparation",[_preparation_serial,target,frame.to_byte_array(),changes,filtering])
 	else:
-		RayDevice.dispatch(_rt,&"render",[target,frame.to_byte_array(),changes,filtering])
+		RayDevice.dispatch(target_device,&"render",[target,frame.to_byte_array(),changes,filtering])
 	rt_stats["updated_instances"] = changes.instances.size()
 	rt_stats["updated_morphs"] = changes.poses.size()
 	rt_stats["lights"] = _rt_lights.size()
-	terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
-	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
-	rt_stats["active"] = true
 	rt_stats["size"] = [target.x,target.y]
 	rt_stats["quality"] = quality
 	rt_stats["samples_per_pixel"] = RT_SAMPLE_GRID * RT_SAMPLE_GRID
@@ -343,28 +388,44 @@ func _collect_raytrace_lights(focus: Vector3) -> void:
 	for i in mini(found.size(),4): _rt_lights.append(weakref(found[i][1]))
 
 
-func _raytrace_prepared(ok: bool) -> void:
-	_rt_ready = ok
-	_rt_failed = not ok
-	if not ok:
+func _raytrace_prepared(ok: bool, id: int) -> void:
+	# The device also reports a later dispatch failure through this signal.
+	# Its old candidate callback remains connected after promotion.
+	if not ok and _rt != null and id == _rt.get_instance_id():
+		_rt_failed = true
 		rt_stats["fallback"] = "pipeline_failed"
 		_finish_preparation()
-		_release_raytrace()
 		if is_instance_valid(terrain) and terrain._water_mat and viewport:
 			terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
+		_release_raytrace()
+		return
+	if _rt_pending == null or id != _rt_pending.get_instance_id(): return
+	_rt_pending_ready = ok
+	if not ok:
+		_rt_failed = true
+		rt_stats["replacement_failure"] = "pipeline_failed"
+		_finish_preparation()
+		_cancel_raytrace_candidate()
+
+
+func _cancel_raytrace_candidate() -> void:
+	_rt_scene = null; _rt_pending_scene = null; _rt_pending_ready = false
+	_rt_geometries = []; _rt_placements = []; _rt_build_stage = -1
+	if _rt_pending != null:
+		RayDevice.dispatch(_rt_pending,&"dispose")
+		_rt_pending = null
+	_preparation_submitted = false
 
 
 func _release_raytrace() -> void:
-	_preparation_submitted = false
+	_cancel_raytrace_candidate()
 	_rt_ready = false
 	rt_stats["active"] = false
-	_rt_scene = null
 	_rt_live = null
 	_rt_lights.clear()
 	_rt_center = Vector3.INF
 	_rt_plane = INF
 	if _rt != null:
-		_rt.prepared.disconnect(_raytrace_prepared)
 		RayDevice.dispatch(_rt,&"dispose")
 		_rt = null
 
@@ -427,6 +488,7 @@ func _exit_tree() -> void:
 	if is_instance_valid(terrain) and terrain._water_mat:
 		terrain._water_mat.set_shader_parameter("planar_texture", null)
 	_release_raytrace()
+	RayDevice.dispatch(_rt_programs,&"dispose")
 
 
 ## The liquid cells of the even rows and columns _select_plane probes. Level

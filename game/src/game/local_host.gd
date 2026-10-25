@@ -189,6 +189,7 @@ func _rpc_owner(token: String) -> void:
 		return
 	owner_peer = pid
 	_owner_seen = Time.get_ticks_msec()
+	session._relax_timeout(pid)
 	var host: Dictionary = session.players[1]
 	session.players.erase(1)
 	session.players[pid] = host
