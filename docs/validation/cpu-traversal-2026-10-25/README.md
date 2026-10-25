@@ -713,3 +713,14 @@ ground (5,117), star particles (17,473) and the revival overlay (9); see
 the [failed setup receipt](merged-main-runner-setup-failure.json) is not a game
 regression. All current game scripts, shaders, scenes, resources and native
 libraries were compared with the measured export snapshot without differences.
+
+Follow-up GPU Lab `0708e54d364e496c` identifies the tactical interruption as
+delayed **mirror-water preparation**. Its initial request stays pending with
+no visible plane; on walking leg 1 the first visible plane advances the water
+preparation serial from 0 to 1, coinciding with the preparation cover. The
+cover remains active for about 57 ms after the diagnostic observes it. The
+two-leg fixture fails the same continuous-control check (36 checks, one
+failure); see [the diagnostic receipt](dar-tactical-water-state.json). This
+is not included in the FPS results, and no water-preparation guard has been
+removed. Preparing that first real reflection during loading remains a
+separate investigation from the native actor-bounds change.
