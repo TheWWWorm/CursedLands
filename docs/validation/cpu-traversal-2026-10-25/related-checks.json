@@ -1,0 +1,116 @@
+[
+  {
+    "test": "script_scheduler",
+    "code": 0,
+    "errors": [
+      "ERROR: 3 resources still in use at exit (run with --verbose for details)."
+    ],
+    "summary": [
+      "SCRIPT_SCHEDULER 15 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_clock",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_clock_coop",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK_COOP 17 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_parity_boundaries",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_PARITY_BOUNDARIES 20 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_dead_predicates",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_DEAD_PREDICATES 16 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_future_queries",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_FUTURE_QUERIES 1257 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_perception",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_PERCEPTION 7 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_hero_references",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_HERO_REFERENCES 11 checks 0 failures"
+    ]
+  },
+  {
+    "test": "script_quest_waits",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_QUEST_WAITS 56 checks 0 failures"
+    ]
+  },
+  {
+    "test": "lever_transition_save",
+    "code": 245,
+    "errors": [
+      "FAIL actual original zone loads without an external save fixture"
+    ],
+    "summary": [],
+    "rerun_campaign": "base",
+    "rerun_errors": [],
+    "rerun_summary": [
+      "LEVER_TRANSITION_SAVE 59 checks 0 failures"
+    ]
+  },
+  {
+    "test": "lever_use_flags",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "LEVER_USE_FLAGS 240 checks 0 failures"
+    ]
+  },
+  {
+    "test": "z19q3_levers",
+    "code": 245,
+    "errors": [],
+    "summary": [],
+    "rerun_campaign": "base",
+    "rerun_errors": [],
+    "rerun_summary": [
+      "Z19Q3_LEVERS 12 checks 0 failures"
+    ]
+  },
+  {
+    "test": "catacomb_group_lever",
+    "code": 0,
+    "errors": [],
+    "summary": [
+      "CATACOMB_GROUP_LEVER 26 checks 0 failures"
+    ]
+  }
+]

@@ -1,0 +1,728 @@
+{
+	"ei/object_water.gd:_process": {
+		"calls": 238,
+		"inclusive_us": 761,
+		"max_us": 12,
+		"self_us": 761
+	},
+	"ei/terrain.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 3830,
+		"max_us": 61,
+		"self_us": 3830
+	},
+	"ei/unit_model.gd:_process": {
+		"calls": 49385,
+		"inclusive_us": 215382,
+		"max_us": 272,
+		"self_us": 215382
+	},
+	"game/coop_progress.gd:_physics_process": {
+		"calls": 638,
+		"inclusive_us": 7185,
+		"max_us": 723,
+		"self_us": 7185
+	},
+	"game/fx/severed_limb.gd:_process": {
+		"calls": 175,
+		"inclusive_us": 40560,
+		"max_us": 910,
+		"self_us": 40560
+	},
+	"game/fx/soft_ground_deform.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 874,
+		"max_us": 17,
+		"self_us": 874
+	},
+	"game/fx/terrain_details.gd:_apply_grass_material": {
+		"calls": 1,
+		"inclusive_us": 3366,
+		"max_us": 3366,
+		"self_us": 3366
+	},
+	"game/fx/terrain_details.gd:_blade_indices": {
+		"calls": 3,
+		"inclusive_us": 27,
+		"max_us": 12,
+		"self_us": 27
+	},
+	"game/fx/terrain_details.gd:_cache_root_bounds": {
+		"calls": 109,
+		"inclusive_us": 641,
+		"max_us": 39,
+		"self_us": 520
+	},
+	"game/fx/terrain_details.gd:_camera_focus": {
+		"calls": 119,
+		"inclusive_us": 673,
+		"max_us": 12,
+		"self_us": 673
+	},
+	"game/fx/terrain_details.gd:_chunk_job": {
+		"calls": 109,
+		"inclusive_us": 1670,
+		"max_us": 44,
+		"self_us": 372
+	},
+	"game/fx/terrain_details.gd:_chunk_mesh": {
+		"calls": 1730,
+		"inclusive_us": 1716,
+		"max_us": 7,
+		"self_us": 1716
+	},
+	"game/fx/terrain_details.gd:_cull_chunk": {
+		"calls": 1730,
+		"inclusive_us": 2032,
+		"max_us": 13,
+		"self_us": 2032
+	},
+	"game/fx/terrain_details.gd:_ensure_grass_resources": {
+		"calls": 119,
+		"inclusive_us": 3733,
+		"max_us": 3636,
+		"self_us": 119
+	},
+	"game/fx/terrain_details.gd:_finish_grass_jobs": {
+		"calls": 119,
+		"inclusive_us": 8054,
+		"max_us": 462,
+		"self_us": 1478
+	},
+	"game/fx/terrain_details.gd:_grass_job": {
+		"calls": 109,
+		"inclusive_us": 1298,
+		"max_us": 38,
+		"self_us": 1298
+	},
+	"game/fx/terrain_details.gd:_index_scenery_box": {
+		"calls": 5937,
+		"inclusive_us": 12365,
+		"max_us": 35,
+		"self_us": 12365
+	},
+	"game/fx/terrain_details.gd:_install_chunk": {
+		"calls": 109,
+		"inclusive_us": 6576,
+		"max_us": 290,
+		"self_us": 5466
+	},
+	"game/fx/terrain_details.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 112762,
+		"max_us": 55461,
+		"self_us": 26711
+	},
+	"game/fx/terrain_details.gd:_root_bounds": {
+		"calls": 109,
+		"inclusive_us": 121,
+		"max_us": 4,
+		"self_us": 121
+	},
+	"game/fx/terrain_details.gd:_stream": {
+		"calls": 1,
+		"inclusive_us": 157,
+		"max_us": 157,
+		"self_us": 157
+	},
+	"game/fx/terrain_details.gd:_update_motion": {
+		"calls": 118,
+		"inclusive_us": 5047,
+		"max_us": 84,
+		"self_us": 5047
+	},
+	"game/fx/terrain_details.gd:_update_scenery": {
+		"calls": 238,
+		"inclusive_us": 42929,
+		"max_us": 41891,
+		"self_us": 30564
+	},
+	"game/fx/terrain_details.gd:_update_submissions": {
+		"calls": 119,
+		"inclusive_us": 13251,
+		"max_us": 856,
+		"self_us": 9972
+	},
+	"game/fx/terrain_details.gd:blade_mesh": {
+		"calls": 2,
+		"inclusive_us": 248,
+		"max_us": 199,
+		"self_us": 221
+	},
+	"game/fx/terrain_details.gd:prepare_grass": {
+		"calls": 119,
+		"inclusive_us": 14579,
+		"max_us": 13201,
+		"self_us": 10537
+	},
+	"game/game_sound.gd:_ack_play": {
+		"calls": 3,
+		"inclusive_us": 5491,
+		"max_us": 5264,
+		"self_us": 5472
+	},
+	"game/game_sound.gd:_ack_queue": {
+		"calls": 4,
+		"inclusive_us": 269,
+		"max_us": 227,
+		"self_us": 47
+	},
+	"game/game_sound.gd:_ack_tick": {
+		"calls": 192,
+		"inclusive_us": 5869,
+		"max_us": 5275,
+		"self_us": 581
+	},
+	"game/game_sound.gd:_act_target": {
+		"calls": 340,
+		"inclusive_us": 494,
+		"max_us": 9,
+		"self_us": 494
+	},
+	"game/game_sound.gd:_bored_tick": {
+		"calls": 192,
+		"inclusive_us": 20046,
+		"max_us": 294,
+		"self_us": 19083
+	},
+	"game/game_sound.gd:_combat_inputs": {
+		"calls": 119,
+		"inclusive_us": 44112,
+		"max_us": 664,
+		"self_us": 43618
+	},
+	"game/game_sound.gd:_hostile_act": {
+		"calls": 338,
+		"inclusive_us": 507,
+		"max_us": 6,
+		"self_us": 507
+	},
+	"game/game_sound.gd:_near_ratios": {
+		"calls": 169,
+		"inclusive_us": 24053,
+		"max_us": 379,
+		"self_us": 22336
+	},
+	"game/game_sound.gd:_near_units": {
+		"calls": 507,
+		"inclusive_us": 4203,
+		"max_us": 78,
+		"self_us": 4203
+	},
+	"game/game_sound.gd:_player_combat_flag": {
+		"calls": 238,
+		"inclusive_us": 117901,
+		"max_us": 1623,
+		"self_us": 89425
+	},
+	"game/game_sound.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 332239,
+		"max_us": 9288,
+		"self_us": 48067
+	},
+	"game/game_sound.gd:_screens": {
+		"calls": 119,
+		"inclusive_us": 139,
+		"max_us": 2,
+		"self_us": 139
+	},
+	"game/game_sound.gd:_send_combat_flags": {
+		"calls": 119,
+		"inclusive_us": 220193,
+		"max_us": 3623,
+		"self_us": 58167
+	},
+	"game/game_sound.gd:_sense_ratio": {
+		"calls": 3022,
+		"inclusive_us": 1430,
+		"max_us": 6,
+		"self_us": 1430
+	},
+	"game/game_sound.gd:_torch_tick": {
+		"calls": 192,
+		"inclusive_us": 1044,
+		"max_us": 10,
+		"self_us": 1044
+	},
+	"game/game_sound.gd:_update_listener": {
+		"calls": 119,
+		"inclusive_us": 1622,
+		"max_us": 40,
+		"self_us": 1622
+	},
+	"game/game_sound.gd:_world_tick": {
+		"calls": 192,
+		"inclusive_us": 282123,
+		"max_us": 6162,
+		"self_us": 34971
+	},
+	"game/game_sound.gd:ack": {
+		"calls": 5,
+		"inclusive_us": 363,
+		"max_us": 254,
+		"self_us": 83
+	},
+	"game/game_sound.gd:chatter_blocked": {
+		"calls": 199,
+		"inclusive_us": 1001,
+		"max_us": 15,
+		"self_us": 819
+	},
+	"game/game_sound.gd:dialogue_active": {
+		"calls": 199,
+		"inclusive_us": 182,
+		"max_us": 2,
+		"self_us": 182
+	},
+	"game/game_sound.gd:held_weapon_type": {
+		"calls": 38,
+		"inclusive_us": 249,
+		"max_us": 16,
+		"self_us": 249
+	},
+	"game/game_sound.gd:impact": {
+		"calls": 12,
+		"inclusive_us": 22,
+		"max_us": 3,
+		"self_us": 22
+	},
+	"game/game_sound.gd:on_event": {
+		"calls": 63,
+		"inclusive_us": 5419,
+		"max_us": 3413,
+		"self_us": 5419
+	},
+	"game/game_sound.gd:on_world": {
+		"calls": 119,
+		"inclusive_us": 96,
+		"max_us": 2,
+		"self_us": 96
+	},
+	"game/game_sound.gd:spell": {
+		"calls": 18,
+		"inclusive_us": 18,
+		"max_us": 2,
+		"self_us": 18
+	},
+	"game/game_sound.gd:step": {
+		"calls": 630,
+		"inclusive_us": 391,
+		"max_us": 8,
+		"self_us": 391
+	},
+	"game/game_sound.gd:unit": {
+		"calls": 30,
+		"inclusive_us": 23,
+		"max_us": 2,
+		"self_us": 23
+	},
+	"game/game_sound.gd:voice_name": {
+		"calls": 52,
+		"inclusive_us": 158,
+		"max_us": 7,
+		"self_us": 158
+	},
+	"game/internet_directory.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 130,
+		"max_us": 2,
+		"self_us": 130
+	},
+	"game/lan_discovery.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 1081,
+		"max_us": 16,
+		"self_us": 1081
+	},
+	"game/local_host.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 482,
+		"max_us": 11,
+		"self_us": 482
+	},
+	"game/music_system.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 496,
+		"max_us": 15,
+		"self_us": 496
+	},
+	"game/net_status.gd:_physics_process": {
+		"calls": 638,
+		"inclusive_us": 925,
+		"max_us": 77,
+		"self_us": 925
+	},
+	"game/object_activity.gd:_add_cells": {
+		"calls": 1200,
+		"inclusive_us": 10818,
+		"max_us": 42,
+		"self_us": 9726
+	},
+	"game/object_activity.gd:_arm": {
+		"calls": 1,
+		"inclusive_us": 225,
+		"max_us": 225,
+		"self_us": 218
+	},
+	"game/object_activity.gd:_cell": {
+		"calls": 250200,
+		"inclusive_us": 95192,
+		"max_us": 73,
+		"self_us": 95192
+	},
+	"game/object_activity.gd:_knows_enemy": {
+		"calls": 1,
+		"inclusive_us": 1,
+		"max_us": 1,
+		"self_us": 1
+	},
+	"game/object_activity.gd:_rearm": {
+		"calls": 14834,
+		"inclusive_us": 7554,
+		"max_us": 11,
+		"self_us": 7554
+	},
+	"game/object_activity.gd:_wake_cells": {
+		"calls": 600,
+		"inclusive_us": 565632,
+		"max_us": 1842,
+		"self_us": 464090
+	},
+	"game/object_activity.gd:applies": {
+		"calls": 1,
+		"inclusive_us": 2,
+		"max_us": 2,
+		"self_us": 2
+	},
+	"game/object_activity.gd:expire": {
+		"calls": 600,
+		"inclusive_us": 11120,
+		"max_us": 115,
+		"self_us": 11086
+	},
+	"game/object_activity.gd:is_awake": {
+		"calls": 263569,
+		"inclusive_us": 236539,
+		"max_us": 177,
+		"self_us": 236539
+	},
+	"game/object_activity.gd:wake": {
+		"calls": 600,
+		"inclusive_us": 679446,
+		"max_us": 2092,
+		"self_us": 88620
+	},
+	"game/object_activity.gd:wake_radius": {
+		"calls": 1200,
+		"inclusive_us": 14151,
+		"max_us": 43,
+		"self_us": 14151
+	},
+	"game/object_activity.gd:wake_unit": {
+		"calls": 99,
+		"inclusive_us": 455,
+		"max_us": 12,
+		"self_us": 381
+	},
+	"game/player_swap.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 1273,
+		"max_us": 36,
+		"self_us": 1273
+	},
+	"game/projectile.gd:_physics_process": {
+		"calls": 287,
+		"inclusive_us": 2892,
+		"max_us": 471,
+		"self_us": 2791
+	},
+	"game/script/vm.gd:_all": {
+		"calls": 56737,
+		"inclusive_us": 3068277,
+		"max_us": 1376,
+		"self_us": 237014
+	},
+	"game/script/vm.gd:_area_has_point": {
+		"calls": 599,
+		"inclusive_us": 1311,
+		"max_us": 9,
+		"self_us": 1311
+	},
+	"game/script/vm.gd:_args": {
+		"calls": 163623,
+		"inclusive_us": 3290465,
+		"max_us": 1360,
+		"self_us": 550378
+	},
+	"game/script/vm.gd:_block_pure": {
+		"calls": 113472,
+		"inclusive_us": 257366,
+		"max_us": 265,
+		"self_us": 252720
+	},
+	"game/script/vm.gd:_call": {
+		"calls": 165250,
+		"inclusive_us": 5001014,
+		"max_us": 3082,
+		"self_us": 1325017
+	},
+	"game/script/vm.gd:_check_interactions": {
+		"calls": 600,
+		"inclusive_us": 50974,
+		"max_us": 293,
+		"self_us": 50974
+	},
+	"game/script/vm.gd:_conditions": {
+		"calls": 56737,
+		"inclusive_us": 3680282,
+		"max_us": 1391,
+		"self_us": 300227
+	},
+	"game/script/vm.gd:_eval": {
+		"calls": 295925,
+		"inclusive_us": 5666510,
+		"max_us": 1371,
+		"self_us": 662237
+	},
+	"game/script/vm.gd:_forget_conditions": {
+		"calls": 1202,
+		"inclusive_us": 13265,
+		"max_us": 96,
+		"self_us": 13265
+	},
+	"game/script/vm.gd:_get_object": {
+		"calls": 44326,
+		"inclusive_us": 61924,
+		"max_us": 52,
+		"self_us": 61924
+	},
+	"game/script/vm.gd:_get_var": {
+		"calls": 6083,
+		"inclusive_us": 6451,
+		"max_us": 14,
+		"self_us": 6451
+	},
+	"game/script/vm.gd:_group": {
+		"calls": 1628,
+		"inclusive_us": 3276,
+		"max_us": 11,
+		"self_us": 3276
+	},
+	"game/script/vm.gd:_is_in_area": {
+		"calls": 599,
+		"inclusive_us": 4428,
+		"max_us": 19,
+		"self_us": 3117
+	},
+	"game/script/vm.gd:_kill": {
+		"calls": 2,
+		"inclusive_us": 2,
+		"max_us": 1,
+		"self_us": 2
+	},
+	"game/script/vm.gd:_memo_key": {
+		"calls": 96,
+		"inclusive_us": 249,
+		"max_us": 8,
+		"self_us": 249
+	},
+	"game/script/vm.gd:_num": {
+		"calls": 162331,
+		"inclusive_us": 70991,
+		"max_us": 52,
+		"self_us": 70991
+	},
+	"game/script/vm.gd:_obj_id": {
+		"calls": 41331,
+		"inclusive_us": 91651,
+		"max_us": 47,
+		"self_us": 91651
+	},
+	"game/script/vm.gd:_once_per_world": {
+		"calls": 2,
+		"inclusive_us": 12,
+		"max_us": 6,
+		"self_us": 12
+	},
+	"game/script/vm.gd:_party_conditions": {
+		"calls": 56737,
+		"inclusive_us": 3227097,
+		"max_us": 1380,
+		"self_us": 158820
+	},
+	"game/script/vm.gd:_party_records": {
+		"calls": 1800,
+		"inclusive_us": 18347,
+		"max_us": 284,
+		"self_us": 18347
+	},
+	"game/script/vm.gd:_poll": {
+		"calls": 56832,
+		"inclusive_us": 4140846,
+		"max_us": 3304,
+		"self_us": 352589
+	},
+	"game/script/vm.gd:_pure": {
+		"calls": 2219,
+		"inclusive_us": 20785,
+		"max_us": 260,
+		"self_us": 4646
+	},
+	"game/script/vm.gd:_refresh_heroes": {
+		"calls": 600,
+		"inclusive_us": 25673,
+		"max_us": 332,
+		"self_us": 6541
+	},
+	"game/script/vm.gd:_resume": {
+		"calls": 2,
+		"inclusive_us": 3306,
+		"max_us": 3235,
+		"self_us": 39
+	},
+	"game/script/vm.gd:_run": {
+		"calls": 56832,
+		"inclusive_us": 4288843,
+		"max_us": 3310,
+		"self_us": 147997
+	},
+	"game/script/vm.gd:_script_distance": {
+		"calls": 2396,
+		"inclusive_us": 1995,
+		"max_us": 6,
+		"self_us": 1995
+	},
+	"game/script/vm.gd:_set_var": {
+		"calls": 2657,
+		"inclusive_us": 2348,
+		"max_us": 9,
+		"self_us": 2348
+	},
+	"game/script/vm.gd:_stmt_call": {
+		"calls": 5,
+		"inclusive_us": 3243,
+		"max_us": 3089,
+		"self_us": 29
+	},
+	"game/script/vm.gd:_story_records": {
+		"calls": 1200,
+		"inclusive_us": 25701,
+		"max_us": 306,
+		"self_us": 11005
+	},
+	"game/script/vm.gd:_tick": {
+		"calls": 600,
+		"inclusive_us": 4609701,
+		"max_us": 12828,
+		"self_us": 230970
+	},
+	"game/script/vm.gd:_truthy": {
+		"calls": 63417,
+		"inclusive_us": 32610,
+		"max_us": 43,
+		"self_us": 32610
+	},
+	"game/script/vm.gd:_unit": {
+		"calls": 2658,
+		"inclusive_us": 3841,
+		"max_us": 15,
+		"self_us": 3841
+	},
+	"game/script/vm.gd:_xy": {
+		"calls": 5391,
+		"inclusive_us": 7087,
+		"max_us": 16,
+		"self_us": 7087
+	},
+	"game/script/vm.gd:spawn": {
+		"calls": 1,
+		"inclusive_us": 14,
+		"max_us": 14,
+		"self_us": 14
+	},
+	"game/script/vm.gd:tick": {
+		"calls": 600,
+		"inclusive_us": 4613950,
+		"max_us": 12841,
+		"self_us": 4249
+	},
+	"game/session.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 359,
+		"max_us": 6,
+		"self_us": 359
+	},
+	"game/sound_mixer.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 8651,
+		"max_us": 123,
+		"self_us": 8651
+	},
+	"game/unit.gd:_physics_process": {
+		"calls": 264771,
+		"inclusive_us": 134448,
+		"max_us": 52,
+		"self_us": 134448
+	},
+	"game/unit.gd:_process": {
+		"calls": 49385,
+		"inclusive_us": 720884,
+		"max_us": 3909,
+		"self_us": 720493
+	},
+	"game/unit.gd:tick": {
+		"calls": 25611,
+		"inclusive_us": 1020222,
+		"max_us": 5974,
+		"self_us": 1019892
+	},
+	"game/world.gd:_physics_process": {
+		"calls": 638,
+		"inclusive_us": 777,
+		"max_us": 5,
+		"self_us": 777
+	},
+	"game/world.gd:_tick": {
+		"calls": 600,
+		"inclusive_us": 8342874,
+		"max_us": 46976,
+		"self_us": 5610
+	},
+	"game/world.gd:_tick_body": {
+		"calls": 600,
+		"inclusive_us": 8337264,
+		"max_us": 46963,
+		"self_us": 1769934
+	},
+	"platform/discord_presence.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 85,
+		"max_us": 2,
+		"self_us": 85
+	},
+	"platform/pad_input.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 1256,
+		"max_us": 62,
+		"self_us": 1256
+	},
+	"platform/pad_ui.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 4184,
+		"max_us": 57,
+		"self_us": 4184
+	},
+	"platform/performance_log.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 1662,
+		"max_us": 23,
+		"self_us": 1662
+	},
+	"platform/touch_input.gd:_process": {
+		"calls": 119,
+		"inclusive_us": 126,
+		"max_us": 8,
+		"self_us": 126
+	}
+}

@@ -1,0 +1,174 @@
+[
+  {
+    "name": "picking-render-gz1h-0-old",
+    "zone": "gz1h",
+    "mode": "old",
+    "returncode": 0,
+    "pack_sha256": "14f82b1c1aead54a295a3b6ca877fbf6b073f1067a6eac4ce9aee02d4405f0db",
+    "fps": 79.2801293154899,
+    "frame_ms": {
+      "max": 1401.466,
+      "p50": 11.876,
+      "p95": 15.749,
+      "p99": 18.121
+    },
+    "sim_seconds": 44.8799999999998,
+    "wall_seconds": 45.004972,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6562, 53.89062)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(256.1562, 55.1875)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 415,
+    "after_5s": {
+      "fps": 82.23918689008903,
+      "p50_ms": 11.881,
+      "p95_ms": 15.564,
+      "p99_ms": 17.594
+    },
+    "valid": true
+  },
+  {
+    "name": "picking-render-gz1h-1-fused",
+    "zone": "gz1h",
+    "mode": "fused",
+    "returncode": 0,
+    "pack_sha256": "5284c531584cb1c8d7ad47deb8c11804d3c0a33e7fcc3bda4b71cb7201956437",
+    "fps": 91.1528392009474,
+    "frame_ms": {
+      "max": 1436.728,
+      "p50": 10.373,
+      "p95": 14.041,
+      "p99": 16.148
+    },
+    "sim_seconds": 44.8799999999998,
+    "wall_seconds": 45.001341,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6562, 53.76562)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(256.2188, 55.07812)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 415,
+    "after_5s": {
+      "fps": 94.68914388965304,
+      "p50_ms": 10.403,
+      "p95_ms": 13.944,
+      "p99_ms": 15.851
+    },
+    "valid": true
+  },
+  {
+    "name": "picking-render-gz1h-2-fused",
+    "zone": "gz1h",
+    "mode": "fused",
+    "returncode": 0,
+    "pack_sha256": "5284c531584cb1c8d7ad47deb8c11804d3c0a33e7fcc3bda4b71cb7201956437",
+    "fps": 107.963929604407,
+    "frame_ms": {
+      "max": 1505.664,
+      "p50": 8.632,
+      "p95": 11.966,
+      "p99": 14.087
+    },
+    "sim_seconds": 44.8799999999998,
+    "wall_seconds": 45.005772,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6562, 53.84375)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(256.1719, 55.14062)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 415,
+    "after_5s": {
+      "fps": 113.27646398269599,
+      "p50_ms": 8.59,
+      "p95_ms": 11.784,
+      "p99_ms": 13.461
+    },
+    "valid": true
+  },
+  {
+    "name": "picking-render-gz1h-3-old",
+    "zone": "gz1h",
+    "mode": "old",
+    "returncode": 0,
+    "pack_sha256": "14f82b1c1aead54a295a3b6ca877fbf6b073f1067a6eac4ce9aee02d4405f0db",
+    "fps": 83.8722169559851,
+    "frame_ms": {
+      "max": 1430.324,
+      "p50": 11.208,
+      "p95": 14.842,
+      "p99": 17.591
+    },
+    "sim_seconds": 44.8799999999998,
+    "wall_seconds": 45.008945,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6562, 53.90625)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(256.1562, 55.20312)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 415,
+    "after_5s": {
+      "fps": 87.18714987855897,
+      "p50_ms": 11.185,
+      "p95_ms": 14.771,
+      "p99_ms": 17.174
+    },
+    "valid": true
+  }
+]

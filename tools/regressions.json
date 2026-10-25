@@ -877,6 +877,28 @@
       "args": [],
       "min_checks": 6069,
       "timeout": 240
+    },
+    {
+      "id": "script_expression_native",
+      "script": "tools/tests/script_expression_native.gd",
+      "summary": "SCRIPT_EXPRESSION_NATIVE",
+      "contract": "Native nested script expressions preserve float32 stores, live lever/object/variable reads, fallback side effects and RNG order.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 21000
+    },
+    {
+      "id": "picking_retained",
+      "script": "tools/tests/picking_retained.gd",
+      "summary": "PICKING_RETAINED",
+      "contract": "Fused native mechanism bounds preserve exact clipping, rounding, live morphs/transforms and unsupported-geometry fallbacks.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 2200
     }
   ]
 }

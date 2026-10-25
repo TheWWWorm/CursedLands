@@ -1,0 +1,485 @@
+{
+  "base_commit": "8f8dfd775a79599944b5434596eb944a7fc29f3e",
+  "runtime_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "baseline_pack_sha256": "37a8bf03ab627256ea92605c0ee437293d3cb2ba8bc1c1a7161103f7b4cf1e8d",
+  "candidate_with_weather_pack_sha256": "14f82b1c1aead54a295a3b6ca877fbf6b073f1067a6eac4ce9aee02d4405f0db",
+  "weather_control_pack_sha256": "01fe3706af3f6a784fc387a9da1db491094469a3757963c090236f04dfefe53b",
+  "weather_dependency": "18b587261b96cf7df223703e55ec161ae5cba69b:game/src/ei/figure.gd",
+  "cpu": {
+    "lscpu": [
+      {
+        "field": "Architecture:",
+        "data": "x86_64"
+      },
+      {
+        "field": "CPU op-mode(s):",
+        "data": "32-bit, 64-bit"
+      },
+      {
+        "field": "Address sizes:",
+        "data": "48 bits physical, 48 bits virtual"
+      },
+      {
+        "field": "Byte Order:",
+        "data": "Little Endian"
+      },
+      {
+        "field": "CPU(s):",
+        "data": "32"
+      },
+      {
+        "field": "On-line CPU(s) list:",
+        "data": "0-31"
+      },
+      {
+        "field": "Vendor ID:",
+        "data": "AuthenticAMD"
+      },
+      {
+        "field": "Model name:",
+        "data": "AMD Ryzen 9 5950X 16-Core Processor"
+      },
+      {
+        "field": "CPU family:",
+        "data": "25"
+      },
+      {
+        "field": "Model:",
+        "data": "33"
+      },
+      {
+        "field": "Thread(s) per core:",
+        "data": "2"
+      },
+      {
+        "field": "Core(s) per socket:",
+        "data": "16"
+      },
+      {
+        "field": "Socket(s):",
+        "data": "1"
+      },
+      {
+        "field": "Stepping:",
+        "data": "2"
+      },
+      {
+        "field": "Frequency boost:",
+        "data": "enabled"
+      },
+      {
+        "field": "CPU(s) scaling MHz:",
+        "data": "55%"
+      },
+      {
+        "field": "CPU max MHz:",
+        "data": "5086.1812"
+      },
+      {
+        "field": "CPU min MHz:",
+        "data": "582.1540"
+      },
+      {
+        "field": "BogoMIPS:",
+        "data": "6800.17"
+      },
+      {
+        "field": "Flags:",
+        "data": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap"
+      },
+      {
+        "field": "L1d cache:",
+        "data": "512 KiB (16 instances)"
+      },
+      {
+        "field": "L1i cache:",
+        "data": "512 KiB (16 instances)"
+      },
+      {
+        "field": "L2 cache:",
+        "data": "8 MiB (16 instances)"
+      },
+      {
+        "field": "L3 cache:",
+        "data": "64 MiB (2 instances)"
+      },
+      {
+        "field": "NUMA node(s):",
+        "data": "1"
+      },
+      {
+        "field": "NUMA node0 CPU(s):",
+        "data": "0-31"
+      },
+      {
+        "field": "Vulnerability Gather data sampling:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Ghostwrite:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Indirect target selection:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Itlb multihit:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability L1tf:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Mds:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Meltdown:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Mmio stale data:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Old microcode:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Reg file data sampling:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Retbleed:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Spec rstack overflow:",
+        "data": "Mitigation; Safe RET"
+      },
+      {
+        "field": "Vulnerability Spec store bypass:",
+        "data": "Mitigation; Speculative Store Bypass disabled via prctl"
+      },
+      {
+        "field": "Vulnerability Spectre v1:",
+        "data": "Mitigation; usercopy/swapgs barriers and __user pointer sanitization"
+      },
+      {
+        "field": "Vulnerability Spectre v2:",
+        "data": "Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected"
+      },
+      {
+        "field": "Vulnerability Srbds:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Tsa:",
+        "data": "Mitigation; Clear CPU buffers"
+      },
+      {
+        "field": "Vulnerability Tsx async abort:",
+        "data": "Not affected"
+      },
+      {
+        "field": "Vulnerability Vmscape:",
+        "data": "Mitigation; IBPB before exit to userspace"
+      }
+    ]
+  },
+  "original": {
+    "exe_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "wine_job": "55f578cca0824336",
+    "screenshot_sha256": "9160fd9bc0fd68523765217d8250b18b90377f1df4a479978505bdb9c2ebf7f0",
+    "config": "#0) GiveMoney(0,Add(Sub(Mul(7,3),Div(8,2)),Add(16777217,-16777216))\n",
+    "observed": "You picked up: Money (17)",
+    "rea_evidence_bundle_sha256": "ceb28dfa55033ef20d3422e711b267beb70df2e8cba88466d064cf0b0470c802"
+  },
+  "fixtures": {
+    "gz1h": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/astral-fixtures/gz1h.sav",
+      "sha256": "4d6a538bf509791462a3a91e02953c1306373dd0c06ae800435296f1118a2045"
+    },
+    "gz2h": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/astral-fixtures/gz2h.sav",
+      "sha256": "d72e2931ecadc2971fbc53deac27d58447d0214fdd5b2aa362dd33072c8a9f50"
+    },
+    "gz16g": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/astral-fixtures/gz16g.sav",
+      "sha256": "3416bf0b25e1731fe9389962f68dc260130a7651e6f7e8e124859ce11bd2def8"
+    },
+    "gz7g": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-60-20261007/astral-fixtures/gz7g.sav",
+      "sha256": "832f20fbe1babbe62328d0a6b51ca370a14bb8c21a67428bcb9330ba71257f30"
+    },
+    "gz21k": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/portal-throughput-20261007/large-area-sweep/environs-entry5-fixture/gz21k.sav",
+      "sha256": "f011ab887aadb1dd5b322df03c6376039a5eb238f4a28cd8d156a9e452842614"
+    }
+  },
+  "expression_native_builds": [
+    {
+      "platform": "linux",
+      "sha256": "985633b44a5a7c6a67222c4432cb2f60137ac0b6ac3ad81a8ffa750f9d8b09f9",
+      "source_sha256": {
+        "motion_spline.h": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+        "lightning_geometry.h": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+        "figure_geometry.h": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+        "screen_rect.h": "a2d8a1968e76e7e4c10f840c689104b92191e5f792d3df4c26ed0e6b50fc98d9",
+        "water_current.h": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+        "build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+        "water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+        "unit_simulation_state.h": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+        "unit_presentation.h": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+        "nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+        "nav_turn.h": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+        "script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a",
+        "terrain_color.h": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "fire_particles.h": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+        "ai_activity.h": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "mmp_texture.h": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+        "grass_chunk.h": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "soft_ground_paint.h": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+        "soft_ground_mesh.h": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+        "spell_particles.h": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+        "net_smooth.h": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+        ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ai_activity_core.h": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+        "unit_query.h": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+        "nav_topology.h": "d0121ad3b366a56deb06b1ec572d6f3b538380e338d47a01fb64bd3792098ce2",
+        "nav_build.h": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+        "CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+        "discord_ipc.h": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+        "perception_batch.h": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "README.md": "d6871e68389fd4ccbf0ce4b858ac2544683616b860a59f709f3b18a2b86f0d83",
+        "water_raytrace.h": "19233d3ce753ce58a4bf02cda82733c6f69e957e05c78a2b29f72f0ccd4ff95c",
+        "window_frontier.h": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+        "particle_draw.h": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "audio_decode.h": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+        "water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+      }
+    },
+    {
+      "platform": "windows",
+      "sha256": "50bb70b42a11b0e2bef63a9cbf3fec56aa3c3e0cb99122f4d9c0ecc2d72a6e36",
+      "source_sha256": {
+        "motion_spline.h": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+        "lightning_geometry.h": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+        "figure_geometry.h": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+        "screen_rect.h": "a2d8a1968e76e7e4c10f840c689104b92191e5f792d3df4c26ed0e6b50fc98d9",
+        "water_current.h": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+        "build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+        "water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+        "unit_simulation_state.h": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+        "unit_presentation.h": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+        "nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+        "nav_turn.h": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+        "script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a",
+        "terrain_color.h": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "fire_particles.h": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+        "ai_activity.h": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "mmp_texture.h": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+        "grass_chunk.h": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "soft_ground_paint.h": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+        "soft_ground_mesh.h": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+        "spell_particles.h": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+        "net_smooth.h": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+        ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ai_activity_core.h": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+        "unit_query.h": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+        "nav_topology.h": "d0121ad3b366a56deb06b1ec572d6f3b538380e338d47a01fb64bd3792098ce2",
+        "nav_build.h": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+        "CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+        "discord_ipc.h": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+        "perception_batch.h": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "README.md": "d6871e68389fd4ccbf0ce4b858ac2544683616b860a59f709f3b18a2b86f0d83",
+        "water_raytrace.h": "19233d3ce753ce58a4bf02cda82733c6f69e957e05c78a2b29f72f0ccd4ff95c",
+        "window_frontier.h": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+        "particle_draw.h": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "audio_decode.h": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+        "water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+      }
+    },
+    {
+      "platform": "android",
+      "sha256": "c759e7062d7ff08a6c23a1a1523c6880ccd3f77414403828c029ea9a820d7701",
+      "source_sha256": {
+        "motion_spline.h": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+        "lightning_geometry.h": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+        "figure_geometry.h": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+        "screen_rect.h": "a2d8a1968e76e7e4c10f840c689104b92191e5f792d3df4c26ed0e6b50fc98d9",
+        "water_current.h": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+        "build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+        "water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+        "unit_simulation_state.h": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+        "unit_presentation.h": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+        "nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+        "nav_turn.h": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+        "script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a",
+        "terrain_color.h": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "fire_particles.h": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+        "ai_activity.h": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "mmp_texture.h": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+        "grass_chunk.h": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "soft_ground_paint.h": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+        "soft_ground_mesh.h": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+        "spell_particles.h": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+        "net_smooth.h": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+        ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ai_activity_core.h": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+        "unit_query.h": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+        "nav_topology.h": "d0121ad3b366a56deb06b1ec572d6f3b538380e338d47a01fb64bd3792098ce2",
+        "nav_build.h": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+        "CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+        "discord_ipc.h": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+        "perception_batch.h": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "README.md": "d6871e68389fd4ccbf0ce4b858ac2544683616b860a59f709f3b18a2b86f0d83",
+        "water_raytrace.h": "19233d3ce753ce58a4bf02cda82733c6f69e957e05c78a2b29f72f0ccd4ff95c",
+        "window_frontier.h": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+        "particle_draw.h": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "audio_decode.h": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+        "water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+      }
+    }
+  ],
+  "final_native_builds": [
+    {
+      "platform": "linux",
+      "sha256": "de763f9152516b31e1b7475a37c6454fcc7ee8874e5ea15150268d4490a38089",
+      "source_sha256": {
+        "motion_spline.h": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+        "lightning_geometry.h": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+        "figure_geometry.h": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+        "screen_rect.h": "c0c270d2b20a4ecf864b7d41f7152b0f6e7abe450779061ba2c35f6e52bb8e09",
+        "water_current.h": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+        "build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+        "water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+        "unit_simulation_state.h": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+        "unit_presentation.h": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+        "nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+        "nav_turn.h": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+        "script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a",
+        "terrain_color.h": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "fire_particles.h": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+        "ai_activity.h": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "mmp_texture.h": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+        "grass_chunk.h": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "soft_ground_paint.h": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+        "soft_ground_mesh.h": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+        "spell_particles.h": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+        "net_smooth.h": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+        ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ai_activity_core.h": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+        "unit_query.h": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+        "nav_topology.h": "d0121ad3b366a56deb06b1ec572d6f3b538380e338d47a01fb64bd3792098ce2",
+        "nav_build.h": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+        "CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+        "discord_ipc.h": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+        "perception_batch.h": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "README.md": "fe7fa76345ffcf6179acd4082c0af60e3f72cf95547140f2863adfd60ce6d52e",
+        "water_raytrace.h": "19233d3ce753ce58a4bf02cda82733c6f69e957e05c78a2b29f72f0ccd4ff95c",
+        "window_frontier.h": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+        "particle_draw.h": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "audio_decode.h": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+        "water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+      }
+    },
+    {
+      "platform": "windows",
+      "sha256": "6fa2d3d11908ae182b7da536078888fbf0bbccfc931010218ac6d9c0349da1b6",
+      "source_sha256": {
+        "motion_spline.h": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+        "lightning_geometry.h": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+        "figure_geometry.h": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+        "screen_rect.h": "c0c270d2b20a4ecf864b7d41f7152b0f6e7abe450779061ba2c35f6e52bb8e09",
+        "water_current.h": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+        "build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+        "water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+        "unit_simulation_state.h": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+        "unit_presentation.h": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+        "nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+        "nav_turn.h": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+        "script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a",
+        "terrain_color.h": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "fire_particles.h": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+        "ai_activity.h": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "mmp_texture.h": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+        "grass_chunk.h": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "soft_ground_paint.h": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+        "soft_ground_mesh.h": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+        "spell_particles.h": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+        "net_smooth.h": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+        ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ai_activity_core.h": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+        "unit_query.h": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+        "nav_topology.h": "d0121ad3b366a56deb06b1ec572d6f3b538380e338d47a01fb64bd3792098ce2",
+        "nav_build.h": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+        "CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+        "discord_ipc.h": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+        "perception_batch.h": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "README.md": "fe7fa76345ffcf6179acd4082c0af60e3f72cf95547140f2863adfd60ce6d52e",
+        "water_raytrace.h": "19233d3ce753ce58a4bf02cda82733c6f69e957e05c78a2b29f72f0ccd4ff95c",
+        "window_frontier.h": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+        "particle_draw.h": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "audio_decode.h": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+        "water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+      }
+    },
+    {
+      "platform": "android",
+      "sha256": "1cda70cf9c0ffe415ce47eac8b3835443ace57f3bedc8ac339a4bc2ddc111a45",
+      "source_sha256": {
+        "motion_spline.h": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+        "lightning_geometry.h": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+        "figure_geometry.h": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+        "screen_rect.h": "c0c270d2b20a4ecf864b7d41f7152b0f6e7abe450779061ba2c35f6e52bb8e09",
+        "water_current.h": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+        "build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+        "water_surface.h": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+        "unit_simulation_state.h": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+        "unit_presentation.h": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+        "nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+        "nav_turn.h": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+        "script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a",
+        "terrain_color.h": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+        "fire_particles.h": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+        "ai_activity.h": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+        "mmp_texture.h": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+        "grass_chunk.h": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+        "soft_ground_paint.h": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+        "soft_ground_mesh.h": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+        "spell_particles.h": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+        "net_smooth.h": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+        ".gdignore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ai_activity_core.h": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+        "unit_query.h": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+        "nav_topology.h": "d0121ad3b366a56deb06b1ec572d6f3b538380e338d47a01fb64bd3792098ce2",
+        "nav_build.h": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+        "CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+        "discord_ipc.h": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+        "perception_batch.h": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+        "README.md": "fe7fa76345ffcf6179acd4082c0af60e3f72cf95547140f2863adfd60ce6d52e",
+        "water_raytrace.h": "19233d3ce753ce58a4bf02cda82733c6f69e957e05c78a2b29f72f0ccd4ff95c",
+        "window_frontier.h": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+        "particle_draw.h": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+        "audio_decode.h": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+        "water_wave.h": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+      }
+    }
+  ],
+  "picking_candidate_pack_sha256": "5284c531584cb1c8d7ad47deb8c11804d3c0a33e7fcc3bda4b71cb7201956437",
+  "picking_candidate_linux_library_sha256": "de763f9152516b31e1b7475a37c6454fcc7ee8874e5ea15150268d4490a38089",
+  "qualified_windows_engine_sha256": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+  "picking_gpu_job": "4d1bef6a1b5b4e65",
+  "resolution_gpu_job": "11e84068597543af",
+  "final_code_sha256": {
+    "game/src/game/game.gd": "b01323bc46879862e46719ef5ecfb8202cda7061490ed6b5ee6654363e1503f2",
+    "game/src/game/script/vm.gd": "af8fc98517b1723ab8da843602531a17b4ae9b5fd2499fec6f361298d1974aeb",
+    "game/src/ui/mesh_screen_rect.gd": "e66852f0fb7b2221774a8ba57ce7a036dad8dfc2b387866882f550283b550555",
+    "game/src/native/source/nav_kernel.cpp": "2a4c2171a6b70efac0ee94e4f43eff41407ee4981dce259aebd7689311ac8d93",
+    "game/src/native/source/screen_rect.h": "c0c270d2b20a4ecf864b7d41f7152b0f6e7abe450779061ba2c35f6e52bb8e09",
+    "game/src/native/source/script_expression.h": "77c81721a7a31b66e6336ca864ca060ef48f0d59086f947d0a05706a4312085a"
+  }
+}

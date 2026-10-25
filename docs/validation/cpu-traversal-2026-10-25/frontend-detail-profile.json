@@ -1,0 +1,457 @@
+{
+	"ei/object_water.gd:_process": {
+		"calls": 5476,
+		"inclusive_us": 7589,
+		"max_us": 13
+	},
+	"ei/terrain.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 467682,
+		"max_us": 188547
+	},
+	"ei/unit_model.gd:_process": {
+		"calls": 101407,
+		"inclusive_us": 203189,
+		"max_us": 217
+	},
+	"game/coop_progress.gd:_physics_process": {
+		"calls": 2019,
+		"inclusive_us": 5201,
+		"max_us": 14
+	},
+	"game/direct_control.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 90207,
+		"max_us": 108
+	},
+	"game/fx/ambient_life.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 146431,
+		"max_us": 2337
+	},
+	"game/fx/contact_shadows.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 19338,
+		"max_us": 158
+	},
+	"game/fx/ground_marks.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 747925,
+		"max_us": 1680
+	},
+	"game/fx/local_lighting.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 300315,
+		"max_us": 1258
+	},
+	"game/fx/particle_system.gd:_process": {
+		"calls": 5441,
+		"inclusive_us": 1595562,
+		"max_us": 7063
+	},
+	"game/fx/quest_bird.gd:_process": {
+		"calls": 1,
+		"inclusive_us": 5,
+		"max_us": 5
+	},
+	"game/fx/quest_lights.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 10017,
+		"max_us": 66
+	},
+	"game/fx/rain_snow.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 7439,
+		"max_us": 11
+	},
+	"game/fx/scene_raytrace.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 31944,
+		"max_us": 32
+	},
+	"game/fx/soft_ground_deform.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 16784,
+		"max_us": 109
+	},
+	"game/fx/surface_weather.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 26245,
+		"max_us": 26
+	},
+	"game/fx/terrain_color_cache.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 51741,
+		"max_us": 1610
+	},
+	"game/fx/terrain_details.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 572128,
+		"max_us": 2354
+	},
+	"game/fx/water_interaction.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 429961,
+		"max_us": 5277
+	},
+	"game/fx/water_reflection.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 286160,
+		"max_us": 1350
+	},
+	"game/fx/weather_mist.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 131646,
+		"max_us": 1552
+	},
+	"game/game.gd:_keep_selection": {
+		"calls": 2739,
+		"inclusive_us": 9181,
+		"max_us": 20
+	},
+	"game/game.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 5365353,
+		"max_us": 4183
+	},
+	"game/game.gd:_update_cursor": {
+		"calls": 2739,
+		"inclusive_us": 4727948,
+		"max_us": 3736
+	},
+	"game/game.gd:_update_daylight": {
+		"calls": 2739,
+		"inclusive_us": 603293,
+		"max_us": 512
+	},
+	"game/game.gd:pick_hover": {
+		"calls": 5792,
+		"inclusive_us": 23726,
+		"max_us": 17
+	},
+	"game/game.gd:pick_lever": {
+		"calls": 5334,
+		"inclusive_us": 9309467,
+		"max_us": 3583
+	},
+	"game/game_sound.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 698005,
+		"max_us": 2976
+	},
+	"game/internet_directory.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2583,
+		"max_us": 14
+	},
+	"game/lan_discovery.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2441,
+		"max_us": 8
+	},
+	"game/local_host.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 52217,
+		"max_us": 101
+	},
+	"game/music_system.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 9606,
+		"max_us": 19
+	},
+	"game/net_status.gd:_physics_process": {
+		"calls": 2019,
+		"inclusive_us": 3227,
+		"max_us": 10
+	},
+	"game/order_marks.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 189609,
+		"max_us": 138
+	},
+	"game/pad_field.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 41076,
+		"max_us": 37
+	},
+	"game/player_swap.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2470,
+		"max_us": 11
+	},
+	"game/session.gd:_physics_process": {
+		"calls": 2019,
+		"inclusive_us": 8566,
+		"max_us": 17
+	},
+	"game/session.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 6389,
+		"max_us": 15
+	},
+	"game/sound_mixer.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 114872,
+		"max_us": 89
+	},
+	"game/unit.gd:_physics_process": {
+		"calls": 18469,
+		"inclusive_us": 7036,
+		"max_us": 10
+	},
+	"game/unit.gd:_process": {
+		"calls": 25540,
+		"inclusive_us": 762176,
+		"max_us": 220
+	},
+	"game/unit_fog.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 199495,
+		"max_us": 1498
+	},
+	"game/world.gd:_physics_process": {
+		"calls": 2011,
+		"inclusive_us": 2514,
+		"max_us": 8
+	},
+	"game/world.gd:_process": {
+		"calls": 2738,
+		"inclusive_us": 1829765,
+		"max_us": 5009
+	},
+	"platform/discord_presence.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2473,
+		"max_us": 10
+	},
+	"platform/pad_input.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 14386,
+		"max_us": 16
+	},
+	"platform/pad_ui.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 64779,
+		"max_us": 66
+	},
+	"platform/performance_log.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 23687,
+		"max_us": 20
+	},
+	"platform/touch_input.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2623,
+		"max_us": 7
+	},
+	"ui/action_strip.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 12415,
+		"max_us": 13
+	},
+	"ui/base_strip.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 12201,
+		"max_us": 27
+	},
+	"ui/belt_strip.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 25941,
+		"max_us": 19
+	},
+	"ui/camera_depth_of_field.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 28119,
+		"max_us": 26
+	},
+	"ui/camera_rig.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 495162,
+		"max_us": 524
+	},
+	"ui/camp_view.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 16356,
+		"max_us": 28
+	},
+	"ui/chat_overlay.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 6378,
+		"max_us": 11
+	},
+	"ui/dialog_panel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 4337,
+		"max_us": 9
+	},
+	"ui/enemy_bars.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 145506,
+		"max_us": 252
+	},
+	"ui/esc_signpost.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 10278,
+		"max_us": 13
+	},
+	"ui/game_cursor.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 46158,
+		"max_us": 3700
+	},
+	"ui/game_hud.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 47832,
+		"max_us": 90
+	},
+	"ui/hud_dial.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 5213,
+		"max_us": 10
+	},
+	"ui/interface_board.gd:_process": {
+		"calls": 10956,
+		"inclusive_us": 4554,
+		"max_us": 8
+	},
+	"ui/inventory_panel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 12693,
+		"max_us": 12
+	},
+	"ui/item_view.gd:_process": {
+		"calls": 295812,
+		"inclusive_us": 126998,
+		"max_us": 34
+	},
+	"ui/load_panel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2693,
+		"max_us": 3
+	},
+	"ui/message_log.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 67855,
+		"max_us": 72
+	},
+	"ui/minimap.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 20675,
+		"max_us": 30
+	},
+	"ui/movie_player.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 3134,
+		"max_us": 7
+	},
+	"ui/notify_line.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2180,
+		"max_us": 5
+	},
+	"ui/options_panel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 3463,
+		"max_us": 9
+	},
+	"ui/pad_prompts.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 3852,
+		"max_us": 10
+	},
+	"ui/pad_wheel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 1857,
+		"max_us": 8
+	},
+	"ui/paperdoll.gd:_process": {
+		"calls": 8219,
+		"inclusive_us": 75017,
+		"max_us": 100
+	},
+	"ui/party_faces.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 105870,
+		"max_us": 100
+	},
+	"ui/player_list.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 11009,
+		"max_us": 12
+	},
+	"ui/player_names.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 8344,
+		"max_us": 12
+	},
+	"ui/players_panel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2545,
+		"max_us": 20
+	},
+	"ui/portrait.gd:_process": {
+		"calls": 5478,
+		"inclusive_us": 45090,
+		"max_us": 30
+	},
+	"ui/revive_overlay.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 246940,
+		"max_us": 1115
+	},
+	"ui/save_transfer.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 2654,
+		"max_us": 9
+	},
+	"ui/selection_frame.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 4374,
+		"max_us": 11
+	},
+	"ui/shader_compilation_screen.gd:_process": {
+		"calls": 2,
+		"inclusive_us": 15698,
+		"max_us": 8846
+	},
+	"ui/spell_slots.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 68831,
+		"max_us": 64
+	},
+	"ui/touch_actions.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 3763,
+		"max_us": 10
+	},
+	"ui/tutorial_panel.gd:_process": {
+		"calls": 8217,
+		"inclusive_us": 243272,
+		"max_us": 684
+	},
+	"ui/unit_panel.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 58863,
+		"max_us": 5112
+	},
+	"ui/village_name.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 6717,
+		"max_us": 11
+	},
+	"ui/weapon_bar.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 19954,
+		"max_us": 16
+	},
+	"ui/wiki_preview.gd:_process": {
+		"calls": 5478,
+		"inclusive_us": 7609,
+		"max_us": 21
+	},
+	"ui/world_labels.gd:_process": {
+		"calls": 2739,
+		"inclusive_us": 5904,
+		"max_us": 11
+	}
+}

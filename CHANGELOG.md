@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reduce campaign simulation CPU work with native nested quest expressions while preserving script scheduling, numeric rounding, live reads and side effects.
+- Combine mechanism mesh deformation and screen-bound calculations in the native helper while retaining exact cursor hit rules.
 - Preserve requested posture changes through a killing melee impact and play the following transition ([#113](https://github.com/TheWWWorm/CursedLands/issues/113)).
 - Enter combat readiness when a surviving enemy selects retaliation, including during its hit animation ([#115](https://github.com/TheWWWorm/CursedLands/issues/115)).
 - Rename existing manual saves with F2 in Load and Save screens; Enter applies and Esc cancels. Preserve the saved world, preview and date ([#114](https://github.com/TheWWWorm/CursedLands/issues/114)).

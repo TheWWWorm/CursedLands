@@ -1685,7 +1685,7 @@ func pick_lever(p: Vector2) -> int:
 		# currently morphed part bounds as creature selection. The small
 		# origin assist remains a fallback for distant switches and chests.
 		for mi: MeshInstance3D in world.lever_sys._morph.get(nid, {}).get("meshes", []):
-			var rect := GameUnit.MeshScreenRect.of_context(mi, cam, view)
+			var rect := GameUnit.MeshScreenRect.of_retained_context(mi, cam, view)
 			if not _in_rect(rect, p): continue
 			var z := maxf(0.0, -(to_view * mi.global_position).z)
 			if z < depth:

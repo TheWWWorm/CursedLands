@@ -59,8 +59,53 @@ protected:
         ClassDB::bind_method(D_METHOD("bounds", "surfaces", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::bounds);
         ClassDB::bind_method(D_METHOD("deform_vertices", "base", "shapes", "shape_weights", "normalized", "bones", "weights", "poses"), &ScreenRectKernel::deform_vertices);
         ClassDB::bind_method(D_METHOD("deformation_state", "instance"), &ScreenRectKernel::deformation_state);
+        ClassDB::bind_method(D_METHOD("retained_bounds", "instance", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::retained_bounds);
     }
 public:
+    // Scenery mechanisms retain their uploaded vertex arrays. Fuse their
+    // live morph, world transform and exact clipping in one native call.
+    // Nil means unsupported: the existing general/cache path remains the
+    // oracle for skins, third-party meshes and multi-surface figures.
+    Variant retained_bounds(MeshInstance3D *instance, const TypedArray<Plane> &planes,
+            const Projection &projection, const Basis &inverse_basis,
+            const Vector3 &origin, const Vector2 &size) const {
+        if (!instance || !instance->is_inside_tree() || !instance->is_visible_in_tree()) return Rect2i();
+        const Ref<Mesh> mesh = instance->get_mesh();
+        if (mesh.is_null()) return Rect2i();
+        if (!mesh->is_class("ArrayMesh") || instance->get_skin().is_valid() || mesh->get_surface_count() != 1 ||
+                mesh->has_meta("ei_cpu_surfaces") || !mesh->has_meta("ei_cpu_geometry")) return Variant();
+        const Variant stored = mesh->get_meta("ei_cpu_geometry");
+        if (stored.get_type() != Variant::ARRAY) return Variant();
+        const Array geometry = stored;
+        if (geometry.size() != 2 || geometry[0].get_type() != Variant::PACKED_VECTOR3_ARRAY ||
+                (geometry[1].get_type() != Variant::NIL && geometry[1].get_type() != Variant::PACKED_INT32_ARRAY)) return Variant();
+        PackedVector3Array vertices = geometry[0];
+        // Large static mechanisms benefit more from the existing exact cache.
+        if (vertices.size() > 2048) return Variant();
+        const int count = instance->get_blend_shape_count();
+        if (count > 0) {
+            if (!mesh->has_meta("ei_cpu_shapes")) return Variant();
+            const Variant stored_shapes = mesh->get_meta("ei_cpu_shapes");
+            if (stored_shapes.get_type() != Variant::ARRAY) return Variant();
+            const Array shapes = stored_shapes;
+            if (shapes.size() != count) return Variant();
+            PackedFloat64Array weights; weights.resize(count);
+            for (int i = 0; i < count; ++i) weights.set(i, instance->get_blend_shape_value(i));
+            vertices = deform_vertices(vertices, shapes, weights,
+                int(mesh->get("blend_shape_mode")) == Mesh::BLEND_SHAPE_MODE_NORMALIZED,
+                PackedInt32Array(), PackedFloat32Array(), TypedArray<Transform3D>());
+        }
+        const Transform3D transform = instance->get_global_transform_interpolated();
+        Vector3 *out = vertices.ptrw();
+        for (int64_t i = 0; i < vertices.size(); ++i) out[i] = transform.xform(out[i]);
+        Array surface;
+        surface.push_back(vertices);
+        surface.push_back(geometry[1].get_type() == Variant::PACKED_INT32_ARRAY ? geometry[1] : Variant(PackedInt32Array()));
+        surface.push_back(mesh->call("surface_get_primitive_type", 0));
+        Array surfaces; surfaces.push_back(surface);
+        return bounds(surfaces, planes, projection, inverse_basis, origin, size);
+    }
+
     // Read the same current renderer inputs in one native call. Morph-heavy
     // creatures otherwise cross the script boundary hundreds of times merely
     // to validate an unchanged cached rectangle. No pose is cached here.

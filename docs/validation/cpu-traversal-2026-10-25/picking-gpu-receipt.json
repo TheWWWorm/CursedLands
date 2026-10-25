@@ -1,0 +1,24 @@
+{
+  "id": "4d1bef6a1b5b4e65",
+  "status": "completed",
+  "argv": [
+    "python3",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/picking_render_series.py"
+  ],
+  "cwd": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025",
+  "timeout_seconds": 900,
+  "created_at": 1792933979.7845807,
+  "label": "Portal retained mechanism picking matched traversal",
+  "directory": "/var/lib/gpu-lab/jobs/4d1bef6a1b5b4e65",
+  "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+  "display": ":98",
+  "workload": "heavy",
+  "vram_mb": 4096,
+  "started_at": 1792933979.784905,
+  "pid": 1428966,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "exit_code": 0,
+  "finished_at": 1792934408.9619343,
+  "gpu_slot": "1"
+}

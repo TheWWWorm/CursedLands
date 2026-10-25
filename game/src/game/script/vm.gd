@@ -47,6 +47,10 @@ var world_bodies := {}
 ## Remake campaign co-op: eligible global one-shot script -> first player's
 ## controller. A later chained copy must see the same winner after save/load.
 var _world_done := {}
+## Only the expression traversal is native. Older libraries and diagnostic
+## controls retain the same interpreter; derived VMs keep their overrides.
+var _expression_kernel: RefCounted = ClassDB.instantiate("ScriptExpressionKernel") \
+	if ClassDB.class_exists("ScriptExpressionKernel") and not OS.get_cmdline_user_args().has("--ei-script-expressions") else null
 
 
 class Instance:
@@ -551,6 +555,12 @@ func _set_var(name: String, v, inst: Instance) -> void:
 
 
 func _eval(e: Array, inst: Instance):
+	if _expression_kernel != null and get_script() == ScriptVM:
+		return _expression_kernel.evaluate(e, self, inst)
+	return _eval_script(e, inst)
+
+
+func _eval_script(e: Array, inst: Instance):
 	var value
 	match e[0]:
 		P.N_NUM: value = e[1]

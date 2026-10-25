@@ -1,0 +1,97 @@
+[
+  {
+    "zone": "gz1h",
+    "area": "Portal",
+    "script": {
+      "runs": 3,
+      "median_tick_seconds": 3.6117,
+      "median_window_seconds": 5.005178,
+      "min_tick_seconds": 3.32922,
+      "max_tick_seconds": 3.715684
+    },
+    "native": {
+      "runs": 3,
+      "median_tick_seconds": 2.696571,
+      "median_window_seconds": 4.000369,
+      "min_tick_seconds": 2.670866,
+      "max_tick_seconds": 2.799124
+    },
+    "tick_reduction_percent": 25.33790181908796
+  },
+  {
+    "zone": "gz2h",
+    "area": "Suslanger",
+    "script": {
+      "runs": 2,
+      "median_tick_seconds": 3.068804,
+      "median_window_seconds": 4.120215,
+      "min_tick_seconds": 3.019754,
+      "max_tick_seconds": 3.117854
+    },
+    "native": {
+      "runs": 2,
+      "median_tick_seconds": 2.6062015,
+      "median_window_seconds": 3.6093315,
+      "min_tick_seconds": 2.528254,
+      "max_tick_seconds": 2.684149
+    },
+    "tick_reduction_percent": 15.074357958344686
+  },
+  {
+    "zone": "gz16g",
+    "area": "River and Islands",
+    "script": {
+      "runs": 2,
+      "median_tick_seconds": 2.378012,
+      "median_window_seconds": 3.1669185,
+      "min_tick_seconds": 2.106301,
+      "max_tick_seconds": 2.649723
+    },
+    "native": {
+      "runs": 2,
+      "median_tick_seconds": 1.6562835,
+      "median_window_seconds": 2.4038465,
+      "min_tick_seconds": 1.629779,
+      "max_tick_seconds": 1.682788
+    },
+    "tick_reduction_percent": 30.3500781324905
+  },
+  {
+    "zone": "gz7g",
+    "area": "Dead City",
+    "script": {
+      "runs": 2,
+      "median_tick_seconds": 1.722204,
+      "median_window_seconds": 2.3792405,
+      "min_tick_seconds": 1.615453,
+      "max_tick_seconds": 1.828955
+    },
+    "native": {
+      "runs": 2,
+      "median_tick_seconds": 1.3653635,
+      "median_window_seconds": 1.962952,
+      "min_tick_seconds": 1.1512,
+      "max_tick_seconds": 1.579527
+    },
+    "tick_reduction_percent": 20.719990198605977
+  },
+  {
+    "zone": "gz21k",
+    "area": "City Environs",
+    "script": {
+      "runs": 2,
+      "median_tick_seconds": 1.361138,
+      "median_window_seconds": 1.9347604999999999,
+      "min_tick_seconds": 1.356484,
+      "max_tick_seconds": 1.365792
+    },
+    "native": {
+      "runs": 2,
+      "median_tick_seconds": 1.2298575,
+      "median_window_seconds": 1.834012,
+      "min_tick_seconds": 1.172318,
+      "max_tick_seconds": 1.287397
+    },
+    "tick_reduction_percent": 9.64490742305335
+  }
+]
