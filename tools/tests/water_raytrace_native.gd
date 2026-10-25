@@ -183,6 +183,9 @@ func first_person_presentation() -> void:
 			"complete shadow/GI copy retains authored pose")
 		check(native._instance_updates(false).is_empty() and script._instance_updates(false).is_empty(),
 			"stationary presented instances avoid redundant updates")
+		check(native.instances[0].get("lighting_offset",Vector3.ZERO)==-model._view_shift
+			and script.instances[0].get("lighting_offset",Vector3.ZERO)==-model._view_shift,
+			"first-person lighting follows the authored body beneath its presentation shift")
 	model._view_shift=Vector3(0.3,0,0); native._instance_updates(false); script._instance_updates(false)
 	model.remove_child(body)
 	native._instance_updates(false);script._instance_updates(false)

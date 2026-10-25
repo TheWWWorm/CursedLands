@@ -336,7 +336,8 @@ func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
 				_pending_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
 					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
 			for entry: Dictionary in _pending_scene.instances:
-				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask})
+				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask,
+					"lighting_offset":entry.get("lighting_offset",Vector3.ZERO)})
 			_pending_stage=1
 		1:
 			if _path_mode:
@@ -459,8 +460,8 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			var v: Vector4=matrix[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 	var sun := Gfx.sun.srgb_to_linear()
 	var direction := Gfx._cloud_sun_direction
-	# A cave has no unoccluded outdoor sky. Its authored lights and emissive
-	# surfaces supply indirect illumination instead of an ambient floor.
+	# A cave has no outdoor sky transport. Its authored ambient floor travels
+	# separately in PathSky's reserved channels, alongside local illumination.
 	var sky := Color.BLACK if game._sky_cave else Gfx.ambient.srgb_to_linear()
 	data.append_array(PackedFloat32Array([sun.r,sun.g,sun.b,GameData.option("rt_shadows"),direction.x,direction.y,direction.z,0.00465,
 		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality],camera.near,

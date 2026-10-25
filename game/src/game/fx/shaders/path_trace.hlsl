@@ -23,6 +23,7 @@
 // Direct sunlight only, before albedo. Nearby raster grass can remove the
 // part its detailed blade shadows block without darkening indirect light.
 [[vk::binding(20,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_sun : register(u2000000);
+[[vk::binding(21,0)]] ByteAddressBuffer lighting_offsets : register(t2100000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -448,6 +449,12 @@ void main() {
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
     indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;path_direct_sun[pixel]=0.0;
     if(primary.hit<0.5)return;
+    // Camera clearance moves only the first-person presentation mesh. Trace
+    // its illumination at the matching authored surface, where the complete
+    // shadow/GI body lives. Otherwise that overlapping copy encloses parts of
+    // the shifted receiver and blacks out its sunlight and bounce lighting.
+    // Keep guide/depth and reprojection at the displayed position above.
+    primary.position+=asfloat(lighting_offsets.Load3(primary.instance_id*16u));
     float3 diffuse=0.0,specular=0.0,direct_specular=0.0,sunlight=0.0;
     float diffuse_distance=0.0,specular_distance=65504.0;
     uint samples=clamp(uint(frame.settings.y),1u,16u);
@@ -462,7 +469,13 @@ void main() {
     // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
     // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
     // storing integers above 2048 directly. The filter carries identity onward.
-    indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
+    // Cave artwork relies on an authored ambient floor even in passages
+    // without lamps. Preserve that diffuse minimum, rather than importing
+    // outdoor sky or adding the full ambient term on top of traced light.
+    // It is applied once at the receiver, never recursively at each bounce.
+    float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+    diffuse=max(diffuse/float(samples),ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
+    indirect_image[pixel]=float4(diffuse,f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
     path_direct_specular[pixel]=float4(direct_specular/float(samples),0.0);
     path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);

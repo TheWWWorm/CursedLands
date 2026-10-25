@@ -4,8 +4,13 @@ extends RefCounted
 ## PT adds sky transport to sunlight. Do not add that whole floor again.
 static func palette(ambient: Color, sun: Color, sky: Color, cave: bool, daylight := -1.0) -> PackedFloat32Array:
 	var result := PackedFloat32Array(); result.resize(12)
-	if cave: return result
 	var base := ambient.srgb_to_linear()
+	if cave:
+		# Original caves depend on their authored ambient floor, including
+		# passages without lamps. Keep it separate from outdoor sky transport
+		# in the palette's reserved channels; ray misses still see black.
+		result[3]=base.r;result[7]=base.g;result[11]=base.b
+		return result
 	var day := Gfx.sun_day(sun) if daylight<0.0 else daylight
 	var colour := sky.srgb_to_linear()
 	var luminance := colour.r*0.2126+colour.g*0.7152+colour.b*0.0722

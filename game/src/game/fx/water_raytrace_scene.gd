@@ -23,6 +23,7 @@ var _mesh_roots := {}
 var _unit_roots := {}
 var _groups := {}
 var _view_models := {}
+var _view_offsets := {}
 var _morph_geometries: Array[int] = []
 var _terrain: EITerrain
 var _plane := 0.0
@@ -155,7 +156,7 @@ func topology_changed() -> bool:
 func discard_geometry() -> void:
 	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
-	_mesh_roots.clear();_groups.clear();_view_models.clear();_morph_geometries.clear()
+	_mesh_roots.clear();_groups.clear();_view_models.clear();_view_offsets.clear();_morph_geometries.clear()
 	_kernel=null;_watching=false;_cursor=0
 	_ground=Ground.new()
 
@@ -363,18 +364,28 @@ func _instance_updates(force: bool) -> Array:
 				var entry: Dictionary = instances[i]
 				var mesh: MeshInstance3D = entry.node.get_ref()
 				if not is_instance_valid(mesh) or not mesh.is_inside_tree() or not model._view_meshes.has(mesh): continue
+				var transform := model.presented_mesh_transform(mesh)
 				presented[i] = {"before":entry.transform,"mask":entry.mask,
-					"transform":model.presented_mesh_transform(mesh)}
+					"transform":transform,"lighting_offset":mesh.global_transform.origin-transform.origin}
 	var changes := _tracked_instance_updates(force)
-	if presented.is_empty(): return changes
+	if presented.is_empty() and _view_offsets.is_empty(): return changes
 	var changed := {}
 	for change: Dictionary in changes: changed[change.index] = change
+	for i: int in _view_offsets:
+		if presented.has(i): continue
+		var entry: Dictionary = instances[i]
+		entry.lighting_offset = Vector3.ZERO
+		changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask,"lighting_offset":Vector3.ZERO}
+	_view_offsets.clear()
 	for i: int in presented:
 		var view: Dictionary = presented[i]
 		var entry: Dictionary = instances[i]
+		var previous_offset: Vector3 = entry.get("lighting_offset",Vector3.ZERO)
 		entry.transform = view.transform
-		if force or entry.transform != view.before or entry.mask != view.mask:
-			changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask}
+		entry.lighting_offset = view.lighting_offset
+		_view_offsets[i] = true
+		if force or entry.transform != view.before or entry.mask != view.mask or previous_offset != view.lighting_offset:
+			changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask,"lighting_offset":view.lighting_offset}
 		else: changed.erase(i)
 	return changed.values()
 

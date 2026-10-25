@@ -60,7 +60,7 @@ func run() -> void:
 	for c: Color in [Color.WHITE,Color(0.8,0.4,0.1),Color(0.1,0.15,0.3)]:
 		var p:=SkyPalette.palette(Color(0.4,0.5,0.6),c,Color.BLACK,false)
 		check(p.size()==12 and p[2]>p[10] and p[2]>0.0,"day/evening/night palette stays finite and directional: "+str(c))
-	check(SkyPalette.palette(Color.WHITE,Color.WHITE,Color.WHITE,true)==PackedFloat32Array([0,0,0,0,0,0,0,0,0,0,0,0]),"cave has no sky environment")
+	check(SkyPalette.palette(Color.WHITE,Color.WHITE,Color.WHITE,true)==PackedFloat32Array([0,0,0,1,0,0,0,1,0,0,0,1]),"cave keeps authored ambient separate from its black sky environment")
 	camera=Camera3D.new();add_child(camera);camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.size=3;camera.current=true;size=Vector2i(256,144);sun_energy=0;sky_energy=1;bounces=1
 	for n: Vector3 in [Vector3.UP,Vector3.RIGHT,Vector3.DOWN]:

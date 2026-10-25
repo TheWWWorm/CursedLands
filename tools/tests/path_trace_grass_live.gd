@@ -10,6 +10,8 @@ func run(a: Node) -> void:
 	var details: TerrainDetails=a.t.details
 	a.previous_position=a.h.pos; a.total_distance=0.0
 	details.set_process(false)
+	if OS.get_cmdline_user_args().has("--pt-darkness-audit"):
+		await darkness_audit(a); return
 	if OS.get_cmdline_user_args().has("--pt-grass-contact"):
 		await contact_audit(a,details); return
 	if OS.get_cmdline_user_args().has("--pt-character-audit"):
@@ -68,6 +70,26 @@ func run(a: Node) -> void:
 	await capture(a,"ground-conventional")
 	a.check(a.rt.device==null,"conventional lighting restores after the grass comparison")
 	FileAccess.open(a.out.path_join("grass-view.json"),FileAccess.WRITE).store_string(JSON.stringify({"camera":str(a.camera.global_transform),"position":str(a.h.pos),"sun":str(sun.global_transform),"grass_casters":casters.size(),"stats":a.rt.stats},"\t"))
+
+func darkness_audit(a: Node) -> void:
+	a.h.model.act("walk",1,0);a.h.model.player.pause();a.h.model.player.seek(0.3,true);a.h.model.flush_pending_pose()
+	a.g.direct._set_view_mode(3);a.g.direct.tilt=-1.1;a.g.direct.apply_camera()
+	a.g.get_node("LocalLighting").set_process(false)
+	a.s.world.get_node("ParticleFx").set_process(false);a.t.set_process(false)
+	await capture(a,"darkness-pt")
+	var rows: Array=a.h.model._view_shadows.duplicate()
+	a.h.model._view_shadows.clear()
+	for row: Dictionary in rows:row.shadow.hide()
+	await capture(a,"darkness-no-body-shadow")
+	for row: Dictionary in rows:row.shadow.show();row.reflection.hide()
+	await capture(a,"darkness-no-body-gi")
+	for row: Dictionary in rows:row.shadow.hide()
+	await capture(a,"darkness-no-body-copies")
+	a.h.model._view_shadows.assign(rows);a.h.model._update_first_person_shadows()
+	GameData.options.pt_mode=0
+	await capture(a,"darkness-conventional")
+	FileAccess.open(a.out.path_join("darkness-inputs.json"),FileAccess.WRITE).store_string(JSON.stringify({"cave":a.g._sky_cave,"ambient":str(Gfx.ambient),"sun":str(Gfx.sun),"sky":str(Gfx.fog_sky),"body_shift":str(a.h.model._view_shift),"lights":a.rt.stats.get("lights",0)},"\t"))
+	GameData.options.pt_mode=1;await a.ready_scene(a.rt)
 
 func capture(a: Node,label: String) -> void:
 	await a.frames(30); await RenderingServer.frame_post_draw
