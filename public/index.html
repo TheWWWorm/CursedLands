@@ -32,7 +32,7 @@ button:disabled{opacity:.6}#bar{height:6px;background:#372e20;border-radius:3px;
 <div id="start"><h1><img src="icon-192.png" width="72" height="72" alt="">Cursed Lands</h1><div id="notice">Preparing…</div><div id="bar" hidden><div></div></div><button id="play">Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button><a id="public-wiki" href="/wiki/">Public wiki · no game files required</a></div>
 <script src="storage.js"></script><script src="files.js"></script><script src="index.js"></script>
 <script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":22276748,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":22301216,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const wikiLanguage = ['en', 'ru', 'de'].includes(navigator.language.slice(0, 2)) ? navigator.language.slice(0, 2) : 'en';
 document.getElementById('public-wiki').textContent = {en: 'Public wiki · no game files required', ru: 'Открытая вики · файлы игры не нужны', de: 'Öffentliches Wiki · keine Spieldateien nötig'}[wikiLanguage];
 document.getElementById('public-wiki').href = '/wiki/?lang=' + wikiLanguage;

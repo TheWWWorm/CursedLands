@@ -1,0 +1,40 @@
+{
+  "build_complete": true,
+  "path": "/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/engine/bin/godot.windows.template_release.x86_64.exe",
+  "sha256": "b8ff93ae9d55d2b119e27c98c1d5c1bdaea321548514aa4396e6271a2b8087f4",
+  "bytes": 94230016,
+  "patch_count": 22,
+  "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88; Windows production stack with R16 HUD masks and corrected Streamline camera matrices",
+  "provenance_file": "/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/engine-build.json",
+  "command": [
+    "python3",
+    "-m",
+    "SCons",
+    "-j6",
+    "platform=windows",
+    "arch=x86_64",
+    "target=template_release",
+    "debug_symbols=no",
+    "lto=none",
+    "production=yes",
+    "optimize=speed",
+    "use_mingw=yes",
+    "use_static_cpp=yes",
+    "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+    "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/dependencies/mesa-x86_64-gcc",
+    "use_pix=no",
+    "module_mono_enabled=no",
+    "module_openxr_enabled=no",
+    "accesskit=no",
+    "use_fsr_sdk=yes",
+    "d3d12=yes",
+    "agility_sdk_path=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/engine/bin/build_deps/agility_sdk",
+    "use_streamline=yes"
+  ],
+  "seconds": 16.353896756016184,
+  "native_windows_runtime_tested": false,
+  "source_file_sha256": {
+    "servers/rendering/renderer_rd/effects/dlss.cpp": "8cd7f8ca8afa5ce901b0c232736da98aed86173d1fc398f2b36feef1432ab10d",
+    "servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp": "7fa54d109c9b71fb42549fe43f2befc98f07a1eef59647dcd473bed0695e0b97"
+  }
+}

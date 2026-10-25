@@ -1,0 +1,113 @@
+{
+  "version": "1.29.0",
+  "date": "2026-10-25",
+  "release_type": "stable",
+  "acceptance_passed": true,
+  "source_commit": "9aadc8a5bf2d3507b351b6aa3f1f8163502392c3",
+  "game_tree": "c531a1956b690f6612358222367d2ed853e6408a",
+  "validation_commit_parent": "9aadc8a5bf2d3507b351b6aa3f1f8163502392c3",
+  "included_chats": [
+    {
+      "id": "01a16fb2-4098-7941-908d-011f285530fc",
+      "title": "Fix issues 112 and 110",
+      "head": "493e6359"
+    },
+    {
+      "id": "01a16f83-5f1f-7891-bc4e-16e5d9b6a407",
+      "title": "Fix DX12 path tracing glitches",
+      "head": "1a77f23b"
+    },
+    {
+      "id": "01a16fc5-5d2d-7f22-8df6-6cc4832b02cf",
+      "title": "Investigate DLSS FG ghosting",
+      "integration": "production temporal cutouts, live refresh and Streamline camera contract; original prototype evidence kept separate"
+    }
+  ],
+  "issues_fixed": [
+    85,
+    109,
+    110,
+    111,
+    112
+  ],
+  "protocols": {
+    "campaign": 23,
+    "autochess": 4,
+    "matching_version_required": true
+  },
+  "checks": {
+    "focused_headless_cases": 36,
+    "focused_headless_assertions": 6706,
+    "focused_rendered_cases": 2,
+    "focused_rendered_assertions": 43,
+    "packaged_board_animation_cases": 2,
+    "packaged_headless_cases": 7,
+    "linux_vulkan_cases": 11,
+    "windows_proton_d3d12_cases": 12,
+    "camera_projection_points": 2160,
+    "camera_projection_failed_points": 0,
+    "shader_negative_control_failures": 6,
+    "asset_free_python_tests": 43,
+    "compiled_scripts_identical_across_five_platforms": 436
+  },
+  "source_suite_provenance": {
+    "original_hash": "f04e56f70224c7bf01dd03cb9073292d34490726b2f799c1617185ed18808adc",
+    "only_subsequent_game_source_change": "config/version 1.28.0 to 1.29.0; normalized source hash verified; final packaged regressions separately recorded"
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "Final executable, pack and merged native helpers; Vulkan PT and temporal tests plus packaged campaign/navigation/clock regressions."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_sr_tested": true,
+      "dlss_fg_tested": false,
+      "scope": "Final EXE and pack under Proton/VKD3D with standard NVIDIA DLLs. Native Windows RTX40 frame-generation and presentation require separate qualification."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Universal executable, version, icon and all compiled scripts audited; native runtime not exercised."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 production export, version code 63, unchanged public signing certificate, manifest and compiled-script parity audited; device runtime not exercised."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium start and published 1.28.0 service-worker cache upgrade; saved IndexedDB data preserved. No original campaign was imported in this browser check."
+    }
+  },
+  "browser": {
+    "fresh_start": true,
+    "previous_version": "1.28.0",
+    "cache_upgrade": true,
+    "saved_data_preserved": true,
+    "deployment_verification": "performed after source push; recorded in publication follow-up"
+  },
+  "asset_policy": "Every proposed directory and upload is checked with tools/check_release_assets.py; withdrawn runtime and kernels excluded.",
+  "fixture_correction": "The PT material receiver test now explicitly selects native unfiltered raster output. Its initial DLSS-seeded synthetic color edge blended during output reconstruction; all six initial failures and captures are retained separately. The corrected fixture retains the 0.02 leakage tolerance; dedicated DLSS evaluation checks are separate.",
+  "limits": [
+    "No full-campaign completion claim.",
+    "No claim that all DLSS-G ghosting or PT shimmer is eliminated.",
+    "Prior branch validation is retained with its own runtime hashes and is not added to current acceptance totals."
+  ],
+  "evidence": {
+    "focused-headless.json": "1e0094ae1f72fd63ce61a0936130674c9fd0f3dc4b46e579131a8dd767f48e2c",
+    "focused-rendered.json": "c32672f6f5da8684b1f19d14977db93fcd58de4427e0c5b8178599e728dfefb5",
+    "boards-runtime.json": "59801b2fa6bd6ad0708e5dcbfd0dbedc1258e23b73c28905da1dab97ff34e896",
+    "packaged-headless.json": "f03c88f4f2779fcda24eebf3b593a23239ba10430809541147068bdf16cc1f86",
+    "linux-runtime.json": "2f87d28a84347363799ef6f126386ffedbbc8ebe643298e9c819dba73b4df6f6",
+    "windows-runtime.json": "14d20f818cf5b40c5db8827d0f3786315df3d1c21424342dea520022b41c2137",
+    "camera-contract.json": "0ba8a586a4ab285398d82b2a6f136c60f2712c89e052d4431e616e41144ae7eb",
+    "shader-negative-control.json": "79b4c8984cdefdc681ac2f738bffecff4102188dfeca0a90dd966d42564b72fa",
+    "android-export.json": "637001c3a0836bc1885e9322643d8d10f6d1dfdce7a52bda264061cbea9ff86f",
+    "branding.json": "466bdd65d847fcc380a15585e984e1506fcf4dcb658e495dc1a692c0aa713f54",
+    "native-build.json": "df2516a69268456d8849174a5d59406f51934dc8e4bf4c37b7accf441f6368b6",
+    "windows-engine.json": "055ff1d14b926ecf9da66d2c25baba4877d73f4807bad9cf576427bb5f88147b",
+    "receiver-fixture-mismatch.json": "d3f68a377dd1aa2f2f6da0a1b8ce6cc93288b20fb5235af1cd7cb4e6e7c240fc",
+    "browser-fresh.json": "0326e5fe00ccbe6c8db6e0474866eb4b473ed0996876ce4a99f0bfc07e87cffc",
+    "browser-upgrade.json": "7337469a0d228e6a04c921d093ee14fce10bced8bc21e1311a8a7d9940134573"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/home/llm2x/.local/bin/godot-4",
+    "--path",
+    "/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/temporal-baseline-game",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--headless",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/repo/tools/parity/gameplay_bootstrap.gd",
+    "--suite-script=/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/repo/tools/tests/unit_temporal_motion.gd",
+    "--suite-script-root=/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/repo/tools/tests",
+    "--suite-campaign=cursed_lands",
+    "--suite-display=headless"
+  ],
+  "exit": 1,
+  "checks": 54,
+  "expected_failures": 6,
+  "baseline": "merged production source before temporal integration",
+  "result": "regression reproduced"
+}

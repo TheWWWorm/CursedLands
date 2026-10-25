@@ -1,0 +1,20 @@
+{
+  "version": "1.29.0",
+  "compiled_scripts": 436,
+  "all_compiled_scripts_byte_identical_to_desktop": true,
+  "all_five_platforms_identical": true,
+  "no_original_game_data_saves_or_private_probes": true,
+  "same_public_certificate": true,
+  "version_code": 63,
+  "debuggable": false,
+  "apk_sha256": "7543646a4d700738403393d2dc118eff3e1b836e0ab8cd709ef4bb24657458fd",
+  "native_libraries": {
+    "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+    "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+    "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "lib/arm64-v8a/libterrain_search_android.so": "b1f5d928a16c991394646620d5a174c84206627a9f81ee1d1e20c6d511de2e20"
+  },
+  "production_template_java_unchanged": true,
+  "engine_patch_count": 16
+}

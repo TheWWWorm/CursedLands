@@ -8753,8 +8753,8 @@
       }
     },
     {
-      "id": "rendering/unit_temporal_motion",
-      "category": "rendering",
+      "id": "settings/unit_temporal_motion",
+      "category": "settings",
       "script": "tools/tests/unit_temporal_motion.gd",
       "marker": "UNIT_TEMPORAL_MOTION",
       "min_checks": 54,
@@ -8768,6 +8768,25 @@
         "res/database.res",
         "res/texts.res"
       ]
+    },
+    {
+      "id": "effects/path_trace_material_receivers",
+      "category": "effects",
+      "script": "tools/tests/path_trace_material_receivers.gd",
+      "marker": "SCENE_RT_DEVICE",
+      "min_checks": 7,
+      "quick": false,
+      "description": "Raw PT material boundary rejection at three trace resolutions, with an asserted native unfiltered viewport contract.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus"
     }
   ]
 }

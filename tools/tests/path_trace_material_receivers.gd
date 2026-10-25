@@ -1,4 +1,5 @@
 extends "res://tools/tests/scene_raytrace_device.gd"
+## SCENE_RT_DEVICE summary comes from the shared device-fixture base.
 ## Both halves share one geometric plane. Only the production material guide
 ## can stop reduced-resolution glossy light crossing the material boundary.
 const Receiver = preload("res://src/game/fx/scene_raytrace_shader.gd")
@@ -8,8 +9,15 @@ func run() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="):out=arg.trim_prefix("--audit-out=")
 	DirAccess.make_dir_recursive_absolute(out);Gfx.ensure_globals()
+	# This measures the PT receiver's raw material rejection. Temporal output
+	# reconstruction intentionally mixes the artificial one-pixel colour edge
+	# and cannot be included in this receiver-only leakage measurement.
+	GameData.options.merge({"rtx_upscaling":0,"fsr_upscaling":0,"q_aa":0,"render_scale":4},true)
 	GameData.resolution_size="1280x720";GameData.options.display_mode=0
 	GameData.options.resolution=GameData.resolutions().find(Vector2i(1280,720))
+	GameData._apply_window()
+	check(get_tree().root.scaling_3d_mode==Viewport.SCALING_3D_MODE_BILINEAR and not get_tree().root.use_taa \
+		and is_equal_approx(get_tree().root.scaling_3d_scale,1.0),"receiver test uses native unfiltered output")
 	get_window().borderless=true;get_window().size=Vector2i(1280,720)
 	camera=Camera3D.new();add_child(camera);camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.size=8;camera.position=Vector3(0,0,6);camera.current=true

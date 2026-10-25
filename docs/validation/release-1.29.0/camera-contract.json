@@ -1,0 +1,22 @@
+{
+  "baseline": {
+    "point_cases": 2160,
+    "max_pixel_error": 15655.608042465361,
+    "failed_points": 1854,
+    "depths": {
+      "near": 209.99049889871023,
+      "far": 10.010499557904655
+    },
+    "source_sha256": "a41c34b94cc3e624b3964c82a583e6f93b625f91d03ecce2b38b90c30e67ebc1"
+  },
+  "corrected": {
+    "point_cases": 2160,
+    "max_pixel_error": 6.636890899853119e-05,
+    "failed_points": 0,
+    "depths": {
+      "near": 1.0000000057953002,
+      "far": -1.2514647096395492e-12
+    },
+    "source_sha256": "8cd7f8ca8afa5ce901b0c232736da98aed86173d1fc398f2b36feef1432ab10d"
+  }
+}

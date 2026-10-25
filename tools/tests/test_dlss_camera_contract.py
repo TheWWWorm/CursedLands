@@ -78,6 +78,7 @@ def sources(directory):
     assert "new file mode" in section
     baseline = "".join(line[1:] for line in section.splitlines(True)
                        if line.startswith("+") and not line.startswith("+++"))
+    baseline = baseline.rstrip("\n") + "\n"
     file = directory / RELATIVE
     file.parent.mkdir(parents=True)
     file.write_text(baseline)

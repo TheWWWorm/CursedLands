@@ -84,3 +84,8 @@ python3 -m unittest discover -s tools/tests -p test_dlss_camera_contract.py -v
 
 This checks the committed patch stack against independent projection math and its
 unfixed negative control. It does not replace native Windows DLSS-G testing.
+
+The gameplay catalog also registers `effects/path_trace_material_receivers` as a
+Forward+ rendered check. It explicitly asserts native unfiltered output before
+measuring the PT receiver’s material boundary. DLSS output reconstruction has its
+own evaluation and movement checks; it is not included in this raw receiver test.
