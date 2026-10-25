@@ -1029,3 +1029,31 @@ that fixture: the modern terrain/floor mesh and soft-ground clipping API being
 optimized is remake-specific, and an identical original geometry fixture is
 not available. The exact geometry comparison is against the previous remake;
 Windows/Wine checks here execute the remake, with no original Dar FPS claim.
+
+## Remaining Dar animation cost after projection batching
+
+A private diagnostic export splits `anim_flush` around its existing engine
+advance and visible root-composition calls. GPU Lab heavy job
+`83ff591c2179484f` passes **54 route checks**, with 2,079 walking frames and
+334 actors. No gameplay code or animation-call order changes in this probe.
+
+| Inclusive scope | ms/walking frame | calls/frame |
+|---|---:|---:|
+| Actor native-frame presentation | 1.695 | 81.40 |
+| Animation flush | 0.835 | 44.67 |
+| Visible key advancement and setters | 0.325 | 15.98 |
+| Visible pose composition | 0.317 | 15.98 |
+| Hidden timeline advancement | 0.079 | 26.54 |
+| Materializing a pending pose | 0.005 | 0.10 |
+| Unit sound traversal | 0.275 | 1.00 |
+
+These scopes overlap; they are not added together. This single instrumented
+route identifies remaining work and makes no additional FPS claim. Visible
+pose composition and the sound traversal are now stronger candidates than
+further mark-projection work. Original `0x50c230` composes each part from its
+parent and recursively updates children; any replacement must preserve the
+existing key order, same-frame edits, dirty propagation and custom-part hooks.
+Mark ageing and delayed first-visible mirror preparation remain open too.
+See [scope totals](actor-parts/actor-parts-profile-summary.json) and
+[diagnostic provenance](actor-parts/provenance.json). No animation or sound
+behavior changed in this profiling pass.

@@ -1,0 +1,22 @@
+{
+  "source_commit": "a3e01dcfe82f86fbec3bad737601d845cb5d8af9",
+  "gpu_job": "83ff591c2179484f",
+  "checks": 54,
+  "failures": 0,
+  "walking_frames": 2079,
+  "scope": "Private diagnostic export only; divides animation flush into key advancement, visible root composition, and materializing pending poses. Engine calls and their order are unchanged. Other inclusive wrappers are identical to the mark-projection profile.",
+  "limitations": "Single instrumented route for locating remaining costs, not an FPS or before/after performance claim. Nested scopes overlap and must not be summed.",
+  "runtime_sha256": {
+    "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "runtime.pck": "4ec8f022d65ce8aea45be1467c81173c884bcc93824f9f26c96283f64218d087"
+  },
+  "diagnostic_sources_sha256": {
+    "src/game/unit.gd": "6a1c131d862dcf5dee0baeccd1760d2e92c551d0ca10be4699f9c560f662cb7c",
+    "src/ei/unit_model.gd": "588423652221fe05a7769040431ad9c74c8d96de5266ab124128d39237e8aee8",
+    "cpu_scope.gd": "ca7c4f29ee8db398fcd587509ccefdedea654e57e0cf47993e13585ab77797fe"
+  },
+  "original_composition_source": {
+    "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0010c/50c230_FUN_0050c230.c",
+    "sha256": "2a2dcd90305616d98f23ae6d775c1d2b3c351f08fa9143112f33ddbaed5ecfad"
+  }
+}

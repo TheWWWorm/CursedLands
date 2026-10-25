@@ -1,0 +1,165 @@
+{
+  "frames": 2079,
+  "summary": {
+    "game/unit.gd:_present_native_frame": {
+      "ms_per_frame": 1.6954886964886964,
+      "us_per_call": 20.830281111682357,
+      "calls_per_frame": 81.3953823953824,
+      "max_us": 991
+    },
+    "game/unit.gd:_process": {
+      "ms_per_frame": 1.6264733044733046,
+      "us_per_call": 28.78505516208118,
+      "calls_per_frame": 56.50408850408851,
+      "max_us": 997
+    },
+    "game/unit.gd:anim_flush": {
+      "ms_per_frame": 0.8353746993746994,
+      "us_per_call": 18.70181446185323,
+      "calls_per_frame": 44.668109668109665,
+      "max_us": 153
+    },
+    "game/fx/ground_marks.gd:_process": {
+      "ms_per_frame": 0.79101443001443,
+      "us_per_call": 791.01443001443,
+      "calls_per_frame": 1.0,
+      "max_us": 2752
+    },
+    "animation:keys_visible": {
+      "ms_per_frame": 0.3250774410774411,
+      "us_per_call": 20.33690418873375,
+      "calls_per_frame": 15.984607984607985,
+      "max_us": 100
+    },
+    "animation:compose_visible": {
+      "ms_per_frame": 0.31735353535353533,
+      "us_per_call": 19.85369523350987,
+      "calls_per_frame": 15.984607984607985,
+      "max_us": 74
+    },
+    "game/unit_sounds.gd:tick": {
+      "ms_per_frame": 0.2754074074074074,
+      "us_per_call": 275.4074074074074,
+      "calls_per_frame": 1.0,
+      "max_us": 1000
+    },
+    "animation:keys_hidden": {
+      "ms_per_frame": 0.07861664261664263,
+      "us_per_call": 2.9616395165528115,
+      "calls_per_frame": 26.544973544973544,
+      "max_us": 119
+    },
+    "animation:materialize_pending": {
+      "ms_per_frame": 0.00477008177008177,
+      "us_per_call": 48.37560975609756,
+      "calls_per_frame": 0.0986050986050986,
+      "max_us": 87
+    }
+  },
+  "legs": [
+    {
+      "leg": 0,
+      "frames": 488,
+      "scopes": {
+        "animation:compose_visible": {
+          "calls": 8110,
+          "inclusive_us": 166627,
+          "max_us": 72
+        },
+        "animation:keys_hidden": {
+          "calls": 13792,
+          "inclusive_us": 39343,
+          "max_us": 97
+        },
+        "animation:keys_visible": {
+          "calls": 8110,
+          "inclusive_us": 167033,
+          "max_us": 87
+        },
+        "animation:materialize_pending": {
+          "calls": 45,
+          "inclusive_us": 2270,
+          "max_us": 80
+        }
+      }
+    },
+    {
+      "leg": 1,
+      "frames": 584,
+      "scopes": {
+        "animation:compose_visible": {
+          "calls": 6925,
+          "inclusive_us": 147483,
+          "max_us": 49
+        },
+        "animation:keys_hidden": {
+          "calls": 15013,
+          "inclusive_us": 46063,
+          "max_us": 86
+        },
+        "animation:keys_visible": {
+          "calls": 6925,
+          "inclusive_us": 148439,
+          "max_us": 85
+        },
+        "animation:materialize_pending": {
+          "calls": 67,
+          "inclusive_us": 3278,
+          "max_us": 77
+        }
+      }
+    },
+    {
+      "leg": 2,
+      "frames": 602,
+      "scopes": {
+        "animation:compose_visible": {
+          "calls": 12186,
+          "inclusive_us": 217588,
+          "max_us": 57
+        },
+        "animation:keys_hidden": {
+          "calls": 13269,
+          "inclusive_us": 38984,
+          "max_us": 84
+        },
+        "animation:keys_visible": {
+          "calls": 12186,
+          "inclusive_us": 226259,
+          "max_us": 100
+        },
+        "animation:materialize_pending": {
+          "calls": 41,
+          "inclusive_us": 1974,
+          "max_us": 83
+        }
+      }
+    },
+    {
+      "leg": 3,
+      "frames": 405,
+      "scopes": {
+        "animation:compose_visible": {
+          "calls": 6011,
+          "inclusive_us": 128080,
+          "max_us": 74
+        },
+        "animation:keys_hidden": {
+          "calls": 13113,
+          "inclusive_us": 39054,
+          "max_us": 119
+        },
+        "animation:keys_visible": {
+          "calls": 6011,
+          "inclusive_us": 134105,
+          "max_us": 65
+        },
+        "animation:materialize_pending": {
+          "calls": 52,
+          "inclusive_us": 2395,
+          "max_us": 87
+        }
+      }
+    }
+  ]
+}
