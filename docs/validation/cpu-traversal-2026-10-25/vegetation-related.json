@@ -1,0 +1,46 @@
+[
+  {
+    "test": "vegetation_warmup",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "vegetation-related-vegetation_warmup",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/vegetation_warmup.gd",
+      "headless"
+    ]
+  },
+  {
+    "test": "biome_cover_contact",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "vegetation-related-biome_cover_contact",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/biome_cover_contact.gd",
+      "headless"
+    ]
+  },
+  {
+    "test": "shader_compilation_live",
+    "returncode": 1,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "vegetation-related-shader_compilation_live",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/shader_compilation_live.gd",
+      "rendered"
+    ]
+  },
+  {
+    "test": "shader_compilation_arena",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "vegetation-related-shader_compilation_arena",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/shader_compilation_arena.gd",
+      "rendered"
+    ]
+  }
+]

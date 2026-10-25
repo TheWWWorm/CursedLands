@@ -910,6 +910,17 @@
       "mode": "headless",
       "args": [],
       "min_checks": 5205
+    },
+    {
+      "id": "vegetation_warmup",
+      "script": "tools/tests/vegetation_warmup.gd",
+      "summary": "VEGETATION_WARMUP",
+      "contract": "Loading-time vegetation representatives match streamed cover, contact and mound materials, vertex layouts and shadow states without starting streaming work.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 124
     }
   ]
 }

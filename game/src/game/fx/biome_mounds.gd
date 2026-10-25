@@ -224,3 +224,21 @@ func build(field: RefCounted, key: Vector2i, boxes: Array) -> Dictionary:
 	arrays[Mesh.ARRAY_TEX_UV] = uvs; arrays[Mesh.ARRAY_TEX_UV2] = layers
 	arrays[Mesh.ARRAY_CUSTOM0] = anchors; arrays[Mesh.ARRAY_CUSTOM1] = shapes; arrays[Mesh.ARRAY_INDEX] = indices
 	return {"records":accepted,"arrays":arrays}
+
+
+## Collapsed triangle with the streamed mesh layout. No terrain queries or
+## placement RNG are needed to prepare a pipeline; regression coverage compares
+## this format with the real builder, including all custom-channel encodings.
+static func warmup_mesh() -> ArrayMesh:
+	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = PackedVector3Array([Vector3.ZERO,Vector3.ZERO,Vector3.ZERO])
+	arrays[Mesh.ARRAY_NORMAL] = PackedVector3Array([Vector3.UP,Vector3.UP,Vector3.UP])
+	arrays[Mesh.ARRAY_TEX_UV] = PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+	arrays[Mesh.ARRAY_TEX_UV2] = PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+	var custom := PackedFloat32Array(); custom.resize(12)
+	arrays[Mesh.ARRAY_CUSTOM0] = custom
+	arrays[Mesh.ARRAY_CUSTOM1] = custom
+	arrays[Mesh.ARRAY_INDEX] = PackedInt32Array([0,1,2])
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,[],{},FORMAT)
+	return mesh

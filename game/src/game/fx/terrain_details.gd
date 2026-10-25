@@ -646,6 +646,8 @@ func prepare_grass() -> void:
 ## Prepare its real vertex layouts too: stones add CUSTOM2, while sea maps
 ## add CUSTOM1 to every chunk. Zero-scale records use the same mesh builder
 ## as the streamed chunks without generating or installing those chunks.
+## Contacts and mounds have separate shaders/layouts; their first streamed
+## draw must also be prepared while loading. Preserve the actual shadow mode.
 func cover_warmup_variants() -> Array:
 	prepare_grass()
 	var variants := []
@@ -659,7 +661,11 @@ func cover_warmup_variants() -> Array:
 		var arrays := geometry.build(records,Vector2i.ZERO,sea,regional)
 		var mesh := ArrayMesh.new()
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,[],{},BiomeCover.Geometry.FORMAT)
-		variants.append([_cover_material,mesh])
+		variants.append([_cover_material,mesh,GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED])
+	if _cover_contact_material and Gfx.on("gfx_contact_shadows"):
+		variants.append([_cover_contact_material,BiomeCover.Contact.warmup_mesh(),GeometryInstance3D.SHADOW_CASTING_SETTING_OFF])
+	if _mound_material and _cover_field.mounds.enabled:
+		variants.append([_mound_material,BiomeCover.Mounds.warmup_mesh(),GeometryInstance3D.SHADOW_CASTING_SETTING_OFF])
 	return variants
 
 

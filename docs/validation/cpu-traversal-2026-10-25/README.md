@@ -409,3 +409,76 @@ The original-code comparison, raw phase traces and remaining-target inventory
 above remain part of this work. The mechanism script loop is complete; the
 remaining measured particle, ambient-ground, actor-presentation and startup
 resource costs are still under investigation.
+
+
+### Streamed vegetation and remaining CPU targets
+
+A follow-up diagnostic profile (`dc6deca54ad14a17`, RTX 3090 Ti) wraps 205
+script methods. These inclusive timings include instrumentation overhead;
+worker timings overlap and nested rows must not be added together.
+
+| Scope | Portal ms/frame | River ms/frame | City ms/frame |
+|---|---:|---:|---:|
+| Mechanism picking after native batching | 1.444 | 0.934 | 0.378 |
+| Unit frame presentation | 0.740 | 0.606 | 0.318 |
+| Hidden-presentation scheduler | 0.630 | 0.236 | 0.177 |
+| Animation flush (included in presentation) | 0.303 | 0.130 | 0.114 |
+| Ambient-life processing | 0.063 | 0.056 | 0.399 |
+| Ambient terrain-triangle search (nested) | 0.019 | 0.018 | 0.261 |
+
+The admission trace in that job records the first grass, biome cover,
+stone-contact and mound meshes in frame 15,682. Its pre/post-draw interval is
+**1,387.353 ms**, with +16 surface, +10 draw and +11 specialization pipelines.
+The benchmark has not issued a movement command yet, although the camera is
+already turning. Delayed viewport GPU/CPU timings do not measure this stalled
+interval. The earlier independent phase trace measured the same stall at
+1,437 ms.
+
+The biome-cover-off control (`21bdc02e6e7f419e`, RTX 3090) has no comparable
+stall: its maximum pre/post-draw interval is 15.543 ms. This is an isolation
+control, not a quality-reduction fix or an FPS comparison. Its device differs
+and it overlaps another task's Dar Leanos run; neither whole-game throughput
+nor a precise speedup is inferred from that control.
+
+Inspection found that loading-time preparation included loose leaf/stone
+layouts but omitted the distinct contact and mound shaders/layouts. Loose
+cover also used the default one-sided shadow setting, while streamed chunks
+use double-sided casting. The change adds collapsed representatives for both
+missing layouts and carries the actual shadow setting through admission,
+deduplication and drawing. It does not generate chunks or alter placement.
+
+The registered `vegetation_warmup` regression compares representatives with
+production geometry builders and installed chunks for inland, sea and cave
+combinations. It checks the full vertex formats, material identities, shadow
+states, per-light draws, cache separation, option gates, unchanged placement
+data/RNG and absence of streaming work. It passes 124 checks on Linux and on
+Windows under Wine 11.20. The unchanged previous pack fails all four missing
+coverage assertions (16 checks, 4 failures), without parse or runtime errors.
+The existing stone-contact geometry test also passes 26 checks under Wine.
+The final frozen pack also passes the same 124 layout checks and 26 contact
+checks. Arena preparation passes 27 checks. Campaign preparation completes
+42 checks with the same two screenshot-cover failures on both the previous
+and corrected packs: `fsr2-pre-presented` and `terrain-pre-presented`. Their
+captured corner error and text samples are identical. These pre-existing
+presentation failures remain recorded; no assertions were relaxed.
+
+In the matched Portal pair (`55ee717ff8224089`, RTX 3090), the first streamed
+cover frame takes **1,466.660 ms before and 46.177 ms after**. The graphics
+options hashes, 1920×1080 output and 100% render scale match; standard
+rendering, all 415 actors and normal single-player simulation remain enabled.
+Both runs issue four movement commands and both controlled actors stay alive.
+This is removal of a startup freeze, not a steady-state FPS claim. The total
+10-second sample still includes other startup work, including cloud setup.
+
+The first cover frame still increments the same 16 surface / 10 draw / 11
+specialization counters. Preparing the missing shaders/layouts removes the
+long compilation cost; this is not a claim that every subsequent pipeline
+creation is eliminated. The test also reapplies viewport settings after load,
+so these remaining counters are not a direct measurement of ordinary loading
+with already-applied player settings. See the [paired summary](vegetation-pair-summary.json),
+[pack provenance](vegetation-provenance.json) and compressed raw traces.
+
+An original-runtime comparison of these warm-up pipelines is inapplicable:
+this biome-cover/contact/mound system and Godot's pipeline preparation are
+remake additions. No original terrain, placement or gameplay behavior is
+changed, and no original-game FPS comparison is claimed for this change.

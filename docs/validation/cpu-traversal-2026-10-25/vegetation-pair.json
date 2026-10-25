@@ -1,0 +1,28 @@
+[
+  {
+    "run": "vegetation-pair-before",
+    "pack": "mechanisms-final-linux",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "vegetation-pair-before",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/traversal-admission.gd",
+      "rendered",
+      "--gameplay-config=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/phase-gz1h.json"
+    ]
+  },
+  {
+    "run": "vegetation-pair-after",
+    "pack": "vegetation-final-linux",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "vegetation-pair-after",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/traversal-admission.gd",
+      "rendered",
+      "--gameplay-config=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/phase-gz1h.json"
+    ]
+  }
+]

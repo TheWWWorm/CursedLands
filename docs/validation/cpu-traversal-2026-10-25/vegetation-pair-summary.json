@@ -1,0 +1,156 @@
+[
+  {
+    "run": "vegetation-pair-before",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "first_cover_draw": {
+      "frame": 13145,
+      "begin_usec": 730956,
+      "draw_ms": 1466.66,
+      "pipeline_delta": [
+        0,
+        16,
+        10,
+        11
+      ]
+    },
+    "max_draw_ms": 1466.66,
+    "frame_ms": {
+      "max": 1489.356,
+      "p50": 8.218,
+      "p95": 12.399,
+      "p99": 18.405
+    },
+    "fps": 95.4811069256562,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 1.0,
+    "renderer": "forward_plus",
+    "options_sha256": "a7cb952645cf44aaa76220b46a0e78715ea31be9996f65be51f1d9188863935f",
+    "units": 415,
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6875, 66.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(257.1875, 66.75)",
+        "uid": 1000059185
+      }
+    ],
+    "commands": [
+      {
+        "from": "(255.6562, 50.75)",
+        "route": "authored entrance loop",
+        "to": "(255.67, 58.75)",
+        "uid": 1500000128,
+        "wall_ms": 2228
+      },
+      {
+        "from": "(257.1562, 50.75)",
+        "route": "authored entrance loop",
+        "to": "(257.17, 58.75)",
+        "uid": 1000059185,
+        "wall_ms": 2228
+      },
+      {
+        "from": "(255.6719, 58.75)",
+        "route": "authored entrance loop",
+        "to": "(255.69, 66.75)",
+        "uid": 1500000128,
+        "wall_ms": 8004
+      },
+      {
+        "from": "(257.1719, 58.75)",
+        "route": "authored entrance loop",
+        "to": "(257.19, 66.75)",
+        "uid": 1000059185,
+        "wall_ms": 8004
+      }
+    ],
+    "single_player_worker": true,
+    "sim_seconds": 9.84499999999995
+  },
+  {
+    "run": "vegetation-pair-after",
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "first_cover_draw": {
+      "frame": 12308,
+      "begin_usec": 729710,
+      "draw_ms": 46.177,
+      "pipeline_delta": [
+        0,
+        16,
+        10,
+        11
+      ]
+    },
+    "max_draw_ms": 46.177,
+    "frame_ms": {
+      "max": 247.168,
+      "p50": 9.372,
+      "p95": 13.16,
+      "p99": 16.509
+    },
+    "fps": 100.199009418407,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "render_scale": 1.0,
+    "renderer": "forward_plus",
+    "options_sha256": "a7cb952645cf44aaa76220b46a0e78715ea31be9996f65be51f1d9188863935f",
+    "units": 415,
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6875, 66.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(257.1875, 66.75)",
+        "uid": 1000059185
+      }
+    ],
+    "commands": [
+      {
+        "from": "(255.6562, 50.75)",
+        "route": "authored entrance loop",
+        "to": "(255.67, 58.75)",
+        "uid": 1500000128,
+        "wall_ms": 2010
+      },
+      {
+        "from": "(257.1562, 50.75)",
+        "route": "authored entrance loop",
+        "to": "(257.17, 58.75)",
+        "uid": 1000059185,
+        "wall_ms": 2010
+      },
+      {
+        "from": "(255.6719, 58.75)",
+        "route": "authored entrance loop",
+        "to": "(255.69, 66.75)",
+        "uid": 1500000128,
+        "wall_ms": 8007
+      },
+      {
+        "from": "(257.1719, 58.75)",
+        "route": "authored entrance loop",
+        "to": "(257.19, 66.75)",
+        "uid": 1000059185,
+        "wall_ms": 8007
+      }
+    ],
+    "single_player_worker": true,
+    "sim_seconds": 9.78999999999995
+  }
+]

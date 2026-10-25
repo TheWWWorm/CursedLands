@@ -98,7 +98,7 @@ static func run(game: Game) -> void:
 	_prepare_bird(game)
 	var t0 := Time.get_ticks_msec()
 	var env := _env_key(game)
-	var items: Array = []   # [key, material, kind]
+	var items: Array = []   # [key, material, kind, mesh, shadow mode]
 	var seen := {}
 	# Most often needed first (the budget may stop the list): the particles
 	# (move orders, every spell), the zone's materials under point lights
@@ -138,7 +138,7 @@ static func run(game: Game) -> void:
 			var far: Array = grass._far_grass.prepare()
 			_add(items, seen, far[1], env, GRASS, far[0])
 		for variant: Array in grass.cover_warmup_variants():
-			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]))
+			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]), variant[2])
 	# VisionFog: its overlay is a MultiMesh of plain transforms.
 	_add(items, seen, VisionFog.material(), env, INSTANCED)
 	if items.is_empty():
@@ -166,7 +166,7 @@ static func run(game: Game) -> void:
 		var n := items.size() if not forced else mini(i + BATCH, items.size())
 		var shown: Array[Node] = []
 		for j in range(i, n):
-			shown.append_array(w._show(items[j][1], items[j][2], items[j][3]))
+			shown.append_array(w._show(items[j][1], items[j][2], items[j][3], items[j][4]))
 			if items[j][1] is BaseMaterial3D:
 				_keep.append(_shader_holder(items[j][1]))
 		var start := i
@@ -282,18 +282,20 @@ static func _push(cam: Camera3D, w: Node3D) -> void:
 			(c as Node3D).force_update_transform()
 
 
-static func _add(items: Array, seen: Dictionary, m: Material, env: String, kind: int, mesh: Mesh = null) -> void:
+static func _add(items: Array, seen: Dictionary, m: Material, env: String, kind: int, mesh: Mesh = null, shadow_mode := -1) -> void:
 	if m == null:
 		return
 	var k := _mat_key(m) + ("i%d" % kind if kind != MESH else "")
+	if k.is_empty(): return
 	if mesh: k += ":v%d" % mesh.get_instance_id()
-	if k.is_empty() or seen.has(k):
+	k += ":shadow%d" % _shadow_mode(kind, shadow_mode)
+	if seen.has(k):
 		return
 	seen[k] = true
 	var key := k + "|" + env
 	if _warmed.has(key):
 		return
-	items.append([key, m, kind, mesh])
+	items.append([key, m, kind, mesh, _shadow_mode(kind, shadow_mode)])
 
 
 ## One material per shader: a ShaderMaterial by its shader, a BaseMaterial3D
@@ -484,7 +486,13 @@ func _make_groups() -> void:
 			g.add_child(l)
 
 
-func _show(m: Material, kind: int, source: Mesh = null) -> Array[Node]:
+static func _shadow_mode(kind: int, requested: int) -> int:
+	if requested >= 0: return requested
+	if kind == MESH: return GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	return GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED if kind == GRASS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+
+func _show(m: Material, kind: int, source: Mesh = null, shadow_mode := -1) -> Array[Node]:
 	var out: Array[Node] = []
 	for g in get_children():
 		var gi: GeometryInstance3D
@@ -496,8 +504,8 @@ func _show(m: Material, kind: int, source: Mesh = null) -> Array[Node]:
 			var mmi := MultiMeshInstance3D.new()
 			mmi.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 			mmi.multimesh = _multimesh(kind, source)
-			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED if kind == GRASS else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			gi = mmi
+		gi.cast_shadow = _shadow_mode(kind, shadow_mode)
 		gi.material_override = m
 		gi.layers |= REFLECTION_WARMUP_LAYER
 		gi.custom_aabb = AABB(Vector3(-0.01, -0.01, -0.01), Vector3(0.02, 0.02, 0.02))
@@ -640,7 +648,7 @@ static func arena(field: ArenaPveField) -> void:
 		warmer._make_groups()
 		var completed := 0
 		for item: Array in items:
-			var shown:=warmer._show(item[1],item[2],item[3])
+			var shown:=warmer._show(item[1],item[2],item[3],item[4])
 			if item[1] is BaseMaterial3D: _keep.append(_shader_holder(item[1]))
 			await _arena_frame(tree, field.view)
 			if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():

@@ -1,0 +1,18 @@
+[
+  {
+    "path": "game/src/game/shader_warmup.gd",
+    "sha256": "952de1486fa2474f3acd21675f2c10f8a8c91c8ac92c73b2d400404413b0194a"
+  },
+  {
+    "path": "game/src/game/fx/terrain_details.gd",
+    "sha256": "061c23e7147e255cd4dd19bebfe3a08d89d0032671824f099b7e1756da04d546"
+  },
+  {
+    "path": "game/src/game/fx/biome_cover_contact.gd",
+    "sha256": "095fa9256659e601008c88ad20bd0274628ac09115ddf10943368cf91b0c5130"
+  },
+  {
+    "path": "game/src/game/fx/biome_mounds.gd",
+    "sha256": "8155176e83058807eb566bc6e5c44dd0c20a5f55cc30ffcbc787d0a9a67646fb"
+  }
+]

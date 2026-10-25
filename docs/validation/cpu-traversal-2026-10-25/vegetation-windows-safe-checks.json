@@ -1,0 +1,42 @@
+[
+  {
+    "test": "vegetation_warmup",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/vegetation_warmup.gd"
+    ],
+    "summary": [
+      "VEGETATION_WARMUP checks=124 failures=0"
+    ]
+  },
+  {
+    "test": "biome_cover_contact",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/biome_cover_contact.gd"
+    ],
+    "summary": [
+      "BIOME_COVER_CONTACT checks=26 failures=0"
+    ]
+  }
+]

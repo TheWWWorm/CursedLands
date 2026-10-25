@@ -123,3 +123,20 @@ static func dense_pieces(polygon: PackedVector2Array, xy: PackedVector2Array, de
 					triangle.append(xy[0]*(1.0-uv.x-uv.y)+xy[1]*uv.x+xy[2]*uv.y)
 				for clipped: PackedVector2Array in Geometry2D.intersect_polygons(polygon,triangle): result.append(clipped)
 	return result
+
+
+## Collapsed triangle with the streamed mesh layout. No terrain queries or
+## placement RNG are needed to prepare a pipeline; regression coverage compares
+## this format with the real builder, including all custom-channel encodings.
+static func warmup_mesh() -> ArrayMesh:
+	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = PackedVector3Array([Vector3.ZERO,Vector3.ZERO,Vector3.ZERO])
+	arrays[Mesh.ARRAY_COLOR] = PackedColorArray([Color.WHITE,Color.WHITE,Color.WHITE])
+	arrays[Mesh.ARRAY_TEX_UV] = PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+	arrays[Mesh.ARRAY_TEX_UV2] = PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+	var custom := PackedFloat32Array(); custom.resize(12)
+	arrays[Mesh.ARRAY_CUSTOM0] = custom
+	arrays[Mesh.ARRAY_INDEX] = PackedInt32Array([0,1,2])
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays,[],{},FORMAT)
+	return mesh
