@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 1.30.0 — 2026-10-25
+
+- Add an optional SHaRC radiance cache for experimental path tracing, with translated settings and fallback to ordinary path tracing.
+- Improve natural cave walls with consistent world-space texture projection, relief and bounded contours; preserve original collision and navigation geometry.
+- Restore original menu caption artwork, align menu boards across window sizes and restore Lost in Astral menu patrols.
+- Batch actor picking, direct-control animation sampling, ambient ground queries, particle updates, vegetation contacts, foot contacts and ground-mark projection in native code while retaining script fallbacks.
+- Prepare destination clouds, contact shaders and the first mirror-water view during loading; avoid redundant ground-mark opacity uploads and repeated actor sound-state lookups.
+
 - Reduce campaign simulation CPU work with native nested quest expressions while preserving script scheduling, numeric rounding, live reads and side effects.
 - Combine mechanism mesh deformation and screen-bound calculations in the native helper while retaining exact cursor hit rules.
 - Preserve requested posture changes through a killing melee impact and play the following transition ([#113](https://github.com/TheWWWorm/CursedLands/issues/113)).
