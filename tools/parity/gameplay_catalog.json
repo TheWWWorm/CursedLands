@@ -2431,7 +2431,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 109,
       "quick": false,
-      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -2451,7 +2451,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 113,
       "quick": false,
-      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -8751,6 +8751,23 @@
           "res/redress.res"
         ]
       }
+    },
+    {
+      "id": "rendering/unit_temporal_motion",
+      "category": "rendering",
+      "script": "tools/tests/unit_temporal_motion.gd",
+      "marker": "UNIT_TEMPORAL_MOTION",
+      "min_checks": 54,
+      "quick": true,
+      "description": "Existing character materials switch to opaque velocity cutouts for temporal reconstruction and restore native MSAA.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
     }
   ]
 }

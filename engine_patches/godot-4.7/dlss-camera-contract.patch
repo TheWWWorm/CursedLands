@@ -1,0 +1,45 @@
+--- a/servers/rendering/renderer_rd/effects/dlss.cpp
++++ b/servers/rendering/renderer_rd/effects/dlss.cpp
+@@ -216,11 +216,13 @@
+ }
+ 
+ static sl::float4x4 sl_convert_matrix(const Projection &mtx) {
++	// Godot applies column vectors. Streamline's row-vector convention needs
++	// the transpose, stored as row-major: each Godot column becomes one row.
+ 	sl::float4x4 ret;
+-	ret.setRow(0, sl::float4(mtx.columns[0].x, mtx.columns[1].x, mtx.columns[2].x, mtx.columns[3].x));
+-	ret.setRow(1, sl::float4(mtx.columns[0].y, mtx.columns[1].y, mtx.columns[2].y, mtx.columns[3].y));
+-	ret.setRow(2, sl::float4(mtx.columns[0].z, mtx.columns[1].z, mtx.columns[2].z, mtx.columns[3].z));
+-	ret.setRow(3, sl::float4(mtx.columns[0].w, mtx.columns[1].w, mtx.columns[2].w, mtx.columns[3].w));
++	ret.setRow(0, sl::float4(mtx.columns[0].x, mtx.columns[0].y, mtx.columns[0].z, mtx.columns[0].w));
++	ret.setRow(1, sl::float4(mtx.columns[1].x, mtx.columns[1].y, mtx.columns[1].z, mtx.columns[1].w));
++	ret.setRow(2, sl::float4(mtx.columns[2].x, mtx.columns[2].y, mtx.columns[2].z, mtx.columns[2].w));
++	ret.setRow(3, sl::float4(mtx.columns[3].x, mtx.columns[3].y, mtx.columns[3].z, mtx.columns[3].w));
+ 	return ret;
+ }
+ 
+@@ -341,12 +343,19 @@
+ 
+ 	// Set SL Options
+ 	if (StreamlineContext::get().slSetConstants != nullptr) {
++		// The Godot motion-vector decoder uses Y-down, reversed [-1, 1] clip Z.
++		// Streamline reconstructs (2u-1, 1-2v, depth, 1): Y-up, [0, 1] Z.
++		// Convert only the SDK constants; the decoder still needs its own basis.
++		Projection streamline_clip_from_decoder;
++		streamline_clip_from_decoder.set_depth_correction(true, false, true);
++		const Projection streamline_projection = streamline_clip_from_decoder * p_params.cam_projection;
++		const Projection streamline_reprojection = streamline_clip_from_decoder * p_params.reprojection * streamline_clip_from_decoder.inverse();
+ 		sl::float4x4 mtxIdentity = sl_make_identity_matrix();
+-		context->constants.cameraViewToClip = sl_convert_matrix(p_params.cam_projection); // projection mtx (unjittered)
+-		context->constants.clipToCameraView = sl_convert_matrix(p_params.cam_projection.inverse()); // projection mtx (unjittered, inverted)
+-		context->constants.clipToLensClip = mtxIdentity; // keep identity unless some lens distortion is applied
+-		context->constants.clipToPrevClip = sl_convert_matrix(p_params.reprojection); // reprojection matrix
+-		context->constants.prevClipToClip = sl_convert_matrix(p_params.reprojection.inverse()); // inverted reprojection matrix
++		context->constants.cameraViewToClip = sl_convert_matrix(streamline_projection);
++		context->constants.clipToCameraView = sl_convert_matrix(streamline_projection.inverse());
++		context->constants.clipToLensClip = mtxIdentity;
++		context->constants.clipToPrevClip = sl_convert_matrix(streamline_reprojection);
++		context->constants.prevClipToClip = sl_convert_matrix(streamline_reprojection.inverse());
+ 
+ 		context->constants.cameraPos = sl_convert_vector(p_params.cam_transform.get_origin());
+ 		context->constants.cameraFwd = sl_convert_vector(-p_params.cam_transform.basis.get_column(2));

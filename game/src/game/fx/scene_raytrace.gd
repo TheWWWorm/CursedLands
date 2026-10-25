@@ -10,6 +10,7 @@ const SCALES := [0.5,0.75,1.0]
 const GI_SAMPLES := [1,2,4]
 const SHADOW_SAMPLES := [1,2,4]
 const RECEIVER_RADIUS := 72.0
+const PATH_LIGHT_LIMIT := 64
 const REASON := "Scene ray tracing needs a ray-tracing GPU and the qualified DX12 or Vulkan Forward+ renderer. Conventional lighting remains available."
 
 var game: Game
@@ -121,10 +122,13 @@ func _process(dt: float) -> void:
 	elif not visible_request:
 		_preparation_seen="";_end_preparation()
 	var may_retry := _allow_retry(camera.global_position,dt)
+	# Spell flashes can live for less than the geometry polling interval.
+	# Refresh the bounded light list before this frame, without rebuilding meshes.
+	if _path_mode:_collect_lights(camera.global_position)
 	_poll -= dt
 	if _scene != null and _poll<=0.0 and not terrain_preparing:
 		_poll = 1.0
-		_collect_lights(camera.global_position)
+		if not _path_mode:_collect_lights(camera.global_position)
 		# Keep the working region lit while changed membership/equipment is
 		# gathered. Instance updates immediately mask removed/replaced meshes;
 		# a new scene is published only after its first complete frame.
@@ -332,7 +336,8 @@ func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
 				_pending_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
 					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
 			for entry: Dictionary in _pending_scene.instances:
-				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask})
+				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask,
+					"lighting_offset":entry.get("lighting_offset",Vector3.ZERO)})
 			_pending_stage=1
 		1:
 			if _path_mode:
@@ -455,15 +460,18 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			var v: Vector4=matrix[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 	var sun := Gfx.sun.srgb_to_linear()
 	var direction := Gfx._cloud_sun_direction
-	# A cave has no unoccluded outdoor sky. Its authored lights and emissive
-	# surfaces supply indirect illumination instead of an ambient floor.
+	# A cave has no outdoor sky transport. Its authored ambient floor travels
+	# separately in PathSky's reserved channels, alongside local illumination.
 	var sky := Color.BLACK if game._sky_cave else Gfx.ambient.srgb_to_linear()
 	data.append_array(PackedFloat32Array([sun.r,sun.g,sun.b,GameData.option("rt_shadows"),direction.x,direction.y,direction.z,0.00465,
 		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality],camera.near,
 		float(camera.projection==Camera3D.PROJECTION_ORTHOGONAL),camera.far,float(history),Scene.RADIUS*2.0,
 		_center.x,_center.y,_center.z,Scene.RADIUS]))
 	var colours := PackedFloat32Array()
-	for i in 7:
+	var local_positions := PackedFloat32Array()
+	var local_colours := PackedFloat32Array()
+	var extra_signature := PackedFloat32Array()
+	for i in (PATH_LIGHT_LIMIT if _path_mode else 7):
 		var light: OmniLight3D = _lights[i].get_ref() if i<_lights.size() else null
 		var position := Vector4.ZERO; var colour := Color(0,0,0,0)
 		if light != null and light.is_visible_in_tree() and light.light_energy>0.0:
@@ -472,9 +480,15 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			colour.a = maxf(light.light_size,0.04)
 			if _path_mode:
 				colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
-		data.append_array(PackedFloat32Array([position.x,position.y,position.z,position.w]))
-		colours.append_array(PackedFloat32Array([colour.r,colour.g,colour.b,colour.a]))
-		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
+				# Readability lights explicitly disable glossy highlights.
+				if light.light_specular<=0.0:colour.a=-colour.a
+		var pos := PackedFloat32Array([position.x,position.y,position.z,position.w])
+		var rgb := PackedFloat32Array([colour.r,colour.g,colour.b,colour.a])
+		local_positions.append_array(pos);local_colours.append_array(rgb)
+		if i<7:
+			data.append_array(pos);colours.append_array(rgb)
+			RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
+		else:extra_signature.append_array(pos);extra_signature.append_array(rgb)
 	data.append_array(colours)
 	if _path_mode:
 		# Cloud attenuation changes illumination, not the authored time of day.
@@ -491,6 +505,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		if GameData.option("pt_accumulation")==0:
 			for i in range(44,48):signature[i]=0.0
 		signature.append_array(environment)
+		signature.append_array(extra_signature)
 		var bytes := signature.to_byte_array()
 		var clouds := _path_cloud_frame()
 		var cloud_bytes := clouds.to_byte_array()
@@ -518,7 +533,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			# Daylight drift alone is tiny (bounded to 0.2% per channel).
 			# It must not give the whole outdoor image the torch's short history
 			# every frame. A changing local light still uses the fast response.
-			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4)
+			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4) or bytes.slice(116*4)!=_path_signature.slice(116*4)
 			if local_changed or weather_fading:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
 		var reuse := history and same_projection and same_cloud_mode and (stationary if progressive else same_lighting or gentle_change)
 		if not reuse: data[82]=0.0
@@ -533,6 +548,10 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 		data.append_array(environment)
 		data.append_array(clouds)
+		# Weather changes every receiver; local flutter only needs a fast
+		# response where those lights contribute to the visible surface.
+		data.append_array(PackedFloat32Array([mini(_lights.size(),PATH_LIGHT_LIMIT),float(gentle_change and weather_fading),0,1]))
+		data.append_array(local_positions);data.append_array(local_colours)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
@@ -546,7 +565,7 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	# Projection is checked by the caller; ordinary camera motion reprojects.
 	# Region and local-light positions/ranges stay exact. The campaign clock
 	# advances sunlight and sky every frame, even with a stationary camera.
-	if current.size()!=previous.size() or current.size()!=116*4: return false
+	if current.size()!=previous.size() or current.size()<116*4 or (current.size()-116*4)%32!=0: return false
 	if current.slice(44*4,76*4)!=previous.slice(44*4,76*4): return false
 	for offset in [32,40,104,108,112]:
 		if current.decode_float((offset+3)*4)!=previous.decode_float((offset+3)*4): return false
@@ -566,8 +585,12 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	# At most 0.057 degrees per frame; responsive history remains bounded to
 	# eight frames. Abrupt weather/time changes still reject it immediately.
 	if not direction.is_finite() or not old_direction.is_finite() or direction.distance_squared_to(old_direction)>0.000001: return false
-	for i in 7:
-		var offset := (76+i*4)*4
+	var colour_offsets: Array[int]=[]
+	for i in 7:colour_offsets.append((76+i*4)*4)
+	for offset in range(116*4,current.size(),32):
+		if current.slice(offset,offset+16)!=previous.slice(offset,offset+16):return false
+		colour_offsets.append(offset+16)
+	for offset: int in colour_offsets:
 		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
 		if current.decode_float(offset+12)!=previous.decode_float(offset+12): return false
 		var old := Vector3(previous.decode_float(offset),previous.decode_float(offset+4),previous.decode_float(offset+8))
@@ -589,12 +612,27 @@ func _collect_lights(focus: Vector3) -> void:
 		if light==null or not light.is_visible_in_tree() or light.light_energy<=0.0 or light.light_negative: continue
 		var distance := maxf(light.global_position.distance_to(focus)-light.omni_range,0.0)
 		if distance<Scene.RADIUS: found.append([distance,light])
-	found.sort_custom(func(a: Array,b: Array) -> bool:
+	if _path_mode:
+		# Only over-budget regions need camera-based pruning. Otherwise stable
+		# identity order avoids changing the sampling distribution as we walk.
+		if found.size()>PATH_LIGHT_LIMIT:
+			found.sort_custom(func(a: Array,b: Array) -> bool:
+				return _light_priority(a[1],focus)>_light_priority(b[1],focus))
+			found.resize(PATH_LIGHT_LIMIT)
+		found.sort_custom(func(a: Array,b: Array) -> bool:return a[1].get_instance_id()<b[1].get_instance_id())
+	else:found.sort_custom(func(a: Array,b: Array) -> bool:
 		return a[1].get_instance_id()<b[1].get_instance_id() if is_equal_approx(a[0],b[0]) else a[0]<b[0])
 	var previous := _lights.map(func(w: WeakRef): return w.get_ref())
 	_lights.clear()
-	for i in mini(found.size(),7): _lights.append(weakref(found[i][1]))
+	for i in mini(found.size(),PATH_LIGHT_LIMIT if _path_mode else 7): _lights.append(weakref(found[i][1]))
+	stats["lights"]=_lights.size()
+	stats["local_light_shadow_samples"]=4 if _path_mode and _lights.size()>7 else _lights.size()
 	if previous!=_lights.map(func(w: WeakRef): return w.get_ref()): _history_key=""
+
+static func _light_priority(light: OmniLight3D,focus: Vector3) -> float:
+	var c:=light.light_color.srgb_to_linear()*light.light_energy
+	var power:=maxf(c.r,maxf(c.g,c.b))
+	return power/(1.0+light.global_position.distance_squared_to(focus)/maxf(light.omni_range*light.omni_range,0.01))
 
 func _prepared(ok: bool,id: int) -> void:
 	if _pending_device!=null and _pending_device.get_instance_id()==id:

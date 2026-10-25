@@ -222,6 +222,29 @@ func discarded_watcher() -> void:
 	limb.free()
 	check(not scene.topology_changed(),"discarded scene settles after temporary geometry is removed")
 
+func pending_lifetime() -> void:
+	for scripted in [false,true]:
+		var scene:=snapshot()
+		if scripted:scene._kernel=null
+		unit.remove_child(hidden_part)
+		while not scene.step():pass
+		check(scene.instances.size()==1 and scene.instances[0].node.get_ref()==body,
+			"queued gather skips a detached but still live part: script="+str(scripted))
+		unit.add_child(hidden_part)
+		scene=snapshot()
+		if scripted:scene._kernel=null
+		var original:=body.mesh;body.mesh=null
+		while not scene.step():pass
+		check(scene.instances.size()==1 and scene.instances[0].node.get_ref()==hidden_part,
+			"queued gather skips a cleared mesh: script="+str(scripted))
+		body.mesh=original
+	world.remove_child(unit)
+	var detached:=snapshot()
+	check(detached.pending.is_empty(),"removed unit is skipped while its registry entry is still live")
+	world.add_child(unit)
+	var restored:=snapshot();while not restored.step():pass
+	check(restored.instances.size()==2,"reattached unit restores both queued figure parts")
+
 func budgets() -> void:
 	check(Scene.MAX_TRIANGLES==320000 and Scene.MAX_TEXTURES==192 and Scene.MAX_INSTANCES==4096,"geometry, texture and instance budget caps are unchanged")
 	var scene := Scene.new();scene._kernel=null;scene.triangles=Scene.MAX_TRIANGLES
@@ -233,6 +256,48 @@ func budgets() -> void:
 	scene._add_instance(body,0,body.global_transform)
 	check(scene.failed,"instance overflow still rejects the snapshot")
 
+func camera_mesh_variants() -> void:
+	var hero:=GameUnit.new();world.add_child(hero);world.units={1:unit,2:hero}
+	var model:=EIUnitModel.new();hero.add_child(model);hero.model=model
+	var torso:=part(model,"Torso",Vector3.ZERO)
+	var original:=ArrayMesh.new();original.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,torso.mesh.surface_get_arrays(0))
+	torso.mesh=original;model._view_torso=torso;model._view_body_original=original
+	model._view_body_closed=original.duplicate()
+	for scripted in [false,true]:
+		model.set_first_person_view(true)
+		var scene:=snapshot();scene.lighting_camera_mask=1|EIUnitModel.CLOSE_VIEW_LAYER
+		if scripted:scene._kernel=null
+		while not scene.step():pass
+		scene.updates(true)
+		var variants: Array=scene.instances.filter(func(e):return e.node.get_ref()==torso)
+		check(variants.size()==2,"snapshot retains both camera torso variants: script="+str(scripted))
+		var packed: int=scene.triangles
+		for cycle in 3:
+			for first in [false,true]:
+				model.set_first_person_view(first)
+				model._view_shift=Vector3(0.25,0,-0.1) if first else Vector3.ZERO
+				scene.updates()
+				var receivers: Array=variants.filter(func(e):return (e.mask&1)!=0)
+				check(receivers.size()==1 and receivers[0].mesh==torso.mesh,
+					"camera switch keeps exactly the current torso receiver: %s/%s/%s"%[scripted,cycle,first])
+				check(not scene.topology_changed() and scene.triangles==packed,
+					"camera switch requires no scene rebuild: %s/%s/%s"%[scripted,cycle,first])
+				check(receivers.size()==1 and receivers[0].transform==model.presented_mesh_transform(torso)
+					and receivers[0].get("lighting_offset",Vector3.ZERO)==(-model._view_shift if first else Vector3.ZERO),
+					"camera switch restores placement and lighting origin: %s/%s/%s"%[scripted,cycle,first])
+		var same:=snapshot();same.lighting_camera_mask=scene.lighting_camera_mask
+		while not same.step():pass
+		var matches: PackedInt32Array=same.history_matches(scene)
+		var unique:={}
+		for index: int in matches:unique[index]=true
+		check(matches.size()==scene.instances.size() and not matches.has(-1)
+			and unique.size()==matches.size(),
+			"snapshot history maps each retained variant uniquely: script="+str(scripted))
+		torso.mesh=original.duplicate()
+		check(scene.topology_changed(),"unrelated equipment replacement still invalidates camera variants")
+		model.set_first_person_view(false)
+	world.units={1:unit};hero.free()
+
 func run() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="): out=arg.trim_prefix("--audit-out=")
@@ -243,7 +308,7 @@ func run() -> void:
 	unit=GameUnit.new();unit.name="BoundaryUnit";world.add_child(unit);world.units={1:unit}
 	body=part(unit,"Body",Vector3(-0.4,0,0))
 	hidden_part=part(unit,"HiddenPart",Vector3(5,0,0));hidden_part.hide()
-	boundaries();mutations();static_bounds();detached_geometry();terrain_versions();discarded_watcher();budgets()
+	boundaries();mutations();static_bounds();detached_geometry();terrain_versions();discarded_watcher();pending_lifetime();budgets();camera_mesh_variants()
 	world.free()
 	FileAccess.open(out.path_join("path-topology-results.json"),FileAccess.WRITE).store_string(JSON.stringify({
 		"checks":checks,"failures":failures,"legacy_boundary_changed":legacy_boundary_changed,

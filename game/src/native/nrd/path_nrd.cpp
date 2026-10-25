@@ -84,17 +84,29 @@ public:
         c.isMotionVectorInWorldSpace = true; c.motionVectorScale[2] = 1.0f;
         c.isHistoryConfidenceAvailable = true;
         c.timeDeltaBetweenFrames = std::clamp(float(milliseconds), 1.0f, 1000.0f);
-        c.accumulationMode = first ? nrd::AccumulationMode::CLEAR_AND_RESTART :
-            reset ? nrd::AccumulationMode::RESTART : nrd::AccumulationMode::CONTINUE;
+        // A light can change colour or disappear while the receiver remains
+        // geometrically valid. RESTART alone leaves one frame of stale colour
+        // in this integration's stabilized output. Clear every history pool
+        // on explicit rejection so short spell flashes start and stop promptly.
+        c.accumulationMode = (first || reset) ? nrd::AccumulationMode::CLEAR_AND_RESTART :
+            nrd::AccumulationMode::CONTINUE;
         smoothed_ms += (c.timeDeltaBetweenFrames - smoothed_ms) / (1.0f + 200.0f / smoothed_ms);
         nrd::ReblurSettings settings{};
         settings.maxAccumulatedFrameNum = std::clamp(nrd::GetMaxAccumulatedFrameNum(0.35f, 1000.0f / smoothed_ms), 8u, 30u);
-        // Fire flutter and rain transitions already supply a shorter response
-        // budget. Apply it to both slow and stabilized NRD history as well.
-        if (lighting_limit < 8.0) settings.maxAccumulatedFrameNum = uint32_t(std::max(1.0, lighting_limit));
         settings.maxFastAccumulatedFrameNum = std::min(6u, settings.maxAccumulatedFrameNum);
         settings.maxStabilizedFrameNum = settings.maxAccumulatedFrameNum;
+        // The pack shader applies the controller's lighting response through
+        // per-receiver confidence. Keep these windows intact: a nearby flame
+        // must not remove temporal reconstruction from unrelated skin/terrain.
         settings.historyFixFrameNum = std::min(3u, settings.maxFastAccumulatedFrameNum - 1);
+        // Local confidence deliberately retains one/two samples near fluttering
+        // lights. Treat those as converged enough to leave history repair;
+        // otherwise REBLUR repeatedly replaces it with neighbouring radiance.
+        if (lighting_limit < 8.0) {
+            const double confidence = 1.0 - 1.0 / std::max(lighting_limit, 2.0);
+            // REBLUR's double-rounded history grows beyond one at 5/8.
+            settings.historyFixFrameNum = confidence < 0.625 ? 1u : 2u;
+        }
         settings.returnHistoryLengthInsteadOfOcclusion = true;
         if (nrd::SetCommonSettings(*instance, c) != nrd::Result::SUCCESS ||
             nrd::SetDenoiserSettings(*instance, 0, &settings) != nrd::Result::SUCCESS) return {};

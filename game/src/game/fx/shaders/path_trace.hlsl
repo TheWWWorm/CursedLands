@@ -23,6 +23,7 @@
 // Direct sunlight only, before albedo. Nearby raster grass can remove the
 // part its detailed blade shadows block without darkening indirect light.
 [[vk::binding(20,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_sun : register(u2000000);
+[[vk::binding(21,0)]] ByteAddressBuffer lighting_offsets : register(t2100000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -44,6 +45,9 @@ struct Frame {
     float4 cloud_state;      // Threshold, strength, height, 0 off/1 sheet/2 field.
     float4 cloud_phases;
     float4 cloud_domain;     // Volume field minimum xz, span, texture size.
+    float4 local_state;      // Count; W enables the extended local-light table.
+    float4 local_position[64];
+    float4 local_colour[64];  // Signed radius: negative disables specular.
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
@@ -236,31 +240,58 @@ float cloud_visibility(float3 position) {
     float density=smoothstep(frame.cloud_state.x-0.14,frame.cloud_state.x+0.14,coarse*0.75+detail*0.25);
     return 1.0-density*frame.cloud_state.y;
 }
+float local_weight(Surface s,uint i) {
+    float4 lamp=frame.local_position[i];
+    float distance2=dot(lamp.xyz-s.position,lamp.xyz-s.position);
+    if(lamp.w<=0.0||distance2<0.000025)return 0.0;
+    return dot(frame.local_colour[i].rgb,float3(0.2126,0.7152,0.0722))*max(1.0-distance2/(lamp.w*lamp.w),0.0);
+}
+void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float weight,inout float3 diffuse,inout float3 specular) {
+    float3 delta=lamp.xyz-s.position;float distance=length(delta);
+    if(lamp.w<=0.0||distance>=lamp.w||distance<0.005)return;
+    float3 direction=area_ray(delta/distance,abs(colour.w)/distance,u);
+    float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
+    if(colour.w<0.0)sp=0.0;
+    if(!any(d+sp>0.0))return;
+    float3 incoming=colour.rgb*(weight*PI*abs(dot(s.normal,direction))*
+        max(1.0-distance*distance/(lamp.w*lamp.w),0.0)*visibility(s,direction,distance,false));
+    diffuse+=d*incoming;specular+=sp*incoming;
+}
 void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight) {
     diffuse=0.0;specular=0.0;sunlight=0.0;
-    for(uint i=0;i<8;i++) {
-        float3 direction,colour;float reach;
-        if(i==0) {
-            if(!any(frame.sun.rgb>0.0))continue;
-            direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,i));
-            colour=frame.sun.rgb*cloud_visibility(s.position);reach=frame.camera.w;
-        } else {
-            float4 lamp=frame.point_position[i-1];
-            float3 delta=lamp.xyz-s.position;float distance=length(delta);
-            if(lamp.w<=0.0||distance>=lamp.w||distance<0.005)continue;
-            direction=area_ray(delta/distance,frame.point_colour[i-1].w/distance,path_random(sampler,i));
-            colour=frame.point_colour[i-1].rgb*max(1.0-distance*distance/(lamp.w*lamp.w),0.0);
-            reach=distance;
-        }
-        float cosine=abs(dot(s.normal,direction));
-        if(cosine<=0.0)continue;
+    if(any(frame.sun.rgb>0.0)) {
+        float3 direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,0u));
         float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
-        if(!any(d+sp>0.0))continue;
-        // Authored game light values are diffuse irradiance / pi. Convert
-        // them to the radiance scale used by the normalized BRDF.
-        float3 incoming=colour*(PI*cosine*visibility(s,direction,reach,i==0));
-        diffuse+=d*incoming;specular+=sp*incoming;
-        if(i==0)sunlight=d*incoming;
+        if(any(d+sp>0.0)) {
+            float3 incoming=frame.sun.rgb*(PI*abs(dot(s.normal,direction))*cloud_visibility(s.position)*visibility(s,direction,frame.camera.w,true));
+            diffuse=d*incoming;specular=sp*incoming;sunlight=diffuse;
+        }
+    }
+    if(frame.local_state.w<0.5) {
+        for(uint i=0;i<7;i++)point_light(s,v,frame.point_position[i],frame.point_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular);
+        return;
+    }
+    uint count=min(uint(frame.local_state.x),64u);
+    if(count<=7u) {
+        for(uint i=0;i<count;i++)point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular);
+        return;
+    }
+    // Four stratified importance samples keep crowded fire/spell scenes at a
+    // fixed shadow-ray budget. Divide by the selection probability so every
+    // admitted source contributes its full energy, including late spell lights.
+    // https://pbr-book.org/4ed/Light_Sources/Light_Sampling
+    float total=0.0;
+    for(uint i=0;i<count;i++)total+=local_weight(s,i);
+    if(total<=0.0)return;
+    float4 jitter=float4(path_random(sampler,13u),path_random(sampler,14u));
+    float4 thresholds=(float4(0,1,2,3)+jitter)*(total*0.25);
+    float cumulative=0.0;uint draw=0u;
+    for(uint i=0;i<count&&draw<4u;i++) {
+        float weight=local_weight(s,i);cumulative+=weight;
+        while(draw<4u&&thresholds[draw]<cumulative&&weight>0.0) {
+            point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,draw+1u),total/(4.0*weight),diffuse,specular);
+            draw++;
+        }
     }
 }
 #ifndef PATH_NO_EMITTERS
@@ -384,8 +415,9 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         RayDesc ray={surface_origin(current,direction),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         float segment=hit.hit>0.5?length(hit.position-current.position):60000.0;
-        hit_distance.x=min(hit_distance.x+segment,60000.0);
-        if(depth==0)hit_distance.y=segment;
+        // NRD reconstructs the first secondary surface, not total path length.
+        // A later sky escape must not turn a nearby diffuse hit into infinity.
+        if(depth==0)hit_distance=float2(segment,segment);
         if(hit.hit<0.5) {
             float3 environment=sky_radiance(direction);
             diffuse+=weight_d*environment;specular+=weight_s*environment;break;
@@ -417,6 +449,12 @@ void main() {
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
     indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;path_direct_sun[pixel]=0.0;
     if(primary.hit<0.5)return;
+    // Camera clearance moves only the first-person presentation mesh. Trace
+    // its illumination at the matching authored surface, where the complete
+    // shadow/GI body lives. Otherwise that overlapping copy encloses parts of
+    // the shifted receiver and blacks out its sunlight and bounce lighting.
+    // Keep guide/depth and reprojection at the displayed position above.
+    primary.position+=asfloat(lighting_offsets.Load3(primary.instance_id*16u));
     float3 diffuse=0.0,specular=0.0,direct_specular=0.0,sunlight=0.0;
     float diffuse_distance=0.0,specular_distance=65504.0;
     uint samples=clamp(uint(frame.settings.y),1u,16u);
@@ -431,7 +469,13 @@ void main() {
     // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
     // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
     // storing integers above 2048 directly. The filter carries identity onward.
-    indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
+    // Cave artwork relies on an authored ambient floor even in passages
+    // without lamps. Preserve that diffuse minimum, rather than importing
+    // outdoor sky or adding the full ambient term on top of traced light.
+    // It is applied once at the receiver, never recursively at each bounce.
+    float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+    diffuse=max(diffuse/float(samples),ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
+    indirect_image[pixel]=float4(diffuse,f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
     path_direct_specular[pixel]=float4(direct_specular/float(samples),0.0);
     path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
@@ -986,11 +1030,30 @@ void main(inout Surface result,Attributes attributes) {
     // rays along the actual triangle and keep the shading hemisphere outside
     // it, rather than flipping the smooth normal beneath the triangle.
     if(dot(result.normal,result.geometric_normal)<0.0)result.normal=-result.normal;
-    if(dot(result.normal,WorldRayDirection())>=0.0)result.normal=result.geometric_normal;
+    // Smooth hill/branch normals can cross the view horizon while the actual
+    // facet stays visible. Replacing them with the face normal at zero causes
+    // a large lighting jump during a tiny camera turn. Project continuously
+    // into the visible hemisphere; the geometric hemisphere stays positive.
+    float3 view=-WorldRayDirection();
+    result.normal=normalize(result.normal+view*max(0.05-dot(result.normal,view),0.0));
     float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge1)),0.001),
                       length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge2)),0.001));
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);
-    float base_texels=max(result.cone*RayTCurrent()*density*float(width),1.0);
+    float footprint=result.cone*RayTCurrent();
+    if(result.cone==0.0) {
+        // Primary rays have no continuation cone. Their material footprint
+        // comes from the actual trace grid, including reduced-resolution PT
+        // under temporal upscaling. LOD 0 here made fine equipment masks and
+        // reflected texture colour alternate as the camera/actor moved.
+        footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
+        if(frame.camera.x<0.5) {
+            float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+            float3 forward=-mul(frame.camera_world,float4(0,0,1,0)).xyz;
+            footprint*=max(dot(position-eye,forward),0.0);
+        }
+    }
+    footprint/=max(abs(dot(result.geometric_normal,WorldRayDirection())),0.1);
+    float base_texels=max(footprint*density*float(width),1.0);
     float lod=log2(base_texels);
     float3 texel=float3(hit_uv(a,b,c,w),a.emission_layer.w);
     float3 colour=0.0;

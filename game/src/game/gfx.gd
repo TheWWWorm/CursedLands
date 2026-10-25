@@ -388,6 +388,13 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 		code = _blend_fog(code, lit)
 	if lit and LocalLightShader.enabled():
 		code = _function_tail(code, "fragment", LocalLightShader.CAPTURE)
+	if _temporal_units and code.contains("#define EI_UNIT_CUTOUT"):
+		# Alpha coverage routes cutouts through Godot's transparent pass, which
+		# cannot write articulated motion. Temporal views retain the same 0.5
+		# cutout through the opaque velocity pass. Native MSAA keeps coverage.
+		code = code.replace(", alpha_to_coverage", "") \
+			.replace("\tALPHA_ANTIALIASING_EDGE = 0.3;\n", "") \
+			.replace("\tALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));\n", "")
 	return figure_options(WaterReflection.clip_source(WaterTextureData.source(GroundContactData.source(code))))
 
 
@@ -439,6 +446,18 @@ static var _cloud_mode := 0
 static var _figure_mode := -1
 static var _water_reflection_mode := -1
 static var _scene_rt_mode := false
+static var _temporal_units := false
+
+
+static func _set_temporal_units(enabled: bool) -> void:
+	if enabled == _temporal_units: return
+	_temporal_units = enabled
+	for row: Array in _made:
+		if not String(row[1]).contains("#define EI_UNIT_CUTOUT"): continue
+		var shader := (row[0] as WeakRef).get_ref() as Shader
+		if shader:
+			shader.code = compose(row[1], row[2], row[3])
+			CameraFade.refresh_shader(shader)
 ## Restrict the compatibility change to Android GLES. Tests can exercise the
 ## same source on another GPU without changing the shipped desktop defaults.
 static var _compact_figures := OS.has_feature("android") and Portability.compatibility()
@@ -1313,6 +1332,10 @@ static func apply_quality(vp: Viewport) -> void:
 	vp.positional_shadow_atlas_size = atlas
 	FsrGraphics.apply_upscaling(vp)
 	RtxGraphics.apply_upscaling(vp)
+	if vp == GameData.get_tree().root:
+		_set_temporal_units(vp.use_taa or int(vp.scaling_3d_mode) not in [
+			Viewport.SCALING_3D_MODE_BILINEAR, Viewport.SCALING_3D_MODE_FSR,
+			Viewport.SCALING_3D_MODE_METALFX_SPATIAL])
 
 
 ## Option q_shadow_fit: the sun's four cascades span what can be seen, the

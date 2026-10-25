@@ -1,17 +1,18 @@
 # Changelog
 
-## Unreleased
+## 1.29.0 — 2026-10-25
 
-- Include bounded frame-time and hitch statistics, camera position and rendering options in exported diagnostic logs; separate loading and background intervals.
-- Draw live attack previews toward the enemy’s current position, including running and newly revealed targets, while keeping predictive pursuit. ([#85](https://github.com/TheWWWorm/CursedLands/issues/85))
-- Keep ground deformation for snow and remove it from sand, including neighboring deformation fields and ground-cover placement.
-- Scale tutorial cards and guide/info controls with the HUD on high-resolution screens while preserving their base size.
-- Increase Direct3D 12 resource-descriptor capacity and shader-instance storage to accommodate overlapping large maps during loading.
-- Report terrain map coordinates and a ready-to-use `teleport` command from `cursor`, with translated help and an explicit screen-pixel fallback when no map ground is available.
-- Preserve NPC corpse memory, pending discoveries and ongoing investigations through saves and reloads. ([#112](https://github.com/TheWWWorm/CursedLands/issues/112))
-- Restore magic-trap casts with target masks derived from the owner’s map diplomacy, retaining activation and cooldown state. ([#110](https://github.com/TheWWWorm/CursedLands/issues/110), [#106](https://github.com/TheWWWorm/CursedLands/issues/106))
-- Play the requested posture transition after a spell finishes casting. ([#109](https://github.com/TheWWWorm/CursedLands/issues/109))
-- Move Load, Save and Options boards in screen space so delayed viewport rendering cannot expose a previous settled position during the slide. ([#111](https://github.com/TheWWWorm/CursedLands/issues/111), [#105](https://github.com/TheWWWorm/CursedLands/issues/105))
+- Move reserve units into empty bench slots or swap occupied slots with mouse, drag or keyboard controls, including multiplayer. Preserve each unit’s equipment and saved identity.
+- Accept item rewards on the first click and remove repeated installation scans during Autochess multiplayer-menu layout.
+- Improve Autochess targeting and spell selection: finish reachable wounded enemies, reject unavailable spells and allow area spells when allies are protected. Increase exploding-hare damage to 60/125/300, improve goblin damage, and strengthen Elementals, Jigran wolves and Jun lizards. Campaign creature values remain unchanged.
+- Update moving lifts and opening doors through local navigation changes; defer global connectivity work and bound distant teleport invalidation. Limit simulation time admitted after severe stalls while preserving the selected 1×/2× speed.
+- Remove overlapping visible strips from Lost in Astral prison walls while retaining collision bounds.
+- Preserve NPC corpse memory and investigations across saves ([#112](https://github.com/TheWWWorm/CursedLands/issues/112)); restore original magic-trap diplomacy targeting ([#110](https://github.com/TheWWWorm/CursedLands/issues/110)); play queued posture transitions after spell casts ([#109](https://github.com/TheWWWorm/CursedLands/issues/109)); and keep Load, Save and Options boards in their animated screen positions ([#111](https://github.com/TheWWWorm/CursedLands/issues/111)).
+- Aim attack previews at moving enemies’ current positions while retaining predictive pursuit ([#85](https://github.com/TheWWWorm/CursedLands/issues/85)). Restrict ground deformation to snow, scale tutorial controls with the HUD, and provide map coordinates through the `cursor` console command.
+- Increase Direct3D 12 descriptor and shader-instance capacity for overlapping map loads. Include bounded frame-time and hitch statistics in diagnostic logs.
+- Stabilize path-traced hillsides, foliage, grass shadows, material boundaries and local spell/fire lights. Filter material textures for the ray footprint, preserve authored cave ambient lighting, and maintain first-person body illumination and torso receivers across camera changes.
+- Restore character animation motion vectors for temporal reconstruction and correct Streamline camera matrices. Native MSAA coverage, transparent wisps, wound textures and stealth fading remain supported.
+
 
 ## 1.28.0 — 2026-10-24
 

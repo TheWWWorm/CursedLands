@@ -579,6 +579,17 @@
       ],
       "min_checks": 186,
       "timeout": 420
+    },
+    {
+      "id": "unit_temporal_motion",
+      "script": "tools/tests/unit_temporal_motion.gd",
+      "summary": "UNIT_TEMPORAL_MOTION",
+      "contract": "Temporal character cutouts write motion while native MSAA, wounds, stealth, fades, previews and translucent wisps survive live switches.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 54
     }
   ]
 }

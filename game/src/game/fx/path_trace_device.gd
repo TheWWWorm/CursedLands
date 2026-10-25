@@ -31,6 +31,9 @@ var _cloud_sampler := RID()
 signal emitter_stats(count: int, candidates: int)
 var emitters := Emitters.new()
 var _instance_geometry := RID()
+var _lighting_offsets := RID()
+var _lighting_offset_data := PackedByteArray()
+var _lighting_offset_values: Array[Vector3] = []
 var _emitters := RID()
 var _emitter_lookup := RID()
 var _uses_emitters := false
@@ -54,7 +57,7 @@ func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
 		return shader_prefix()+"raygen"+("_deep" if _deep_paths else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
-func frame_bytes() -> int: return 752
+func frame_bytes() -> int: return 2816
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
 func raw_formats() -> Array[int]:
 	var formats := super.raw_formats();formats.append(RenderingDevice.DATA_FORMAT_R16G16_SFLOAT)
@@ -104,6 +107,11 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	_variants[0] = {"shader":_shader,"pipeline":_pipeline}
 	var mapping := _placement_geometry.to_byte_array()
 	_instance_geometry = _own(_rd.storage_buffer_create(mapping.size(),mapping))
+	_lighting_offset_data.resize(placements.size()*16)
+	_lighting_offset_values.resize(placements.size())
+	for i in placements.size():
+		_write_lighting_offset(i,placements[i].get("lighting_offset",Vector3.ZERO))
+	_lighting_offsets = _own(_rd.storage_buffer_create(_lighting_offset_data.size(),_lighting_offset_data))
 	_motion_data.resize(placements.size()*MOTION_STRIDE)
 	for i in _geometry.size(): _geometry_placements.append([])
 	for i in placements.size():
@@ -113,7 +121,7 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	emitters.setup(data,_geometry,placements,_opaque_fast_path)
 	_emitters = _own(_rd.storage_buffer_create(Emitters.HEADER+Emitters.LIMIT*Emitters.STRIDE))
 	_emitter_lookup = _own(_rd.storage_buffer_create(Emitters.HASH_SLOTS*16))
-	return _instance_geometry.is_valid() and _motion.is_valid() and _emitters.is_valid() and _emitter_lookup.is_valid() \
+	return _instance_geometry.is_valid() and _lighting_offsets.is_valid() and _motion.is_valid() and _emitters.is_valid() and _emitter_lookup.is_valid() \
 		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths)
 
 ## Compile only the needed emitter/deep-path combinations. Every variant
@@ -169,7 +177,8 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,13,[_terrain_data]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,[_terrain_atlas]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,15,[_cloud_image]),
-		_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,16,[_cloud_sampler])]
+		_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,16,[_cloud_sampler]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,21,[_lighting_offsets])]
 	if _uses_emitters:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
@@ -177,7 +186,7 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 
 func update_scene(changes: Dictionary) -> bool:
 	if _closed or not _ready: return false
-	if not _update_motion(changes):
+	if not _update_motion(changes) or not _update_lighting_offsets(changes):
 		_render_failed();return false
 	if not super.update_scene(changes): return false
 	if emitters.update(changes):
@@ -206,6 +215,22 @@ func adopt_history(previous: RefCounted,matches: PackedInt32Array) -> void:
 		else:_history_reject.append(i)
 	nrd_active=true;_history_valid=true
 	history_handoffs=previous.history_handoffs+1
+
+func _write_lighting_offset(index: int,offset: Vector3) -> void:
+	_lighting_offset_values[index]=offset
+	for axis in 3:_lighting_offset_data.encode_float(index*16+axis*4,offset[axis])
+
+func _update_lighting_offsets(changes: Dictionary) -> bool:
+	var first := _lighting_offset_values.size();var last := -1
+	for placement: Dictionary in changes.get("instances",[]):
+		var index: int=placement.index
+		var offset: Vector3=placement.get("lighting_offset",Vector3.ZERO)
+		if offset==_lighting_offset_values[index]:continue
+		_write_lighting_offset(index,offset)
+		first=mini(first,index);last=maxi(last,index)
+	if last<first:return true
+	return _rd.buffer_update(_lighting_offsets,first*16,(last-first+1)*16,
+		_lighting_offset_data.slice(first*16,(last+1)*16))==OK
 
 func _write_motion(index: int,position: Transform3D,normal: Basis,valid: bool,moving: bool) -> void:
 	var offset := index*MOTION_STRIDE
@@ -341,3 +366,4 @@ func dispose() -> void:
 	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()
 	_variants.clear()
 	_motion=RID();_motion_data.clear();_motion_pending.clear();_geometry_placements.clear()
+	_lighting_offsets=RID();_lighting_offset_data.clear();_lighting_offset_values.clear()

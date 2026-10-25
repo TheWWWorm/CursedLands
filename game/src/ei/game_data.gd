@@ -652,6 +652,11 @@ func _ready() -> void:
 	_apply_audio()
 	_setup_display()
 	_apply_display()
+	# Scene tools and direct campaign starts can load before the delayed
+	# window placement. Establish interpolation before any world enters the
+	# tree, so its initial render transforms are sent through the right path.
+	if not Array(OS.get_cmdline_user_args()).any(func(a): return a.begins_with("--local-host-config=") or a.begins_with("--autochess-host-config=")):
+		_apply_motion_interpolation()
 	_apply_window_late.call_deferred()
 	var flash := FlashLog.requested()   # diagnostic, off by default (FlashLog)
 	if flash > 0.0:
@@ -1319,6 +1324,24 @@ func _apply_window_late() -> void:
 	for i in 3:
 		await get_tree().process_frame
 	_apply_window()
+
+
+func _apply_motion_interpolation() -> void:
+	if not is_inside_tree(): return
+	var tree := get_tree()
+	# Only units interpolate; figures animate their own poses in _process.
+	tree.root.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	var enabled := option("phys_interp") != 0
+	if tree.physics_interpolation == enabled: return
+	if enabled:
+		# Godot 4.7 skips ordinary transform notifications once interpolation
+		# is enabled. Flush placements queued while it was off before switching
+		# paths; resetting interpolation alone does not upload static meshes.
+		for node: Node3D in tree.root.find_children("*", "Node3D", true, false):
+			node.force_update_transform()
+	tree.physics_interpolation = enabled
+
+
 var _fps_layer: CanvasLayer
 
 
@@ -1385,12 +1408,7 @@ func _apply_window() -> void:
 			vp.scaling_3d_mode = smode
 		Gfx.apply_quality(vp)
 	_show_fps(option("show_fps") != 0)
-	# Physics interpolation (phys_interp): only the units take part
-	# (GameUnit: on, its figure off so the animation is drawn as posed); the
-	# rest of the tree is off, as everything else moves in _process.
-	if is_inside_tree():
-		get_tree().root.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
-		get_tree().physics_interpolation = option("phys_interp") != 0
+	_apply_motion_interpolation()
 	apply_mouse_mode()
 	if DisplayServer.get_name() == "headless" or Portability.constrained() or OS.get_cmdline_user_args().has("--touch"):
 		return

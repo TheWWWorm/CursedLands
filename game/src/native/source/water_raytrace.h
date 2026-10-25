@@ -148,7 +148,7 @@ private:
         Array changes;
         for (Group &group : groups) {
             auto *root = Object::cast_to<Node3D>(ObjectDB::get_instance(group.node));
-            bool visible = root && root->is_visible_in_tree();
+            bool visible = root && root->is_inside_tree() && root->is_visible_in_tree();
             if (visible && group.unit && bool(root->call(invisible_method))) visible = false;
             if (!force && !visible && group.visible == 0) continue;
             group.visible = visible ? 1 : 0;
@@ -156,7 +156,7 @@ private:
                 auto *node = Object::cast_to<Node3D>(ObjectDB::get_instance(entry.node));
                 int mask = 0;
                 Transform3D transform = entry.transform;
-                if (visible && node && node->is_visible_in_tree()) {
+                if (visible && node && node->is_inside_tree() && node->is_visible_in_tree()) {
                     auto *mesh = Object::cast_to<MeshInstance3D>(node);
                     if (entry.terrain || (mesh && mesh->get_mesh().is_valid() && mesh->get_mesh()->get_instance_id() == entry.mesh)) {
                         mask = 255;

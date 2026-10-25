@@ -346,3 +346,19 @@ targets, library edits, tree reentry and the diagnostics path. Run it together
 with the preparation, retention and unobserved-pose tests in the rebuilt native
 template. See [autochess validation](../../docs/validation/autochess-frame-time-20261018.md)
 for tested builds and frame-time measurements. Installed templates are unchanged.
+
+
+`dlss-camera-contract.patch` applies after `restore-dlss.patch`. It converts
+Godot column-vector matrices to Streamline row-vector uploads and changes only
+the SDK clip/depth basis; the motion decoder keeps its existing convention.
+Rebuild the Windows template. The source-only regression compiles the shipped
+converter bodies and checks 2,160 independent camera reprojections, reversed
+depth planes and the preceding faulty behavior:
+
+```sh
+python3 -m unittest discover -s tools/tests -p test_dlss_camera_contract.py -v
+```
+
+The game’s `unit_temporal_motion` regression separately checks existing character
+materials through live viewport reconstruction changes, including native MSAA,
+alpha cutouts, wounds, stealth, camera fades, previews and translucent wisps.

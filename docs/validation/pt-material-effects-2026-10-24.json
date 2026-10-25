@@ -1,0 +1,2969 @@
+{
+  "date": "2026-10-24",
+  "base_main": "bab580bd43e7d146c341904c3413bcfb471e5d22",
+  "previous_lighting_fixes": "d3d35ed6161571ee3dab6bddd207c5f3cdf4e874",
+  "build_type": "local-development-test",
+  "source_sha256": {
+    "game/src/game/fx/path_trace_device.gd": "887297debbcb084e35caed83d2ab976d073bb66febb328953bbbec8104ac31ef",
+    "game/src/game/fx/scene_raytrace.gd": "e1f19373fc27b8c2f666279b62107ee8280964570ec1c59a360f7306424a6439",
+    "game/src/game/fx/scene_raytrace_shader.gd": "84602526dd45e7a4ad44ce552ef32c4e2c21a76430ce5408fbad215b328f4eeb",
+    "game/src/game/fx/shaders/path_trace.hlsl": "f9c269b744278f96f5d73174e732f2ae37104c85fd090ee34f3aaf674e44ab68",
+    "game/src/game/fx/shaders/path_trace_build.json": "1b544c2a5e6e53419aa8683c037f5a63a1f1d264fdf36fe724117af62bfd1ec7",
+    "game/src/native/nrd/path_nrd.cpp": "e507450ecd82c55cd450713732469580a285a05311ba688011bdb22add4326ff",
+    "game/src/game/fx/shaders/nrd/build.json": "896b389e57afe3b642ee98619baa564c07cb9ed379874c0e30d8ad82fc95afa1"
+  },
+  "final_checks_passed": 306,
+  "final_runs": [
+    {
+      "tag": "effects-final-light-performance",
+      "suite": "path_trace_light_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 17,
+      "seconds": 44.99,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "f4629d338cc2b065be6c80ce8dd6a9319b2396ebf8f27ab956c82944c87f16fb",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS many-light benchmark prepares the original scene",
+        "PASS benchmark retains 7 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 16 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 64 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 64 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 64 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 64 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 16 lights",
+        "PASS history rejection matches light motion",
+        "PASS benchmark retains 7 lights",
+        "PASS history rejection matches light motion",
+        "MANY_LIGHT_BENCH 17 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-light-performance"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_foliage",
+      "suite": "path_trace_foliage",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 13,
+      "seconds": 12.68,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "ed87685478b6e75301cf3c58268b881979a2775017126f535cfbf8b12f5cf95c",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS qualified leaf transport device",
+        "PASS build masked leaf and solid bark",
+        "PASS backlighting passes through leaves while bark stays solid: [(0.3999, 0.3999, 0.3999, 8.0), (0.0, 0.0, 0.0, 8.0)]",
+        "PASS leaf reflection gives up the transmitted share: [(0.5996, 0.5996, 0.5996, 8.0), (0.9995, 0.9995, 0.9995, 8.0)]",
+        "PASS reflection plus transmission preserves the diffuse energy budget",
+        "PASS both hemisphere sampling PDFs conserve uniform-environment energy: [(0.989, 0.989, 0.989, 64.0), (0.9889, 0.9889, 0.9889, 64.0)]",
+        "PASS build with leaf backlighting disabled",
+        "PASS turning leaf lighting off restores opaque shading",
+        "PASS build blocker behind the leaves",
+        "PASS transmitted sunlight respects real geometry behind the leaf",
+        "PASS build emissive surface behind the leaves",
+        "PASS emissive MIS and BSDF paths cross the leaf without self-intersection or duplicate energy: [(0.7902, 0.0, 0.0, 64.0), (0.0, 0.0, 0.0, 64.0)]",
+        "PASS solid bark does not leak the back emitter",
+        "SCENE_RT_DEVICE 13 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_foliage"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_many_lights",
+      "suite": "path_trace_many_lights",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 20,
+      "seconds": 10.18,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "59f6d36d663425dc97b1dd12923ae70105b80973adde7f0c56d405c24e1ca5af",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS crowded regions retain 64 local lights",
+        "PASS a new bright spell survives the over-budget selection",
+        "PASS camera movement preserves source order inside the budget",
+        "PASS gentle fire flutter beyond slot seven retains short history",
+        "PASS spell colour changes beyond slot seven reject stale history",
+        "PASS moving effects beyond slot seven reject stale history",
+        "PASS extinguished effects leave no retained illumination",
+        "PASS conventional scene RT retains its seven visibility channels",
+        "PASS qualified many-light GPU",
+        "PASS build many-light transport scene",
+        "PASS 7 lights preserve exact summed illumination within 3%: 0.0001",
+        "PASS 8 lights preserve exact summed illumination within 3%: 0.0076",
+        "PASS 16 lights preserve exact summed illumination within 3%: 0.0088",
+        "PASS 64 lights preserve exact summed illumination within 3%: 0.0110",
+        "PASS the eighth spell illuminates the receiver immediately",
+        "PASS extinguishing the eighth spell removes its blue lighting",
+        "PASS NRD reconstructs the added spell among persistent warm lights",
+        "PASS NRD reset removes an expired spell while other coloured lights remain",
+        "PASS build glossy light response scene",
+        "PASS diffuse-only character assist does not create metallic highlights",
+        "SCENE_RT_DEVICE 20 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_many_lights"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_material_receivers",
+      "suite": "path_trace_material_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 6,
+      "seconds": 7.43,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "0537e1aea8a32626f22574ab21d8ed19434a254c7efbc3ca8abd1cfe22038841",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS 320-pixel metal edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 320-pixel roughness edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 640-pixel metal edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 640-pixel roughness edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 960-pixel metal edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 960-pixel roughness edge preserves material lighting: leak 0.000, holes 0",
+        "SCENE_RT_DEVICE 6 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_material_receivers"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_nrd_device",
+      "suite": "path_trace_nrd_device",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 19,
+      "seconds": 13.09,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "0fc2d39f1a721ca5db1d9b190ebbbffedcbdabfd113dfc8b35feccff8d107a91",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS qualified NRD test device",
+        "PASS build actual ray-traced NRD fixture",
+        "PASS native NRD 4.18 runtime and compute shaders loaded",
+        "PASS NRD ran without custom fallback",
+        "PASS native dispatch planner and GPU passes execute every frame",
+        "PASS NRD preserves coloured emission and positive indirect light",
+        "PASS stationary surface reuses NRD history",
+        "PASS NRD output remains finite and bounded",
+        "PASS NRD presents stable public texture handles",
+        "PASS progressive mode keeps exact long accumulation",
+        "PASS return to NRD restarts and converges",
+        "PASS odd-sized resize rebuilds NRD pools",
+        "PASS lighting reset removes extinguished emission immediately",
+        "PASS direct-sun output respects the traced roof shadow",
+        "PASS direct-sun output carries unoccluded sunlight for nearby grass",
+        "PASS NRD dispatch failure falls back to usable custom lighting",
+        "PASS fallback accumulates current illumination after NRD failure",
+        "PASS NRD failure releases all pool images and is not retried every frame",
+        "PASS NRD pools, descriptors and pipelines are released",
+        "SCENE_RT_DEVICE 19 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_nrd_device"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_nrd_motion",
+      "suite": "path_trace_nrd_motion",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 42,
+      "seconds": 11.13,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "36df2b55a6358032a77412d043befc9be8627fca99af734973331d7215b0a1fa",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS qualified rigid motion reconstruction device",
+        "PASS build shared geometry with the full 4096 stable placement IDs",
+        "PASS orthographic_translation matches independently weighted reference",
+        "PASS orthographic_translation has correct historical confidence",
+        "PASS orthographic_translation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_rotation matches independently weighted reference",
+        "PASS orthographic_rotation has correct historical confidence",
+        "PASS orthographic_rotation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_nonuniform_scale matches independently weighted reference",
+        "PASS orthographic_nonuniform_scale has correct historical confidence",
+        "PASS orthographic_nonuniform_scale reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_camera_and_object matches independently weighted reference",
+        "PASS orthographic_camera_and_object has correct historical confidence",
+        "PASS orthographic_camera_and_object reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_camera_only matches independently weighted reference",
+        "PASS orthographic_camera_only has correct historical confidence",
+        "PASS perspective_translation matches independently weighted reference",
+        "PASS perspective_translation has correct historical confidence",
+        "PASS perspective_translation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_rotation matches independently weighted reference",
+        "PASS perspective_rotation has correct historical confidence",
+        "PASS perspective_rotation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_nonuniform_scale matches independently weighted reference",
+        "PASS perspective_nonuniform_scale has correct historical confidence",
+        "PASS perspective_nonuniform_scale reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_camera_and_object matches independently weighted reference",
+        "PASS perspective_camera_and_object has correct historical confidence",
+        "PASS perspective_camera_and_object reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_camera_only matches independently weighted reference",
+        "PASS perspective_camera_only has correct historical confidence",
+        "PASS unrelated_identity matches independently weighted reference",
+        "PASS unrelated_identity has correct historical confidence",
+        "PASS new_visibility matches independently weighted reference",
+        "PASS new_visibility has correct historical confidence",
+        "PASS deformation matches independently weighted reference",
+        "PASS deformation has correct historical confidence",
+        "PASS NRD accumulates the stationary rigid surface",
+        "PASS NRD world motion retains valid rigid-surface history",
+        "PASS NRD rejects newly visible instance history",
+        "PASS NRD confidence rejects untracked deformation",
+        "PASS NRD odd-sized resize restarts motion history",
+        "PASS teardown releases motion and identity resources",
+        "SCENE_RT_DEVICE 42 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_nrd_motion"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_spell_lights_live",
+      "suite": "path_trace_spell_lights_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 8,
+      "seconds": 44.29,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "e8ec21a720a4e39e67dae57daed7ab031c40a18776c36a19e5176ff192ec410a",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS original cave supplies the fire effect",
+        "PASS cave and authored material shaders prepare PT",
+        "PASS seven existing lights occupy the previous capacity",
+        "PASS a short spell enters PT on the first frame before the geometry poll",
+        "PASS the first spell frame adds traced blue illumination to the original scene",
+        "PASS the first displayed spell frame follows current radiance without a slow colour ramp",
+        "PASS spell expiry removes the light and its old history immediately",
+        "PASS expired spell restores the original fire-lit scene",
+        "PATH_SPELL_LIGHTS 8 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_spell_lights_live"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_surface_detail",
+      "suite": "path_trace_surface_detail",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 47,
+      "seconds": 10.08,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "084ef849c0a05e432f65347408782b51f697f1cb88b8ae79c90fca61fa0200b8",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS qualified path-tracing device",
+        "PASS verified original atlas stone03",
+        "PASS changed source rejects mismatched regions stone03",
+        "PASS export includes authored map stone03",
+        "PASS lossless data map retains mip chain stone03",
+        "PASS import preserves RGB even where metalness alpha is zero stone03",
+        "PASS verified original atlas columnruins01",
+        "PASS changed source rejects mismatched regions columnruins01",
+        "PASS export includes authored map columnruins01",
+        "PASS lossless data map retains mip chain columnruins01",
+        "PASS import preserves RGB even where metalness alpha is zero columnruins01",
+        "PASS verified original atlas bridge00",
+        "PASS changed source rejects mismatched regions bridge00",
+        "PASS export includes authored map bridge00",
+        "PASS lossless data map retains mip chain bridge00",
+        "PASS import preserves RGB even where metalness alpha is zero bridge00",
+        "PASS bridge bone ornament stays smooth and dielectric",
+        "PASS smooth bone region matches the runtime albedo row orientation",
+        "PASS snow mask and neutral normal align to the decoded original texture",
+        "PASS native and script collectors agree on detail maps",
+        "PASS detail map uses one existing array layer",
+        "PASS build normal fixture [false, false]",
+        "PASS GPU respects tangent orientation or degenerate fallback [false, false]: (0.599609, -0.293945, 0.743652)",
+        "PASS GPU consumes packed roughness and metalness [false, false]",
+        "PASS raster and ray normals agree [false, false]: (0.599609, -0.294434, 0.743164)",
+        "PASS build normal fixture [true, false]",
+        "PASS GPU respects tangent orientation or degenerate fallback [true, false]: (-0.599609, -0.293945, 0.743652)",
+        "PASS GPU consumes packed roughness and metalness [true, false]",
+        "PASS raster and ray normals agree [true, false]: (-0.600098, -0.294434, 0.743164)",
+        "PASS build normal fixture [false, true]",
+        "PASS GPU respects tangent orientation or degenerate fallback [false, true]: (-0.000015, -0.000015, 1.0)",
+        "PASS GPU consumes packed roughness and metalness [false, true]",
+        "PASS raster and ray normals agree [false, true]: (-0.000488, -0.000488, 1.0)",
+        "PASS build rotated nonuniform instance false",
+        "PASS instance transforms preserve raster/ray basis parity false: (0.640625, -0.189941, 0.743652) / (0.640625, -0.19043, 0.743164)",
+        "PASS build rotated nonuniform instance true",
+        "PASS instance transforms preserve raster/ray basis parity true: (-0.640625, -0.189941, 0.743652) / (-0.640869, -0.19043, 0.743164)",
+        "PASS build back-facing normal fixture",
+        "PASS back-face normal stays in the visible geometry hemisphere",
+        "PASS raster and ray back-face normals agree: (0.599609, -0.294434, -0.744141)",
+        "PASS distance fades normal detail and broadens unresolved highlights",
+        "PASS minification fades unresolved normals without dropping metalness",
+        "PASS detail enable change invalidates the material snapshot",
+        "PASS disabled detail uses scalar fallback without map upload",
+        "PASS material-effects option disables authored detail collection",
+        "PASS build disabled material fixture",
+        "PASS disabled material effects restore flat dielectric response",
+        "SCENE_RT_DEVICE 47 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_surface_detail"
+    },
+    {
+      "tag": "effects-final-linux-path_trace_surface_maps",
+      "suite": "path_trace_surface_maps",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 16,
+      "seconds": 9.18,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "db6c6a664ea2425dd2f80f1ab1d58ecff78925219d5ebfa05701fd30d6a898b2",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS qualified path-tracing device",
+        "PASS collector retains the mapped receiver",
+        "PASS surface map shares the existing texture array",
+        "PASS native and script packing preserve the same material map",
+        "PASS roughness and metalness remain linear data",
+        "PASS build native mapped-material pipeline",
+        "PASS GPU samples the equipment's rough metal region",
+        "PASS GPU preserves exposed dielectric skin",
+        "PASS material mask visibly reduces the metal diffuse lobe",
+        "PASS metal reflects substantially more sky than skin",
+        "PASS equipment mask replacement invalidates material identity with unchanged albedo",
+        "PASS rebuild changed equipment material",
+        "PASS replaced equipment no longer leaves a metallic region",
+        "PASS disabled material effects avoid mask storage and sampling",
+        "PASS build scalar material fallback",
+        "PASS disabled option restores the rough dielectric fallback",
+        "SCENE_RT_DEVICE 16 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-path_trace_surface_maps"
+    },
+    {
+      "tag": "effects-final-linux-wind-guide",
+      "suite": "path_trace_wind_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 7,
+      "seconds": 8.63,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "6181e90f1f47da98703299c67bf2c3e73e2535f71477f3999554ae0bcbe37b9e"
+      },
+      "fixture_sha256": "bf3fa65707874eba1f1f0840d7727a8ad8ba1db88c8526c5f10c32af36daa59e",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS wind phase 0, foreground false: 1.00000 valid",
+        "PASS wind phase 1, foreground false: 1.00000 valid",
+        "PASS wind phase 2, foreground false: 1.00000 valid",
+        "PASS wind phase 3, foreground false: 1.00000 valid",
+        "PASS wind phase 4, foreground false: 1.00000 valid",
+        "PASS wind phase 5, foreground false: 1.00000 valid",
+        "PASS wind phase 6, foreground true: 0.00000 valid",
+        "SCENE_RT_DEVICE 7 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-linux-wind-guide"
+    },
+    {
+      "tag": "effects-final-windows-dlss-wind",
+      "suite": "path_trace_wind_live",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 9,
+      "seconds": 87.61,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "6deac7cc30524783e3b494598e213141e65a89315bac6b4795199f53a6c693a9",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126580.986:00fc:0100:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-dlss-wind\\vkd3d-proton.CursedLands.exe.cache.",
+        "126580.986:00fc:0100:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-dlss-wind\\vkd3d-proton.CursedLands.exe.cache.",
+        "126580.987:00fc:0180:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-dlss-wind\\vkd3d-proton.CursedLands.exe.cache.",
+        "126581.695:00fc:0100:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-dlss-wind\\vkd3d-proton.CursedLands.exe.cache.",
+        "126581.695:00fc:0100:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-dlss-wind\\vkd3d-proton.CursedLands.exe.cache.",
+        "126581.696:00fc:018c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-dlss-wind\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS authored route exists: zone1",
+        "PASS DLSS Performance is available",
+        "PASS windy eye-height campaign scene is ready",
+        "PASS PT grid matches recorded low/Performance combination",
+        "PASS actual trees use combined wind and ground-contact shader",
+        "PASS PT and NRD stay active during wind and camera motion",
+        "PASS nearby terrain retains traced lighting during motion",
+        "PASS SDK evaluates DLSS throughout wind and camera motion",
+        "PASS DLSS remains active without SDK errors",
+        "PATH_WIND_LIVE 9 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-dlss-wind"
+    },
+    {
+      "tag": "effects-final-windows-path_trace_many_lights",
+      "suite": "path_trace_many_lights",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 20,
+      "seconds": 14.74,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "1a560fce23e6333dd1c0eeac72462835f53db2450905775ee821af85885a8249",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126567.167:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_many_lights\\vkd3d-proton.CursedLands.exe.cache.",
+        "126567.167:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_many_lights\\vkd3d-proton.CursedLands.exe.cache.",
+        "126567.168:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_many_lights\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS crowded regions retain 64 local lights",
+        "PASS a new bright spell survives the over-budget selection",
+        "PASS camera movement preserves source order inside the budget",
+        "PASS gentle fire flutter beyond slot seven retains short history",
+        "PASS spell colour changes beyond slot seven reject stale history",
+        "PASS moving effects beyond slot seven reject stale history",
+        "PASS extinguished effects leave no retained illumination",
+        "PASS conventional scene RT retains its seven visibility channels",
+        "PASS qualified many-light GPU",
+        "PASS build many-light transport scene",
+        "PASS 7 lights preserve exact summed illumination within 3%: 0.0006",
+        "PASS 8 lights preserve exact summed illumination within 3%: 0.0074",
+        "PASS 16 lights preserve exact summed illumination within 3%: 0.0085",
+        "PASS 64 lights preserve exact summed illumination within 3%: 0.0108",
+        "PASS the eighth spell illuminates the receiver immediately",
+        "PASS extinguishing the eighth spell removes its blue lighting",
+        "PASS NRD reconstructs the added spell among persistent warm lights",
+        "PASS NRD reset removes an expired spell while other coloured lights remain",
+        "PASS build glossy light response scene",
+        "PASS diffuse-only character assist does not create metallic highlights",
+        "SCENE_RT_DEVICE 20 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-path_trace_many_lights"
+    },
+    {
+      "tag": "effects-final-windows-path_trace_material_receivers",
+      "suite": "path_trace_material_receivers",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 6,
+      "seconds": 12.03,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "c96bde6633cda755ede5b19999e7fc38a85754dadf455bb72019a42c126e756e",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126583.383:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_material_receivers\\vkd3d-proton.CursedLands.exe.cache.",
+        "126583.383:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_material_receivers\\vkd3d-proton.CursedLands.exe.cache.",
+        "126583.384:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_material_receivers\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS 320-pixel metal edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 320-pixel roughness edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 640-pixel metal edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 640-pixel roughness edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 960-pixel metal edge preserves material lighting: leak 0.000, holes 0",
+        "PASS 960-pixel roughness edge preserves material lighting: leak 0.000, holes 0",
+        "SCENE_RT_DEVICE 6 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-path_trace_material_receivers"
+    },
+    {
+      "tag": "effects-final-windows-path_trace_nrd_device",
+      "suite": "path_trace_nrd_device",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 19,
+      "seconds": 16.04,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "9996987a083040e4f70d914c39135af6d9f4840d1298dcdfaf6083f5dc1d7e11",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126596.219:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_nrd_device\\vkd3d-proton.CursedLands.exe.cache.",
+        "126596.219:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_nrd_device\\vkd3d-proton.CursedLands.exe.cache.",
+        "126596.220:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_nrd_device\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS qualified NRD test device",
+        "PASS build actual ray-traced NRD fixture",
+        "PASS native NRD 4.18 runtime and compute shaders loaded",
+        "PASS NRD ran without custom fallback",
+        "PASS native dispatch planner and GPU passes execute every frame",
+        "PASS NRD preserves coloured emission and positive indirect light",
+        "PASS stationary surface reuses NRD history",
+        "PASS NRD output remains finite and bounded",
+        "PASS NRD presents stable public texture handles",
+        "PASS progressive mode keeps exact long accumulation",
+        "PASS return to NRD restarts and converges",
+        "PASS odd-sized resize rebuilds NRD pools",
+        "PASS lighting reset removes extinguished emission immediately",
+        "PASS direct-sun output respects the traced roof shadow",
+        "PASS direct-sun output carries unoccluded sunlight for nearby grass",
+        "PASS NRD dispatch failure falls back to usable custom lighting",
+        "PASS fallback accumulates current illumination after NRD failure",
+        "PASS NRD failure releases all pool images and is not retried every frame",
+        "PASS NRD pools, descriptors and pipelines are released",
+        "SCENE_RT_DEVICE 19 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-path_trace_nrd_device"
+    },
+    {
+      "tag": "effects-final-windows-path_trace_nrd_motion",
+      "suite": "path_trace_nrd_motion",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 42,
+      "seconds": 12.69,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "24d855dd764e7b0eda76cb38b463961a958271bf25aa9d10585eedf8f40d5d60",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126613.044:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_nrd_motion\\vkd3d-proton.CursedLands.exe.cache.",
+        "126613.044:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_nrd_motion\\vkd3d-proton.CursedLands.exe.cache.",
+        "126613.045:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_nrd_motion\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS qualified rigid motion reconstruction device",
+        "PASS build shared geometry with the full 4096 stable placement IDs",
+        "PASS orthographic_translation matches independently weighted reference",
+        "PASS orthographic_translation has correct historical confidence",
+        "PASS orthographic_translation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_rotation matches independently weighted reference",
+        "PASS orthographic_rotation has correct historical confidence",
+        "PASS orthographic_rotation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_nonuniform_scale matches independently weighted reference",
+        "PASS orthographic_nonuniform_scale has correct historical confidence",
+        "PASS orthographic_nonuniform_scale reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_camera_and_object matches independently weighted reference",
+        "PASS orthographic_camera_and_object has correct historical confidence",
+        "PASS orthographic_camera_and_object reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS orthographic_camera_only matches independently weighted reference",
+        "PASS orthographic_camera_only has correct historical confidence",
+        "PASS perspective_translation matches independently weighted reference",
+        "PASS perspective_translation has correct historical confidence",
+        "PASS perspective_translation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_rotation matches independently weighted reference",
+        "PASS perspective_rotation has correct historical confidence",
+        "PASS perspective_rotation reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_nonuniform_scale matches independently weighted reference",
+        "PASS perspective_nonuniform_scale has correct historical confidence",
+        "PASS perspective_nonuniform_scale reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_camera_and_object matches independently weighted reference",
+        "PASS perspective_camera_and_object has correct historical confidence",
+        "PASS perspective_camera_and_object reduces error versus camera-only reprojection by at least 75 percent",
+        "PASS perspective_camera_only matches independently weighted reference",
+        "PASS perspective_camera_only has correct historical confidence",
+        "PASS unrelated_identity matches independently weighted reference",
+        "PASS unrelated_identity has correct historical confidence",
+        "PASS new_visibility matches independently weighted reference",
+        "PASS new_visibility has correct historical confidence",
+        "PASS deformation matches independently weighted reference",
+        "PASS deformation has correct historical confidence",
+        "PASS NRD accumulates the stationary rigid surface",
+        "PASS NRD world motion retains valid rigid-surface history",
+        "PASS NRD rejects newly visible instance history",
+        "PASS NRD confidence rejects untracked deformation",
+        "PASS NRD odd-sized resize restarts motion history",
+        "PASS teardown releases motion and identity resources",
+        "SCENE_RT_DEVICE 42 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-path_trace_nrd_motion"
+    },
+    {
+      "tag": "effects-final-windows-path_trace_spell_lights_live",
+      "suite": "path_trace_spell_lights_live",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 8,
+      "seconds": 43.24,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "7fe2a19c7d9b12fe5d66076f612f4c6b8ac7b88d79c3747bf644ce9262140b9a",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126626.511:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_spell_lights_live\\vkd3d-proton.CursedLands.exe.cache.",
+        "126626.511:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_spell_lights_live\\vkd3d-proton.CursedLands.exe.cache.",
+        "126626.512:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-path_trace_spell_lights_live\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS original cave supplies the fire effect",
+        "PASS cave and authored material shaders prepare PT",
+        "PASS seven existing lights occupy the previous capacity",
+        "PASS a short spell enters PT on the first frame before the geometry poll",
+        "PASS the first spell frame adds traced blue illumination to the original scene",
+        "PASS the first displayed spell frame follows current radiance without a slow colour ramp",
+        "PASS spell expiry removes the light and its old history immediately",
+        "PASS expired spell restores the original fire-lit scene",
+        "PATH_SPELL_LIGHTS 8 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-path_trace_spell_lights_live"
+    },
+    {
+      "tag": "effects-final-windows-wind-guide",
+      "suite": "path_trace_wind_receivers",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 7,
+      "seconds": 13.04,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-final/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "76c83f8bf3fb3457b235437e510e4674e8980fce7586fa13afd6ece5d3346871"
+      },
+      "fixture_sha256": "ede4ffe8db1aad09b6e6066b34a9f6a6cc31a346ee21d1904a7799dc39c18a92",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126858.566:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-wind-guide\\vkd3d-proton.CursedLands.exe.cache.",
+        "126858.566:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-wind-guide\\vkd3d-proton.CursedLands.exe.cache.",
+        "126858.567:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-final-windows-wind-guide\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS wind phase 0, foreground false: 1.00000 valid",
+        "PASS wind phase 1, foreground false: 1.00000 valid",
+        "PASS wind phase 2, foreground false: 1.00000 valid",
+        "PASS wind phase 3, foreground false: 1.00000 valid",
+        "PASS wind phase 4, foreground false: 1.00000 valid",
+        "PASS wind phase 5, foreground false: 1.00000 valid",
+        "PASS wind phase 6, foreground true: 0.00000 valid",
+        "SCENE_RT_DEVICE 7 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-final-windows-wind-guide"
+    }
+  ],
+  "additional_unchanged_component_checks": [
+    {
+      "tag": "effects-packed-windows-materials",
+      "suite": "path_trace_materials",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 470,
+      "seconds": 63.23,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-confidence/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-confidence/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "845942ad670f2629f42ce1d32c30d418831848032735944167db13db35a20565"
+      },
+      "fixture_sha256": "a78907601733b92fd1a01f334ccdebb131dd9e0874201f829dbcce9d1ce7c6c8",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "126374.236:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-packed-windows-materials\\vkd3d-proton.CursedLands.exe.cache.",
+        "126374.236:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-packed-windows-materials\\vkd3d-proton.CursedLands.exe.cache.",
+        "126374.237:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-packed-windows-materials\\vkd3d-proton.CursedLands.exe.cache.",
+        "MATERIAL_SHADER_OPTIONS checks=470 failures=0"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-packed-windows-materials",
+      "harness_correction": {
+        "reason": "The old failure regex misread checks=470 failures=0 as 470 failures. All shader checks passed and there are no shader errors.",
+        "previous_errors": [
+          "MATERIAL_SHADER_OPTIONS checks=470 failures=0"
+        ]
+      }
+    },
+    {
+      "tag": "effects-linux-path_trace_light_history",
+      "suite": "path_trace_light_history",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "errors": [],
+      "checks": 52,
+      "seconds": 9.48,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "c377b12baea351059e3fdb444321fa36ba5fd14aaadf51f9505bd44f46f96f7c"
+      },
+      "fixture_sha256": "7c0b5e3babd0fe4430f135d8c57d493a593b381033308864386c277e035842fb",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS unchanged responsive lighting retains eight-frame history",
+        "PASS gentle intensity rise uses three-frame history",
+        "PASS gentle intensity fall keeps bounded history",
+        "PASS stable lighting recovers the normal history budget",
+        "PASS history time remains bounded at 120 Hz",
+        "PASS history time remains bounded at 30 Hz",
+        "PASS history time remains bounded at 20 Hz",
+        "PASS immediate reset for [\"light_energy\", 1.25]",
+        "PASS immediate reset for [\"light_energy\", 0.0]",
+        "PASS immediate reset for [\"light_color\", (1.0, 0.71, 0.42, 1.0)]",
+        "PASS immediate reset for [\"position\", (0.001, 1.0, 2.0)]",
+        "PASS immediate reset for [\"omni_range\", 6.001]",
+        "PASS immediate reset for [\"light_size\", 0.101]",
+        "PASS immediate reset for [\"visible\", false]",
+        "PASS newly lit sources cannot reuse dark history",
+        "PASS sun changes still invalidate history",
+        "PASS environment changes still invalidate history",
+        "PASS projection changes reset even during gentle flutter",
+        "PASS small camera motion reprojects short flutter history",
+        "PASS camera cuts reset flutter history",
+        "PASS unchanged still-scene mode retains progressive accumulation",
+        "PASS still-scene mode rejects even tiny light changes",
+        "PASS still-scene mode rejects changed geometry",
+        "PASS diagnostic strict mode reproduces the previous reset",
+        "PASS replacing a light node invalidates its history",
+        "PASS the seventh local-light slot also retains short intensity history",
+        "PASS several independent gentle intensity changes share the bounded history",
+        "PASS one moving source invalidates a multi-light flutter frame",
+        "PASS gradual daylight retains full responsive history",
+        "PASS daylight and torch flutter can reuse history together",
+        "PASS unchanged daylight recovers full responsive history",
+        "PASS daylight drift preserves denoising at 30 Hz",
+        "PASS daylight drift preserves denoising at 20 Hz",
+        "PASS larger sun colour changes reset immediately",
+        "PASS larger environment changes reset immediately",
+        "PASS a sun direction jump resets immediately",
+        "PASS extinguished sunlight cannot retain its previous radiance",
+        "PASS gradual daylight does not hide a moving local source",
+        "PASS gradual daylight does not hide a projection change",
+        "PASS still-scene accumulation keeps exact daylight matching",
+        "PASS strict diagnostic mode rejects gradual daylight",
+        "PASS precipitation fade retains short responsive history",
+        "PASS abrupt lighting jumps still reset during rain fade",
+        "PASS progressive accumulation never holds fading weather",
+        "PASS qualified light-history GPU device",
+        "PASS build GPU history fixture",
+        "PASS GPU limits both diffuse and glossy history to three frames",
+        "PASS GPU applies the short-history diffuse weight",
+        "PASS GPU applies the short-history glossy weight",
+        "PASS GPU accepts fractional history ages at 30 Hz",
+        "PASS slow frames give the current light a larger diffuse and glossy weight",
+        "PASS GPU discards all stale illumination on the extinguishing frame",
+        "SCENE_RT_DEVICE 52 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-linux-path_trace_light_history"
+    },
+    {
+      "tag": "effects-windows-path_trace_light_history",
+      "suite": "path_trace_light_history",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "errors": [],
+      "checks": 52,
+      "seconds": 11.68,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-windows-x86_64/CursedLands.pck": "ee81fcd40b3b1f6d77f5d18c10899dc726654eafcece112c9c653ee97f6b9f67"
+      },
+      "fixture_sha256": "6282bd5a1e1e8548b524e19816bf51aefe29eb7854562ac3d4a8550c83c6b367",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "125976.574:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-windows-path_trace_light_history\\vkd3d-proton.CursedLands.exe.cache.",
+        "125976.574:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-windows-path_trace_light_history\\vkd3d-proton.CursedLands.exe.cache.",
+        "125976.575:0020:011c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\pt-windows-glitches-20261024\\checks\\effects-windows-path_trace_light_history\\vkd3d-proton.CursedLands.exe.cache.",
+        "PASS unchanged responsive lighting retains eight-frame history",
+        "PASS gentle intensity rise uses three-frame history",
+        "PASS gentle intensity fall keeps bounded history",
+        "PASS stable lighting recovers the normal history budget",
+        "PASS history time remains bounded at 120 Hz",
+        "PASS history time remains bounded at 30 Hz",
+        "PASS history time remains bounded at 20 Hz",
+        "PASS immediate reset for [\"light_energy\", 1.25]",
+        "PASS immediate reset for [\"light_energy\", 0.0]",
+        "PASS immediate reset for [\"light_color\", (1.0, 0.71, 0.42, 1.0)]",
+        "PASS immediate reset for [\"position\", (0.001, 1.0, 2.0)]",
+        "PASS immediate reset for [\"omni_range\", 6.001]",
+        "PASS immediate reset for [\"light_size\", 0.101]",
+        "PASS immediate reset for [\"visible\", false]",
+        "PASS newly lit sources cannot reuse dark history",
+        "PASS sun changes still invalidate history",
+        "PASS environment changes still invalidate history",
+        "PASS projection changes reset even during gentle flutter",
+        "PASS small camera motion reprojects short flutter history",
+        "PASS camera cuts reset flutter history",
+        "PASS unchanged still-scene mode retains progressive accumulation",
+        "PASS still-scene mode rejects even tiny light changes",
+        "PASS still-scene mode rejects changed geometry",
+        "PASS diagnostic strict mode reproduces the previous reset",
+        "PASS replacing a light node invalidates its history",
+        "PASS the seventh local-light slot also retains short intensity history",
+        "PASS several independent gentle intensity changes share the bounded history",
+        "PASS one moving source invalidates a multi-light flutter frame",
+        "PASS gradual daylight retains full responsive history",
+        "PASS daylight and torch flutter can reuse history together",
+        "PASS unchanged daylight recovers full responsive history",
+        "PASS daylight drift preserves denoising at 30 Hz",
+        "PASS daylight drift preserves denoising at 20 Hz",
+        "PASS larger sun colour changes reset immediately",
+        "PASS larger environment changes reset immediately",
+        "PASS a sun direction jump resets immediately",
+        "PASS extinguished sunlight cannot retain its previous radiance",
+        "PASS gradual daylight does not hide a moving local source",
+        "PASS gradual daylight does not hide a projection change",
+        "PASS still-scene accumulation keeps exact daylight matching",
+        "PASS strict diagnostic mode rejects gradual daylight",
+        "PASS precipitation fade retains short responsive history",
+        "PASS abrupt lighting jumps still reset during rain fade",
+        "PASS progressive accumulation never holds fading weather",
+        "PASS qualified light-history GPU device",
+        "PASS build GPU history fixture",
+        "PASS GPU limits both diffuse and glossy history to three frames",
+        "PASS GPU applies the short-history diffuse weight",
+        "PASS GPU applies the short-history glossy weight",
+        "PASS GPU accepts fractional history ages at 30 Hz",
+        "PASS slow frames give the current light a larger diffuse and glossy weight",
+        "PASS GPU discards all stale illumination on the extinguishing frame",
+        "SCENE_RT_DEVICE 52 checks 0 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-windows-path_trace_light_history"
+    }
+  ],
+  "additional_scope": "The 470-check shader run has the final raster shader, and the two 52-check runs have the final controller. Their packs precede the native NRD reset change; measured runtime hashes identify them separately.",
+  "negative_controls": [
+    {
+      "tag": "effects-base-many-v2",
+      "suite": "path_trace_many_lights",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 1,
+      "errors": [
+        "FAIL crowded regions retain 64 local lights",
+        "FAIL a new bright spell survives the over-budget selection",
+        "FAIL gentle fire flutter beyond slot seven retains short history",
+        "FAIL spell colour changes beyond slot seven reject stale history",
+        "FAIL moving effects beyond slot seven reject stale history",
+        "FAIL extinguished effects leave no retained illumination",
+        "FAIL 8 lights preserve exact summed illumination within 3%: 0.1405",
+        "FAIL 16 lights preserve exact summed illumination within 3%: 0.6020",
+        "FAIL 64 lights preserve exact summed illumination within 3%: 0.9032",
+        "FAIL the eighth spell illuminates the receiver immediately",
+        "FAIL diffuse-only character assist does not create metallic highlights",
+        "SCENE_RT_DEVICE 18 checks 11 failures",
+        "path-many-lights.json: ['crowded regions retain 64 local lights', 'a new bright spell survives the over-budget selection', 'gentle fire flutter beyond slot seven retains short history', 'spell colour changes beyond slot seven reject stale history', 'moving effects beyond slot seven reject stale history', 'extinguished effects leave no retained illumination', '8 lights preserve exact summed illumination within 3%: 0.1405', '16 lights preserve exact summed illumination within 3%: 0.6020', '64 lights preserve exact summed illumination within 3%: 0.9032', 'the eighth spell illuminates the receiver immediately', 'diffuse-only character assist does not create metallic highlights']",
+        "scene-device-results.json: ['crowded regions retain 64 local lights', 'a new bright spell survives the over-budget selection', 'gentle fire flutter beyond slot seven retains short history', 'spell colour changes beyond slot seven reject stale history', 'moving effects beyond slot seven reject stale history', 'extinguished effects leave no retained illumination', '8 lights preserve exact summed illumination within 3%: 0.1405', '16 lights preserve exact summed illumination within 3%: 0.6020', '64 lights preserve exact summed illumination within 3%: 0.9032', 'the eighth spell illuminates the receiver immediately', 'diffuse-only character assist does not create metallic highlights']"
+      ],
+      "checks": 18,
+      "seconds": 7.93,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "26688a0d5fb8984edc4d188cd8131b142ff491180cad55d7d33748d693425665"
+      },
+      "fixture_sha256": "17a90ff03efb1bb2a973e008ea58df0a2f6dbf6360409b17e075c440980a8116",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "FAIL crowded regions retain 64 local lights",
+        "FAIL a new bright spell survives the over-budget selection",
+        "PASS camera movement preserves source order inside the budget",
+        "FAIL gentle fire flutter beyond slot seven retains short history",
+        "FAIL spell colour changes beyond slot seven reject stale history",
+        "FAIL moving effects beyond slot seven reject stale history",
+        "FAIL extinguished effects leave no retained illumination",
+        "PASS conventional scene RT retains its seven visibility channels",
+        "PASS qualified many-light GPU",
+        "PASS build many-light transport scene",
+        "PASS 7 lights preserve exact summed illumination within 3%: 0.0001",
+        "FAIL 8 lights preserve exact summed illumination within 3%: 0.1405",
+        "FAIL 16 lights preserve exact summed illumination within 3%: 0.6020",
+        "FAIL 64 lights preserve exact summed illumination within 3%: 0.9032",
+        "FAIL the eighth spell illuminates the receiver immediately",
+        "PASS extinguishing the eighth spell removes its blue lighting",
+        "PASS build glossy light response scene",
+        "FAIL diffuse-only character assist does not create metallic highlights",
+        "SCENE_RT_DEVICE 18 checks 11 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-base-many-v2"
+    },
+    {
+      "tag": "effects-base-path_trace_material_receivers",
+      "suite": "path_trace_material_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 1,
+      "errors": [
+        "FAIL 320-pixel metal edge preserves material lighting: leak 0.647, holes 0",
+        "FAIL 320-pixel roughness edge preserves material lighting: leak 0.647, holes 0",
+        "FAIL 640-pixel metal edge preserves material lighting: leak 0.537, holes 0",
+        "FAIL 640-pixel roughness edge preserves material lighting: leak 0.537, holes 0",
+        "FAIL 960-pixel metal edge preserves material lighting: leak 0.388, holes 0",
+        "FAIL 960-pixel roughness edge preserves material lighting: leak 0.388, holes 0",
+        "SCENE_RT_DEVICE 6 checks 6 failures",
+        "path-material-receivers.json: ['320-pixel metal edge preserves material lighting: leak 0.647, holes 0', '320-pixel roughness edge preserves material lighting: leak 0.647, holes 0', '640-pixel metal edge preserves material lighting: leak 0.537, holes 0', '640-pixel roughness edge preserves material lighting: leak 0.537, holes 0', '960-pixel metal edge preserves material lighting: leak 0.388, holes 0', '960-pixel roughness edge preserves material lighting: leak 0.388, holes 0']",
+        "scene-device-results.json: ['320-pixel metal edge preserves material lighting: leak 0.647, holes 0', '320-pixel roughness edge preserves material lighting: leak 0.647, holes 0', '640-pixel metal edge preserves material lighting: leak 0.537, holes 0', '640-pixel roughness edge preserves material lighting: leak 0.537, holes 0', '960-pixel metal edge preserves material lighting: leak 0.388, holes 0', '960-pixel roughness edge preserves material lighting: leak 0.388, holes 0']"
+      ],
+      "checks": 6,
+      "seconds": 8.38,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "26688a0d5fb8984edc4d188cd8131b142ff491180cad55d7d33748d693425665"
+      },
+      "fixture_sha256": "a2126872df47b140415d35df35850b2f43c20e62f60025ccd0fdccc942f76cd7",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "FAIL 320-pixel metal edge preserves material lighting: leak 0.647, holes 0",
+        "FAIL 320-pixel roughness edge preserves material lighting: leak 0.647, holes 0",
+        "FAIL 640-pixel metal edge preserves material lighting: leak 0.537, holes 0",
+        "FAIL 640-pixel roughness edge preserves material lighting: leak 0.537, holes 0",
+        "FAIL 960-pixel metal edge preserves material lighting: leak 0.388, holes 0",
+        "FAIL 960-pixel roughness edge preserves material lighting: leak 0.388, holes 0",
+        "SCENE_RT_DEVICE 6 checks 6 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-base-path_trace_material_receivers"
+    },
+    {
+      "tag": "effects-vk-many-nrd",
+      "suite": "path_trace_many_lights",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 1,
+      "errors": [
+        "FAIL NRD reset removes an expired spell while other coloured lights remain",
+        "SCENE_RT_DEVICE 20 checks 1 failures",
+        "path-many-lights.json: ['NRD reset removes an expired spell while other coloured lights remain']",
+        "scene-device-results.json: ['NRD reset removes an expired spell while other coloured lights remain']"
+      ],
+      "checks": 20,
+      "seconds": 10.73,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "c377b12baea351059e3fdb444321fa36ba5fd14aaadf51f9505bd44f46f96f7c"
+      },
+      "fixture_sha256": "0691d9a6b506e1ee14457255f7cf703ced1031032f3a5efdc5753bc5c5c250d5",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS crowded regions retain 64 local lights",
+        "PASS a new bright spell survives the over-budget selection",
+        "PASS camera movement preserves source order inside the budget",
+        "PASS gentle fire flutter beyond slot seven retains short history",
+        "PASS spell colour changes beyond slot seven reject stale history",
+        "PASS moving effects beyond slot seven reject stale history",
+        "PASS extinguished effects leave no retained illumination",
+        "PASS conventional scene RT retains its seven visibility channels",
+        "PASS qualified many-light GPU",
+        "PASS build many-light transport scene",
+        "PASS 7 lights preserve exact summed illumination within 3%: 0.0001",
+        "PASS 8 lights preserve exact summed illumination within 3%: 0.0076",
+        "PASS 16 lights preserve exact summed illumination within 3%: 0.0088",
+        "PASS 64 lights preserve exact summed illumination within 3%: 0.0110",
+        "PASS the eighth spell illuminates the receiver immediately",
+        "PASS extinguishing the eighth spell removes its blue lighting",
+        "PASS NRD reconstructs the added spell among persistent warm lights",
+        "FAIL NRD reset removes an expired spell while other coloured lights remain",
+        "PASS build glossy light response scene",
+        "PASS diffuse-only character assist does not create metallic highlights",
+        "SCENE_RT_DEVICE 20 checks 1 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-vk-many-nrd"
+    },
+    {
+      "tag": "effects-vk-spell-inspect",
+      "suite": "path_trace_spell_lights_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 1,
+      "errors": [
+        "FAIL expired spell restores the original fire-lit scene",
+        "PATH_SPELL_LIGHTS 7 checks 1 failures",
+        "path-spell-lights-live.json: ['expired spell restores the original fire-lit scene']"
+      ],
+      "checks": 7,
+      "seconds": 39.13,
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "c377b12baea351059e3fdb444321fa36ba5fd14aaadf51f9505bd44f46f96f7c"
+      },
+      "fixture_sha256": "9a1baff09c48c48b68390086fafc0053ee7d71be4965fa6f8d1a6dffa164a064",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "summary": [
+        "PASS original cave supplies the fire effect",
+        "PASS cave and authored material shaders prepare PT",
+        "PASS seven existing lights occupy the previous capacity",
+        "PASS a short spell enters PT on the first frame before the geometry poll",
+        "PASS the first spell frame adds traced blue illumination to the original scene",
+        "PASS spell expiry removes the light and its old history immediately",
+        "FAIL expired spell restores the original fire-lit scene",
+        "PATH_SPELL_LIGHTS 7 checks 1 failures"
+      ],
+      "evidence_path": "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/checks/effects-vk-spell-inspect"
+    }
+  ],
+  "many_lights": {
+    "linux": {
+      "checks": 20,
+      "failures": [],
+      "observations": [
+        {
+          "lights": 7,
+          "reference": "(0.2222, 0.2812, 0.3661, 8.0)",
+          "relative_error": 7.91635580575149e-05,
+          "sampled": "(0.2222, 0.2812, 0.3661, 48.0)"
+        },
+        {
+          "lights": 8,
+          "reference": "(0.2551, 0.3271, 0.3989, 16.0)",
+          "relative_error": 0.0076288469946977,
+          "sampled": "(0.2531, 0.3258, 0.3959, 48.0)"
+        },
+        {
+          "lights": 16,
+          "reference": "(0.5167, 0.7065, 0.8047, 24.0)",
+          "relative_error": 0.00877066296120874,
+          "sampled": "(0.5122, 0.7025, 0.7993, 48.0)"
+        },
+        {
+          "lights": 64,
+          "reference": "(2.0862, 2.904, 3.3294, 80.0)",
+          "relative_error": 0.0110276050692721,
+          "sampled": "(2.0632, 2.8827, 3.3069, 48.0)"
+        },
+        {
+          "nrd_after": "(0.0386, 0.0193, 0.0155, 1.0)",
+          "nrd_before": "(0.0399, 0.0199, 0.0159, 21.9326)",
+          "nrd_during": "(0.0399, 0.02, 1.1486, 21.9721)"
+        },
+        {
+          "diffuse_only": "(0.0, 0.0, 0.0, 8.0)",
+          "glossy": "(11.0383, 11.0383, 11.0383, 8.0)"
+        }
+      ]
+    },
+    "windows": {
+      "checks": 20,
+      "failures": [],
+      "observations": [
+        {
+          "lights": 7,
+          "reference": "(0.2222, 0.2812, 0.3659, 8.0)",
+          "relative_error": 0.0005743871048982,
+          "sampled": "(0.2221, 0.281, 0.3658, 48.0)"
+        },
+        {
+          "lights": 8,
+          "reference": "(0.255, 0.3271, 0.3987, 16.0)",
+          "relative_error": 0.00737168460930703,
+          "sampled": "(0.2531, 0.3257, 0.3958, 48.0)"
+        },
+        {
+          "lights": 16,
+          "reference": "(0.5165, 0.7062, 0.8043, 24.0)",
+          "relative_error": 0.00850042872590509,
+          "sampled": "(0.5121, 0.7023, 0.7991, 48.0)"
+        },
+        {
+          "lights": 64,
+          "reference": "(2.0853, 2.9029, 3.3276, 80.0)",
+          "relative_error": 0.0107641917577889,
+          "sampled": "(2.0628, 2.8822, 3.3061, 48.0)"
+        },
+        {
+          "nrd_after": "(0.0386, 0.0193, 0.0154, 1.0)",
+          "nrd_before": "(0.0397, 0.0199, 0.0159, 21.9236)",
+          "nrd_during": "(0.0398, 0.02, 1.1462, 21.9701)"
+        },
+        {
+          "diffuse_only": "(0.0, 0.0, 0.0, 8.0)",
+          "glossy": "(10.8889, 10.8889, 10.8889, 8.0)"
+        }
+      ]
+    }
+  },
+  "material_edges": {
+    "linux": {
+      "checks": 6,
+      "failures": [],
+      "observations": [
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": false,
+          "width": 320
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": true,
+          "width": 320
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": false,
+          "width": 640
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": true,
+          "width": 640
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": false,
+          "width": 960
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": true,
+          "width": 960
+        }
+      ]
+    },
+    "windows": {
+      "checks": 6,
+      "failures": [],
+      "observations": [
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": false,
+          "width": 320
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": true,
+          "width": 320
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": false,
+          "width": 640
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": true,
+          "width": 640
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": false,
+          "width": 960
+        },
+        {
+          "holes": 0,
+          "leakage": 0.0,
+          "roughness_only": true,
+          "width": 960
+        }
+      ]
+    }
+  },
+  "spell_live": {
+    "linux": {
+      "blue_after": 0.0272961504260699,
+      "blue_before": 0.0269437161170774,
+      "blue_first_frame": 0.26335711594671,
+      "checks": 8,
+      "failures": [],
+      "inspections": [
+        {
+          "filtered_blue": 0.0269437161170774,
+          "history": 1.0,
+          "label": "before",
+          "packed_colours": [
+            [
+              1.66564297676086,
+              0.746188640594482,
+              0.245380818843842
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ]
+          ],
+          "raw_blue": 0.0274508529942897,
+          "renders": 31
+        },
+        {
+          "filtered_blue": 0.26335711594671,
+          "history": 0.0,
+          "label": "first",
+          "packed_colours": [
+            [
+              1.66564297676086,
+              0.746188640594482,
+              0.245380818843842
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00719440774992108,
+              0.0331047624349594,
+              1.0
+            ]
+          ],
+          "raw_blue": 0.260458095164763,
+          "renders": 32
+        },
+        {
+          "filtered_blue": 0.260562393665314,
+          "history": 1.0,
+          "label": "settled",
+          "packed_colours": [
+            [
+              1.66564297676086,
+              0.746188640594482,
+              0.245380818843842
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00719440774992108,
+              0.0331047624349594,
+              1.0
+            ]
+          ],
+          "raw_blue": 0.255923621799383,
+          "renders": 44
+        },
+        {
+          "filtered_blue": 0.0272961504260699,
+          "history": 0.0,
+          "label": "expired",
+          "packed_colours": [
+            [
+              1.66564297676086,
+              0.746188640594482,
+              0.245380818843842
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ]
+          ],
+          "raw_blue": 0.0276163165271282,
+          "renders": 45
+        }
+      ],
+      "note": "Original cave and flame with six dim probe lights and the production SpellFx. Geometry poll does not expire during the first spell frame.",
+      "stats": {
+        "accumulation_frames": 1.0,
+        "active": true,
+        "adaptive_changes": 0,
+        "adaptive_gpu_ms": 0.0,
+        "adaptive_scale": 1.0,
+        "adaptive_target_fps": 0,
+        "build_timings": {
+          "extra_ms": 2.836,
+          "materials_ms": 0.949,
+          "placements_ms": 2.262,
+          "program_ms": 2300.081,
+          "resources_ms": 2318.131,
+          "textures_ms": 9.014,
+          "vertices_ms": 2.982
+        },
+        "cpu_update_ms": 0.312,
+        "display_size": [
+          1280,
+          720
+        ],
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 926,
+        "gi_samples": 0,
+        "history_handoffs": 0,
+        "history_limit": 8.0,
+        "history_matched_surfaces": 0,
+        "history_reused": false,
+        "instances": 962,
+        "light_history_limited": false,
+        "lights": 7,
+        "local_light_shadow_samples": 7,
+        "path_bounces": 2,
+        "path_samples": 1,
+        "path_tracing": true,
+        "program_cache_hits": 0,
+        "program_compilations": 1,
+        "quality": 0,
+        "rebuilding": false,
+        "render_scale": 1.0,
+        "render_size": [
+          1280,
+          720
+        ],
+        "shadow_samples": 0,
+        "size": [
+          640,
+          360
+        ],
+        "snapshot_generation": 1,
+        "supported": true,
+        "terrain_material_build_us": 13792,
+        "terrain_material_bytes": 409404,
+        "terrain_material_triangles": 39974,
+        "trace_render_scale": 1.0,
+        "triangles": 77646,
+        "updated_instances": 0,
+        "updated_poses": 0,
+        "window_resolution_reference": false
+      },
+      "torch": "(179.9853, 8.631007, -43.2999)"
+    },
+    "windows": {
+      "blue_after": 0.0272807201867302,
+      "blue_before": 0.0268848252503408,
+      "blue_first_frame": 0.26337156502323,
+      "checks": 8,
+      "failures": [],
+      "inspections": [
+        {
+          "filtered_blue": 0.0268848252503408,
+          "history": 1.0,
+          "label": "before",
+          "packed_colours": [
+            [
+              1.66459083557129,
+              0.745717287063599,
+              0.245225816965103
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ]
+          ],
+          "raw_blue": 0.0274334983403484,
+          "renders": 31
+        },
+        {
+          "filtered_blue": 0.26337156502323,
+          "history": 0.0,
+          "label": "first",
+          "packed_colours": [
+            [
+              1.66459083557129,
+              0.745717287063599,
+              0.245225816965103
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00719440774992108,
+              0.0331047624349594,
+              1.0
+            ]
+          ],
+          "raw_blue": 0.260427036558588,
+          "renders": 32
+        },
+        {
+          "filtered_blue": 0.260521582654781,
+          "history": 1.0,
+          "label": "settled",
+          "packed_colours": [
+            [
+              1.66459083557129,
+              0.745717287063599,
+              0.245225816965103
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00719440774992108,
+              0.0331047624349594,
+              1.0
+            ]
+          ],
+          "raw_blue": 0.256043634774784,
+          "renders": 44
+        },
+        {
+          "filtered_blue": 0.0272807201867302,
+          "history": 0.0,
+          "label": "expired",
+          "packed_colours": [
+            [
+              1.66459083557129,
+              0.745717287063599,
+              0.245225816965103
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ],
+            [
+              0.00999999977648258,
+              0.000100228236988187,
+              0.0
+            ]
+          ],
+          "raw_blue": 0.0275981227681041,
+          "renders": 45
+        }
+      ],
+      "note": "Original cave and flame with six dim probe lights and the production SpellFx. Geometry poll does not expire during the first spell frame.",
+      "stats": {
+        "accumulation_frames": 1.0,
+        "active": true,
+        "adaptive_changes": 0,
+        "adaptive_gpu_ms": 0.0,
+        "adaptive_scale": 1.0,
+        "adaptive_target_fps": 0,
+        "build_timings": {
+          "extra_ms": 2.833,
+          "materials_ms": 0.967,
+          "placements_ms": 3.188,
+          "program_ms": 2670.274,
+          "resources_ms": 2713.049,
+          "textures_ms": 9.981,
+          "vertices_ms": 25.796
+        },
+        "cpu_update_ms": 0.285,
+        "display_size": [
+          1280,
+          720
+        ],
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 926,
+        "gi_samples": 0,
+        "history_handoffs": 0,
+        "history_limit": 8.0,
+        "history_matched_surfaces": 0,
+        "history_reused": false,
+        "instances": 962,
+        "light_history_limited": false,
+        "lights": 7,
+        "local_light_shadow_samples": 7,
+        "path_bounces": 2,
+        "path_samples": 1,
+        "path_tracing": true,
+        "program_cache_hits": 0,
+        "program_compilations": 1,
+        "quality": 0,
+        "rebuilding": false,
+        "render_scale": 1.0,
+        "render_size": [
+          1280,
+          720
+        ],
+        "shadow_samples": 0,
+        "size": [
+          640,
+          360
+        ],
+        "snapshot_generation": 1,
+        "supported": true,
+        "terrain_material_build_us": 12431,
+        "terrain_material_bytes": 409404,
+        "terrain_material_triangles": 39974,
+        "trace_render_scale": 1.0,
+        "triangles": 77646,
+        "updated_instances": 0,
+        "updated_poses": 0,
+        "window_resolution_reference": false
+      },
+      "torch": "(179.9853, 8.631007, -43.2999)"
+    }
+  },
+  "dlss_wind": {
+    "checks": 9,
+    "contact_wind_materials": 755,
+    "dlss": {
+      "compiled": true,
+      "dlss_evaluations": 256,
+      "enhanced_barriers": true,
+      "fg_support_reason": "sl::eErrorNoSupportedAdapterFound",
+      "fg_support_result": 6,
+      "fg_supported": false,
+      "frame_generation_active": false,
+      "frame_generation_input_size": "(0, 0)",
+      "frame_generation_output_size": "(0, 0)",
+      "frame_generation_size_supported": false,
+      "frame_generation_status": 0,
+      "frame_generation_ui_alpha_frames": 0,
+      "frame_generation_ui_alpha_texture": "RID(0)",
+      "game_presents": 259,
+      "initialized": true,
+      "last_error": 0,
+      "present_count_available": false,
+      "presented_frames": 0,
+      "reflex_supported": true,
+      "requested": true,
+      "sr_support_reason": "sl::eOk",
+      "sr_support_result": 0,
+      "sr_supported": true
+    },
+    "failures": [],
+    "inactive_frames": 0,
+    "nrd_inactive_frames": 0,
+    "stats": {
+      "accumulation_frames": 8.0,
+      "active": true,
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "adaptive_target_fps": 0,
+      "build_timings": {
+        "extra_ms": 3.858,
+        "materials_ms": 1.266,
+        "placements_ms": 13.927,
+        "program_ms": 0.098,
+        "resources_ms": 34.673,
+        "textures_ms": 11.471,
+        "vertices_ms": 4.042
+      },
+      "cpu_update_ms": 0.986,
+      "display_size": [
+        3840,
+        2160
+      ],
+      "emissive_candidates": 2,
+      "emissive_triangles": 2,
+      "geometries": 1105,
+      "gi_samples": 0,
+      "history_handoffs": 0,
+      "history_limit": 8.0,
+      "history_matched_surfaces": 0,
+      "history_reused": true,
+      "instances": 1213,
+      "light_history_limited": false,
+      "lights": 2,
+      "local_light_shadow_samples": 2,
+      "path_bounces": 2,
+      "path_samples": 1,
+      "path_tracing": true,
+      "program_cache_hits": 2,
+      "program_compilations": 2,
+      "quality": 0,
+      "rebuilding": false,
+      "render_scale": 0.5,
+      "render_size": [
+        1920,
+        1080
+      ],
+      "shadow_samples": 0,
+      "size": [
+        960,
+        540
+      ],
+      "snapshot_generation": 1,
+      "supported": true,
+      "terrain_material_build_us": 7567,
+      "terrain_material_bytes": 500820,
+      "terrain_material_triangles": 46215,
+      "trace_render_scale": 0.5,
+      "triangles": 100500,
+      "updated_instances": 0,
+      "updated_poses": 0,
+      "window_resolution_reference": false
+    },
+    "terrain": {
+      "accepted": 348886,
+      "fraction": 0.994645972790822,
+      "rejected": 1878
+    }
+  },
+  "crowded_light_performance": {
+    "checks": 17,
+    "device": "NVIDIA GeForce RTX 3090",
+    "driver": "vulkan",
+    "failures": [],
+    "note": "Original river, probe lights, PT two bounces and Low at 1280x720. Uncapped heavy job; initialization and shader compilation excluded.",
+    "runs": [
+      {
+        "controller_cpu_ms": {
+          "median": 0.321,
+          "n": 90,
+          "p95": 0.361
+        },
+        "frame_ms": {
+          "median": 3.555,
+          "n": 90,
+          "p95": 5.192
+        },
+        "history_resets": 0,
+        "lights": 7,
+        "main_gpu_ms": {
+          "median": 1.29499995708466,
+          "n": 90,
+          "p95": 1.64699995517731
+        },
+        "moving": false,
+        "nrd": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 2.181408,
+          "n": 90,
+          "p95": 2.609216
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.359,
+          "n": 90,
+          "p95": 0.449
+        },
+        "frame_ms": {
+          "median": 4.222,
+          "n": 90,
+          "p95": 6.425
+        },
+        "history_resets": 0,
+        "lights": 16,
+        "main_gpu_ms": {
+          "median": 1.64999997615814,
+          "n": 90,
+          "p95": 2.15799999237061
+        },
+        "moving": false,
+        "nrd": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 2.612512,
+          "n": 89,
+          "p95": 3.1992
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.625,
+          "n": 90,
+          "p95": 0.9
+        },
+        "frame_ms": {
+          "median": 7.98,
+          "n": 90,
+          "p95": 11.236
+        },
+        "history_resets": 0,
+        "lights": 64,
+        "main_gpu_ms": {
+          "median": 3.77099990844727,
+          "n": 90,
+          "p95": 4.55900001525879
+        },
+        "moving": false,
+        "nrd": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 4.073024,
+          "n": 90,
+          "p95": 4.75968
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.676,
+          "n": 90,
+          "p95": 0.908
+        },
+        "frame_ms": {
+          "median": 7.871,
+          "n": 90,
+          "p95": 10.867
+        },
+        "history_resets": 90,
+        "lights": 64,
+        "main_gpu_ms": {
+          "median": 3.64599990844727,
+          "n": 90,
+          "p95": 4.2649998664856
+        },
+        "moving": true,
+        "nrd": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 4.122432,
+          "n": 89,
+          "p95": 4.524896
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.617,
+          "n": 90,
+          "p95": 0.836
+        },
+        "frame_ms": {
+          "median": 8.042,
+          "n": 90,
+          "p95": 10.6
+        },
+        "history_resets": 90,
+        "lights": 64,
+        "main_gpu_ms": {
+          "median": 3.65700006484985,
+          "n": 90,
+          "p95": 4.17399978637695
+        },
+        "moving": true,
+        "nrd": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 4.141888,
+          "n": 90,
+          "p95": 4.872544
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.48,
+          "n": 90,
+          "p95": 0.567
+        },
+        "frame_ms": {
+          "median": 7.799,
+          "n": 90,
+          "p95": 10.064
+        },
+        "history_resets": 0,
+        "lights": 64,
+        "main_gpu_ms": {
+          "median": 3.71499991416931,
+          "n": 90,
+          "p95": 4.58900022506714
+        },
+        "moving": false,
+        "nrd": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 3.964736,
+          "n": 89,
+          "p95": 4.454304
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.367,
+          "n": 90,
+          "p95": 0.477
+        },
+        "frame_ms": {
+          "median": 4.434,
+          "n": 90,
+          "p95": 6.573
+        },
+        "history_resets": 0,
+        "lights": 16,
+        "main_gpu_ms": {
+          "median": 1.75699996948242,
+          "n": 90,
+          "p95": 2.35199999809265
+        },
+        "moving": false,
+        "nrd": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 2.561376,
+          "n": 89,
+          "p95": 3.20272
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.353,
+          "n": 90,
+          "p95": 0.72
+        },
+        "frame_ms": {
+          "median": 3.698,
+          "n": 90,
+          "p95": 5.922
+        },
+        "history_resets": 0,
+        "lights": 7,
+        "main_gpu_ms": {
+          "median": 1.41100001335144,
+          "n": 90,
+          "p95": 1.70700001716614
+        },
+        "moving": false,
+        "nrd": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 2.101952,
+          "n": 90,
+          "p95": 2.924128
+        }
+      }
+    ]
+  },
+  "matched_static_benchmark": [
+    {
+      "tag": "effects-bench-0",
+      "variant": "previous",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "26688a0d5fb8984edc4d188cd8131b142ff491180cad55d7d33748d693425665"
+      },
+      "results": {
+        "audit_shader_pack_sha256": "",
+        "detailed_materials": true,
+        "device": "NVIDIA GeForce RTX 3090",
+        "driver": "vulkan",
+        "leaf_backlighting": true,
+        "note": "Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch.",
+        "runs": [
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.538,
+              "n": 90,
+              "p95": 0.729
+            },
+            "frame_ms": {
+              "median": 4.41,
+              "n": 90,
+              "p95": 6.827
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.986000001430511,
+              "n": 90,
+              "p95": 1.56299996376038
+            },
+            "round": 0,
+            "rt_gpu_ms": {
+              "median": 0.8736,
+              "n": 89,
+              "p95": 0.939872
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 8.11,
+                "materials_ms": 2.249,
+                "placements_ms": 4.72,
+                "program_ms": 736.987,
+                "resources_ms": 798.45,
+                "textures_ms": 21.525,
+                "vertices_ms": 24.849
+              },
+              "cpu_update_ms": 0.254,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 17243,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          },
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.353,
+              "n": 90,
+              "p95": 0.815
+            },
+            "frame_ms": {
+              "median": 3.671,
+              "n": 90,
+              "p95": 6.615
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.889999985694885,
+              "n": 90,
+              "p95": 1.32500004768372
+            },
+            "round": 1,
+            "rt_gpu_ms": {
+              "median": 0.867456,
+              "n": 90,
+              "p95": 0.916544
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 8.11,
+                "materials_ms": 2.249,
+                "placements_ms": 4.72,
+                "program_ms": 736.987,
+                "resources_ms": 798.45,
+                "textures_ms": 21.525,
+                "vertices_ms": 24.849
+              },
+              "cpu_update_ms": 0.304,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 17243,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          }
+        ],
+        "terrain_cliffs": true,
+        "viewport": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "tag": "effects-bench-1",
+      "variant": "candidate-before-NRD-reset",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "c377b12baea351059e3fdb444321fa36ba5fd14aaadf51f9505bd44f46f96f7c"
+      },
+      "results": {
+        "audit_shader_pack_sha256": "",
+        "detailed_materials": true,
+        "device": "NVIDIA GeForce RTX 3090",
+        "driver": "vulkan",
+        "leaf_backlighting": true,
+        "note": "Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch.",
+        "runs": [
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.627,
+              "n": 90,
+              "p95": 0.982
+            },
+            "frame_ms": {
+              "median": 5.196,
+              "n": 90,
+              "p95": 8.727
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 1.19599997997284,
+              "n": 90,
+              "p95": 1.6360000371933
+            },
+            "round": 0,
+            "rt_gpu_ms": {
+              "median": 0.84432,
+              "n": 89,
+              "p95": 1.832544
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 5.622,
+                "materials_ms": 2.4,
+                "placements_ms": 4.736,
+                "program_ms": 2698.359,
+                "resources_ms": 2755.707,
+                "textures_ms": 20.145,
+                "vertices_ms": 24.435
+              },
+              "cpu_update_ms": 0.544,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "local_light_shadow_samples": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 18651,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          },
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.568,
+              "n": 90,
+              "p95": 0.89
+            },
+            "frame_ms": {
+              "median": 4.519,
+              "n": 90,
+              "p95": 7.048
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.894999980926514,
+              "n": 90,
+              "p95": 1.5789999961853
+            },
+            "round": 1,
+            "rt_gpu_ms": {
+              "median": 0.835744,
+              "n": 89,
+              "p95": 0.875968
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 5.622,
+                "materials_ms": 2.4,
+                "placements_ms": 4.736,
+                "program_ms": 2698.359,
+                "resources_ms": 2755.707,
+                "textures_ms": 20.145,
+                "vertices_ms": 24.435
+              },
+              "cpu_update_ms": 0.596,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "local_light_shadow_samples": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 18651,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          }
+        ],
+        "terrain_cliffs": true,
+        "viewport": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "tag": "effects-bench-2",
+      "variant": "candidate-before-NRD-reset",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/effects-candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "c377b12baea351059e3fdb444321fa36ba5fd14aaadf51f9505bd44f46f96f7c"
+      },
+      "results": {
+        "audit_shader_pack_sha256": "",
+        "detailed_materials": true,
+        "device": "NVIDIA GeForce RTX 3090",
+        "driver": "vulkan",
+        "leaf_backlighting": true,
+        "note": "Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch.",
+        "runs": [
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.297,
+              "n": 90,
+              "p95": 0.402
+            },
+            "frame_ms": {
+              "median": 2.776,
+              "n": 90,
+              "p95": 4.707
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.912000000476837,
+              "n": 90,
+              "p95": 1.41299998760223
+            },
+            "round": 0,
+            "rt_gpu_ms": {
+              "median": 0.840864,
+              "n": 89,
+              "p95": 0.897184
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 5.507,
+                "materials_ms": 2.319,
+                "placements_ms": 4.277,
+                "program_ms": 2298.001,
+                "resources_ms": 2355.421,
+                "textures_ms": 17.856,
+                "vertices_ms": 27.452
+              },
+              "cpu_update_ms": 0.123,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "local_light_shadow_samples": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 16502,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          },
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.304,
+              "n": 90,
+              "p95": 0.705
+            },
+            "frame_ms": {
+              "median": 2.998,
+              "n": 90,
+              "p95": 5.422
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.889999985694885,
+              "n": 90,
+              "p95": 1.48500001430511
+            },
+            "round": 1,
+            "rt_gpu_ms": {
+              "median": 0.839328,
+              "n": 90,
+              "p95": 0.878656
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 5.507,
+                "materials_ms": 2.319,
+                "placements_ms": 4.277,
+                "program_ms": 2298.001,
+                "resources_ms": 2355.421,
+                "textures_ms": 17.856,
+                "vertices_ms": 27.452
+              },
+              "cpu_update_ms": 0.145,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "local_light_shadow_samples": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 16502,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          }
+        ],
+        "terrain_cliffs": true,
+        "viewport": [
+          1280,
+          720
+        ]
+      }
+    },
+    {
+      "tag": "effects-bench-3",
+      "variant": "previous",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-windows-glitches-20261024/candidate/CursedLands-1.28.0-linux-x86_64/CursedLands.pck": "26688a0d5fb8984edc4d188cd8131b142ff491180cad55d7d33748d693425665"
+      },
+      "results": {
+        "audit_shader_pack_sha256": "",
+        "detailed_materials": true,
+        "device": "NVIDIA GeForce RTX 3090",
+        "driver": "vulkan",
+        "leaf_backlighting": true,
+        "note": "Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch.",
+        "runs": [
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.222,
+              "n": 90,
+              "p95": 0.27
+            },
+            "frame_ms": {
+              "median": 2.543,
+              "n": 90,
+              "p95": 3.973
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.913999974727631,
+              "n": 90,
+              "p95": 1.39900004863739
+            },
+            "round": 0,
+            "rt_gpu_ms": {
+              "median": 0.87552,
+              "n": 90,
+              "p95": 1.186464
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 5.898,
+                "materials_ms": 1.944,
+                "placements_ms": 4.058,
+                "program_ms": 658.643,
+                "resources_ms": 713.455,
+                "textures_ms": 18.242,
+                "vertices_ms": 24.662
+              },
+              "cpu_update_ms": 0.119,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 16269,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          },
+          {
+            "case": "path-2-low",
+            "controller_cpu_ms": {
+              "median": 0.228,
+              "n": 90,
+              "p95": 0.281
+            },
+            "frame_ms": {
+              "median": 2.73,
+              "n": 90,
+              "p95": 4.426
+            },
+            "gpu_stages_ms": {},
+            "main_gpu_ms": {
+              "median": 0.897000014781952,
+              "n": 90,
+              "p95": 1.29900002479553
+            },
+            "round": 1,
+            "rt_gpu_ms": {
+              "median": 0.870272,
+              "n": 89,
+              "p95": 0.911264
+            },
+            "stats": {
+              "accumulation_frames": 8.0,
+              "active": true,
+              "adaptive_changes": 0,
+              "adaptive_gpu_ms": 0.0,
+              "adaptive_scale": 1.0,
+              "adaptive_target_fps": 0,
+              "build_timings": {
+                "extra_ms": 5.898,
+                "materials_ms": 1.944,
+                "placements_ms": 4.058,
+                "program_ms": 658.643,
+                "resources_ms": 713.455,
+                "textures_ms": 18.242,
+                "vertices_ms": 24.662
+              },
+              "cpu_update_ms": 0.125,
+              "display_size": [
+                1280,
+                720
+              ],
+              "emissive_candidates": 0,
+              "emissive_triangles": 0,
+              "geometries": 2040,
+              "gi_samples": 0,
+              "history_handoffs": 0,
+              "history_limit": 8.0,
+              "history_matched_surfaces": 0,
+              "history_reused": true,
+              "instances": 2171,
+              "light_history_limited": false,
+              "lights": 1,
+              "path_bounces": 2,
+              "path_samples": 1,
+              "path_tracing": true,
+              "program_cache_hits": 0,
+              "program_compilations": 1,
+              "quality": 0,
+              "rebuilding": false,
+              "render_scale": 1.0,
+              "render_size": [
+                1280,
+                720
+              ],
+              "shadow_samples": 0,
+              "size": [
+                640,
+                360
+              ],
+              "snapshot_generation": 1,
+              "supported": true,
+              "terrain_material_build_us": 16269,
+              "terrain_material_bytes": 786792,
+              "terrain_material_triangles": 56145,
+              "trace_render_scale": 1.0,
+              "triangles": 150449,
+              "updated_instances": 0,
+              "updated_poses": 0,
+              "window_resolution_reference": false
+            }
+          }
+        ],
+        "terrain_cliffs": true,
+        "viewport": [
+          1280,
+          720
+        ]
+      }
+    }
+  ],
+  "validation_environment": "GPU Lab automatic GPU assignment. Linux Vulkan and standard Windows executable under Wine/Proton VKD3D. Genuine DLSS Performance SDK execution; native Windows presentation and FG are not part of this local test.",
+  "fixture_correction": "The old synthetic wind guide put a lighting alpha of 1 in the packed material channel. The corrected fixture supplies roughness=1, metalness=0 (code 63); both APIs then pass. The failed attempt is retained at checks/effects-final-linux-path_trace_wind_receivers.",
+  "native_sha256": {
+    "game/src/native/bin/libpath_nrd.so": "78cbbc0b8db8a9c73aeeee38969c8cbb21e5af97f5c0cfe55b9319a2a23f17e1",
+    "game/src/native/bin/libpath_nrd.dll": "22a237dbf7222aadb5b441b99883c7c9a136b4d433f1828b3b37486518119139"
+  }
+}

@@ -36,9 +36,10 @@ func run() -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,1,1,72))
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",1.0)
-	for variation in [[640,1.0],[960,1.0],[1280,1.0],[640,-1.0],[960,-1.0],[1280,-1.0],[640,1.0,true],[640,-1.0,true]]:
+	for variation in [[640,1.0],[960,1.0],[1280,1.0],[640,-1.0],[960,-1.0],[1280,-1.0],[640,1.0,true],[640,-1.0,true],[640,1.0,true,true]]:
 		var width: int=variation[0]
 		var holes: bool=variation.size()>2
+		var sparse: bool=variation.size()>3
 		material.set_shader_parameter("normal_sign",variation[1])
 		var target:=Vector2i(width,width*720/1280)
 		for edge: bool in [false,true]:
@@ -49,7 +50,12 @@ func run() -> void:
 				var wx: float=((x+0.5)/target.x*2.0-1.0)*extent
 				var depth:=12.0+wx*n.x/n.z-(2.0 if edge and x>=target.x/2 else 0.0)
 				if holes and x%16 in [7,8]:depth=0.0
-				for y in target.y:guide_image.set_pixel(x,y,Color(n.x,n.y,n.z,maxf(depth,0.0)))
+				for y in target.y:
+					var z:=depth
+					if sparse:
+						z=12.0+wx*n.x/n.z-(2.0 if edge and x>=target.x/2 else 0.0)
+						if x%4!=0 or y%4!=0:z=0.0
+					guide_image.set_pixel(x,y,Color(n.x,n.y,n.z,maxf(z,0.0)))
 			var guide_texture:=ImageTexture.create_from_image(guide_image);var data_texture:=ImageTexture.create_from_image(data_image)
 			RenderingServer.global_shader_parameter_set(&"ei_rt_guide",guide_texture)
 			for key in [&"ei_rt_gi",&"ei_rt_shadow0",&"ei_rt_shadow1"]:RenderingServer.global_shader_parameter_set(key,data_texture)
@@ -63,9 +69,9 @@ func run() -> void:
 					if green==not(edge and x>=640):correct+=1
 					count+=1
 			var fraction:=float(correct)/count
-			results.append({"width":width,"normal_sign":variation[1],"depth_edge":edge,"holes":holes,"correct_fraction":fraction})
-			check(fraction>0.995,"steep receiver at %d pixels, normal sign %s, depth discontinuity %s, holes %s: %.4f"%[width,variation[1],edge,holes,fraction])
-			capture.save_png(out.path_join("receiver-%d-%s-%s-%s.png"%[width,variation[1],edge,holes]))
+			results.append({"width":width,"normal_sign":variation[1],"depth_edge":edge,"holes":holes,"sparse":sparse,"correct_fraction":fraction})
+			check(fraction>0.995,"steep receiver at %d pixels, normal sign %s, depth discontinuity %s, holes %s, sparse %s: %.4f"%[width,variation[1],edge,holes,sparse,fraction])
+			capture.save_png(out.path_join("receiver-%d-%s-%s-%s-%s.png"%[width,variation[1],edge,holes,sparse]))
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
 	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:RenderingServer.global_shader_parameter_set(key,null)
 	FileAccess.open(out.path_join("path-receivers.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"results":results},"\t"))

@@ -74,3 +74,13 @@ tested behaviors and remaining gaps. Native Windows driver/frame-generation,
 Android, internet co-op and full campaign playthroughs remain separate qualification
 work; headless assertions do not replace them. The supplied load-crash path has
 its own [Windows/Wine D3D12 repeated-load protocol](validation/load-crashes-cursor-2026-10-25/README.md).
+
+Temporal character motion is registered in both runners as `unit_temporal_motion`.
+The asset-free engine camera contract is registered with Python unittest discovery:
+
+```sh
+python3 -m unittest discover -s tools/tests -p test_dlss_camera_contract.py -v
+```
+
+This checks the committed patch stack against independent projection math and its
+unfixed negative control. It does not replace native Windows DLSS-G testing.

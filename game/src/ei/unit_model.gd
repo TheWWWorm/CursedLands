@@ -35,6 +35,7 @@ const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
 const WispGlow = preload("res://src/ei/wisp_glow.gd")
 const Mouth = preload("res://src/ei/dialogue_mouth.gd")
+const VIEW_MESH_VARIANTS_META := &"first_person_mesh_variants"
 
 ## Remake option gfx_sharp_units ("Sharp character textures"; default on,
 ## off under "Original look"): the unit texture fetch of every unit material
@@ -136,6 +137,7 @@ vec4 ei_unit_wound(vec4 base, vec4 wound) {
 ## after max(ambient, sun, point lights), before the shadow (TLP 1000d910).
 const UNIT_SHADER := """
 shader_type spatial;
+#define EI_UNIT_CUTOUT
 #define EI_FIGURE_OPTIONS
 render_mode cull_back, ambient_light_disabled, alpha_to_coverage;
 #define EI_FIGURE_LIGHT
@@ -1350,7 +1352,7 @@ static func _material(ui_preview: bool, soft_alpha := false) -> Material:
 
 
 static func _soft_alpha(code: String) -> String:
-	return code.replace(", alpha_to_coverage", "").replace("\tALPHA_SCISSOR_THRESHOLD = 0.5;\n", "") \
+	return code.replace("#define EI_UNIT_CUTOUT\n", "").replace(", alpha_to_coverage", "").replace("\tALPHA_SCISSOR_THRESHOLD = 0.5;\n", "") \
 		.replace("\tALPHA_ANTIALIASING_EDGE = 0.3;\n", "") \
 		.replace("\tALPHA_TEXTURE_COORDINATE = UV * vec2(textureSize(albedo_tex, 0));\n", "")
 
@@ -1563,6 +1565,10 @@ func set_first_person_view(on: bool) -> void:
 		for i in before.size():
 			if before[i] != after[i]: _view_rim.append(after[i] - rest)
 	if _view_body_closed == null: return
+	# Both are immutable presentation variants of the same surface. Keep them
+	# in a ray scene together so changing camera mode only switches masks;
+	# otherwise the restored torso loses PT until the world finishes rebuilding.
+	_view_torso.set_meta(VIEW_MESH_VARIANTS_META,[_view_body_original,_view_body_closed])
 	_view_torso.mesh = _view_body_closed if on else _view_body_original
 	if on and _view_meshes.is_empty():
 		# Move renderer instances only. Materials can be shared by heads,
@@ -1710,6 +1716,14 @@ func _set_first_person_shift(shift: Vector3) -> void:
 			var presented := mesh.global_transform
 			presented.origin += shift
 			RenderingServer.instance_set_transform(mesh.get_instance(), presented)
+
+
+## Ray-traced camera receivers must occupy the same place as their raster
+## instances. The complete shadow/reflection copies keep the authored pose.
+func presented_mesh_transform(mesh: MeshInstance3D) -> Transform3D:
+	var presented := mesh.global_transform
+	if _view_active and _view_meshes.has(mesh): presented.origin += _view_shift
+	return presented
 
 
 ## A stable eye anchor from the authored resting pose. Reading its tracks

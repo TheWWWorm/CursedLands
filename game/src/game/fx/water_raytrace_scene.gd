@@ -22,6 +22,8 @@ var _nodes := {}
 var _mesh_roots := {}
 var _unit_roots := {}
 var _groups := {}
+var _view_models := {}
+var _view_offsets := {}
 var _morph_geometries: Array[int] = []
 var _terrain: EITerrain
 var _plane := 0.0
@@ -72,7 +74,7 @@ func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
 			if root is Node3D and world.is_ancestor_of(root) and root.get_world_3d()==world.get_world_3d() and not roots.has(root):
 				roots.append(root)
 	for root: Node3D in roots:
-		if not is_instance_valid(root): continue
+		if not is_instance_valid(root) or not root.is_inside_tree(): continue
 		var dynamic := root is GameUnit or root.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
 		var radius := RADIUS+24.0
 		if dynamic and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
@@ -130,8 +132,14 @@ static func surface_relief(material: Material, land: bool) -> float:
 	var profile: Variant = material.get_shader_parameter("surface_profile")
 	return clampf(profile.w,0.0,1.0) if profile is Vector4 and GameData.option("gfx_materials")>0 else 0.0
 
+func _mesh_variants(mesh: MeshInstance3D) -> Array:
+	var variants: Array=mesh.get_meta(EIUnitModel.VIEW_MESH_VARIANTS_META,[])
+	# An equipment replacement is still a real topology change. Only the two
+	# registered, immutable camera meshes can share this retained membership.
+	return variants if variants.has(mesh.mesh) else [mesh.mesh]
+
 func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
-	var version := [mesh.mesh.get_instance_id()]
+	var version := [_mesh_variants(mesh).map(func(source: Mesh):return source.get_instance_id())]
 	for surface in mesh.mesh.get_surface_count():
 		var material := mesh.get_active_material(surface)
 		var key := material.get_instance_id() if material else 0
@@ -154,7 +162,7 @@ func topology_changed() -> bool:
 func discard_geometry() -> void:
 	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
-	_mesh_roots.clear();_groups.clear();_morph_geometries.clear()
+	_mesh_roots.clear();_groups.clear();_view_models.clear();_view_offsets.clear();_morph_geometries.clear()
 	_kernel=null;_watching=false;_cursor=0
 	_ground=Ground.new()
 
@@ -167,7 +175,9 @@ func step(budget_us := 6000) -> bool:
 	while _cursor < pending.size() and not failed:
 		var entry: Dictionary = pending[_cursor]; _cursor += 1
 		var node: Node3D = entry.node.get_ref()
-		if is_instance_valid(node):
+		# Gathering spans frames. Equipment/body parts can leave the tree or
+		# lose their mesh before this queued entry reaches the packing budget.
+		if is_instance_valid(node) and node.is_inside_tree() and (entry.land or (node as MeshInstance3D).mesh != null):
 			if entry.land:
 				var arrays: Array = _ground.arrays(node.deformation_arrays(),node.get_instance_id())
 				var geometry := _append(arrays,node.global_transform,null,true)
@@ -182,31 +192,35 @@ func step(budget_us := 6000) -> bool:
 				_add_instance(node,geometry,Transform3D.IDENTITY)
 			else:
 				var mesh := node as MeshInstance3D
-				for surface in mesh.mesh.get_surface_count():
-					# Only ArrayMesh exposes this query to scripts. PrimitiveMesh
-					# uses triangles except PointMesh, which has no ray surface.
-					if mesh.mesh is ArrayMesh:
-						if mesh.mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
-					elif not mesh.mesh is PrimitiveMesh or mesh.mesh is PointMesh: continue
-					var material := mesh.get_active_material(surface)
-					var key := "%s:%s:%s"%[mesh.mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
-					var morph: bool = mesh.get_blend_shape_count() > 0
-					if morph: key += ":"+str(node.get_instance_id())
-					var geometry: int = _mesh_cache.get(key,-1)
-					if geometry < 0:
-						var source: Dictionary=_sources.surface(mesh.mesh,surface)
-						geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
-						if geometry >= 0:
-							_mesh_cache[key] = geometry
-							if morph:
-								_morph_geometries.append(geometry)
-								geometries[geometry].morph = {"node":weakref(node),"mesh":mesh.mesh,"surface":surface,
-									"arrays":source.arrays,"shapes":source.shapes,"weights":[]}
-					_add_instance(node,geometry,node.global_transform,surface)
+				for source_mesh: Mesh in _mesh_variants(mesh):
+					_pack_mesh(mesh,source_mesh)
 		if Time.get_ticks_usec() >= deadline: break
 	return failed or _cursor >= pending.size()
 
-func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface := -1) -> void:
+func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
+	for surface in source_mesh.get_surface_count():
+		# Only ArrayMesh exposes this query to scripts. PrimitiveMesh
+		# uses triangles except PointMesh, which has no ray surface.
+		if source_mesh is ArrayMesh:
+			if source_mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
+		elif not source_mesh is PrimitiveMesh or source_mesh is PointMesh: continue
+		var material := mesh.get_active_material(surface)
+		var key := "%s:%s:%s"%[source_mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
+		var morph: bool = source_mesh is ArrayMesh and source_mesh.get_blend_shape_count() > 0
+		if morph: key += ":"+str(mesh.get_instance_id())
+		var geometry: int = _mesh_cache.get(key,-1)
+		if geometry < 0:
+			var source: Dictionary=_sources.surface(source_mesh,surface)
+			geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
+			if geometry >= 0:
+				_mesh_cache[key] = geometry
+				if morph:
+					_morph_geometries.append(geometry)
+					geometries[geometry].morph = {"node":weakref(mesh),"mesh":source_mesh,"surface":surface,
+						"arrays":source.arrays,"shapes":source.shapes,"weights":[]}
+		_add_instance(mesh,geometry,mesh.global_transform,surface,source_mesh)
+
+func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface := -1, source_mesh: Mesh = null) -> void:
 	if geometry < 0: return
 	_watching = false
 	if instances.size() >= MAX_INSTANCES: failed = true; return
@@ -214,7 +228,11 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 	var key := root.get_instance_id()
 	if not _groups.has(key): _groups[key] = {"node":weakref(root),"indices":[],"visible":-1}
 	_groups[key].indices.append(instances.size())
-	instances.append({"geometry":geometry,"node":weakref(node),"mesh":node.mesh if node is MeshInstance3D else null,
+	if root is GameUnit and is_instance_valid(root.model) and root.model.is_ancestor_of(node):
+		var model_key: int = root.model.get_instance_id()
+		if not _view_models.has(model_key): _view_models[model_key] = {"model":weakref(root.model),"indices":[]}
+		_view_models[model_key].indices.append(instances.size())
+	instances.append({"geometry":geometry,"node":weakref(node),"mesh":source_mesh if source_mesh else node.mesh if node is MeshInstance3D else null,
 		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
 
 func history_matches(previous: RefCounted) -> PackedInt32Array:
@@ -223,17 +241,20 @@ func history_matches(previous: RefCounted) -> PackedInt32Array:
 	var old := {}
 	for i in previous.instances.size():
 		var entry: Dictionary=previous.instances[i];var node: Node3D=entry.node.get_ref()
-		if is_instance_valid(node):old["%d:%d"%[node.get_instance_id(),entry.surface]]=i
+		if is_instance_valid(node):old[_history_key(entry,node)]=i
 	for i in instances.size():
 		var entry: Dictionary=instances[i];var node: Node3D=entry.node.get_ref()
 		if not is_instance_valid(node) or geometries[entry.geometry].has("morph"):continue
-		var key := "%d:%d"%[node.get_instance_id(),entry.surface]
+		var key := _history_key(entry,node)
 		if not old.has(key):continue
 		var before: Dictionary=previous.instances[old[key]]
 		if entry.mesh!=before.mesh:continue
 		if _nodes.get(node.get_instance_id())!=previous._nodes.get(node.get_instance_id()):continue
 		matches[i]=old[key]
 	return matches
+
+func _history_key(entry: Dictionary,node: Node3D) -> String:
+	return "%d:%d:%d"%[node.get_instance_id(),entry.surface,entry.mesh.get_instance_id() if entry.mesh else 0]
 
 func _layer(texture: Texture2D, atlas := -1) -> int:
 	var key := "terrain:%d"%atlas if atlas >= 0 else str(texture.get_instance_id()) if texture else "white"
@@ -342,6 +363,50 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 
 ## Plain values only: the render thread never dereferences a scene node.
 func _instance_updates(force: bool) -> Array:
+	# First-person clearance is a renderer-only shift, absent from Node3D's
+	# transform and the native tracker. Finish the pose after DirectPose, then
+	# apply that presentation only to the local camera's visible body. Water
+	# reflections and full-body shadow/GI copies retain their authored pose.
+	var presented := {}
+	if lighting_camera_mask >= 0:
+		for group: Dictionary in _view_models.values():
+			var model: EIUnitModel = group.model.get_ref()
+			if not is_instance_valid(model) or not model.is_inside_tree() or not model._view_active: continue
+			model._align_first_person_body()
+			for i: int in group.indices:
+				var entry: Dictionary = instances[i]
+				var mesh: MeshInstance3D = entry.node.get_ref()
+				if not is_instance_valid(mesh) or not mesh.is_inside_tree() or not model._view_meshes.has(mesh): continue
+				var transform := model.presented_mesh_transform(mesh)
+				presented[i] = {"before":entry.transform,"mask":entry.mask,
+					"transform":transform,"lighting_offset":mesh.global_transform.origin-transform.origin}
+	var changes := _tracked_instance_updates(force)
+	if presented.is_empty() and _view_offsets.is_empty(): return changes
+	var changed := {}
+	for change: Dictionary in changes: changed[change.index] = change
+	for i: int in _view_offsets:
+		if presented.has(i): continue
+		var entry: Dictionary = instances[i]
+		var mesh: MeshInstance3D = entry.node.get_ref()
+		# The native tracker caches the authored transform, so an idle body
+		# need not emit a transform change when its renderer-only shift ends.
+		if is_instance_valid(mesh) and mesh.is_inside_tree():entry.transform=mesh.global_transform
+		entry.lighting_offset = Vector3.ZERO
+		changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask,"lighting_offset":Vector3.ZERO}
+	_view_offsets.clear()
+	for i: int in presented:
+		var view: Dictionary = presented[i]
+		var entry: Dictionary = instances[i]
+		var previous_offset: Vector3 = entry.get("lighting_offset",Vector3.ZERO)
+		entry.transform = view.transform
+		entry.lighting_offset = view.lighting_offset
+		_view_offsets[i] = true
+		if force or entry.transform != view.before or entry.mask != view.mask or previous_offset != view.lighting_offset:
+			changed[i] = {"index":i,"transform":entry.transform,"mask":entry.mask,"lighting_offset":view.lighting_offset}
+		else: changed.erase(i)
+	return changed.values()
+
+func _tracked_instance_updates(force: bool) -> Array:
 	if _kernel != null and (lighting_camera_mask < 0 or _kernel.has_method("lighting_updates")):
 		if not _watching:
 			_kernel.clear_instances()
@@ -360,14 +425,14 @@ func _instance_updates(force: bool) -> Array:
 	var transforms := []
 	for group: Dictionary in _groups.values():
 		var root: Node3D = group.node.get_ref()
-		var visible := is_instance_valid(root) and root.is_visible_in_tree()
+		var visible := is_instance_valid(root) and root.is_inside_tree() and root.is_visible_in_tree()
 		if root is GameUnit and root.is_invisible(): visible = false
 		if not force and not visible and group.visible == 0: continue
 		group.visible = 1 if visible else 0
 		for i: int in group.indices:
 			var entry: Dictionary = instances[i]; var node: Node3D = entry.node.get_ref()
 			var mask := 0; var transform: Transform3D = entry.transform
-			if visible and is_instance_valid(node) and (entry.terrain or node.mesh == entry.mesh) and node.is_visible_in_tree():
+			if visible and is_instance_valid(node) and node.is_inside_tree() and (entry.terrain or node.mesh == entry.mesh) and node.is_visible_in_tree():
 				mask = 255
 				if not entry.terrain: transform = node.global_transform
 				if node is MeshInstance3D:
