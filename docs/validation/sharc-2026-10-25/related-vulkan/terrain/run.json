@@ -1,0 +1,86 @@
+{
+  "exit_code": 0,
+  "pid": 1830398,
+  "wall_seconds": 13.356817909021629,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+  ],
+  "gpu_uuids_observed": [
+    "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.07692953798687086,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "terrain",
+  "checks": 69,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/related-vulkan/fixtures/path_trace_terrain.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1830398,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/related-profile/terrain/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-terrain.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "6b52cbeba3d1f888ab1873dda288e7f0ada971b929a46c942a908c39a7ad0b06",
+    "gpu.jsonl": "7d07ad888890af27d99d9adbfd0f81c7943d815e4a0e57de06a31558ae59eb19",
+    "path-terrain.json": "eae12a8c80df80daa03dfc3553b6884583aae36f0e779e065d7005376933877e",
+    "qualification-runtime.json": "0ce234eed55fc61086d76e52557af5ad60a71d9bb9fbf39349c3ee0399c1ab96",
+    "run.log": "4f2f427ae56332102bad4a9b0d887428dab28af0a561162af6a8fead5a2976d2",
+    "scene-device-results.json": "f4e03be2c06bd62d674d9cb89344df928b8aafb4681b9b94ccefcb69ca1e3ed1"
+  }
+}

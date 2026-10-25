@@ -1,0 +1,26 @@
+PASS bundled cache is credited while the option is Off
+PASS export includes the complete SHaRC license
+PASS SHaRC-capable hardware PT and fp16 storage
+PASS build enclosed diffuse room with coloured emission
+PASS Off allocates no cache resources
+PASS SHaRC update/resolve/query path is active
+PASS SHaRC output uses the existing native NRD denoiser
+PASS sparse update rays populate the actual GPU cache
+PASS main paths terminate on successful GPU cache queries: [30162, 1179877, 27521, 1157119]
+PASS stationary cache persists across frames
+PASS cached transport preserves coloured light without double-counting: (1.475, 0.0, 0.0, 29.9531) / (1.4678, 0.0, 0.0, 21.9962)
+PASS cache memory has a fixed 44 MiB bound
+PASS SHaRC retains stable output handles
+PASS odd-sized resize keeps all three cache passes and NRD usable
+PASS moving a blocker invalidates cached light
+PASS identical transforms do not repeatedly clear the cache
+PASS extinguished emitter leaves no cached or denoised light
+PASS Still scene releases cache and uses exact bounded PT
+PASS Responsive mode recreates a clean cache
+PASS live Off returns to ordinary PT
+PASS partial cache allocation failure falls back to working PT
+PASS partial failure frees resources and does not retry every frame
+PASS failed cache update rebinds and presents an ordinary PT/NRD frame
+PASS failed update frees the initialized cache and suppresses retries
+PASS teardown releases cache, descriptors and separate shader tables
+SCENE_RT_DEVICE 25 checks 0 failures

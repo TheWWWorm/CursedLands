@@ -1385,6 +1385,30 @@
       "mode": "headless",
       "args": [],
       "min_checks": 1403
+    },
+    {
+      "id": "path_trace_sharc",
+      "script": "tools/tests/path_trace_sharc.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "SHaRC GPU cache, NRD, invalidation, resize, fallback and resource lifetime",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 25
+    },
+    {
+      "id": "path_trace_sharc_live",
+      "script": "tools/tests/path_trace_sharc_live.gd",
+      "summary": "SHARC_LIVE",
+      "contract": "Optional SHaRC cache in live campaign terrain, local lights, settings switches, travel and NRD.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 18
     }
   ]
 }

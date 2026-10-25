@@ -1,0 +1,34 @@
+{
+  "exit": 0,
+  "errors": [],
+  "summary": [
+    "SCENE_RT_DEVICE 26 checks 0 failures"
+  ],
+  "seconds": 13.084375203005038,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/related-path_trace_nrd_device/fixtures/path_trace_nrd_device.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/related-path_trace_nrd_device"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "0bf92f6519aff75ec8bac0f64038320c7c395945bf2e770cad22360a325ca575"
+  },
+  "fixture_sha256": "f7c46a2745f47bd19857979cc1fc667d15c0ef432567303bd88650a7017791e4"
+}

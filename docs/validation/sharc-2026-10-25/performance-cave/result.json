@@ -1,0 +1,35 @@
+{
+  "exit": 0,
+  "errors": [],
+  "summary": [
+    "SHARC_PERFORMANCE 26 checks 0 failures"
+  ],
+  "seconds": 58.515872112999205,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/performance-cave/fixtures/path_trace_sharc_performance.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/performance-cave",
+    "--sharc-cave"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "0bf92f6519aff75ec8bac0f64038320c7c395945bf2e770cad22360a325ca575"
+  },
+  "fixture_sha256": "520c51c059bf6f6f3335477692da7f47f7fb5bfa5b9c0a55ca1161a1e1731aaa"
+}

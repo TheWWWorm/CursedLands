@@ -98,7 +98,7 @@ func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
-	var mode := "%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation")]
+	var mode := "%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc")]
 	if mode != _mode or terrain != _terrain:
 		if terrain != _terrain or path_mode!=_path_mode: _release()
 		_path_mode=path_mode
@@ -237,6 +237,10 @@ func _process(dt: float) -> void:
 	stats["program_cache_hits"]=_programs.hits
 	if device!=null:stats["build_timings"]=device.build_timings.duplicate()
 	if device is PathDevice:
+		stats["sharc_active"]=device.sharc.active
+		stats["sharc_failed"]=device.sharc_failed
+		stats["sharc_frames"]=device.sharc.frames
+		stats["sharc_resets"]=device.sharc.resets
 		stats["history_handoffs"]=device.history_handoffs
 		stats["history_matched_surfaces"]=device.history_matched_surfaces
 	_settle_preparation(size)
@@ -315,7 +319,9 @@ func _queue_candidate() -> void:
 	_pending_device=PathDevice.new() if _path_mode else Device.new()
 	_pending_device.programs=_programs
 	_pending_device.incremental_build=device!=null
-	if _path_mode:_pending_device.defer_nrd=device is PathDevice and device.nrd_active
+	if _path_mode:
+		_pending_device.defer_nrd=device is PathDevice and device.nrd_active
+		_pending_device.sharc_enabled=GameData.option("pt_sharc")>0
 	var id := _pending_device.get_instance_id()
 	_pending_device.prepared.connect(_prepared.bind(id))
 	_pending_device.rendered.connect(_rendered.bind(id))
@@ -550,7 +556,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		data.append_array(clouds)
 		# Weather changes every receiver; local flutter only needs a fast
 		# response where those lights contribute to the visible surface.
-		data.append_array(PackedFloat32Array([mini(_lights.size(),PATH_LIGHT_LIMIT),float(gentle_change and weather_fading),0,1]))
+		data.append_array(PackedFloat32Array([mini(_lights.size(),PATH_LIGHT_LIMIT),float(gentle_change and weather_fading),GameData.option("pt_sharc"),1]))
 		data.append_array(local_positions);data.append_array(local_colours)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000

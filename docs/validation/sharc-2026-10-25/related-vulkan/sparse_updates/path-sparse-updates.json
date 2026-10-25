@@ -1,0 +1,160 @@
+{
+	"checks": 44,
+	"driver": "vulkan",
+	"failures": [],
+	"rows": [
+		{
+			"label": "separated",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 32,
+			"offset_calls": 2,
+			"ok": true,
+			"tlas_builds": 1
+		},
+		{
+			"label": "stop",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "idle",
+			"motion_bytes": 0,
+			"motion_calls": 0,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "lighting_only",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 32,
+			"offset_calls": 2,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "duplicate",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "hidden_move",
+			"motion_bytes": 288,
+			"motion_calls": 3,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "reveal",
+			"motion_bytes": 96,
+			"motion_calls": 1,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 1
+		},
+		{
+			"label": "hide",
+			"motion_bytes": 96,
+			"motion_calls": 1,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 1
+		},
+		{
+			"label": "settle",
+			"motion_bytes": 96,
+			"motion_calls": 1,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "dense",
+			"motion_bytes": 12288,
+			"motion_calls": 1,
+			"offset_bytes": 2048,
+			"offset_calls": 1,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "dense_stop",
+			"motion_bytes": 12288,
+			"motion_calls": 1,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "fragmented",
+			"motion_bytes": 384768,
+			"motion_calls": 8,
+			"offset_bytes": 16,
+			"offset_calls": 1,
+			"ok": true,
+			"tlas_builds": 1
+		},
+		{
+			"label": "fragmented_stop",
+			"motion_bytes": 384768,
+			"motion_calls": 8,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "deformation",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 1
+		},
+		{
+			"label": "handoff",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 1
+		},
+		{
+			"label": "handoff_stop",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": true,
+			"tlas_builds": 0
+		},
+		{
+			"label": "failed_second_range",
+			"motion_bytes": 192,
+			"motion_calls": 2,
+			"offset_bytes": 0,
+			"offset_calls": 0,
+			"ok": false,
+			"tlas_builds": 0
+		}
+	]
+}

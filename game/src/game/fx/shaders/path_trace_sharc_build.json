@@ -1,0 +1,34 @@
+{
+  "sdk_revision": "4e21b585c33c83d723ca9a1e11bbb1090d145793",
+  "sdk_files": {
+    "include/SharcCommon.h": "097e5238a3c3a3360d1e8685b56189a75b5c663dbdcc74383d5384c61b936a76",
+    "include/SharcTypes.h": "cde3f200e4e84f029968dffd9eede5228f2ae0b0bbc166d2babb1aa88dc044b3",
+    "include/HashGridCommon.h": "74585a8af1eee32c90c9f56ef0db5d50ca8929ac4d1fbc093ea8664957b02334",
+    "include/HashGridTypes.h": "f5a04ff7f7a511cb8ccd7150fdf39e689f10afa4c0c355982ef52f6859e9340f",
+    "License.md": "5575ad921bfe6027dc830887ff51ceb4097e31c2d538b6932cd4bbdf5c1899a9"
+  },
+  "sources": {
+    "path_trace.hlsl": "141e30e1a8b9564e0a92815a3bc30442c1cb4dd1b22aa3163d3d378c7379f54d",
+    "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
+    "path_trace_sharc_resolve.hlsl": "a022bedb389a4bce8c4d53b77ffa88ca82ea50445ead8dc3f15b06a8173f533d",
+    "builder": "f7d23ae8e397038aace9e043d2b2592032ba62b5d2b2a16d7f4b93db4b9a585d"
+  },
+  "files": {
+    "path_trace_raygen_sharc.dxil": "9e22864fad6b49da9de6fb4eb06e9df2edaf30706869553a0a9e20ed10a9119b",
+    "path_trace_raygen_sharc.spv": "d1c11b2cf889b42fbbdb8ff73aec5c27ee65ace7501eee93532fb09a6baa4d20",
+    "path_trace_raygen_sharc_no_emitters.dxil": "f57443ee7ec7fc101f3d9c5bf77734e7056fae3dda94151a13b4ae5067d2093f",
+    "path_trace_raygen_sharc_no_emitters.spv": "6cc7e13139178b94c63ff87e596b072b13ff2e7a3ebea0dbcfff940a8ec52e9f",
+    "path_trace_raygen_sharc_deep.dxil": "6d2bc822bd22182f5b935940f6bad44c301285584dbb18e54c927f6c4c41800d",
+    "path_trace_raygen_sharc_deep.spv": "baf3f6714103bc9adde1487926fde19f1a8bbb4d70c9ddcc98f3212a39af218f",
+    "path_trace_raygen_sharc_deep_no_emitters.dxil": "04fd4b142362ddcbe0374f67d59b7a86cf8bcfed69bac86b599ef64d277380df",
+    "path_trace_raygen_sharc_deep_no_emitters.spv": "df813fe3f44763a43ac99cec4a0c582fe67e088fae352f51abe661d6e767c48f",
+    "path_trace_raygen_sharc_update.dxil": "60a8ecd2af8bf41de16375589b7fd7013cff2375244f597d4c3cd3fe0bc3725b",
+    "path_trace_raygen_sharc_update.spv": "a842ddaef8f1239ce4cb67a424f67a89312e89f85f2a932f657ee97a0222cee7",
+    "path_trace_raygen_sharc_update_no_emitters.dxil": "b84377ed1600477d8d1c8256aed5736e7404389362bf65387f822a370d3bdd30",
+    "path_trace_raygen_sharc_update_no_emitters.spv": "12465cde976853f7cf315ae49387e99fd3679f7687010c339555436ce759521c",
+    "path_trace_sharc_resolve.spv": "85d08f9074bcad5f85b9104e78901bffca1e01ed583edb8dca516c82e6d410ff"
+  },
+  "notice_sha256": "f432a930684eeab486fa6b062f6ef9ad77e24fff605c6118aa70ba5af99e3869",
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)"
+}

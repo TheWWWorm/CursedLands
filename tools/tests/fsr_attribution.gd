@@ -27,11 +27,13 @@ func run() -> void:
 	check(packaged_amd == (OS.get_name() == "Windows"), "AMD SDK attribution matches platform contents")
 	if packaged_dlss:
 		check(ProjectSettings.get_setting("application/boot_splash/image") == "res://assets/branding/splash-graphics.png", "native boot uses combined attribution splash")
-	for flag in [GraphicsAttribution.NVIDIA_FLAG,GraphicsAttribution.NRD_FLAG,GraphicsAttribution.AMD_FLAG]: ProjectSettings.set_setting(flag,false)
+	for flag in [GraphicsAttribution.NVIDIA_FLAG,GraphicsAttribution.NRD_FLAG,GraphicsAttribution.SHARC_FLAG,GraphicsAttribution.AMD_FLAG]: ProjectSettings.set_setting(flag,false)
 	check(GraphicsAttribution.credits_bbcode().is_empty(), "unbundled SDKs have no credits claim")
 	ProjectSettings.set_setting(GraphicsAttribution.NRD_FLAG,true)
 	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NRD_CREDIT)), "NRD-only package has credits")
 	check(not GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NVIDIA_CREDIT)), "NRD-only package does not claim DLSS")
+	ProjectSettings.set_setting(GraphicsAttribution.SHARC_FLAG,true)
+	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.SHARC_CREDIT)), "SHaRC package has explicit attribution")
 	ProjectSettings.set_setting(GraphicsAttribution.NVIDIA_FLAG,packaged_dlss)
 	ProjectSettings.set_setting(GraphicsAttribution.AMD_FLAG,packaged_amd)
 	GameData.options.rtx_upscaling=0;GameData.options.pt_mode=0

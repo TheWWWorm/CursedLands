@@ -49,6 +49,15 @@ bounded sparse uploads in ABBA order, with 40 warm-up and 100 measured updates
 per block. It measures render-thread packing/upload time, not whole-game FPS;
 see [the RTXPT 1.9 comparison](integrations/rtxpt-1.9-sparse-updates-2026-10-25.md).
 
+`--suite sharc` checks the real optional radiance cache, NRD, resets, resize,
+fallback and teardown. `--suite sharc_live` covers campaign terrain, lights,
+mode switches and streaming. Both are in `full`. Run `--suite sharc_performance`
+separately in a **heavy** job. It measures Off/On/On/Off at two and four bounces,
+40 warm-up and 120 measured frames per block, including update, resolve, trace
+and total PT GPU time. The standalone fixture accepts `--sharc-cave` and
+`--sharc-high` for indoor and High-quality comparisons. See
+[SHaRC integration and limitations](integrations/path-tracing-sharc.md).
+
 On the development workstation, submit graphical runs through GPU Lab. Each
 job receives an isolated virtual display; up to three ordinary jobs can share
 each GPU when load and free memory permit. This qualification runner additionally

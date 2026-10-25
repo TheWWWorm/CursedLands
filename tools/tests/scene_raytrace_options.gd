@@ -17,6 +17,7 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute(out)
 	check(GameData.option("rt_shadows")==0 and GameData.option("rt_gi")==0,"fresh profiles keep scene RT opt in")
 	check(GameData.option("q_rt_lighting")==1,"fresh profiles default RT lighting to Medium")
+	check(GameData.option("pt_sharc")==0,"SHaRC is opt in on fresh profiles")
 	check(GameData.option("pt_mode")==0 and GameData.option("pt_accumulation")==0,"path tracing is opt in with responsive history")
 	var panel:=OptionsPanel.new();add_child(panel);panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 	check(panel._rows[2].disabled,"quality disabled while both lighting effects are off")
@@ -37,12 +38,16 @@ func run() -> void:
 		check(panel._rows[0].disabled and panel._rows[1].disabled and not panel._rows[2].disabled and not panel._rows[4].disabled,"pending path mode replaces RT controls and enables shared quality and accumulation")
 		check(GameData.option("pt_mode")==0,"path selection is pending until Apply")
 		check(panel._rows[5].disabled,"adaptive budget is disabled for still-scene accumulation")
+		check(panel._rows[6].disabled,"SHaRC is disabled for exact still-scene accumulation")
 		panel._set_value("pt_accumulation",0)
 		check(not panel._rows[5].disabled,"responsive PT enables the rendered-frame target")
 		panel._set_value("pt_target_fps",3)
+		panel._set_value("pt_sharc",1)
+		check(panel._values.pt_sharc==1 and GameData.option("pt_sharc")==0,"SHaRC remains pending until Apply")
 		panel._set_value("pt_accumulation",1)
 		panel._accept();settings.load(GameData.CONFIG_PATH)
 		check(settings.get_value("options","pt_mode",-1)==1 and settings.get_value("options","pt_accumulation",-1)==1 and settings.get_value("options","rt_shadows",-1)==1 and settings.get_value("options","rt_gi",-1)==1,"Apply persists path options and preserves RT preferences")
+		check(settings.get_value("options","pt_sharc",-1)==1,"Apply persists SHaRC even when accumulation temporarily disables it")
 		check(settings.get_value("options","pt_target_fps",-1)==3,"Apply persists the rendered-frame target")
 		panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 		check(panel._values.pt_mode==1 and panel._values.pt_accumulation==1,"reopening restores path options")
@@ -51,7 +56,7 @@ func run() -> void:
 		panel._set_value("pt_mode",0)
 		check(not panel._rows[0].disabled and not panel._rows[1].disabled and panel._rows[4].disabled,"turning path mode off restores RT controls")
 	else:
-		for row in 6:check(panel._rows[row].disabled,"unsupported renderer disables RT control "+str(row))
+		for row in 7:check(panel._rows[row].disabled,"unsupported renderer disables RT control "+str(row))
 		panel._sel=0;key(panel,KEY_RIGHT)
 		check(panel._values.rt_shadows==0,"unsupported renderer cannot enable RT")
 		panel._values.rt_shadows=1;panel._show_group(OptionsPanel.SCENE_RT_GROUP)
@@ -76,7 +81,7 @@ func run() -> void:
 			panel._sel=link;key(panel,KEY_ENTER)
 			check(panel._group==OptionsPanel.SCENE_RT_GROUP and panel._parent(panel._group)==OptionsPanel.REMAKE_GROUP,"keyboard opens RT/PT under Remake")
 			check(panel.text_width(panel._group_label(panel._group),2)<=600.0,"translated RT/PT breadcrumb fits "+language)
-			for row in 6:
+			for row in 7:
 				var option: Dictionary=panel._rows[row]
 				check(panel.text_width(option.label)<=260.0,"translated label fits "+language+str(row)+str(size))
 				for choice in option.choices.size():

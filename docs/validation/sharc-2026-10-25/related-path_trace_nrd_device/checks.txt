@@ -1,0 +1,27 @@
+PASS qualified NRD test device
+PASS build actual ray-traced NRD fixture
+PASS native NRD 4.18 runtime and compute shaders loaded
+PASS NRD ran without custom fallback
+PASS native dispatch planner and GPU passes execute every frame
+PASS NRD preserves coloured emission and positive indirect light
+PASS stationary surface reuses NRD history
+PASS NRD output remains finite and bounded
+PASS NRD presents stable public texture handles
+PASS fractional flame response preserves the slow denoising history at 30 Hz (13.992)
+PASS fractional flame response preserves the slow denoising history at 20 Hz (13.993)
+PASS fractional flame response preserves the slow denoising history at 12 Hz (13.992)
+PASS nearby changing light retains short history at 60 Hz (2.000)
+PASS nearby light response accelerates at 30 Hz (1.000)
+PASS distant light restores the unaffected receiver's long history
+PASS weather transition responds across the whole visible surface (2.000)
+PASS progressive mode keeps exact long accumulation
+PASS return to NRD restarts and converges
+PASS odd-sized resize rebuilds NRD pools
+PASS lighting reset removes extinguished emission immediately
+PASS direct-sun output respects the traced roof shadow
+PASS direct-sun output carries unoccluded sunlight for nearby grass
+PASS NRD dispatch failure falls back to usable custom lighting
+PASS fallback accumulates current illumination after NRD failure
+PASS NRD failure releases all pool images and is not retried every frame
+PASS NRD pools, descriptors and pipelines are released
+SCENE_RT_DEVICE 26 checks 0 failures

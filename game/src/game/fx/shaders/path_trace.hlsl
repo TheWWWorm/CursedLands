@@ -72,6 +72,13 @@ float2 hit_uv(Vertex a,Vertex b,Vertex c,float3 weights) {
                   dot(weights,float3(a.normal_v.w,b.normal_v.w,c.normal_v.w)));
 }
 #if defined(PATH_RAYGEN)
+#ifdef PATH_SHARC
+#include "path_trace_sharc.hlsli"
+SharcHitData sharc_hit(Surface s) {
+    SharcHitData h;h.positionWorld=s.position;h.normalWorld=s.geometric_normal;
+    h.materialDemodulation=max(s.albedo,0.05);h.emissive=0.0;return h;
+}
+#endif
 static const float PI=3.14159265359;
 float3 sky_radiance(float3 direction) {
     if(frame.path.w<0.5)return frame.sky.rgb;
@@ -422,18 +429,83 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
             float3 environment=sky_radiance(direction);
             diffuse+=weight_d*environment;specular+=weight_s*environment;break;
         }
-        float3 direct_d,direct_s,unused_sun;
-        sampler.vertex=depth+1u;
-        direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
         float emission_weight=1.0;
 #ifndef PATH_NO_EMITTERS
         emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
 #endif
+#if defined(PATH_SHARC) && !defined(PATH_SHARC_UPDATE)
+        // Keep the primary direct signal and sharp/leaf transport exact. A
+        // nearby hit smaller than its cache voxel is not a safe lookup.
+        if(current.roughness>=0.6 && current.metalness<0.1 && hit.roughness>=0.6
+            && hit.metalness<0.1 && hit.visible==0.0) {
+            SharcParameters cache=sharc_parameters();
+            float voxel=HashGridGetVoxelSize(HashGridGetLevel(hit.position,cache.hashGridParameters),cache.hashGridParameters);
+            if(segment>voxel) {
+                sharc_count(1u);
+                float3 cached;
+                if(SharcGetCachedRadiance(cache,sharc_hit(hit),cached,false) && all(isfinite(cached))) {
+                    sharc_count(2u);
+                    float3 incoming=hit.emission*emission_weight+max(cached,0.0);
+                    diffuse+=weight_d*incoming;specular+=weight_s*incoming;break;
+                }
+            }
+        }
+        sharc_count(3u);
+#endif
+        float3 direct_d,direct_s,unused_sun;
+        sampler.vertex=depth+1u;
+        direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
         float3 incoming=hit.emission*emission_weight+hit.albedo*direct_d+direct_s;
         diffuse+=weight_d*incoming;specular+=weight_s*incoming;
         current=hit;v=-direction;
     }
 }
+#ifdef PATH_SHARC_UPDATE
+[shader("raygeneration")]
+void main() {
+    uint2 tile=DispatchRaysIndex().xy;
+    uint jitter=sample_hash(tile.x+tile.y*DispatchRaysDimensions().x+sharc_frame.dimensions.y*0x9e3779b9u);
+    uint2 pixel=tile*4u+uint2(jitter&3u,(jitter>>2u)&3u);
+    uint2 size=sharc_frame.dimensions.zw;if(any(pixel>=size))return;
+    float2 uv=(float2(pixel)+0.5)/float2(size);
+    float4 p=mul(frame.inv_projection,float4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0));p/=p.w;
+    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+    float3 forward=-mul(frame.camera_world,float4(0,0,1,0)).xyz;
+    float3 origin=eye,direction=normalize(mul(frame.camera_world,float4(p.xyz,0)).xyz);
+    if(frame.camera.x>0.5){origin=mul(frame.camera_world,float4(p.xyz,1)).xyz;direction=forward;}
+    Surface current=(Surface)0;
+    RayDesc ray={origin,frame.camera.x>0.5?0.001:frame.settings.w/max(dot(direction,forward),0.001),direction,frame.camera.y};
+    TraceRay(scene,RAY_FLAG_NONE,1,0,0,0,ray,current);
+    if(current.hit<0.5)return;
+    current.position+=asfloat(lighting_offsets.Load3(current.instance_id*16u));
+    SharcParameters cache=sharc_parameters();SharcState state;SharcInit(state);
+    PathSampler sampler=path_sampler(sharc_frame.dimensions.y,pixel.x+pixel.y*size.x);
+    float3 view=-direction;float emission_weight=1.0;
+    sharc_count(0u);
+    for(uint depth=0;depth<8u;depth++) {
+        sampler.vertex=depth;
+        float3 d,sp,sunlight;direct_light(current,view,sampler,d,sp,sunlight);
+#ifndef PATH_NO_EMITTERS
+        float3 ed,es;emissive_light(current,view,sampler,ed,es);d+=ed;sp+=es;
+#endif
+        SharcHitData h=sharc_hit(current);h.emissive=current.emission*emission_weight;
+        if(!SharcUpdateHit(cache,state,h,d*current.albedo+sp,path_random(sampler,15u).x))break;
+        direction=sample_bsdf(current,view,sampler);float pdf;
+        bsdf(current,view,direction,d,sp,pdf);
+        float cosine=abs(dot(current.normal,direction));if(pdf<=1e-8||cosine<=0.0)break;
+        SharcSetThroughput(state,(d*current.albedo+sp)*(cosine/pdf));
+        ray.Origin=surface_origin(current,direction);ray.Direction=direction;ray.TMin=0;ray.TMax=frame.camera.w;
+        Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
+        TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
+        if(hit.hit<0.5){SharcUpdateMiss(cache,state,sky_radiance(direction));break;}
+        emission_weight=1.0;
+#ifndef PATH_NO_EMITTERS
+        emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
+#endif
+        current=hit;view=-direction;
+    }
+}
+#else
 [shader("raygeneration")]
 void main() {
     uint2 pixel=DispatchRaysIndex().xy;float2 size=float2(DispatchRaysDimensions().xy);
@@ -486,6 +558,7 @@ void main() {
     shadow_image1[pixel]=float4(primary.albedo,float(surface));
     path_distance[pixel]=float2(diffuse_distance/float(samples),specular_distance==65504.0?0.0:specular_distance);
 }
+#endif // PATH_SHARC_UPDATE
 #elif defined(PATH_MISS)
 [shader("miss")]
 void main(inout Surface result) {result.visible=1.0;}

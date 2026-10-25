@@ -1,0 +1,162 @@
+{
+	"checks": 66,
+	"failures": [],
+	"metrics": {
+		"deformation": {
+			"actual": 0.48828125,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.0,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.0,
+			"expected": 0.48828125,
+			"history_age": 1.0,
+			"reference_error": 0.31171875
+		},
+		"native_motion_ages": [
+			1.0,
+			2.0,
+			3.0,
+			4.0,
+			5.0,
+			6.0,
+			7.0,
+			8.0,
+			8.0,
+			8.0,
+			8.0
+		],
+		"new_visibility": {
+			"actual": 0.48828125,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.0,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.0,
+			"expected": 0.48828125,
+			"history_age": 1.0,
+			"reference_error": 0.31171875
+		},
+		"orthographic_camera_and_object": {
+			"actual": 0.7607421875,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.27275390625,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"orthographic_camera_only": {
+			"actual": 0.7607421875,
+			"camera_only": 0.7607421875,
+			"camera_only_age": 8.0,
+			"camera_only_error": 0.000292968750000067,
+			"camera_only_reference_error": 0.0392578125,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"orthographic_nonuniform_scale": {
+			"actual": 0.76025390625,
+			"camera_only": 0.484619140625,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.275958251953125,
+			"camera_only_reference_error": 0.315380859375,
+			"error": 0.000323486328125067,
+			"expected": 0.760577392578125,
+			"history_age": 8.0,
+			"reference_error": 0.03974609375
+		},
+		"orthographic_rotation": {
+			"actual": 0.7607421875,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.27275390625,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"orthographic_translation": {
+			"actual": 0.7607421875,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.27275390625,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"perspective_camera_and_object": {
+			"actual": 0.759765625,
+			"camera_only": 0.482666015625,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.277667236328125,
+			"camera_only_reference_error": 0.317333984375,
+			"error": 0.000567626953125067,
+			"expected": 0.760333251953125,
+			"history_age": 8.0,
+			"reference_error": 0.040234375
+		},
+		"perspective_camera_only": {
+			"actual": 0.7607421875,
+			"camera_only": 0.7607421875,
+			"camera_only_age": 8.0,
+			"camera_only_error": 0.000292968750000067,
+			"camera_only_reference_error": 0.0392578125,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"perspective_nonuniform_scale": {
+			"actual": 0.7607421875,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.27275390625,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"perspective_rotation": {
+			"actual": 0.76025390625,
+			"camera_only": 0.487060546875,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.273822021484375,
+			"camera_only_reference_error": 0.312939453125,
+			"error": 0.000628662109375067,
+			"expected": 0.760882568359375,
+			"history_age": 8.0,
+			"reference_error": 0.03974609375
+		},
+		"perspective_translation": {
+			"actual": 0.7607421875,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.27275390625,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.000292968750000067,
+			"expected": 0.76103515625,
+			"history_age": 8.0,
+			"reference_error": 0.0392578125
+		},
+		"unrelated_identity": {
+			"actual": 0.48828125,
+			"camera_only": 0.48828125,
+			"camera_only_age": 1.0,
+			"camera_only_error": 0.0,
+			"camera_only_reference_error": 0.31171875,
+			"error": 0.0,
+			"expected": 0.48828125,
+			"history_age": 1.0,
+			"reference_error": 0.31171875
+		}
+	}
+}
