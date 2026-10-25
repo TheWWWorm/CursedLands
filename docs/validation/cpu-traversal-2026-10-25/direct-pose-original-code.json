@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0010a/50acd0_FUN_0050acd0.c",
+      "sha256": "efa1aa8428b975d3dbd76d0ab2c72daeac9ee7afa5af4547970634f5441824f1"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0010c/50c230_FUN_0050c230.c",
+      "sha256": "2a2dcd90305616d98f23ae6d775c1d2b3c351f08fa9143112f33ddbaed5ecfad"
+    }
+  ],
+  "confirmed": "The original 0x50acd0 interpolates current translation/quaternion keys; 0x50c230 composes those keys through the parent hierarchy. The native sampler preserves the existing EIAnim quaternion order and continues to use the engine interpolator.",
+  "limits": "DirectPose lower/upper body blending for first-person controls is a remake feature. No equivalent original-game Wine direct-pose fixture exists. No original animation speed or Dar FPS claim is made."
+}

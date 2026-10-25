@@ -1,0 +1,82 @@
+[
+  {
+    "test": "direct_pose_native",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/direct_pose_native.gd"
+    ],
+    "summary": [
+      "DIRECT_POSE_NATIVE checks=7470 failures=0"
+    ]
+  },
+  {
+    "test": "direct_gait_continuity",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/direct_gait_continuity.gd"
+    ],
+    "summary": [
+      "DIRECT_GAIT_CONTINUITY {\"checks\":1929,\"clips\":{\"crun01\":504,\"crun02\":72,\"cwalk01\":24,\"cwalk02\":168,\"cwalk06\":192,\"cwalk08\":24,\"cwalk10\":168},\"failures\":0,\"wrong_healthy_selections\":0}"
+    ]
+  },
+  {
+    "test": "picking_figures",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/picking_figures.gd"
+    ],
+    "summary": [
+      "PICKING_FIGURES checks=1403 failures=0"
+    ]
+  },
+  {
+    "test": "star_particles",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/star_particles.gd"
+    ],
+    "summary": [
+      "STAR_PARTICLES checks=17473 failures=0"
+    ]
+  }
+]

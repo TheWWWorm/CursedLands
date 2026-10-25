@@ -1,0 +1,35 @@
+[
+  {
+    "test": "first_person_shadows",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_pose_visual.py",
+      "direct-pose-first_person_shadows",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/first_person_shadows.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "first_person_running_down",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_pose_visual.py",
+      "direct-pose-first_person_running_down",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/first_person_running_down.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "ingos_direct_feedback",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_pose_visual.py",
+      "direct-pose-ingos_direct_feedback",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ingos_direct_feedback.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  }
+]

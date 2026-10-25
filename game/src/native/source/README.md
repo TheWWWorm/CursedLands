@@ -41,6 +41,17 @@ morph weights on each query, preserving clicks and live same-frame edits.
 also retain it automatically. `tools/tests/picking_figures.gd` compares exact
 arrays, fallback and dispatch with real authored humans and winged creatures.
 
+`DirectPoseKernel` samples and composes the first-person leg/upper-body animation
+tracks in one native call. Interpolation stays in the engine and node paths,
+authored parents, sample times and quaternion conventions remain live. Only
+track paths/types are cached, with synchronous resource-change invalidation,
+weak resource references, at most 64 clips, 512 tracks per clip and 65,536 path
+characters per clip. Scripted or oversized animations decline the whole query.
+`-- --ei-script-direct-pose` and older libraries retain the original script loop.
+The registered `direct_pose_native` regression compares exact poses and key
+order, resource/node edits, eviction, destruction and full fallback. The
+generated binding profile includes `Animation` for direct engine calls.
+
 The terrain instance also owns persistent static block topology: representatives,
 weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
 floor and object changes invalidate it through the existing map revision.

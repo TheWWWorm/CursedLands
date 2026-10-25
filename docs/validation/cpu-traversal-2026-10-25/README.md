@@ -724,3 +724,84 @@ failure); see [the diagnostic receipt](dar-tactical-water-state.json). This
 is not included in the FPS results, and no water-preparation guard has been
 removed. Preparing that first real reflection during loading remains a
 separate investigation from the native actor-bounds change.
+
+## Direct-control animation sampling
+
+On integrated source `2a912713`, a further Dar profile identifies about
+0.33 ms/frame in the per-track `DirectPose.sample` loop while walking. The
+native `DirectPoseKernel` batches the same engine interpolation and ordered
+quaternion composition. It retains only track paths/types, synchronously
+invalidated by `Animation.changed`; current nodes, authored parents, values
+and sample times remain live. Weak source references, a 64-clip limit,
+512-track limit and 65,536 path-character limit bound retained metadata.
+Eviction and destruction disconnect invalidators. Unsupported/scripted clips
+decline the complete query, preserving the existing script fallback. The
+`--ei-script-direct-pose` diagnostic also keeps that loop. Clip choice, blend
+weights, gait timing, movement, pose application and shadow updates are unchanged.
+
+The first experiment used dynamic engine calls and was slightly slower than
+script (roughly 115 versus 111 ms for 600 samples). Typed calls alone took
+about 100 versus 112 ms. Reusing unchanged track metadata reduces the final
+isolated fixture to **18.1–18.2 versus 110.6–110.8 ms for 600 samples**. These
+are sampling timings, not whole-game FPS. The rejected experiments and raw
+logs are retained in [the checks receipt](direct-pose-checks.json).
+
+GPU Lab heavy job `3912cd1d4dea40ff` compares script/native sampling in the
+same instrumented export, save and fixed Dar route. Both runs pass **54 checks**,
+reach all four waypoints without blocked frames or reroutes, and retain the
+same 334 actors, options hash and 1920×1080 window. Standard Very High graphics,
+mirror water, soft ground and volume clouds remain enabled; PT, reconstruction
+and frame generation remain disabled. No CPU builds, other checks or image
+encoding run during these measurements.
+
+| Walking leg | Script sample ms/frame | Native sample ms/frame | Script full pose ms/frame | Native full pose ms/frame |
+|---|---:|---:|---:|---:|
+| 0 | 0.331 | 0.091 | 0.483 | 0.255 |
+| 1 | 0.334 | 0.087 | 0.487 | 0.242 |
+| 2 | 0.333 | 0.090 | 0.486 | 0.252 |
+| 3 | 0.347 | 0.094 | 0.509 | 0.262 |
+
+Weighted by each run's walking frames, sampling takes **0.336 → 0.090 ms/frame**
+and the whole pose callback **0.490 → 0.252 ms/frame**. This demonstrates about
+0.24 ms/frame less CPU work in this path. Scopes are inclusive and must not be
+added. This instrumented pair does not establish an additional whole-game FPS
+percentage. The implementation is shared by direct controls in other zones,
+including third-person controls, with benefits depending on active pose work.
+See [the matched comparison](dar-pose-comparison.json) and compressed raw
+scope captures and route logs.
+
+The registered `direct_pose_native` test passes **7,470 checks** on Linux and
+Windows under Wine. It compares exact values and key order across all four
+quaternion conventions, loop/interpolation modes, authored actions, duplicate
+tracks, live track edits/reordering, renames/reparenting, clip replacement,
+empty/oversized/scripted animations, cache eviction, resource/helper lifetime,
+and script fallback. The prior library fails the availability contract
+(one check, one failure). Related gait continuity (1,929), actor picking (1,403)
+and star particles (17,473) pass on both platforms; the latter two also run
+through the registered Linux runner. Linux rendered checks pass first-person
+shadows (28, zero differing shadow pixels), sustained downward running (28),
+and Ingos dialogue/footprints/casting (57). The virtual monitor's existing
+missing-EDID diagnostic is retained separately from game failures.
+
+The first expanded test incorrectly requested `track_move_down(0)`, which
+attempts index -1 in this engine. The fixture now moves valid index 3 and keeps
+the same immediate-result comparison. Its initial failure log is retained;
+no animation engine guard or production behavior was changed for that setup
+error. All runtime scripts and native libraries match the final export
+snapshot. Linux, Windows and Android ARM64 libraries are rebuilt with the
+expanded `Animation` binding profile; Android was not device-executed. See
+[registered results](direct-pose-registered.json) and
+[source/build provenance](direct-pose-provenance.json).
+
+Original-code comparison confirms current translation/quaternion key
+interpolation at `0x50acd0` and authored parent composition at `0x50c230`;
+see [the source receipt](direct-pose-original-code.json). This helper retains
+the remake's existing EIAnim conventions and engine interpolation. The
+direct-control lower/upper-body blend is a remake feature with no equivalent
+original-game Wine fixture. The Wine checks above run the remake; original
+animation timing and original Dar FPS equivalence remain unmeasured.
+
+The new profile also separates vegetation interaction work: contact collection
+costs approximately 0.13–0.23 ms/frame, versus 0.05–0.08 for history/stamping.
+Ground-mark processing and delayed first-visible mirror preparation remain
+other targets. None of those paths is changed by this animation batch.

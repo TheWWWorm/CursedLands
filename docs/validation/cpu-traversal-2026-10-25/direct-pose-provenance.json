@@ -1,0 +1,67 @@
+{
+  "base_commit": "2a912713f4bc53a77b2903ec4c96dea75809ed07",
+  "source_sha256": {
+    "game/src/game/direct_pose.gd": "5c0f58bad3821c149eaacf5f30f817251ee72605fe104b2df0a578253ed18725",
+    "game/src/native/source/direct_pose.h": "a3ca245a7b1543500b8793ed2c3312d13e076bae67d4860d8217a2a3a0df7013",
+    "game/src/native/source/build_profile.json": "2942b7fa3f775c02e4dd79628d76d30ecffeb73440a976f7bfe350517ea64ac2",
+    "tools/tests/direct_pose_native.gd": "7c699727e33ccae19bca0624ad37b64a1330ef5834205d619d599f828d21f153"
+  },
+  "packs": {
+    "direct-pose-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "3b9b90c3d357bcd4e1540acd041187fc003cdd1e37a741e53d15684a78594c7d",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "3f7ee8403db343e8eb9530cefef2cede2365141985a0bdf2e56b2c12ac7ace36",
+      "src/native/bin/libpath_nrd.dll": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "ae19ac4d9abd2b6a076201e6412fab197e77d5b7aa9daf1b10a8c3ec2f5ee3ff",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "865e6d14d98c9043f1a137b2d05061944eec1aa4eb8c04bd042b378aeedb12a8"
+    },
+    "direct-pose-final-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "80820137295ac374dcf553a19048ae4ab41f654919f5035378cf7b221ce4d945",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "3f7ee8403db343e8eb9530cefef2cede2365141985a0bdf2e56b2c12ac7ace36",
+      "src/native/bin/libpath_nrd.dll": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "ae19ac4d9abd2b6a076201e6412fab197e77d5b7aa9daf1b10a8c3ec2f5ee3ff",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "865e6d14d98c9043f1a137b2d05061944eec1aa4eb8c04bd042b378aeedb12a8"
+    },
+    "direct-pose-detail-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "3331114cf610675f73399d19006413912ef3636ded83617f4322ae91fa55f8db",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "3f7ee8403db343e8eb9530cefef2cede2365141985a0bdf2e56b2c12ac7ace36",
+      "src/native/bin/libpath_nrd.dll": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "ae19ac4d9abd2b6a076201e6412fab197e77d5b7aa9daf1b10a8c3ec2f5ee3ff",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "865e6d14d98c9043f1a137b2d05061944eec1aa4eb8c04bd042b378aeedb12a8"
+    }
+  },
+  "rendered_job": "ac40ffb326914e81",
+  "android": "ARM64 library rebuilt; not executed on an Android device",
+  "original": "Original authored-key interpolation and parent composition inspected at 0x50acd0/0x50c230. Remake first-person DirectPose composition has no original Wine fixture; no original runtime/FPS equivalence claim.",
+  "fixture_correction": "The first expanded fixture used Animation.track_move_down(0), which attempts index -1 in this engine. Corrected the fixture to move index 3; its same-frame comparison is unchanged. The failed setup log remains included.",
+  "experiments": "Initial dynamic engine-call batch was slightly slower; typed calls improved modestly. Bounded, synchronously invalidated path/type metadata supplies the measured saving. Only the cached typed implementation is shipped."
+}

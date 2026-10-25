@@ -1,0 +1,116 @@
+{
+  "git_head": "2a912713f4bc53a77b2903ec4c96dea75809ed07",
+  "game_source_sha256": "8c8841c9d45da29c559d1d8c0c9522352cfc75deabf890f6c6b774d184b6053a",
+  "manifest_sha256": "886d14abbb4c2ec0ab5a767b4f0bc488ad19f53a9cfa766fa842db90ae59a655",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "star_particles",
+      "script": "tools/tests/star_particles.gd",
+      "script_sha256": "78127de7ec446d3c4338c90fa4f9f5bb26bc8fbe03a3a26f3d42ee54e01b88e2",
+      "contract": "Native exit/wisp updates preserve ordered interpolation, random streams, ground/carrier spawning, lifecycle and custom/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.52,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-registered/star_particles/fixtures/star_particles.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-registered/star_particles/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "star_particles/run.log",
+      "passed": true,
+      "result": {
+        "checks": 17473,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "picking_figures",
+      "script": "tools/tests/picking_figures.gd",
+      "script_sha256": "470dbaa57eff8697bebf25ef6a2019f49b86d82141c293736756ceeab9be89c5",
+      "contract": "One native actor-bounds batch preserves exact ordered part rectangles, union, same-frame pose/visibility/mesh edits and unsupported/older-library fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.67,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-registered/picking_figures/fixtures/picking_figures.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-registered/picking_figures/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "picking_figures/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1403,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "direct_pose_native",
+      "script": "tools/tests/direct_pose_native.gd",
+      "script_sha256": "7c699727e33ccae19bca0624ad37b64a1330ef5834205d619d599f828d21f153",
+      "contract": "Native first-person pose sampling preserves exact ordered values, quaternion conventions, same-frame track and node edits, bounded weak metadata lifetime, and complete unsupported/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.07,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-registered/direct_pose_native/fixtures/direct_pose_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-registered/direct_pose_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "direct_pose_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 7470,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.pck",
+    "sha256": "3b9b90c3d357bcd4e1540acd041187fc003cdd1e37a741e53d15684a78594c7d"
+  },
+  "passed": true
+}

@@ -1,0 +1,1925 @@
+{
+  "job": "3912cd1d4dea40ff",
+  "method": "Matched instrumented script/native pair in one GPU Lab heavy job. Same pack, native library, fixed save, route and graphics settings; only --ei-script-direct-pose changes. No CPU builds/checks, per-phase image encoding or recording during measurements. Inclusive scopes must not be added. This pair establishes callback savings; it is not an uninstrumented whole-game FPS claim.",
+  "runs": [
+    {
+      "name": "dar-pose-profile-script",
+      "pack": "direct-pose-detail-profile",
+      "script_control": true,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-pose-profile-script",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording",
+        "--ei-script-direct-pose"
+      ],
+      "start": 1792946640.5974271,
+      "finish": 1792946748.770178,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_seconds": 32.63345,
+      "walking_frames": 1852,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.269349,
+          "frames": 449,
+          "frame_ms": {
+            "max": 28.087,
+            "median": 18.316,
+            "p95": 23.744
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.125,
+            286.140625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.367209,
+          "frames": 523,
+          "frame_ms": {
+            "max": 26.424,
+            "median": 15.806,
+            "p95": 21.278
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.234375,
+            276.078125
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.038168,
+          "frames": 508,
+          "frame_ms": {
+            "max": 22.864,
+            "median": 15.729,
+            "p95": 20.273
+          },
+          "from": [
+            182.375,
+            275.984375
+          ],
+          "to": [
+            188.65625,
+            291.8125
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.958724,
+          "frames": 372,
+          "frame_ms": {
+            "max": 30.586,
+            "median": 21.074,
+            "p95": 26.792
+          },
+          "from": [
+            188.65625,
+            291.8125
+          ],
+          "to": [
+            183.109375,
+            276.34375
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ],
+      "scopes": {
+        "held-fg-off": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 419,
+            "inclusive_us": 1902,
+            "max_us": 12,
+            "ms_per_frame": 0.004539379474940334,
+            "frame_count": 419
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 419,
+            "inclusive_us": 21713,
+            "max_us": 145,
+            "ms_per_frame": 0.05182100238663485,
+            "frame_count": 419
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 419,
+            "inclusive_us": 20102,
+            "max_us": 137,
+            "ms_per_frame": 0.04797613365155132,
+            "frame_count": 419
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 838,
+            "inclusive_us": 1874,
+            "max_us": 10,
+            "ms_per_frame": 0.00447255369928401,
+            "frame_count": 419
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 419,
+            "inclusive_us": 269840,
+            "max_us": 2255,
+            "ms_per_frame": 0.6440095465393795,
+            "frame_count": 419
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 419,
+            "inclusive_us": 112300,
+            "max_us": 1846,
+            "ms_per_frame": 0.26801909307875893,
+            "frame_count": 419
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 103,
+            "inclusive_us": 27538,
+            "max_us": 433,
+            "ms_per_frame": 0.06572315035799522,
+            "frame_count": 419
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 103,
+            "inclusive_us": 75685,
+            "max_us": 1367,
+            "ms_per_frame": 0.1806324582338902,
+            "frame_count": 419
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1763,
+            "inclusive_us": 17309,
+            "max_us": 25,
+            "ms_per_frame": 0.041310262529832935,
+            "frame_count": 419
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 419,
+            "inclusive_us": 105628,
+            "max_us": 1821,
+            "ms_per_frame": 0.25209546539379474,
+            "frame_count": 419
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 17559,
+            "inclusive_us": 342695,
+            "max_us": 112,
+            "ms_per_frame": 0.8178878281622911,
+            "frame_count": 419
+          }
+        },
+        "walk-0": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 449,
+            "inclusive_us": 195689,
+            "max_us": 879,
+            "ms_per_frame": 0.4358329621380846,
+            "frame_count": 449
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 449,
+            "inclusive_us": 217053,
+            "max_us": 980,
+            "ms_per_frame": 0.4834142538975501,
+            "frame_count": 449
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 449,
+            "inclusive_us": 215177,
+            "max_us": 972,
+            "ms_per_frame": 0.4792360801781737,
+            "frame_count": 449
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 898,
+            "inclusive_us": 17829,
+            "max_us": 69,
+            "ms_per_frame": 0.03970824053452116,
+            "frame_count": 449
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 446,
+            "inclusive_us": 148462,
+            "max_us": 678,
+            "ms_per_frame": 0.3306503340757238,
+            "frame_count": 449
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 449,
+            "inclusive_us": 446464,
+            "max_us": 2977,
+            "ms_per_frame": 0.9943518930957683,
+            "frame_count": 449
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 449,
+            "inclusive_us": 137902,
+            "max_us": 1623,
+            "ms_per_frame": 0.3071314031180401,
+            "frame_count": 449
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 141,
+            "inclusive_us": 34212,
+            "max_us": 394,
+            "ms_per_frame": 0.07619599109131403,
+            "frame_count": 449
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 141,
+            "inclusive_us": 93806,
+            "max_us": 1189,
+            "ms_per_frame": 0.20892204899777284,
+            "frame_count": 449
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1959,
+            "inclusive_us": 20808,
+            "max_us": 31,
+            "ms_per_frame": 0.04634298440979955,
+            "frame_count": 449
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 449,
+            "inclusive_us": 130824,
+            "max_us": 1595,
+            "ms_per_frame": 0.2913674832962138,
+            "frame_count": 449
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 21554,
+            "inclusive_us": 409939,
+            "max_us": 124,
+            "ms_per_frame": 0.9130044543429845,
+            "frame_count": 449
+          }
+        },
+        "pan-0": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 191,
+            "inclusive_us": 5214,
+            "max_us": 497,
+            "ms_per_frame": 0.02729842931937173,
+            "frame_count": 191
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 191,
+            "inclusive_us": 15488,
+            "max_us": 548,
+            "ms_per_frame": 0.08108900523560209,
+            "frame_count": 191
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 191,
+            "inclusive_us": 14619,
+            "max_us": 542,
+            "ms_per_frame": 0.07653926701570682,
+            "frame_count": 191
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 382,
+            "inclusive_us": 1306,
+            "max_us": 46,
+            "ms_per_frame": 0.006837696335078534,
+            "frame_count": 191
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 10,
+            "inclusive_us": 3290,
+            "max_us": 379,
+            "ms_per_frame": 0.017225130890052356,
+            "frame_count": 191
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 191,
+            "inclusive_us": 254985,
+            "max_us": 3665,
+            "ms_per_frame": 1.335,
+            "frame_count": 191
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 191,
+            "inclusive_us": 41479,
+            "max_us": 900,
+            "ms_per_frame": 0.2171675392670157,
+            "frame_count": 191
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 64,
+            "inclusive_us": 9903,
+            "max_us": 234,
+            "ms_per_frame": 0.051848167539267014,
+            "frame_count": 191
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 64,
+            "inclusive_us": 27241,
+            "max_us": 640,
+            "ms_per_frame": 0.14262303664921466,
+            "frame_count": 191
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 437,
+            "inclusive_us": 6223,
+            "max_us": 30,
+            "ms_per_frame": 0.032581151832460735,
+            "frame_count": 191
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 191,
+            "inclusive_us": 38349,
+            "max_us": 876,
+            "ms_per_frame": 0.20078010471204188,
+            "frame_count": 191
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 10160,
+            "inclusive_us": 194127,
+            "max_us": 143,
+            "ms_per_frame": 1.0163717277486912,
+            "frame_count": 191
+          }
+        },
+        "walk-1": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 523,
+            "inclusive_us": 229520,
+            "max_us": 753,
+            "ms_per_frame": 0.4388527724665392,
+            "frame_count": 523
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 523,
+            "inclusive_us": 254721,
+            "max_us": 834,
+            "ms_per_frame": 0.48703824091778203,
+            "frame_count": 523
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 523,
+            "inclusive_us": 252464,
+            "max_us": 826,
+            "ms_per_frame": 0.48272275334608034,
+            "frame_count": 523
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 1046,
+            "inclusive_us": 20490,
+            "max_us": 93,
+            "ms_per_frame": 0.039177820267686424,
+            "frame_count": 523
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 518,
+            "inclusive_us": 174672,
+            "max_us": 603,
+            "ms_per_frame": 0.333980879541109,
+            "frame_count": 523
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 523,
+            "inclusive_us": 426312,
+            "max_us": 2701,
+            "ms_per_frame": 0.8151281070745698,
+            "frame_count": 523
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 523,
+            "inclusive_us": 108042,
+            "max_us": 1404,
+            "ms_per_frame": 0.2065812619502868,
+            "frame_count": 523
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 145,
+            "inclusive_us": 26362,
+            "max_us": 386,
+            "ms_per_frame": 0.050405353728489484,
+            "frame_count": 523
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 145,
+            "inclusive_us": 70305,
+            "max_us": 1021,
+            "ms_per_frame": 0.1344263862332696,
+            "frame_count": 523
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1405,
+            "inclusive_us": 15176,
+            "max_us": 45,
+            "ms_per_frame": 0.029017208413001913,
+            "frame_count": 523
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 523,
+            "inclusive_us": 99784,
+            "max_us": 1380,
+            "ms_per_frame": 0.19079158699808796,
+            "frame_count": 523
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 21765,
+            "inclusive_us": 362836,
+            "max_us": 284,
+            "ms_per_frame": 0.6937590822179733,
+            "frame_count": 523
+          }
+        },
+        "pan-1": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 259,
+            "inclusive_us": 6507,
+            "max_us": 739,
+            "ms_per_frame": 0.025123552123552124,
+            "frame_count": 259
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 259,
+            "inclusive_us": 19879,
+            "max_us": 822,
+            "ms_per_frame": 0.07675289575289575,
+            "frame_count": 259
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 259,
+            "inclusive_us": 18464,
+            "max_us": 816,
+            "ms_per_frame": 0.0712895752895753,
+            "frame_count": 259
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 518,
+            "inclusive_us": 1713,
+            "max_us": 75,
+            "ms_per_frame": 0.006613899613899614,
+            "frame_count": 259
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 11,
+            "inclusive_us": 3970,
+            "max_us": 572,
+            "ms_per_frame": 0.015328185328185327,
+            "frame_count": 259
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 259,
+            "inclusive_us": 320383,
+            "max_us": 3447,
+            "ms_per_frame": 1.237,
+            "frame_count": 259
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 259,
+            "inclusive_us": 53018,
+            "max_us": 1097,
+            "ms_per_frame": 0.20470270270270272,
+            "frame_count": 259
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 70,
+            "inclusive_us": 11370,
+            "max_us": 250,
+            "ms_per_frame": 0.043899613899613894,
+            "frame_count": 259
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 70,
+            "inclusive_us": 35822,
+            "max_us": 807,
+            "ms_per_frame": 0.1383088803088803,
+            "frame_count": 259
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 703,
+            "inclusive_us": 8548,
+            "max_us": 35,
+            "ms_per_frame": 0.033003861003861004,
+            "frame_count": 259
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 259,
+            "inclusive_us": 48742,
+            "max_us": 1073,
+            "ms_per_frame": 0.1881930501930502,
+            "frame_count": 259
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 11784,
+            "inclusive_us": 228407,
+            "max_us": 232,
+            "ms_per_frame": 0.8818803088803089,
+            "frame_count": 259
+          }
+        },
+        "walk-2": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 508,
+            "inclusive_us": 222756,
+            "max_us": 731,
+            "ms_per_frame": 0.438496062992126,
+            "frame_count": 508
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 508,
+            "inclusive_us": 247015,
+            "max_us": 820,
+            "ms_per_frame": 0.48625,
+            "frame_count": 508
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 508,
+            "inclusive_us": 244860,
+            "max_us": 814,
+            "ms_per_frame": 0.482007874015748,
+            "frame_count": 508
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 1016,
+            "inclusive_us": 19895,
+            "max_us": 75,
+            "ms_per_frame": 0.03916338582677165,
+            "frame_count": 508
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 506,
+            "inclusive_us": 169314,
+            "max_us": 568,
+            "ms_per_frame": 0.33329527559055117,
+            "frame_count": 508
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 508,
+            "inclusive_us": 507011,
+            "max_us": 3346,
+            "ms_per_frame": 0.9980531496062992,
+            "frame_count": 508
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 508,
+            "inclusive_us": 156958,
+            "max_us": 1923,
+            "ms_per_frame": 0.3089724409448819,
+            "frame_count": 508
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 142,
+            "inclusive_us": 37353,
+            "max_us": 468,
+            "ms_per_frame": 0.0735295275590551,
+            "frame_count": 508
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 142,
+            "inclusive_us": 108150,
+            "max_us": 1408,
+            "ms_per_frame": 0.21289370078740158,
+            "frame_count": 508
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 2328,
+            "inclusive_us": 25976,
+            "max_us": 37,
+            "ms_per_frame": 0.051133858267716534,
+            "frame_count": 508
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 508,
+            "inclusive_us": 148658,
+            "max_us": 1898,
+            "ms_per_frame": 0.29263385826771654,
+            "frame_count": 508
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 26137,
+            "inclusive_us": 526413,
+            "max_us": 102,
+            "ms_per_frame": 1.036246062992126,
+            "frame_count": 508
+          }
+        },
+        "pan-2": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 282,
+            "inclusive_us": 6958,
+            "max_us": 590,
+            "ms_per_frame": 0.024673758865248228,
+            "frame_count": 282
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 282,
+            "inclusive_us": 20692,
+            "max_us": 742,
+            "ms_per_frame": 0.07337588652482269,
+            "frame_count": 282
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 282,
+            "inclusive_us": 19494,
+            "max_us": 730,
+            "ms_per_frame": 0.06912765957446808,
+            "frame_count": 282
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 564,
+            "inclusive_us": 1741,
+            "max_us": 41,
+            "ms_per_frame": 0.006173758865248227,
+            "frame_count": 282
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 13,
+            "inclusive_us": 4264,
+            "max_us": 375,
+            "ms_per_frame": 0.015120567375886525,
+            "frame_count": 282
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 282,
+            "inclusive_us": 226181,
+            "max_us": 2670,
+            "ms_per_frame": 0.8020602836879432,
+            "frame_count": 282
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 282,
+            "inclusive_us": 69833,
+            "max_us": 1201,
+            "ms_per_frame": 0.24763475177304967,
+            "frame_count": 282
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 70,
+            "inclusive_us": 16830,
+            "max_us": 353,
+            "ms_per_frame": 0.05968085106382978,
+            "frame_count": 282
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 70,
+            "inclusive_us": 46879,
+            "max_us": 829,
+            "ms_per_frame": 0.16623758865248225,
+            "frame_count": 282
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1107,
+            "inclusive_us": 11117,
+            "max_us": 20,
+            "ms_per_frame": 0.039421985815602835,
+            "frame_count": 282
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 282,
+            "inclusive_us": 65338,
+            "max_us": 1180,
+            "ms_per_frame": 0.2316950354609929,
+            "frame_count": 282
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 13797,
+            "inclusive_us": 296376,
+            "max_us": 97,
+            "ms_per_frame": 1.0509787234042554,
+            "frame_count": 282
+          }
+        },
+        "walk-3": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 372,
+            "inclusive_us": 169729,
+            "max_us": 819,
+            "ms_per_frame": 0.456260752688172,
+            "frame_count": 372
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 372,
+            "inclusive_us": 189387,
+            "max_us": 915,
+            "ms_per_frame": 0.5091048387096775,
+            "frame_count": 372
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 372,
+            "inclusive_us": 187764,
+            "max_us": 909,
+            "ms_per_frame": 0.504741935483871,
+            "frame_count": 372
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 744,
+            "inclusive_us": 17159,
+            "max_us": 76,
+            "ms_per_frame": 0.0461263440860215,
+            "frame_count": 372
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 369,
+            "inclusive_us": 128995,
+            "max_us": 624,
+            "ms_per_frame": 0.346760752688172,
+            "frame_count": 372
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 372,
+            "inclusive_us": 437780,
+            "max_us": 3188,
+            "ms_per_frame": 1.1768279569892472,
+            "frame_count": 372
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 372,
+            "inclusive_us": 87828,
+            "max_us": 1135,
+            "ms_per_frame": 0.23609677419354838,
+            "frame_count": 372
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 126,
+            "inclusive_us": 22937,
+            "max_us": 308,
+            "ms_per_frame": 0.06165860215053763,
+            "frame_count": 372
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 126,
+            "inclusive_us": 56472,
+            "max_us": 803,
+            "ms_per_frame": 0.15180645161290324,
+            "frame_count": 372
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1125,
+            "inclusive_us": 14651,
+            "max_us": 35,
+            "ms_per_frame": 0.039384408602150534,
+            "frame_count": 372
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 372,
+            "inclusive_us": 81814,
+            "max_us": 1111,
+            "ms_per_frame": 0.21993010752688172,
+            "frame_count": 372
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 18512,
+            "inclusive_us": 297703,
+            "max_us": 156,
+            "ms_per_frame": 0.8002768817204301,
+            "frame_count": 372
+          }
+        },
+        "pan-3": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 229,
+            "inclusive_us": 4772,
+            "max_us": 699,
+            "ms_per_frame": 0.020838427947598253,
+            "frame_count": 229
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 229,
+            "inclusive_us": 16482,
+            "max_us": 775,
+            "ms_per_frame": 0.07197379912663755,
+            "frame_count": 229
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 229,
+            "inclusive_us": 15481,
+            "max_us": 770,
+            "ms_per_frame": 0.06760262008733625,
+            "frame_count": 229
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 458,
+            "inclusive_us": 1392,
+            "max_us": 60,
+            "ms_per_frame": 0.006078602620087336,
+            "frame_count": 229
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 8,
+            "inclusive_us": 2807,
+            "max_us": 531,
+            "ms_per_frame": 0.01225764192139738,
+            "frame_count": 229
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 229,
+            "inclusive_us": 211876,
+            "max_us": 3729,
+            "ms_per_frame": 0.9252227074235808,
+            "frame_count": 229
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 229,
+            "inclusive_us": 36566,
+            "max_us": 657,
+            "ms_per_frame": 0.1596768558951965,
+            "frame_count": 229
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 70,
+            "inclusive_us": 9663,
+            "max_us": 195,
+            "ms_per_frame": 0.04219650655021834,
+            "frame_count": 229
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 70,
+            "inclusive_us": 21914,
+            "max_us": 426,
+            "ms_per_frame": 0.0956943231441048,
+            "frame_count": 229
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 342,
+            "inclusive_us": 4940,
+            "max_us": 28,
+            "ms_per_frame": 0.021572052401746724,
+            "frame_count": 229
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 229,
+            "inclusive_us": 32935,
+            "max_us": 637,
+            "ms_per_frame": 0.14382096069868996,
+            "frame_count": 229
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 9536,
+            "inclusive_us": 158400,
+            "max_us": 98,
+            "ms_per_frame": 0.691703056768559,
+            "frame_count": 229
+          }
+        },
+        "final-held": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 342,
+            "inclusive_us": 1641,
+            "max_us": 12,
+            "ms_per_frame": 0.004798245614035087,
+            "frame_count": 342
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 342,
+            "inclusive_us": 18124,
+            "max_us": 189,
+            "ms_per_frame": 0.05299415204678363,
+            "frame_count": 342
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 342,
+            "inclusive_us": 16662,
+            "max_us": 176,
+            "ms_per_frame": 0.04871929824561404,
+            "frame_count": 342
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 684,
+            "inclusive_us": 1579,
+            "max_us": 6,
+            "ms_per_frame": 0.0046169590643274855,
+            "frame_count": 342
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 342,
+            "inclusive_us": 389219,
+            "max_us": 3597,
+            "ms_per_frame": 1.1380672514619883,
+            "frame_count": 342
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 342,
+            "inclusive_us": 56936,
+            "max_us": 728,
+            "ms_per_frame": 0.1664795321637427,
+            "frame_count": 342
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 109,
+            "inclusive_us": 13308,
+            "max_us": 171,
+            "ms_per_frame": 0.038912280701754384,
+            "frame_count": 342
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 109,
+            "inclusive_us": 36219,
+            "max_us": 519,
+            "ms_per_frame": 0.10590350877192982,
+            "frame_count": 342
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 588,
+            "inclusive_us": 8158,
+            "max_us": 32,
+            "ms_per_frame": 0.02385380116959064,
+            "frame_count": 342
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 342,
+            "inclusive_us": 51555,
+            "max_us": 706,
+            "ms_per_frame": 0.15074561403508774,
+            "frame_count": 342
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 15278,
+            "inclusive_us": 271679,
+            "max_us": 119,
+            "ms_per_frame": 0.7943830409356725,
+            "frame_count": 342
+          }
+        }
+      }
+    },
+    {
+      "name": "dar-pose-profile-native",
+      "pack": "direct-pose-detail-profile",
+      "script_control": false,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-pose-profile-native",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording"
+      ],
+      "start": 1792946748.7704444,
+      "finish": 1792946858.9468057,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_seconds": 33.444585000000004,
+      "walking_frames": 1905,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.247707,
+          "frames": 445,
+          "frame_ms": {
+            "max": 31.036,
+            "median": 18.233,
+            "p95": 23.015
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.109375,
+            286.109375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 9.134119,
+          "frames": 584,
+          "frame_ms": {
+            "max": 27.122,
+            "median": 15.325,
+            "p95": 20.907
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.25,
+            276.0625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.111891,
+          "frames": 507,
+          "frame_ms": {
+            "max": 26.596,
+            "median": 15.782,
+            "p95": 20.98
+          },
+          "from": [
+            182.359375,
+            275.984375
+          ],
+          "to": [
+            188.65625,
+            291.84375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.950868,
+          "frames": 369,
+          "frame_ms": {
+            "max": 34.94,
+            "median": 21.271,
+            "p95": 26.773
+          },
+          "from": [
+            188.6875,
+            291.90625
+          ],
+          "to": [
+            183.125,
+            276.390625
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ],
+      "scopes": {
+        "held-fg-off": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 397,
+            "inclusive_us": 1806,
+            "max_us": 11,
+            "ms_per_frame": 0.00454911838790932,
+            "frame_count": 397
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 397,
+            "inclusive_us": 21973,
+            "max_us": 133,
+            "ms_per_frame": 0.05534760705289673,
+            "frame_count": 397
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 397,
+            "inclusive_us": 20373,
+            "max_us": 126,
+            "ms_per_frame": 0.05131738035264484,
+            "frame_count": 397
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 794,
+            "inclusive_us": 1802,
+            "max_us": 9,
+            "ms_per_frame": 0.00453904282115869,
+            "frame_count": 397
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 397,
+            "inclusive_us": 302732,
+            "max_us": 2158,
+            "ms_per_frame": 0.7625491183879093,
+            "frame_count": 397
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 397,
+            "inclusive_us": 114993,
+            "max_us": 1406,
+            "ms_per_frame": 0.28965491183879094,
+            "frame_count": 397
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 103,
+            "inclusive_us": 27479,
+            "max_us": 339,
+            "ms_per_frame": 0.06921662468513855,
+            "frame_count": 397
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 103,
+            "inclusive_us": 78875,
+            "max_us": 1037,
+            "ms_per_frame": 0.19867758186397985,
+            "frame_count": 397
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1872,
+            "inclusive_us": 19178,
+            "max_us": 26,
+            "ms_per_frame": 0.048307304785894206,
+            "frame_count": 397
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 397,
+            "inclusive_us": 108629,
+            "max_us": 1378,
+            "ms_per_frame": 0.27362468513853905,
+            "frame_count": 397
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 17428,
+            "inclusive_us": 353024,
+            "max_us": 116,
+            "ms_per_frame": 0.8892292191435769,
+            "frame_count": 397
+          }
+        },
+        "walk-0": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 445,
+            "inclusive_us": 90573,
+            "max_us": 547,
+            "ms_per_frame": 0.20353483146067416,
+            "frame_count": 445
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 445,
+            "inclusive_us": 113283,
+            "max_us": 604,
+            "ms_per_frame": 0.25456853932584267,
+            "frame_count": 445
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 445,
+            "inclusive_us": 111306,
+            "max_us": 600,
+            "ms_per_frame": 0.2501258426966292,
+            "frame_count": 445
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 890,
+            "inclusive_us": 19299,
+            "max_us": 83,
+            "ms_per_frame": 0.0433685393258427,
+            "frame_count": 445
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 444,
+            "inclusive_us": 40670,
+            "max_us": 392,
+            "ms_per_frame": 0.0913932584269663,
+            "frame_count": 445
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 445,
+            "inclusive_us": 356122,
+            "max_us": 2776,
+            "ms_per_frame": 0.8002741573033708,
+            "frame_count": 445
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 445,
+            "inclusive_us": 134438,
+            "max_us": 1585,
+            "ms_per_frame": 0.3021078651685393,
+            "frame_count": 445
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 146,
+            "inclusive_us": 30899,
+            "max_us": 373,
+            "ms_per_frame": 0.06943595505617978,
+            "frame_count": 445
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 146,
+            "inclusive_us": 93399,
+            "max_us": 1204,
+            "ms_per_frame": 0.20988539325842698,
+            "frame_count": 445
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1833,
+            "inclusive_us": 20411,
+            "max_us": 33,
+            "ms_per_frame": 0.04586741573033708,
+            "frame_count": 445
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 445,
+            "inclusive_us": 127132,
+            "max_us": 1563,
+            "ms_per_frame": 0.28568988764044945,
+            "frame_count": 445
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 20501,
+            "inclusive_us": 397878,
+            "max_us": 133,
+            "ms_per_frame": 0.8941078651685394,
+            "frame_count": 445
+          }
+        },
+        "pan-0": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 216,
+            "inclusive_us": 2650,
+            "max_us": 214,
+            "ms_per_frame": 0.012268518518518519,
+            "frame_count": 216
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 216,
+            "inclusive_us": 13255,
+            "max_us": 272,
+            "ms_per_frame": 0.06136574074074074,
+            "frame_count": 216
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 216,
+            "inclusive_us": 12358,
+            "max_us": 267,
+            "ms_per_frame": 0.05721296296296296,
+            "frame_count": 216
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 432,
+            "inclusive_us": 1330,
+            "max_us": 47,
+            "ms_per_frame": 0.0061574074074074074,
+            "frame_count": 216
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 9,
+            "inclusive_us": 771,
+            "max_us": 93,
+            "ms_per_frame": 0.0035694444444444445,
+            "frame_count": 216
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 216,
+            "inclusive_us": 205163,
+            "max_us": 2605,
+            "ms_per_frame": 0.9498287037037036,
+            "frame_count": 216
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 216,
+            "inclusive_us": 51019,
+            "max_us": 991,
+            "ms_per_frame": 0.2361990740740741,
+            "frame_count": 216
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 69,
+            "inclusive_us": 11464,
+            "max_us": 220,
+            "ms_per_frame": 0.05307407407407408,
+            "frame_count": 216
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 69,
+            "inclusive_us": 34994,
+            "max_us": 741,
+            "ms_per_frame": 0.16200925925925927,
+            "frame_count": 216
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 710,
+            "inclusive_us": 9151,
+            "max_us": 27,
+            "ms_per_frame": 0.04236574074074074,
+            "frame_count": 216
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 216,
+            "inclusive_us": 47708,
+            "max_us": 974,
+            "ms_per_frame": 0.22087037037037038,
+            "frame_count": 216
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 10095,
+            "inclusive_us": 186907,
+            "max_us": 107,
+            "ms_per_frame": 0.8653101851851852,
+            "frame_count": 216
+          }
+        },
+        "walk-1": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 584,
+            "inclusive_us": 113767,
+            "max_us": 339,
+            "ms_per_frame": 0.19480650684931508,
+            "frame_count": 584
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 584,
+            "inclusive_us": 141277,
+            "max_us": 423,
+            "ms_per_frame": 0.2419126712328767,
+            "frame_count": 584
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 584,
+            "inclusive_us": 138949,
+            "max_us": 417,
+            "ms_per_frame": 0.2379263698630137,
+            "frame_count": 584
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 1168,
+            "inclusive_us": 22587,
+            "max_us": 74,
+            "ms_per_frame": 0.0386763698630137,
+            "frame_count": 584
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 583,
+            "inclusive_us": 50716,
+            "max_us": 145,
+            "ms_per_frame": 0.08684246575342466,
+            "frame_count": 584
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 584,
+            "inclusive_us": 618971,
+            "max_us": 3073,
+            "ms_per_frame": 1.0598818493150683,
+            "frame_count": 584
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 584,
+            "inclusive_us": 122941,
+            "max_us": 1353,
+            "ms_per_frame": 0.2105154109589041,
+            "frame_count": 584
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 163,
+            "inclusive_us": 30654,
+            "max_us": 324,
+            "ms_per_frame": 0.05248972602739726,
+            "frame_count": 584
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 163,
+            "inclusive_us": 80019,
+            "max_us": 1020,
+            "ms_per_frame": 0.13701883561643838,
+            "frame_count": 584
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1609,
+            "inclusive_us": 17545,
+            "max_us": 37,
+            "ms_per_frame": 0.030042808219178083,
+            "frame_count": 584
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 584,
+            "inclusive_us": 113949,
+            "max_us": 1332,
+            "ms_per_frame": 0.1951181506849315,
+            "frame_count": 584
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 24729,
+            "inclusive_us": 423793,
+            "max_us": 179,
+            "ms_per_frame": 0.7256729452054794,
+            "frame_count": 584
+          }
+        },
+        "pan-1": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 299,
+            "inclusive_us": 3624,
+            "max_us": 277,
+            "ms_per_frame": 0.012120401337792642,
+            "frame_count": 299
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 299,
+            "inclusive_us": 17529,
+            "max_us": 345,
+            "ms_per_frame": 0.05862541806020066,
+            "frame_count": 299
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 299,
+            "inclusive_us": 16401,
+            "max_us": 340,
+            "ms_per_frame": 0.054852842809364546,
+            "frame_count": 299
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 598,
+            "inclusive_us": 1855,
+            "max_us": 98,
+            "ms_per_frame": 0.0062040133779264215,
+            "frame_count": 299
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 12,
+            "inclusive_us": 1075,
+            "max_us": 122,
+            "ms_per_frame": 0.0035953177257525082,
+            "frame_count": 299
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 299,
+            "inclusive_us": 234364,
+            "max_us": 3199,
+            "ms_per_frame": 0.7838260869565218,
+            "frame_count": 299
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 299,
+            "inclusive_us": 52831,
+            "max_us": 1085,
+            "ms_per_frame": 0.17669230769230768,
+            "frame_count": 299
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 71,
+            "inclusive_us": 11575,
+            "max_us": 259,
+            "ms_per_frame": 0.038712374581939796,
+            "frame_count": 299
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 71,
+            "inclusive_us": 35342,
+            "max_us": 788,
+            "ms_per_frame": 0.11820066889632108,
+            "frame_count": 299
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 683,
+            "inclusive_us": 7205,
+            "max_us": 25,
+            "ms_per_frame": 0.024096989966555186,
+            "frame_count": 299
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 299,
+            "inclusive_us": 48432,
+            "max_us": 1064,
+            "ms_per_frame": 0.16197993311036787,
+            "frame_count": 299
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 12259,
+            "inclusive_us": 221017,
+            "max_us": 123,
+            "ms_per_frame": 0.7391872909698997,
+            "frame_count": 299
+          }
+        },
+        "walk-2": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 507,
+            "inclusive_us": 102810,
+            "max_us": 595,
+            "ms_per_frame": 0.2027810650887574,
+            "frame_count": 507
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 507,
+            "inclusive_us": 127907,
+            "max_us": 636,
+            "ms_per_frame": 0.2522820512820513,
+            "frame_count": 507
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 507,
+            "inclusive_us": 125743,
+            "max_us": 632,
+            "ms_per_frame": 0.2480138067061144,
+            "frame_count": 507
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 1014,
+            "inclusive_us": 20604,
+            "max_us": 71,
+            "ms_per_frame": 0.04063905325443787,
+            "frame_count": 507
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 503,
+            "inclusive_us": 45784,
+            "max_us": 485,
+            "ms_per_frame": 0.09030374753451675,
+            "frame_count": 507
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 507,
+            "inclusive_us": 491512,
+            "max_us": 3260,
+            "ms_per_frame": 0.9694516765285995,
+            "frame_count": 507
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 507,
+            "inclusive_us": 166533,
+            "max_us": 2110,
+            "ms_per_frame": 0.3284674556213018,
+            "frame_count": 507
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 142,
+            "inclusive_us": 40486,
+            "max_us": 517,
+            "ms_per_frame": 0.07985404339250493,
+            "frame_count": 507
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 142,
+            "inclusive_us": 114670,
+            "max_us": 1544,
+            "ms_per_frame": 0.22617357001972385,
+            "frame_count": 507
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 2428,
+            "inclusive_us": 27417,
+            "max_us": 34,
+            "ms_per_frame": 0.05407692307692308,
+            "frame_count": 507
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 507,
+            "inclusive_us": 158298,
+            "max_us": 2082,
+            "ms_per_frame": 0.3122248520710059,
+            "frame_count": 507
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 26560,
+            "inclusive_us": 522485,
+            "max_us": 267,
+            "ms_per_frame": 1.030542406311637,
+            "frame_count": 507
+          }
+        },
+        "pan-2": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 257,
+            "inclusive_us": 3867,
+            "max_us": 300,
+            "ms_per_frame": 0.01504669260700389,
+            "frame_count": 257
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 257,
+            "inclusive_us": 17150,
+            "max_us": 368,
+            "ms_per_frame": 0.06673151750972763,
+            "frame_count": 257
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 257,
+            "inclusive_us": 16045,
+            "max_us": 363,
+            "ms_per_frame": 0.062431906614785995,
+            "frame_count": 257
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 514,
+            "inclusive_us": 1746,
+            "max_us": 69,
+            "ms_per_frame": 0.0067937743190661475,
+            "frame_count": 257
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 12,
+            "inclusive_us": 1221,
+            "max_us": 141,
+            "ms_per_frame": 0.004750972762645914,
+            "frame_count": 257
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 257,
+            "inclusive_us": 253315,
+            "max_us": 3427,
+            "ms_per_frame": 0.9856614785992218,
+            "frame_count": 257
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 257,
+            "inclusive_us": 82564,
+            "max_us": 1737,
+            "ms_per_frame": 0.3212607003891051,
+            "frame_count": 257
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 71,
+            "inclusive_us": 21449,
+            "max_us": 409,
+            "ms_per_frame": 0.08345914396887161,
+            "frame_count": 257
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 71,
+            "inclusive_us": 55212,
+            "max_us": 1250,
+            "ms_per_frame": 0.21483268482490273,
+            "frame_count": 257
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1265,
+            "inclusive_us": 14042,
+            "max_us": 34,
+            "ms_per_frame": 0.05463813229571984,
+            "frame_count": 257
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 257,
+            "inclusive_us": 78311,
+            "max_us": 1698,
+            "ms_per_frame": 0.30471206225680936,
+            "frame_count": 257
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 13339,
+            "inclusive_us": 294002,
+            "max_us": 148,
+            "ms_per_frame": 1.143976653696498,
+            "frame_count": 257
+          }
+        },
+        "walk-3": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 369,
+            "inclusive_us": 77185,
+            "max_us": 421,
+            "ms_per_frame": 0.20917344173441735,
+            "frame_count": 369
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 369,
+            "inclusive_us": 96680,
+            "max_us": 528,
+            "ms_per_frame": 0.2620054200542006,
+            "frame_count": 369
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 369,
+            "inclusive_us": 94975,
+            "max_us": 520,
+            "ms_per_frame": 0.25738482384823846,
+            "frame_count": 369
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 738,
+            "inclusive_us": 16721,
+            "max_us": 80,
+            "ms_per_frame": 0.045314363143631436,
+            "frame_count": 369
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 368,
+            "inclusive_us": 34819,
+            "max_us": 178,
+            "ms_per_frame": 0.09436043360433603,
+            "frame_count": 369
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 369,
+            "inclusive_us": 439382,
+            "max_us": 3528,
+            "ms_per_frame": 1.190737127371274,
+            "frame_count": 369
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 369,
+            "inclusive_us": 90119,
+            "max_us": 1175,
+            "ms_per_frame": 0.2442249322493225,
+            "frame_count": 369
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 126,
+            "inclusive_us": 22992,
+            "max_us": 301,
+            "ms_per_frame": 0.0623089430894309,
+            "frame_count": 369
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 126,
+            "inclusive_us": 58624,
+            "max_us": 797,
+            "ms_per_frame": 0.15887262872628727,
+            "frame_count": 369
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 1112,
+            "inclusive_us": 14167,
+            "max_us": 33,
+            "ms_per_frame": 0.03839295392953929,
+            "frame_count": 369
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 369,
+            "inclusive_us": 84012,
+            "max_us": 1114,
+            "ms_per_frame": 0.22767479674796748,
+            "frame_count": 369
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 19331,
+            "inclusive_us": 299409,
+            "max_us": 145,
+            "ms_per_frame": 0.8114065040650407,
+            "frame_count": 369
+          }
+        },
+        "pan-3": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 223,
+            "inclusive_us": 3075,
+            "max_us": 283,
+            "ms_per_frame": 0.013789237668161435,
+            "frame_count": 223
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 223,
+            "inclusive_us": 14772,
+            "max_us": 356,
+            "ms_per_frame": 0.0662421524663677,
+            "frame_count": 223
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 223,
+            "inclusive_us": 13805,
+            "max_us": 351,
+            "ms_per_frame": 0.06190582959641256,
+            "frame_count": 223
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 446,
+            "inclusive_us": 1565,
+            "max_us": 64,
+            "ms_per_frame": 0.007017937219730942,
+            "frame_count": 223
+          },
+          "game/direct_pose.gd:sample": {
+            "calls": 10,
+            "inclusive_us": 930,
+            "max_us": 127,
+            "ms_per_frame": 0.004170403587443946,
+            "frame_count": 223
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 223,
+            "inclusive_us": 201154,
+            "max_us": 3251,
+            "ms_per_frame": 0.9020358744394619,
+            "frame_count": 223
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 223,
+            "inclusive_us": 42039,
+            "max_us": 645,
+            "ms_per_frame": 0.18851569506726457,
+            "frame_count": 223
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 73,
+            "inclusive_us": 9629,
+            "max_us": 167,
+            "ms_per_frame": 0.04317937219730942,
+            "frame_count": 223
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 73,
+            "inclusive_us": 27352,
+            "max_us": 464,
+            "ms_per_frame": 0.12265470852017937,
+            "frame_count": 223
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 463,
+            "inclusive_us": 6523,
+            "max_us": 26,
+            "ms_per_frame": 0.029251121076233184,
+            "frame_count": 223
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 223,
+            "inclusive_us": 38376,
+            "max_us": 625,
+            "ms_per_frame": 0.17208968609865471,
+            "frame_count": 223
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 9857,
+            "inclusive_us": 154833,
+            "max_us": 116,
+            "ms_per_frame": 0.6943183856502242,
+            "frame_count": 223
+          }
+        },
+        "final-held": {
+          "game/direct_pose.gd:_compose_pose": {
+            "calls": 345,
+            "inclusive_us": 1596,
+            "max_us": 12,
+            "ms_per_frame": 0.004626086956521739,
+            "frame_count": 345
+          },
+          "game/direct_pose.gd:_process": {
+            "calls": 345,
+            "inclusive_us": 18725,
+            "max_us": 103,
+            "ms_per_frame": 0.05427536231884058,
+            "frame_count": 345
+          },
+          "game/direct_pose.gd:apply_pose": {
+            "calls": 345,
+            "inclusive_us": 17239,
+            "max_us": 96,
+            "ms_per_frame": 0.04996811594202899,
+            "frame_count": 345
+          },
+          "game/direct_pose.gd:restore_pose": {
+            "calls": 690,
+            "inclusive_us": 1654,
+            "max_us": 10,
+            "ms_per_frame": 0.004794202898550725,
+            "frame_count": 345
+          },
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 345,
+            "inclusive_us": 394870,
+            "max_us": 3257,
+            "ms_per_frame": 1.1445507246376811,
+            "frame_count": 345
+          },
+          "game/fx/terrain_details.gd:_update_motion": {
+            "calls": 345,
+            "inclusive_us": 55928,
+            "max_us": 848,
+            "ms_per_frame": 0.16211014492753623,
+            "frame_count": 345
+          },
+          "game/fx/vegetation_interaction.gd:advance": {
+            "calls": 109,
+            "inclusive_us": 12439,
+            "max_us": 187,
+            "ms_per_frame": 0.036055072463768115,
+            "frame_count": 345
+          },
+          "game/fx/vegetation_interaction.gd:contacts": {
+            "calls": 109,
+            "inclusive_us": 35995,
+            "max_us": 619,
+            "ms_per_frame": 0.10433333333333333,
+            "frame_count": 345
+          },
+          "game/fx/vegetation_interaction.gd:posed_bounds": {
+            "calls": 533,
+            "inclusive_us": 7429,
+            "max_us": 41,
+            "ms_per_frame": 0.021533333333333335,
+            "frame_count": 345
+          },
+          "game/fx/vegetation_interaction.gd:update": {
+            "calls": 345,
+            "inclusive_us": 50465,
+            "max_us": 823,
+            "ms_per_frame": 0.14627536231884058,
+            "frame_count": 345
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 14400,
+            "inclusive_us": 252654,
+            "max_us": 126,
+            "ms_per_frame": 0.7323304347826087,
+            "frame_count": 345
+          }
+        }
+      }
+    }
+  ]
+}
