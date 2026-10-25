@@ -225,8 +225,13 @@ func _update(m: Mark) -> int:
 	var alpha := _decal_alpha((1.0 - maxf(f, 0.0)) * m.alpha0)
 	if moved:
 		_place(m)
-	if m.decal.modulate.a != alpha:
-		m.decal.modulate.a = alpha
+	# Color stores float32. Comparing its alpha with the unrounded script
+	# double otherwise rewrites an unchanged decal and shader every tick.
+	var previous := m.decal.modulate
+	var colour := previous
+	colour.a = alpha
+	if colour != previous:
+		m.decal.modulate = colour
 		if m.projection: m.projection.material_override.set_shader_parameter("opacity",alpha)
 	return m.life
 

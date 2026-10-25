@@ -1120,3 +1120,42 @@ original-code/Wine comparison remains recorded above. Windows/Wine results in
 this pass execute the remake and make no original-game FPS claim. The same
 loading path is shared by other campaign zones using Mirror water. Mark ageing
 remains a separate CPU candidate.
+
+## Skip unchanged ground-mark opacity uploads
+
+The remaining mark-ageing loop compared a float32 `Color.a` with the script's
+unrounded double. For example, an authored alpha of 0.8 produces
+`0.971008813452892`, while the stored colour is `0.971008837223053`. The unequal
+comparison rewrote the decal and projected-material opacity every tick even
+while the mark stayed fully opaque. The comparison now uses the renderer's
+stored colour precision and retains its current RGB channels. Lifetime,
+growth, rotation, placement, fade calculations and expiry order are unchanged.
+
+Heavy GPU Lab **4e4a1ced4622471e** compares the untouched old method with the
+new production method on the same **32 live Dar footprints**, using ordinary
+materials and their authored 0.35/0.40 alphas. The ABBA blocks measure
+**1.085 → 0.710 microseconds per mark update, 34.5% less CPU**. All **183**
+route/output checks pass. Inputs are restored outside each timed batch, and
+all visible output values match. This is a small shared CPU saving, not a
+34.5% whole-game FPS increase. The earlier counting-material screening probe
+is retained but is not the accepted performance measurement. See
+[the live comparison](mark-opacity/dar-micro.json).
+
+The registered regression passes **15,870 checks each on Linux and Windows
+under Wine**. Its independent old method is verified byte-for-byte (apart
+from class indentation). It checks unchanged uploads, full fade sequences,
+long lifetimes, expiry, blood growth/spin, external colour edits and marks
+without projected materials. The old runtime fails all five redundant-upload
+assertions. Related surface projection passes 1,338 checks on both platforms;
+blood pool save/reload passes 18. Running footprints (14), receiving surfaces
+(13) and animated blood image comparisons (24) pass on **both Vulkan and
+OpenGL**. See [check evidence](mark-opacity/checks.json).
+
+All 461 runtime files match the exported snapshot; native libraries are
+unchanged. [Provenance](mark-opacity/provenance.json) records the exact source
+and pack hashes. Original `0x6cf9e0` advances growth, spin, lifetime and fade in
+float fields; those computations are preserved. The renderer-upload boundary
+being optimized is Godot-specific, so there is no equivalent original Wine
+call comparison. The existing original blood captures remain referenced above;
+this pass makes no original-game FPS claim. This shared mark update benefits
+other campaign zones wherever unchanged opacity previously caused uploads.

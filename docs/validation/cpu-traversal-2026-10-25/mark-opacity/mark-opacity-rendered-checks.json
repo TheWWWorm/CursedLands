@@ -1,0 +1,74 @@
+[
+  {
+    "test": "footprint_running_scene",
+    "renderer": "forward_plus",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "mark-opacity-footprint_running_scene-forward_plus",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/footprint_running_scene.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "footprint_running_scene",
+    "renderer": "gl_compatibility",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "mark-opacity-footprint_running_scene-gl_compatibility",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/footprint_running_scene.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "ground_mark_receivers",
+    "renderer": "forward_plus",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "mark-opacity-ground_mark_receivers-forward_plus",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ground_mark_receivers.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "ground_mark_receivers",
+    "renderer": "gl_compatibility",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "mark-opacity-ground_mark_receivers-gl_compatibility",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ground_mark_receivers.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "ground_mark_animation",
+    "renderer": "forward_plus",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "mark-opacity-ground_mark_animation-forward_plus",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ground_mark_animation.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "ground_mark_animation",
+    "renderer": "gl_compatibility",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "mark-opacity-ground_mark_animation-gl_compatibility",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ground_mark_animation.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  }
+]

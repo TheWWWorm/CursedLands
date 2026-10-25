@@ -1442,6 +1442,17 @@
       "mode": "headless",
       "args": [],
       "min_checks": 1338
+    },
+    {
+      "id": "ground_mark_opacity",
+      "script": "tools/tests/ground_mark_opacity.gd",
+      "summary": "GROUND_MARK_OPACITY",
+      "contract": "Unchanged float32 ground-mark opacity skips redundant decal/material writes while exact visible fades, growth, rotation, expiry and external colour edits retain old behavior.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 15870
     }
   ]
 }

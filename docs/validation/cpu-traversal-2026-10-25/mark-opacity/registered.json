@@ -1,0 +1,83 @@
+{
+  "git_head": "1bc39a0547c2954bbd29d8654f4768f4a326fb41",
+  "game_source_sha256": "5b03bebd470f212be6a44b36e66863112555db1bae1e79354e4a179abb65c653",
+  "manifest_sha256": "ad8daa4986b26e09de7b77215a0985ff87c10300ee4412e90b109e88b992d106",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "ground_mark_projection_native",
+      "script": "tools/tests/ground_mark_projection_native.gd",
+      "script_sha256": "61eedbbe3e6fc5925cc71dd18ebb9f82197c55b442733fd8e6ed8129c347fce8",
+      "contract": "Native ground-mark subdivision and clipping preserve exact ordered terrain/floor geometry, live changes, animated patches and complete scalar/custom fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.97,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-registered/ground_mark_projection_native/fixtures/ground_mark_projection_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-registered/ground_mark_projection_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "ground_mark_projection_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1338,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "ground_mark_opacity",
+      "script": "tools/tests/ground_mark_opacity.gd",
+      "script_sha256": "25c6a7796a911127a839d93555a3113c465e3f2d4e71894e779f74b752bb4ef3",
+      "contract": "Unchanged float32 ground-mark opacity skips redundant decal/material writes while exact visible fades, growth, rotation, expiry and external colour edits retain old behavior.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 2.92,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-registered/ground_mark_opacity/fixtures/ground_mark_opacity.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-registered/ground_mark_opacity/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "ground_mark_opacity/run.log",
+      "passed": true,
+      "result": {
+        "checks": 15870,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.pck",
+    "sha256": "8aeff7fea33ef5fef833d26e327bc1f24444ab08a869afd9f859b7d4c0d5f20f"
+  },
+  "passed": true
+}
