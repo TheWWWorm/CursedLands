@@ -1,0 +1,38 @@
+{
+  "star-contract-linux": [
+    "STAR_PARTICLES_TIMING [{\"kind\":8248,\"native\":false,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":226327},{\"kind\":8248,\"native\":true,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":87680},{\"kind\":8248,\"native\":true,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":89335},{\"kind\":8248,\"native\":false,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":233859},{\"kind\":8269,\"native\":false,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":11148},{\"kind\":8269,\"native\":true,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":4758},{\"kind\":8269,\"native\":true,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":4743},{\"kind\":8269,\"native\":false,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":10053}]",
+    "STAR_PARTICLES checks=17473 failures=0"
+  ],
+  "star-contract-windows": [
+    "STAR_PARTICLES_TIMING [{\"kind\":8248,\"native\":false,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":248591},{\"kind\":8248,\"native\":true,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":89802},{\"kind\":8248,\"native\":true,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":90044},{\"kind\":8248,\"native\":false,\"particles\":425,\"rng_state\":-2188850998872477932,\"ticks\":600,\"usec\":249990},{\"kind\":8269,\"native\":false,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":10804},{\"kind\":8269,\"native\":true,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":5219},{\"kind\":8269,\"native\":true,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":5219},{\"kind\":8269,\"native\":false,\"particles\":22,\"rng_state\":2318037763194997,\"ticks\":600,\"usec\":10785}]",
+    "STAR_PARTICLES checks=17473 failures=0"
+  ],
+  "star-contract-before": [
+    "FAIL native star updates are available",
+    "STAR_PARTICLES checks=1 failures=1"
+  ],
+  "star-wisp-combat": [
+    "WISP_COMBAT checks=438 failures=0 family=[\"WillowispM1\", \"WillowispM3\", \"WillowispM5\"]"
+  ],
+  "star-related-linux-fire_particles": [
+    "FIRE_PARTICLES checks=43389 failures=0 native_us=41822 script_us=146865"
+  ],
+  "star-related-linux-spell_particles": [
+    "SPELL_PARTICLES checks=101055 failures=0 native_ticks=16754 native_us=451748 script_us=1537799"
+  ],
+  "star-related-linux-wisp_native_callbacks": [
+    "WISP_NATIVE_CALLBACKS checks=4428 failures=0 cases=16"
+  ],
+  "star-related-windows-fire_particles": [
+    "FIRE_PARTICLES checks=43389 failures=0 native_us=43826 script_us=162050"
+  ],
+  "star-related-windows-spell_particles": [
+    "SPELL_PARTICLES checks=101055 failures=0 native_ticks=16754 native_us=454302 script_us=1599096"
+  ],
+  "star-related-windows-wisp_native_callbacks": [
+    "WISP_NATIVE_CALLBACKS checks=4428 failures=0 cases=16"
+  ],
+  "star-related-linux-ambient_ground_native": [
+    "AMBIENT_GROUND_NATIVE checks=5117 failures=0"
+  ]
+}

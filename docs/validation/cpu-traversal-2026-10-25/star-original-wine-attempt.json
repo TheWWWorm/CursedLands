@@ -1,0 +1,24 @@
+{
+  "original_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "build": [
+    "/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr/bin/x86_64-w64-mingw32-gcc",
+    "-m32",
+    "-O1",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-nostdlib",
+    "-Wl,-mi386pe",
+    "-Wl,-T,/usr/lib/x86_64-linux-gnu/ldscripts/i386pe.x",
+    "-Wl,--entry,__start",
+    "-Wl,--image-base,0x400000",
+    "-Wl,--stack,0x10000",
+    "-Wl,--heap,0x10000",
+    "replay_star_updates_wine.c",
+    "replay_kernel32.a",
+    "replay_msvcrt.a",
+    "-o",
+    "replay_star_updates_wine.exe"
+  ],
+  "wine": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+  "returncode": 5
+}

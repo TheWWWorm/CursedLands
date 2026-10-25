@@ -143,6 +143,15 @@ order, all interpolation fields and the subsequent RNG state are identical.
 emission settings, custom callbacks and concurrent independent emitters.
 The generated binding profile includes `RandomNumberGenerator` for this helper.
 
+`StarParticleKernel` batches the existing exit and wisp particle update and
+stable removal pass. Their spawn callbacks still sample authored ground and
+live carrier state in script. Particle ordering, interpolation fields, RNG
+draws and emitter lifecycle match the scalar path exactly. Custom callbacks,
+derived emitters and older libraries retain that path; `-- --ei-script-stars`
+selects it explicitly. Only exit emitters use the existing particle workers;
+wisp attachment and lifecycle stay on the main thread. The registered
+`star_particles` regression checks both paths, including concurrent emitters.
+
 The extension and its bindings compile with `-ffp-contract=off`, matching the
 engine. This is required for exact interpolation on ARM: fused multiply/add
 otherwise changes intermediate rounding and subsequent movement state.

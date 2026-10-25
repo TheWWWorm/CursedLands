@@ -1,0 +1,7 @@
+LIBRARY KERNEL32.dll
+EXPORTS
+CreateFileA@28
+GetFileSize@8
+ReadFile@20
+VirtualAlloc@16
+ExitProcess@4

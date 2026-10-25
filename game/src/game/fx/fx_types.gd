@@ -376,6 +376,8 @@ static func create(fx, type: int) -> FxEmitter:
 		e.prepare_fire_batch()
 	if e.spawn_fn in [T.sp_modifier, T.sp_orbit, T.sp_tornado, T.sp_blast, T.sp_castel]:
 		e.prepare_spell_batch()
+	if e.spawn_fn in [T.sp_exit, T.sp_wisp]:
+		e.prepare_star_batch()
 	e.par = not (SERIAL.has(e.spawn_fn.get_method()) or SERIAL.has(e.upd_fn.get_method()) \
 		or SERIAL.has(e.ctl_fn.get_method()))
 	return e

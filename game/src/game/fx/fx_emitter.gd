@@ -90,6 +90,23 @@ var _spell_kernel: RefCounted
 var _spell_spawn: Callable
 var _spell_update: Callable
 var _spell_control: Callable
+var _star_kernel: RefCounted
+var _star_spawn: Callable
+var _star_update: Callable
+var _star_type := 0
+
+
+func prepare_star_batch() -> void:
+	# Subclasses may override rnd(), stop() or attach(). Keep their callbacks.
+	if get_script() != FxEmitter or OS.get_cmdline_user_args().has("--ei-script-stars"): return
+	if ClassDB.class_exists("StarParticleKernel"):
+		_star_kernel = ClassDB.instantiate("StarParticleKernel")
+		if not _star_kernel.supports_type(type):
+			_star_kernel = null
+			return
+		_star_spawn = spawn_fn
+		_star_update = upd_fn
+		_star_type = type
 
 
 func prepare_spell_batch() -> void:
@@ -223,6 +240,9 @@ func update_pre() -> bool:
 ## this emitter (and its ground snapshot) when `par`, no node or other
 ## object; returns false when the emitter is finished.
 func update_sim() -> bool:
+	if _star_kernel and type == _star_type and spawn_fn == _star_spawn and upd_fn == _star_update and not ctl_fn.is_valid():
+		if _star_kernel.advance(self):
+			return _spawn_particles()
 	if _fire_kernel and spawn_fn == _fire_spawn and upd_fn == _fire_update and ctl_fn == _fire_control:
 		if ctl_fn.is_valid():
 			for c in cp: ctl_fn.call(self, c)
@@ -270,6 +290,12 @@ func update_sim_script() -> bool:
 			p[3] = p[7]
 			p[0x16] = p[0x17]
 		i += 1
+	return _spawn_particles()
+
+
+## Shared emission policy. Star batches keep their original spawn callbacks,
+## including ground queries, carrier changes and exact random consumption.
+func _spawn_particles() -> bool:
 	var n := roundi(moved / d4) if d4 != 0.0 else 0
 	if n <= d0:
 		n = d0

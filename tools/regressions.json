@@ -932,6 +932,17 @@
       "mode": "headless",
       "args": [],
       "min_checks": 5117
+    },
+    {
+      "id": "star_particles",
+      "script": "tools/tests/star_particles.gd",
+      "summary": "STAR_PARTICLES",
+      "contract": "Native exit/wisp updates preserve ordered interpolation, random streams, ground/carrier spawning, lifecycle and custom/older-library fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 17473
     }
   ]
 }

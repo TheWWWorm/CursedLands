@@ -1,0 +1,71 @@
+{
+  "base_commit": "5c3e4c690dbf188d104a573c0d356fb75b1c7eeb",
+  "source_sha256": {
+    "game/src/game/fx/fx_emitter.gd": "7c14ff716ce5b6604a5d282f5413172da32b0115f9e5e21e1238b8c9ee7bce93",
+    "game/src/game/fx/fx_types.gd": "15a624404f5d0f01d9ec7e3decad404603c92af60cad13807bbe2aa67e0a1810",
+    "game/src/native/source/star_particles.h": "8b01de6ad93f2ed78b99f3c5f4b5e439c309df435516e9c8d4d9ef9cafe02c07",
+    "game/src/native/source/nav_kernel.cpp": "9ac85980ecf72f0051478d715dcf9ee9c397f1d9d608298616cca0127eca7f2b",
+    "tools/tests/star_particles.gd": "78127de7ec446d3c4338c90fa4f9f5bb26bc8fbe03a3a26f3d42ee54e01b88e2"
+  },
+  "packs": {
+    "star-particles-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "c864d1944ef624b67ef7f9527883c30461d62bbc0224d76f540b2a410918bc16",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "15c5820c4628f66d12f3a7fbb4ce112295aaaa3ff61ef1fb82f83dd113034fec",
+      "src/native/bin/libpath_nrd.dll": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "acc0f99e1f4c91a926f01b2c3fc88c76cdd15df1bee8cf6bfebd36f69f0c0ccb",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "e635fd633d63333e5fd64f3557525921b47862ceb4a354064038c501a488eb4d"
+    },
+    "star-particles-final-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "0539e078b3c606c44320eb5c36076f869bbf22dd178a1cf8c69801344db5f3dc",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "15c5820c4628f66d12f3a7fbb4ce112295aaaa3ff61ef1fb82f83dd113034fec",
+      "src/native/bin/libpath_nrd.dll": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "acc0f99e1f4c91a926f01b2c3fc88c76cdd15df1bee8cf6bfebd36f69f0c0ccb",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "e635fd633d63333e5fd64f3557525921b47862ceb4a354064038c501a488eb4d"
+    },
+    "star-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "aaeea1830fc263d8b9fc23faacbf9fb19a89ae5c15c08a48e6cd30d3c12a25dd",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "15c5820c4628f66d12f3a7fbb4ce112295aaaa3ff61ef1fb82f83dd113034fec",
+      "src/native/bin/libpath_nrd.dll": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "acc0f99e1f4c91a926f01b2c3fc88c76cdd15df1bee8cf6bfebd36f69f0c0ccb",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "e635fd633d63333e5fd64f3557525921b47862ceb4a354064038c501a488eb4d"
+    }
+  },
+  "production_libraries": {
+    "libterrain_search_android.so": "15c5820c4628f66d12f3a7fbb4ce112295aaaa3ff61ef1fb82f83dd113034fec",
+    "libterrain_search.dll": "acc0f99e1f4c91a926f01b2c3fc88c76cdd15df1bee8cf6bfebd36f69f0c0ccb",
+    "libterrain_search.so": "e635fd633d63333e5fd64f3557525921b47862ceb4a354064038c501a488eb4d"
+  },
+  "test_pack_patch": "figure.gd from 18b58726, same weather fix used in previous private packs; neither star pack includes pending cloud preparation. Windows preset name is Windows; the corrected export succeeded.",
+  "android": "ARM64 rebuilt, not executed on a device",
+  "original_wine": "Controlled callback harness could not map original address 0x490000, exit 5. No successful original Wine runtime comparison claimed."
+}

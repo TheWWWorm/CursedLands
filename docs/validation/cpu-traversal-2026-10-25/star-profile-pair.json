@@ -1,0 +1,27 @@
+[
+  {
+    "name": "star-profile-script",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "star-profile-script",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/traversal-scopes.gd",
+      "rendered",
+      "--gameplay-config=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/star-profile-gz16g.json",
+      "--ei-script-stars"
+    ]
+  },
+  {
+    "name": "star-profile-native",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "star-profile-native",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/traversal-scopes.gd",
+      "rendered",
+      "--gameplay-config=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/star-profile-gz16g.json"
+    ]
+  }
+]

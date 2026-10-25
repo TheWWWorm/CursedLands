@@ -1,0 +1,30 @@
+[
+  {
+    "test": "fire_particles",
+    "returncode": 0,
+    "summary": [
+      "FIRE_PARTICLES checks=43389 failures=0 native_us=41822 script_us=146865"
+    ]
+  },
+  {
+    "test": "spell_particles",
+    "returncode": 0,
+    "summary": [
+      "SPELL_PARTICLES checks=101055 failures=0 native_ticks=16754 native_us=451748 script_us=1537799"
+    ]
+  },
+  {
+    "test": "wisp_native_callbacks",
+    "returncode": 0,
+    "summary": [
+      "WISP_NATIVE_CALLBACKS checks=4428 failures=0 cases=16"
+    ]
+  },
+  {
+    "test": "ambient_ground_native",
+    "returncode": 0,
+    "summary": [
+      "AMBIENT_GROUND_NATIVE checks=5117 failures=0"
+    ]
+  }
+]

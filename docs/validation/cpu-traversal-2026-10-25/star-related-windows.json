@@ -1,0 +1,82 @@
+[
+  {
+    "test": "star_particles",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/star-particles-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/star_particles.gd"
+    ],
+    "summary": [
+      "STAR_PARTICLES checks=17473 failures=0"
+    ]
+  },
+  {
+    "test": "fire_particles",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/star-particles-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/fire_particles.gd"
+    ],
+    "summary": [
+      "FIRE_PARTICLES checks=43389 failures=0 native_us=43826 script_us=162050"
+    ]
+  },
+  {
+    "test": "spell_particles",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/star-particles-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/spell_particles.gd"
+    ],
+    "summary": [
+      "SPELL_PARTICLES checks=101055 failures=0 native_ticks=16754 native_us=454302 script_us=1599096"
+    ]
+  },
+  {
+    "test": "wisp_native_callbacks",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/star-particles-final-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/wisp_native_callbacks.gd"
+    ],
+    "summary": [
+      "WISP_NATIVE_CALLBACKS checks=4428 failures=0 cases=16"
+    ]
+  }
+]

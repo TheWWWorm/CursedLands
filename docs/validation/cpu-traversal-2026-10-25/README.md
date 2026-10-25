@@ -543,3 +543,49 @@ does not alter original gameplay navigation. No original ambient-performance
 measurement is claimed. Original expression/picking comparisons above remain
 separate evidence. Particle loops, actor presentation and cloud startup remain
 open measured targets.
+
+### Exit and wisp particle updates
+
+`StarParticleKernel` moves the existing per-particle update and stable removal
+pass for exits (`0x2038`) and wisps (`0x204d`) into one native call. The original
+spawn callbacks still handle terrain, carrier state, gait, death and emission.
+It preserves exact particle fields, interpolation, random draws and order.
+Derived emitters, custom callbacks and older libraries retain the scalar path;
+`--ei-script-stars` selects it explicitly. Exit workers and main-thread wisps
+keep their existing ownership rules. No particles or updates are omitted.
+
+The registered regression passes **17,473 checks** on Linux and Windows/Wine,
+including concurrent exit emitters, lifecycle boundaries, changing settings,
+carrier transitions, callbacks and fallback. The preceding pack fails the
+native availability assertion. An initial exact comparison found a one-ULP
+difference in Godot's parsed wisp RNG multiplier; the helper now uses its exact
+binary value, and the assertions remain exact. Related fire (43,389), spell
+(101,055), original wisp callback (4,428) and Linux ambient-ground (5,117) checks
+pass. The actual rendered wisp lifecycle/combat fixture passes 438 checks on
+all three wisp skins (GPU Lab `3d449cf4fb444489`). Android ARM64 is rebuilt,
+but has not been executed on a device.
+
+GPU Lab `7984b610e5764f6e` compares script/native dispatch in the same diagnostic
+pack on River: standard rendering, 1080p/100%, identical options, 294 actors,
+six movement commands and normal speed. Average exit update cost falls from
+845.9 to 438.4 µs/call; wisp update cost from 38.52 to 25.17 µs/call, including
+unchanged spawning. Total main-thread particle processing falls from 0.3448 to
+0.3041 ms/frame. Worker sums overlap wall time and must not be added to this.
+Whole-window FPS is effectively unchanged (163.09 versus 163.44); this single
+instrumented pair is evidence of a smaller CPU cost, not a whole-game FPS gain.
+The isolated 600-tick Linux fixture takes 226–234 versus 88–89 ms for exits and
+10–11 versus 4.7–4.8 ms for wisps. See [scopes](star-profile-summary.json),
+[checks](star-checks.json) and [source/runtime provenance](star-provenance.json).
+
+Original English v1.06 `game.exe` (SHA-256
+`d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8`)
+has the matching exit factory at `0x48783b`, spawn at `0x492d30`, update at
+`0x492f40`, and wisp update at `0x4961b0`. Disassembly confirms lifetime,
+alpha-table order, 0.05 exit rise, atlas cycle and wisp RNG/size behavior.
+The remake adapter's existing field layout and precision are retained.
+The original wisp replay fixture continues to pass. The saved
+[REA evidence](star-original-rea-snapshot.json.gz) records the addresses and
+bytes. A controlled original-instruction Wine harness was attempted, but Wine
+could not map the required `0x490000` address (exit 5); its receipt is retained.
+Thus the new evidence is original code plus controlled replay, not a successful
+full original-game Wine particle observation or original FPS measurement.

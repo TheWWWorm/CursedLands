@@ -1,0 +1,214 @@
+{
+  "job": "7984b610e5764f6e",
+  "caveats": [
+    "One instrumented diagnostic pair, not an acceptance FPS comparison.",
+    "Worker emitter sums overlap wall time; do not add them to main-thread scopes.",
+    "No scene contents or emission count is reduced."
+  ],
+  "runs": [
+    {
+      "mode": "script",
+      "frames": 3262,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "units": 294,
+      "command_count": 6,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 1.0,
+      "options_sha256": "b0fc2856f2c3b746bf42cd77c57b8db055b5200106cc1f59ec3b4fb443b4d978",
+      "fps": 163.090092276894,
+      "frame_ms": {
+        "max": 551.969,
+        "p50": 5.55,
+        "p95": 8.623,
+        "p99": 10.603
+      },
+      "scopes": {
+        "game/fx/particle_system.gd:_process": {
+          "calls": 6287,
+          "inclusive_us": 1124788,
+          "max_us": 7578,
+          "us_per_call": 178.9069508509623,
+          "ms_per_frame": 0.34481545064377683
+        },
+        "game/fx/particle_system.gd:_tick": {
+          "calls": 682,
+          "inclusive_us": 822533,
+          "max_us": 7247,
+          "us_per_call": 1206.0601173020527,
+          "ms_per_frame": 0.25215603923973023
+        },
+        "particle_type_2001": {
+          "calls": 6052,
+          "inclusive_us": 420184,
+          "max_us": 224,
+          "us_per_call": 69.42894910773298,
+          "ms_per_frame": 0.12881177191906806
+        },
+        "particle_type_2003": {
+          "calls": 3916,
+          "inclusive_us": 124830,
+          "max_us": 78,
+          "us_per_call": 31.87691521961185,
+          "ms_per_frame": 0.03826793378295524
+        },
+        "particle_type_201b": {
+          "calls": 180,
+          "inclusive_us": 10558,
+          "max_us": 324,
+          "us_per_call": 58.65555555555556,
+          "ms_per_frame": 0.0032366646229307176
+        },
+        "particle_type_202d": {
+          "calls": 160,
+          "inclusive_us": 9649,
+          "max_us": 133,
+          "us_per_call": 60.30625,
+          "ms_per_frame": 0.0029580012262415698
+        },
+        "particle_type_2038": {
+          "calls": 378,
+          "inclusive_us": 319755,
+          "max_us": 1384,
+          "us_per_call": 845.9126984126984,
+          "ms_per_frame": 0.09802421827099939
+        },
+        "particle_type_2039": {
+          "calls": 162,
+          "inclusive_us": 22387,
+          "max_us": 3624,
+          "us_per_call": 138.19135802469137,
+          "ms_per_frame": 0.006862967504598406
+        },
+        "particle_type_203a": {
+          "calls": 66,
+          "inclusive_us": 16863,
+          "max_us": 733,
+          "us_per_call": 255.5,
+          "ms_per_frame": 0.005169527896995709
+        },
+        "particle_type_204d": {
+          "calls": 8188,
+          "inclusive_us": 315408,
+          "max_us": 138,
+          "us_per_call": 38.52076209086468,
+          "ms_per_frame": 0.09669160024524831
+        }
+      },
+      "particles": {
+        "particle_type_2001_parts": 583131,
+        "particle_type_2003_parts": 183384,
+        "particle_type_201b_parts": 22500,
+        "particle_type_202d_parts": 21190,
+        "particle_type_2038_parts": 206809,
+        "particle_type_2039_parts": 2532,
+        "particle_type_203a_parts": 6144,
+        "particle_type_204d_parts": 174317
+      }
+    },
+    {
+      "mode": "native",
+      "frames": 3269,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "units": 294,
+      "command_count": 6,
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 1.0,
+      "options_sha256": "b0fc2856f2c3b746bf42cd77c57b8db055b5200106cc1f59ec3b4fb443b4d978",
+      "fps": 163.440814626218,
+      "frame_ms": {
+        "max": 534.427,
+        "p50": 5.542,
+        "p95": 8.348,
+        "p99": 10.586
+      },
+      "scopes": {
+        "game/fx/particle_system.gd:_process": {
+          "calls": 6292,
+          "inclusive_us": 994231,
+          "max_us": 7545,
+          "us_per_call": 158.01509853782582,
+          "ms_per_frame": 0.30413918629550324
+        },
+        "game/fx/particle_system.gd:_tick": {
+          "calls": 681,
+          "inclusive_us": 688760,
+          "max_us": 7198,
+          "us_per_call": 1011.3950073421439,
+          "ms_per_frame": 0.21069440195778527
+        },
+        "particle_type_2001": {
+          "calls": 6035,
+          "inclusive_us": 424755,
+          "max_us": 179,
+          "us_per_call": 70.38193869096935,
+          "ms_per_frame": 0.12993423065157542
+        },
+        "particle_type_2003": {
+          "calls": 3905,
+          "inclusive_us": 130133,
+          "max_us": 101,
+          "us_per_call": 33.324711907810496,
+          "ms_per_frame": 0.03980819822575711
+        },
+        "particle_type_201b": {
+          "calls": 180,
+          "inclusive_us": 10607,
+          "max_us": 331,
+          "us_per_call": 58.92777777777778,
+          "ms_per_frame": 0.003244723156928724
+        },
+        "particle_type_202d": {
+          "calls": 160,
+          "inclusive_us": 9619,
+          "max_us": 151,
+          "us_per_call": 60.11875,
+          "ms_per_frame": 0.00294249005812175
+        },
+        "particle_type_2038": {
+          "calls": 377,
+          "inclusive_us": 165259,
+          "max_us": 661,
+          "us_per_call": 438.3527851458886,
+          "ms_per_frame": 0.05055338023860508
+        },
+        "particle_type_2039": {
+          "calls": 162,
+          "inclusive_us": 21973,
+          "max_us": 4045,
+          "us_per_call": 135.6358024691358,
+          "ms_per_frame": 0.006721627408993576
+        },
+        "particle_type_203a": {
+          "calls": 66,
+          "inclusive_us": 16511,
+          "max_us": 659,
+          "us_per_call": 250.16666666666666,
+          "ms_per_frame": 0.005050780055062711
+        },
+        "particle_type_204d": {
+          "calls": 8165,
+          "inclusive_us": 205533,
+          "max_us": 141,
+          "us_per_call": 25.172443355786896,
+          "ms_per_frame": 0.06287335576628938
+        }
+      },
+      "particles": {
+        "particle_type_2001_parts": 581438,
+        "particle_type_2003_parts": 182851,
+        "particle_type_201b_parts": 22500,
+        "particle_type_202d_parts": 21190,
+        "particle_type_2038_parts": 206265,
+        "particle_type_2039_parts": 2532,
+        "particle_type_203a_parts": 6144,
+        "particle_type_204d_parts": 173811
+      }
+    }
+  ]
+}

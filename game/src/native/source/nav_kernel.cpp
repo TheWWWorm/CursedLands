@@ -39,6 +39,7 @@
 #include "audio_decode.h"
 #include "fire_particles.h"
 #include "spell_particles.h"
+#include "star_particles.h"
 #include "grass_chunk.h"
 #include "ambient_ground.h"
 #include "nav_turn.h"
@@ -575,6 +576,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(AudioDecodeKernel);
         GDREGISTER_CLASS(FireParticleKernel);
         GDREGISTER_CLASS(SpellParticleKernel);
+        GDREGISTER_CLASS(StarParticleKernel);
         GDREGISTER_CLASS(GrassFieldKernel); GDREGISTER_CLASS(GrassChunkJob);
         GDREGISTER_CLASS(AmbientGroundKernel);
         GDREGISTER_CLASS(NavTurnKernel);
