@@ -1,0 +1,47 @@
+{
+  "gpu_job": "a9719b87ce414290",
+  "checks": 36,
+  "failures": 0,
+  "frames": 2656,
+  "controllable_frames": 2656,
+  "phases": [
+    {
+      "phase": "held-fg-off",
+      "frames": 640,
+      "controllable_frames": 640,
+      "blocked": []
+    },
+    {
+      "phase": "walk-0",
+      "frames": 374,
+      "controllable_frames": 374,
+      "blocked": []
+    },
+    {
+      "phase": "pan-0",
+      "frames": 360,
+      "controllable_frames": 360,
+      "blocked": []
+    },
+    {
+      "phase": "walk-1",
+      "frames": 284,
+      "controllable_frames": 284,
+      "blocked": []
+    },
+    {
+      "phase": "pan-1",
+      "frames": 377,
+      "controllable_frames": 377,
+      "blocked": []
+    },
+    {
+      "phase": "final-held",
+      "frames": 621,
+      "controllable_frames": 621,
+      "blocked": []
+    }
+  ],
+  "baseline": "../dar-tactical-water-state.json",
+  "limits": "Two-leg control regression, not an FPS comparison. This candidate precedes only the canvas-disabled loading guard; final registered standard and PT routes use the exact final runtime."
+}

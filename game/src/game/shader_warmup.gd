@@ -142,6 +142,7 @@ static func run(game: Game) -> void:
 	# VisionFog: its overlay is a MultiMesh of plain transforms.
 	_add(items, seen, VisionFog.material(), env, INSTANCED)
 	if items.is_empty():
+		_prepare_mirror(game, cam, forced)
 		ShaderCompilationScreen.end(progress_owner)
 		return
 	ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.SCENE, 0, items.size())
@@ -200,10 +201,17 @@ static func run(game: Game) -> void:
 	GameData.trace("shader warm-up: %d of %d materials, %d ms (zone's first picture %d ms)%s" % [
 		last_count, items.size(), last_ms, first_ms, "" if forced else ", drawn with the first frame"])
 	if forced:
+		_prepare_mirror(game, cam, true)
 		w.queue_free()
 		ShaderCompilationScreen.end(progress_owner)
 	else:
 		w._finish_deferred(items)
+
+
+static func _prepare_mirror(game: Game, source: Camera3D, forced: bool) -> void:
+	if not forced or not is_instance_valid(game.world.terrain): return
+	var reflection := game.world.terrain._reflection
+	if is_instance_valid(reflection): reflection.prepare_loading(source)
 
 
 func _finish_deferred(items: Array) -> void:

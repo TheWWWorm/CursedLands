@@ -28,7 +28,7 @@ var case_name := "setup"
 var scene_probe: DrawProbe
 var mirror_probe: DrawProbe
 var probe_camera := 0
-var connected_device := 0
+var connected_devices := {}
 var progress: Array[Dictionary] = []
 var releases: Array[Dictionary] = []
 var acknowledgements: Array[Dictionary] = []
@@ -86,9 +86,12 @@ func _step() -> void:
 		var compositor := Compositor.new()
 		compositor.compositor_effects = [mirror_probe]
 		reflection.camera.compositor = compositor
-	if reflection._rt != null and reflection._rt.get_instance_id() != connected_device:
-		connected_device = reflection._rt.get_instance_id()
-		reflection._rt.rendered.connect(_acknowledged.bind(connected_device))
+	# Initial output is rendered on the staged device before promotion. Observe
+	# both slots; attaching only after promotion misses its acknowledgement.
+	for device: RayDevice in [reflection._rt, reflection._rt_pending]:
+		if device != null and not connected_devices.has(device.get_instance_id()):
+			connected_devices[device.get_instance_id()] = true
+			device.rendered.connect(_acknowledged.bind(device.get_instance_id()))
 
 
 func frames(count := 1) -> void:
@@ -106,6 +109,8 @@ func snapshot() -> Dictionary:
 		"serial":reflection._preparation_serial if reflection else -1,
 		"device_id":reflection._rt.get_instance_id() if reflection and reflection._rt else 0,
 		"completed_renders":reflection._rt.completed_renders if reflection and reflection._rt else 0,
+		"pending_device_id":reflection._rt_pending.get_instance_id() if reflection and reflection._rt_pending else 0,
+		"pending_completed_renders":reflection._rt_pending.completed_renders if reflection and reflection._rt_pending else 0,
 		"stats":reflection.rt_stats.duplicate(true) if reflection else {}}
 
 
@@ -179,7 +184,8 @@ func wait_finished(require_rt := false, deadline_ms := 180_000) -> bool:
 		var reflection := reflector()
 		if require_rt and (reflection == null or reflection._rt_failed): return false
 		var ready: bool = not require_rt or (reflection._rt_ready and reflection.rt_stats.get("active",false) \
-			and reflection._rt != null and reflection._rt.completed_renders > 0)
+			and reflection._rt != null and reflection._rt.completed_renders > 0 \
+			and reflection._rt_scene == null and reflection._rt_pending == null)
 		if ready and not held() and not ShaderCompilationScreen.active(): return true
 	return false
 
@@ -197,8 +203,9 @@ func assert_rt_release(label: String, initial_renders: int) -> void:
 	var matched := false
 	for row: Dictionary in acknowledgements:
 		if row["case"] == label and bool(row.ok):
-			matched = int(row.ack_serial) == int(row.serial) and int(row.ack_device_id) == int(row.device_id) \
-				and int(row.completed_renders) > initial_renders and not bool(row.water_owner)
+			var active := int(row.ack_device_id) == int(row.device_id) and int(row.completed_renders) > initial_renders
+			var pending := int(row.ack_device_id) == int(row.pending_device_id) and int(row.pending_completed_renders) > initial_renders
+			matched = int(row.ack_serial) == int(row.serial) and (active or pending) and not bool(row.water_owner)
 			break
 	check(matched, label+": matching device and request acknowledge newly rendered RT output")
 

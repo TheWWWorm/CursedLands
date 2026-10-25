@@ -1364,6 +1364,19 @@
       "rendering_method": "forward_plus"
     },
     {
+      "id": "water_load_preparation",
+      "script": "tools/tests/water_load_preparation.gd",
+      "summary": "WATER_LOAD_PREPARATION",
+      "contract": "Mirror water completes real scene draws during loading even when the initial camera sees no water; first sight preserves controls, camera state, clocks and reflected geometry.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 24,
+      "timeout": 420
+    },
+    {
       "id": "picking_figures",
       "script": "tools/tests/picking_figures.gd",
       "summary": "PICKING_FIGURES",

@@ -120,7 +120,7 @@ func _active() -> bool:
 		and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
 
 
-func _process(dt: float) -> void:
+func _sync_settings() -> void:
 	var settings_key := "%s:%s:%s:%s" % [GameData.option("gfx_water"), GameData.option("gfx_water_reflections"), GameData.option("q_water_rt_quality"), GameData.graphics_revision]
 	if settings_key != _settings_key:
 		_finish_preparation()
@@ -131,6 +131,10 @@ func _process(dt: float) -> void:
 		# previous materials, nor wait for the ordinary topology poll interval.
 		if _rt_scene != null or _rt_pending != null: _cancel_raytrace_candidate()
 		_needs_preparation = Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
+
+
+func _process(dt: float) -> void:
+	_sync_settings()
 	_rt_topology_poll -= dt
 	if not _active():
 		_disable()
@@ -153,6 +157,22 @@ func _process(dt: float) -> void:
 		_disable()
 		return
 	if _needs_preparation and not _preparing: _begin_preparation()
+	_configure_mirror(source, plane, source.get_camera_transform())
+	var material := terrain._water_mat
+	if GameData.option("gfx_water_reflections") == 3:
+		_update_raytrace(source)
+	else:
+		if _rt != null or _rt_scene != null or _rt_pending != null:
+			_release_raytrace()
+			material.set_shader_parameter("planar_texture",viewport.get_texture())
+		_rt_failed = false
+		if _preparing and not _preparation_submitted:
+			_preparation_submitted = true
+			_mirror_draw_callback = _mirror_drawing.bind(_preparation_serial)
+			RenderingServer.frame_pre_draw.connect(_mirror_draw_callback)
+
+
+func _configure_mirror(source: Camera3D, height: float, pose: Transform3D) -> void:
 	if viewport == null: _create_view()
 	viewport.size = target_size(source.get_viewport().get_visible_rect().size)
 	camera.keep_aspect = source.keep_aspect
@@ -166,26 +186,61 @@ func _process(dt: float) -> void:
 	# them as pitching down reduces their depth. REACH only bounds the water
 	# surface search; geometry must use the main view's draw distance.
 	camera.far = source.far
-	camera.global_transform = reflected_transform(source.get_camera_transform(), plane)
+	camera.global_transform = reflected_transform(pose, height)
 	camera.cull_mask = reflection_mask(source.cull_mask)
-	RenderingServer.global_shader_parameter_set(&"ei_water_mirror", Vector3(plane, 0, 0))
+	RenderingServer.global_shader_parameter_set(&"ei_water_mirror", Vector3(height, 0, 0))
 	var material := terrain._water_mat
-	material.set_shader_parameter("planar_height", plane)
+	material.set_shader_parameter("planar_height", height)
 	material.set_shader_parameter("planar_projection", camera.get_camera_projection())
 	material.set_shader_parameter("planar_view", camera.global_transform.affine_inverse())
 	material.set_shader_parameter("planar_enabled", true)
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	if GameData.option("gfx_water_reflections") == 3:
-		_update_raytrace(source)
-	else:
-		if _rt != null or _rt_scene != null or _rt_pending != null:
-			_release_raytrace()
-			material.set_shader_parameter("planar_texture",viewport.get_texture())
-		_rt_failed = false
-		if _preparing and not _preparation_submitted:
-			_preparation_submitted = true
-			_mirror_draw_callback = _mirror_drawing.bind(_preparation_serial)
-			RenderingServer.frame_pre_draw.connect(_mirror_draw_callback)
+
+
+## ShaderWarmup calls this only while a desktop loading cover allows forced
+## draws. Its small material viewport cannot prepare the real scene target.
+## Use the nearest authored water even when the loading camera faces away;
+## the normal first gameplay update still selects its own visible plane.
+func prepare_loading(source: Camera3D) -> bool:
+	if not supported() or not _active() or GameData.option("gfx_water_reflections") != 2 \
+			or LoadingScreen._current == null or OS.has_feature("web") or LoadingScreen.force_deferred:
+		return false
+	_sync_settings()
+	if not _needs_preparation or source == null or not source.is_inside_tree(): return false
+	if viewport != null and viewport.disable_3d: return false
+	var width := terrain.sectors_x * EITerrain.SECTOR
+	var height := terrain.sectors_y * EITerrain.SECTOR
+	_index(width, height)
+	var nearest := Vector3.INF
+	var best := INF
+	for row in _rows.size():
+		var y := row * 2
+		for x in _rows[row]:
+			var i := y * width + x
+			var level := terrain.water[i]
+			if not is_finite(level) or terrain.liquid_ground[i] in [EITerrain.LAVA, 255]: continue
+			var point := Vector3(x + 0.5, level, -y - 0.5)
+			var distance := point.distance_squared_to(source.global_position)
+			if distance >= best: continue
+			if level < terrain.height_at(point.x, -point.z) + 0.08: continue
+			nearest = point
+			best = distance
+	if not nearest.is_finite(): return false
+	_begin_preparation()
+	var eye := nearest + Vector3(0, clampf(absf(source.global_position.y - nearest.y), 2.0, 20.0), 8.0)
+	var pose := Transform3D(Basis.IDENTITY, eye).looking_at(nearest)
+	_configure_mirror(source, nearest.y, pose)
+	if _rt != null or _rt_scene != null or _rt_pending != null:
+		_release_raytrace()
+		terrain._water_mat.set_shader_parameter("planar_texture", viewport.get_texture())
+	# Finish both newly placed and stationary geometry passes, exactly as the
+	# material warmup does. Only completed draws acknowledge this request.
+	for settle in 4:
+		RenderingServer.force_draw(true, 0.0)
+		RenderingServer.force_sync()
+	_finish_preparation()
+	_disable()
+	return true
 
 
 func _begin_preparation() -> void:

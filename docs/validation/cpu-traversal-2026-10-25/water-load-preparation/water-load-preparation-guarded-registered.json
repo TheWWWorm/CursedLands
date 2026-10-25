@@ -1,0 +1,129 @@
+{
+  "git_head": "4d1721203672e8cc7bedf3a58921409a7621987d",
+  "game_source_sha256": "93ff9c20d7a61ad2faddbc0bf676fa2231b6ced62c4094397f551a8e33088b45",
+  "manifest_sha256": "81085c034ad1817849ad509864814fb3ffcb661e28a83975e13b95db19d8549f",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app",
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "dar_leanos_standard_route",
+      "script": "tools/tests/dar_leanos_route.gd",
+      "script_sha256": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "contract": "Dar Leanos reaches the same fixed first-person waypoints with live authority, collision and Very High standard rendering throughout the walk.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 123.91,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/dar_leanos_standard_route/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/dar_leanos_standard_route/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/dar_leanos_standard_route/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/dar_leanos_standard_route/fixtures/dar_leanos_route.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/dar_leanos_standard_route/fixtures",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--zone-route-zone=gz31j",
+        "--zone-route-peaceful",
+        "--zone-route-standard"
+      ],
+      "log": "dar_leanos_standard_route/run.log",
+      "passed": true,
+      "result": {
+        "checks": 54,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "water_load_preparation",
+      "script": "tools/tests/water_load_preparation.gd",
+      "script_sha256": "dc667c3c2ea6eb6c406454aa4da174d88c9ad40abb68d36910e0893b8590284f",
+      "contract": "Mirror water completes real scene draws during loading even when the initial camera sees no water; first sight preserves controls, camera state, clocks and reflected geometry.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 27.66,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/water_load_preparation/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/water_load_preparation/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/water_load_preparation/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/water_load_preparation/fixtures/water_load_preparation.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-registered/water_load_preparation/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "water_load_preparation/run.log",
+      "passed": true,
+      "result": {
+        "checks": 24,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-linux/runtime.pck",
+    "sha256": "7668df7aae15e93cd285fecb75eadcdf3b8b26024e15d6e59ba86d1d1a1c4c75"
+  },
+  "passed": true
+}

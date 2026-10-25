@@ -1063,3 +1063,60 @@ behavior changed in this profiling pass.
 The next two screening experiments were slower and were removed before integration. A property-based C++ animation composer matched 7,937 exact checks but cost **28.2% more CPU** than the unchanged script. A C++ outer actor-sound scan matched 201 limited state/stamp checks but cost **31–51% more CPU**, depending on how many of the 334 actors were nearby. Script-property access and synchronous script callbacks outweighed the saved interpreter loop work. No gameplay code, platform library or sound/animation behavior changes in this pass.
 
 See [prototype evidence](rejected-native-prototypes/README.md), [raw measurements](rejected-native-prototypes/measurements.json) and the archived independent old methods. These are screening microbenchmarks, not FPS claims. The remaining first-visible mirror preparation and mark-ageing candidates are unaffected by rejecting these approaches.
+
+## Prepare first Mirror water before returning to play
+
+The pending first-water work identified by the earlier Dar tactical diagnostic
+now completes under the existing loading cover. After material warmup, the
+Mirror controller renders four synchronized frames of the nearest authored
+water scene using its actual reflection viewport, target size and environment.
+The player's camera, simulation/wave clocks and normal visible-plane selection
+are unchanged. The representative view is disabled afterward; the first real
+view still uses the current camera and water height. Deferred/web loading and
+hardware RT keep their existing preparation paths. A canvas-only viewport or a
+map without eligible water retains its pending request rather than claiming a
+completed draw.
+
+The same two-leg Dar tactical route passes **36 checks**, with **2,656 of 2,656
+frames controllable** and no water preparation owner appearing during play.
+Previously, first visible water advanced its serial from 0 to 1 during walking
+and interrupted controls for about 57 ms. It now has serial 1 and no pending
+work before play starts. This is a control/stall regression, not an additional
+average-FPS claim. See [Dar controls](water-load-preparation/dar-controls.json)
+and the [earlier failure](dar-tactical-water-state.json).
+
+The registered loading regression passes **24 checks each on Linux and Windows
+under Wine**, using real Rindale river geometry. It checks completed render
+callbacks and visible reflected geometry, first-sight controls, unchanged clocks
+and camera state, repeated warmup, settings refresh, absent water, live lava
+changes, deferred loading, hardware RT exclusion and canvas-only rejection.
+The unchanged main pack fails the four first-water/reuse assertions. Both final
+registered Dar routes pass **54 checks** each in standard and full path tracing.
+Cloud preparation (11), solo clock resynchronization (13), recovery from a
+90-second preparation stall (7), and play-clock behavior (28) also pass on the
+final pack. The regression runner's eight Python checks pass.
+
+The existing Mirror/RT preparation suite passes **67 checks** on both versions
+after correcting its observation of the existing staged RT rebuild. Its old
+fixture failed three checks on unchanged main as well: it connected only after
+a pending device had already acknowledged its first render, and treated the
+still-active previous scene as a finished replacement. The test now observes
+both device slots and waits until gathering and replacement finish. Request
+identity, actual rendered output, newly replaced device IDs, cover ownership,
+cancellation and failure recovery assertions remain in place. The before and
+after failures and passes are retained in [check evidence](water-load-preparation/checks.json).
+
+The final exported snapshot matches all **461 runtime files**; native libraries
+are unchanged. See [provenance and test receipts](water-load-preparation/provenance.json).
+Earlier prototype/fixture failures are retained separately, including the
+canvas-only guard's failing intermediate pack. The inspected captures show
+real geometry during loading and the restored river reflection during play.
+No player-visible option or text is added, and no remote update was performed.
+
+This preparation barrier and Godot reflection viewport are remake additions.
+There is no matching original-game entry point for the same Wine experiment;
+the original map water heights and gameplay code are unchanged. The broader
+original-code/Wine comparison remains recorded above. Windows/Wine results in
+this pass execute the remake and make no original-game FPS claim. The same
+loading path is shared by other campaign zones using Mirror water. Mark ageing
+remains a separate CPU candidate.

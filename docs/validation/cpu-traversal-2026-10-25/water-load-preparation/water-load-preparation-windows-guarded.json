@@ -1,0 +1,13 @@
+{
+	"checks": 24,
+	"failures": [],
+	"rows": [
+		{
+			"completed_mirror_draws": 4,
+			"geometry_samples": 8240,
+			"loading_geometry_samples": 2899,
+			"loading_warmup_us": 5095460,
+			"preparation_serial": 1
+		}
+	]
+}

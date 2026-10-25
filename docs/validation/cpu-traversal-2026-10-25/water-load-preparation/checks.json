@@ -1,0 +1,184 @@
+{
+  "water-load-preparation-guarded-registered-dar_leanos_standard_route": {
+    "passed": true,
+    "result": {
+      "checks": 54,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-guarded-registered-water_load_preparation": {
+    "passed": true,
+    "result": {
+      "checks": 24,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-guarded-related-local_host_clock_resync": {
+    "passed": true,
+    "result": {
+      "checks": 13,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-guarded-related-local_host_shader_stall": {
+    "passed": true,
+    "result": {
+      "checks": 7,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-guarded-related-local_host_play_clock": {
+    "passed": true,
+    "result": {
+      "checks": 28,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-guarded-related-dar_leanos_route": {
+    "passed": true,
+    "result": {
+      "checks": 54,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-guarded-related-cloud_load_preparation": {
+    "passed": true,
+    "result": {
+      "checks": 11,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-before-water_load_preparation": {
+    "passed": false,
+    "result": null,
+    "errors": [
+      "FAIL loading completes actual reflected scene draws",
+      "FAIL first Mirror preparation completes under the loading screen",
+      "FAIL repeated loading warmup reuses its completed reflection",
+      "FAIL first visible water keeps gameplay controllable",
+      "Invalid/incomplete counts: checks=15, failures=4, minimum=24",
+      "Process exit: 1"
+    ]
+  },
+  "water-load-preparation-registered-local_host_clock_resync": {
+    "passed": true,
+    "result": {
+      "checks": 13,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-local_host_shader_stall": {
+    "passed": true,
+    "result": {
+      "checks": 7,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-local_host_play_clock": {
+    "passed": true,
+    "result": {
+      "checks": 28,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-dar_leanos_route": {
+    "passed": true,
+    "result": {
+      "checks": 54,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-dar_leanos_standard_route": {
+    "passed": true,
+    "result": {
+      "checks": 54,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-cloud_load_preparation": {
+    "passed": true,
+    "result": {
+      "checks": 11,
+      "failures": 0
+    },
+    "errors": []
+  },
+  "water-load-preparation-registered-water_load_preparation": {
+    "passed": false,
+    "result": {
+      "checks": 24,
+      "failures": 5
+    },
+    "errors": [
+      "FAIL canvas-only reflection cannot acknowledge unfinished 3D work",
+      "FAIL absent water preserves pending preparation",
+      "FAIL live lava cells are excluded even when the water index was already built",
+      "FAIL a graphics revision prepares current water under the loading cover",
+      "FAIL graphics refresh completes new scene draws",
+      "Process exit: 1",
+      "Assertion result does not satisfy the manifest"
+    ]
+  },
+  "water-load-preparation-before": [
+    "FAIL first Mirror preparation completes under the loading screen",
+    "FAIL representative view is disabled before play",
+    "FAIL first visible water keeps gameplay controllable",
+    "FAIL first visible water uses the real camera transform",
+    "WATER_LOAD_PREPARATION checks=13 failures=4"
+  ],
+  "water-load-preparation-before-fixture": [
+    "FAIL loading completes actual reflected scene draws",
+    "FAIL first Mirror preparation completes under the loading screen",
+    "FAIL first visible water keeps gameplay controllable",
+    "WATER_LOAD_PREPARATION checks=13 failures=3"
+  ],
+  "water-load-preparation-candidate": [
+    "WATER_LOAD_PREPARATION checks=13 failures=0"
+  ],
+  "water-load-before-final-fixture": [
+    "FAIL loading completes actual reflected scene draws",
+    "FAIL first Mirror preparation completes under the loading screen",
+    "FAIL repeated loading warmup reuses its completed reflection",
+    "FAIL first visible water keeps gameplay controllable",
+    "WATER_LOAD_PREPARATION checks=15 failures=4"
+  ],
+  "dar-tactical-water-prepared": [
+    "DAR_PREPARATION {\"active\":true,\"hero\":\"loading\",\"owners\":[],\"phase\":\"Finishing preparation\u2026\",\"seconds\":32.751126}",
+    "DAR_WATER_PREPARATION {\"hero\":\"loading\",\"owner\":\"pipeline:water:3068116604088\",\"plane\":-1e99999,\"seconds\":32.751183,\"state\":[1,false,false]}",
+    "DAR_PREPARATION {\"active\":false,\"hero\":\"(173.5, 302.5)\",\"owners\":[],\"phase\":\"\",\"seconds\":39.225909}",
+    "TACTICAL_ZONE_TRAVERSAL 36 checks 0 failures"
+  ],
+  "water-load-related-shader-water": [
+    "SCRIPT ERROR: Parse Error: Could not resolve super class path \"res://tools/tests/water_raytrace_artifact.gd\"."
+  ],
+  "water-load-related-shader-water-staged": [
+    "FAIL initial-rt: matching device and request acknowledge newly rendered RT output",
+    "FAIL recenter actually replaced the hardware scene",
+    "FAIL the new water plane actually replaces the hardware scene",
+    "SHADER_COMPILATION_WATER 67 checks 3 failures"
+  ],
+  "water-load-related-shader-water-before": [
+    "FAIL initial-rt: matching device and request acknowledge newly rendered RT output",
+    "FAIL recenter actually replaced the hardware scene",
+    "FAIL the new water plane actually replaces the hardware scene",
+    "SHADER_COMPILATION_WATER 67 checks 3 failures"
+  ],
+  "water-load-related-staged-fixture-before": [
+    "SHADER_COMPILATION_WATER 67 checks 0 failures"
+  ],
+  "water-load-related-staged-fixture-final": [
+    "SHADER_COMPILATION_WATER 67 checks 0 failures"
+  ]
+}

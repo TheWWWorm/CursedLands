@@ -1,0 +1,31 @@
+[
+  {
+    "test": "water_load_preparation",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-final-windows/runtime.exe",
+      "--rendering-method",
+      "forward_plus",
+      "--rendering-driver",
+      "vulkan",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--max-fps",
+      "30",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/water_load_preparation.gd",
+      "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-windows-images"
+    ],
+    "summary": [
+      "WATER_LOAD_PREPARATION checks=23 failures=0"
+    ]
+  }
+]

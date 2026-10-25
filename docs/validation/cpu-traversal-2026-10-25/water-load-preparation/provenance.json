@@ -1,0 +1,58 @@
+{
+  "base_commit": "4d172120",
+  "runtime_files_compared": 461,
+  "differences": [],
+  "source_sha256": {
+    "game/src/game/fx/water_reflection.gd": "d6fbf4183cb8b28944011f8b58f49bab9673b6107d1604fcad66192051d4d6c2",
+    "game/src/game/shader_warmup.gd": "14ef0b735ca8db140234b4e19cb7b0fac794074796ae6e03cd6d13c27c631d9a",
+    "tools/tests/water_load_preparation.gd": "dc667c3c2ea6eb6c406454aa4da174d88c9ad40abb68d36910e0893b8590284f",
+    "tools/tests/shader_compilation_water.gd": "3c2ad98bd061749a5d5b5faa0971ac6246781de68ad2a86cc00f727da1a5f086",
+    "tools/regressions.json": "81085c034ad1817849ad509864814fb3ffcb661e28a83975e13b95db19d8549f"
+  },
+  "packs": {
+    "mark-projection-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "868480d0f9dcb3eec912a61975a33cbc6a85ed2ef851ef63d86137c0ebfebd7e",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "water-load-preparation-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "b1f02fd6a14b5992ab4fb4fdb3cbf5ac64dc2d3a6bd1668394620de8177c4652",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "water-load-preparation-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "3b7e05471c05aa381c3421db43d997e18e9702f18ca34852767cd6a9f42ace7e",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "water-load-preparation-guarded-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "7668df7aae15e93cd285fecb75eadcdf3b8b26024e15d6e59ba86d1d1a1c4c75",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "water-load-preparation-guarded-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "d9d2b87cfa4f7bb9a49ade171c038da5402e0699ad7b4a35bddaeaaa9c6607c6",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    }
+  },
+  "snapshot": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/water-load-preparation-guarded-game",
+  "native_libraries": "Unchanged from accepted main; this change is GDScript only.",
+  "original_comparison": "The original-code comparison for shared gameplay remains in the parent report. This change prepares a Godot SubViewport and its shader/render-thread completion barrier, a remake-only Mirror implementation. The original executable has no corresponding Godot preparation entry point, so an identical original Wine regression or FPS comparison is inapplicable. Original map water heights, simulation and gameplay code remain unchanged. Windows/Wine evidence here executes the remake.",
+  "intermediate_failures": [
+    "The first fixture left its manually created viewport enabled and used exact transform equality. The maintained fixture disables it before observing draws and uses Transform3D.is_equal_approx for engine transform storage.",
+    "The first related water invocation did not stage its res://tools/tests superclass for a packaged runtime. It was cancelled after the parse failure; the external staged copy retains the original test body.",
+    "The older RT fixture failed three checks on both unchanged main and the candidate. It watched only the active device and returned while a replacement was still building. The correction observes pending and active devices and waits for replacement completion, retaining output, request identity and replacement assertions. Both versions then pass all 67 checks.",
+    "The pre-guard candidate was tested against the expanded fixture and failed its canvas-only completion check plus dependent checks. Final Linux and Windows packs preserve the pending request when viewport.disable_3d is true and pass all 24 checks."
+  ]
+}
