@@ -11,6 +11,9 @@ const BOARDS := {"button01_new_game": "new", "button02_load_game": "load", "butt
 	"button04_options": "options", "button06_credits": "credits", "button08_exit": "exit"}
 
 var camera: Camera3D
+## The original loads a server world for the menu too. Its MOB patrols use
+## the same navigation, movement and AI as the campaign's creatures.
+var world: GameWorld
 var _column: Node3D
 var _player: AnimationPlayer
 var _boards := {}   # part -> Node3D
@@ -59,9 +62,13 @@ func _ready() -> void:
 	# create() lights its detached island before the caller adds it. Refresh
 	# view-owned point uniforms only after the camera has entered the tree.
 	set_hour(hour)
-	for child in get_children():
-		if child is EIMapScene and child.terrain:
-			child.terrain._update_wind_parameters(true)
+	if world and world.terrain:
+		world.terrain._update_wind_parameters(true)
+	else:
+		# Detached menu previews/tools can still supply a map directly.
+		for child in get_children():
+			if child is EIMapScene and child.terrain:
+				child.terrain._update_wind_parameters(true)
 
 
 func _process(dt: float) -> void:
@@ -183,12 +190,16 @@ func set_hour(h: float) -> void:
 
 static func create() -> MenuScene:
 	GameData.trace("menu scene: loading island")
-	var map := EIMapScene.load_map("zonemainmenunew")
-	if map == null:
+	var w := GameWorld.new()
+	w.zone = {"type":"menu"}
+	if not w.load_map("zonemainmenunew"):
 		GameData.trace("menu scene: island unavailable")
+		w.free()
 		return null
+	var map := w.map
 	var s := MenuScene.new()
-	s.add_child(map)
+	s.world = w
+	s.add_child(w)
 	# The terrain follows Options' gfx_terrain / gfx_water here too (as
 	# Game._apply_options in a zone), not only the values it was built with.
 	if map.terrain:
@@ -197,9 +208,8 @@ static func create() -> MenuScene:
 		var info: Dictionary = n.get_meta("ei", {})
 		if String(info.get("template", "")) == "unmoco2":
 			s._column = n
-		elif n is EIUnitModel:
-			(n as EIUnitModel).act("idle")
 	if s._column == null:
+		s.free()
 		return null
 	GameData.trace("menu scene: setting up signpost and environment")
 	s._setup_column()
@@ -208,12 +218,18 @@ static func create() -> MenuScene:
 	return s
 
 
+## Screen-space axis of the pole, also used by the remake's extra controls.
+func pole_center_x() -> float:
+	return camera.unproject_position(_column.global_position).x
+
+
 func _setup_column() -> void:
 	var labels := EIFigure.material_for("mainmenu00labels")
 	for mi: MeshInstance3D in _column.find_children("*", "MeshInstance3D", true, false):
 		var part := String(mi.get_parent().name)
 		if part.begins_with("but") and not part.begins_with("button"):
 			mi.material_override = labels
+	MenuCaptions.apply(_column, "unmoco2")
 	for part: String in BOARDS:
 		var n := _column.find_child(part, true, false) as Node3D
 		if n:

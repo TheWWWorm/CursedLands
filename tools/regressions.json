@@ -709,6 +709,174 @@
       "args": [],
       "min_checks": 29,
       "timeout": 420
+    },
+    {
+      "id": "menu_patrols_base",
+      "script": "tools/tests/menu_patrols.gd",
+      "summary": "MENU_PATROLS",
+      "contract": "Menu creatures execute authored routes and waits without a player.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 13,
+      "timeout": 240
+    },
+    {
+      "id": "menu_alignment_base",
+      "script": "tools/tests/menu_alignment.gd",
+      "summary": "MENU_ALIGNMENT",
+      "contract": "Extra main-menu controls align with the projected signpost and stay inside resized windows.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 51,
+      "timeout": 240
+    },
+    {
+      "id": "menu_patrols_base_rendered",
+      "script": "tools/tests/menu_patrols.gd",
+      "summary": "MENU_PATROLS",
+      "contract": "Actual rendered menu advances authored patrols through the normal frame clock.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 15,
+      "timeout": 240
+    },
+    {
+      "id": "menu_captions_base_en",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "summary": "MENU_CAPTION_QUALITY",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=en"
+      ],
+      "min_checks": 67,
+      "timeout": 300
+    },
+    {
+      "id": "menu_captions_base_ru",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "summary": "MENU_CAPTION_QUALITY",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "min_checks": 67,
+      "timeout": 300
+    },
+    {
+      "id": "menu_captions_base_de",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "summary": "MENU_CAPTION_QUALITY",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=de"
+      ],
+      "min_checks": 67,
+      "timeout": 300
+    },
+    {
+      "id": "menu_patrols_astral",
+      "script": "tools/tests/menu_patrols.gd",
+      "summary": "MENU_PATROLS",
+      "contract": "Menu creatures execute authored routes and waits without a player.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 37,
+      "timeout": 240
+    },
+    {
+      "id": "menu_alignment_astral",
+      "script": "tools/tests/menu_alignment.gd",
+      "summary": "MENU_ALIGNMENT",
+      "contract": "Extra main-menu controls align with the projected signpost and stay inside resized windows.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 51,
+      "timeout": 240
+    },
+    {
+      "id": "menu_patrols_astral_rendered",
+      "script": "tools/tests/menu_patrols.gd",
+      "summary": "MENU_PATROLS",
+      "contract": "Actual rendered menu advances authored patrols through the normal frame clock.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 39,
+      "timeout": 240
+    },
+    {
+      "id": "menu_captions_astral_en",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "summary": "MENU_CAPTION_QUALITY",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=en"
+      ],
+      "min_checks": 71,
+      "timeout": 300
+    },
+    {
+      "id": "menu_captions_astral_ru",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "summary": "MENU_CAPTION_QUALITY",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "min_checks": 71,
+      "timeout": 300
+    },
+    {
+      "id": "menu_captions_astral_de",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "summary": "MENU_CAPTION_QUALITY",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=de"
+      ],
+      "min_checks": 71,
+      "timeout": 300
+    },
+    {
+      "id": "menu_wind_ready",
+      "script": "tools/tests/weather_wind.gd",
+      "summary": "WEATHER_WIND",
+      "contract": "Retain current-view wind publication on menu entry, including direct-map preview ownership and paused weather.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 6069,
+      "timeout": 240
     }
   ]
 }

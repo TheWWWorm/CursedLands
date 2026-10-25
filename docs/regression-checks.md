@@ -16,6 +16,7 @@ python3 tools/check_regressions.py \
 python3 tools/check_regressions.py --tier rendered \
   --engine /absolute/path/to/godot \
   --base-data /absolute/path/to/owned/base-game \
+  --astral-data /absolute/path/to/owned/lost-in-astral \
   --texts-en /absolute/path/to/english/texts.res \
   --texts-ru /absolute/path/to/russian/texts.res \
   --texts-de /absolute/path/to/german/texts.res \
@@ -98,3 +99,13 @@ solo authority through the visible HUD. The clock test covers a restored fast
 save, a stale owner cache, Ruins/Foothills travel, village return and a 5 FPS
 owner. It asserts actual simulation seconds per wall second, not only the dial
 or `Engine.time_scale`.
+
+The [menu checks](validation/menu-patrol-text-2026-10-25/README.md) register
+`menu_patrols_*`, `menu_alignment_*` and `menu_captions_*` for both campaigns,
+plus the existing weather fixture as `menu_wind_ready`.
+They exercise authored patrol routes, projected pole alignment at five window
+sizes, and the original caption artwork in the main menu, actual paused Escape
+menu and Options. Caption checks compare preserved glyphs and relief with the
+owned archive and require better edge contrast than bilinear enlargement. The
+EN/RU/DE runs select the remake UI language; painted captions continue to use
+the supplied edition's own localized artwork.

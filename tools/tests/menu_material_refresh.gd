@@ -108,7 +108,7 @@ func _ready() -> void:
 		get_tree().quit(2)
 		return
 	GameData.options.merge({"auto_graphics":0, "confine_mouse":0, "q_aa":0, "q_shadows":2,
-		"volume_sfx":0, "volume_stream":0, "volume_voice":0, "show_fps":0}, true)
+		"volume_sfx":0, "volume_stream":0, "volume_voice":0, "show_fps":1}, true)
 	Gfx.ensure_globals()
 	Engine.time_scale = 0
 	Engine.max_fps = 60

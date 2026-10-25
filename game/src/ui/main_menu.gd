@@ -290,15 +290,16 @@ func _layout_campaign_bar() -> void:
 	var safe := Portability.safe_rect(size)
 	var ui_scale := maxf(0.75, minf(safe.size.x / 1280.0, safe.size.y / 800.0))
 	var width := minf(600, maxf(0, safe.size.x / ui_scale - 32))
+	var centre := _scene.pole_center_x() if _scene and _scene.is_inside_tree() else safe.get_center().x
 	_campaign_bar.scale = Vector2.ONE * ui_scale
-	_campaign_bar.position = Vector2(safe.get_center().x - width * ui_scale * 0.5, safe.position.y + 16 * ui_scale)
+	_campaign_bar.position = Vector2(clampf(centre - width * ui_scale * 0.5, safe.position.x, safe.end.x - width * ui_scale), safe.position.y + 16 * ui_scale)
 	_campaign_bar.size.x = width
 	if _utility_bar:
 		var footer_width := minf(900, maxf(0, safe.size.x / ui_scale - 32))
 		_utility_bar.scale = Vector2.ONE * ui_scale
 		_utility_bar.size.x = footer_width
 		_utility_bar.size.y = _utility_bar.get_combined_minimum_size().y
-		_utility_bar.position = Vector2(safe.get_center().x - footer_width * ui_scale * 0.5, safe.end.y - (38 + _utility_bar.size.y) * ui_scale - _version.footer_height())
+		_utility_bar.position = Vector2(clampf(centre - footer_width * ui_scale * 0.5, safe.position.x, safe.end.x - footer_width * ui_scale), safe.end.y - (38 + _utility_bar.size.y) * ui_scale - _version.footer_height())
 		_wiki_hint.scale = Vector2.ONE * ui_scale
 		_wiki_hint.size = Vector2(footer_width, 20)
 		_wiki_hint.position = Vector2(_utility_bar.position.x, safe.end.y - 30 * ui_scale - _version.footer_height())

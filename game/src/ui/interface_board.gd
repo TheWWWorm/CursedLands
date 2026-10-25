@@ -64,6 +64,7 @@ func _build(model: String, skin: String, labels: String, parts: PackedStringArra
 		# Label parts ("*label", "but03"...) carry the labels texture.
 		var is_label := part.ends_with("label") or (part.begins_with("but") and not part.begins_with("button"))
 		mi.material_override = lab_mat if is_label else tex_mat
+	MenuCaptions.apply(_fig, model)
 	# EISpace.vec maps EI (x, y, z) to Godot (x, z, −y): exactly the original's π/2
 	# turn about the view x axis seen from a Godot camera (view y down / z
 	# forward = Godot −y / −z). Any further angle turns about x as well.

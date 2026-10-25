@@ -8883,6 +8883,338 @@
         116
       ],
       "display": "headless"
+    },
+    {
+      "id": "interface/menu_patrols_base",
+      "category": "interface",
+      "script": "tools/tests/menu_patrols.gd",
+      "marker": "MENU_PATROLS",
+      "min_checks": 13,
+      "quick": false,
+      "description": "Menu creatures execute authored routes and waits without a player.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "headless"
+    },
+    {
+      "id": "interface/menu_alignment_base",
+      "category": "interface",
+      "script": "tools/tests/menu_alignment.gd",
+      "marker": "MENU_ALIGNMENT",
+      "min_checks": 51,
+      "quick": false,
+      "description": "Extra main-menu controls align with the projected signpost and stay inside resized windows.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "headless"
+    },
+    {
+      "id": "interface/menu_patrols_base_rendered",
+      "category": "interface",
+      "script": "tools/tests/menu_patrols.gd",
+      "marker": "MENU_PATROLS",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Actual rendered menu advances authored patrols through the normal frame clock.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_captions_base_en",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "marker": "MENU_CAPTION_QUALITY",
+      "min_checks": 67,
+      "quick": false,
+      "description": "Original carved caption artwork with sharper enlargement; real main menu, paused in-game Escape and Options in en",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--menu-locale=en"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_captions_base_ru",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "marker": "MENU_CAPTION_QUALITY",
+      "min_checks": 67,
+      "quick": false,
+      "description": "Original carved caption artwork with sharper enlargement; real main menu, paused in-game Escape and Options in ru",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_captions_base_de",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "marker": "MENU_CAPTION_QUALITY",
+      "min_checks": 67,
+      "quick": false,
+      "description": "Original carved caption artwork with sharper enlargement; real main menu, paused in-game Escape and Options in de",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--menu-locale=de"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_patrols_astral",
+      "category": "interface",
+      "script": "tools/tests/menu_patrols.gd",
+      "marker": "MENU_PATROLS",
+      "min_checks": 37,
+      "quick": false,
+      "description": "Menu creatures execute authored routes and waits without a player.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "headless"
+    },
+    {
+      "id": "interface/menu_alignment_astral",
+      "category": "interface",
+      "script": "tools/tests/menu_alignment.gd",
+      "marker": "MENU_ALIGNMENT",
+      "min_checks": 51,
+      "quick": false,
+      "description": "Extra main-menu controls align with the projected signpost and stay inside resized windows.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "headless"
+    },
+    {
+      "id": "interface/menu_patrols_astral_rendered",
+      "category": "interface",
+      "script": "tools/tests/menu_patrols.gd",
+      "marker": "MENU_PATROLS",
+      "min_checks": 39,
+      "quick": false,
+      "description": "Actual rendered menu advances authored patrols through the normal frame clock.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_captions_astral_en",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "marker": "MENU_CAPTION_QUALITY",
+      "min_checks": 71,
+      "quick": false,
+      "description": "Original carved caption artwork with sharper enlargement; real main menu, paused in-game Escape and Options in en",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--menu-locale=en"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zonezero.mob",
+        "maps/zonezero.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_captions_astral_ru",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "marker": "MENU_CAPTION_QUALITY",
+      "min_checks": 71,
+      "quick": false,
+      "description": "Original carved caption artwork with sharper enlargement; real main menu, paused in-game Escape and Options in ru",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zonezero.mob",
+        "maps/zonezero.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_captions_astral_de",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "marker": "MENU_CAPTION_QUALITY",
+      "min_checks": 71,
+      "quick": false,
+      "description": "Original carved caption artwork with sharper enlargement; real main menu, paused in-game Escape and Options in de",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--menu-locale=de"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zonezero.mob",
+        "maps/zonezero.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_wind_ready",
+      "category": "interface",
+      "script": "tools/tests/weather_wind.gd",
+      "marker": "WEATHER_WIND",
+      "min_checks": 6069,
+      "quick": true,
+      "description": "Retain current-view wind publication on menu entry, including direct-map preview ownership and paused weather.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/textures.res"
+      ],
+      "display": "rendered"
     }
   ]
 }

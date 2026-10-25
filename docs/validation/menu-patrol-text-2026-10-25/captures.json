@@ -1,0 +1,18 @@
+{
+  "base-main.png": {
+    "source": "/home/llm2x/Documents/EI/local/scratchpad/menu-motion-text-20261025/faithful-rendered/menu_captions_base_en/data/godot/app_userdata/Cursed Lands/main-menu-en.png",
+    "sha256": "8cf008eb6947b988e3593af77be237651e771d2979b69780da4d08225aebe8e3"
+  },
+  "astral-main.png": {
+    "source": "/home/llm2x/Documents/EI/local/scratchpad/menu-motion-text-20261025/faithful-rendered/menu_captions_astral_ru/data/godot/app_userdata/Cursed Lands/main-menu-ru.png",
+    "sha256": "8d4c0c1af6d2d33356c9c7c1e53939ab800598761995a7348da776dc3ef082d8"
+  },
+  "astral-escape.png": {
+    "source": "/home/llm2x/Documents/EI/local/scratchpad/menu-motion-text-20261025/faithful-rendered/menu_captions_astral_ru/data/godot/app_userdata/Cursed Lands/ingame-escape-ru.png",
+    "sha256": "83a190512a1f41e5c5fe33628f619d32942ab12bca7bc4afc84b7cfef752139f"
+  },
+  "astral-options.png": {
+    "source": "/home/llm2x/Documents/EI/local/scratchpad/menu-motion-text-20261025/faithful-rendered/menu_captions_astral_ru/data/godot/app_userdata/Cursed Lands/ingame-options-ru.png",
+    "sha256": "8ddd282d9b3f2c2c837e4ef5368b745e8c67cdfcc17de49746d8aa731516e004"
+  }
+}
