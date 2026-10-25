@@ -1,0 +1,54 @@
+{
+  "git_head": "e026666fd68ef1bbf1c7418184c3d742fa2dab87",
+  "game_source_sha256": "69e98f6e962d3e67378bca697e7eb6cb1873c7e64b95b7d0bf489a53dc50669a",
+  "manifest_sha256": "bc7fd3f7b740b7764c4d07e780e4d41ea697e4cb2ee108a17d8a2659d7c23581",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "unit_sound_state",
+      "script": "tools/tests/unit_sound_state.gd",
+      "script_sha256": "b25d4bfc3e140b39164a8c6a7faff6accdd808fdb479c5aafc57a9414b539a56",
+      "contract": "Typed per-actor sound state retains exact ordered voice/step requests, RNG, animation boundaries, wakeups, range transitions, dialogue and external handles against the independent previous collector.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-registered-before/unit_sound_state/fixtures/unit_sound_state.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-registered-before/unit_sound_state/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "unit_sound_state/run.log",
+      "passed": false,
+      "result": {
+        "checks": 1137,
+        "failures": 1
+      },
+      "errors": [
+        "FAIL hot sound state uses typed fields",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/mark-opacity-linux/runtime.pck",
+    "sha256": "8aeff7fea33ef5fef833d26e327bc1f24444ab08a869afd9f859b7d4c0d5f20f"
+  },
+  "passed": false
+}

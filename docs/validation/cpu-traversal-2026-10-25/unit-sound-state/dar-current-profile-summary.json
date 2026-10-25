@@ -1,0 +1,983 @@
+{
+  "frames": 2140,
+  "summary": {
+    "game/unit.gd:_present_frame": {
+      "ms_per_frame": 1.7903271028037384,
+      "calls_per_frame": 80.3411214953271,
+      "us_per_call": 22.284069097888676,
+      "max_us": 1117
+    },
+    "game/unit.gd:_present_native_frame": {
+      "ms_per_frame": 1.670766355140187,
+      "calls_per_frame": 80.3411214953271,
+      "us_per_call": 20.795905310300704,
+      "max_us": 1115
+    },
+    "game/unit.gd:_process": {
+      "ms_per_frame": 1.6257878504672896,
+      "calls_per_frame": 55.93504672897196,
+      "us_per_call": 29.065638549385554,
+      "max_us": 1121
+    },
+    "game/unit.gd:anim_flush": {
+      "ms_per_frame": 0.821814953271028,
+      "calls_per_frame": 44.461682242990655,
+      "us_per_call": 18.483667549501828,
+      "max_us": 1100
+    },
+    "game/world.gd:_process": {
+      "ms_per_frame": 0.8058247663551402,
+      "calls_per_frame": 1.0,
+      "us_per_call": 805.8247663551402,
+      "max_us": 2038
+    },
+    "game/fx/ground_marks.gd:_process": {
+      "ms_per_frame": 0.6934457943925233,
+      "calls_per_frame": 1.0,
+      "us_per_call": 693.4457943925233,
+      "max_us": 2449
+    },
+    "game/fx/terrain_details.gd:_process": {
+      "ms_per_frame": 0.6117079439252336,
+      "calls_per_frame": 1.0,
+      "us_per_call": 611.7079439252336,
+      "max_us": 6557
+    },
+    "game/world.gd:_step_hidden_presentations": {
+      "ms_per_frame": 0.5044200934579439,
+      "calls_per_frame": 1.0,
+      "us_per_call": 504.42009345794395,
+      "max_us": 1604
+    },
+    "game/fx/ground_marks.gd:_drain_units": {
+      "ms_per_frame": 0.4959560747663551,
+      "calls_per_frame": 1.0,
+      "us_per_call": 495.95607476635513,
+      "max_us": 1827
+    },
+    "game/unit.gd:_step_sleeping_presentation": {
+      "ms_per_frame": 0.4579345794392523,
+      "calls_per_frame": 21.297663551401868,
+      "us_per_call": 21.501634596397306,
+      "max_us": 288
+    },
+    "game/unit.gd:_advance_sleeping_presentation": {
+      "ms_per_frame": 0.4228373831775701,
+      "calls_per_frame": 26.7,
+      "us_per_call": 15.83660611151948,
+      "max_us": 281
+    },
+    "game/fx/ground_marks.gd:_step_frames": {
+      "ms_per_frame": 0.4027948598130841,
+      "calls_per_frame": 42.32943925233645,
+      "us_per_call": 9.5157145222719,
+      "max_us": 593
+    },
+    "game/game_sound.gd:_process": {
+      "ms_per_frame": 0.333614953271028,
+      "calls_per_frame": 1.0,
+      "us_per_call": 333.614953271028,
+      "max_us": 1213
+    },
+    "game/unit_sounds.gd:tick": {
+      "ms_per_frame": 0.27170280373831773,
+      "calls_per_frame": 1.0,
+      "us_per_call": 271.70280373831775,
+      "max_us": 1077
+    },
+    "game/fx/terrain_details.gd:_update_motion": {
+      "ms_per_frame": 0.2500771028037383,
+      "calls_per_frame": 1.0,
+      "us_per_call": 250.0771028037383,
+      "max_us": 2319
+    },
+    "game/game.gd:pick_lever": {
+      "ms_per_frame": 0.24910093457943924,
+      "calls_per_frame": 1.999532710280374,
+      "us_per_call": 124.57957466697826,
+      "max_us": 309
+    },
+    "ui/enemy_bars.gd:_process": {
+      "ms_per_frame": 0.24440794392523363,
+      "calls_per_frame": 1.0,
+      "us_per_call": 244.40794392523364,
+      "max_us": 613
+    },
+    "game/fx/vegetation_interaction.gd:update": {
+      "ms_per_frame": 0.23544906542056074,
+      "calls_per_frame": 1.0,
+      "us_per_call": 235.44906542056074,
+      "max_us": 2299
+    },
+    "game/direct_pose.gd:_process": {
+      "ms_per_frame": 0.23113691588785049,
+      "calls_per_frame": 1.0,
+      "us_per_call": 231.13691588785048,
+      "max_us": 594
+    },
+    "game/direct_pose.gd:apply_pose": {
+      "ms_per_frame": 0.22727616822429905,
+      "calls_per_frame": 1.0,
+      "us_per_call": 227.27616822429906,
+      "max_us": 591
+    },
+    "game/fx/ground_marks.gd:_deform_feet": {
+      "ms_per_frame": 0.20261168224299067,
+      "calls_per_frame": 3.697663551401869,
+      "us_per_call": 54.79451535447997,
+      "max_us": 254
+    },
+    "game/unit.gd:_draw_step": {
+      "ms_per_frame": 0.19922102803738317,
+      "calls_per_frame": 55.930373831775704,
+      "us_per_call": 3.5619470135599167,
+      "max_us": 88
+    },
+    "game/unit_fog.gd:_process": {
+      "ms_per_frame": 0.1916317757009346,
+      "calls_per_frame": 1.0,
+      "us_per_call": 191.63177570093458,
+      "max_us": 2047
+    },
+    "game/direct_pose.gd:_compose_pose": {
+      "ms_per_frame": 0.18729158878504673,
+      "calls_per_frame": 1.0,
+      "us_per_call": 187.29158878504674,
+      "max_us": 550
+    },
+    "game/direct_control.gd:_process": {
+      "ms_per_frame": 0.1804836448598131,
+      "calls_per_frame": 1.0,
+      "us_per_call": 180.4836448598131,
+      "max_us": 1035
+    },
+    "game/fx/vegetation_interaction.gd:contacts": {
+      "ms_per_frame": 0.17493971962616822,
+      "calls_per_frame": 0.27242990654205607,
+      "us_per_call": 642.1457975986278,
+      "max_us": 2009
+    },
+    "game/fx/ground_marks.gd:_tick": {
+      "ms_per_frame": 0.16673971962616824,
+      "calls_per_frame": 0.27850467289719627,
+      "us_per_call": 598.6963087248322,
+      "max_us": 1040
+    },
+    "ui/camera_rig.gd:_process": {
+      "ms_per_frame": 0.14887710280373834,
+      "calls_per_frame": 1.0,
+      "us_per_call": 148.87710280373832,
+      "max_us": 318
+    },
+    "game/fx/particle_system.gd:_process": {
+      "ms_per_frame": 0.137953738317757,
+      "calls_per_frame": 1.0,
+      "us_per_call": 137.953738317757,
+      "max_us": 844
+    },
+    "game/fx/particle_system.gd:_advance_effects": {
+      "ms_per_frame": 0.1345728971962617,
+      "calls_per_frame": 1.0,
+      "us_per_call": 134.5728971962617,
+      "max_us": 841
+    },
+    "game/fx/water_interaction.gd:_process": {
+      "ms_per_frame": 0.1308906542056075,
+      "calls_per_frame": 1.0,
+      "us_per_call": 130.8906542056075,
+      "max_us": 354
+    },
+    "game/fx/ambient_life.gd:_process": {
+      "ms_per_frame": 0.12842943925233644,
+      "calls_per_frame": 1.0,
+      "us_per_call": 128.42943925233644,
+      "max_us": 2806
+    },
+    "game/fx/ground_marks.gd:_sole_contact": {
+      "ms_per_frame": 0.12831682242990655,
+      "calls_per_frame": 15.060280373831775,
+      "us_per_call": 8.520214713456825,
+      "max_us": 67
+    },
+    "game/fx/ambient_life.gd:step": {
+      "ms_per_frame": 0.12016168224299065,
+      "calls_per_frame": 1.0,
+      "us_per_call": 120.16168224299065,
+      "max_us": 2795
+    },
+    "ei/terrain.gd:_process": {
+      "ms_per_frame": 0.11788925233644859,
+      "calls_per_frame": 1.0,
+      "us_per_call": 117.88925233644859,
+      "max_us": 267
+    },
+    "game/game.gd:_process": {
+      "ms_per_frame": 0.10790093457943925,
+      "calls_per_frame": 1.0,
+      "us_per_call": 107.90093457943925,
+      "max_us": 182
+    },
+    "game/unit.gd:_update_pose": {
+      "ms_per_frame": 0.10750607476635514,
+      "calls_per_frame": 80.43598130841121,
+      "us_per_call": 1.336542092451767,
+      "max_us": 106
+    },
+    "game/fx/terrain_details.gd:vegetation_allowed": {
+      "ms_per_frame": 0.0988911214953271,
+      "calls_per_frame": 5.959345794392523,
+      "us_per_call": 16.594291539245667,
+      "max_us": 1073
+    },
+    "ui/unit_panel.gd:_process": {
+      "ms_per_frame": 0.0988588785046729,
+      "calls_per_frame": 1.0,
+      "us_per_call": 98.8588785046729,
+      "max_us": 2862
+    },
+    "game/fx/particle_system.gd:_tick": {
+      "ms_per_frame": 0.09348785046728972,
+      "calls_per_frame": 0.27850467289719627,
+      "us_per_call": 335.67785234899327,
+      "max_us": 777
+    },
+    "ui/revive_overlay.gd:_process": {
+      "ms_per_frame": 0.09209719626168224,
+      "calls_per_frame": 1.0,
+      "us_per_call": 92.09719626168224,
+      "max_us": 1134
+    },
+    "game/unit.gd:_can_sleep_presentation": {
+      "ms_per_frame": 0.09081121495327103,
+      "calls_per_frame": 80.59018691588786,
+      "us_per_call": 1.1268272035161164,
+      "max_us": 20
+    },
+    "game/game.gd:_update_daylight": {
+      "ms_per_frame": 0.0905911214953271,
+      "calls_per_frame": 1.0,
+      "us_per_call": 90.5911214953271,
+      "max_us": 158
+    },
+    "ui/tutorial_panel.gd:_process": {
+      "ms_per_frame": 0.08998177570093457,
+      "calls_per_frame": 3.0,
+      "us_per_call": 29.99392523364486,
+      "max_us": 518
+    },
+    "game/fx/ground_marks.gd:_update": {
+      "ms_per_frame": 0.08981635514018692,
+      "calls_per_frame": 71.28177570093457,
+      "us_per_call": 1.2600184865906663,
+      "max_us": 78
+    },
+    "game/direct_pose.gd:sample": {
+      "ms_per_frame": 0.08656355140186917,
+      "calls_per_frame": 0.9948598130841122,
+      "us_per_call": 87.01080319398778,
+      "max_us": 381
+    },
+    "game/fx/water_reflection.gd:_process": {
+      "ms_per_frame": 0.08624906542056075,
+      "calls_per_frame": 1.0,
+      "us_per_call": 86.24906542056075,
+      "max_us": 940
+    },
+    "game/fx/ambient_life.gd:_threats": {
+      "ms_per_frame": 0.08419485981308411,
+      "calls_per_frame": 1.0,
+      "us_per_call": 84.19485981308411,
+      "max_us": 247
+    },
+    "game/fx/ground_marks.gd:_step": {
+      "ms_per_frame": 0.08095794392523364,
+      "calls_per_frame": 0.31401869158878504,
+      "us_per_call": 257.8125,
+      "max_us": 481
+    },
+    "game/unit.gd:_anim_rate": {
+      "ms_per_frame": 0.07885747663551401,
+      "calls_per_frame": 80.3411214953271,
+      "us_per_call": 0.9815331821089979,
+      "max_us": 22
+    },
+    "ei/unit_model.gd:_process": {
+      "ms_per_frame": 0.07343271028037382,
+      "calls_per_frame": 80.3411214953271,
+      "us_per_call": 0.9140115163147793,
+      "max_us": 193
+    },
+    "game/fx/local_lighting.gd:_process": {
+      "ms_per_frame": 0.06702196261682243,
+      "calls_per_frame": 1.0,
+      "us_per_call": 67.02196261682244,
+      "max_us": 1260
+    },
+    "game/levers.gd:usable": {
+      "ms_per_frame": 0.06014579439252336,
+      "calls_per_frame": 57.9196261682243,
+      "us_per_call": 1.0384354729402652,
+      "max_us": 21
+    },
+    "game/fx/terrain_details.gd:grass_allowed": {
+      "ms_per_frame": 0.059668224299065424,
+      "calls_per_frame": 5.959345794392523,
+      "us_per_call": 10.01254606759194,
+      "max_us": 1059
+    },
+    "ei/terrain.gd:_update_cloud_parameters": {
+      "ms_per_frame": 0.0569588785046729,
+      "calls_per_frame": 1.0,
+      "us_per_call": 56.958878504672896,
+      "max_us": 115
+    },
+    "ui/spell_slots.gd:_process": {
+      "ms_per_frame": 0.05583831775700934,
+      "calls_per_frame": 1.0,
+      "us_per_call": 55.83831775700934,
+      "max_us": 110
+    },
+    "game/fx/vegetation_interaction.gd:advance": {
+      "ms_per_frame": 0.05510514018691589,
+      "calls_per_frame": 0.27242990654205607,
+      "us_per_call": 202.27272727272728,
+      "max_us": 412
+    },
+    "game/world.gd:_sample_client_effect_frame": {
+      "ms_per_frame": 0.05122663551401869,
+      "calls_per_frame": 1.0,
+      "us_per_call": 51.22663551401869,
+      "max_us": 410
+    },
+    "ui/item_view.gd:_process": {
+      "ms_per_frame": 0.048152803738317755,
+      "calls_per_frame": 108.0,
+      "us_per_call": 0.4458592938733126,
+      "max_us": 21
+    },
+    "game/world.gd:_advance_client_effects": {
+      "ms_per_frame": 0.04557336448598131,
+      "calls_per_frame": 1.0,
+      "us_per_call": 45.57336448598131,
+      "max_us": 398
+    },
+    "particle_type_2001": {
+      "ms_per_frame": 0.04407523364485982,
+      "calls_per_frame": 0.5570093457943925,
+      "us_per_call": 79.12835570469798,
+      "max_us": 214
+    },
+    "game/fx/ground_mark_projection.gd:place": {
+      "ms_per_frame": 0.043430373831775705,
+      "calls_per_frame": 0.26401869158878505,
+      "us_per_call": 164.49734513274336,
+      "max_us": 265
+    },
+    "ui/mesh_screen_rect.gd:camera_context": {
+      "ms_per_frame": 0.040543457943925235,
+      "calls_per_frame": 17.610280373831777,
+      "us_per_call": 2.302260786498965,
+      "max_us": 268
+    },
+    "game/fx/terrain_details.gd:_update_submissions": {
+      "ms_per_frame": 0.04016448598130841,
+      "calls_per_frame": 1.0,
+      "us_per_call": 40.16448598130841,
+      "max_us": 420
+    },
+    "game/unit_sounds.gd:_frame": {
+      "ms_per_frame": 0.037546728971962616,
+      "calls_per_frame": 16.59766355140187,
+      "us_per_call": 2.26216954306146,
+      "max_us": 729
+    },
+    "game/fx/terrain_color_cache.gd:_process": {
+      "ms_per_frame": 0.03712757009345794,
+      "calls_per_frame": 1.0,
+      "us_per_call": 37.12757009345794,
+      "max_us": 1537
+    },
+    "game/fx/particle_system.gd:_draw": {
+      "ms_per_frame": 0.035954205607476634,
+      "calls_per_frame": 1.0,
+      "us_per_call": 35.95420560747664,
+      "max_us": 248
+    },
+    "game/direct_pose.gd:restore_pose": {
+      "ms_per_frame": 0.03506261682242991,
+      "calls_per_frame": 2.0,
+      "us_per_call": 17.531308411214955,
+      "max_us": 73
+    },
+    "game/fx/terrain_details.gd:surface_sample": {
+      "ms_per_frame": 0.03402803738317757,
+      "calls_per_frame": 9.552336448598131,
+      "us_per_call": 3.5622737501222974,
+      "max_us": 36
+    },
+    "game/game_sound.gd:_world_tick": {
+      "ms_per_frame": 0.03335841121495327,
+      "calls_per_frame": 0.27850467289719627,
+      "us_per_call": 119.77684563758389,
+      "max_us": 543
+    },
+    "ui/party_faces.gd:_process": {
+      "ms_per_frame": 0.0316392523364486,
+      "calls_per_frame": 1.0,
+      "us_per_call": 31.6392523364486,
+      "max_us": 92
+    },
+    "ei/terrain.gd:wind_frame": {
+      "ms_per_frame": 0.030968224299065417,
+      "calls_per_frame": 6.0,
+      "us_per_call": 5.161370716510904,
+      "max_us": 55
+    },
+    "ui/paperdoll.gd:_process": {
+      "ms_per_frame": 0.02892710280373832,
+      "calls_per_frame": 3.000934579439252,
+      "us_per_call": 9.639364683899096,
+      "max_us": 96
+    },
+    "game/sound_mixer.gd:_process": {
+      "ms_per_frame": 0.027877570093457944,
+      "calls_per_frame": 1.0,
+      "us_per_call": 27.877570093457944,
+      "max_us": 57
+    },
+    "particle_type_2038": {
+      "ms_per_frame": 0.027792056074766355,
+      "calls_per_frame": 0.11682242990654206,
+      "us_per_call": 237.9,
+      "max_us": 432
+    },
+    "ui/message_log.gd:_process": {
+      "ms_per_frame": 0.02755233644859813,
+      "calls_per_frame": 1.0,
+      "us_per_call": 27.55233644859813,
+      "max_us": 89
+    },
+    "ei/terrain.gd:_update_wind_parameters": {
+      "ms_per_frame": 0.02685093457943925,
+      "calls_per_frame": 1.0,
+      "us_per_call": 26.85093457943925,
+      "max_us": 134
+    },
+    "game/fx/ground_mark_projection.gd:sync": {
+      "ms_per_frame": 0.023563551401869158,
+      "calls_per_frame": 1.0,
+      "us_per_call": 23.56355140186916,
+      "max_us": 63
+    },
+    "ei/terrain.gd:_update_wave_parameters": {
+      "ms_per_frame": 0.021760280373831774,
+      "calls_per_frame": 1.0,
+      "us_per_call": 21.760280373831776,
+      "max_us": 63
+    },
+    "ui/game_hud.gd:_process": {
+      "ms_per_frame": 0.019539252336448598,
+      "calls_per_frame": 1.0,
+      "us_per_call": 19.539252336448598,
+      "max_us": 72
+    },
+    "game/order_marks.gd:_process": {
+      "ms_per_frame": 0.017058878504672897,
+      "calls_per_frame": 1.0,
+      "us_per_call": 17.058878504672897,
+      "max_us": 54
+    },
+    "ui/game_cursor.gd:_process": {
+      "ms_per_frame": 0.01702429906542056,
+      "calls_per_frame": 1.0,
+      "us_per_call": 17.02429906542056,
+      "max_us": 99
+    },
+    "game/unit.gd:_pre_cast": {
+      "ms_per_frame": 0.016895327102803736,
+      "calls_per_frame": 80.3411214953271,
+      "us_per_call": 0.21029488745419647,
+      "max_us": 10
+    },
+    "game/unit.gd:_held": {
+      "ms_per_frame": 0.01599485981308411,
+      "calls_per_frame": 80.3411214953271,
+      "us_per_call": 0.19908683766649218,
+      "max_us": 26
+    },
+    "game/local_host.gd:_process": {
+      "ms_per_frame": 0.015545327102803739,
+      "calls_per_frame": 1.0,
+      "us_per_call": 15.54532710280374,
+      "max_us": 107
+    },
+    "platform/pad_ui.gd:_process": {
+      "ms_per_frame": 0.012976168224299065,
+      "calls_per_frame": 1.0,
+      "us_per_call": 12.976168224299066,
+      "max_us": 28
+    },
+    "game/unit.gd:_physics_process": {
+      "ms_per_frame": 0.012880373831775701,
+      "calls_per_frame": 51.35747663551402,
+      "us_per_call": 0.25079841681452164,
+      "max_us": 11
+    },
+    "game/fx/scene_raytrace.gd:_process": {
+      "ms_per_frame": 0.012300934579439251,
+      "calls_per_frame": 1.0,
+      "us_per_call": 12.300934579439252,
+      "max_us": 25
+    },
+    "ui/camera_depth_of_field.gd:_process": {
+      "ms_per_frame": 0.01204626168224299,
+      "calls_per_frame": 1.0,
+      "us_per_call": 12.04626168224299,
+      "max_us": 40
+    },
+    "game/fx/weather_mist.gd:_process": {
+      "ms_per_frame": 0.01194392523364486,
+      "calls_per_frame": 1.0,
+      "us_per_call": 11.94392523364486,
+      "max_us": 44
+    },
+    "ui/portrait.gd:_process": {
+      "ms_per_frame": 0.01166214953271028,
+      "calls_per_frame": 1.0,
+      "us_per_call": 11.66214953271028,
+      "max_us": 38
+    },
+    "ui/belt_strip.gd:_process": {
+      "ms_per_frame": 0.010068691588785046,
+      "calls_per_frame": 1.0,
+      "us_per_call": 10.068691588785047,
+      "max_us": 30
+    },
+    "game/fx/surface_weather.gd:_process": {
+      "ms_per_frame": 0.009957009345794394,
+      "calls_per_frame": 1.0,
+      "us_per_call": 9.957009345794393,
+      "max_us": 31
+    },
+    "game/fx/ground_marks.gd:_sole_vertices": {
+      "ms_per_frame": 0.00950373831775701,
+      "calls_per_frame": 11.010280373831776,
+      "us_per_call": 0.8631695102283338,
+      "max_us": 17
+    },
+    "platform/performance_log.gd:_process": {
+      "ms_per_frame": 0.008677102803738318,
+      "calls_per_frame": 1.0,
+      "us_per_call": 8.677102803738318,
+      "max_us": 24
+    },
+    "game/fx/particle_system.gd:_apply_material_options": {
+      "ms_per_frame": 0.008579906542056074,
+      "calls_per_frame": 1.0,
+      "us_per_call": 8.579906542056074,
+      "max_us": 42
+    },
+    "ui/minimap.gd:_process": {
+      "ms_per_frame": 0.008486915887850466,
+      "calls_per_frame": 1.0,
+      "us_per_call": 8.486915887850467,
+      "max_us": 22
+    },
+    "ui/weapon_bar.gd:_process": {
+      "ms_per_frame": 0.008423364485981308,
+      "calls_per_frame": 1.0,
+      "us_per_call": 8.423364485981308,
+      "max_us": 23
+    },
+    "game/fx/ground_mark_projection.gd:bind": {
+      "ms_per_frame": 0.007805140186915888,
+      "calls_per_frame": 0.26401869158878505,
+      "us_per_call": 29.56283185840708,
+      "max_us": 54
+    },
+    "game/fx/terrain_details.gd:_finish_grass_jobs": {
+      "ms_per_frame": 0.007799532710280374,
+      "calls_per_frame": 1.0,
+      "us_per_call": 7.799532710280374,
+      "max_us": 1034
+    },
+    "game/game_sound.gd:_update_listener": {
+      "ms_per_frame": 0.007736915887850467,
+      "calls_per_frame": 1.0,
+      "us_per_call": 7.736915887850468,
+      "max_us": 21
+    },
+    "game/fx/contact_shadows.gd:_process": {
+      "ms_per_frame": 0.007639719626168225,
+      "calls_per_frame": 1.0,
+      "us_per_call": 7.639719626168224,
+      "max_us": 140
+    },
+    "ui/camp_view.gd:_process": {
+      "ms_per_frame": 0.006770560747663551,
+      "calls_per_frame": 1.0,
+      "us_per_call": 6.770560747663551,
+      "max_us": 28
+    },
+    "game/fx/soft_ground_deform.gd:_process": {
+      "ms_per_frame": 0.006611214953271028,
+      "calls_per_frame": 1.0,
+      "us_per_call": 6.611214953271028,
+      "max_us": 15
+    },
+    "game/session.gd:_process": {
+      "ms_per_frame": 0.006570560747663551,
+      "calls_per_frame": 1.0,
+      "us_per_call": 6.570560747663551,
+      "max_us": 82
+    },
+    "platform/pad_input.gd:_process": {
+      "ms_per_frame": 0.0057546728971962615,
+      "calls_per_frame": 1.0,
+      "us_per_call": 5.7546728971962615,
+      "max_us": 16
+    },
+    "game/game.gd:_update_hero_lights": {
+      "ms_per_frame": 0.005607009345794393,
+      "calls_per_frame": 1.0,
+      "us_per_call": 5.607009345794393,
+      "max_us": 16
+    },
+    "game/pad_field.gd:_process": {
+      "ms_per_frame": 0.005570560747663551,
+      "calls_per_frame": 1.0,
+      "us_per_call": 5.570560747663551,
+      "max_us": 16
+    },
+    "game/fx/ambient_habitats.gd:habitat": {
+      "ms_per_frame": 0.005461214953271029,
+      "calls_per_frame": 0.20514018691588784,
+      "us_per_call": 26.621867881548976,
+      "max_us": 1096
+    },
+    "game/fx/terrain_details.gd:_install_chunk": {
+      "ms_per_frame": 0.005201401869158879,
+      "calls_per_frame": 0.05046728971962617,
+      "us_per_call": 103.06481481481481,
+      "max_us": 287
+    },
+    "ui/inventory_panel.gd:_process": {
+      "ms_per_frame": 0.0046294392523364486,
+      "calls_per_frame": 1.0,
+      "us_per_call": 4.629439252336448,
+      "max_us": 20
+    },
+    "ui/esc_signpost.gd:_process": {
+      "ms_per_frame": 0.00451822429906542,
+      "calls_per_frame": 1.0,
+      "us_per_call": 4.5182242990654204,
+      "max_us": 12
+    },
+    "ui/base_strip.gd:_process": {
+      "ms_per_frame": 0.004507943925233645,
+      "calls_per_frame": 1.0,
+      "us_per_call": 4.507943925233645,
+      "max_us": 13
+    },
+    "ui/action_strip.gd:_process": {
+      "ms_per_frame": 0.004369158878504673,
+      "calls_per_frame": 1.0,
+      "us_per_call": 4.369158878504673,
+      "max_us": 12
+    },
+    "game/unit.gd:_sleep_model": {
+      "ms_per_frame": 0.004194859813084112,
+      "calls_per_frame": 24.65,
+      "us_per_call": 0.17017686868495385,
+      "max_us": 9
+    },
+    "ui/mesh_screen_rect.gd:of_context": {
+      "ms_per_frame": 0.004139252336448598,
+      "calls_per_frame": 0.14158878504672898,
+      "us_per_call": 29.234323432343235,
+      "max_us": 53
+    },
+    "game/game.gd:_update_cursor": {
+      "ms_per_frame": 0.004042990654205608,
+      "calls_per_frame": 1.0,
+      "us_per_call": 4.0429906542056075,
+      "max_us": 12
+    },
+    "game/fx/terrain_details.gd:_camera_focus": {
+      "ms_per_frame": 0.0040322429906542055,
+      "calls_per_frame": 1.0,
+      "us_per_call": 4.032242990654206,
+      "max_us": 13
+    },
+    "game/music_system.gd:_process": {
+      "ms_per_frame": 0.00396822429906542,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.9682242990654206,
+      "max_us": 13
+    },
+    "ui/player_list.gd:_process": {
+      "ms_per_frame": 0.0039285046728971965,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.9285046728971964,
+      "max_us": 12
+    },
+    "game/fx/quest_lights.gd:_process": {
+      "ms_per_frame": 0.003725233644859813,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.725233644859813,
+      "max_us": 53
+    },
+    "game/session.gd:_physics_process": {
+      "ms_per_frame": 0.003615420560747664,
+      "calls_per_frame": 0.9186915887850468,
+      "us_per_call": 3.9354018311291963,
+      "max_us": 13
+    },
+    "game/game.gd:_keep_selection": {
+      "ms_per_frame": 0.003260747663551402,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.2607476635514017,
+      "max_us": 12
+    },
+    "game/spell_sounds.gd:tick": {
+      "ms_per_frame": 0.003242990654205607,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.2429906542056073,
+      "max_us": 12
+    },
+    "ui/player_names.gd:_process": {
+      "ms_per_frame": 0.0031252336448598134,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.1252336448598133,
+      "max_us": 22
+    },
+    "game/game_sound.gd:_screens": {
+      "ms_per_frame": 0.003087383177570093,
+      "calls_per_frame": 1.0,
+      "us_per_call": 3.0873831775700933,
+      "max_us": 11
+    },
+    "ui/wiki_preview.gd:_process": {
+      "ms_per_frame": 0.002819626168224299,
+      "calls_per_frame": 2.0,
+      "us_per_call": 1.4098130841121495,
+      "max_us": 12
+    },
+    "game/fx/rain_snow.gd:_process": {
+      "ms_per_frame": 0.002791121495327103,
+      "calls_per_frame": 1.0,
+      "us_per_call": 2.791121495327103,
+      "max_us": 12
+    },
+    "game/fx/fx_ground.gd:of": {
+      "ms_per_frame": 0.0026420560747663553,
+      "calls_per_frame": 0.27850467289719627,
+      "us_per_call": 9.486577181208053,
+      "max_us": 25
+    },
+    "game/coop_progress.gd:_physics_process": {
+      "ms_per_frame": 0.0025037383177570092,
+      "calls_per_frame": 0.9186915887850468,
+      "us_per_call": 2.7253306205493386,
+      "max_us": 9
+    },
+    "ui/village_name.gd:_process": {
+      "ms_per_frame": 0.002485514018691589,
+      "calls_per_frame": 1.0,
+      "us_per_call": 2.485514018691589,
+      "max_us": 10
+    },
+    "game/fx/ambient_habitats.gd:liquid": {
+      "ms_per_frame": 0.0024850467289719625,
+      "calls_per_frame": 0.20514018691588784,
+      "us_per_call": 12.11389521640091,
+      "max_us": 1076
+    },
+    "ui/chat_overlay.gd:_process": {
+      "ms_per_frame": 0.0024467289719626167,
+      "calls_per_frame": 1.0,
+      "us_per_call": 2.446728971962617,
+      "max_us": 8
+    },
+    "ui/world_labels.gd:_process": {
+      "ms_per_frame": 0.0023205607476635515,
+      "calls_per_frame": 1.0,
+      "us_per_call": 2.3205607476635515,
+      "max_us": 20
+    },
+    "ui/hud_dial.gd:_process": {
+      "ms_per_frame": 0.001952803738317757,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.952803738317757,
+      "max_us": 11
+    },
+    "ui/interface_board.gd:_process": {
+      "ms_per_frame": 0.0018467289719626167,
+      "calls_per_frame": 4.0,
+      "us_per_call": 0.4616822429906542,
+      "max_us": 8
+    },
+    "game/fx/ground_marks.gd:_place": {
+      "ms_per_frame": 0.0018060747663551401,
+      "calls_per_frame": 0.26401869158878505,
+      "us_per_call": 6.84070796460177,
+      "max_us": 15
+    },
+    "ui/selection_frame.gd:_process": {
+      "ms_per_frame": 0.0017271028037383178,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.7271028037383178,
+      "max_us": 8
+    },
+    "ui/dialog_panel.gd:_process": {
+      "ms_per_frame": 0.0016514018691588786,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.6514018691588785,
+      "max_us": 8
+    },
+    "game/levers.gd:draw": {
+      "ms_per_frame": 0.0015616822429906543,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.5616822429906543,
+      "max_us": 10
+    },
+    "game/fx/ambient_life.gd:_update_residents": {
+      "ms_per_frame": 0.0015523364485981307,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.5523364485981308,
+      "max_us": 9
+    },
+    "game/fx/terrain_details.gd:_stream": {
+      "ms_per_frame": 0.0015345794392523364,
+      "calls_per_frame": 0.004672897196261682,
+      "us_per_call": 328.4,
+      "max_us": 346
+    },
+    "ui/touch_actions.gd:_process": {
+      "ms_per_frame": 0.0014303738317757008,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.4303738317757009,
+      "max_us": 6
+    },
+    "ui/options_panel.gd:_process": {
+      "ms_per_frame": 0.0013985981308411216,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.3985981308411215,
+      "max_us": 9
+    },
+    "ui/pad_prompts.gd:_process": {
+      "ms_per_frame": 0.0013682242990654206,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.3682242990654205,
+      "max_us": 8
+    },
+    "game/net_status.gd:_physics_process": {
+      "ms_per_frame": 0.001260747663551402,
+      "calls_per_frame": 0.9186915887850468,
+      "us_per_call": 1.3723296032553407,
+      "max_us": 11
+    },
+    "ui/movie_player.gd:_process": {
+      "ms_per_frame": 0.001211214953271028,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.2112149532710281,
+      "max_us": 10
+    },
+    "game/player_swap.gd:_process": {
+      "ms_per_frame": 0.0010761682242990654,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.0761682242990653,
+      "max_us": 8
+    },
+    "game/fx/particle_system.gd:_fill_apply": {
+      "ms_per_frame": 0.0010705607476635514,
+      "calls_per_frame": 0.09953271028037383,
+      "us_per_call": 10.755868544600938,
+      "max_us": 27
+    },
+    "ui/load_panel.gd:_process": {
+      "ms_per_frame": 0.0010532710280373831,
+      "calls_per_frame": 1.0,
+      "us_per_call": 1.0532710280373832,
+      "max_us": 8
+    },
+    "game/world.gd:_physics_process": {
+      "ms_per_frame": 0.0009799065420560747,
+      "calls_per_frame": 0.9186915887850468,
+      "us_per_call": 1.0666327568667344,
+      "max_us": 10
+    },
+    "game/lan_discovery.gd:_process": {
+      "ms_per_frame": 0.0009771028037383177,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.9771028037383177,
+      "max_us": 9
+    },
+    "platform/touch_input.gd:_process": {
+      "ms_per_frame": 0.0009560747663551402,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.9560747663551402,
+      "max_us": 8
+    },
+    "ui/players_panel.gd:_process": {
+      "ms_per_frame": 0.00095,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.95,
+      "max_us": 9
+    },
+    "game/fx/ambient_habitats.gd:ground": {
+      "ms_per_frame": 0.0009065420560747663,
+      "calls_per_frame": 0.22570093457943924,
+      "us_per_call": 4.01656314699793,
+      "max_us": 17
+    },
+    "game/internet_directory.gd:_process": {
+      "ms_per_frame": 0.0009046728971962616,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.9046728971962616,
+      "max_us": 10
+    },
+    "ui/save_transfer.gd:_process": {
+      "ms_per_frame": 0.0008453271028037384,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.8453271028037384,
+      "max_us": 6
+    },
+    "game/fx/ambient_habitats.gd:clear_at": {
+      "ms_per_frame": 0.0008023364485981308,
+      "calls_per_frame": 0.20514018691588784,
+      "us_per_call": 3.9111617312072893,
+      "max_us": 16
+    },
+    "platform/discord_presence.gd:_process": {
+      "ms_per_frame": 0.0007985981308411215,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.7985981308411215,
+      "max_us": 8
+    },
+    "ui/notify_line.gd:_process": {
+      "ms_per_frame": 0.0007883177570093458,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.7883177570093458,
+      "max_us": 6
+    },
+    "ui/pad_wheel.gd:_process": {
+      "ms_per_frame": 0.0007322429906542056,
+      "calls_per_frame": 1.0,
+      "us_per_call": 0.7322429906542056,
+      "max_us": 2
+    },
+    "game/fx/ambient_habitats.gd:refresh": {
+      "ms_per_frame": 0.00016962616822429908,
+      "calls_per_frame": 0.029906542056074768,
+      "us_per_call": 5.671875,
+      "max_us": 9
+    },
+    "game/fx/particle_system.gd:_fill": {
+      "ms_per_frame": 9.626168224299065e-05,
+      "calls_per_frame": 0.00046728971962616824,
+      "us_per_call": 206.0,
+      "max_us": 206
+    }
+  }
+}

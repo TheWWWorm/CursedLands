@@ -21,12 +21,23 @@ const MIN_D := 8.0
 const MAX_D := 40.0
 ## Silence (magic effect 0x10, (0x10)) mutes the steps.
 const SILENCE := "silence"
-const EMPTY_STATE: Dictionary = {}
+## One persistent typed record per heard actor. Frame updates access fields
+## directly instead of resolving each state value through a Dictionary.
+class VoiceState:
+	var clip := ""
+	var anim := &""
+	var name := ""
+	var frame := 0.0
+	var idle := -1
+	var attack := -1
+	var seen := 0
+	var far := false
+
 
 var mixer: SoundMixer
 var world: GameWorld
 var _adb := {}            # template -> {clip: record}
-var _units := {}          # instance id -> {clip, frame, idle, attack}
+var _units := {}          # instance id -> VoiceState
 var _stamp := 0
 var dialogue_silent := false
 var _steps := {}          # steps path -> file count
@@ -55,9 +66,9 @@ func tick() -> void:
 		if not is_instance_valid(u):
 			continue
 		var key := u.get_instance_id()
-		var st: Dictionary = _units.get(key, EMPTY_STATE)
+		var st: VoiceState = _units.get(key)
 		if u.pos.distance_squared_to(lis) > MAX_D * MAX_D:
-			if not st.is_empty():
+			if st != null:
 				n += 1
 				st.seen = _stamp
 				st.far = true
@@ -71,25 +82,30 @@ func tick() -> void:
 		# Static figures and an exhausted/missing clip have no animation time.
 		# Retain the unit's entry but resynchronise before the next valid clip.
 		if anim == &"":
-			if not st.is_empty():
+			if st != null:
 				n += 1
 				st.seen = _stamp
 				st.far = true
 			continue
 		n += 1
 		var cur := pl.current_animation_position * EIAnim.FPS
-		if st.is_empty() or st.get("far", false):   # first sight (a joiner's corpse, a new model) / back in range: no sound
+		if st == null or st.far:   # first sight / back in range: no sound
 			var c := String(anim).trim_prefix("ei/")
-			if st.is_empty():
-				_units[key] = {"clip": c, "anim": anim, "name": c, "frame": cur, "idle": -1, "attack": -1, "seen": _stamp}
-			else:
-				st.merge({"clip": c, "anim": anim, "name": c, "frame": cur, "seen": _stamp, "far": false}, true)
+			if st == null:
+				st = VoiceState.new()
+				_units[key] = st
+			st.clip = c
+			st.anim = anim
+			st.name = c
+			st.frame = cur
+			st.seen = _stamp
+			st.far = false
 			continue
 		st.seen = _stamp
 		if anim != st.anim:
 			st.anim = anim
 			st.name = String(anim).trim_prefix("ei/")
-		var clip: String = st.get("name", st.clip)
+		var clip: String = st.name
 		if clip == "":
 			continue
 		var prev: float = st.frame
@@ -113,21 +129,21 @@ func tick() -> void:
 func silence_dialogue(active: bool) -> void:
 	dialogue_silent = active
 	if active:
-		for st: Dictionary in _units.values():
+		for st: VoiceState in _units.values():
 			mixer.stop(int(st.idle))
 			mixer.stop(int(st.attack))
 
 
 ## The unit's attack sound is still playing.
 func attack_playing(u: GameUnit) -> bool:
-	var st: Dictionary = _units.get(u.get_instance_id(), EMPTY_STATE)
-	return not st.is_empty() and mixer.playing(int(st.attack))
+	var st: VoiceState = _units.get(u.get_instance_id())
+	return st != null and mixer.playing(int(st.attack))
 
 
 ## an attack acknowledgement takes the attack sound's place.
 func set_attack(u: GameUnit, h: int) -> void:
-	var st: Dictionary = _units.get(u.get_instance_id(), EMPTY_STATE)
-	if not st.is_empty():
+	var st: VoiceState = _units.get(u.get_instance_id())
+	if st != null:
 		st.attack = h
 
 
@@ -139,7 +155,7 @@ func current_clip_action(u: GameUnit) -> int:
 	return int(_clips(u.model.template).get(clip, {}).get("act", -1))
 
 
-func _frame(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: float) -> void:
+func _frame(u: GameUnit, st: VoiceState, rec: Dictionary, prev: float, cur: float) -> void:
 	var act: int = rec.act
 	match act:
 		ACT_WALK, ACT_RUN:
@@ -180,7 +196,7 @@ func _frame(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: floa
 
 ## the clip's sound frame f (0 = none) sounds when
 ## prev ≤ f < cur; one of its non-zero sound numbers at random.
-func _voice(u: GameUnit, st: Dictionary, rec: Dictionary, prev: float, cur: float, prio: int) -> void:
+func _voice(u: GameUnit, st: VoiceState, rec: Dictionary, prev: float, cur: float, prio: int) -> void:
 	if dialogue_silent: return
 	var f := float(rec.frame)
 	if rec.frame == 0 or f < prev or cur <= f:

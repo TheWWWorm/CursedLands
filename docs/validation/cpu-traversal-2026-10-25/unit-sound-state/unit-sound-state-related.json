@@ -1,0 +1,24 @@
+[
+  {
+    "test": "combat_inputs",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "unit-sound-state-combat_inputs",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/combat_inputs.gd",
+      "headless"
+    ]
+  },
+  {
+    "test": "audio_bus_routes",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "unit-sound-state-audio_bus_routes",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/audio_bus_routes.gd",
+      "headless"
+    ]
+  }
+]

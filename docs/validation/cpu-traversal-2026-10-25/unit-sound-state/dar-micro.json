@@ -1,0 +1,42 @@
+{
+  "gpu_job": "56c771e90c114829",
+  "before_us": 124.028625,
+  "after_us": 92.23825,
+  "saving_percent": 25.631482248553517,
+  "rows": [
+    {
+      "actors": 334,
+      "calls": 4000,
+      "candidate": false,
+      "near": 53,
+      "states": 53,
+      "usec": 494372
+    },
+    {
+      "actors": 334,
+      "calls": 4000,
+      "candidate": true,
+      "near": 53,
+      "states": 53,
+      "usec": 369036
+    },
+    {
+      "actors": 334,
+      "calls": 4000,
+      "candidate": true,
+      "near": 53,
+      "states": 53,
+      "usec": 368870
+    },
+    {
+      "actors": 334,
+      "calls": 4000,
+      "candidate": false,
+      "near": 53,
+      "states": 53,
+      "usec": 497857
+    }
+  ],
+  "method": "ABBA of the complete independent previous collector and new production collector over the same 334 live Dar actors, listener, normal mixer and player timelines. Initial observation is silent; repeated current-frame scans retain identical state and issue no duplicate sound requests. No own CPU builds or checks ran during this heavy GPU job.",
+  "limits": "Current-frame scan microbenchmark, not a complete moving-frame or whole-game FPS result. Separate state regressions exercise advancing clips, sound requests and RNG. The screening probe field named native actually selects the typed GDScript prototype; no native code changed."
+}

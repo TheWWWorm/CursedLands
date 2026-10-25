@@ -1,0 +1,39 @@
+{
+  "unit-sound-state-before": [
+    "FAIL hot sound state uses typed fields",
+    "FAIL authored idle request survives",
+    "FAIL authored attack request survives",
+    "FAIL authored death request survives",
+    "FAIL authored special request survives",
+    "UNIT_SOUND_STATE checks=1137 failures=5"
+  ],
+  "unit-sound-state-debug": [
+    "FAIL hot sound state uses typed fields",
+    "FAIL authored idle request survives",
+    "FAIL authored attack request survives",
+    "FAIL authored death request survives",
+    "FAIL authored special request survives",
+    "UNIT_SOUND_STATE checks=1137 failures=5"
+  ],
+  "unit-sound-state-before-corrected": [
+    "FAIL hot sound state uses typed fields",
+    "UNIT_SOUND_STATE checks=1137 failures=1"
+  ],
+  "typed-sound-scan-probe": [
+    "TYPED_UNIT_SOUND_SCAN_PROBE_TIMING [{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":0,\"usec\":111365},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":0,\"usec\":94903},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":0,\"usec\":95058},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":0,\"usec\":111440},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":16,\"usec\":140272},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":16,\"usec\":117573},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":16,\"usec\":118433},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":16,\"usec\":143084},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":56,\"usec\":209300},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":56,\"usec\":173084},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":56,\"usec\":172993},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":56,\"usec\":209158},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":334,\"usec\":699853},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":334,\"usec\":582319},{\"actors\":334,\"frames\":2000,\"native\":true,\"near\":334,\"usec\":578220},{\"actors\":334,\"frames\":2000,\"native\":false,\"near\":334,\"usec\":699008}]",
+    "TYPED_UNIT_SOUND_SCAN_PROBE checks=200 failures=0"
+  ],
+  "unit-sound-state-combat_inputs": [
+    "COMBAT_INPUTS 918 checks 0 failures"
+  ],
+  "unit-sound-state-audio_bus_routes": [
+    "AUDIO_BUS_ROUTES {\"checks\":2,\"failures\":0}"
+  ],
+  "dar-current-profile": [
+    "STANDARD_ZONE_TRAVERSAL 54 checks 0 failures"
+  ],
+  "dar-sound-state-micro": [
+    "SOUND_STATE_LIVE_MICRO [{\"actors\":334,\"calls\":4000,\"candidate\":false,\"near\":53,\"states\":53,\"usec\":494372},{\"actors\":334,\"calls\":4000,\"candidate\":true,\"near\":53,\"states\":53,\"usec\":369036},{\"actors\":334,\"calls\":4000,\"candidate\":true,\"near\":53,\"states\":53,\"usec\":368870},{\"actors\":334,\"calls\":4000,\"candidate\":false,\"near\":53,\"states\":53,\"usec\":497857}]",
+    "STANDARD_ZONE_TRAVERSAL 64 checks 0 failures"
+  ]
+}

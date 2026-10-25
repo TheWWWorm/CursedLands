@@ -1159,3 +1159,54 @@ being optimized is Godot-specific, so there is no equivalent original Wine
 call comparison. The existing original blood captures remain referenced above;
 this pass makes no original-game FPS claim. This shared mark update benefits
 other campaign zones wherever unchanged opacity previously caused uploads.
+
+## Typed actor sound state and refreshed Dar profile
+
+A fresh diagnostic export of integrated `e026666f` passes **54 checks** on the
+fixed 334-actor Dar route (GPU Lab heavy `b761fa80b6d44fcc`). Across 2,140 walking
+frames, inclusive actor presentation is 1.67 ms/frame, animation flush 0.82,
+ground marks 0.69, terrain details 0.61, unit sound scanning 0.27 and health-bar
+processing 0.24. These scopes overlap and include instrumentation; they are
+priorities for investigation, not additional FPS measurements. See the
+[complete scope summary](unit-sound-state/dar-current-profile-summary.json).
+
+The sound collector now retains one typed record per heard actor instead of
+resolving clip, frame and sound-handle fields through a Dictionary on every
+update. Registry order, range checks, wakeups, clip timing, voice/step requests,
+random draws, dialogue suppression and external acknowledgement handles remain
+unchanged. This uses GDScript's typed fields; no native library changes.
+
+Heavy GPU Lab **56c771e90c114829** measures the independent previous collector
+against production in ABBA order on the same live Dar scene: **334 actors,
+53 in range**. Current-frame scanning falls from **124.029 to 92.238 µs/call**,
+**25.6% less CPU**, with identical state and no duplicate sound requests.
+All **64 route/output checks** pass. This saves about 0.032 ms per scan; it is
+not a 25.6% frame-rate gain or a measurement of full audio mixing. Advancing
+clips and emitted requests are covered separately by the regression. See the
+[live measurements](unit-sound-state/dar-micro.json).
+
+The registered `unit_sound_state` test passes **1,137 checks on both Linux and
+Windows/Wine**, comparing ordered requests, retained state and RNG against the
+complete old collector from `e026666f`. It covers exact step/voice boundaries,
+same-clip wraps, missing clips/models/players, invisible actors, range exit and
+re-entry, silence, dialogue, brief-zone attacks, waking, registry removal and
+freed actors. The unchanged pack passes the behavioral comparisons but fails
+the assertion that the hot cache uses typed fields. An initial request-counting
+fixture error and its corrected negative control are retained in the evidence.
+
+Related hidden presentation (**69**), combat inputs (**918**) and audio bus
+routing (**2**, exercising 60,000 channel reuses) pass on Linux and Windows/Wine.
+The final registered Dar traversal passes **54 checks each in standard rendering
+and full path tracing**. All 461 runtime files match the exported snapshot;
+native binaries remain unchanged. See [provenance](unit-sound-state/provenance.json),
+[check summaries](unit-sound-state/checks.json) and
+[rendered results](unit-sound-state/unit-sound-state-rendered.json).
+
+Original `0x534b60` stores clip/frame and idle/attack handles in fixed fields,
+resets previous time when the clip changes and uses `prev < step <= current`.
+Original `0x534760` uses `prev <= voice_frame < current`. Those existing remake
+rules are preserved. An identical original Wine comparison of GDScript cache
+access is inapplicable; the Wine runs above execute the remake and make no
+original FPS claim. The same collector runs in other campaign zones. Remaining
+measured candidates include animation composition and repeated health-bar
+selection queries; the rejected property-based native composer remains removed.

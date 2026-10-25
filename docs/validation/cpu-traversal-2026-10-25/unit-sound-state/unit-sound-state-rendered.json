@@ -1,0 +1,130 @@
+{
+  "git_head": "e026666fd68ef1bbf1c7418184c3d742fa2dab87",
+  "game_source_sha256": "69e98f6e962d3e67378bca697e7eb6cb1873c7e64b95b7d0bf489a53dc50669a",
+  "manifest_sha256": "bc7fd3f7b740b7764c4d07e780e4d41ea697e4cb2ee108a17d8a2659d7c23581",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "dar_leanos_route",
+      "script": "tools/tests/dar_leanos_route.gd",
+      "script_sha256": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "contract": "Dar Leanos reaches fixed first-person waypoints with live authority, collision, PT and native NRD throughout the walk.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 151.97,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_route/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_route/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_route/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_route/fixtures/dar_leanos_route.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_route/fixtures",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--zone-route-zone=gz31j",
+        "--zone-route-peaceful"
+      ],
+      "log": "dar_leanos_route/run.log",
+      "passed": true,
+      "result": {
+        "checks": 54,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "dar_leanos_standard_route",
+      "script": "tools/tests/dar_leanos_route.gd",
+      "script_sha256": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "contract": "Dar Leanos reaches the same fixed first-person waypoints with live authority, collision and Very High standard rendering throughout the walk.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 118.86,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_standard_route/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_standard_route/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_standard_route/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_standard_route/fixtures/dar_leanos_route.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-rendered/dar_leanos_standard_route/fixtures",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--zone-route-zone=gz31j",
+        "--zone-route-peaceful",
+        "--zone-route-standard"
+      ],
+      "log": "dar_leanos_standard_route/run.log",
+      "passed": true,
+      "result": {
+        "checks": 54,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-linux/runtime.pck",
+    "sha256": "a97aa32f0968cf6b5712f5cd72d57403f579bf362a51f82fd0d9e998e9190cc5"
+  },
+  "passed": true
+}

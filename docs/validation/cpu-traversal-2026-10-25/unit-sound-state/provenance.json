@@ -1,0 +1,42 @@
+{
+  "base_commit": "e026666f",
+  "runtime_files_compared": 461,
+  "differences": [],
+  "snapshot": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/unit-sound-state-game",
+  "packs": {
+    "unit-sound-state-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "a97aa32f0968cf6b5712f5cd72d57403f579bf362a51f82fd0d9e998e9190cc5",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "unit-sound-state-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "3b5fac365a0e1f32a86159f39c873250d5d444ae47ac81ca049bd59e3b70163e",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/unit_sounds.gd": "d5a541fa46976bc79f017eea36f9868c06aa98bbc8795af74f392fc0e6a66abd",
+    "tools/tests/unit_sound_state.gd": "b25d4bfc3e140b39164a8c6a7faff6accdd808fdb479c5aafc57a9414b539a56",
+    "tools/tests/unit_sound_state_reference.gd": "02763d937ce6b5821c9599c62f3ecbf53e4928b6fab0ee238922c07b5c6f5d7c",
+    "tools/regressions.json": "bc7fd3f7b740b7764c4d07e780e4d41ea697e4cb2ee108a17d8a2659d7c23581"
+  },
+  "reference_exact_except_header_and_class_name": true,
+  "original_sources": {
+    "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00134/534b60_FUN_00534b60.c": "056bc48781d1e37faaebecb37e1fbc3264a4741d50c4234c93c871150200c186",
+    "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00134/534760_FUN_00534760.c": "4d856cd06d33023ecbb428a7e09ee35b9d006f7275f1975cd03ce4ab668cff37"
+  },
+  "original_comparison": "Original 0x534b60 retains clip/frame and idle/attack handles in fixed fields, resets previous time only on clip changes, uses prev < step <= current for steps, and suppresses silence/brief-zone attacks. 0x534760 uses prev <= voice_frame < current. The remake already implements those rules; this change preserves them while replacing its Dictionary state. An identical original Wine comparison of GDScript cache access is inapplicable. Windows/Wine checks execute the remake and make no original FPS claim.",
+  "native_libraries": "Unchanged; typed GDScript state only.",
+  "diagnostic_profile": {
+    "gpu_job": "b761fa80b6d44fcc",
+    "base_commit": "e026666f",
+    "checks": 54,
+    "notes": "Private timing wrappers only; inclusive scopes overlap. No extra FPS claim."
+  },
+  "fixture_correction": "The first before run reported four additional fixture failures because Godot String.contains(\"\") is false. The request counter now explicitly accepts an empty suffix. On unchanged production, the corrected fixture passes every behavior comparison and fails only the intended typed-cache assertion. Raw initial failures are retained."
+}

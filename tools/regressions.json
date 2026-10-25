@@ -1453,6 +1453,17 @@
       "mode": "headless",
       "args": [],
       "min_checks": 15870
+    },
+    {
+      "id": "unit_sound_state",
+      "script": "tools/tests/unit_sound_state.gd",
+      "summary": "UNIT_SOUND_STATE",
+      "contract": "Typed per-actor sound state retains exact ordered voice/step requests, RNG, animation boundaries, wakeups, range transitions, dialogue and external handles against the independent previous collector.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1137
     }
   ]
 }
