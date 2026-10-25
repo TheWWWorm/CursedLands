@@ -262,16 +262,17 @@ func _update_motion(changes: Dictionary) -> bool:
 	# Otherwise a stopped actor keeps walking backwards through stale history.
 	var dirty := _motion_pending
 	_motion_pending = {}
-	for index: int in dirty:
-		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
+	# A moving part already receives its final record below. Clearing it first
+	# doubled packing work for every articulated limb in crowded scenes.
+	var rejected := {}
+	for index in _history_reject:rejected[index]=true
 	var deformed := {}
 	for pose: Dictionary in changes.get("poses",[]):
 		for index: int in _geometry_placements[pose.geometry]:
 			deformed[index] = true
-			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
-			dirty[index] = true;_motion_pending[index] = true
 	for placement: Dictionary in changes.get("instances",[]):
 		var index: int = placement.index
+		if rejected.has(index):continue
 		var previous: Transform3D = _instances[index].transform
 		var current: Transform3D = placement.transform
 		var valid: bool = (_instances[index].mask&1)!=0 and (placement.mask&1)!=0 and not deformed.has(index)
@@ -286,10 +287,17 @@ func _update_motion(changes: Dictionary) -> bool:
 				normal = (current*previous.affine_inverse()).basis.transposed()
 		_write_motion(index,position,normal,valid,moving)
 		dirty[index] = true;_motion_pending[index] = true
-	for index in _history_reject:
+	for index in deformed:
+		if _motion_pending.has(index) or rejected.has(index):continue
+		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
+		dirty[index]=true;_motion_pending[index]=true
+	for index in rejected:
 		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
 		dirty[index]=true;_motion_pending[index]=true
 	_history_reject.clear()
+	for index: int in dirty:
+		if not _motion_pending.has(index):
+			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
 	if dirty.is_empty(): return true
 	# One bounded upload avoids an API call for every articulated body part.
 	var indices := dirty.keys();indices.sort()

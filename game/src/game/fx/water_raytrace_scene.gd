@@ -5,7 +5,9 @@ const RADIUS := 96.0
 const UNIT_HYSTERESIS := 8.0
 const MAX_TRIANGLES := 320000
 const MAX_TEXTURES := 192
-const MAX_INSTANCES := 4096
+# Dense LiA cities exceed 4096 articulated parts within the unchanged radius.
+# The FP16 identity encoding remains exact across this bounded range.
+const MAX_INSTANCES := 8192
 const TEXTURE_SIZE := 512
 var center := Vector3.ZERO
 var vertices := PackedFloat32Array()
@@ -33,6 +35,13 @@ var _watching := false
 var _detail_options := Vector4i.ZERO
 var path_materials := false
 var _terrain_version := []
+# Live polling shares a small frame budget between roots. Atomic candidate
+# validation still uses a fresh synchronous check before publishing output.
+var topology_pending := false
+var _topology_roots: Array[WeakRef] = []
+var _topology_cursor := 0
+var _topology_seen := {}
+var _topology_materials := {}
 const PathTerrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Ground = preload("res://src/game/fx/raytrace_ground.gd")
 var _ground := Ground.new()
@@ -60,42 +69,43 @@ func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 		pending.append({"node":weakref(mesh),"land":false})
 		_nodes[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 
-func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
-	var found: Array[MeshInstance3D] = []
+func _scene_roots() -> Array:
 	var world := _terrain.game_world()
-	if world == null: return found
+	if world == null: return []
 	var roots: Array = world.objects.values()+world.units.values()
-	# Combat effects such as detached limbs own real figure meshes without
-	# becoming gameplay objects or units. Explicit opt-in avoids scanning the
-	# whole tree, collecting particles, or retaining another loaded world's
-	# geometry. The SceneTree removes freed roots from the group automatically.
+	# Detached limbs opt in without retaining another world's geometry.
 	if world.is_inside_tree():
 		for root: Node in world.get_tree().get_nodes_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP):
 			if root is Node3D and world.is_ancestor_of(root) and root.get_world_3d()==world.get_world_3d() and not roots.has(root):
 				roots.append(root)
-	for root: Node3D in roots:
-		if not is_instance_valid(root) or not root.is_inside_tree(): continue
-		var dynamic := root is GameUnit or root.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
-		var radius := RADIUS+24.0
-		if dynamic and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
-		# Include hidden parts, too: visibility is a live instance mask, and a
-		# fogged creature must not require a fresh mesh build when revealed.
-		if root.global_position.distance_squared_to(center) > radius*radius: continue
-		if dynamic and remember_units: _unit_roots[root.get_instance_id()]=true
-		for mesh: MeshInstance3D in root.find_children("*","MeshInstance3D",true,false):
-			if mesh.mesh == null or mesh is EIObjectWater: continue
-			# Admit an animated figure as a whole. Idle limbs crossing the 96 m
-			# boundary only need instance updates, not a new scene/AS every poll.
-			# Root hysteresis keeps a retained figure stable near its entry edge.
-			if not dynamic and not _near(mesh.global_transform*mesh.get_aabb(),false): continue
-			var supported := false
-			for surface in mesh.mesh.get_surface_count():
-				var mat := mesh.get_active_material(surface)
-				if mat is BaseMaterial3D or (mat is ShaderMaterial and mat.get_shader_parameter("albedo_tex") is Texture2D):
-					supported = true; break
-			if supported:
-				found.append(mesh)
-				if remember_units: _mesh_roots[mesh.get_instance_id()] = weakref(root)
+	return roots
+
+func _root_meshes(root: Node3D,remember_units := false) -> Array[MeshInstance3D]:
+	var found: Array[MeshInstance3D] = []
+	if not is_instance_valid(root) or not root.is_inside_tree(): return found
+	var dynamic := root is GameUnit or root.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
+	var radius := RADIUS+24.0
+	if dynamic and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
+	# Hidden parts remain members; their visibility is a live instance mask.
+	if root.global_position.distance_squared_to(center) > radius*radius: return found
+	if dynamic and remember_units: _unit_roots[root.get_instance_id()]=true
+	for mesh: MeshInstance3D in root.find_children("*","MeshInstance3D",true,false):
+		if mesh.mesh == null or mesh is EIObjectWater: continue
+		# Admit an animated figure as a whole, with root hysteresis.
+		if not dynamic and not _near(mesh.global_transform*mesh.get_aabb(),false): continue
+		var supported := false
+		for surface in mesh.mesh.get_surface_count():
+			var mat := mesh.get_active_material(surface)
+			if mat is BaseMaterial3D or (mat is ShaderMaterial and mat.get_shader_parameter("albedo_tex") is Texture2D):
+				supported = true; break
+		if supported:
+			found.append(mesh)
+			if remember_units: _mesh_roots[mesh.get_instance_id()] = weakref(root)
+	return found
+
+func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
+	var found: Array[MeshInstance3D] = []
+	for root: Node3D in _scene_roots():found.append_array(_root_meshes(root,remember_units))
 	return found
 
 func _material_version(material: Material) -> Array:
@@ -147,19 +157,37 @@ func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 		version.append([key,materials[key]])
 	return version
 
-func topology_changed() -> bool:
-	if _soft_ground!=Gfx.on("gfx_soft_ground"):return true
-	if lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs")): return true
-	if path_materials and _terrain_version!=PathTerrain.version(_terrain): return true
-	var current := {}
-	var materials := {}
-	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
-	return current != _nodes
+func _reset_topology_poll() -> void:
+	topology_pending=false;_topology_roots.clear();_topology_cursor=0
+	_topology_seen.clear();_topology_materials.clear()
+
+func topology_changed(budget_us := 0) -> bool:
+	if _soft_ground!=Gfx.on("gfx_soft_ground") \
+		or (lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))) \
+		or (path_materials and _terrain_version!=PathTerrain.version(_terrain)):
+		_reset_topology_poll();return true
+	if budget_us<=0:_reset_topology_poll()
+	if not topology_pending:
+		for root: Node3D in _scene_roots():
+			if is_instance_valid(root):_topology_roots.append(weakref(root))
+		topology_pending=true
+	var deadline := Time.get_ticks_usec()+budget_us
+	while _topology_cursor<_topology_roots.size():
+		var root: Node3D=_topology_roots[_topology_cursor].get_ref();_topology_cursor+=1
+		for mesh: MeshInstance3D in _root_meshes(root):
+			var id := mesh.get_instance_id()
+			if _nodes.get(id)!=_mesh_version(mesh,_topology_materials):
+				_reset_topology_poll();return true
+			_topology_seen[id]=true
+		if budget_us>0 and Time.get_ticks_usec()>=deadline:return false
+	var changed := _topology_seen.size()!=_nodes.size()
+	_reset_topology_poll();return changed
 
 ## Retain only inexpensive source watches after a failed/empty gather. The
 ## controller can retry when real inputs change without keeping copied images
 ## or repeatedly repacking an unchanged over-budget scene.
 func discard_geometry() -> void:
+	_reset_topology_poll()
 	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
 	_mesh_roots.clear();_groups.clear();_view_models.clear();_view_offsets.clear();_morph_geometries.clear()

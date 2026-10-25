@@ -14,6 +14,8 @@
 - Clear inactive crash-report row highlights when hovering Accept and align keyboard selection with activation.
 - Preserve the solo simulation connection through blocking shader compilation.
 - Arm renderer recovery before intro movies.
+- Reduce repeated path-tracing motion packing and source readbacks during traversal; budget live topology scans and support dense city scenes up to 8,192 placements.
+- Skip revival mouse hit-tests while the pointer is hidden during direct movement, retaining revival progress bars.
 
 ## 1.29.0 — 2026-10-25
 

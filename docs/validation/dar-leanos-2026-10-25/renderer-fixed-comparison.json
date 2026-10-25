@@ -1,0 +1,318 @@
+[
+  {
+    "name": "fixed-before",
+    "checks": 76,
+    "failures": 0,
+    "window": "(1920, 1080)",
+    "walks": [
+      {
+        "phase": "walk-0",
+        "seconds": 8.319735,
+        "frames": 182,
+        "frame_ms": {
+          "max": 135.728,
+          "median": 43.006,
+          "p95": 64.07
+        },
+        "from": [
+          173.5,
+          302.5
+        ],
+        "to": [
+          168.078125,
+          286.046875
+        ],
+        "reroutes": []
+      },
+      {
+        "phase": "walk-1",
+        "seconds": 8.364942,
+        "frames": 185,
+        "frame_ms": {
+          "max": 103.913,
+          "median": 42.9,
+          "p95": 65.371
+        },
+        "from": [
+          168.015625,
+          285.828125
+        ],
+        "to": [
+          182.203125,
+          276.09375
+        ],
+        "reroutes": []
+      },
+      {
+        "phase": "walk-2",
+        "seconds": 8.189823,
+        "frames": 190,
+        "frame_ms": {
+          "max": 71.465,
+          "median": 40.955,
+          "p95": 62.593
+        },
+        "from": [
+          182.40625,
+          275.953125
+        ],
+        "to": [
+          188.640625,
+          291.796875
+        ],
+        "reroutes": []
+      },
+      {
+        "phase": "walk-3",
+        "seconds": 8.161342,
+        "frames": 191,
+        "frame_ms": {
+          "max": 80.634,
+          "median": 40.027,
+          "p95": 65.086
+        },
+        "from": [
+          188.734375,
+          292.015625
+        ],
+        "to": [
+          183.09375,
+          276.296875
+        ],
+        "reroutes": []
+      }
+    ],
+    "cache_final": {
+      "bytes": 133341120,
+      "entries": 704,
+      "hits": 16098,
+      "misses": 1254
+    },
+    "rt_final": {
+      "accumulation_frames": 8.0,
+      "active": true,
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "adaptive_target_fps": 0,
+      "build_timings": {
+        "extra_ms": 16.932,
+        "materials_ms": 3.228,
+        "placements_ms": 17.756,
+        "program_ms": 42.977,
+        "resources_ms": 106.767,
+        "textures_ms": 18.454,
+        "vertices_ms": 7.408
+      },
+      "cpu_gather_ms": 0.0,
+      "cpu_snapshot_ms": 0.001,
+      "cpu_topology_ms": 0.043,
+      "cpu_total_ms": 6.504,
+      "cpu_update_ms": 2.16,
+      "display_size": [
+        1920,
+        1080
+      ],
+      "emissive_candidates": 0,
+      "emissive_triangles": 0,
+      "geometries": 2735,
+      "gi_samples": 0,
+      "history_handoffs": 0,
+      "history_limit": 8.0,
+      "history_matched_surfaces": 0,
+      "history_reused": true,
+      "instances": 3961,
+      "light_history_limited": false,
+      "lights": 0,
+      "local_light_shadow_samples": 0,
+      "path_bounces": 2,
+      "path_samples": 1,
+      "path_tracing": true,
+      "program_cache_hits": 0,
+      "program_compilations": 1,
+      "quality": 0,
+      "rebuilding": false,
+      "render_scale": 1.0,
+      "render_size": [
+        1920,
+        1080
+      ],
+      "replacement_failure": "snapshot_budget",
+      "retry_attempt": 4,
+      "retry_delay_seconds": 2.09515522222223,
+      "shadow_samples": 0,
+      "size": [
+        960,
+        540
+      ],
+      "snapshot_generation": 1,
+      "supported": true,
+      "terrain_material_build_us": 19372,
+      "terrain_material_bytes": 796668,
+      "terrain_material_triangles": 56421,
+      "trace_render_scale": 1.0,
+      "triangles": 168431,
+      "updated_instances": 378,
+      "updated_poses": 0,
+      "window_resolution_reference": false
+    }
+  },
+  {
+    "name": "fixed-after",
+    "checks": 76,
+    "failures": 0,
+    "window": "(1920, 1080)",
+    "walks": [
+      {
+        "phase": "walk-0",
+        "seconds": 8.34054,
+        "frames": 192,
+        "frame_ms": {
+          "max": 109.7,
+          "median": 42.609,
+          "p95": 51.913
+        },
+        "from": [
+          173.5,
+          302.5
+        ],
+        "to": [
+          168.109375,
+          286.109375
+        ],
+        "reroutes": []
+      },
+      {
+        "phase": "walk-1",
+        "seconds": 8.368415,
+        "frames": 217,
+        "frame_ms": {
+          "max": 210.276,
+          "median": 36.443,
+          "p95": 62.163
+        },
+        "from": [
+          168.046875,
+          285.9375
+        ],
+        "to": [
+          182.25,
+          276.0625
+        ],
+        "reroutes": []
+      },
+      {
+        "phase": "walk-2",
+        "seconds": 8.196311,
+        "frames": 195,
+        "frame_ms": {
+          "max": 221.87,
+          "median": 40.219,
+          "p95": 51.191
+        },
+        "from": [
+          182.375,
+          275.984375
+        ],
+        "to": [
+          188.6875,
+          291.90625
+        ],
+        "reroutes": []
+      },
+      {
+        "phase": "walk-3",
+        "seconds": 8.170372,
+        "frames": 197,
+        "frame_ms": {
+          "max": 218.965,
+          "median": 39.039,
+          "p95": 53.544
+        },
+        "from": [
+          188.734375,
+          292.03125
+        ],
+        "to": [
+          183.109375,
+          276.34375
+        ],
+        "reroutes": []
+      }
+    ],
+    "cache_final": {
+      "bytes": 159936288,
+      "entries": 769,
+      "hits": 17236,
+      "misses": 774
+    },
+    "rt_final": {
+      "accumulation_frames": 8.0,
+      "active": true,
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "adaptive_target_fps": 0,
+      "build_timings": {
+        "extra_ms": 16.012,
+        "largest_step_ms": 1.262,
+        "materials_ms": 4.69,
+        "placements_ms": 7.558,
+        "program_ms": 0.057,
+        "resources_ms": 36.012,
+        "texture_upload_ms": 14.255,
+        "texture_upload_step_ms": 0.64,
+        "textures_ms": 0.395,
+        "vertices_ms": 7.294
+      },
+      "cpu_gather_ms": 0.0,
+      "cpu_snapshot_ms": 0.001,
+      "cpu_topology_ms": 0.031,
+      "cpu_total_ms": 5.326,
+      "cpu_update_ms": 1.56,
+      "display_size": [
+        1920,
+        1080
+      ],
+      "emissive_candidates": 0,
+      "emissive_triangles": 0,
+      "geometries": 3158,
+      "gi_samples": 0,
+      "history_handoffs": 5,
+      "history_limit": 8.0,
+      "history_matched_surfaces": 1995,
+      "history_reused": true,
+      "instances": 4407,
+      "light_history_limited": false,
+      "lights": 0,
+      "local_light_shadow_samples": 0,
+      "path_bounces": 2,
+      "path_samples": 1,
+      "path_tracing": true,
+      "program_cache_hits": 5,
+      "program_compilations": 1,
+      "quality": 0,
+      "rebuilding": false,
+      "render_scale": 1.0,
+      "render_size": [
+        1920,
+        1080
+      ],
+      "shadow_samples": 0,
+      "size": [
+        960,
+        540
+      ],
+      "snapshot_generation": 6,
+      "supported": true,
+      "terrain_material_build_us": 11857,
+      "terrain_material_bytes": 887968,
+      "terrain_material_triangles": 58525,
+      "trace_render_scale": 1.0,
+      "triangles": 191256,
+      "updated_instances": 383,
+      "updated_poses": 0,
+      "window_resolution_reference": false
+    }
+  }
+]

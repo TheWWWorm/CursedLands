@@ -246,7 +246,7 @@ func pending_lifetime() -> void:
 	check(restored.instances.size()==2,"reattached unit restores both queued figure parts")
 
 func budgets() -> void:
-	check(Scene.MAX_TRIANGLES==320000 and Scene.MAX_TEXTURES==192 and Scene.MAX_INSTANCES==4096,"geometry, texture and instance budget caps are unchanged")
+	check(Scene.MAX_TRIANGLES==320000 and Scene.MAX_TEXTURES==192 and Scene.MAX_INSTANCES==8192,"geometry and texture caps stay fixed; the dense-city instance cap is bounded at 8192")
 	var scene := Scene.new();scene._kernel=null;scene.triangles=Scene.MAX_TRIANGLES
 	scene._append(body.mesh.surface_get_arrays(0),Transform3D.IDENTITY,body.material_override,false)
 	check(scene.failed,"triangle overflow still rejects the snapshot")

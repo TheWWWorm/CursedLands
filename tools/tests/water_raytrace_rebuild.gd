@@ -13,6 +13,8 @@ func run() -> void:
  # Move only the snapshot centre: retain this known water-facing camera so
  # the test cannot pass by disabling reflections after leaving the river.
  var previous:Object=reflector._rt
+ var sources:RefCounted=reflector._rt_live._sources
+ var source_hits:int=sources.hits
  var previous_output:Texture2D=previous.output
  var before:int=previous.completed_renders
  reflector._rt_center=camera.global_position+Vector3(17,0,0)
@@ -34,6 +36,8 @@ func run() -> void:
   check(reflector._rt.incremental_build,"replacement builds textures and visible BLAS incrementally")
   check(reflector._rt.programs!=null and reflector._rt.programs==previous.programs,"replacement reuses compiled ray programs")
  check(t._water_mat.get_shader_parameter("planar_texture")==reflector._rt.output,"water samples the promoted output")
+ check(reflector._rt_live._sources==sources,"water replacements retain the same CPU source cache")
+ check(sources.hits>source_hits,"recenter reuses source geometry and pixels instead of repeating GPU readback")
  await frames(8)
  check(previous._closed,"old GPU resources retire after replacement")
  var active:Object=reflector._rt
@@ -49,6 +53,7 @@ func run() -> void:
  reflector._raytrace_prepared(false,active.get_instance_id())
  check(not reflector._rt_ready and reflector._rt_failed,"failure after promotion retires the active device")
  check(t._water_mat.get_shader_parameter("planar_texture")==reflector.viewport.get_texture(),"late device failure restores a complete planar fallback")
+ check(sources._entries.is_empty() and sources._bytes==0,"releasing water tracing clears its bounded CPU source cache")
  await finish_test(context)
 func finish_test(context:Array)->void:
  context[1].queue_free();context[0].queue_free();await frames(12)

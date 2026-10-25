@@ -1,0 +1,104 @@
+{
+  "git_head": "cbe0bec9719005de8447c14ee4abe929f37051a7",
+  "game_source_sha256": "b7f73a816623d9e4eefcfc29f2b961be50a5811b48d1ed11d7af66014d8768cf",
+  "manifest_sha256": "1f1d44cb0060552d1109c0ce21107f9a7ce2fb8c345a1df525b832e7db24fbb8",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-native/check-engine",
+  "engine_sha256": "1e7f1b864e76bcd54e4f9165c7fbd27c419c9b6e1325072ec74ae788462418de",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "water_raytrace_rebuild",
+      "script": "tools/tests/water_raytrace_rebuild.gd",
+      "script_sha256": "5d2968e4d4943525546a8474aae1caff00191dd3b41a420e7e42089dd01cd3fe",
+      "contract": "RT water preserves a complete reflection during incremental, cached scene replacement.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 33.67,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo",
+        "--timeout",
+        "240",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/water_raytrace_rebuild/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/water_raytrace_rebuild/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/water_raytrace_rebuild/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/water_raytrace_rebuild/fixtures/water_raytrace_rebuild.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/water_raytrace_rebuild/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "water_raytrace_rebuild/run.log",
+      "passed": true,
+      "result": {
+        "checks": 16,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "revive_overlay_picking",
+      "script": "tools/tests/revive_overlay_picking.gd",
+      "script_sha256": "a0a05b416470a0df4ea56659a07e61575394718f18eae159905a85e9a246fe14",
+      "contract": "Direct movement skips hidden-pointer mouse hit-tests while progress bars, tactical hover and revealed-pointer interaction remain live.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.27,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/revive_overlay_picking/fixtures/revive_overlay_picking.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-followup/revive_overlay_picking/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "revive_overlay_picking/run.log",
+      "passed": true,
+      "result": {
+        "checks": 9,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/final-native/check-engine.pck",
+    "sha256": "f10f46dca5b2417e97facd806fc8a66ba41ab276c147384a8cbf13f5ccace96b"
+  },
+  "passed": true
+}

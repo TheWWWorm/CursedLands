@@ -30,7 +30,10 @@ func _process(_dt: float) -> void:
 	var bars := []
 	if game and game.session and game.world and Revive.enabled(game.session):
 		var p := get_viewport().get_mouse_position()
-		if not game.hud.blocks_input() and get_viewport().gui_get_hovered_control() == null:
+		# Match Game._update_cursor: direct movement has no mouse target until
+		# its pointer is revealed. Keep progress bars updating independently.
+		var pointer := not game.direct or not game.direct.active() or game.direct.pointer
+		if pointer and not game.hud.blocks_input() and get_viewport().gui_get_hovered_control() == null:
 			var t := game.revive_target(game.pick_hover(p))
 			if t:
 				s = RemakeText.t(HOVER) % t.display_name

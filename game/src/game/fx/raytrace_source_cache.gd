@@ -1,7 +1,9 @@
 extends RefCounted
 ## Forward+ surface/texture getters read GPU buffers back. Keep CPU sources
 ## across neighboring snapshots, with weak watches and bounded memory.
-const MAX_BYTES := 128*1024*1024
+# Dense LiA banks need geometry plus roughly 100 normalized 512px layers.
+# 128 MiB evicted the mesh sources before every adjacent snapshot completed.
+const MAX_BYTES := 256*1024*1024
 const MAX_ENTRIES := 4096
 var _entries := {}
 var _bytes := 0

@@ -47,6 +47,10 @@ var _rt_build_stage := -1
 var _rt_geometries := []
 var _rt_placements := []
 var _rt_programs := RayDevice.Programs.new()
+# Recenter snapshots use the same immutable mesh/texture sources. Reading
+# them back from the GPU again stalls city walking even with staged builds.
+var _rt_sources := RayScene.SourceCache.new()
+var _rt_ground := RayScene.Ground.new()
 var _rt_topology_poll := 0.0
 var _rt_lights: Array[WeakRef] = []
 var _rt_ready := false
@@ -250,10 +254,10 @@ func _update_raytrace(source: Camera3D) -> void:
 		return
 	if ShaderCompilationScreen.terrain_pending(terrain): return
 	var changed := false
-	if _rt_ready and _rt_live != null and _rt_topology_poll <= 0.0:
+	if _rt_ready and _rt_live != null and (_rt_topology_poll <= 0.0 or _rt_live.topology_pending):
 		_rt_topology_poll = 1.0
 		_collect_raytrace_lights(source.global_position)
-		changed = _rt_live.topology_changed()
+		changed = _rt_live.topology_changed(500)
 	# Keep the complete reflection while gathering and building a replacement.
 	# Recompiling pipelines and revealing every initially masked BLAS on its
 	# first render used to turn each recenter into an unbounded frame spike.
@@ -261,6 +265,8 @@ func _update_raytrace(source: Camera3D) -> void:
 			or source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25):
 		_rt_pending_plane = plane
 		_rt_scene = RayScene.new()
+		_rt_scene._sources = _rt_sources
+		_rt_scene._ground = _rt_ground
 		_rt_scene.begin(terrain,source.global_position,plane)
 	if _rt_scene != null and _rt_scene.step(1500 if _rt != null else 6000):
 		_queue_raytrace_candidate()
@@ -418,6 +424,7 @@ func _cancel_raytrace_candidate() -> void:
 
 
 func _release_raytrace() -> void:
+	_rt_sources.clear();_rt_ground=RayScene.Ground.new()
 	_cancel_raytrace_candidate()
 	_rt_ready = false
 	rt_stats["active"] = false

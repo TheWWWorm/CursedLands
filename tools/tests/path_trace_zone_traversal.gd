@@ -2,6 +2,7 @@ extends "local_host_campaign.gd"
 ## Authored campaign geometry, real solo authority, keyboard steering and the
 ## production first-person camera. Captures are visual evidence, not benchmarks.
 signal inspected(value: Dictionary)
+var route_resolution := Vector2i(1920,1080)
 var out := ""
 var zone := "gz4g"
 var fixture := ""
@@ -152,6 +153,7 @@ func _ready() -> void:
 		if arg.begins_with("--zone-route-zone="):zone=arg.trim_prefix("--zone-route-zone=")
 		if arg.begins_with("--zone-route-save="):fixture=arg.trim_prefix("--zone-route-save=")
 		if arg=="--zone-route-fg":use_fg=true
+		if arg=="--zone-route-4k":route_resolution=Vector2i(3840,2160)
 		if arg=="--zone-route-peaceful":peaceful=true
 		if arg.begins_with("--zone-route-legs="):leg_count=int(arg.trim_prefix("--zone-route-legs="))
 	if out.is_empty():out=ProjectSettings.globalize_path("user://zone-traversal")
@@ -163,8 +165,8 @@ func _ready() -> void:
 		"pt_mode":1,"q_rt_lighting":0,"pt_accumulation":0,"rtx_upscaling":1 if use_fg else 0,"rtx_frame_generation":0,
 		"fsr_upscaling":0,"fsr_frame_generation":0,"autosave":0,"show_tutorial":0,"control_mode":3,
 		"pad_enabled":0,"scroll_border":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
-	GameData.resolution_size="1920x1080"
-	GameData.options.resolution=maxi(0,GameData.resolutions().find(Vector2i(1920,1080)))
+	GameData.resolution_size="%dx%d"%[route_resolution.x,route_resolution.y]
+	GameData.options.resolution=maxi(0,GameData.resolutions().find(route_resolution))
 	GameData._window_state.clear();GameData._apply_window()
 	s=Session.new();get_parent().add_child(s)
 	g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
@@ -187,12 +189,14 @@ func _ready() -> void:
 	GameData._window_gen+=1
 	get_window().wrap_controls=false;get_window().min_size=Vector2i.ONE
 	get_window().mode=Window.MODE_WINDOWED;get_window().borderless=true
-	get_window().size=Vector2i(1920,1080);get_window().position=Vector2i.ZERO
+	get_window().size=route_resolution;get_window().position=Vector2i.ZERO
 	Engine.max_fps=30
 	rt=g.get_node("SceneRaytrace")
 	check(await until(func():return rt.stats.get("active",false) and rt.device!=null and rt.device.nrd_active and g.direct.usable(),120),"PT and first-person controls are ready")
 	check(s.local_host.frontend and s.local_host._process_alive(),"real separate-process solo authority")
-	check(DisplayServer.window_get_size()==Vector2i(1920,1080),"full-size capture window")
+	# Wine/X11 acknowledges an oversized borderless capture window on the
+	# following frames; PT can already be ready before that resize lands.
+	check(await until(func():return DisplayServer.window_get_size()==route_resolution,3),"full-size capture window")
 	if use_fg:check(RtxGraphics.facts().fg,"qualified NVIDIA FG runtime")
 	if failures>0:await s.local_host.stop();get_tree().quit(1);return
 	var settled:=0
@@ -205,7 +209,7 @@ func _ready() -> void:
 	previous_position=hero.pos;visited.append(hero.pos)
 	var world_start := s.world.time
 	recording_start=Time.get_ticks_usec()
-	write_file("record-ready","1920x1080")
+	write_file("record-ready","%dx%d"%[route_resolution.x,route_resolution.y])
 	await get_tree().create_timer(2.0,true,false,true).timeout
 	await phase("held-fg-off",6)
 	for leg in leg_count:
