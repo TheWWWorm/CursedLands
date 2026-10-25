@@ -1,0 +1,27 @@
+[
+  {
+    "name": "ambient-profile-script",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "ambient-profile-script",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/traversal-ambient-scopes.gd",
+      "rendered",
+      "--gameplay-config=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ambient-profile-gz21k.json",
+      "--bench-script-ambient-ground"
+    ]
+  },
+  {
+    "name": "ambient-profile-native",
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "ambient-profile-native",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/traversal-ambient-scopes.gd",
+      "rendered",
+      "--gameplay-config=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ambient-profile-gz21k.json"
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "ambient-contract-linux": [
+    "AMBIENT_GROUND_TIMING [{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":false,\"queries\":3000,\"usec\":65436},{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":true,\"queries\":3000,\"usec\":6349},{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":true,\"queries\":3000,\"usec\":6205},{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":false,\"queries\":3000,\"usec\":66321},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":false,\"queries\":3000,\"usec\":69778},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":true,\"queries\":3000,\"usec\":10021},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":true,\"queries\":3000,\"usec\":9976},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":false,\"queries\":3000,\"usec\":68347}]",
+    "AMBIENT_GROUND_NATIVE checks=5117 failures=0"
+  ],
+  "ambient-contract-windows": [
+    "AMBIENT_GROUND_TIMING [{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":false,\"queries\":3000,\"usec\":71464},{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":true,\"queries\":3000,\"usec\":6658},{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":true,\"queries\":3000,\"usec\":6629},{\"drawn\":false,\"height_sum\":15734.1754176107,\"native\":false,\"queries\":3000,\"usec\":74427},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":false,\"queries\":3000,\"usec\":77989},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":true,\"queries\":3000,\"usec\":10820},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":true,\"queries\":3000,\"usec\":10614},{\"drawn\":true,\"height_sum\":15734.1754183826,\"native\":false,\"queries\":3000,\"usec\":74869}]",
+    "AMBIENT_GROUND_NATIVE checks=5117 failures=0"
+  ],
+  "ambient-contract-before": [
+    "FAIL native highest-triangle query is available",
+    "AMBIENT_GROUND_NATIVE checks=1 failures=1"
+  ],
+  "ambient-related-astral": [
+    "AMBIENT_LIFE lost_in_astral 108 checks 0 failures"
+  ],
+  "ambient-related-base": [
+    "FAIL small-animal loose profiles match actual shader texture gz4g",
+    "FAIL small-animal loose profiles match actual shader texture gz9g",
+    "FAIL small-animal loose profiles match actual shader texture gz18h",
+    "AMBIENT_LIFE cursed_lands 136 checks 3 failures"
+  ],
+  "ambient-related-base-before": [
+    "FAIL small-animal loose profiles match actual shader texture gz4g",
+    "FAIL small-animal loose profiles match actual shader texture gz9g",
+    "FAIL small-animal loose profiles match actual shader texture gz18h",
+    "AMBIENT_LIFE cursed_lands 136 checks 3 failures"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "base_commit": "a5afceab5798358e3d3b09672152b05ca19a29df",
+  "source_sha256": {
+    "game/src/game/fx/ambient_habitats.gd": "a364a425219f77c1dbbe004a6c945aa6ff96e7879b8710573a6a016271e3a041",
+    "game/src/native/source/ambient_ground.h": "0d7edeec59fdfbaaa2c0498b0d221b6a9c97e85b722e4b26d5e080327b59ed40",
+    "game/src/native/source/nav_kernel.cpp": "e4c88c39241ea9be7ebf8f7bd3ff2737e588568323d14f53ee35f17cb793c0b5",
+    "tools/tests/ambient_ground_native.gd": "721a70e32725909c6ac82043b6d546c26750f6a8a4401f597d2a6dd189c2211a",
+    "tools/regressions.json": "e2c1b321620557f6be8919046e204cc19c232fc36ac2adfbe069e2e6c4e3cf16"
+  },
+  "production_libraries": {
+    "libterrain_search_android.so": "63e2b7e4c86a74dd061d4b6fa2f2cf59d0c5ae516d10d1112b1143dfa4cccf9c",
+    "libterrain_search.dll": "fae693add5430db0b602246a798271c5326df25ce897dcc7f4455d346ace808a",
+    "libterrain_search.so": "8016106718488b81c1d4f7f23d32f93220e2ba09b4bcef8fab926985d39fd33a"
+  },
+  "packs": {
+    "ambient-ground-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "cfe06a988b59703360db88c7cf8c5abff864f17a641355c9b1d456f94f6aa395",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "9802878f3396e86479187bff55ca48d61e9079aafb986236388ea7d5fecfe2dc",
+      "src/native/bin/libpath_nrd.dll": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "b715a2e5c2d9adf9de17f4a3502f40e5891e81f9500636c83fc929737bf7c637",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "8016106718488b81c1d4f7f23d32f93220e2ba09b4bcef8fab926985d39fd33a"
+    },
+    "ambient-ground-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "b3ee922eb34bf471295b0638e6c73ec045488a730eb3ac09de70ef3d7b288923",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "63e2b7e4c86a74dd061d4b6fa2f2cf59d0c5ae516d10d1112b1143dfa4cccf9c",
+      "src/native/bin/libpath_nrd.dll": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "fae693add5430db0b602246a798271c5326df25ce897dcc7f4455d346ace808a",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "8016106718488b81c1d4f7f23d32f93220e2ba09b4bcef8fab926985d39fd33a"
+    },
+    "ambient-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "9ddef5322b53361b5d17955767139a976a7bdfefbaed54e042e06e68aa8d8821",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "63e2b7e4c86a74dd061d4b6fa2f2cf59d0c5ae516d10d1112b1143dfa4cccf9c",
+      "src/native/bin/libpath_nrd.dll": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "fae693add5430db0b602246a798271c5326df25ce897dcc7f4455d346ace808a",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "8016106718488b81c1d4f7f23d32f93220e2ba09b4bcef8fab926985d39fd33a"
+    }
+  },
+  "test_pack_patch": "figure.gd from 18b58726, same private weather safety fix used in both benchmark modes; not part of this change",
+  "profile": "Three wrapped functions listed in recipes/ambient-profile-methods.json. Same exported pack and libraries in both modes; script control clears the optional static ground kernel.",
+  "android": "ARM64 rebuilt; no device execution claimed"
+}

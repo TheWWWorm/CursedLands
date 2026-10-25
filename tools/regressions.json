@@ -921,6 +921,17 @@
       "mode": "headless",
       "args": [],
       "min_checks": 124
+    },
+    {
+      "id": "ambient_ground_native",
+      "script": "tools/tests/ambient_ground_native.gd",
+      "summary": "AMBIENT_GROUND_NATIVE",
+      "contract": "Native ambient ground queries preserve highest authored triangles, ordered ties, jitter, live terrain/material changes, drawn loose-ground interpolation and older-library fallbacks.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 5117
     }
   ]
 }

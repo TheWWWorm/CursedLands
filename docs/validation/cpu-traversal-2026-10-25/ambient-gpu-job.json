@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"id\": \"7f28b87e4a184e52\", \"status\": \"completed\", \"argv\": [\"python3\", \"/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ambient_profile_pair.py\"], \"cwd\": \"/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025\", \"timeout_seconds\": 650, \"created_at\": 1792940031.7278273, \"label\": \"City Environs ambient-ground CPU diagnostic pair\", \"directory\": \"/var/lib/gpu-lab-gpu0/jobs/7f28b87e4a184e52\", \"gpu_uuid\": \"GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441\", \"display\": \":99\", \"workload\": \"heavy\", \"vram_mb\": 4096, \"started_at\": 1792940031.7281146, \"pid\": 1621374, \"stderr_truncated\": false, \"stdout_truncated\": false, \"exit_code\": 0, \"finished_at\": 1792940183.6746297, \"gpu_slot\": \"0\"}"
+    }
+  ],
+  "isError": false
+}

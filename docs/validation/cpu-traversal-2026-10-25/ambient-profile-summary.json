@@ -1,0 +1,104 @@
+{
+  "job": "7f28b87e4a184e52",
+  "caveats": [
+    "One instrumented pair, not an acceptance claim for whole-game FPS.",
+    "Only three wrapped methods; scopes are nested and must not be summed.",
+    "Another task ran a qualitative recording on the other GPU during part of this pair."
+  ],
+  "runs": [
+    {
+      "mode": "script",
+      "frames": 3493,
+      "fps": 174.630223127231,
+      "frame_ms": {
+        "max": 240.395,
+        "p50": 5.211,
+        "p95": 8.191,
+        "p99": 10.229
+      },
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 1.0,
+      "units": 207,
+      "command_count": 6,
+      "all_census_units": [
+        207
+      ],
+      "controlled_alive": true,
+      "options_sha256": "b0fc2856f2c3b746bf42cd77c57b8db055b5200106cc1f59ec3b4fb443b4d978",
+      "scopes": {
+        "game/fx/ambient_ground.gd:elevation": {
+          "calls": 6987,
+          "inclusive_us": 173573,
+          "max_us": 75,
+          "us_per_call": 24.842278517246314,
+          "ms_per_frame": 0.049691669052390496
+        },
+        "game/fx/ambient_habitats.gd:ground": {
+          "calls": 22230,
+          "inclusive_us": 836128,
+          "max_us": 121,
+          "us_per_call": 37.61259559154296,
+          "ms_per_frame": 0.23937245920412253
+        },
+        "game/fx/ambient_life.gd:_process": {
+          "calls": 3493,
+          "inclusive_us": 1247144,
+          "max_us": 2239,
+          "us_per_call": 357.0409390208989,
+          "ms_per_frame": 0.3570409390208989
+        }
+      }
+    },
+    {
+      "mode": "native",
+      "frames": 3725,
+      "fps": 186.219590340897,
+      "frame_ms": {
+        "max": 233.689,
+        "p50": 5.005,
+        "p95": 7.435,
+        "p99": 8.941
+      },
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "viewport_size": [
+        1920,
+        1080
+      ],
+      "render_scale": 1.0,
+      "units": 207,
+      "command_count": 6,
+      "all_census_units": [
+        207
+      ],
+      "controlled_alive": true,
+      "options_sha256": "b0fc2856f2c3b746bf42cd77c57b8db055b5200106cc1f59ec3b4fb443b4d978",
+      "scopes": {
+        "game/fx/ambient_ground.gd:elevation": {
+          "calls": 7450,
+          "inclusive_us": 186357,
+          "max_us": 68,
+          "us_per_call": 25.01436241610738,
+          "ms_per_frame": 0.050028724832214766
+        },
+        "game/fx/ambient_habitats.gd:ground": {
+          "calls": 24070,
+          "inclusive_us": 293139,
+          "max_us": 84,
+          "us_per_call": 12.178604071458247,
+          "ms_per_frame": 0.07869503355704699
+        },
+        "game/fx/ambient_life.gd:_process": {
+          "calls": 3725,
+          "inclusive_us": 734590,
+          "max_us": 1166,
+          "us_per_call": 197.20536912751678,
+          "ms_per_frame": 0.19720536912751677
+        }
+      }
+    }
+  ]
+}

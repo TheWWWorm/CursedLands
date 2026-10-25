@@ -412,6 +412,16 @@ positive certificates against complete weighted floods.
 `FireParticleKernel` and `SpellParticleKernel` own particle state and random
 streams through complete update/spawn/compaction passes. The script adapters
 retain scene-dependent carrier setup and custom callback fallbacks.
+`AmbientGroundKernel` batches the ordered 3×3-cell search used by ambient
+creatures. It preserves the highest authored triangle, original tie order,
+edge/determinant tolerances and scalar rounding. Current packed terrain arrays
+are borrowed for one call; no terrain snapshot, node or query result is cached.
+Visible loose-ground/footprint elevation stays in `ambient_ground.gd`, invoked
+only for accepted triangles before selecting the highest result. A missing
+library or unsupported input retains `AmbientHabitats._ground_script`.
+The registered `ambient_ground_native` test compares both paths, including
+folded/jittered terrain, ties, live edits and option-dependent elevation.
+
 `GrassFieldKernel` captures immutable terrain and texture inputs once; bounded
 `GrassChunkJob` workers produce complete MultiMesh buffers without scene access.
 The game installs those buffers on its main thread and joins stale jobs on zone

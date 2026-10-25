@@ -40,6 +40,7 @@
 #include "fire_particles.h"
 #include "spell_particles.h"
 #include "grass_chunk.h"
+#include "ambient_ground.h"
 #include "nav_turn.h"
 #include "soft_ground_mesh.h"
 #include "soft_ground_paint.h"
@@ -575,6 +576,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(FireParticleKernel);
         GDREGISTER_CLASS(SpellParticleKernel);
         GDREGISTER_CLASS(GrassFieldKernel); GDREGISTER_CLASS(GrassChunkJob);
+        GDREGISTER_CLASS(AmbientGroundKernel);
         GDREGISTER_CLASS(NavTurnKernel);
         GDREGISTER_CLASS(SoftGroundMeshJob);
         GDREGISTER_CLASS(SoftGroundPaintKernel);

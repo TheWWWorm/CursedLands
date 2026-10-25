@@ -8,6 +8,7 @@ const Water = preload("res://src/game/fx/water_surface.gd")
 const DrawnGround = preload("res://src/game/fx/ambient_ground.gd")
 const BUCKET := 8.0
 const CELL := 32.0
+static var _ground_kernel: RefCounted = ClassDB.instantiate("AmbientGroundKernel") if ClassDB.class_exists("AmbientGroundKernel") else null
 var terrain: EITerrain
 var biome := "unknown"
 var region := "unknown"
@@ -116,6 +117,19 @@ func clear_at(p: Vector2, height: float) -> bool:
 ## Highest authored land triangle, including the terrain's XY jitter. No
 ## copy of the map or optional ground-cover field is needed for a few roots.
 func ground(p: Vector2, drawn := false) -> Dictionary:
+	if _ground_kernel != null:
+		var hit: Variant = _ground_kernel.sample(p,Vector2i(terrain.size_ei()),terrain.grid_w,
+			terrain.heights,terrain.land_xy,terrain.land_tile,terrain.tile_types,
+			int(terrain.texture_size/terrain.tile_size),_drawn_elevation if drawn else Callable())
+		if hit is Dictionary: return hit
+	return _ground_script(p,drawn)
+
+
+func _drawn_elevation(a: Vector3, b: Vector3, c: Vector3, weights: Vector3, cell: Vector2i) -> float:
+	return DrawnGround.elevation(terrain,a,b,c,weights,cell)
+
+
+func _ground_script(p: Vector2, drawn := false) -> Dictionary:
 	var size := Vector2i(terrain.size_ei())
 	if p.x<0 or p.y<0 or p.x>=size.x or p.y>=size.y: return {}
 	var best := {}; var cell := Vector2i(p.floor())

@@ -482,3 +482,64 @@ An original-runtime comparison of these warm-up pipelines is inapplicable:
 this biome-cover/contact/mound system and Godot's pipeline preparation are
 remake additions. No original terrain, placement or gameplay behavior is
 changed, and no original-game FPS comparison is claimed for this change.
+
+
+### Ambient creatures' terrain queries
+
+The next measured script target is the ordered 3×3-cell triangle search in
+`AmbientHabitats.ground`. `AmbientGroundKernel` performs that search in one
+native call, borrowing the current terrain arrays without retaining a terrain
+snapshot or query cache. It preserves the highest triangle, scan/tie order,
+authored XY offsets, normal, material code/type, edge tolerances and scalar
+rounding. Visible loose-ground elevation stays in its existing script callback,
+before selecting the highest result. Missing libraries and unsupported arrays
+keep the complete script implementation. The grass helper cannot substitute for
+this search: it uses different first-hit and boundary rules.
+
+The registered `ambient_ground_native` regression passes **5,117 checks** on
+Linux and Windows under Wine 11.20. It checks exact result dictionaries on
+folded/jittered triangles, shared boundaries, drawn ground, live terrain/material
+edits, full-width material types, collapsed triangles, invalid inputs and both
+fallbacks. The previous frozen pack fails the missing-native assertion cleanly
+(one check, one failure). For 3,000-query batches in script/native/native/script
+order, Linux native authored-height queries take 6.2–6.3 ms versus 65.4–66.3 ms;
+drawn-height queries take about 10.0 ms versus 68.3–69.8 ms. Height sums agree.
+
+GPU Lab job `7f28b87e4a184e52` then compares both dispatch paths in the same
+instrumented pack on City Environs. Only three functions are wrapped. Standard
+rendering, 1920×1080, 100% scale, options hashes and 207 actors match; both runs
+issue six movement commands at normal speed and keep both controlled actors
+alive. These inclusive scopes are nested, so their savings must not be added:
+
+| Scope | Script ms/frame | Native ms/frame |
+|---|---:|---:|
+| Ambient terrain query | 0.2394 | 0.0787 |
+| Drawn-ground elevation, included above | 0.0497 | 0.0500 |
+| Entire ambient-life callback | 0.3570 | 0.1972 |
+
+The entire callback saves **0.160 ms/frame**, approximately 45% on this route.
+Average ground-query cost falls from 37.61 to 12.18 µs including the unchanged
+drawn-ground callback. Whole-window FPS is 174.63 versus 186.22, but this is one
+instrumented pair and another task records on the other GPU during part of it;
+it is not a controlled whole-game FPS claim. The query benefit applies wherever
+ambient creatures use it; earlier profiles show much less such work in Portal
+and River. See [the normalized scopes](ambient-profile-summary.json),
+[validation receipts](ambient-checks.json), [provenance](ambient-provenance.json)
+and compressed raw results.
+
+The related actual LiA ambient-life regression passes 108 checks. Base campaign
+ambient-life reports the same three failures on both the previous and corrected
+packs (136 checks each): loose-ground shader-profile assertions for small
+animals in `gz4g`, `gz9g` and `gz18h`. Those assertions inspect the unchanged
+drawn-ground profile; they do not compare the native query. They remain recorded
+without relaxing coverage. Windows vegetation preparation still passes 124
+checks, and the regression runner's seven Python tests pass. Linux, Windows and
+Android ARM64 native libraries are rebuilt; Android has not been run on a device.
+
+The ambient wildlife/loose-ground system is a remake addition, so comparing this
+specific query boundary in the original executable under Wine is inapplicable.
+The change retains the authored triangle data and existing query semantics; it
+does not alter original gameplay navigation. No original ambient-performance
+measurement is claimed. Original expression/picking comparisons above remain
+separate evidence. Particle loops, actor presentation and cloud startup remain
+open measured targets.

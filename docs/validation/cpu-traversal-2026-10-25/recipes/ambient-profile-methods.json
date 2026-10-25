@@ -1,0 +1,5 @@
+[
+  "game/fx/ambient_ground.gd:elevation",
+  "game/fx/ambient_habitats.gd:ground",
+  "game/fx/ambient_life.gd:_process"
+]
