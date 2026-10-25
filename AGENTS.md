@@ -3,6 +3,20 @@
 Do not use subagents or delegate to other agents unless the user explicitly asks.
 This preference also applies when a skill recommends parallel agent work.
 
+# Issue and bug fixes
+
+Verify the reported failure before changing behavior. Compare the affected logic
+with the original game code and check the corresponding original behavior under
+Wine. Record the comparison evidence and distinguish confirmed behavior from
+inferences. If an original comparison is inapplicable or cannot be performed,
+document the reason and the remaining uncertainty.
+
+Preserve existing functionality and previous fixes. Review related code, fix
+history and regression coverage, keep changes focused, and check adjacent
+behavior and affected game modes. Run the new regression test and related
+existing regressions as required below. Investigate failures before declaring
+the fix complete; do not weaken earlier regression tests to make a fix pass.
+
 # Regression tests
 
 Every issue or bug fix and every feature addition or change MUST include a
