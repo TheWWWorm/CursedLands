@@ -200,7 +200,27 @@ func fixture() -> void:
 		check(delta.changed_pixels == 0,"pressure shadows match forced instance refresh")
 	for flag: String in ["hidden","fogged","dead"]:
 		u.set(flag,true); check(field.contacts(details,world).is_empty(),flag+" actor supplies no pressure"); u.set(flag,false)
-	u.position.y += 2.0; check(field.contacts(details,world).is_empty(),"airborne/bridge figure supplies no ground pressure"); u.position.y -= 2.0
+	var planted_bounds:=Pressure.posed_bounds(u)
+	u.position.y += 2.0
+	# SceneTreeFTI retains the submitted pose until the next draw, including
+	# children of an interpolation-disabled actor. Pressure must follow that
+	# displayed pose, then reject the airborne figure when it is published.
+	var before_draw:=Pressure.posed_bounds(u)
+	var before_contacts:=field.contacts(details,world)
+	var script_before:Array=field.call("contacts_script",details,world) if field.has_method("contacts_script") else before_contacts
+	check(before_contacts==script_before,"native and script agree before the teleported pose is drawn")
+	check(before_contacts.size()==1 if before_draw==planted_bounds else before_contacts.is_empty(),"contact follows the currently submitted pose before drawing")
+	await frames(2)
+	var drawn_bounds:=Pressure.posed_bounds(u)
+	check(drawn_bounds.position.y>planted_bounds.position.y+1.9,"rendered posed bounds follow the lifted figure")
+	var airborne:=field.contacts(details,world)
+	check(airborne.is_empty(),"airborne/bridge figure supplies no ground pressure")
+	var script_after:Array=field.call("contacts_script",details,world) if field.has_method("contacts_script") else airborne
+	check(airborne==script_after,"native and script agree after the teleported pose is drawn")
+	rows.append({"case":"airborne-presentation","planted":str(planted_bounds),"before_draw":str(before_draw),"drawn":str(drawn_bounds),"contacts_before":before_contacts.size(),"contacts_drawn":airborne.size()})
+	u.position.y -= 2.0
+	await frames(2)
+	check(field.contacts(details,world).size()==1,"returned rendered figure resumes contact")
 	var standing: Vector2 = admitted[0].extent if not admitted.is_empty() else Vector2.ZERO
 	u.stance = GameUnit.STANCE_CRAWL
 	var clip := u.model.resolve("crawl")
@@ -265,4 +285,5 @@ func _ready() -> void:
 	field_rules(); await fixture()
 	TexUpscale.shutdown(); await frames(16)
 	FileAccess.open("user://vegetation-interaction.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"rows":rows},"\t")+"\n")
+	print("VEGETATION_INTERACTION checks=",checks," failures=",failures)
 	get_tree().quit(1 if failures else 0)

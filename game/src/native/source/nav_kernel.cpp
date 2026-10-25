@@ -35,6 +35,7 @@
 #include "figure_geometry.h"
 #include "unit_presentation.h"
 #include "direct_pose.h"
+#include "vegetation_contacts.h"
 #include "motion_spline.h"
 #include "mmp_texture.h"
 #include "audio_decode.h"
@@ -587,6 +588,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(FigureGeometryKernel);
         GDREGISTER_CLASS(UnitPresentationKernel);
         GDREGISTER_CLASS(DirectPoseKernel);
+        GDREGISTER_CLASS(VegetationContactKernel);
         GDREGISTER_CLASS(NetSmoothKernel);
     }
 }

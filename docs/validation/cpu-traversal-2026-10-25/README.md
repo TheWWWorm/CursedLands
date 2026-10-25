@@ -805,3 +805,75 @@ The new profile also separates vegetation interaction work: contact collection
 costs approximately 0.13–0.23 ms/frame, versus 0.05–0.08 for history/stamping.
 Ground-mark processing and delayed first-visible mirror preparation remain
 other targets. None of those paths is changed by this animation batch.
+
+## Vegetation contact collection
+
+On integrated source `fa5c65e8`, `VegetationContactKernel` batches the existing
+grass-pressure contact collector. It reads current visibility, interpolated
+roots and mesh bounds, orders candidates by distance and instance ID, and
+preserves the nearest-32 budget **before** terrain/height admission. Terrain
+queries, the pressure texture, history, recovery and stamping are unchanged.
+The helper retains no actors, geometry or contact results. Only immutable
+property/method names are reused. Custom actors, models, meshes, terrain
+collectors and pressure owners retain the complete scalar path; older native
+libraries and `--ei-script-vegetation-contacts` do likewise. The scalar body
+is identical to the baseline collector.
+
+The first native experiment improved an isolated crowd fixture but did not
+establish a Dar gain: its separately profiled native pass was slower. Those
+two 54-check route runs and their raw scopes are retained as a rejected
+experiment. Caching the immutable names removed repeated name interning.
+The final implementation was then measured against the script collector in
+the **same live scene**, without awaiting frames between timed blocks.
+
+GPU Lab heavy job `3b580ecebd7c49ca` completes the standard Dar route and
+performs script/native/native/script blocks of 300 queries at each of three
+focus positions. The scene has 334 actors, 34 visible actors, and 4–5 admitted
+contacts. Exact ordered contacts are checked before and after every block.
+All **82 checks pass**. No CPU builds or other checks run during measurement.
+The microbenchmark runs after the timed traversal phases.
+
+| Focus offset | Script µs/query | Native µs/query | CPU time saved |
+|---|---:|---:|---:|
+| (0, 0) | 249.07 | 216.49 | 13.08% |
+| (5, 0) | 200.82 | 178.22 | 11.25% |
+| (0, 5) | 246.35 | 216.86 | 11.97% |
+
+This saves **23–33 µs per contact query**, not per rendered frame. It is a
+small shared-path improvement and does **not** establish an additional
+whole-game FPS gain. The authored crowd fixture takes 108.2–109.7 ms in script
+versus 69.8–70.1 ms native for 240 queries; outside-focus and hidden-actor
+fixtures also improve. See [the live measurement](vegetation-contacts/dar-live-micro.json)
+and [raw check summaries](vegetation-contacts/checks.json).
+
+The registered native regression passes **1,027 checks** on Linux and Windows
+under Wine. It covers exact contact/key order, budget boundaries, live poses,
+visibility, geometry replacement, interpolation, figure rebuilding and complete
+fallback. The old library fails the availability contract (one check, one
+failure). Related animation sampling (7,470) and actor bounds (1,403) pass on
+both platforms, and vegetation preparation (124) passes through the Linux
+runner. Linux, Windows and Android ARM64 libraries were rebuilt; Android was
+not device-executed. All 461 runtime files compared with the final export
+snapshot match. See [build/source provenance](vegetation-contacts/provenance.json)
+and [registered headless results](vegetation-contacts/vegetation-contacts-registered.json).
+
+The existing rendered test initially fails its immediate airborne assertion
+on **all three** controls: pre-change pack, new native pack, and new pack with
+scalar collection. The engine's SceneTreeFTI path returns the last submitted
+transform until the next draw. A diagnostic confirms that both collectors see
+the grounded pose before drawing and reject the lifted pose after drawing.
+The maintained test now verifies both stages, retains the airborne exclusion
+assertion, and adds native/scalar equality and landing checks. It passes
+**47 checks** on both the pre-change and new packs, with zero differences for
+empty/off/restored pressure, paused wind, and forced shadow refresh. The
+initial failures remain archived. See [the diagnostic](vegetation-contacts/airborne-diagnostic.json),
+[updated baseline](vegetation-contacts/vegetation-contacts-rendered-before-updated-fixture.json)
+and [updated native result](vegetation-contacts/vegetation-contacts-rendered-registered.json).
+
+Original-game comparison is inapplicable to this specific collector: commit
+`8f3b93d5` introduced the remake's optional grass-pressure texture and bounded
+history. There is no corresponding original-game Wine fixture. Validation
+therefore compares the retained remake collector exactly; the Wine checks
+above execute the remake. Original Dar runtime/FPS equivalence remains
+unmeasured. Ground-mark processing and first-visible mirror preparation remain
+separate investigation targets.

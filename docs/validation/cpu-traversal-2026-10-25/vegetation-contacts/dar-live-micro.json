@@ -1,0 +1,140 @@
+{
+  "gpu_job": "3b580ecebd7c49ca",
+  "method": "Synchronous script/native/native/script, 300 queries per pass, same live scene, after timed route phases. Exact results checked before and after every pass. No concurrent CPU builds/checks.",
+  "checks": 82,
+  "failures": 0,
+  "summaries": [
+    {
+      "offset": "(0.0, 0.0)",
+      "script_us_per_query": 249.06833333333333,
+      "native_us_per_query": 216.48666666666668,
+      "saving_us_per_query": 32.58166666666665,
+      "saving_percent": 13.08141674640827
+    },
+    {
+      "offset": "(5.0, 0.0)",
+      "script_us_per_query": 200.815,
+      "native_us_per_query": 178.215,
+      "saving_us_per_query": 22.599999999999994,
+      "saving_percent": 11.25413938201827
+    },
+    {
+      "offset": "(0.0, 5.0)",
+      "script_us_per_query": 246.35333333333332,
+      "native_us_per_query": 216.86,
+      "saving_us_per_query": 29.49333333333331,
+      "saving_percent": 11.971964387194534
+    }
+  ],
+  "raw": [
+    {
+      "contacts": 5,
+      "native": false,
+      "offset": "(0.0, 0.0)",
+      "queries": 300,
+      "usec": 74617,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": true,
+      "offset": "(0.0, 0.0)",
+      "queries": 300,
+      "usec": 65124,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": true,
+      "offset": "(0.0, 0.0)",
+      "queries": 300,
+      "usec": 64768,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": false,
+      "offset": "(0.0, 0.0)",
+      "queries": 300,
+      "usec": 74824,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 4,
+      "native": false,
+      "offset": "(5.0, 0.0)",
+      "queries": 300,
+      "usec": 59667,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 4,
+      "native": true,
+      "offset": "(5.0, 0.0)",
+      "queries": 300,
+      "usec": 53279,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 4,
+      "native": true,
+      "offset": "(5.0, 0.0)",
+      "queries": 300,
+      "usec": 53650,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 4,
+      "native": false,
+      "offset": "(5.0, 0.0)",
+      "queries": 300,
+      "usec": 60822,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": false,
+      "offset": "(0.0, 5.0)",
+      "queries": 300,
+      "usec": 75146,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": true,
+      "offset": "(0.0, 5.0)",
+      "queries": 300,
+      "usec": 65678,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": true,
+      "offset": "(0.0, 5.0)",
+      "queries": 300,
+      "usec": 64438,
+      "visible_actors": 34,
+      "world_actors": 334
+    },
+    {
+      "contacts": 5,
+      "native": false,
+      "offset": "(0.0, 5.0)",
+      "queries": 300,
+      "usec": 72666,
+      "visible_actors": 34,
+      "world_actors": 334
+    }
+  ],
+  "limit": "Callback-only microbenchmark. Does not establish a whole-game FPS improvement."
+}

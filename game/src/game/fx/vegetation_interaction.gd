@@ -20,6 +20,11 @@ var focus := Vector2.ZERO # Godot world XZ
 var updates := 0
 var last_update_us := 0
 var last_contacts := 0
+static var _kernel: RefCounted = _make_kernel()
+
+
+static func _make_kernel() -> RefCounted:
+	return ClassDB.instantiate("VegetationContactKernel") if ClassDB.class_exists("VegetationContactKernel") and not OS.get_cmdline_user_args().has("--ei-script-vegetation-contacts") else null
 
 
 func _init() -> void:
@@ -60,6 +65,13 @@ static func posed_bounds(u: GameUnit) -> AABB:
 
 
 func contacts(details: TerrainDetails, world: GameWorld) -> Array[Dictionary]:
+	if _kernel != null and get_script().get_base_script() == null:
+		var result: Variant = _kernel.contacts(world.visible_units(),details,focus,GameUnit,EIUnitModel,TerrainDetails,WIDTH,MAX_UNITS,GameUnit.STANCE_CRAWL)
+		if result != null:return result
+	return contacts_script(details,world)
+
+
+func contacts_script(details: TerrainDetails, world: GameWorld) -> Array[Dictionary]:
 	var nearby := []
 	for u: GameUnit in world.visible_units():
 		if not shown(u) or not u.near_screen(): continue

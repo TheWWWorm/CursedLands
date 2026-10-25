@@ -1384,6 +1384,29 @@
       "mode": "headless",
       "args": [],
       "min_checks": 7470
+    },
+    {
+      "id": "vegetation_contacts_native",
+      "script": "tools/tests/vegetation_contacts_native.gd",
+      "summary": "VEGETATION_CONTACTS_NATIVE",
+      "contract": "Native vegetation contacts preserve exact ordering, nearest-before-admission budget, live interpolated geometry and visibility, and complete custom/older-library fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1027
+    },
+    {
+      "id": "vegetation_interaction",
+      "script": "tools/tests/vegetation_interaction.gd",
+      "summary": "VEGETATION_INTERACTION",
+      "contract": "Rendered pressure follows submitted actor poses, excludes airborne and hidden figures, preserves paused/off/empty images and shadows, and keeps bounded recoverable history.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 47
     }
   ]
 }

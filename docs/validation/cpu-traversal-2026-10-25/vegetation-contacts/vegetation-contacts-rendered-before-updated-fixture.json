@@ -1,0 +1,71 @@
+{
+  "git_head": "fa5c65e829e654da7795b8da6bcaca329783c3e6",
+  "game_source_sha256": "7d35cffa3d7485af79b3175ca1289741078938482c40666cc8dc3e7395dca7d3",
+  "manifest_sha256": "1088307b4da9bc87f605e908d6e95f65d97a368fd60909dfeb1f12a88579cc0b",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "vegetation_interaction",
+      "script": "tools/tests/vegetation_interaction.gd",
+      "script_sha256": "7d55000097f25e9042c3c0bec39b22ead655f004d36b2e2e13699793c9867737",
+      "contract": "Rendered pressure follows submitted actor poses, excludes airborne and hidden figures, preserves paused/off/empty images and shadows, and keeps bounded recoverable history.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 25.71,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-contacts-rendered-before-updated-fixture/vegetation_interaction/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-contacts-rendered-before-updated-fixture/vegetation_interaction/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-contacts-rendered-before-updated-fixture/vegetation_interaction/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-contacts-rendered-before-updated-fixture/vegetation_interaction/fixtures/vegetation_interaction.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-contacts-rendered-before-updated-fixture/vegetation_interaction/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "vegetation_interaction/run.log",
+      "passed": true,
+      "result": {
+        "checks": 47,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/direct-pose-final-linux/runtime.pck",
+    "sha256": "3b9b90c3d357bcd4e1540acd041187fc003cdd1e37a741e53d15684a78594c7d"
+  },
+  "passed": true
+}

@@ -1,0 +1,91 @@
+{
+  "command": [
+    "python3",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_pose_visual.py",
+    "vegetation-contacts-rendered",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/vegetation_interaction.gd",
+    "rendered"
+  ],
+  "returncode": 1,
+  "result": {
+    "checks": 42,
+    "failures": 1,
+    "rows": [
+      {
+        "case": "pressure-history",
+        "payload_bytes": 65536,
+        "updates": 62
+      },
+      {
+        "case": "baseline-settling",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      },
+      {
+        "case": "baseline-stable",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      },
+      {
+        "case": "empty",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      },
+      {
+        "case": "empty-refresh",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      },
+      {
+        "bounds": "[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]",
+        "case": "admission",
+        "contacts": 1,
+        "point": "(132.5, 6.405092, -92.5)"
+      },
+      {
+        "case": "standing",
+        "difference": {
+          "changed_pixels": 2781,
+          "peak_delta": 71,
+          "pixels_over_2": 1855
+        }
+      },
+      {
+        "case": "shadow-refresh",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      },
+      {
+        "case": "paused-wind",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      },
+      {
+        "case": "restored",
+        "difference": {
+          "changed_pixels": 0,
+          "peak_delta": 0,
+          "pixels_over_2": 0
+        }
+      }
+    ]
+  }
+}

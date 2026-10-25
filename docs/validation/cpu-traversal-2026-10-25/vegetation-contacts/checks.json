@@ -1,0 +1,72 @@
+{
+  "vegetation-contacts-before": [
+    "FAIL native contact collector is available",
+    "VEGETATION_CONTACTS_NATIVE checks=1 failures=1"
+  ],
+  "vegetation-contacts-first": [
+    "VEGETATION_CONTACTS_NATIVE_TIMING [{\"native\":false,\"queries\":240,\"usec\":75781},{\"native\":true,\"queries\":240,\"usec\":61911},{\"native\":true,\"queries\":240,\"usec\":60922},{\"native\":false,\"queries\":240,\"usec\":75035}]",
+    "VEGETATION_CONTACTS_NATIVE checks=794 failures=0"
+  ],
+  "vegetation-contacts-expanded": [
+    "VEGETATION_CONTACTS_NATIVE_TIMING [{\"native\":false,\"queries\":240,\"usec\":74713},{\"native\":true,\"queries\":240,\"usec\":57515},{\"native\":true,\"queries\":240,\"usec\":59793},{\"native\":false,\"queries\":240,\"usec\":75019}]",
+    "VEGETATION_CONTACTS_NATIVE checks=992 failures=0"
+  ],
+  "vegetation-contacts-cached": [
+    "VEGETATION_CONTACTS_NATIVE_TIMING [{\"native\":false,\"queries\":240,\"usec\":75137},{\"native\":true,\"queries\":240,\"usec\":52161},{\"native\":true,\"queries\":240,\"usec\":51994},{\"native\":false,\"queries\":240,\"usec\":75526}]",
+    "VEGETATION_CONTACTS_NATIVE checks=992 failures=0"
+  ],
+  "vegetation-contacts-final": [
+    "VEGETATION_CONTACTS_NATIVE_TIMING [{\"native\":false,\"queries\":240,\"scenario\":\"crowd\",\"usec\":109724},{\"native\":true,\"queries\":240,\"scenario\":\"crowd\",\"usec\":70063},{\"native\":true,\"queries\":240,\"scenario\":\"crowd\",\"usec\":69754},{\"native\":false,\"queries\":240,\"scenario\":\"crowd\",\"usec\":108227},{\"native\":false,\"queries\":240,\"scenario\":\"outside\",\"usec\":7802},{\"native\":true,\"queries\":240,\"scenario\":\"outside\",\"usec\":6930},{\"native\":true,\"queries\":240,\"scenario\":\"outside\",\"usec\":6902},{\"native\":false,\"queries\":240,\"scenario\":\"outside\",\"usec\":7678},{\"native\":false,\"queries\":240,\"scenario\":\"hidden\",\"usec\":3330},{\"native\":true,\"queries\":240,\"scenario\":\"hidden\",\"usec\":2106},{\"native\":true,\"queries\":240,\"scenario\":\"hidden\",\"usec\":2101},{\"native\":false,\"queries\":240,\"scenario\":\"hidden\",\"usec\":3348}]",
+    "VEGETATION_CONTACTS_NATIVE checks=1027 failures=0"
+  ],
+  "vegetation-contacts-rendered": [
+    "FAIL airborne/bridge figure supplies no ground pressure"
+  ],
+  "vegetation-contacts-rendered-before": [
+    "FAIL airborne/bridge figure supplies no ground pressure"
+  ],
+  "vegetation-contacts-rendered-script": [
+    "FAIL airborne/bridge figure supplies no ground pressure"
+  ],
+  "vegetation-airborne-diagnostic": [
+    "AIRBORNE_UNDRAWN {\"before\":\"[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]\",\"bounds\":\"[P: (132.092, 6.413195, -92.87636), S: (0.845428, 1.672584, 0.897385)]\",\"drawn_root\":\"(132.5, 6.405092, -92.5)\",\"native_contacts\":1,\"root\":\"(132.5, 8.405092, -92.5)\",\"script_contacts\":1}",
+    "AIRBORNE_DRAWN {\"bounds\":\"[P: (132.092, 8.413196, -92.87636), S: (0.845428, 1.672583, 0.897385)]\",\"drawn_root\":\"(132.5, 8.405092, -92.5)\",\"native_contacts\":0,\"root\":\"(132.5, 8.405092, -92.5)\",\"script_contacts\":0}"
+  ],
+  "dar-vegetation-contacts-live-micro": [
+    "STANDARD_ZONE_TRAVERSAL 82 checks 0 failures"
+  ],
+  "vegetation-contacts-registered-vegetation_warmup": {
+    "checks": 124,
+    "failures": 0
+  },
+  "vegetation-contacts-registered-picking_figures": {
+    "checks": 1403,
+    "failures": 0
+  },
+  "vegetation-contacts-registered-direct_pose_native": {
+    "checks": 7470,
+    "failures": 0
+  },
+  "vegetation-contacts-registered-vegetation_contacts_native": {
+    "checks": 1027,
+    "failures": 0
+  },
+  "vegetation-contacts-rendered-registered-vegetation_interaction": {
+    "checks": 47,
+    "failures": 0
+  },
+  "vegetation-contacts-rendered-before-updated-fixture-vegetation_interaction": {
+    "checks": 47,
+    "failures": 0
+  },
+  "vegetation-contacts-windows-picking_figures": [
+    "PICKING_FIGURES checks=1403 failures=0"
+  ],
+  "vegetation-contacts-windows-build": [],
+  "vegetation-contacts-windows-vegetation_contacts_native": [
+    "VEGETATION_CONTACTS_NATIVE checks=1027 failures=0"
+  ],
+  "vegetation-contacts-windows-direct_pose_native": [
+    "DIRECT_POSE_NATIVE checks=7470 failures=0"
+  ]
+}

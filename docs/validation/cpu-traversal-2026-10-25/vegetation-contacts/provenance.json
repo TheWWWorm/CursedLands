@@ -1,0 +1,65 @@
+{
+  "base_commit": "fa5c65e829e654da7795b8da6bcaca329783c3e6",
+  "source_sha256": {
+    "game/src/game/fx/vegetation_interaction.gd": "659750f858e8a39c033aa848cbb426142d60b07230ed0886e1dd84f6511e340f",
+    "game/src/native/source/vegetation_contacts.h": "6a3fce0d69558ff34d46a27ae2d478c4c0ed30d92914f58cc30d6585ebf77ac2",
+    "game/src/native/source/nav_kernel.cpp": "052394575c084e3939c27185ecb56d5b1f13ce8eaa599ea4218b701d89d03a06",
+    "game/src/native/source/build_profile.json": "2942b7fa3f775c02e4dd79628d76d30ecffeb73440a976f7bfe350517ea64ac2",
+    "tools/tests/vegetation_contacts_native.gd": "e89b29ee116936c06a3c36031f965f1a8270510284e7399ebbd7d37a82d3967c",
+    "tools/tests/vegetation_interaction.gd": "7d55000097f25e9042c3c0bec39b22ead655f004d36b2e2e13699793c9867737",
+    "tools/regressions.json": "1088307b4da9bc87f605e908d6e95f65d97a368fd60909dfeb1f12a88579cc0b"
+  },
+  "packs": {
+    "vegetation-contacts-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "93e6f417bfffc17b8c2cff7b24147f0575cf22c6ab62b7a69e8a962da9c301b6",
+      "src/native/bin/libterrain_search_android.so": "602f478053c616d4593b6779393201d17c5a569c6655cd7bd124db26aff6a792",
+      "src/native/bin/libterrain_search.dll": "4d10ac6f91ae348b7adb2efec4c0bfa19c719dd1b4c61d6b2c57f7150f661486",
+      "src/native/bin/libterrain_search.so": "15265e0187a3928ff80f2ce05c0a1f77324091e2034317ec6d62c52d57461c04"
+    },
+    "vegetation-contacts-final-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "8779ee679cfcc7b6588bcbfd1c145b14dbefe861c30fe04f9bba6cba14434455",
+      "src/native/bin/libterrain_search_android.so": "602f478053c616d4593b6779393201d17c5a569c6655cd7bd124db26aff6a792",
+      "src/native/bin/libterrain_search.dll": "4d10ac6f91ae348b7adb2efec4c0bfa19c719dd1b4c61d6b2c57f7150f661486",
+      "src/native/bin/libterrain_search.so": "15265e0187a3928ff80f2ce05c0a1f77324091e2034317ec6d62c52d57461c04"
+    },
+    "vegetation-contacts-cached-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "93e6f417bfffc17b8c2cff7b24147f0575cf22c6ab62b7a69e8a962da9c301b6",
+      "src/native/bin/libterrain_search_android.so": "3f7ee8403db343e8eb9530cefef2cede2365141985a0bdf2e56b2c12ac7ace36",
+      "src/native/bin/libterrain_search.dll": "ae19ac4d9abd2b6a076201e6412fab197e77d5b7aa9daf1b10a8c3ec2f5ee3ff",
+      "src/native/bin/libterrain_search.so": "15265e0187a3928ff80f2ce05c0a1f77324091e2034317ec6d62c52d57461c04"
+    },
+    "vegetation-contact-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "795cee60147cc3bcfc023b7b1dd19464429a2737ea034779cb264480f91a5924",
+      "src/native/bin/libterrain_search_android.so": "3f7ee8403db343e8eb9530cefef2cede2365141985a0bdf2e56b2c12ac7ace36",
+      "src/native/bin/libterrain_search.dll": "ae19ac4d9abd2b6a076201e6412fab197e77d5b7aa9daf1b10a8c3ec2f5ee3ff",
+      "src/native/bin/libterrain_search.so": "2fec947386dc5102be7d9bf6da6216e1104cf513a65d920ec88bfc8af2681a06"
+    }
+  },
+  "runtime_snapshot": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/vegetation-contacts-final-game",
+  "runtime_files_compared": 461,
+  "differences": [],
+  "scalar_fallback_body_exactly_matches_baseline": true,
+  "android": "ARM64 rebuilt; not executed on an Android device.",
+  "original_comparison": {
+    "introduction_commit": "8f3b93d59cce5bb50f01a22dca2c7052fb6efd9e",
+    "scope": "Optional pressure texture, contact collector and history were introduced by the remake. There is no equivalent original-game Wine fixture for this mechanism. Native contacts are compared exactly to the prior remake collector; Windows/Wine checks execute the remake. No original Dar runtime/FPS equivalence is claimed."
+  },
+  "rendered_fixture": {
+    "engine_source": "/home/llm2x/Documents/EI/local/scratchpad/pt-five-targets-20261024/engine/scene/3d/node_3d.cpp",
+    "engine_source_sha256": "449a81317e6b59a8bc2fe1a62eef06bbf632473c6c11d40e44bc832892da31e3",
+    "lines": "536-582",
+    "reason": "SceneTreeFTI returns the last submitted transform until drawing. The old immediate airborne assertion fails on both the pre-change pack and scalar control. The maintained fixture now checks the submitted pose before drawing, waits two frames, retains the airborne exclusion assertion, checks native/scalar equality, and verifies contact returns after landing.",
+    "original_checks": 42,
+    "original_failures_each": 1,
+    "updated_checks_each": 47,
+    "updated_failures_each": 0
+  },
+  "rejected_experiment": {
+    "gpu_job": "34398dd9244e4147",
+    "reason": "The first implementation rebuilt property/method names on every query. Separate instrumented Dar passes did not establish a gain and native contact scopes were slower. Cached immutable names were added before the accepted same-scene microbenchmark. This pair is not evidence of a shipped FPS gain."
+  }
+}

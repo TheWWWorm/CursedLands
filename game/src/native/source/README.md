@@ -52,6 +52,16 @@ The registered `direct_pose_native` regression compares exact poses and key
 order, resource/node edits, eviction, destruction and full fallback. The
 generated binding profile includes `Animation` for direct engine calls.
 
+`VegetationContactKernel` collects visible grass-pressure contacts in one
+native query. Actor visibility, screen eligibility, interpolated transforms,
+mesh bounds and contact ordering are sampled anew. Terrain admission and
+surface sampling still use the existing methods, and the nearest-32 budget
+is applied before those checks. No actor or result is retained. Derived
+actors, models, collectors or meshes keep the complete script path, as do
+older libraries and `-- --ei-script-vegetation-contacts`. The registered
+`vegetation_contacts_native` test compares ordered contacts, live geometry
+changes, budget boundaries and custom/older-library fallbacks.
+
 The terrain instance also owns persistent static block topology: representatives,
 weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
 floor and object changes invalidate it through the existing map revision.
