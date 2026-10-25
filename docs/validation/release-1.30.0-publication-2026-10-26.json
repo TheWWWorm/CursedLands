@@ -1,0 +1,231 @@
+{
+  "version": "1.30.0",
+  "verified_at": "2026-10-25T23:26:11Z",
+  "validation": "release-1.30.0-2026-10-26.json",
+  "game_tree": "44a151eb18222924ad7509e9e8867161d67f9657",
+  "game_source_unchanged_between_export_and_tag": true,
+  "github": {
+    "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.30.0",
+    "tag": "v1.30.0",
+    "tag_commit": "7653ff89b75fb6823c25aad4f22bc6486b6a8266",
+    "isDraft": false,
+    "isPrerelease": false,
+    "published_at": "2026-10-25T23:21:54Z",
+    "verified_at": "2026-10-25T23:22:11Z",
+    "all_asset_names_sizes_and_server_sha256_match": true,
+    "checksum_download_matches": true,
+    "asset_policy_check": "passed before upload for every asset",
+    "assets": [
+      {
+        "name": "CursedLands-1.30.0-android.apk",
+        "size": 50190880,
+        "digest": "sha256:ffc9dd1a97d815055cd090f6c2d3f9156cafbb65099ecb8b23aaf80060de8575",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/CursedLands-1.30.0-android.apk"
+      },
+      {
+        "name": "CursedLands-1.30.0-linux-x86_64.tar.gz",
+        "size": 60201273,
+        "digest": "sha256:fe0eaf4f43068649310498820a78dce409e2b0aa4ae5c6226e2fc100debaa24f",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/CursedLands-1.30.0-linux-x86_64.tar.gz"
+      },
+      {
+        "name": "CursedLands-1.30.0-macos-universal.zip",
+        "size": 87819762,
+        "digest": "sha256:12d6bd639698fffc47fa541d1313bdd952f110013c89ad19d247a9d614b4bfe2",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/CursedLands-1.30.0-macos-universal.zip"
+      },
+      {
+        "name": "CursedLands-1.30.0-tools.zip",
+        "size": 80216,
+        "digest": "sha256:e52d2ce4f52395f7ebeed9365fc3a57bdddbfa402f7aa68b3e0e4ee4ad1f8ac8",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/CursedLands-1.30.0-tools.zip"
+      },
+      {
+        "name": "CursedLands-1.30.0-web.zip",
+        "size": 189080577,
+        "digest": "sha256:99de28717faa14f3a6e70150ddf4a8745f2f417dcea398e889a0f03f127979ab",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/CursedLands-1.30.0-web.zip"
+      },
+      {
+        "name": "CursedLands-1.30.0-windows-x86_64.zip",
+        "size": 146895177,
+        "digest": "sha256:18cb415640254e731d70fe33c1d6d33af0fa9cc721624b6607caa8fef6a9fabc",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/CursedLands-1.30.0-windows-x86_64.zip"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "size": 599,
+        "digest": "sha256:4c1f2708cee6b70372bf415c420985bf3aa4c9f1b4ed13ef4a29b68f08e1aac6",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.30.0/SHA256SUMS.txt"
+      }
+    ],
+    "is_latest_stable": true
+  },
+  "browser_deployment": {
+    "site": "https://cursedlands.wwworm.com/",
+    "commit": "7653ff89b75fb6823c25aad4f22bc6486b6a8266",
+    "version": "1.30.0",
+    "previous_stable": "v1.29.0",
+    "verified_at": "2026-10-25T23:24:58Z",
+    "live_files": {
+      "data-worker.js": {
+        "bytes": 1568,
+        "sha256": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+        "isolation_headers": true
+      },
+      "files.js": {
+        "bytes": 14821,
+        "sha256": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+        "isolation_headers": true
+      },
+      "icon-192.png": {
+        "bytes": 50904,
+        "sha256": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
+        "isolation_headers": true
+      },
+      "icon-512.png": {
+        "bytes": 324019,
+        "sha256": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+        "isolation_headers": true
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 45361,
+        "sha256": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
+        "isolation_headers": true
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+        "isolation_headers": true
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+        "isolation_headers": true
+      },
+      "index.html": {
+        "bytes": 6220,
+        "sha256": "4c02f22721750e370c6c13df5052bc2956a66563681f50117b90da02455a15dd",
+        "isolation_headers": true
+      },
+      "index.icon.png": {
+        "bytes": 7516,
+        "sha256": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
+        "isolation_headers": true
+      },
+      "index.js": {
+        "bytes": 279815,
+        "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+        "isolation_headers": true
+      },
+      "index.pck": {
+        "bytes": 22350296,
+        "sha256": "87b2140ec77544611c741613c80d87fd0977f938c7e6e43eb77011e10cdc6ced",
+        "isolation_headers": true
+      },
+      "index.png": {
+        "bytes": 340337,
+        "sha256": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+        "isolation_headers": true
+      },
+      "index.wasm": {
+        "bytes": 39509339,
+        "sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+        "isolation_headers": true
+      },
+      "installer-worker.js": {
+        "bytes": 16243,
+        "sha256": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+        "isolation_headers": true
+      },
+      "manifest.webmanifest": {
+        "bytes": 483,
+        "sha256": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+        "isolation_headers": true
+      },
+      "storage.js": {
+        "bytes": 5685,
+        "sha256": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+        "isolation_headers": true
+      },
+      "service-worker.js": {
+        "bytes": 7282,
+        "sha256": "2b8d946d23c0d6f9f441f82e68b4f251ee8aba06a3c5515ac36c171edff65731",
+        "isolation_headers": true
+      },
+      "BUILD-INFO.json": {
+        "bytes": 607,
+        "sha256": "1426080cc74dffa323952f9efd27d4386e9b77079320571799b0d74895023de8",
+        "isolation_headers": true
+      },
+      "THIRD_PARTY_NOTICES.md": {
+        "bytes": 8821,
+        "sha256": "96f76ccab336100fe1a8b039e2f62cf8fa8959fe50978ca60c2b9f6515994060",
+        "isolation_headers": true
+      },
+      "index.wasm.part0": {
+        "bytes": 20971520,
+        "sha256": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+        "isolation_headers": true
+      },
+      "index.wasm.part1": {
+        "bytes": 18537819,
+        "sha256": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+        "isolation_headers": true
+      }
+    },
+    "all_live_hashes_match": true,
+    "scope": "Every changed hosted asset since 1.29.0, complete service-worker engine cache, build metadata, all split parts and reassembled files"
+  },
+  "archive_member_readback": {
+    "CursedLands-1.30.0-linux-x86_64.tar.gz": true,
+    "CursedLands-1.30.0-windows-x86_64.zip": true,
+    "CursedLands-1.30.0-macos-universal.zip": true,
+    "CursedLands-1.30.0-web.zip": true
+  },
+  "asset_policy_results": [
+    "Withdrawal policy passed: CursedLands-1.30.0-android.apk",
+    "Withdrawal policy passed: CursedLands-1.30.0-linux-x86_64.tar.gz",
+    "Withdrawal policy passed: CursedLands-1.30.0-macos-universal.zip",
+    "Withdrawal policy passed: CursedLands-1.30.0-tools.zip",
+    "Withdrawal policy passed: CursedLands-1.30.0-web.zip",
+    "Withdrawal policy passed: CursedLands-1.30.0-windows-x86_64.zip",
+    "Withdrawal policy passed: SHA256SUMS.txt"
+  ],
+  "standalone_tools_bundle": {
+    "files": [
+      "tools/convert_legacy_mod.py",
+      "tools/package_mod.py",
+      "tools/tests/test_legacy_mod_converter.py",
+      "game/src/ei/database.gd",
+      "game/src/game/mod_schema.gd",
+      "docs/mods.md",
+      "docs/versioning.md",
+      "docs/validation/hd-lands-1.5.0-2026-10-13.json",
+      "docs/validation/release-1.30.0-2026-10-26.json",
+      "docs/legacy-mod-converter.md",
+      "docs/legacy-mod-compatibility.md",
+      "docs/validation/legacy-mod-converter-2026-10-11.json",
+      "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+      "LICENSE.md",
+      "docs/mod-formulas.md",
+      "examples/mods/field-medicine/mod.json",
+      "examples/mods/field-medicine/main.lua",
+      "examples/mods/quest-focus/mod.json",
+      "examples/mods/quest-focus/rewards.lua",
+      "examples/mods/quest-focus/main.lua",
+      "examples/mods/expedition-xp/mod.json",
+      "examples/mods/expedition-xp/main.lua",
+      "examples/mods/quick-recovery/mod.json"
+    ],
+    "exact_source_readback": true,
+    "standalone_tests_passed": true,
+    "standalone_test_log": "tools-bundle-tests.log",
+    "example_byte_identical": true,
+    "artifact": {
+      "name": "CursedLands-1.30.0-tools.zip",
+      "bytes": 80216,
+      "sha256": "e52d2ce4f52395f7ebeed9365fc3a57bdddbfa402f7aa68b3e0e4ee4ad1f8ac8"
+    }
+  }
+}
