@@ -1,0 +1,215 @@
+{
+  "animation-composition": {
+    "groups": {
+      "31-parts": {
+        "script_us_per_call": [
+          24.071,
+          24.037
+        ],
+        "native_us_per_call": [
+          30.795,
+          30.888
+        ],
+        "script_mean_us": 24.054000000000002,
+        "native_mean_us": 30.841500000000003,
+        "native_extra_percent": 28.21776003991021
+      }
+    },
+    "raw": [
+      {
+        "frames": 1000,
+        "native": false,
+        "parts": 31,
+        "usec": 24071
+      },
+      {
+        "frames": 1000,
+        "native": true,
+        "parts": 31,
+        "usec": 30795
+      },
+      {
+        "frames": 1000,
+        "native": true,
+        "parts": 31,
+        "usec": 30888
+      },
+      {
+        "frames": 1000,
+        "native": false,
+        "parts": 31,
+        "usec": 24037
+      }
+    ]
+  },
+  "unit-sound-scan": {
+    "groups": {
+      "0": {
+        "script_us_per_call": [
+          59.216,
+          59.0295
+        ],
+        "native_us_per_call": [
+          77.7705,
+          77.6495
+        ],
+        "script_mean_us": 59.122749999999996,
+        "native_mean_us": 77.71000000000001,
+        "native_extra_percent": 31.43840568985714
+      },
+      "16": {
+        "script_us_per_call": [
+          73.148,
+          73.191
+        ],
+        "native_us_per_call": [
+          102.9835,
+          102.619
+        ],
+        "script_mean_us": 73.1695,
+        "native_mean_us": 102.80125000000001,
+        "native_extra_percent": 40.497406706346226
+      },
+      "56": {
+        "script_us_per_call": [
+          105.4185,
+          103.4665
+        ],
+        "native_us_per_call": [
+          154.679,
+          154.592
+        ],
+        "script_mean_us": 104.4425,
+        "native_mean_us": 154.6355,
+        "native_extra_percent": 48.05802235679921
+      },
+      "334": {
+        "script_us_per_call": [
+          336.618,
+          338.6385
+        ],
+        "native_us_per_call": [
+          509.395,
+          508.0525
+        ],
+        "script_mean_us": 337.62825,
+        "native_mean_us": 508.72375,
+        "native_extra_percent": 50.67570619460901
+      }
+    },
+    "raw": [
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 0,
+        "usec": 118432
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 0,
+        "usec": 155541
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 0,
+        "usec": 155299
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 0,
+        "usec": 118059
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 16,
+        "usec": 146296
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 16,
+        "usec": 205967
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 16,
+        "usec": 205238
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 16,
+        "usec": 146382
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 56,
+        "usec": 210837
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 56,
+        "usec": 309358
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 56,
+        "usec": 309184
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 56,
+        "usec": 206933
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 334,
+        "usec": 673236
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 334,
+        "usec": 1018790
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": true,
+        "near": 334,
+        "usec": 1016105
+      },
+      {
+        "actors": 334,
+        "frames": 2000,
+        "native": false,
+        "near": 334,
+        "usec": 677277
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 19:52:20 +2490ms] session bda31d68fe81: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+UNIT_SOUND_SCAN_PROBE_TIMING [{"actors":334,"frames":2000,"native":false,"near":0,"usec":118432},{"actors":334,"frames":2000,"native":true,"near":0,"usec":155541},{"actors":334,"frames":2000,"native":true,"near":0,"usec":155299},{"actors":334,"frames":2000,"native":false,"near":0,"usec":118059},{"actors":334,"frames":2000,"native":false,"near":16,"usec":146296},{"actors":334,"frames":2000,"native":true,"near":16,"usec":205967},{"actors":334,"frames":2000,"native":true,"near":16,"usec":205238},{"actors":334,"frames":2000,"native":false,"near":16,"usec":146382},{"actors":334,"frames":2000,"native":false,"near":56,"usec":210837},{"actors":334,"frames":2000,"native":true,"near":56,"usec":309358},{"actors":334,"frames":2000,"native":true,"near":56,"usec":309184},{"actors":334,"frames":2000,"native":false,"near":56,"usec":206933},{"actors":334,"frames":2000,"native":false,"near":334,"usec":673236},{"actors":334,"frames":2000,"native":true,"near":334,"usec":1018790},{"actors":334,"frames":2000,"native":true,"near":334,"usec":1016105},{"actors":334,"frames":2000,"native":false,"near":334,"usec":677277}]
+UNIT_SOUND_SCAN_PROBE checks=201 failures=0
+[trace 19:52:26 +8475ms] clean exit

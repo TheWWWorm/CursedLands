@@ -1,0 +1,18 @@
+--- current/nav_kernel.cpp
++++ rejected/nav_kernel.cpp
+@@ -38,6 +38,7 @@
+ #include "vegetation_contacts.h"
+ #include "ground_contact.h"
+ #include "ground_mark_projection.h"
++#include "unit_sound_scan.h"
+ #include "motion_spline.h"
+ #include "mmp_texture.h"
+ #include "audio_decode.h"
+@@ -593,6 +594,7 @@
+         GDREGISTER_CLASS(VegetationContactKernel);
+         GDREGISTER_CLASS(GroundContactKernel);
+         GDREGISTER_CLASS(GroundMarkProjectionKernel);
++        GDREGISTER_CLASS(UnitSoundScanKernel);
+         GDREGISTER_CLASS(NetSmoothKernel);
+     }
+ }

@@ -1057,3 +1057,9 @@ Mark ageing and delayed first-visible mirror preparation remain open too.
 See [scope totals](actor-parts/actor-parts-profile-summary.json) and
 [diagnostic provenance](actor-parts/provenance.json). No animation or sound
 behavior changed in this profiling pass.
+
+## Rejected direct native actor loops
+
+The next two screening experiments were slower and were removed before integration. A property-based C++ animation composer matched 7,937 exact checks but cost **28.2% more CPU** than the unchanged script. A C++ outer actor-sound scan matched 201 limited state/stamp checks but cost **31–51% more CPU**, depending on how many of the 334 actors were nearby. Script-property access and synchronous script callbacks outweighed the saved interpreter loop work. No gameplay code, platform library or sound/animation behavior changes in this pass.
+
+See [prototype evidence](rejected-native-prototypes/README.md), [raw measurements](rejected-native-prototypes/measurements.json) and the archived independent old methods. These are screening microbenchmarks, not FPS claims. The remaining first-visible mirror preparation and mark-ageing candidates are unaffected by rejecting these approaches.

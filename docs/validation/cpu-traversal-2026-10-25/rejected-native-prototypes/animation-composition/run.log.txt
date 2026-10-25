@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 19:36:35 +2456ms] session 4cc4f50e7b0a: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ANIMATION_COMPOSITION_PROBE_TIMING [{"frames":1000,"native":false,"parts":31,"usec":24071},{"frames":1000,"native":true,"parts":31,"usec":30795},{"frames":1000,"native":true,"parts":31,"usec":30888},{"frames":1000,"native":false,"parts":31,"usec":24037}]
+ANIMATION_COMPOSITION_PROBE checks=7937 failures=0
+[trace 19:36:36 +2802ms] clean exit
