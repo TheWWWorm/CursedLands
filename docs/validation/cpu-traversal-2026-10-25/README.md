@@ -589,3 +589,27 @@ bytes. A controlled original-instruction Wine harness was attempted, but Wine
 could not map the required `0x490000` address (exit 5); its receipt is retained.
 Thus the new evidence is original code plus controlled replay, not a successful
 full original-game Wine particle observation or original FPS measurement.
+
+### Cold cloud preparation before gameplay
+
+The remaining first-frame terrain scope contains synchronous volume-noise
+setup. Terrain graphics initialization precedes active-world attachment, so
+its atmosphere callback correctly declines to publish an inactive world.
+`Game.attach_world` now publishes the destination cloud frame after its weather
+and daylight are attached, before the loading cover's shader preparation.
+This moves resource creation into loading without changing volume quality,
+cloud phases, time advancement or active-world ownership.
+
+The registered rendered `cloud_load_preparation` test uses the actual campaign
+attachment with cold resources. It fails 8 of 11 checks before the change and
+passes all 11 afterward. The first explicit terrain atmosphere callback takes
+204.109 ms before (203.911 ms setup) and 0.075 ms afterward; the 196.521 ms cold
+setup now happens during attachment. These are boundary measurements on a
+fixed test, not an FPS comparison. Retained-world reuse, cave clearing,
+sheet-only clouds and disabled ownership also pass. The related cloud
+analytic/lifecycle fixture passes 29 checks. See
+[checks and timings](cloud-preparation-checks.json) and
+[pack provenance](cloud-preparation-provenance.json). Both rendered runs emit
+the already recognized GPU Lab missing-EDID refresh-rate diagnostic; neither
+has a script error. This Godot volumetric-cloud system is a remake addition,
+so an equivalent original-game Wine callback comparison is inapplicable.

@@ -744,6 +744,9 @@ func attach_world(w: GameWorld) -> void:
 	# Warm the destination's sky/light configuration, rather than compiling
 	# its first actual sky shader after the loading cover has gone away.
 	_update_daylight(false)
+	# Terrain processing resumes after loading. Publish this world's cloud
+	# frame now so cold volume resources also prepare under the loading cover.
+	if w.terrain: w.terrain._update_cloud_parameters()
 	_apply_shadows(w)
 	_fit_shadows()
 	var pfx := ParticleFx.of(w)

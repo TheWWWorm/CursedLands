@@ -1,0 +1,15 @@
+{
+  "before_pack": "ambient-ground-linux",
+  "after_pack": "cloud-preparation-linux",
+  "before_job": "45c94d13415e4581",
+  "after_job": "6e4e047e338b4680",
+  "pck_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ambient-ground-linux/runtime.pck": "cfe06a988b59703360db88c7cf8c5abff864f17a641355c9b1d456f94f6aa395",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/cloud-preparation-linux/runtime.pck": "63e857f94c4c553ffae3f8c9ceba54a6d008951b35605f6f43b5bb6c42bfe365"
+  },
+  "source_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/game/src/game/game.gd": "1dd12a9b285cf811c75fb6f4b5ed825cbd10831bcd4d65fab914be73ae79c747",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/cloud_load_preparation.gd": "4b688ce224f995882ceb8c1a84258f3226cf11ce7c3630618717a585ed982631"
+  },
+  "private_patch": "figure.gd weather safety from 18b58726, identical in before and after. Star batches present only after; this fixture uses zero particle effect processing before the checked attach boundary."
+}

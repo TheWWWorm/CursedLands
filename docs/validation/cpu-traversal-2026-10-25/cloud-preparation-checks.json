@@ -1,0 +1,60 @@
+{
+  "cloud-preparation-before": {
+    "summaries": [
+      "FAIL destination cloud globals are published during load",
+      "FAIL cold volume noise is ready before the first gameplay tick",
+      "FAIL first terrain update reuses prepared resources",
+      "FAIL preparation does not advance the cloud or wave clock",
+      "FAIL retained-world attachment reuses noise",
+      "FAIL cave attachment clears active volume before rendering",
+      "FAIL sheet-only attachment allocates no volume",
+      "FAIL disabled-cloud attachment clears ownership",
+      "CLOUD_LOAD_PREPARATION checks=11 failures=8"
+    ],
+    "result": {
+      "checks": 11,
+      "failures": 8,
+      "rows": [
+        {
+          "case": "first explicit terrain cloud update after load",
+          "prepared_during_load": false,
+          "setup_ms": 203.911,
+          "usec": 204109
+        }
+      ]
+    }
+  },
+  "cloud-preparation-after": {
+    "summaries": [
+      "CLOUD_LOAD_PREPARATION checks=11 failures=0"
+    ],
+    "result": {
+      "checks": 11,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "first explicit terrain cloud update after load",
+          "prepared_during_load": true,
+          "setup_ms": 196.521,
+          "usec": 75
+        }
+      ]
+    }
+  },
+  "cloud-related-lifecycle": {
+    "summaries": [
+      "CLOUDS checks=29 failures=0"
+    ],
+    "result": {
+      "checks": 29,
+      "failures": 0,
+      "rows": [
+        {
+          "case": "analytic",
+          "phase_after_wrap": "(0.996468, 0.99999, 0.00008, 0.010655)",
+          "wind_change_phase_distance": 0.000202417373657227
+        }
+      ]
+    }
+  }
+}
