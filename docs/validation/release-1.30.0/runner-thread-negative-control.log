@@ -1,0 +1,25 @@
+test_packaged_run_keeps_relative_helpers_and_fixture_data (test_regression_runner.PackagedFixtureTests.test_packaged_run_keeps_relative_helpers_and_fixture_data) ... RUN probe
+PASS probe {'checks': 3, 'failures': 0}
+ok
+test_duplicate_result_cannot_hide_failure (test_regression_runner.VerdictTests.test_duplicate_result_cannot_hide_failure) ... ok
+test_exit_and_late_errors_fail (test_regression_runner.VerdictTests.test_exit_and_late_errors_fail) ... ok
+test_exported_runtime_and_required_renderer (test_regression_runner.VerdictTests.test_exported_runtime_and_required_renderer) ... ok
+test_headless_uses_production_worker_render_thread_mode (test_regression_runner.VerdictTests.test_headless_uses_production_worker_render_thread_mode) ... FAIL
+test_reported_failures_fail (test_regression_runner.VerdictTests.test_reported_failures_fail) ... ok
+test_success_exit_without_assertions_fails (test_regression_runner.VerdictTests.test_success_exit_without_assertions_fails) ... ok
+test_success_formats (test_regression_runner.VerdictTests.test_success_formats) ... ok
+test_virtual_monitor_exception_is_narrow_and_retained (test_regression_runner.VerdictTests.test_virtual_monitor_exception_is_narrow_and_retained) ... ok
+test_wrong_campaign_and_missing_start_cannot_pass (test_regression_runner.VerdictTests.test_wrong_campaign_and_missing_start_cannot_pass) ... ok
+
+======================================================================
+FAIL: test_headless_uses_production_worker_render_thread_mode (test_regression_runner.VerdictTests.test_headless_uses_production_worker_render_thread_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/test_regression_runner.py", line 30, in test_headless_uses_production_worker_render_thread_mode
+    self.assertIn("--render-thread", command)
+AssertionError: '--render-thread' not found in ['/qualified/game', '--audio-driver', 'Dummy', '--max-fps', '30', '--headless']
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.009s
+
+FAILED (failures=1)

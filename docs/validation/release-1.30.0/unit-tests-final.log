@@ -1,0 +1,94 @@
+test_camera_motion_matches_independent_projection (test_dlss_camera_contract.CameraContract.test_camera_motion_matches_independent_projection) ... ok
+test_negative_control_reproduces_bad_camera_motion (test_dlss_camera_contract.CameraContract.test_negative_control_reproduces_bad_camera_motion) ... ok
+test_sdk_reverse_depth_contract (test_dlss_camera_contract.CameraContract.test_sdk_reverse_depth_contract) ... ok
+test_add_remove_rename_records_and_missing_fields (test_legacy_mod_converter.ConversionTest.test_add_remove_rename_records_and_missing_fields) ... ok
+test_archive_names_match_runtime_byte_decoding (test_legacy_mod_converter.ConversionTest.test_archive_names_match_runtime_byte_decoding) ... ok
+test_archive_traversal_case_collision_and_truncation (test_legacy_mod_converter.ConversionTest.test_archive_traversal_case_collision_and_truncation) ... ok
+test_cp1252_record_names_and_multiplayer_target (test_legacy_mod_converter.ConversionTest.test_cp1252_record_names_and_multiplayer_target) ... ok
+test_disabled_legacy_settings_and_author_email (test_legacy_mod_converter.ConversionTest.test_disabled_legacy_settings_and_author_email) ... ok
+test_dll_dependency_blocks_package_even_without_binary (test_legacy_mod_converter.ConversionTest.test_dll_dependency_blocks_package_even_without_binary) ... ok
+test_documentation_and_report_only (test_legacy_mod_converter.ConversionTest.test_documentation_and_report_only) ... ok
+test_existing_output_is_not_overwritten (test_legacy_mod_converter.ConversionTest.test_existing_output_is_not_overwritten) ... ok
+test_links_and_case_colliding_input_files (test_legacy_mod_converter.ConversionTest.test_links_and_case_colliding_input_files) ... ok
+test_maps_settings_and_new_assets_are_reported (test_legacy_mod_converter.ConversionTest.test_maps_settings_and_new_assets_are_reported) ... ok
+test_multiple_distinct_archives_and_conflicting_precedence (test_legacy_mod_converter.ConversionTest.test_multiple_distinct_archives_and_conflicting_precedence) ... ok
+test_native_file_cannot_hide_as_readme (test_legacy_mod_converter.ConversionTest.test_native_file_cannot_hide_as_readme) ... ok
+test_nonfinite_and_out_of_range_numeric_values (test_legacy_mod_converter.ConversionTest.test_nonfinite_and_out_of_range_numeric_values) ... ok
+test_oversized_pack_still_reports_later_unsupported_content (test_legacy_mod_converter.ConversionTest.test_oversized_pack_still_reports_later_unsupported_content) ... ok
+test_package_delta_and_inputs_unchanged (test_legacy_mod_converter.ConversionTest.test_package_delta_and_inputs_unchanged) ... ok
+test_redress_delta_preserves_source_archives (test_legacy_mod_converter.ConversionTest.test_redress_delta_preserves_source_archives) ... ok
+test_registry_remapping_and_modes (test_legacy_mod_converter.ConversionTest.test_registry_remapping_and_modes) ... ok
+test_schema_matches_engine_contract (test_legacy_mod_converter.ConversionTest.test_schema_matches_engine_contract) ... ok
+test_unsafe_registry_path (test_legacy_mod_converter.ConversionTest.test_unsafe_registry_path) ... ok
+test_unsupported_edit_blocks_otherwise_supported_patch (test_legacy_mod_converter.ConversionTest.test_unsupported_edit_blocks_otherwise_supported_patch) ... ok
+test_actual_render_thread_must_match_project_or_explicit_override (test_path_trace_qualification.QualificationTests.test_actual_render_thread_must_match_project_or_explicit_override) ... ok
+test_camera_reports_require_frames_and_each_real_view_transition (test_path_trace_qualification.QualificationTests.test_camera_reports_require_frames_and_each_real_view_transition) ... ok
+test_clean_process_with_gpu_evidence_finishes (test_path_trace_qualification.QualificationTests.test_clean_process_with_gpu_evidence_finishes) ... {"event": "started", "pid": 2548568, "output": "/tmp/tmpsju3twsq"}
+ok
+test_controller_completeness_tracks_named_handoffs (test_path_trace_qualification.QualificationTests.test_controller_completeness_tracks_named_handoffs) ... ok
+test_descendant_grace_does_not_extend_the_suite_deadline (test_path_trace_qualification.QualificationTests.test_descendant_grace_does_not_extend_the_suite_deadline) ... {"event": "started", "pid": 2548627, "output": "/tmp/tmposacrhi1"}
+ok
+test_end_to_end_isolation_manifest_and_fail_fast (test_path_trace_qualification.QualificationTests.test_end_to_end_isolation_manifest_and_fail_fast) ... PT qualification failed: Invalid or protected --env key: __GLX_VENDOR_LIBRARY_NAME
+PT qualification failed: Invalid or protected --env key: __NV_PRIME_RENDER_OFFLOAD
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT
+PT qualification failed: Invalid or protected --env key: NVIDIA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: VK_DRIVER_FILES
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE
+PT qualification failed: Invalid or protected --env key: CUDA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: VK_ICD_FILENAMES
+PT qualification failed: Invalid or protected --env key: DXVK_FILTER_DEVICE_NAME
+PT qualification failed: Invalid or protected --env key: DRI_PRIME
+PT qualification failed: Invalid or protected --env key: VKD3D_FILTER_DEVICE_NAME
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+PT qualification failed: Requested physical GPU is absent from nvidia-smi
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+ok
+test_existing_player_or_test_profile_is_never_overwritten (test_path_trace_qualification.QualificationTests.test_existing_player_or_test_profile_is_never_overwritten) ... ok
+test_exited_unreaped_children_are_not_live_workload (test_path_trace_qualification.QualificationTests.test_exited_unreaped_children_are_not_live_workload) ... {"event": "started", "pid": 2548799, "output": "/tmp/tmpd0zkrzr8"}
+ok
+test_gpu_xml_uses_graphics_processes_and_uuid_not_names (test_path_trace_qualification.QualificationTests.test_gpu_xml_uses_graphics_processes_and_uuid_not_names) ... ok
+test_inherited_service_display_and_gpu_environment_are_preserved (test_path_trace_qualification.QualificationTests.test_inherited_service_display_and_gpu_environment_are_preserved) ... ok
+test_lifecycle_requires_actual_ordered_dispatch_and_resource_release (test_path_trace_qualification.QualificationTests.test_lifecycle_requires_actual_ordered_dispatch_and_resource_release) ... ok
+test_missing_gpu_observation_cannot_pass (test_path_trace_qualification.QualificationTests.test_missing_gpu_observation_cannot_pass) ... {"event": "started", "pid": 2548809, "output": "/tmp/tmpfzfe3461"}
+ok
+test_ordinary_descendant_may_finish_cleanly_within_shared_deadline (test_path_trace_qualification.QualificationTests.test_ordinary_descendant_may_finish_cleanly_within_shared_deadline) ... {"event": "started", "pid": 2548826, "output": "/tmp/tmpqj09pubj"}
+ok
+test_partial_benchmark_and_unready_sdk_fail_even_with_zero_failures (test_path_trace_qualification.QualificationTests.test_partial_benchmark_and_unready_sdk_fail_even_with_zero_failures) ... ok
+test_recursive_runtime_library_mutation_changes_frozen_inputs (test_path_trace_qualification.QualificationTests.test_recursive_runtime_library_mutation_changes_frozen_inputs) ... ok
+test_rss_correlates_same_state_cycles_and_rejects_growth_or_missing_evidence (test_path_trace_qualification.QualificationTests.test_rss_correlates_same_state_cycles_and_rejects_growth_or_missing_evidence) ... ok
+test_runtime_script_failure_stops_process (test_path_trace_qualification.QualificationTests.test_runtime_script_failure_stops_process) ... {"event": "started", "pid": 2549475, "output": "/tmp/tmp4b24zv26"}
+ok
+test_sharc_benchmark_requires_full_abba_gpu_evidence (test_path_trace_qualification.QualificationTests.test_sharc_benchmark_requires_full_abba_gpu_evidence) ... ok
+test_spatial_benchmark_rejects_incomplete_or_nonfinite_measurements (test_path_trace_qualification.QualificationTests.test_spatial_benchmark_rejects_incomplete_or_nonfinite_measurements) ... ok
+test_stress_requires_every_save_and_actual_sdk_phases (test_path_trace_qualification.QualificationTests.test_stress_requires_every_save_and_actual_sdk_phases) ... ok
+test_wall_deadline_includes_hung_teardown (test_path_trace_qualification.QualificationTests.test_wall_deadline_includes_hung_teardown) ... {"event": "started", "pid": 2549584, "output": "/tmp/tmpbv1833fu"}
+ok
+test_wrong_physical_gpu_stops_process (test_path_trace_qualification.QualificationTests.test_wrong_physical_gpu_stops_process) ... {"event": "started", "pid": 2549596, "output": "/tmp/tmpcj7jaqd5"}
+ok
+test_x11_allowance_is_exact_and_never_masks_script_or_gpu_errors (test_path_trace_qualification.QualificationTests.test_x11_allowance_is_exact_and_never_masks_script_or_gpu_errors) ... ok
+test_zero_exit_parent_with_live_descendant_fails_and_cleans_only_its_group (test_path_trace_qualification.QualificationTests.test_zero_exit_parent_with_live_descendant_fails_and_cleans_only_its_group) ... {"event": "started", "pid": 2549598, "output": "/tmp/tmpi2ykql_z"}
+ok
+test_packaged_run_keeps_relative_helpers_and_fixture_data (test_regression_runner.PackagedFixtureTests.test_packaged_run_keeps_relative_helpers_and_fixture_data) ... RUN probe
+PASS probe {'checks': 3, 'failures': 0}
+ok
+test_duplicate_result_cannot_hide_failure (test_regression_runner.VerdictTests.test_duplicate_result_cannot_hide_failure) ... ok
+test_exit_and_late_errors_fail (test_regression_runner.VerdictTests.test_exit_and_late_errors_fail) ... ok
+test_exported_runtime_and_required_renderer (test_regression_runner.VerdictTests.test_exported_runtime_and_required_renderer) ... ok
+test_headless_uses_production_worker_render_thread_mode (test_regression_runner.VerdictTests.test_headless_uses_production_worker_render_thread_mode) ... ok
+test_reported_failures_fail (test_regression_runner.VerdictTests.test_reported_failures_fail) ... ok
+test_success_exit_without_assertions_fails (test_regression_runner.VerdictTests.test_success_exit_without_assertions_fails) ... ok
+test_success_formats (test_regression_runner.VerdictTests.test_success_formats) ... ok
+test_virtual_monitor_exception_is_narrow_and_retained (test_regression_runner.VerdictTests.test_virtual_monitor_exception_is_narrow_and_retained) ... ok
+test_wrong_campaign_and_missing_start_cannot_pass (test_regression_runner.VerdictTests.test_wrong_campaign_and_missing_start_cannot_pass) ... ok
+test_renamed_zip_with_mod_payload_is_rejected (test_release_assets.ReleaseAssetPolicyTests.test_renamed_zip_with_mod_payload_is_rejected) ... ok
+test_retired_packager_fails_without_creating_output (test_release_assets.ReleaseAssetPolicyTests.test_retired_packager_fails_without_creating_output) ... ok
+test_standard_dlss_and_historical_documents_are_allowed (test_release_assets.ReleaseAssetPolicyTests.test_standard_dlss_and_historical_documents_are_allowed) ... ok
+test_tar_build_metadata_cannot_relabel_mod_as_normal (test_release_assets.ReleaseAssetPolicyTests.test_tar_build_metadata_cannot_relabel_mod_as_normal) ... ok
+test_unpacked_mod_is_rejected (test_release_assets.ReleaseAssetPolicyTests.test_unpacked_mod_is_rejected) ... ok
+test_withdrawn_asset_name_is_rejected (test_release_assets.ReleaseAssetPolicyTests.test_withdrawn_asset_name_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 63 tests in 5.834s
+
+OK

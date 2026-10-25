@@ -1,0 +1,38 @@
+test_packaged_run_keeps_relative_helpers_and_fixture_data (test_regression_runner.PackagedFixtureTests.test_packaged_run_keeps_relative_helpers_and_fixture_data) ... RUN probe
+FAIL
+test_duplicate_result_cannot_hide_failure (test_regression_runner.VerdictTests.test_duplicate_result_cannot_hide_failure) ... ok
+test_exit_and_late_errors_fail (test_regression_runner.VerdictTests.test_exit_and_late_errors_fail) ... ok
+test_exported_runtime_and_required_renderer (test_regression_runner.VerdictTests.test_exported_runtime_and_required_renderer) ... ok
+test_reported_failures_fail (test_regression_runner.VerdictTests.test_reported_failures_fail) ... ok
+test_success_exit_without_assertions_fails (test_regression_runner.VerdictTests.test_success_exit_without_assertions_fails) ... ok
+test_success_formats (test_regression_runner.VerdictTests.test_success_formats) ... ok
+test_virtual_monitor_exception_is_narrow_and_retained (test_regression_runner.VerdictTests.test_virtual_monitor_exception_is_narrow_and_retained) ... ok
+test_wrong_campaign_and_missing_start_cannot_pass (test_regression_runner.VerdictTests.test_wrong_campaign_and_missing_start_cannot_pass) ... ok
+
+======================================================================
+FAIL: test_packaged_run_keeps_relative_helpers_and_fixture_data (test_regression_runner.PackagedFixtureTests.test_packaged_run_keeps_relative_helpers_and_fixture_data)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/test_regression_runner.py", line 122, in test_packaged_run_keeps_relative_helpers_and_fixture_data
+    self.assertEqual(runner.main(), 0)
+                     ^^^^^^^^^^^^^
+  File "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/check_regressions.py", line 192, in main
+    result = subprocess.run(command, cwd=REPO, env={**os.environ, **isolated},
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/test_regression_runner.py", line 102, in run
+    self.assertTrue(base.is_file(), "relative benchmark superclass was not staged")
+AssertionError: False is not true : relative benchmark superclass was not staged
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.007s
+
+FAILED (failures=1)
