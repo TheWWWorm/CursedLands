@@ -17,6 +17,10 @@ var model: EIUnitModel
 var applied_frames := 0
 var torso_error := 0.0
 var _last_clock := -1.0
+static var _kernel: RefCounted = _make_kernel()
+
+static func _make_kernel() -> RefCounted:
+	return ClassDB.instantiate("DirectPoseKernel") if ClassDB.class_exists("DirectPoseKernel") and not OS.get_cmdline_user_args().has("--ei-script-direct-pose") else null
 
 func _init(actor: GameUnit) -> void:
 	unit = actor
@@ -35,6 +39,14 @@ func collect(n: EIAnimPart) -> void:
 	for c in n.animation_children: collect(c)
 
 func sample(clip: String, time: float) -> Dictionary:
+	if _kernel != null:
+		var anim := model.player.get_animation("ei/"+clip)
+		if anim == null:return {}
+		var result: Variant = _kernel.sample(model,parts,anim,time,EIAnimPart,EIAnim.absolute,EIAnim.parent_first)
+		if result != null:return result
+	return sample_script(clip,time)
+
+func sample_script(clip: String, time: float) -> Dictionary:
 	var rotations := {}
 	var positions := {}
 	var anim := model.player.get_animation("ei/"+clip)

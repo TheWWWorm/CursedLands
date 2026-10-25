@@ -1409,6 +1409,17 @@
       "rendering_method": "forward_plus",
       "args": [],
       "min_checks": 18
+    },
+    {
+      "id": "direct_pose_native",
+      "script": "tools/tests/direct_pose_native.gd",
+      "summary": "DIRECT_POSE_NATIVE",
+      "contract": "Native first-person pose sampling preserves exact ordered values, quaternion conventions, same-frame track and node edits, bounded weak metadata lifetime, and complete unsupported/older-library fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 7470
     }
   ]
 }

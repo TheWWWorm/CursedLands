@@ -1,0 +1,63 @@
+{
+  "direct-pose-linux": [
+    "DIRECT_POSE_NATIVE_TIMING [{\"native\":false,\"samples\":600,\"usec\":111387},{\"native\":true,\"samples\":600,\"usec\":115071},{\"native\":true,\"samples\":600,\"usec\":115344},{\"native\":false,\"samples\":600,\"usec\":110453}]",
+    "DIRECT_POSE_NATIVE checks=7231 failures=0"
+  ],
+  "direct-pose-typed-linux": [
+    "DIRECT_POSE_NATIVE_TIMING [{\"native\":false,\"samples\":600,\"usec\":112618},{\"native\":true,\"samples\":600,\"usec\":100175},{\"native\":true,\"samples\":600,\"usec\":99636},{\"native\":false,\"samples\":600,\"usec\":112293}]",
+    "DIRECT_POSE_NATIVE checks=7231 failures=0"
+  ],
+  "direct-pose-cache-linux": [
+    "DIRECT_POSE_NATIVE_TIMING [{\"native\":false,\"samples\":600,\"usec\":109600},{\"native\":true,\"samples\":600,\"usec\":18127},{\"native\":true,\"samples\":600,\"usec\":18020},{\"native\":false,\"samples\":600,\"usec\":109440}]",
+    "DIRECT_POSE_NATIVE checks=7231 failures=0"
+  ],
+  "direct-pose-cache-expanded": [
+    "ERROR: FATAL: Index p_index = 4294967295 is out of bounds (count = 18)."
+  ],
+  "direct-pose-cache-expanded-fixed": [
+    "DIRECT_POSE_NATIVE_TIMING [{\"native\":false,\"samples\":600,\"usec\":110564},{\"native\":true,\"samples\":600,\"usec\":18169},{\"native\":true,\"samples\":600,\"usec\":18128},{\"native\":false,\"samples\":600,\"usec\":110808}]",
+    "DIRECT_POSE_NATIVE checks=7470 failures=0"
+  ],
+  "direct-pose-final-before": [
+    "FAIL native pose sampler is available",
+    "DIRECT_POSE_NATIVE checks=1 failures=1"
+  ],
+  "direct-pose-gait-linux": [
+    "DIRECT_GAIT_CONTINUITY {\"checks\":1929,\"clips\":{\"crun01\":504,\"crun02\":72,\"cwalk01\":24,\"cwalk02\":168,\"cwalk06\":192,\"cwalk08\":24,\"cwalk10\":168},\"failures\":0,\"wrong_healthy_selections\":0}"
+  ],
+  "direct-pose-first_person_shadows": [
+    "ERROR: Parameter \"monitors\" is null.",
+    "FIRST_PERSON_SHADOWS {\"checks\":28,\"failures\":[],\"measurements\":[{\"case\":\"run phase 0.2\",\"moving_pixels\":3617,\"wrong_pixels\":0},{\"case\":\"run phase 0.5\",\"moving_pixels\":2819,\"wrong_pixels\":0},{\"case\":\"run phase 0.8\",\"moving_pixels\":2196,\"wrong_pixels\":0},{\"case\":\"attack phase 0.2\",\"moving_pixels\":4052,\"wrong_pixels\":0},{\"case\":\"attack phase 0.5\",\"moving_pixels\":3101,\"wrong_pixels\":0},{\"case\":\"attack phase 0.8\",\"moving_pixels\":2571,\"wrong_pixels\":0},{\"case\":\"cast phase 0.2\",\"moving_pixels\":5008,\"wrong_pixels\":0},{\"case\":\"cast phase 0.5\",\"moving_pixels\":3423,\"wrong_pixels\":0},{\"case\":\"cast phase 0.8\",\"moving_pixels\":2958,\"wrong_pixels\":0}]}"
+  ],
+  "direct-pose-first_person_running_down": [
+    "ERROR: Parameter \"monitors\" is null.",
+    "FIRST_PERSON_RUNNING_DOWN {\"checks\":28,\"failures\":[],\"measurements\":[{\"case\":\"armor=false fov=75\",\"distance\":26.0911217480898,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":357,\"seconds\":6},{\"case\":\"armor=false fov=50\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=false fov=110\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=true fov=75\",\"distance\":26.0911217480898,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=true fov=50\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6},{\"case\":\"armor=true fov=110\",\"distance\":26.0980074852705,\"duplicate_frames\":0,\"frames\":360,\"pose_samples\":16,\"rim_vertices_visible\":0,\"run_frames\":360,\"seconds\":6}]}"
+  ],
+  "direct-pose-ingos_direct_feedback": [
+    "ERROR: Parameter \"monitors\" is null.",
+    "INGOS_DIRECT_FEEDBACK {\"checks\":57,\"failures\":[],\"hd\":false,\"measurements\":[{\"contacts\":113,\"new_marks\":4,\"smooth\":false,\"snow_sectors\":1},{\"contacts\":112,\"new_marks\":3,\"smooth\":true,\"snow_sectors\":1},{\"atlas\":\"(256.0, 256.0)\",\"minimap_colours\":\"[(0.0, 1.0, 0.0, 1.0), (1.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.451, 1.0)]\"}]}"
+  ],
+  "direct-pose-windows-direct_pose_native": [
+    "DIRECT_POSE_NATIVE_TIMING [{\"native\":false,\"samples\":600,\"usec\":136680},{\"native\":true,\"samples\":600,\"usec\":19037},{\"native\":true,\"samples\":600,\"usec\":18961},{\"native\":false,\"samples\":600,\"usec\":136118}]",
+    "DIRECT_POSE_NATIVE checks=7470 failures=0"
+  ],
+  "direct-pose-windows-direct_gait_continuity": [
+    "DIRECT_GAIT_CONTINUITY {\"checks\":1929,\"clips\":{\"crun01\":504,\"crun02\":72,\"cwalk01\":24,\"cwalk02\":168,\"cwalk06\":192,\"cwalk08\":24,\"cwalk10\":168},\"failures\":0,\"wrong_healthy_selections\":0}"
+  ],
+  "direct-pose-windows-picking_figures": [
+    "PICKING_FIGURES checks=1403 failures=0"
+  ],
+  "direct-pose-windows-star_particles": [
+    "STAR_PARTICLES checks=17473 failures=0"
+  ],
+  "direct-pose-registered-direct_pose_native": [
+    "DIRECT_POSE_NATIVE_TIMING [{\"native\":false,\"samples\":600,\"usec\":114569},{\"native\":true,\"samples\":600,\"usec\":19080},{\"native\":true,\"samples\":600,\"usec\":18192},{\"native\":false,\"samples\":600,\"usec\":112236}]",
+    "DIRECT_POSE_NATIVE checks=7470 failures=0"
+  ],
+  "direct-pose-registered-picking_figures": [
+    "PICKING_FIGURES checks=1403 failures=0"
+  ],
+  "direct-pose-registered-star_particles": [
+    "STAR_PARTICLES checks=17473 failures=0"
+  ]
+}
