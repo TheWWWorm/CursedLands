@@ -73,7 +73,11 @@ func choose_goal(leg: int, avoid: Array = []) -> Vector2:
 				if cos(direction-blocked_direction)>0.8:refused=true;break
 			if refused:continue
 			var target := hero.pos+Vector2.from_angle(direction)*length
-			if not s.world.nav.direct_line(hero,target) or reaches_exit(target): continue
+			# Match continuous keyboard steering: terrain and body sweeps are
+			# separate. A coarse actor stamp can cover our start while a real
+			# escape remains open, and moving bodies may have no standing stamp.
+			if not s.world.nav.direct_line(hero,target,false) or reaches_exit(target): continue
+			if s.world.nav.steering_blocker(hero,target)!=null: continue
 			var nearest := 20.0
 			for earlier: Vector2 in visited: nearest=minf(nearest,target.distance_to(earlier))
 			var value := length+minf(nearest,8.0)+cos(direction-preferred)*3.0

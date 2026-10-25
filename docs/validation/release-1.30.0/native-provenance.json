@@ -1,0 +1,23 @@
+[
+  {
+    "platform": "linux",
+    "binary": "libterrain_search.so",
+    "sha256": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+    "source_build_record": "docs/validation/cpu-traversal-2026-10-25/mark-projection/mark-projection-linux-build.json",
+    "all_source_hashes_match": true
+  },
+  {
+    "platform": "windows",
+    "binary": "libterrain_search.dll",
+    "sha256": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+    "source_build_record": "docs/validation/cpu-traversal-2026-10-25/mark-projection/mark-projection-windows-build.json",
+    "all_source_hashes_match": true
+  },
+  {
+    "platform": "android",
+    "binary": "libterrain_search_android.so",
+    "sha256": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+    "source_build_record": "docs/validation/cpu-traversal-2026-10-25/mark-projection/mark-projection-android-build.json",
+    "all_source_hashes_match": true
+  }
+]

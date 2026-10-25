@@ -1,0 +1,72 @@
+{
+  "git_head": "e8c5483b9c341447fae452b58331dd456474c24a",
+  "game_source_sha256": "87fa158baf75aa8d6ce4c6ec1618f0b8f876ca7481c743ea8ba4820eaedc4991",
+  "manifest_sha256": "6528b99bf36f3be3e96221ce079fad5d1e0669823fca4ad2c27f6b7b5ae91926",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "path_trace_zone_traversal_snow",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "script_sha256": "3afa2ed5cd63173728b50569203ede10f253839b574d92950901014a7609ee61",
+      "contract": "Real solo authority and first-person keyboard traversal retain PT/NRD and acknowledge controls across Lost in Astral snow terrain.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 165.54,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-snow-fixed/path_trace_zone_traversal_snow/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-snow-fixed/path_trace_zone_traversal_snow/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-snow-fixed/path_trace_zone_traversal_snow/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-snow-fixed/path_trace_zone_traversal_snow/tools/tests/path_trace_zone_traversal.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-snow-fixed/path_trace_zone_traversal_snow/tools/tests",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--zone-route-zone=gz25k"
+      ],
+      "log": "path_trace_zone_traversal_snow/run.log",
+      "passed": true,
+      "result": {
+        "checks": 50,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.pck",
+    "sha256": "5664e1442c1a2b64a0098c90b82a7c4b7f1c85525b7381ec11466df415573478"
+  },
+  "passed": true
+}

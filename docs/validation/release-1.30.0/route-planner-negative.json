@@ -1,0 +1,58 @@
+{
+  "git_head": "e8c5483b9c341447fae452b58331dd456474c24a",
+  "game_source_sha256": "87fa158baf75aa8d6ce4c6ec1618f0b8f876ca7481c743ea8ba4820eaedc4991",
+  "manifest_sha256": "11eca704c6810a67eafcec74acfd3f09882d6201655aaad3d85a46d0d5ebb110",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "direct_movement_route_fixture",
+      "script": "tools/tests/direct_movement.gd",
+      "script_sha256": "554232a16fbf820de8c1164a02299f916442747c4b30edd99ecf1ecb466c6858",
+      "contract": "Authority steering respects terrain and live bodies; the traversal fixture can select a valid escape from an overlapping actor stamp.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 6.78,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/route-planner-negative/direct_movement_route_fixture/tools/tests/direct_movement.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/route-planner-negative/direct_movement_route_fixture/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "direct_movement_route_fixture/run.log",
+      "passed": false,
+      "result": {
+        "checks": 44,
+        "failures": 3
+      },
+      "errors": [
+        "FAIL authority steering: route fixture finds an escape from an overlapping actor stamp",
+        "FAIL authority steering: route fixture escape respects authored terrain",
+        "FAIL authority steering: route fixture escape never crosses another body",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.pck",
+    "sha256": "5664e1442c1a2b64a0098c90b82a7c4b7f1c85525b7381ec11466df415573478"
+  },
+  "passed": false
+}

@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## 1.30.0 — 2026-10-25
+## 1.30.0 — 2026-10-26
 
 - Add an optional SHaRC radiance cache for experimental path tracing, with translated settings and fallback to ordinary path tracing.
 - Improve natural cave walls with consistent world-space texture projection, relief and bounded contours; preserve original collision and navigation geometry.

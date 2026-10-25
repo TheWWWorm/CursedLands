@@ -1,0 +1,27 @@
+{
+  "version": "1.30.0",
+  "previous_version": "1.29.0",
+  "cache_upgrade": {
+    "passed": true,
+    "old_cache": "cursed-engine-2-8ceb783fe886a45d2de8",
+    "new_cache": "cursed-engine-2-44b3f047ab99b3b0d570",
+    "indexeddb_preserved": true,
+    "database_names": [
+      "/userfs",
+      "cursed-lands-data-v1"
+    ],
+    "pck_sha256": "87b2140ec77544611c741613c80d87fd0977f938c7e6e43eb77011e10cdc6ced",
+    "old_tab_wait_verified": true
+  },
+  "cache": {
+    "keys": [
+      "cursed-engine-2-44b3f047ab99b3b0d570"
+    ],
+    "packs": {
+      "cursed-engine-2-44b3f047ab99b3b0d570": "87b2140ec77544611c741613c80d87fd0977f938c7e6e43eb77011e10cdc6ced"
+    },
+    "worker": "activated",
+    "waiting": null,
+    "isolated": true
+  }
+}

@@ -1,0 +1,10 @@
+{
+	"cached_bands": 0.174332888156059,
+	"checks": 14,
+	"control_bands": 0.349060610596241,
+	"failures": [],
+	"floor_error": 0.000363698271588266,
+	"pt_bands": 0.174282541384686,
+	"raster_bands": 0.139176762342449,
+	"terrain_triangles": 126141
+}

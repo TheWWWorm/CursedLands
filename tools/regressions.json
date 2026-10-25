@@ -1142,6 +1142,16 @@
       "timeout": 180
     },
     {
+      "id": "direct_movement_route_fixture",
+      "script": "tools/tests/direct_movement.gd",
+      "summary": "DIRECT_MOVEMENT",
+      "contract": "Authority steering respects terrain and live bodies; the traversal fixture can select a valid escape from an overlapping actor stamp.",
+      "mode": "headless",
+      "data": "base",
+      "min_checks": 44,
+      "timeout": 180
+    },
+    {
       "id": "path_trace_zone_traversal_river",
       "script": "tools/tests/path_trace_zone_traversal.gd",
       "summary": "PT_ZONE_TRAVERSAL",

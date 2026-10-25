@@ -56,7 +56,9 @@ python3 tools/check_regressions.py --engine /path/to/godot \
 The runner creates a new profile per case with mouse confinement disabled, FPS
 visible, all three audio volumes zero and networking discovery disabled. It uses
 the shared gameplay bootstrap to confirm the actual campaign, script, profile
-and display. A rendered case cannot become a headless pass. The normal 30 FPS cap
+and display. Headless checks use Safe rendering-thread mode, matching the campaign
+and Autochess authority workers; rendered checks retain the package's renderer
+thread settings. A rendered case cannot become a headless pass. The normal 30 FPS cap
 is supplied; legacy fixtures may explicitly choose a different cap.
 
 Every case requires exactly one named completion result, its minimum assertion
@@ -135,7 +137,8 @@ EN/RU/DE runs select the remake UI language; painted captions continue to use
 the supplied edition's own localized artwork.
 
 Exported engines can be tested against their adjacent PCK with `--packaged`.
-The runner stages the external fixtures, records the PCK hash and omits the
+The runner stages test scripts, nested fixture data and their benchmark helpers
+with the original relative directory layout, records the PCK hash and omits the
 editor-only `--path`. Use the qualified custom runtime for ray-tracing checks;
 the stock editor does not expose the project's native ray APIs. Rendered cases
 may declare `rendering_method: forward_plus`; ordinary UI checks retain their
@@ -167,6 +170,10 @@ forward/downward views and camera pans, and require PT/native NRD and usable
 controls throughout. They also check actual displacement, advancing simulation,
 command acknowledgement, worker survival and a free cursor. They are capped
 visual checks, not performance benchmarks or automated shimmer measurements.
+Their route selector checks authored terrain and continuous body sweeps separately,
+matching keyboard steering when actors overlap. `direct_movement_route_fixture`
+checks that escape on a loaded map alongside the authority's existing collision,
+input, stamina and interaction regressions.
 The [ten-zone audit](validation/ei1-first-person-2026-10-25/README.md) includes
 recordings, image review and the remaining city performance finding.
 

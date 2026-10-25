@@ -46,10 +46,22 @@ def engine_arguments(engine, case, packaged=False):
         command += ["--path", str(REPO / "game")]
     command += ["--audio-driver", "Dummy", "--max-fps", "30"]
     if case["mode"] == "headless":
-        return command + ["--headless"]
+        # Match both production authority workers. The packaged Linux desktop
+        # defaults to a separate render thread, which can fail dummy mesh disposal.
+        return command + ["--headless", "--render-thread", "safe"]
     return command + ["--display-driver", "x11", "--rendering-method",
                       case.get("rendering_method", "gl_compatibility"),
                       "--windowed", "--resolution", "1280x720"]
+
+
+def stage_packaged_tests(destination):
+    """Keep test data and relative benchmark dependencies outside the game pack."""
+    for name in ("tests", "benchmarks"):
+        shutil.copytree(REPO / "tools" / name, destination / name,
+                        ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    for script in destination.rglob("*.gd"):
+        script.write_text(script.read_text().replace("res://tools/", str(destination) + "/"))
+    return destination / "tests"
 
 
 def verdict(log, case, returncode):
@@ -166,10 +178,7 @@ def main():
         scripts = REPO / "tools/tests"
         script = REPO / case["script"]
         if args.packaged:
-            scripts = profile / "fixtures"
-            scripts.mkdir()
-            for source in (REPO / "tools/tests").glob("*.gd"):
-                (scripts / source.name).write_text(source.read_text().replace("res://tools/tests/", str(scripts) + "/"))
+            scripts = stage_packaged_tests(profile / "tools")
             script = scripts / script.name
         expected = {"campaign": "cursed_lands" if case["data"] == "base" else "lost_in_astral",
                     "display": case["mode"], "script": str(script),

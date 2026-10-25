@@ -1,0 +1,119 @@
+{
+  "git_head": "e8c5483b9c341447fae452b58331dd456474c24a",
+  "game_source_sha256": "87fa158baf75aa8d6ce4c6ec1618f0b8f876ca7481c743ea8ba4820eaedc4991",
+  "manifest_sha256": "e7595284e8735ca286b7e338a6733025386dfdf0f95fe4358f868a49cc58a3c3",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app",
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "arena_combat_decisions",
+      "script": "tools/tests/arena_combat_decisions.gd",
+      "script_sha256": "8aa9f44b253fcf29fd46e920691a5d79b0d53826abd44f4546db26bd4ce367b7",
+      "contract": "Autochess admits ally-protected area spells, finishes reachable wounded foes and rejects blocked spells while preserving campaign choices.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 5.17,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-dependency-retry/arena_combat_decisions/tools/tests/arena_combat_decisions.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-dependency-retry/arena_combat_decisions/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "arena_combat_decisions/run.log",
+      "passed": true,
+      "result": {
+        "checks": 11,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_popper_balance",
+      "script": "tools/tests/arena_popper_balance.gd",
+      "script_sha256": "59182dda9c87e6eec0045aaf80ba83b3c9358989c842cf7699f4bde97587e207",
+      "contract": "One-use hare burst remains effective through all stars while preserving armor, fuse, target cap, range counter and allied protection.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 5.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-dependency-retry/arena_popper_balance/tools/tests/arena_popper_balance.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-dependency-retry/arena_popper_balance/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless",
+        "--astral-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+      ],
+      "log": "arena_popper_balance/run.log",
+      "passed": true,
+      "result": {
+        "checks": 29,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_opening_viability",
+      "script": "tools/tests/arena_opening_viability.gd",
+      "script_sha256": "fcae9dc69d9efe8ff36fd358f81d2fee44a63f169359fc194f55500390b04e68",
+      "contract": "Equal-price mirrored opening fights preserve goblin output and melee frontline contribution without mutating campaign data.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 58.22,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-dependency-retry/arena_opening_viability/tools/tests/arena_opening_viability.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/focused-dependency-retry/arena_opening_viability/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless",
+        "--astral-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+      ],
+      "log": "arena_opening_viability/run.log",
+      "passed": true,
+      "result": {
+        "checks": 186,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64/CursedLands.pck",
+    "sha256": "5664e1442c1a2b64a0098c90b82a7c4b7f1c85525b7381ec11466df415573478"
+  },
+  "passed": true
+}

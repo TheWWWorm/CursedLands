@@ -1,0 +1,792 @@
+{
+	"actor_count": 239,
+	"adapter": "NVIDIA GeForce RTX 3090",
+	"campaign": "cursed_lands",
+	"checks": 35,
+	"distance": 36.3998207710683,
+	"failures": 1,
+	"frame_limit": 30,
+	"neutral_exploration": false,
+	"note": "Real solo worker, normal keyboard steering, live AI and authored geometry; camera turns are scripted. God mode prevents death. Neutral exploration, when flagged, changes the fixture's initial diplomacy. Initial save may be supplied; no route teleportation. frame_limit=0 identifies an uncapped benchmark.",
+	"options": {
+		"aim_press_once": 1,
+		"armor_formula": 0,
+		"auto_exit": 0,
+		"auto_graphics": 0,
+		"autosave": 0,
+		"brightness": 50,
+		"cam_follow": 1,
+		"cam_pan_speed": 50,
+		"cam_rotate_speed": 50,
+		"cam_see_through": 1,
+		"cam_wasd": 1,
+		"cam_zoom_speed": 50,
+		"camera_reverse_x": 0,
+		"camera_reverse_y": 0,
+		"camera_style": 1,
+		"cave_echo": 1,
+		"character_buff_icons": 1,
+		"character_light": 0,
+		"confine_mouse": 0,
+		"contrast": 50,
+		"control_mode": 3,
+		"coop_clock": 1,
+		"coop_full_xp": 1,
+		"coop_guest_clock": 0,
+		"coop_guest_saves": 0,
+		"coop_player_names": 1,
+		"coop_scale": 2,
+		"coop_share_loot": 1,
+		"cursor_size": 0,
+		"difficulty": 0,
+		"direct_first_person_actions": 1,
+		"direct_fov_first": 5,
+		"direct_fov_third": 3,
+		"direct_hints": 1,
+		"direct_invert_x": 0,
+		"direct_invert_y": 0,
+		"direct_mouse_first": 50,
+		"direct_mouse_third": 50,
+		"direct_pad_curve": 1,
+		"direct_pad_deadzone": 13,
+		"direct_pad_invert_x": 0,
+		"direct_pad_invert_y": 0,
+		"direct_pad_x": 50,
+		"direct_pad_y": 50,
+		"discord_presence": 1,
+		"display_mode": 0,
+		"distant_ai": 0,
+		"enemy_hp_bars": 2,
+		"footprints": 1,
+		"fps_limit": 0,
+		"free_run": 0,
+		"fsr_frame_generation": 0,
+		"fsr_quality": 1,
+		"fsr_upscaling": 0,
+		"gamma": 50,
+		"gfx_ambient_particles": 1,
+		"gfx_ambient_wildlife": 1,
+		"gfx_biome_cover": 1,
+		"gfx_bloom": 1,
+		"gfx_cloud_reflections": 1,
+		"gfx_cloud_shadows": 1,
+		"gfx_clouds": 3,
+		"gfx_contact_shadows": 1,
+		"gfx_depth_of_field": 0,
+		"gfx_detailed_heads": 1,
+		"gfx_far_view": 1,
+		"gfx_firelight": 1,
+		"gfx_foliage_light": 1,
+		"gfx_grass": 1,
+		"gfx_ground_contact": 0,
+		"gfx_hd_textures": 1,
+		"gfx_heat_haze": 1,
+		"gfx_lava_light": 1,
+		"gfx_lit_particles": 1,
+		"gfx_materials": 1,
+		"gfx_rain_puddles": 1,
+		"gfx_severed_limbs": 1,
+		"gfx_sharp_units": 1,
+		"gfx_sky": 1,
+		"gfx_soft_ground": 0,
+		"gfx_soft_particles": 1,
+		"gfx_ssao": 1,
+		"gfx_terrain": 1,
+		"gfx_terrain_cliffs": 1,
+		"gfx_torch_glow": 1,
+		"gfx_vegetation_interaction": 1,
+		"gfx_volumetric": 1,
+		"gfx_water": 1,
+		"gfx_water_caustics": 1,
+		"gfx_water_current": 1,
+		"gfx_water_interaction": 1,
+		"gfx_water_reflections": 3,
+		"gfx_water_waves": 1,
+		"gfx_waterfalls": 1,
+		"gfx_weather_mist": 1,
+		"gfx_weather_surfaces": 1,
+		"gfx_wind": 1,
+		"graphics_preset": 0,
+		"hide_remake_hints": 0,
+		"item_icon_fit": 1,
+		"marks": 1,
+		"mechanism_motion": 0,
+		"merc_travel": 0,
+		"net_directory": 0,
+		"net_lan": 0,
+		"net_upnp": 0,
+		"net_websocket": 0,
+		"original_rune_layout": 0,
+		"pad_cursor_speed": 50,
+		"pad_deadzone": 13,
+		"pad_enabled": 0,
+		"pad_glyphs": 0,
+		"pad_gyro": 0,
+		"pad_gyro_sensitivity": 50,
+		"pad_light": 1,
+		"pad_rumble": 70,
+		"pad_swap_sticks": 0,
+		"pad_target_radius": 6,
+		"pad_wheel_pause": 1,
+		"path_through": 1,
+		"phys_interp": 1,
+		"power_kbd": 25,
+		"power_mouse": 50,
+		"power_mouse_y": 50,
+		"pt_accumulation": 0,
+		"pt_mode": 1,
+		"pt_sharc": 0,
+		"pt_target_fps": 0,
+		"q_aa": 0,
+		"q_aniso": 4,
+		"q_rt_lighting": 0,
+		"q_shadow_fit": 1,
+		"q_shadows": 2,
+		"q_water_rt_quality": 2,
+		"render_scale": 4,
+		"renderer": 0,
+		"resolution": 10,
+		"reverse_stereo": 0,
+		"revive": 1,
+		"rt_gi": 0,
+		"rt_shadows": 0,
+		"rtx_frame_generation": 0,
+		"rtx_upscaling": 0,
+		"rubber_select": 2,
+		"scroll_border": 0,
+		"select_type": 0,
+		"selection_glow": 0,
+		"shadow_buildings": 1,
+		"shadow_flora": 1,
+		"show_flying_hp": 1,
+		"show_fps": 1,
+		"show_path": 1,
+		"show_player_status": 1,
+		"show_tutorial": 0,
+		"skill_reset_button": 1,
+		"smile_faces": 1,
+		"sp_death_notice": 1,
+		"sp_full_xp": 0,
+		"spell_double_tap_self": 1,
+		"stamina_regen": 0,
+		"start_zones": 1,
+		"switch_filters": 1,
+		"tooltip_time": 2,
+		"ui_active_buttons": 1,
+		"unit_fog": 1,
+		"village_start_view": 0,
+		"volume_sfx": 0,
+		"volume_stream": 0,
+		"volume_voice": 0,
+		"vsync": 0
+	},
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"blocked": [],
+			"controllable_frames": 181,
+			"fg_frames": 0,
+			"first_person_frames": 181,
+			"frame_ms": {
+				"max": 33.401,
+				"median": 33.334,
+				"p95": 33.357
+			},
+			"frames": 181,
+			"from": [
+				155.0,
+				302.5
+			],
+			"game_presents": 0,
+			"goal": "(inf, inf)",
+			"nrd_frames": 181,
+			"observations": [
+				{
+					"eye": "[X: (-0.069285, 0.0, -0.997597), Y: (-0.119425, 0.992809, 0.008294), Z: (0.990423, 0.119713, -0.068787), O: (154.6913, 11.47265, -302.4573)]",
+					"pending_inputs": 1,
+					"pos": [
+						155.0,
+						302.5
+					],
+					"rebuilding": false,
+					"world_time": 33.7149999999999
+				},
+				{
+					"eye": "[X: (-0.069285, 0.0, -0.997597), Y: (-0.119425, 0.992809, 0.008294), Z: (0.990423, 0.119713, -0.068787), O: (154.6913, 11.47265, -302.4573)]",
+					"pending_inputs": 1,
+					"pos": [
+						155.0,
+						302.5
+					],
+					"rebuilding": false,
+					"world_time": 34.6499999999998
+				},
+				{
+					"eye": "[X: (-0.069285, 0.0, -0.997597), Y: (-0.119425, 0.992809, 0.008294), Z: (0.990423, 0.119713, -0.068787), O: (154.6913, 11.47265, -302.4573)]",
+					"pending_inputs": 1,
+					"pos": [
+						155.0,
+						302.5
+					],
+					"rebuilding": false,
+					"world_time": 35.6399999999998
+				},
+				{
+					"eye": "[X: (-0.069285, 0.0, -0.997597), Y: (-0.119425, 0.992809, 0.008294), Z: (0.990423, 0.119713, -0.068787), O: (154.6913, 11.47265, -302.4573)]",
+					"pending_inputs": 0,
+					"pos": [
+						155.0,
+						302.5
+					],
+					"rebuilding": false,
+					"world_time": 36.6299999999998
+				},
+				{
+					"eye": "[X: (-0.069285, 0.0, -0.997597), Y: (-0.119425, 0.992809, 0.008294), Z: (0.990423, 0.119713, -0.068787), O: (154.6913, 11.47265, -302.4573)]",
+					"pending_inputs": 1,
+					"pos": [
+						155.0,
+						302.5
+					],
+					"rebuilding": false,
+					"world_time": 37.7299999999998
+				},
+				{
+					"eye": "[X: (-0.069285, 0.0, -0.997597), Y: (-0.119425, 0.992809, 0.008294), Z: (0.990423, 0.119713, -0.068787), O: (154.6913, 11.47265, -302.4573)]",
+					"pending_inputs": 0,
+					"pos": [
+						155.0,
+						302.5
+					],
+					"rebuilding": false,
+					"world_time": 38.6649999999998
+				}
+			],
+			"phase": "held-fg-off",
+			"pt_frames": 181,
+			"reroutes": [],
+			"sdk_presents": 0,
+			"seconds": 6.021014,
+			"start_s": 2.012302,
+			"to": [
+				155.0,
+				302.5
+			],
+			"travelled": 0.0
+		},
+		{
+			"blocked": [],
+			"controllable_frames": 359,
+			"fg_frames": 0,
+			"first_person_frames": 359,
+			"frame_ms": {
+				"max": 36.261,
+				"median": 33.332,
+				"p95": 33.366
+			},
+			"frames": 359,
+			"from": [
+				155.0,
+				302.5
+			],
+			"game_presents": 0,
+			"goal": "(157.6033, 284.6892)",
+			"nrd_frames": 359,
+			"observations": [
+				{
+					"eye": "[X: (-0.989471, 0.0, 0.144732), Y: (0.017326, 0.992809, 0.118451), Z: (-0.143691, 0.119711, -0.982355), O: (155.2476, 11.47265, -300.9845)]",
+					"pending_inputs": 2,
+					"pos": [
+						155.1875,
+						301.265625
+					],
+					"rebuilding": false,
+					"world_time": 40.4799999999998
+				},
+				{
+					"eye": "[X: (-0.989551, 0.0, 0.144182), Y: (0.01726, 0.992809, 0.118463), Z: (-0.143145, 0.119713, -0.982435), O: (155.4544, 11.47265, -299.547)]",
+					"pending_inputs": 1,
+					"pos": [
+						155.390625,
+						299.828125
+					],
+					"rebuilding": false,
+					"world_time": 41.4699999999998
+				},
+				{
+					"eye": "[X: (-0.989486, 0.0, 0.144627), Y: (0.017314, 0.992809, 0.118454), Z: (-0.143587, 0.119713, -0.98237), O: (155.6694, 11.47265, -298.1095)]",
+					"pending_inputs": 2,
+					"pos": [
+						155.609375,
+						298.390625
+					],
+					"rebuilding": false,
+					"world_time": 42.5149999999998
+				},
+				{
+					"eye": "[X: (-0.989558, 0.0, 0.144132), Y: (0.017254, 0.992809, 0.118461), Z: (-0.143096, 0.119711, -0.982442), O: (155.8763, 11.31063, -296.6581)]",
+					"pending_inputs": 1,
+					"pos": [
+						155.8125,
+						296.9375
+					],
+					"rebuilding": false,
+					"world_time": 43.5049999999998
+				},
+				{
+					"eye": "[X: (-0.989477, 0.0, 0.144687), Y: (0.017321, 0.992809, 0.118452), Z: (-0.143646, 0.119712, -0.982362), O: (156.0809, 11.26902, -295.2191)]",
+					"pending_inputs": 2,
+					"pos": [
+						156.015625,
+						295.5
+					],
+					"rebuilding": false,
+					"world_time": 44.4949999999998
+				},
+				{
+					"eye": "[X: (-0.989372, 0.0, 0.145407), Y: (0.017407, 0.992809, 0.118438), Z: (-0.144361, 0.11971, -0.982257), O: (156.2951, 11.2156, -293.7814)]",
+					"pending_inputs": 0,
+					"pos": [
+						156.234375,
+						294.0625
+					],
+					"rebuilding": false,
+					"world_time": 45.4849999999998
+				},
+				{
+					"eye": "[X: (-0.989505, 0.0, 0.144502), Y: (0.017299, 0.992809, 0.118455), Z: (-0.143463, 0.119712, -0.982389), O: (156.5015, 11.16399, -292.3438)]",
+					"pending_inputs": 2,
+					"pos": [
+						156.4375,
+						292.625
+					],
+					"rebuilding": false,
+					"world_time": 46.4749999999998
+				},
+				{
+					"eye": "[X: (-0.989356, 0.0, 0.145517), Y: (0.01742, 0.992809, 0.118438), Z: (-0.144471, 0.119712, -0.982241), O: (156.717, 11.11167, -290.896)]",
+					"pending_inputs": 1,
+					"pos": [
+						156.65625,
+						291.171875
+					],
+					"rebuilding": false,
+					"world_time": 47.4649999999998
+				},
+				{
+					"eye": "[X: (-0.989496, 0.0, 0.144562), Y: (0.017306, 0.992809, 0.118453), Z: (-0.143523, 0.119711, -0.98238), O: (156.9234, 10.73361, -289.4532)]",
+					"pending_inputs": 2,
+					"pos": [
+						156.859375,
+						289.734375
+					],
+					"rebuilding": false,
+					"world_time": 48.5099999999998
+				},
+				{
+					"eye": "[X: (-0.989746, 0.0, 0.142841), Y: (0.0171, 0.992809, 0.118483), Z: (-0.141814, 0.119711, -0.982628), O: (157.1415, 10.35312, -288.0)]",
+					"pending_inputs": 1,
+					"pos": [
+						157.078125,
+						288.28125
+					],
+					"rebuilding": false,
+					"world_time": 49.4999999999998
+				},
+				{
+					"eye": "[X: (-0.989469, 0.0, 0.144747), Y: (0.017328, 0.992809, 0.11845), Z: (-0.143706, 0.119711, -0.982353), O: (157.3569, 10.28119, -286.5626)]",
+					"pending_inputs": 2,
+					"pos": [
+						157.296875,
+						286.84375
+					],
+					"rebuilding": true,
+					"world_time": 50.4899999999998
+				}
+			],
+			"phase": "walk-0",
+			"pt_frames": 359,
+			"reroutes": [],
+			"sdk_presents": 0,
+			"seconds": 11.918776,
+			"start_s": 8.812788,
+			"to": [
+				157.5,
+				285.453125
+			],
+			"travelled": 17.2292175292969
+		},
+		{
+			"blocked": [],
+			"controllable_frames": 116,
+			"fg_frames": 0,
+			"first_person_frames": 116,
+			"frame_ms": {
+				"max": 275.199,
+				"median": 33.33,
+				"p95": 33.384
+			},
+			"frames": 116,
+			"from": [
+				157.5,
+				285.40625
+			],
+			"game_presents": 0,
+			"goal": "(inf, inf)",
+			"nrd_frames": 116,
+			"observations": [
+				{
+					"eye": "[X: (-0.740117, 0.0, 0.672478), Y: (0.080503, 0.992809, 0.0886), Z: (-0.667642, 0.119711, -0.734795), O: (157.8185, 10.3018, -284.5341)]",
+					"pending_inputs": 1,
+					"pos": [
+						157.59375,
+						284.75
+					],
+					"rebuilding": true,
+					"world_time": 53.1849999999998
+				},
+				{
+					"eye": "[X: (-0.517269, 0.0, 0.855823), Y: (0.102452, 0.992809, 0.061923), Z: (-0.849669, 0.119712, -0.513549), O: (157.8708, 10.3018, -284.6073)]",
+					"pending_inputs": 1,
+					"pos": [
+						157.59375,
+						284.75
+					],
+					"rebuilding": false,
+					"world_time": 54.2299999999997
+				},
+				{
+					"eye": "[X: (-0.575792, 0.0, 0.817596), Y: (0.097875, 0.992809, 0.068929), Z: (-0.811717, 0.119711, -0.571652), O: (157.8601, 10.3018, -284.5883)]",
+					"pending_inputs": 1,
+					"pos": [
+						157.59375,
+						284.75
+					],
+					"rebuilding": false,
+					"world_time": 55.2199999999997
+				}
+			],
+			"phase": "pan-0",
+			"pt_frames": 116,
+			"reroutes": [],
+			"sdk_presents": 0,
+			"seconds": 4.004265,
+			"start_s": 21.389605,
+			"to": [
+				157.59375,
+				284.75
+			],
+			"travelled": 0.662912607192993
+		},
+		{
+			"blocked": [],
+			"controllable_frames": 359,
+			"fg_frames": 0,
+			"first_person_frames": 359,
+			"frame_ms": {
+				"max": 57.721,
+				"median": 33.332,
+				"p95": 33.382
+			},
+			"frames": 359,
+			"from": [
+				157.59375,
+				284.75
+			],
+			"game_presents": 0,
+			"goal": "(161.9769, 267.2918)",
+			"nrd_frames": 359,
+			"observations": [
+				{
+					"eye": "[X: (-0.969828, 0.0, 0.243789), Y: (0.147538, 0.796084, 0.586927), Z: (-0.194077, 0.605187, -0.772064), O: (157.9953, 10.37041, -283.2267)]",
+					"pending_inputs": 1,
+					"pos": [
+						157.90625,
+						283.5
+					],
+					"rebuilding": false,
+					"world_time": 57.8049999999997
+				},
+				{
+					"eye": "[X: (-0.969738, 0.0, 0.24415), Y: (0.147755, 0.796088, 0.586867), Z: (-0.194365, 0.605181, -0.771996), O: (158.3404, 10.7716, -281.8365)]",
+					"pending_inputs": 1,
+					"pos": [
+						158.25,
+						282.109375
+					],
+					"rebuilding": false,
+					"world_time": 58.7949999999997
+				},
+				{
+					"eye": "[X: (-0.969896, 0.0, 0.243519), Y: (0.147373, 0.796086, 0.586965), Z: (-0.193862, 0.605183, -0.772121), O: (158.698, 11.00361, -280.4458)]",
+					"pending_inputs": 1,
+					"pos": [
+						158.609375,
+						280.71875
+					],
+					"rebuilding": false,
+					"world_time": 59.7849999999997
+				},
+				{
+					"eye": "[X: (-0.969939, 0.0, 0.243347), Y: (0.14727, 0.796085, 0.586993), Z: (-0.193725, 0.605185, -0.772154), O: (159.0417, 11.57345, -279.0862)]",
+					"pending_inputs": 1,
+					"pos": [
+						158.953125,
+						279.359375
+					],
+					"rebuilding": false,
+					"world_time": 60.7749999999997
+				},
+				{
+					"eye": "[X: (-0.969828, 0.0, 0.243789), Y: (0.147538, 0.796084, 0.586927), Z: (-0.194077, 0.605187, -0.772064), O: (159.3859, 11.92302, -277.6958)]",
+					"pending_inputs": 1,
+					"pos": [
+						159.296875,
+						277.96875
+					],
+					"rebuilding": false,
+					"world_time": 61.7649999999997
+				},
+				{
+					"eye": "[X: (-0.969973, 0.0, 0.243212), Y: (0.147188, 0.796086, 0.587012), Z: (-0.193618, 0.605183, -0.772182), O: (159.7448, 12.06104, -276.2895)]",
+					"pending_inputs": 1,
+					"pos": [
+						159.65625,
+						276.5625
+					],
+					"rebuilding": false,
+					"world_time": 62.8099999999997
+				},
+				{
+					"eye": "[X: (-0.969717, 0.0, 0.244231), Y: (0.147806, 0.796082, 0.586861), Z: (-0.194428, 0.605188, -0.771975), O: (160.0904, 12.06104, -274.8729)]",
+					"pending_inputs": 1,
+					"pos": [
+						160.0,
+						275.140625
+					],
+					"rebuilding": false,
+					"world_time": 63.7999999999997
+				},
+				{
+					"eye": "[X: (-0.969765, 0.0, 0.244042), Y: (0.147692, 0.79608, 0.586894), Z: (-0.194277, 0.605192, -0.77201), O: (160.4485, 12.03032, -273.4615)]",
+					"pending_inputs": 1,
+					"pos": [
+						160.359375,
+						273.734375
+					],
+					"rebuilding": false,
+					"world_time": 64.7899999999998
+				},
+				{
+					"eye": "[X: (-0.969833, 0.0, 0.243771), Y: (0.147528, 0.796082, 0.586932), Z: (-0.194062, 0.605188, -0.772067), O: (160.8073, 11.7821, -272.0409)]",
+					"pending_inputs": 1,
+					"pos": [
+						160.71875,
+						272.3125
+					],
+					"rebuilding": false,
+					"world_time": 65.7799999999999
+				},
+				{
+					"eye": "[X: (-0.96946, 0.0, 0.24525), Y: (0.148423, 0.796079, 0.58671), Z: (-0.195238, 0.605193, -0.771767), O: (161.1688, 11.01239, -270.5872)]",
+					"pending_inputs": 1,
+					"pos": [
+						161.078125,
+						270.859375
+					],
+					"rebuilding": true,
+					"world_time": 66.77
+				},
+				{
+					"eye": "[X: (-0.969828, 0.0, 0.243789), Y: (0.147538, 0.796084, 0.586927), Z: (-0.194077, 0.605187, -0.772064), O: (161.5417, 10.24977, -269.1194)]",
+					"pending_inputs": 1,
+					"pos": [
+						161.453125,
+						269.390625
+					],
+					"rebuilding": true,
+					"world_time": 67.8150000000002
+				}
+			],
+			"phase": "walk-1",
+			"pt_frames": 359,
+			"reroutes": [],
+			"sdk_presents": 0,
+			"seconds": 11.924078,
+			"start_s": 26.098564,
+			"to": [
+				161.796875,
+				268.015625
+			],
+			"travelled": 17.2541465759277
+		},
+		{
+			"blocked": [],
+			"controllable_frames": 121,
+			"fg_frames": 0,
+			"first_person_frames": 121,
+			"frame_ms": {
+				"max": 116.511,
+				"median": 33.332,
+				"p95": 33.392
+			},
+			"frames": 121,
+			"from": [
+				161.796875,
+				267.96875
+			],
+			"game_presents": 0,
+			"goal": "(inf, inf)",
+			"nrd_frames": 121,
+			"observations": [
+				{
+					"eye": "[X: (-0.724988, 0.0, 0.688762), Y: (0.41683, 0.796082, 0.438754), Z: (-0.548311, 0.605188, -0.57715), O: (162.2295, 9.91441, -267.0079)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 70.3450000000005
+				},
+				{
+					"eye": "[X: (-0.452848, 0.0, 0.891588), Y: (0.539577, 0.796083, 0.274057), Z: (-0.709778, 0.605187, -0.360504), O: (162.2868, 9.91441, -267.0968)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 71.3350000000006
+				},
+				{
+					"eye": "[X: (-0.46036, 0.0, 0.887732), Y: (0.537243, 0.796084, 0.278603), Z: (-0.70671, 0.605186, -0.366485), O: (162.2857, 9.91441, -267.0944)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 72.3800000000007
+				},
+				{
+					"eye": "[X: (-0.73989, 0.0, 0.672728), Y: (0.407124, 0.796086, 0.447769), Z: (-0.53555, 0.605183, -0.589016), O: (162.2248, 9.91441, -267.003)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 73.3700000000009
+				}
+			],
+			"phase": "pan-1",
+			"pt_frames": 121,
+			"reroutes": [],
+			"sdk_presents": 0,
+			"seconds": 4.005914,
+			"start_s": 38.634149,
+			"to": [
+				162.0,
+				267.21875
+			],
+			"travelled": 0.777019798755646
+		},
+		{
+			"blocked": [],
+			"controllable_frames": 182,
+			"fg_frames": 0,
+			"first_person_frames": 182,
+			"frame_ms": {
+				"max": 44.004,
+				"median": 33.334,
+				"p95": 33.369
+			},
+			"frames": 182,
+			"from": [
+				162.0,
+				267.21875
+			],
+			"game_presents": 0,
+			"goal": "(inf, inf)",
+			"nrd_frames": 182,
+			"observations": [
+				{
+					"eye": "[X: (-0.750857, 0.0, 0.660464), Y: (0.399703, 0.796085, 0.454407), Z: (-0.525786, 0.605185, -0.597746), O: (162.2212, 9.91441, -266.9993)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 74.910000000001
+				},
+				{
+					"eye": "[X: (-0.750857, 0.0, 0.660464), Y: (0.399703, 0.796085, 0.454407), Z: (-0.525786, 0.605185, -0.597746), O: (162.2212, 9.91441, -266.9993)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 75.9000000000012
+				},
+				{
+					"eye": "[X: (-0.750857, 0.0, 0.660464), Y: (0.399703, 0.796085, 0.454407), Z: (-0.525786, 0.605185, -0.597746), O: (162.2212, 9.91441, -266.9993)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 76.9450000000013
+				},
+				{
+					"eye": "[X: (-0.750857, 0.0, 0.660464), Y: (0.399703, 0.796085, 0.454407), Z: (-0.525786, 0.605185, -0.597746), O: (162.2212, 9.91441, -266.9993)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 77.8800000000014
+				},
+				{
+					"eye": "[X: (-0.750857, 0.0, 0.660464), Y: (0.399703, 0.796085, 0.454407), Z: (-0.525786, 0.605185, -0.597746), O: (162.2212, 9.91441, -266.9993)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 78.8700000000015
+				},
+				{
+					"eye": "[X: (-0.750857, 0.0, 0.660464), Y: (0.399703, 0.796085, 0.454407), Z: (-0.525786, 0.605185, -0.597746), O: (162.2212, 9.91441, -266.9993)]",
+					"pending_inputs": 1,
+					"pos": [
+						162.0,
+						267.21875
+					],
+					"rebuilding": false,
+					"world_time": 79.9150000000017
+				}
+			],
+			"phase": "final-held",
+			"pt_frames": 182,
+			"reroutes": [],
+			"sdk_presents": 0,
+			"seconds": 6.017764,
+			"start_s": 43.241651,
+			"to": [
+				162.0,
+				267.21875
+			],
+			"travelled": 0.0
+		}
+	],
+	"status": {},
+	"title": "The river and the islands",
+	"window": "(1920, 1080)",
+	"zone": "gz7g"
+}

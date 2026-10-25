@@ -1,6 +1,7 @@
 extends "third_person_kbm.gd"
 ## Loaded original terrain and hero, deterministic authority ticks. A local
 ## wall on the navigation grid isolates steering from route following.
+const RouteProbe := preload("path_trace_zone_traversal.gd")
 var start := Vector2.ZERO
 
 func send(v: Vector2, player := 0) -> void:
@@ -104,6 +105,13 @@ func _ready() -> void:
 	check(blocked.x<actor.pos.x,"standing actor blocks forward movement")
 	# Reproduce arrival inside another actor's standing navigation stamp.
 	place();actor.pos=start+Vector2(hero.body_radius()*0.3,0);nav.track_unit(actor)
+	var route := RouteProbe.new()
+	route.s=s;route.hero=hero
+	var escape := route.choose_goal(1)
+	check(escape.is_finite(),"route fixture finds an escape from an overlapping actor stamp")
+	check(escape.is_finite() and nav.direct_line(hero,escape,false),"route fixture escape respects authored terrain")
+	check(escape.is_finite() and nav.steering_blocker(hero,escape)==null,"route fixture escape never crosses another body")
+	route.free()
 	send(Vector2.LEFT);tick(12)
 	check(hero.pos.x<start.x-0.25,"overlapping arrival can back away from another character")
 	place();actor.pos=start+Vector2(1.5,0.2);nav.track_unit(actor)

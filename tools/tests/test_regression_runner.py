@@ -2,7 +2,10 @@
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
+import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location("runner", Path(__file__).parents[1] / "check_regressions.py")
 runner = importlib.util.module_from_spec(spec)
@@ -20,6 +23,14 @@ class VerdictTests(unittest.TestCase):
         self.assertEqual(command[command.index("--display-driver") + 1], "x11")
         self.assertEqual(command[command.index("--audio-driver") + 1], "Dummy")
         self.assertIn("--path", runner.engine_arguments("godot", self.case))
+
+    def test_headless_uses_production_worker_render_thread_mode(self):
+        command = runner.engine_arguments("/qualified/game", self.case, packaged=True)
+        self.assertIn("--headless", command)
+        self.assertIn("--render-thread", command)
+        self.assertEqual(command[command.index("--render-thread") + 1], "safe")
+        rendered = runner.engine_arguments("/qualified/game", {"mode": "rendered"}, packaged=True)
+        self.assertNotIn("--render-thread", rendered)
 
     def verdict(self, text, code=0, **overrides):
         return runner.verdict(text, {**self.case, **overrides}, code)
@@ -63,6 +74,62 @@ class VerdictTests(unittest.TestCase):
         self.assertFalse(self.verdict(message + "\nPROBE 3 checks 0 failures")["passed"])
         self.assertFalse(self.verdict(message.replace("screen_get_refresh_rate", "anything_else") +
                                       "\nPROBE 3 checks 0 failures", mode="rendered")["passed"])
+
+
+class PackagedFixtureTests(unittest.TestCase):
+    def test_packaged_run_keeps_relative_helpers_and_fixture_data(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repo = root / "repo"
+            scripts = repo / "tools/tests"
+            benchmarks = repo / "tools/benchmarks"
+            (scripts / "fixtures").mkdir(parents=True)
+            benchmarks.mkdir()
+            (repo / "game").mkdir()
+            (repo / "game/project.godot").write_text('[application]\nconfig/version="1.0.0"\n')
+            (scripts / "probe.gd").write_text('extends "../benchmarks/base.gd"\n')
+            (benchmarks / "base.gd").write_text(
+                'extends Node\nconst Helper = preload("res://tools/tests/helper.gd")\n')
+            (scripts / "helper.gd").write_text('extends "res://src/game/session.gd"\n')
+            payload = b'{"cases":[1,2,3]}\n'
+            (scripts / "fixtures/original.json").write_bytes(payload)
+            manifest = repo / "tools/regressions.json"
+            manifest.write_text(json.dumps({"cases": [{
+                "id": "probe", "mode": "headless", "data": "base",
+                "script": "tools/tests/probe.gd", "summary": "PROBE",
+                "min_checks": 3, "contract": "staged dependencies",
+            }]}))
+            engine = root / "game.x86_64"
+            engine.write_bytes(b"engine")
+            engine.with_suffix(".pck").write_bytes(b"pack")
+
+            def run(command, **kwargs):
+                script = Path(next(arg.split("=", 1)[1] for arg in command
+                                   if arg.startswith("--suite-script=")))
+                base = script.parent / "../benchmarks/base.gd"
+                self.assertTrue(base.is_file(), "relative benchmark superclass was not staged")
+                self.assertIn(str(script.parent / "helper.gd"), base.read_text())
+                self.assertNotIn("res://tools/", base.read_text())
+                self.assertEqual((script.parent / "fixtures/original.json").read_bytes(), payload)
+                self.assertIn("res://src/game/session.gd", (script.parent / "helper.gd").read_text())
+                expected = {"campaign": "cursed_lands", "display": "headless",
+                            "script": str(script), "profile": {
+                                "confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
+                                "volume_stream": 0, "volume_voice": 0}}
+                kwargs["stdout"].write("GAMEPLAY_SUITE_START " + json.dumps(expected) +
+                                       "\nPROBE 3 checks 0 failures\n")
+                return subprocess.CompletedProcess(command, 0)
+
+            args = ["check_regressions.py", "--packaged", "--engine", str(engine),
+                    "--base-data", str(root), "--output", str(root / "results")]
+            with patch.object(runner, "REPO", repo), patch.object(runner, "MANIFEST", manifest), \
+                    patch.object(runner.sys, "argv", args), \
+                    patch.object(runner.shutil, "which", side_effect=lambda value: value), \
+                    patch.object(runner.subprocess, "check_output", return_value="source\n"), \
+                    patch.object(runner.subprocess, "run", side_effect=run):
+                self.assertEqual(runner.main(), 0)
+            result = json.loads((root / "results/results.json").read_text())
+            self.assertTrue(result["passed"])
 
 
 if __name__ == "__main__":
