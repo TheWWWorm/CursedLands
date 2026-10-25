@@ -1,0 +1,89 @@
+[
+  {
+    "test": "picking_mechanisms",
+    "campaign": "base",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "PICKING_MECHANISMS_TIMING {\"native\":[21760,21634],\"script\":[27446,27362]}",
+      "PICKING_MECHANISMS 5203 checks 0 failures"
+    ]
+  },
+  {
+    "test": "picking_retained",
+    "campaign": "base",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "PICKING_RETAINED_TIMING {\"native\":[8112,8097],\"script\":[17002,16816]}",
+      "PICKING_RETAINED 2209 checks 0 failures"
+    ]
+  },
+  {
+    "test": "picking_bounds",
+    "campaign": "base",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "PICKING_BOUNDS checks=432 failures=0"
+    ]
+  },
+  {
+    "test": "picking_deformation",
+    "campaign": "base",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "PICKING_DEFORMATION checks=1558 failures=0 native_us=420 script_us=6492"
+    ]
+  },
+  {
+    "test": "ingos_interactions",
+    "campaign": "base",
+    "returncode": 1,
+    "errors": [
+      "FAIL reloaded zone snapshot carries changed interaction lock",
+      "FAIL late join receives the already-unlocked labyrinth gate"
+    ],
+    "summary": [
+      "INGOS_INTERACTIONS 63 checks 2 failures",
+      "STORY_COOP_TRAPS_NET 63 checks 2 failures"
+    ]
+  },
+  {
+    "test": "exhausted_interactions",
+    "campaign": "base",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "EXHAUSTED_INTERACTIONS 378 checks 0 failures"
+    ]
+  },
+  {
+    "test": "exhausted_interactions",
+    "campaign": "astral",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "EXHAUSTED_INTERACTIONS 2391 checks 0 failures"
+    ]
+  },
+  {
+    "test": "astral_torch",
+    "campaign": "astral",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_TORCH 17 checks 0 failures"
+    ]
+  },
+  {
+    "test": "astral_chest_permission",
+    "campaign": "astral",
+    "returncode": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_CHEST_PERMISSION 32 checks 0 failures"
+    ]
+  }
+]

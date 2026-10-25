@@ -16,6 +16,8 @@
 #include <godot_cpp/variant/plane.hpp>
 #include <godot_cpp/variant/projection.hpp>
 #include <godot_cpp/variant/rect2i.hpp>
+#include <godot_cpp/variant/callable.hpp>
+#include <godot_cpp/variant/dictionary.hpp>
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -60,8 +62,57 @@ protected:
         ClassDB::bind_method(D_METHOD("deform_vertices", "base", "shapes", "shape_weights", "normalized", "bones", "weights", "poses"), &ScreenRectKernel::deform_vertices);
         ClassDB::bind_method(D_METHOD("deformation_state", "instance"), &ScreenRectKernel::deformation_state);
         ClassDB::bind_method(D_METHOD("retained_bounds", "instance", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::retained_bounds);
+        ClassDB::bind_method(D_METHOD("pick_mechanisms", "levers", "objects", "morphs", "usable", "fallback", "camera", "view", "point"), &ScreenRectKernel::pick_mechanisms);
     }
 public:
+    // Batch only the presentation query. Permission stays in LeverSystem;
+    // unsupported geometry uses the same script cache/oracle as before.
+    // No scene references, eligibility or results survive this call.
+    int64_t pick_mechanisms(const Dictionary &levers, const Dictionary &objects,
+            const Dictionary &morphs, const Callable &usable, const Callable &fallback,
+            Node3D *camera, const Dictionary &view, Vector2 point) const {
+        if (!camera || view.is_empty()) return -1;
+        const TypedArray<Plane> planes = view["planes"];
+        const Projection projection = view["projection"];
+        const Basis inverse_basis = view["inverse_basis"];
+        const Vector3 origin = view["origin"];
+        const Vector2 size = view["size"];
+        const Transform3D to_view = Transform3D(camera->call("get_camera_transform")).affine_inverse();
+        int64_t best = -1, nearby = -1;
+        double depth = INFINITY, distance = 40.;
+        const Array ids = levers.keys();
+        for (int64_t i = 0; i < ids.size(); ++i) {
+            const Variant id = ids[i];
+            if (!bool(usable.call(id))) continue;
+            const Variant object = objects.get(id, Variant());
+            auto *node = Object::cast_to<Node3D>(object.get_validated_object());
+            if (!node || !node->is_visible_in_tree()) continue;
+            const Dictionary morph = morphs.get(id, Dictionary());
+            const Array meshes = morph.get("meshes", Array());
+            for (int64_t j = 0; j < meshes.size(); ++j) {
+                const Variant entry = meshes[j];
+                auto *part = Object::cast_to<MeshInstance3D>(entry.get_validated_object());
+                if (!part) continue;
+                Variant result = retained_bounds(part, planes, projection, inverse_basis, origin, size);
+                if (result.get_type() != Variant::RECT2I) result = fallback.call(part, camera, view);
+                const Rect2i rect = result;
+                const Vector2i end = rect.get_end();
+                // Original PtInRect: right/bottom edges are exclusive.
+                if (!(point.x >= rect.position.x && point.y >= rect.position.y && point.x < end.x && point.y < end.y)) continue;
+                const double z = std::max(0., -double(to_view.xform(part->get_global_position()).z));
+                if (z < depth) { depth = z; best = int64_t(id); }
+            }
+            // Preserve Camera3D's adjusted projection and behind-near-plane
+            // test, including orthographic/frustum cameras and h/v offsets.
+            const Vector3 at = node->get_global_position() + Vector3(0.f, .6f, 0.f);
+            if (bool(camera->call("is_position_behind", at))) continue;
+            const Vector2 projected = camera->call("unproject_position", at);
+            const double d = projected.distance_to(point);
+            if (d < distance) { distance = d; nearby = int64_t(id); }
+        }
+        return best >= 0 ? best : nearby;
+    }
+
     // Scenery mechanisms retain their uploaded vertex arrays. Fuse their
     // live morph, world transform and exact clipping in one native call.
     // Nil means unsupported: the existing general/cache path remains the

@@ -150,7 +150,7 @@ the virtual display, without a script error or interrupted traversal.
 | River and Islands 1 | Native | 128.87 | 129.45 | 10.32 ms |
 | River and Islands 2 | Script | 126.04 | 128.02 | 10.51 ms |
 
-The first movement produces a roughly 1.4-second cold shader/renderer hitch in
+A roughly 1.4-second startup hitch appears in
 these fresh profiles. Both the full window and the window after five seconds
 are reported; excluding that hitch is not a claim to have fixed it. Portal's
 post-five-second median is 88.65 FPS script versus 87.76 native: effectively
@@ -231,7 +231,7 @@ rendered controls.
 | 4 | old | 83.87 | 87.19 | 14.77 ms | 17.17 ms |
 
 Median sustained FPS rises from **84.71 to 103.98 (+22.7%)**; median p95 falls
-from **15.17 to 12.86 ms**. Including the cold movement hitch, median FPS rises
+from **15.17 to 12.86 ms**. Including the startup hitch, median FPS rises
 from **81.58 to 99.56 (+22.0%)**. There is substantial variation, especially
 between candidate runs, but both candidate samples outperform both controls.
 This is a two-samples-per-mode local result, not a predicted improvement for
@@ -261,7 +261,7 @@ The local CPU/GPU, Linux Vulkan driver and bounded entrance route differ from
 the user's Windows environment. The reported 40–50 FPS dip was not reproduced
 at that absolute rate here, and no stable-60-FPS or Windows D3D12 claim follows
 from these measurements. Original Portal FPS, every area/view/combat encounter,
-and Android device execution remain unmeasured. The existing cold movement
+and Android device execution remain unmeasured. The existing startup
 hitch remains visible in the full-window timelines.
 
 All work is isolated on `perf/cpu-traversal-20261025`, starting from local main.
@@ -270,3 +270,142 @@ release is qualified. No public release, player profile or remote main was
 changed. Local benchmark recipes and fixed fixture paths are retained under
 [recipes](recipes); source/artifact and external fixture hashes are in
 [provenance](provenance.json).
+
+
+## Follow-up inventory (after ef6cc817)
+
+The user requested continued work through the remaining legitimate CPU targets.
+This inventory separates measured costs from hypotheses; none of the open rows
+is a promised FPS improvement. GPU Lab job `45d739a3b90f468c` ran 35 seconds each
+in Portal, River and Islands, and City Environs on the same RTX 3090 Ti. The
+qualified engine, settings and weather fix match the earlier candidates. This
+is an instrumented diagnostic build, not an acceptance FPS measurement. Values
+are inclusive microseconds divided by frontend process frames; nested rows
+must not be added together.
+
+| Work | Portal ms/frame | River ms/frame | City ms/frame | Status |
+|---|---:|---:|---:|---|
+| Mechanism picking | 1.851 | 1.224 | 0.469 | Open: split geometry, eligibility and loop overhead |
+| Hidden actor presentation | 0.436 | 0.174 | 0.126 | Open: identify expensive pose work without reducing update rates |
+| Particle presentation including simulation | 0.560 | 0.465 | 0.331 | Open: census by emitter type; several types already native |
+| Ground marks | 0.324 | 0.182 | 0.133 | Open: separate animation events from projection refresh |
+| Unit sound scan | 0.245 | 0.143 | 0.109 | Open: preserve cue timing and RNG order |
+| Daylight update | 0.245 | 0.066 | 0.120 | Open: inspect repeated parameter work |
+| Terrain detail updates | 0.213 | 0.200 | 0.143 | Open: includes one 330 ms River callback |
+| Ambient life | 0.058 | 0.052 | 0.365 | Open: city-specific resident/particle cost |
+| Cloud preparation | first call 185 ms | first call 186 ms | first call 186 ms | Open: resource setup occurs after loading |
+
+The approximately 1.4-second startup stall was previously described as a
+first-movement hitch. The raw phase-two timestamps disprove that attribution:
+the worst frames end at 2115, 2171, 2212 and 2142 ms; the first movement commands
+are issued at 2122, 2179, 2221 and 2149 ms. The stall delays the first command.
+The benchmark camera is already rotating, so renderer preparation remains a
+hypothesis, not a confirmed cause. It is not explained by the 185 ms cloud
+callback alone. Further frame-phase and pipeline measurements are required.
+
+Hardware sampling with `perf stat -e task-clock true` is unavailable on this
+workstation (`perf_event_paranoid=4`, permission denied). The explicit function
+profiles avoid changing workstation security settings.
+
+
+### Mechanism loop batching and deeper attribution
+
+The deeper profile (`fb34652891ce4a78`, RTX 3090, 20 seconds/area) measures
+449,120 retained-part queries across 1,672 Portal frames: roughly two passes
+over 140 parts belonging to 82 usable mechanisms. Geometry takes 1.06 ms/frame
+(including 0.24 ms in the general fallback); permission checks take 0.18 ms,
+and the full picker takes 2.00 ms. Instrumentation adds overhead relative to
+the earlier profile. The loop and call boundary remain legitimate targets.
+
+`ScreenRectKernel.pick_mechanisms` now batches that loop. It calls the existing
+`LeverSystem.usable` predicate in insertion order, uses the same exact retained
+bounds, and calls the existing general path for unsupported geometry. Part
+depth, ties, exclusive right/bottom edges and the 40-pixel origin assist are
+unchanged. No eligibility, scene references or query results are cached by
+this helper. Older libraries and custom permission scripts retain the script
+loop. Linux, Windows and Android ARM64 native binaries were rebuilt.
+
+The new registered `picking_mechanisms` test passes **5,205 assertions** on
+Linux and on Windows under Wine 11.20. It compares live camera, morph,
+visibility, permission and fallback changes to the pre-existing script loop
+and separately asserts boundary/tie cases. The prior library fails the new
+helper-presence assertion (1 check, 1 failure). An isolated Linux
+workload takes 27.229/26.788 ms with the script loop and 21.706/21.903 ms with
+the native loop, about 19% less time; this is not a whole-game FPS result.
+
+Related Linux checks pass: retained bounds (2,209), clipping bounds (432),
+deformation (1,558), base interaction permissions (378), LiA interaction and
+lift recall (2,391), real LiA torch (17) and chest (32). Ingos has the same two
+snapshot assertions failing as the frozen baseline documented above; its
+picking checks pass. Windows retained bounds also passes 2,209 assertions.
+The regression runner's seven Python checks pass. Android execution is not
+available on this workstation.
+
+The original-code comparison remains the inspected renderer path at
+`004e9010` and exact projected-vertex rectangle collectors at `004e86b0` /
+`004e8900`, copied by `005a7640` / `005a7a70`. Batching does not replace those
+geometry rules. Native permission evidence is also retained in
+`tools/tests/fixtures/original_lever_use.json` and exercised by the interaction tests.
+A Wine comparison of this specific script/native boundary is inapplicable:
+the original executable has no Godot meshes or this dispatch boundary. The
+prior original Wine expression observation is retained above; no original
+Portal FPS or new original picking-runtime measurement is claimed.
+
+The emitter census changes the remaining priorities. In Portal, fire
+`0x2003`, campfire `0x2001` and tornado `0x200a` account for most particle work
+and already have native kernels. Per-emitter worker timings overlap and must
+not be added to frame time. In River, still-scripted exit stars `0x2038` and
+wisp ambient stars `0x204d` cost 0.174 and 0.149 inclusive ms/frame. City exit
+stars cost 0.124 ms/frame. City's ambient resident movement accounts for
+0.317 of its 0.368 ms/frame ambient-life callback; its repeated authored
+terrain-triangle queries are a candidate for a focused native geometry helper.
+These targets remain open pending differential tests and measured benefit.
+
+A separate phase trace (`5f20ff0f2cdd472a`) places the 1.437-second startup
+stall between `frame_pre_draw` and `frame_post_draw`. In that same frame,
+pipeline counters increase by 16 surface, 10 draw and 11 specialization
+pipelines. This confirms rendering-phase work, correlated with pipeline
+preparation; it does not yet identify the responsible material/mesh variant.
+The reported delayed viewport GPU time is about 2.75 ms and is not a timer
+for that stalled CPU interval.
+
+
+### Matched standard-rendering traversal after loop batching
+
+GPU Lab job `3b697832e68442da` completed eight 45-second runs on RTX 3090 Ti.
+Both modes use the same PCK and native library; a benchmark-only switch selects
+the existing script loop or the native batch. Portal runs script/batch/batch/
+script, River batch/script, and City script/batch. Options hashes match across
+all eight runs (1920×1080, 100% render scale, standard rendering, same Very
+High preset and anti-aliasing override).
+
+| Area | Script loop FPS after 5 s | Native batch FPS after 5 s | Change | Evidence |
+|---|---:|---:|---:|---|
+| Portal | 91.73 | 109.60 | +19.5% | Median of two runs/mode; every batch run exceeds both controls |
+| River and Islands | 142.91 | 142.77 | −0.1% | One pair; effectively unchanged |
+| City Environs | 152.08 | 171.79 | +13.0% | One pair; preliminary |
+
+Portal p95 frame time improves from 14.60 to 12.95 ms. Its full-window median,
+including startup stalls, improves from 87.75 to 104.44 FPS. These are local
+Linux measurements, not predicted Windows FPS or a cumulative percentage to
+multiply by earlier experiments on different run conditions. All census
+samples retain the expected 415 / 294 / 207 actors, both controlled actors
+remain alive, and every run issues 16 movement commands at normal simulation
+speed. This phase adds the loop improvement to the earlier retained-geometry
+and expression changes; those are present in both controls.
+
+Final review added a null-system guard for an empty world before mechanisms
+are initialized. This is the only script difference between the timed and
+final runtime packs, recorded verbatim in [provenance](mechanisms-provenance.json);
+every timed world has a valid mechanism system. The final regression also
+asserts that the production query dispatches exactly one native batch. Final
+Linux and Wine tests use these guarded packs, with the same compiled native
+libraries used for the timings.
+
+See [the aggregate](mechanisms-render-summary.json),
+[all eight results](mechanisms-render-series.json) and
+[settings, census and command receipts](mechanisms-run-receipts.json).
+The original-code comparison, raw phase traces and remaining-target inventory
+above remain part of this work. The mechanism script loop is complete; the
+remaining measured particle, ambient-ground, actor-presentation and startup
+resource costs are still under investigation.

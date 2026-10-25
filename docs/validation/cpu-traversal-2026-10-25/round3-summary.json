@@ -1,0 +1,59 @@
+[
+  {
+    "zone": "gz1h",
+    "frames": 1672,
+    "levers": 87,
+    "usable": 82,
+    "meshes": 140,
+    "vertices": 17010,
+    "picking_ms_per_frame": 1.9974617224880382,
+    "particles_worker_inclusive_ms_per_frame": {
+      "particle_type_2001": 0.18566806220095694,
+      "particle_type_2003": 0.4723307416267942,
+      "particle_type_200a": 0.07686004784688996,
+      "particle_type_2038": 0.01655921052631579,
+      "particle_type_2039": 0.012891148325358853,
+      "particle_type_203a": 0.010772727272727274
+    },
+    "ambient_move_ms_per_frame": 0.0
+  },
+  {
+    "zone": "gz16g",
+    "frames": 2157,
+    "levers": 72,
+    "usable": 57,
+    "meshes": 105,
+    "vertices": 7161,
+    "picking_ms_per_frame": 1.6678391284191008,
+    "particles_worker_inclusive_ms_per_frame": {
+      "particle_type_2001": 0.2117515067222995,
+      "particle_type_2003": 0.0643064441353732,
+      "particle_type_201b": 0.005314789058878071,
+      "particle_type_202d": 0.004945294390356978,
+      "particle_type_2038": 0.17431061659712563,
+      "particle_type_2039": 0.010270282800185443,
+      "particle_type_203a": 0.00817941585535466,
+      "particle_type_204d": 0.14866481223922112
+    },
+    "ambient_move_ms_per_frame": 0.0
+  },
+  {
+    "zone": "gz21k",
+    "frames": 2723,
+    "levers": 28,
+    "usable": 18,
+    "meshes": 35,
+    "vertices": 2172,
+    "picking_ms_per_frame": 0.5759805361733382,
+    "particles_worker_inclusive_ms_per_frame": {
+      "particle_type_2001": 0.051318031582813076,
+      "particle_type_2003": 0.07598971722365039,
+      "particle_type_2038": 0.12401836210062432,
+      "particle_type_2039": 0.008778185824458317,
+      "particle_type_203a": 0.005630921777451341,
+      "particle_type_203b": 0.002154241645244216,
+      "particle_type_203d": 0.008802791039294895
+    },
+    "ambient_move_ms_per_frame": 0.3170947484392215
+  }
+]

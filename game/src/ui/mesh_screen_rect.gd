@@ -14,6 +14,7 @@ static var _kernel: RefCounted = _make_kernel()
 static var _native_deform := _kernel != null and _kernel.has_method("deform_vertices")
 static var _native_state := _kernel != null and _kernel.has_method("deformation_state")
 static var _native_retained := _kernel != null and _kernel.has_method("retained_bounds")
+static var _native_mechanisms := _kernel != null and _kernel.has_method("pick_mechanisms")
 
 
 static func _make_kernel() -> RefCounted:
