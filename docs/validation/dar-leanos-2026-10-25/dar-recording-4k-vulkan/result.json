@@ -1,0 +1,30 @@
+{
+  "exit": 0,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/godot",
+    "--render-thread",
+    "safe",
+    "--display-driver",
+    "x11",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/dar-recording-4k-vulkan/fixtures/dar_leanos_route.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/dar-recording-4k-vulkan",
+    "--dar-benchmark",
+    "--zone-route-4k",
+    "--zone-route-zone=gz31j",
+    "--zone-route-peaceful"
+  ]
+}

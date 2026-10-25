@@ -93,7 +93,11 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 				avoid.append(heading)
 				var alternate:=choose_goal(1,avoid)
 				if alternate.is_finite():
-					goal=alternate;reroutes.append({"at":elapsed,"goal":str(goal)})
+					var nearby:=[]
+					for unit: GameUnit in s.world.units.values():
+						if unit!=hero and unit.pos.distance_to(hero.pos)<3.0:
+							nearby.append({"id":unit.uid,"position":str(unit.pos)})
+					goal=alternate;reroutes.append({"at":elapsed,"goal":str(goal),"position":str(hero.pos),"nearby_units":nearby})
 			checkpoint=hero.pos;checkpoint_time=elapsed
 		if goal.is_finite(): heading=(goal-hero.pos).angle()
 		elif pan: heading=first_heading+sin(elapsed*0.65)*0.9
@@ -135,8 +139,11 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 		"frames":frames,"pt_frames":active,"nrd_frames":nrd,"first_person_frames":body,"controllable_frames":usable,"fg_frames":fg,"sdk_presents":presents,"game_presents":game_presents,"reroutes":reroutes,
 		"from":[before.x,before.y],"to":[hero.pos.x,hero.pos.y],"travelled":hero.pos.distance_to(before),"goal":str(goal),
 		"frame_ms":{"median":times[times.size()/2],"p95":times[int(times.size()*0.95)],"max":times.back()},"observations":observations,"blocked":blocked})
-	await RenderingServer.frame_post_draw
-	get_viewport().get_texture().get_image().save_png(out.path_join(label+".png"))
+	# Full-frame readback and PNG encoding create artificial pauses in a live
+	# video. Ordinary diagnostic/benchmark runs retain the still captures.
+	if not OS.get_cmdline_user_args().has("--zone-route-recording"):
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png(out.path_join(label+".png"))
 	persist()
 	print("ZONE_PHASE ",label," distance=",rows.back().travelled," PT=",active,"/",frames," NRD=",nrd," FG=",fg)
 
@@ -144,7 +151,8 @@ func persist() -> void:
 	write_file("zone-traversal.json",JSON.stringify({
 		"checks":checks,"failures":failures,"campaign":GameData.campaign_id,"zone":s.zone_id,"title":s.zone_title(s.zone_id),
 		"rows":rows,"distance":distance,"window":str(DisplayServer.window_get_size()),"status":status(),"neutral_exploration":peaceful,
-		"note":"Real solo worker, normal keyboard steering, live AI and authored geometry; camera turns are scripted. God mode prevents death. Neutral exploration, when flagged, changes the fixture's initial diplomacy. Initial save may be supplied; no route teleportation. 30 FPS visual inspection, not a benchmark."},"\t"))
+		"frame_limit":Engine.max_fps,
+		"note":"Real solo worker, normal keyboard steering, live AI and authored geometry; camera turns are scripted. God mode prevents death. Neutral exploration, when flagged, changes the fixture's initial diplomacy. Initial save may be supplied; no route teleportation. frame_limit=0 identifies an uncapped benchmark."},"\t"))
 
 func _ready() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS;process_priority=-6
@@ -188,8 +196,18 @@ func _ready() -> void:
 	g.set_speed(1);heading=hero.facing;drive=true;tilt=-0.12
 	GameData._window_gen+=1
 	get_window().wrap_controls=false;get_window().min_size=Vector2i.ONE
-	get_window().mode=Window.MODE_WINDOWED;get_window().borderless=true
-	get_window().size=route_resolution;get_window().position=Vector2i.ZERO
+	var oversized:=route_resolution.x>DisplayServer.screen_get_size().x or route_resolution.y>DisplayServer.screen_get_size().y
+	if oversized:get_window().borderless=false
+	get_window().mode=Window.MODE_WINDOWED
+	if not oversized:get_window().borderless=true
+	# Avoid starting an oversized capture from a screen-covering window.
+	# Some Wine presentation paths still clamp it; verify the actual size below.
+	if oversized:
+		get_window().size=Vector2i(1920,1080);get_window().position=Vector2i(32,32)
+	for i in 8:await get_tree().process_frame
+	get_window().borderless=true
+	get_window().position=Vector2i(32,32) if oversized else Vector2i.ZERO
+	get_window().size=route_resolution
 	Engine.max_fps=30
 	rt=g.get_node("SceneRaytrace")
 	check(await until(func():return rt.stats.get("active",false) and rt.device!=null and rt.device.nrd_active and g.direct.usable(),120),"PT and first-person controls are ready")
@@ -197,6 +215,7 @@ func _ready() -> void:
 	# Wine/X11 acknowledges an oversized borderless capture window on the
 	# following frames; PT can already be ready before that resize lands.
 	check(await until(func():return DisplayServer.window_get_size()==route_resolution,3),"full-size capture window")
+	print("ZONE_WINDOW ",{"requested":str(route_resolution),"actual":str(DisplayServer.window_get_size()),"mode":get_window().mode,"position":str(get_window().position)})
 	if use_fg:check(RtxGraphics.facts().fg,"qualified NVIDIA FG runtime")
 	if failures>0:await s.local_host.stop();get_tree().quit(1);return
 	var settled:=0

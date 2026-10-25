@@ -1,0 +1,57 @@
+{
+  "git_head": "cbe0bec9719005de8447c14ee4abe929f37051a7",
+  "game_source_sha256": "66314f4014012964ffe108ab925a10b152973177f5a9d6a8b9a12648c92dc8be",
+  "manifest_sha256": "1f1d44cb0060552d1109c0ce21107f9a7ce2fb8c345a1df525b832e7db24fbb8",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/candidate3-native/check-engine",
+  "engine_sha256": "57bd986d6b3862546c8f0fd89feb3d5dd7576d7e40c24a52514dced04a15ec7b",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "revive_overlay_picking",
+      "script": "tools/tests/revive_overlay_picking.gd",
+      "script_sha256": "a0a05b416470a0df4ea56659a07e61575394718f18eae159905a85e9a246fe14",
+      "contract": "Direct movement skips hidden-pointer mouse hit-tests while progress bars, tactical hover and revealed-pointer interaction remain live.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/candidate3-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/hover-before/revive_overlay_picking/fixtures/revive_overlay_picking.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/hover-before/revive_overlay_picking/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "revive_overlay_picking/run.log",
+      "passed": false,
+      "result": {
+        "checks": 9,
+        "failures": 4
+      },
+      "errors": [
+        "FAIL hidden first-person pointer does not raycast the city for a mouse label",
+        "FAIL revealing the pointer restores its revive hover label",
+        "FAIL hiding the pointer clears the prior hover without another hit-test",
+        "FAIL third-person direct movement also skips inactive mouse picking",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/candidate3-native/check-engine.pck",
+    "sha256": "6578b6fb563aeea92ffd01518fce6ad68b7af27df34d2f817254db8679bde2e1"
+  },
+  "passed": false
+}

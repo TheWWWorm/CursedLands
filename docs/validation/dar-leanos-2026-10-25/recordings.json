@@ -1,0 +1,47 @@
+[
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/recordings/dar-leanos-final.mp4",
+    "sha256": "b7c74c1cee480a7d1c21ac33fd56a76c76501bd5ac288d9a0c0845451d55e672",
+    "bytes": 263839201,
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration_s": 65.52,
+    "render_resolution": "1920x1080",
+    "kind": "final full-viewport recording without diagnostic readbacks",
+    "checks": 76,
+    "failures": 0,
+    "frame_generation": "off first two legs, on last two legs",
+    "timing_note": "CPU video capture still costs time. Use the unrecorded ABBA runs for before/after performance."
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/recordings/dar-leanos-combined-1080p.mp4",
+    "sha256": "9a1c09dd6d0729b082a156c3af918fdd4f7adabd0d9a0c6ec0203317312dc714",
+    "bytes": 264326082,
+    "width": 1920,
+    "height": 1080,
+    "frames": 4292,
+    "fps": 60,
+    "duration_s": 71.53333333333333,
+    "render_resolution": "1920x1080",
+    "kind": "full viewport",
+    "checks": 76,
+    "failures": 0,
+    "timing_note": "Qualitative recording; CPU capture overhead is excluded from the unrecorded benchmark."
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/recordings/dar-leanos-4k-vulkan-crop.mp4",
+    "sha256": "077fcc920c027d06993426faa9825365c34dd24568fa3130ffac045b40c09d28",
+    "bytes": 247331325,
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration_s": 92.55,
+    "render_resolution": "3840x2160",
+    "kind": "central crop of native Vulkan viewport",
+    "checks": 54,
+    "failures": 0,
+    "frame_generation": false,
+    "timing_note": "Diagnostic recording; per-phase still readbacks and video capture introduce pauses. Not a performance benchmark."
+  }
+]

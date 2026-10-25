@@ -8,5 +8,7 @@ func choose_goal(leg: int,_avoid: Array=[]) -> Vector2:
 	return ROUTE[leg%ROUTE.size()]
 func phase(label: String,seconds: float,goal:=Vector2.INF,pan:=false) -> void:
 	Engine.max_fps=0 if OS.get_cmdline_user_args().has("--dar-benchmark") else 30
-	await super.phase(label,seconds,goal,pan)
+	# Live actors can briefly obstruct this crowded route. Keep the same
+	# waypoint/arrival requirement, allowing time for the obstruction to clear.
+	await super.phase(label,maxf(seconds,20.0) if goal.is_finite() else seconds,goal,pan)
 	if goal.is_finite():check(hero.pos.distance_to(goal)<1.0,label+" reaches its fixed comparison waypoint")

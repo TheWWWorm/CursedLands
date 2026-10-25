@@ -14,6 +14,16 @@ Related scheduler, clock, quest and lever checks and CPU measurements are in
 mechanism bounds with the existing native and scalar paths, including live
 morph/transform changes, clipping and unsupported-geometry fallbacks.
 
+For dense PT city traversal, select `path_trace_motion_cost`,
+`raytrace_topology_budget`, `raytrace_dense_scene`, `path_trace_motion`,
+`path_trace_topology`, `raytrace_source_cache`, `water_raytrace_rebuild`,
+`path_trace_shadow_motion`, `water_raytrace_live`, `path_trace_history_handoff`
+and `revive_overlay_picking`. `dar_leanos_route` additionally requires LiA data
+and follows fixed first-person waypoints with live solo authority. Its normal
+30 FPS cap is for inspection; `--dar-benchmark` removes the cap for an isolated
+GPU Lab heavy benchmark. Timing and negative controls are recorded in
+[the Dar Leanos validation](validation/dar-leanos-2026-10-25/README.md).
+
 ```sh
 python3 tools/check_regressions.py \
   --engine /absolute/path/to/godot \

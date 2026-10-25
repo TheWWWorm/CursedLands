@@ -1,0 +1,24 @@
+{
+  "id": "24e6ee30449940c4",
+  "status": "completed",
+  "argv": [
+    "python3",
+    "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/run_accepted_pair.py"
+  ],
+  "cwd": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos",
+  "timeout_seconds": 1200,
+  "created_at": 1792938429.4641604,
+  "label": "Dar fixed route ABBA with live obstruction diagnostics",
+  "directory": "/var/lib/gpu-lab/jobs/24e6ee30449940c4",
+  "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+  "display": ":98",
+  "workload": "heavy",
+  "vram_mb": 9000,
+  "started_at": 1792938429.4644706,
+  "pid": 1572036,
+  "stderr_truncated": false,
+  "stdout_truncated": false,
+  "exit_code": 0,
+  "finished_at": 1792938980.9462523,
+  "gpu_slot": "1"
+}

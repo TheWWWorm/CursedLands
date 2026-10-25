@@ -1,0 +1,149 @@
+{
+  "git_head": "6f32b8fc1386eef29f7bcabfcba7a63cf5ca6450",
+  "game_source_sha256": "d4bf45d780134e1aa737f5d92b4ebd3958bbe5d35ca35133d048f9a3ec2ce9e2",
+  "manifest_sha256": "684c75e196dd7eb5283a2161e6d78873f50c498174b17f93bc4f2dc83d87ccd9",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+  "engine_sha256": "feccf7be7d35360677cf239d46f53ef07545758c32deeb82f1dd79170d018f33",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "revive_overlay_picking",
+      "script": "tools/tests/revive_overlay_picking.gd",
+      "script_sha256": "a0a05b416470a0df4ea56659a07e61575394718f18eae159905a85e9a246fe14",
+      "contract": "Direct movement skips hidden-pointer mouse hit-tests while progress bars, tactical hover and revealed-pointer interaction remain live.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/revive_overlay_picking/fixtures/revive_overlay_picking.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/revive_overlay_picking/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "revive_overlay_picking/run.log",
+      "passed": true,
+      "result": {
+        "checks": 9,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "script_expression_native",
+      "script": "tools/tests/script_expression_native.gd",
+      "script_sha256": "cec70e33a5c3ef82c3fbee5ce9c78d42f71d74c9fd43f5e5f8b91cd9501caa86",
+      "contract": "Native nested script expressions preserve float32 stores, live lever/object/variable reads, fallback side effects and RNG order.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.07,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/script_expression_native/fixtures/script_expression_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/script_expression_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "script_expression_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 21575,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "picking_retained",
+      "script": "tools/tests/picking_retained.gd",
+      "script_sha256": "d272cf8dd0c2a0594d9b30b0ffcd21fa504ce411fbd9bf059d5c1baf81264764",
+      "contract": "Fused native mechanism bounds preserve exact clipping, rounding, live morphs/transforms and unsupported-geometry fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/picking_retained/fixtures/picking_retained.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/picking_retained/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "picking_retained/run.log",
+      "passed": true,
+      "result": {
+        "checks": 2209,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "picking_mechanisms",
+      "script": "tools/tests/picking_mechanisms.gd",
+      "script_sha256": "54b0d31bb8e304714cb21d6750b38fc64bd816f698b79df31cb8b31d73395d12",
+      "contract": "Batched native mechanism picking preserves exact rectangles, permission, depth/assist ties, camera and live morph changes, and unsupported/custom fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.27,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/picking_mechanisms/fixtures/picking_mechanisms.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-cpu-checks/picking_mechanisms/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "picking_mechanisms/run.log",
+      "passed": true,
+      "result": {
+        "checks": 5205,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine.pck",
+    "sha256": "9f1a747271060c6660e25e8967bb66980eb08aa73923ac78dc15e3749f66b5e5"
+  },
+  "passed": true
+}
