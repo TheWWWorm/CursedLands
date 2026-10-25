@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Keep moving sun shadows responsive by separating their reconstruction from indirect-light history.
+- Handle unindexed scenery when building weather cover, preventing Lost in Astral load crashes.
+- Reconstruct path-traced direct highlights and soft sunlight shadows alongside native NRD.
+- Preserve water reflections while replacement geometry builds incrementally and reuse compiled ray programs.
+- Clear inactive crash-report row highlights when hovering Accept and align keyboard selection with activation.
+- Resynchronize the solo simulation clock on explicit Normal/Fast selections and preserve its local connection through blocking shader compilation.
+- Arm renderer recovery before intro movies.
+
 ## 1.29.0 — 2026-10-25
 
 - Move reserve units into empty bench slots or swap occupied slots with mouse, drag or keyboard controls, including multiplayer. Preserve each unit’s equipment and saved identity.

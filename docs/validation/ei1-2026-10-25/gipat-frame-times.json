@@ -1,0 +1,690 @@
+{
+  "gipat-final-before": [
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 0.0,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 374.194,
+        "median": 25.351,
+        "n": 379,
+        "p95": 30.019,
+        "p99": 38.076
+      },
+      "game_presents": 0,
+      "generation": 1,
+      "history_handoffs": 0,
+      "history_matched_surfaces": 0,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 0,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "ruins-held",
+      "pos": [
+        52.5,
+        138.0
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 374.023,
+        "median": 34.746,
+        "n": 379,
+        "p95": 374.023,
+        "p99": 374.023
+      },
+      "rt_gpu_ms": {
+        "max": 9.59488,
+        "median": 8.014752,
+        "n": 378,
+        "p95": 9.020224,
+        "p99": 9.489408
+      },
+      "sampled_frames": 379,
+      "seconds": 10.011,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2307084256.0,
+      "window": "(3840, 2160)",
+      "world_time": 27.3349999999999,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 7.63831327110529,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 38.296,
+        "median": 24.759,
+        "n": 203,
+        "p95": 27.726,
+        "p99": 30.641
+      },
+      "game_presents": 0,
+      "generation": 1,
+      "history_handoffs": 0,
+      "history_matched_surfaces": 0,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 9,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "east-opening",
+      "pos": [
+        59.453125,
+        139.140625
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 37.654,
+        "median": 28.893,
+        "n": 203,
+        "p95": 37.654,
+        "p99": 37.654
+      },
+      "rt_gpu_ms": {
+        "max": 14.244736,
+        "median": 9.231328,
+        "n": 203,
+        "p95": 10.868736,
+        "p99": 11.638752
+      },
+      "sampled_frames": 203,
+      "seconds": 5.077,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2306499968.0,
+      "window": "(3840, 2160)",
+      "world_time": 32.5049999999999,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 39.3959858492017,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 235.75,
+        "median": 28.683,
+        "n": 744,
+        "p95": 36.645,
+        "p99": 46.086
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 343,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 88,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "downhill-path",
+      "pos": [
+        66.5,
+        125.25
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 233.741,
+        "median": 37.926,
+        "n": 744,
+        "p95": 94.601,
+        "p99": 233.741
+      },
+      "rt_gpu_ms": {
+        "max": 15.630336,
+        "median": 9.393152,
+        "n": 745,
+        "p95": 11.22304,
+        "p99": 13.5504
+      },
+      "sampled_frames": 744,
+      "seconds": 21.982,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2234910288.0,
+      "window": "(3840, 2160)",
+      "world_time": 54.5049999999997,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 77.9336959384382,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 242.514,
+        "median": 22.052,
+        "n": 1121,
+        "p95": 30.995,
+        "p99": 36.387
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 343,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 105,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "return-0",
+      "pos": [
+        53.078125,
+        138.09375
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 241.69,
+        "median": 26.629,
+        "n": 1121,
+        "p95": 85.037,
+        "p99": 241.69
+      },
+      "rt_gpu_ms": {
+        "max": 15.314944,
+        "median": 8.909824,
+        "n": 1121,
+        "p95": 11.50464,
+        "p99": 12.585984
+      },
+      "sampled_frames": 1121,
+      "seconds": 26.221,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2238588992.0,
+      "window": "(3840, 2160)",
+      "world_time": 80.7400000000018,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 116.458221293986,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 222.518,
+        "median": 26.301,
+        "n": 990,
+        "p95": 31.906,
+        "p99": 36.444
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 343,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 93,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "outbound-0",
+      "pos": [
+        66.515625,
+        125.25
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 221.461,
+        "median": 33.656,
+        "n": 990,
+        "p95": 74.844,
+        "p99": 221.461
+      },
+      "rt_gpu_ms": {
+        "max": 14.985536,
+        "median": 9.440256,
+        "n": 990,
+        "p95": 11.209728,
+        "p99": 11.949056
+      },
+      "sampled_frames": 990,
+      "seconds": 26.558,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2234934064.0,
+      "window": "(3840, 2160)",
+      "world_time": 107.250000000005,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 117.039164159447,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 208.602,
+        "median": 25.893,
+        "n": 741,
+        "p95": 32.179,
+        "p99": 35.644
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 343,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 50,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "settled-after-travel",
+      "pos": [
+        66.0,
+        125.0
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 207.641,
+        "median": 27.81,
+        "n": 741,
+        "p95": 207.641,
+        "p99": 207.641
+      },
+      "rt_gpu_ms": {
+        "max": 14.231552,
+        "median": 11.987968,
+        "n": 741,
+        "p95": 13.379584,
+        "p99": 13.943808
+      },
+      "sampled_frames": 741,
+      "seconds": 20.009,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2374230704.0,
+      "window": "(3840, 2160)",
+      "world_time": 127.215000000008,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    }
+  ],
+  "gipat-final-after": [
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 0.0,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 415.446,
+        "median": 26.943,
+        "n": 357,
+        "p95": 31.469,
+        "p99": 35.652
+      },
+      "game_presents": 0,
+      "generation": 1,
+      "history_handoffs": 0,
+      "history_matched_surfaces": 0,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 0,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "ruins-held",
+      "pos": [
+        52.5,
+        138.0
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 415.12,
+        "median": 34.566,
+        "n": 357,
+        "p95": 415.12,
+        "p99": 415.12
+      },
+      "rt_gpu_ms": {
+        "max": 11.257856,
+        "median": 8.944736,
+        "n": 356,
+        "p95": 10.165184,
+        "p99": 10.49088
+      },
+      "sampled_frames": 357,
+      "seconds": 10.004,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2479028672.0,
+      "window": "(3840, 2160)",
+      "world_time": 25.7949999999999,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 7.6191420443356,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 39.585,
+        "median": 25.069,
+        "n": 204,
+        "p95": 26.705,
+        "p99": 29.107
+      },
+      "game_presents": 0,
+      "generation": 1,
+      "history_handoffs": 0,
+      "history_matched_surfaces": 0,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 9,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "east-opening",
+      "pos": [
+        59.4375,
+        139.140625
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 110.855,
+        "median": 28.662,
+        "n": 204,
+        "p95": 110.855,
+        "p99": 110.855
+      },
+      "rt_gpu_ms": {
+        "max": 14.874976,
+        "median": 10.032128,
+        "n": 204,
+        "p95": 11.241472,
+        "p99": 12.002432
+      },
+      "sampled_frames": 204,
+      "seconds": 5.129,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2484553136.0,
+      "window": "(3840, 2160)",
+      "world_time": 30.9649999999999,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 39.3548619374633,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 84.333,
+        "median": 31.794,
+        "n": 692,
+        "p95": 37.769,
+        "p99": 46.879
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 413,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 89,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "downhill-path",
+      "pos": [
+        66.515625,
+        125.25
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 83.981,
+        "median": 38.181,
+        "n": 692,
+        "p95": 60.285,
+        "p99": 83.981
+      },
+      "rt_gpu_ms": {
+        "max": 14.403584,
+        "median": 10.398496,
+        "n": 693,
+        "p95": 12.067744,
+        "p99": 12.83168
+      },
+      "sampled_frames": 692,
+      "seconds": 21.987,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2535149584.0,
+      "window": "(3840, 2160)",
+      "world_time": 52.9099999999998,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 77.8794656470418,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 66.871,
+        "median": 23.223,
+        "n": 1035,
+        "p95": 34.003,
+        "p99": 38.063
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 413,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 107,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "return-0",
+      "pos": [
+        53.078125,
+        138.09375
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 66.506,
+        "median": 29.693,
+        "n": 1035,
+        "p95": 42.584,
+        "p99": 66.506
+      },
+      "rt_gpu_ms": {
+        "max": 16.392192,
+        "median": 9.996288,
+        "n": 1035,
+        "p95": 12.459008,
+        "p99": 13.371392
+      },
+      "sampled_frames": 1035,
+      "seconds": 26.129,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2548053840.0,
+      "window": "(3840, 2160)",
+      "world_time": 79.0350000000016,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 116.431536715478,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 58.705,
+        "median": 28.885,
+        "n": 922,
+        "p95": 34.65,
+        "p99": 39.0
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 413,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 92,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "outbound-0",
+      "pos": [
+        66.5,
+        125.25
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 58.771,
+        "median": 35.254,
+        "n": 922,
+        "p95": 41.015,
+        "p99": 58.771
+      },
+      "rt_gpu_ms": {
+        "max": 14.589952,
+        "median": 10.648576,
+        "n": 922,
+        "p95": 12.366848,
+        "p99": 13.19424
+      },
+      "sampled_frames": 922,
+      "seconds": 26.444,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2534845200.0,
+      "window": "(3840, 2160)",
+      "world_time": 105.490000000005,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    },
+    {
+      "actual_window": "(3840, 2160)",
+      "adaptive_changes": 0,
+      "adaptive_gpu_ms": 0.0,
+      "adaptive_scale": 1.0,
+      "combat_heals": 0,
+      "distance": 116.998073605821,
+      "dlss": {},
+      "dlss_evaluations": 0,
+      "fg_active_frames": 0,
+      "frame_ms": {
+        "max": 43.339,
+        "median": 27.325,
+        "n": 693,
+        "p95": 34.902,
+        "p99": 38.052
+      },
+      "game_presents": 0,
+      "generation": 2,
+      "history_handoffs": 1,
+      "history_matched_surfaces": 413,
+      "hp": 38.6875,
+      "marks": {
+        "blood": 0,
+        "feet": 50,
+        "fire": 0
+      },
+      "nrd": true,
+      "phase": "settled-after-travel",
+      "pos": [
+        66.0,
+        125.0
+      ],
+      "presented_frames": 0,
+      "process_ms": {
+        "max": 42.866,
+        "median": 30.298,
+        "n": 693,
+        "p95": 41.874,
+        "p99": 42.866
+      },
+      "rt_gpu_ms": {
+        "max": 15.983616,
+        "median": 13.223936,
+        "n": 693,
+        "p95": 14.667712,
+        "p99": 15.422464
+      },
+      "sampled_frames": 693,
+      "seconds": 20.0,
+      "viewport": "(3840.0, 2160.0)",
+      "vram": 2543982672.0,
+      "window": "(3840, 2160)",
+      "world_time": 125.510000000007,
+      "wound_jobs": 0,
+      "wound_layers": 0
+    }
+  ]
+}

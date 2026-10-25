@@ -91,10 +91,15 @@ func run() -> void:
 	var saved := mesh.mesh; mesh.mesh = saved.duplicate()
 	check(t._reflection._rt_live.topology_changed(),"replacing equipment geometry is detected")
 	var previous: Object = t._reflection._rt_live
+	var previous_output: Texture2D = t._reflection._rt.output
 	t._reflection._rt_topology_poll = 0.0; await frames(2)
-	check(t._water_mat.get_shader_parameter("planar_texture") == t._reflection.viewport.get_texture(),"changed equipment uses Mirror while rebuilding")
+	check(t._water_mat.get_shader_parameter("planar_texture") == previous_output,"changed equipment keeps the complete reflection while rebuilding")
+	for i in 1200:
+		if t._reflection._rt_live != previous or t._reflection._rt_failed:break
+		await frames(1)
 	check(await ready_rt() and t._reflection._rt_live != previous,"changed equipment automatically rebuilds the hardware scene")
 	mesh.mesh = saved
 	FileAccess.open(out.path_join("live.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"stats":t._reflection.rt_stats,"visibility_pixels":difference(active,hidden),"movement_pixels":difference(restored,moved),"animation_pixels":difference(pose_before,animated),"animated_parts":changed_parts},"\t"))
 	context[1].queue_free(); context[0].queue_free(); await frames(12); TexUpscale.shutdown()
+	print("WATER_RT_LIVE ",checks," checks ",failures.size()," failures")
 	get_tree().quit(1 if not failures.is_empty() else 0)

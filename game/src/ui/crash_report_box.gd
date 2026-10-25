@@ -220,7 +220,7 @@ func _gui_input(e: InputEvent) -> void:
 		return
 	if e is InputEventMouseMotion:
 		var i := _row_at(to800(e.position))
-		if i >= 0 and i != _sel:
+		if i != _sel:
 			_sel = i
 			queue_redraw()
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed:
@@ -240,10 +240,13 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		return
 	match e.keycode:
 		KEY_UP, KEY_DOWN:
-			_sel = posmod(_sel + (1 if e.keycode == KEY_DOWN else -1), _row_defs().size())
+			# -1 is the closing action, also reached by mouse/gamepad motion
+			# outside the report rows. Keep keyboard activation in agreement.
+			_sel = wrapi(_sel + (1 if e.keycode == KEY_DOWN else -1), -1, _row_defs().size())
 			queue_redraw()
 		KEY_ENTER, KEY_KP_ENTER:
-			act(_sel)
+			if _sel < 0: _answer(true)
+			else: act(_sel)
 		KEY_ESCAPE:
 			_answer(true)
 		_: return

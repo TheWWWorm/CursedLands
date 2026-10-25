@@ -151,13 +151,15 @@ func _start() -> void:
 	var direct: bool = args.has("--play") or args.has("--host") or Array(args).any(func(a): return String(a).begins_with("--join="))
 	if not direct:
 		await startup_notices()
+	# Video upload/presentation also uses the graphics device. Arm recovery
+	# before movies so an intro device hang cannot retry the same API forever.
+	if not await WindowsRenderer.prepare(self): return
 	if not direct and not args.has("--no-movies"):
 		GameData.trace("startup: intro movies")
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Start")))
 		var seq := MovieSequence.start(self, MoviePlayer.ini_movies("Start"))
 		await seq.done
 		GameData.trace("startup: intro movies finished")
-	if not await WindowsRenderer.prepare(self): return
 	var menu: Control = await open_menu()
 	for a in args:
 		if a == "--play":

@@ -12,7 +12,7 @@ python3 tools/check_regressions.py \
   --astral-data /absolute/path/to/owned/lost-in-astral \
   --output /absolute/path/to/new-results
 
-# Real OpenGL checks, automatically submitted to GPU Lab on this workstation.
+# Rendered checks, automatically submitted to GPU Lab on this workstation.
 python3 tools/check_regressions.py --tier rendered \
   --engine /absolute/path/to/godot \
   --base-data /absolute/path/to/owned/base-game \
@@ -89,3 +89,29 @@ The gameplay catalog also registers `effects/path_trace_material_receivers` as a
 Forward+ rendered check. It explicitly asserts native unfiltered output before
 measuring the PT receiver’s material boundary. DLSS output reconstruction has its
 own evaluation and movement checks; it is not included in this raw receiver test.
+
+Exported engines can be tested against their adjacent PCK with `--packaged`.
+The runner stages the external fixtures, records the PCK hash and omits the
+editor-only `--path`. Use the qualified custom runtime for ray-tracing checks;
+the stock editor does not expose the project's native ray APIs. Rendered cases
+may declare `rendering_method: forward_plus`; ordinary UI checks retain their
+Compatibility default. Unsupported hardware is not a passing trace check.
+
+The October 25 EI1 selection includes unindexed weather-cover geometry, repeated
+LiA save loads in raster/PT modes, direct-light stability, incremental water
+replacement, crash-report hover, clock resynchronization and a 90-second local
+transport stall. Expected baseline
+failures and measurements are recorded in
+[the investigation](validation/ei1-2026-10-25/README.md). The LiA fixture accepts
+`--save-fixture=/absolute/copied-save.sav` when launched directly; it copies that
+save into its disposable profile before running two ordinary worker loads.
+
+The LiA fixture also accepts `--lia-fg` in a Windows D3D12 runtime with NVIDIA FG
+available. Each load must activate FG and increment the SDK presentation counter;
+a requested setting alone does not pass. This hardware check is supplemental to
+the portable registered raster/PT load cases.
+
+`path_trace_shadow_motion` keeps receiver history valid while a small sun caster
+moves twice. It checks the stationary umbra, old/new shadow response within
+three frames, and agreement between full diffuse lighting and the terrain sun
+AOV. It runs through the packaged Forward+ GPU runner.

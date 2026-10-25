@@ -1,0 +1,434 @@
+{
+  "inspection_cap_rendered_fps": 30,
+  "recording_fps": 60,
+  "phases_seconds": 6,
+  "comparison": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/recordings/snow-pt-fg-before-after.mp4",
+    "sha256": "7e2b6d89d1c09022adf97e1c5181770c0079bb4736a22280bf3564acdd7850b7",
+    "bytes": 25810733
+  },
+  "runs": {
+    "before": {
+      "checks": {
+        "checks": 25,
+        "failures": 0,
+        "rows": [
+          {
+            "active_frames": 0,
+            "actual_window": "(1920, 1080)",
+            "fg": false,
+            "frames": 356,
+            "game_presents": 356,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-off-held",
+            "sdk_presents": 0,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 6047,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": false,
+              "frame_generation_input_size": "(0, 0)",
+              "frame_generation_output_size": "(0, 0)",
+              "frame_generation_size_supported": false,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 0,
+              "frame_generation_ui_alpha_texture": "RID(0)",
+              "game_presents": 6075,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 0,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 17.9849999999999
+          },
+          {
+            "active_frames": 357,
+            "actual_window": "(1920, 1080)",
+            "fg": true,
+            "frames": 357,
+            "game_presents": 357,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-on-held",
+            "sdk_presents": 714,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 6431,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": true,
+              "frame_generation_input_size": "(1920, 1080)",
+              "frame_generation_output_size": "(1920, 1080)",
+              "frame_generation_size_supported": true,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 384,
+              "frame_generation_ui_alpha_texture": "RID(383965781296724)",
+              "game_presents": 6459,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 766,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 31.0749999999999
+          },
+          {
+            "active_frames": 353,
+            "actual_window": "(1920, 1080)",
+            "fg": true,
+            "frames": 353,
+            "game_presents": 353,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-on-moving",
+            "sdk_presents": 706,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 6814,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": true,
+              "frame_generation_input_size": "(1920, 1080)",
+              "frame_generation_output_size": "(1920, 1080)",
+              "frame_generation_size_supported": true,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 767,
+              "frame_generation_ui_alpha_texture": "RID(383965781296724)",
+              "game_presents": 6842,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 1532,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 44.1649999999998
+          },
+          {
+            "active_frames": 0,
+            "actual_window": "(1920, 1080)",
+            "fg": false,
+            "frames": 348,
+            "game_presents": 348,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-off-moving",
+            "sdk_presents": 0,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 7192,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": false,
+              "frame_generation_input_size": "(1920, 1080)",
+              "frame_generation_output_size": "(1920, 1080)",
+              "frame_generation_size_supported": true,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 767,
+              "frame_generation_ui_alpha_texture": "RID(383965781296724)",
+              "game_presents": 7220,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 1532,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 57.1999999999997
+          }
+        ]
+      },
+      "runtime": {
+        "exit": 0,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/Codex/2026-10-25/pl/work/release-1.29.0/release/CursedLands-1.29.0-windows-x86_64/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/snow-fg-before-v2/fixtures/record_snow_fg.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/snow-fg-before-v2"
+        ],
+        "summary": [
+          "SNOW_FRAMEGEN 25 checks 0 failures"
+        ],
+        "hashes": {
+          "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+          "CursedLands.pck": "6758490bcc5f9178bfb4e70dc4b6a1a3bbd52bbe82363598728e45ea2b744060"
+        }
+      },
+      "gpu": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d"
+      },
+      "video": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/snow-fg-before-v2/snow-framegen.mp4",
+        "sha256": "0d5cc16a9ea650127b39d4b95ebf4540c07c7765976ec51add299ab82999887d",
+        "bytes": 62502375
+      }
+    },
+    "after": {
+      "checks": {
+        "checks": 25,
+        "failures": 0,
+        "rows": [
+          {
+            "active_frames": 0,
+            "actual_window": "(1920, 1080)",
+            "fg": false,
+            "frames": 169,
+            "game_presents": 169,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-off-held",
+            "sdk_presents": 0,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 4756,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": false,
+              "frame_generation_input_size": "(0, 0)",
+              "frame_generation_output_size": "(0, 0)",
+              "frame_generation_size_supported": false,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 0,
+              "frame_generation_ui_alpha_texture": "RID(0)",
+              "game_presents": 4785,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 0,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 19.7449999999999
+          },
+          {
+            "active_frames": 357,
+            "actual_window": "(1920, 1080)",
+            "fg": true,
+            "frames": 357,
+            "game_presents": 357,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-on-held",
+            "sdk_presents": 714,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 5141,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": true,
+              "frame_generation_input_size": "(1920, 1080)",
+              "frame_generation_output_size": "(1920, 1080)",
+              "frame_generation_size_supported": true,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 385,
+              "frame_generation_ui_alpha_texture": "RID(325824809010789)",
+              "game_presents": 5170,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 769,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 32.7249999999999
+          },
+          {
+            "active_frames": 351,
+            "actual_window": "(1920, 1080)",
+            "fg": true,
+            "frames": 351,
+            "game_presents": 351,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-on-moving",
+            "sdk_presents": 702,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 5522,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": true,
+              "frame_generation_input_size": "(1920, 1080)",
+              "frame_generation_output_size": "(1920, 1080)",
+              "frame_generation_size_supported": true,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 766,
+              "frame_generation_ui_alpha_texture": "RID(325824809010789)",
+              "game_presents": 5551,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 1531,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 45.8149999999998
+          },
+          {
+            "active_frames": 0,
+            "actual_window": "(1920, 1080)",
+            "fg": false,
+            "frames": 347,
+            "game_presents": 347,
+            "gate": {
+              "allowed": true,
+              "blockers": []
+            },
+            "label": "fg-off-moving",
+            "sdk_presents": 0,
+            "status": {
+              "compiled": true,
+              "dlss_evaluations": 5898,
+              "enhanced_barriers": true,
+              "fg_support_reason": "sl::eOk",
+              "fg_support_result": 0,
+              "fg_supported": true,
+              "frame_generation_active": false,
+              "frame_generation_input_size": "(1920, 1080)",
+              "frame_generation_output_size": "(1920, 1080)",
+              "frame_generation_size_supported": true,
+              "frame_generation_status": 0,
+              "frame_generation_ui_alpha_frames": 766,
+              "frame_generation_ui_alpha_texture": "RID(325824809010789)",
+              "game_presents": 5927,
+              "initialized": true,
+              "last_error": 0,
+              "present_count_available": true,
+              "presented_frames": 1531,
+              "reflex_supported": true,
+              "requested": true,
+              "sr_support_reason": "sl::eOk",
+              "sr_support_result": 0,
+              "sr_supported": true
+            },
+            "window": "(1920, 1080)",
+            "world_time": 58.9049999999997
+          }
+        ]
+      },
+      "runtime": {
+        "exit": 0,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/windows-runtime/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/snow-fg-after-v2/fixtures/record_snow_fg.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/snow-fg-after-v2"
+        ],
+        "summary": [
+          "SNOW_FRAMEGEN 25 checks 0 failures"
+        ],
+        "hashes": {
+          "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+          "CursedLands.pck": "b0d629d9519b5ae3115dc3064be07a9bd968b5c7b0435c857da6521773765903"
+        }
+      },
+      "gpu": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441"
+      },
+      "video": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/snow-fg-after-v2/snow-framegen.mp4",
+        "sha256": "3cbd8e88264736ad5fdcdc22eb08a09855036eeb03915db88fccbca51bb4ff13",
+        "bytes": 56994295
+      }
+    }
+  }
+}

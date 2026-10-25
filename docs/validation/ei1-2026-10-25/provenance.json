@@ -1,0 +1,131 @@
+{
+  "files": [
+    {
+      "file": "CursedLands-report-20261025-092606.txt",
+      "bytes": 5899,
+      "sha256": "457eec5cb392be524ae544b258b9afc9b94f3b284f46ce9aa275ba1b2c8a3c2c"
+    },
+    {
+      "file": "CursedLands-report-20261025-093508.txt",
+      "bytes": 55541,
+      "sha256": "377ad9f5c8c1b720071f071de58ddbf532e889b66c5597660975d532b7cf63d0"
+    },
+    {
+      "file": "CursedLands-report-20261025-093857.txt",
+      "bytes": 89734,
+      "sha256": "04579732650c7a137f791bf54980b562e640c1919e9a3247dda1e48deb25f716"
+    },
+    {
+      "file": "Downloads 2026.10.25 - 09.30.59.03.DVR.mp4",
+      "bytes": 1714591685,
+      "sha256": "da45d2e9402876fe86a47e7057eb9b65823173231b84a01a5a644b24674cf60d"
+    },
+    {
+      "file": "Downloads 2026.10.25 - 09.35.02.04.DVR.mp4",
+      "bytes": 1911506285,
+      "sha256": "20a127ea9b1bbd369c1267fbbc6869df33b5d541bcfb040bb9e00649c4709908"
+    },
+    {
+      "file": "Downloads 2026.10.25 - 09.37.29.05.DVR.mp4",
+      "bytes": 910796860,
+      "sha256": "ace4d84d5d0730ef9176002bec0ce5e1bdde8b3f942af939aaa070637dfd1528"
+    },
+    {
+      "file": "Downloads 2026.10.25 - 09.39.04.06.DVR.mp4",
+      "bytes": 735216192,
+      "sha256": "31a0f8e3ffa730ad49372947933a02b5562c863c3934104f2ecdcb810ec92aa1"
+    },
+    {
+      "file": "CursedLands-report-20261025-100245.txt",
+      "bytes": 32528,
+      "sha256": "712b1b8f043a025c64b604182e48fae945cebb476e457be46a1d1f91a18abf19"
+    },
+    {
+      "file": "CursedLands-report-20261025-100630.txt",
+      "bytes": 15296,
+      "sha256": "5c58481e58d8e4f93988848186cceff3f88b4ce61e0958a5d2682a06cc5dc105"
+    },
+    {
+      "file": "lost_in_astral (2).zip",
+      "bytes": 1249801,
+      "sha256": "273048c1adbf38b1b983333c34abeaae5c649665ba410f42eec69b94b72042ff"
+    },
+    {
+      "file": "godot",
+      "bytes": 82141352,
+      "sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa"
+    },
+    {
+      "file": "godot.pck",
+      "bytes": 23154132,
+      "sha256": "b351b61fbe33aa0edb99518cb92fa027521ace036c7847e7ca4d0f3241388e66"
+    },
+    {
+      "file": "godot.pck",
+      "bytes": 23145024,
+      "sha256": "00e2dfd2a59b6731cc7d5ba01548fad93b2a0ec12c8c4e83d6f90836f8a63526"
+    },
+    {
+      "file": "CursedLands.exe",
+      "bytes": 94215680,
+      "sha256": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb"
+    },
+    {
+      "file": "CursedLands.pck",
+      "bytes": 23154068,
+      "sha256": "b0d629d9519b5ae3115dc3064be07a9bd968b5c7b0435c857da6521773765903"
+    },
+    {
+      "path": "/tmp/codex-clipboard-3bebf547-7e1f-4157-83c9-a37bf73a9b5a.png",
+      "sha256": "f14b47576d21fb8771435cdb2bede7a41c3ac49b6cb2f97879f8e1372965e6ef",
+      "bytes": 897654
+    },
+    {
+      "path": "/tmp/codex-clipboard-a48dbf39-8896-4869-8f1a-d2a038c5b84f.png",
+      "sha256": "c29cc8bc20aec9231e30aa4213648d8eb6026826e82be3d7e5a4d63f4314203e",
+      "bytes": 1360769
+    },
+    {
+      "path": "/tmp/codex-clipboard-cf303a22-921a-4249-b908-c70e930ba35d.png",
+      "sha256": "520ba5787159d0338af1cf67451b187e8843426fad4558c9e66f1d5dc7e39530",
+      "bytes": 9580969
+    }
+  ],
+  "workspace": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025",
+  "baseline_release": "1.29.0",
+  "acceptance": "No release publication performed",
+  "pre_sun_split_runtime": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/runtime/godot.pck",
+      "sha256": "bdd82cd17722c39c27fd1b76c7eb0129ea90f484b9f3112cf22dd305f4d384c8",
+      "bytes": 23154036
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/windows-runtime/CursedLands.pck",
+      "sha256": "b1ccde0afb8db31e207ecae73b141ed746606ed8045074bf406c45c0e45ba6e7",
+      "bytes": 23153972
+    }
+  ],
+  "final_runtime": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/sun-runtime/godot.pck",
+      "sha256": "b700b337f1a0d8f7c853fea484d3afc6bc9f2540e6233fb4bbbb8b6f95f3f712",
+      "bytes": 23154964
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/windows-runtime/CursedLands.pck",
+      "sha256": "d3bd8656be0f16de0cf57edd91d37da81332d8a73a4a9825e7d5702e9c28d5c3",
+      "bytes": 23154900
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/game/src/native/bin/libpath_nrd.so",
+      "sha256": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "bytes": 2069776
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/game/src/native/bin/libpath_nrd.dll",
+      "sha256": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "bytes": 1472000
+    }
+  ]
+}

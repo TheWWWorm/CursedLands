@@ -13,6 +13,10 @@
 // Analytic direct highlights have known lighting directions, not a secondary
 // hit distance. Preserve them outside NRD's indirect specular reconstruction.
 [[vk::binding(13,0)]] Texture2D<float4> direct_specular : register(t13);
+// Sun visibility follows the caster, not the receiver's secondary hit.
+// Reconstruct it separately so long indirect history cannot leave an old
+// animal shadow behind or erase a newly arriving shadow.
+[[vk::binding(14,0)]] Texture2D<float4> direct_sun : register(t14);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -101,7 +105,7 @@ void main(uint2 pixel:SV_DispatchThreadID) {
     float2 distance=raw_distance[pixel];
     float2 norm_distance=float2(REBLUR_FrontEnd_GetNormHitDist(distance.x,guide.w,float3(3,0.1,20),1.0),
         REBLUR_FrontEnd_GetNormHitDist(distance.y,guide.w,float3(3,0.1,20),roughness));
-    out_diffuse[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(raw_diffuse[pixel].rgb/df,norm_distance.x,true);
+    out_diffuse[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(max(raw_diffuse[pixel].rgb-direct_sun[pixel].rgb,0.0)/df,norm_distance.x,true);
     out_specular[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(max(raw_specular[pixel].rgb-direct_specular[pixel].rgb,0.0)/sf,norm_distance.y,true);
 }
 #else

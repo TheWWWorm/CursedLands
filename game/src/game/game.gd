@@ -261,6 +261,10 @@ func set_speed(sector: int) -> void:
 	speed = sector - 1
 	session.field_speed = speed
 	Engine.time_scale = 55.0 / 27.0 if speed == 1 else 1.0
+	# A load/travel may have restored the authority clock after the last
+	# owner callback. An explicit selection must reach that authority even
+	# when its value matches the last-sent cache.
+	if session.local_host: session.local_host._sync_single_clock(true)
 
 
 ## The route map temporarily uses normal speed without changing the field choice.
