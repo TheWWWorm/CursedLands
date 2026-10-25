@@ -1,0 +1,816 @@
+{
+  "baseline_commit": "567748902e7f6b4144e3fa93de74950b8b9e399d",
+  "scope": "World-space cliff shading relief; no geometry or albedo changes",
+  "negative_control": {
+    "exit": 1,
+    "errors": [
+      "FAIL wall shading has broad vertical relief rather than painted columns: 0.003661",
+      "Missing passing summary: ['CAVE_WALL 16 checks 1 failures']"
+    ],
+    "summary": [
+      "CAVE_WALL 16 checks 1 failures"
+    ],
+    "seconds": 68.62988468797994,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-painted-native/runtime.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--display-driver",
+      "x11",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "forward_plus",
+      "--rendering-driver",
+      "vulkan",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--",
+      "--no-movies",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-before/fixtures/terrain_cave_wall.gd",
+      "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-before"
+    ],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-painted-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-painted-native/runtime.pck": "c2b4f4bac83d06335eea7066882bdb70ef2a9ea03556be662f14b68d17c52d79"
+    },
+    "fixture_sha256": "fad7614164565ead9828bbc71050a843e92937de04d47a142978f593ac545c33"
+  },
+  "registered_rendered": {
+    "git_head": "567748902e7f6b4144e3fa93de74950b8b9e399d",
+    "game_source_sha256": "9a3771c33655222643b91a30db8aebbcc9e5be5b65af41fa78b127a25530881e",
+    "manifest_sha256": "f64a76a35bee5c1e3b7423a0e0892ed3c3924e8481d137fd649435750748aba7",
+    "engine": "../candidate-native/runtime.x86_64",
+    "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "data": {
+      "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+    },
+    "cases": [
+      {
+        "id": "path_trace_terrain",
+        "script": "tools/tests/path_trace_terrain.gd",
+        "script_sha256": "c1ce518bc11c0d27463f34cc06ab14d7801accd68475f77bd6822904e43021ab",
+        "contract": "Native traced terrain colours and wall relief agree with raster sampling across atlas layouts, mips, material corners, world positions and upward lighting normals.",
+        "issues": [],
+        "mode": "rendered",
+        "seconds": 25.15,
+        "command": [
+          "/usr/local/bin/gpu-lab",
+          "run",
+          "--gpu",
+          "auto",
+          "--cwd",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo",
+          "--timeout",
+          "420",
+          "--",
+          "env",
+          "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/path_trace_terrain/data",
+          "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/path_trace_terrain/config",
+          "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/path_trace_terrain/cache",
+          "../candidate-native/runtime.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+          "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/path_trace_terrain/fixtures/path_trace_terrain.gd",
+          "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/path_trace_terrain/fixtures",
+          "--suite-campaign=cursed_lands",
+          "--suite-display=rendered"
+        ],
+        "log": "path_trace_terrain/run.log",
+        "passed": true,
+        "result": {
+          "checks": 117,
+          "failures": 0
+        },
+        "errors": [],
+        "infrastructure_diagnostics": [
+          "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+        ]
+      },
+      {
+        "id": "terrain_cave_wall",
+        "script": "tools/tests/terrain_cave_wall.gd",
+        "script_sha256": "a9eae17bcfa6f958aea8c68c722bce7914a0e79e5f3f8abdbf2d7cb81e50a6ac",
+        "contract": "The zone5_1 cave wall has world-projected rock and broad shading relief in raster, PT and cached PT without changing terrain geometry.",
+        "issues": [],
+        "mode": "rendered",
+        "seconds": 71.74,
+        "command": [
+          "/usr/local/bin/gpu-lab",
+          "run",
+          "--gpu",
+          "auto",
+          "--cwd",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo",
+          "--timeout",
+          "420",
+          "--",
+          "env",
+          "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cave_wall/data",
+          "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cave_wall/config",
+          "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cave_wall/cache",
+          "../candidate-native/runtime.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "forward_plus",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+          "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cave_wall/fixtures/terrain_cave_wall.gd",
+          "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cave_wall/fixtures",
+          "--suite-campaign=cursed_lands",
+          "--suite-display=rendered"
+        ],
+        "log": "terrain_cave_wall/run.log",
+        "passed": true,
+        "result": {
+          "checks": 16,
+          "failures": 0
+        },
+        "errors": [],
+        "infrastructure_diagnostics": [
+          "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+        ]
+      },
+      {
+        "id": "terrain_cliff_pattern",
+        "script": "tools/tests/terrain_cliff_pattern.gd",
+        "script_sha256": "42eda7da93032e94e3e0d9307cebfc6dff58de83e227f0019d0690562e0fb469",
+        "contract": "Projected wall art and broad relief remain fixed in world space without wrap seams, repeated patches, flipped normals or effects on flat/distant surfaces.",
+        "issues": [],
+        "mode": "rendered",
+        "seconds": 7.13,
+        "command": [
+          "/usr/local/bin/gpu-lab",
+          "run",
+          "--gpu",
+          "auto",
+          "--cwd",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo",
+          "--timeout",
+          "420",
+          "--",
+          "env",
+          "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cliff_pattern/data",
+          "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cliff_pattern/config",
+          "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cliff_pattern/cache",
+          "../candidate-native/runtime.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+          "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cliff_pattern/fixtures/terrain_cliff_pattern.gd",
+          "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-registered/terrain_cliff_pattern/fixtures",
+          "--suite-campaign=cursed_lands",
+          "--suite-display=rendered"
+        ],
+        "log": "terrain_cliff_pattern/run.log",
+        "passed": true,
+        "result": {
+          "checks": 17,
+          "failures": 0
+        },
+        "errors": [],
+        "infrastructure_diagnostics": [
+          "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+        ]
+      }
+    ],
+    "pack": {
+      "path": "../candidate-native/runtime.pck",
+      "sha256": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+    },
+    "passed": true
+  },
+  "registered_headless": {
+    "git_head": "567748902e7f6b4144e3fa93de74950b8b9e399d",
+    "game_source_sha256": "9a3771c33655222643b91a30db8aebbcc9e5be5b65af41fa78b127a25530881e",
+    "manifest_sha256": "3fcc0a8b28b4f6e9c6933117ebe759d07abee5db90f2dd02b24a232142fbc33a",
+    "engine": "../candidate-native/runtime.x86_64",
+    "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "data": {
+      "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+    },
+    "cases": [
+      {
+        "id": "terrain_cliff_blends",
+        "script": "tools/tests/terrain_cliff_blends.gd",
+        "script_sha256": "ec4200372c0fcd8a3c187cf07713562fb880abbe4b39081fc2b9d1b3928a4c22",
+        "contract": "Verified natural cliff donors retain rotated material corners and reject unknown, conflicting, snow or missing-donor inputs.",
+        "issues": [],
+        "mode": "headless",
+        "seconds": 9.48,
+        "command": [
+          "../candidate-native/runtime.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--headless",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+          "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-registered-unit/terrain_cliff_blends/fixtures/terrain_cliff_blends.gd",
+          "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-registered-unit/terrain_cliff_blends/fixtures",
+          "--suite-campaign=cursed_lands",
+          "--suite-display=headless"
+        ],
+        "log": "terrain_cliff_blends/run.log",
+        "passed": true,
+        "result": {
+          "checks": 82,
+          "failures": 0
+        },
+        "errors": [],
+        "infrastructure_diagnostics": []
+      }
+    ],
+    "pack": {
+      "path": "../candidate-native/runtime.pck",
+      "sha256": "ef2fe7dbb3a23ebd53898a878091e7b0f4fc97b860e1f6db5e589e33175441aa"
+    },
+    "passed": true
+  },
+  "final_runs": {
+    "wall-relief-final-pattern": {
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "CLIFF_PATTERN 17 checks 0 failures"
+      ],
+      "seconds": 5.222316731989849,
+      "argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--display-driver",
+        "x11",
+        "--max-fps",
+        "30",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-pattern/fixtures/terrain_cliff_pattern.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-pattern"
+      ],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+      },
+      "fixture_sha256": "42eda7da93032e94e3e0d9307cebfc6dff58de83e227f0019d0690562e0fb469"
+    },
+    "wall-relief-final-contacts": {
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TERRAIN_CLIFF_RENDER 87 checks 0 failures"
+      ],
+      "seconds": 34.720187494996935,
+      "argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--display-driver",
+        "x11",
+        "--max-fps",
+        "30",
+        "--rendering-method",
+        "forward_plus",
+        "--rendering-driver",
+        "vulkan",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-contacts/fixtures/terrain_cliff_render.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-contacts",
+        "--cliff-composed"
+      ],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+      },
+      "fixture_sha256": "63d00602e1d4476c809d6ddc8b57504168e531b20b6d459fd50f08e765166919"
+    },
+    "wall-relief-final-gl-contacts": {
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "TERRAIN_CLIFF_RENDER 20 checks 0 failures"
+      ],
+      "seconds": 97.4127654810145,
+      "argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--display-driver",
+        "x11",
+        "--max-fps",
+        "30",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-gl-contacts/fixtures/terrain_cliff_render.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-gl-contacts",
+        "--cliff-composed"
+      ],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+      },
+      "fixture_sha256": "63d00602e1d4476c809d6ddc8b57504168e531b20b6d459fd50f08e765166919"
+    },
+    "wall-relief-final-dx12-path_trace_terrain": {
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 117 checks 0 failures"
+      ],
+      "seconds": 21.698617493006168,
+      "argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.exe",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--rendering-method",
+        "forward_plus",
+        "--rendering-driver",
+        "d3d12",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-dx12-path_trace_terrain/fixtures/path_trace_terrain.gd",
+        "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-dx12-path_trace_terrain"
+      ],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.pck": "da1bb9aca4017036b26966345608f8924044429e616fa52d429c4e596107a133"
+      },
+      "fixture_sha256": "9d9dee5ac9061fe9ba9eab281e34ace4e75c47bf97f76b366ee19ecf80b4f97b"
+    },
+    "wall-relief-final-dx12-terrain_cave_wall": {
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "CAVE_WALL 16 checks 0 failures"
+      ],
+      "seconds": 56.660691638011485,
+      "argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.exe",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--rendering-method",
+        "forward_plus",
+        "--rendering-driver",
+        "d3d12",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-dx12-terrain_cave_wall/fixtures/terrain_cave_wall.gd",
+        "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-dx12-terrain_cave_wall"
+      ],
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.pck": "da1bb9aca4017036b26966345608f8924044429e616fa52d429c4e596107a133"
+      },
+      "fixture_sha256": "ef897f3f6c372cee1a83687f8f39eec85a9ab01ce8abbab891f2ac1111b5b90b"
+    }
+  },
+  "related_cache_lifecycle_before_ridge_rounding": {
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCENE_RT_DEVICE 25 checks 0 failures"
+    ],
+    "seconds": 27.60669434099691,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--display-driver",
+      "x11",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "forward_plus",
+      "--rendering-driver",
+      "vulkan",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--",
+      "--no-movies",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-cache/fixtures/path_trace_sharc.gd",
+      "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-cache"
+    ],
+    "runtime_sha256": {
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "ef2fe7dbb3a23ebd53898a878091e7b0f4fc97b860e1f6db5e589e33175441aa"
+    },
+    "fixture_sha256": "5e3a666f3936c681eb872c6233d7f5119ee4ddf7c8fcd3c90ce4b88b2e1491be"
+  },
+  "cpu_checks": {
+    "regression_runner": 8,
+    "pt_qualification": 24,
+    "shader_manifests": true,
+    "spirv_vulkan12_validated": 3
+  },
+  "source_sha256": {
+    "game/src/game/fx/ground_contact_shader.gd": "9321e6ef55a94def28ae8f52344dc97d59f9754b5a0cc8be8d1022788f7ed48f",
+    "game/src/game/fx/shaders/path_trace.hlsl": "1b92c7a245545fe0e3d9d73c22658989200f41a76c9aa8d953df8d4f840b87d2",
+    "game/src/game/fx/shaders/path_trace_build.json": "ce8772d7d72aa16ec7e4b91229e170cded21ee3e92b50459e11230de727a188e",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.dxil": "1e18a0a40d19522e508e96f65678d7f309cc0be905973b537ebc11383961ebe8",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv": "49ffeff9695e148d52ff61567c187b152c6a73525d1d310cd7601e666f120d0b",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.dxil": "285fc3bbafff99c1ac995407eaa02bc763c8d94b6c34d015627b74da64fa57cb",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv": "116b2e78aa8bccee2e03338b76a158680282dccd680359b3a58e2bea20009902",
+    "game/src/game/fx/shaders/path_trace_sharc_build.json": "f37f11d2d27eb8e1ca8677d7ee3fe5474147decfa7c51eb0e38364b772710fb2",
+    "game/src/game/fx/terrain_cliff.gd": "ad239ad187509d8d13a7a9091c2be907aeaa82a82c83db3cb1d9b715dfebe612",
+    "game/src/game/fx/terrain_cliff_shader.gd": "ebdb2ade7e1ae69b7081d5378ca94d4160ff5ba38e0d704e1bae140a77eaebc2",
+    "tools/regressions.json": "f64a76a35bee5c1e3b7423a0e0892ed3c3924e8481d137fd649435750748aba7",
+    "tools/tests/path_trace_terrain.gd": "c1ce518bc11c0d27463f34cc06ab14d7801accd68475f77bd6822904e43021ab",
+    "tools/tests/terrain_cave_wall.gd": "a9eae17bcfa6f958aea8c68c722bce7914a0e79e5f3f8abdbf2d7cb81e50a6ac",
+    "tools/tests/terrain_cliff_pattern.gd": "42eda7da93032e94e3e0d9307cebfc6dff58de83e227f0019d0690562e0fb469"
+  },
+  "pack_sha256": {
+    "candidate-native": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856",
+    "candidate-windows": "da1bb9aca4017036b26966345608f8924044429e616fa52d429c4e596107a133"
+  },
+  "cave": {
+    "camera": "[X: (0.759257, 0.0, -0.650791), Y: (-0.354977, 0.83814, -0.41414), Z: (0.545455, 0.545455, 0.636364), O: (20.15, 17.51792, -76.1)]",
+    "checks": 16,
+    "failures": [],
+    "floor_difference": 8.16993415355682e-07,
+    "map": "zone5_1",
+    "normal_vertical_variation": 0.0304082663899118,
+    "probes": [
+      {
+        "authored_up": 0.849077045917511,
+        "eligible": 255,
+        "geometric_up": 0.0755167156457901,
+        "index": 5378,
+        "pixel": [
+          650,
+          100
+        ],
+        "point": "(4.839126, 15.84031, -85.42163)",
+        "slot": 32,
+        "tile": [
+          2,
+          42
+        ]
+      },
+      {
+        "authored_up": 0.860144019126892,
+        "eligible": 255,
+        "geometric_up": 0.0789300128817558,
+        "index": 5507,
+        "pixel": [
+          800,
+          100
+        ],
+        "point": "(7.697642, 15.94354, -86.49071)",
+        "slot": 15,
+        "tile": [
+          3,
+          43
+        ]
+      },
+      {
+        "authored_up": 0.864701390266418,
+        "eligible": 255,
+        "geometric_up": 0.102685645222664,
+        "index": 5509,
+        "pixel": [
+          950,
+          100
+        ],
+        "point": "(10.38232, 16.05834, -87.25591)",
+        "slot": 16,
+        "tile": [
+          5,
+          43
+        ]
+      },
+      {
+        "authored_up": 0.653875291347504,
+        "eligible": 255,
+        "geometric_up": 0.0758214443922043,
+        "index": 5638,
+        "pixel": [
+          1100,
+          100
+        ],
+        "point": "(12.39829, 16.10205, -88.39912)",
+        "slot": 26,
+        "tile": [
+          6,
+          44
+        ]
+      },
+      {
+        "authored_up": 0.356637120246887,
+        "eligible": 255,
+        "geometric_up": 0.135899603366852,
+        "index": 5766,
+        "pixel": [
+          1250,
+          100
+        ],
+        "point": "(13.85559, 16.03953, -90.48469)",
+        "slot": 41,
+        "tile": [
+          6,
+          45
+        ]
+      },
+      {
+        "authored_up": 0.968451261520386,
+        "eligible": 255,
+        "geometric_up": 0.0754032656550407,
+        "index": 5378,
+        "pixel": [
+          650,
+          240
+        ],
+        "point": "(4.769036, 13.48429, -84.93409)",
+        "slot": 32,
+        "tile": [
+          2,
+          42
+        ]
+      },
+      {
+        "authored_up": 0.970610022544861,
+        "eligible": 255,
+        "geometric_up": 0.101985923945904,
+        "index": 5507,
+        "pixel": [
+          800,
+          240
+        ],
+        "point": "(7.825315, 13.75256, -86.0894)",
+        "slot": 15,
+        "tile": [
+          3,
+          43
+        ]
+      },
+      {
+        "authored_up": 0.915165543556213,
+        "eligible": 255,
+        "geometric_up": 0.102685645222664,
+        "index": 5509,
+        "pixel": [
+          950,
+          240
+        ],
+        "point": "(10.52014, 13.99459, -87.07812)",
+        "slot": 16,
+        "tile": [
+          5,
+          43
+        ]
+      },
+      {
+        "authored_up": 0.726181864738464,
+        "eligible": 255,
+        "geometric_up": 0.0758214443922043,
+        "index": 5638,
+        "pixel": [
+          1100,
+          240
+        ],
+        "point": "(12.70056, 14.12125, -88.25566)",
+        "slot": 26,
+        "tile": [
+          6,
+          44
+        ]
+      },
+      {
+        "authored_up": 0.589496791362762,
+        "eligible": 255,
+        "geometric_up": 0.207782283425331,
+        "index": 5767,
+        "pixel": [
+          1250,
+          240
+        ],
+        "point": "(14.30755, 13.98379, -90.3834)",
+        "slot": 3,
+        "tile": [
+          7,
+          45
+        ]
+      }
+    ],
+    "vertical_detail_after": 0.0197491962618125,
+    "vertical_detail_before": 0.00613142298559588,
+    "wall_difference": 0.0359340632880275
+  },
+  "pattern": {
+    "checks": 17,
+    "deviation": 0.176330105016555,
+    "failures": 0,
+    "peak_x": 0.0392157137393951,
+    "peak_y": 0.0352941453456879,
+    "relief": {
+      "jump": 0.070588231086731,
+      "valid": true,
+      "vertical_variation": 0.146435843572666,
+      "world_lock_error": 0.0
+    },
+    "translations": {
+      "(0, 128)": 0.394327367997009,
+      "(0, 256)": 0.316087610848369,
+      "(128, 0)": 0.397711371735306,
+      "(128, 128)": 0.363162449609923,
+      "(256, 0)": 0.313678376620012
+    },
+    "world_lock_error": 0.0
+  },
+  "gpu_jobs": {
+    "negative_control": "1fe1afd4ead4483a",
+    "dx12": "cc08ac60c51c4ae9",
+    "composed_vulkan": "b3fecc9492fd4b25",
+    "composed_opengl": "c5f3ff13f11249f5",
+    "opengl_pattern": "2775539decfd4f2d",
+    "performance": "06f17206d5dc4f05"
+  },
+  "performance": {
+    "low": {
+      "receipt": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SHARC_PERFORMANCE 26 checks 0 failures"
+        ],
+        "seconds": 62.819759881007485,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--display-driver",
+          "x11",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-low/fixtures/path_trace_sharc_performance.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-low",
+          "--sharc-cave"
+        ],
+        "runtime_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+        },
+        "fixture_sha256": "3690d2f3a54eafe1215c7095633336129742bf8499d2f9b6514b87ed3dcc034a"
+      },
+      "device": "NVIDIA GeForce RTX 3090 Ti",
+      "results": [
+        {
+          "bounces": 2,
+          "off_gpu_ms": 5.325927734375,
+          "on_gpu_ms": 5.908447265625,
+          "sharc_change_percent": 10.937428374971358
+        },
+        {
+          "bounces": 4,
+          "off_gpu_ms": 6.2320556640625,
+          "on_gpu_ms": 6.5146484375,
+          "sharc_change_percent": 4.534503359254116
+        }
+      ]
+    },
+    "high": {
+      "receipt": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SHARC_PERFORMANCE 26 checks 0 failures"
+        ],
+        "seconds": 204.2867065689934,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--display-driver",
+          "x11",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-high/fixtures/path_trace_sharc_performance.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-final-high",
+          "--sharc-cave",
+          "--sharc-high"
+        ],
+        "runtime_sha256": {
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+        },
+        "fixture_sha256": "ef5b81dc501ed461db1cf19c7ec21584946fdb73f615842e1e5a1e912b541c4d"
+      },
+      "device": "NVIDIA GeForce RTX 3090 Ti",
+      "results": [
+        {
+          "bounces": 2,
+          "off_gpu_ms": 129.24169921875,
+          "on_gpu_ms": 87.02685546875,
+          "sharc_change_percent": -32.663485550858184
+        },
+        {
+          "bounces": 4,
+          "off_gpu_ms": 137.1094970703125,
+          "on_gpu_ms": 90.3865966796875,
+          "sharc_change_percent": -34.0770708003287
+        }
+      ]
+    }
+  },
+  "final_pack_matches_sources": true
+}

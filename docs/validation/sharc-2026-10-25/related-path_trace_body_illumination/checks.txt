@@ -1,0 +1,15 @@
+PASS qualified native body-lighting device
+PASS build overlapping body representations: sun
+PASS uncorrected presentation starts inside its authored shadow copy: sun
+PASS body receives lighting at its matching authored surface: sun
+PASS camera depth retains the displayed body position: sun
+PASS world geometry still blocks the corrected body lighting: sun
+PASS ordinary placement update clears the first-person lighting offset: sun
+PASS build overlapping body representations: sky
+PASS uncorrected presentation starts inside its authored shadow copy: sky
+PASS body receives lighting at its matching authored surface: sky
+PASS camera depth retains the displayed body position: sky
+PASS world geometry still blocks the corrected body lighting: sky
+PASS ordinary placement update clears the first-person lighting offset: sky
+PASS body-lighting fixture releases its GPU resources
+SCENE_RT_DEVICE 14 checks 0 failures

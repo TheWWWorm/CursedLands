@@ -1314,6 +1314,7 @@ func apply_gfx() -> void:
 		_cliffs.bind(_land_mat)
 	else:
 		_land_mat.set_shader_parameter("cliff_tiles",null)
+		_land_mat.set_shader_parameter("cliff_blends",null)
 		_land_mat.set_shader_parameter("cliff_flatness",null)
 	var transition_base := ""
 	if Transitions.requested():
@@ -1438,8 +1439,10 @@ func apply_gfx() -> void:
 	_pair_land_mat = null
 	var specialize := _transitions != null and _transitions.junctions > 0 \
 		and RenderingServer.get_current_rendering_method() == "forward_plus"
+	var cliff_geometry_changed := false
 	for sector in get_children():
 		if sector is EITerrainSector:
+			cliff_geometry_changed = sector.set_cliff_geometry(_cliffs.geometry if _cliffs != null else null) or cliff_geometry_changed
 			sector.set_subdivided(EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
 			var material := _land_mat
 			if specialize and _transitions.pair_sector_allowed(sector.tile_origin):
@@ -1450,6 +1453,8 @@ func apply_gfx() -> void:
 					_pair_land_mat.shader = _transitions.shader(transition_base, true)
 				material = _pair_land_mat
 			sector.set_base_material(material)
+	if cliff_geometry_changed and is_instance_valid(details) and is_instance_valid(details.soft_ground):
+		details.soft_ground.refresh_geometry()
 
 	if is_inside_tree() and not is_instance_valid(color_cache) and TerrainColorCache.available(self):
 		color_cache = TerrainColorCache.create(self)

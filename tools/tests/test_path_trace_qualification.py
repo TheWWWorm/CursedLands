@@ -25,6 +25,21 @@ def telemetry(_group):
 
 
 class QualificationTests(unittest.TestCase):
+    def test_sharc_benchmark_requires_full_abba_gpu_evidence(self):
+        runtime = {"passed": True, "profile": q.PROFILE, "pt_supported": True,
+                   "driver": "vulkan", "method": "forward_plus", "display": "x11", "render_thread": dict(THREADS)}
+        rows = [{"bounces": bounces, "sharc": enabled, "cache_resets": 0,
+                 **{key: {"n": 120, "median": 1.0, "p95": 2.0} for key in
+                    ("frame_ms", "total_gpu_ms", "trace_gpu_ms", "update_gpu_ms", "resolve_gpu_ms")}}
+                for bounces in (2, 4) for enabled in (False, True, True, False)]
+        report = {"checks": 26, "failures": [], "runs": rows}
+        self.assertEqual(q.validate_reports("sharc_performance", report, runtime, "vulkan", False), [])
+        for mutate in (lambda r: r[1].update(cache_resets=1),
+                       lambda r: r[1]["update_gpu_ms"].update(n=0),
+                       lambda r: r.pop(), lambda r: r.reverse()):
+            bad = json.loads(json.dumps(report)); mutate(bad["runs"])
+            self.assertTrue(q.validate_reports("sharc_performance", bad, runtime, "vulkan", False))
+
     def test_inherited_service_display_and_gpu_environment_are_preserved(self):
         with tempfile.TemporaryDirectory() as temporary:
             authority = Path(temporary) / "authority"; authority.touch()

@@ -1,0 +1,189 @@
+{
+  "checks": 16,
+  "device": "NVIDIA GeForce RTX 3090",
+  "driver": "vulkan",
+  "failures": [],
+  "rows": [
+    {
+      "block": 0,
+      "case": "two_distant",
+      "cpu": {
+        "count": 100,
+        "mean_us": 105.35,
+        "median_us": 102.0,
+        "p95_us": 137.0
+      },
+      "full_span": true,
+      "motion_bytes": 786432,
+      "motion_calls": 1,
+      "offset_bytes": 131072,
+      "offset_calls": 1
+    },
+    {
+      "block": 1,
+      "case": "two_distant",
+      "cpu": {
+        "count": 100,
+        "mean_us": 33.16,
+        "median_us": 32.0,
+        "p95_us": 43.0
+      },
+      "full_span": false,
+      "motion_bytes": 192,
+      "motion_calls": 2,
+      "offset_bytes": 32,
+      "offset_calls": 2
+    },
+    {
+      "block": 2,
+      "case": "two_distant",
+      "cpu": {
+        "count": 100,
+        "mean_us": 32.52,
+        "median_us": 31.0,
+        "p95_us": 46.0
+      },
+      "full_span": false,
+      "motion_bytes": 192,
+      "motion_calls": 2,
+      "offset_bytes": 32,
+      "offset_calls": 2
+    },
+    {
+      "block": 3,
+      "case": "two_distant",
+      "cpu": {
+        "count": 100,
+        "mean_us": 106.06,
+        "median_us": 98.0,
+        "p95_us": 131.0
+      },
+      "full_span": true,
+      "motion_bytes": 786432,
+      "motion_calls": 1,
+      "offset_bytes": 131072,
+      "offset_calls": 1
+    },
+    {
+      "block": 0,
+      "case": "dense_1024",
+      "cpu": {
+        "count": 100,
+        "mean_us": 2841.39,
+        "median_us": 2626.0,
+        "p95_us": 3663.0
+      },
+      "full_span": true,
+      "motion_bytes": 98304,
+      "motion_calls": 1,
+      "offset_bytes": 16384,
+      "offset_calls": 1
+    },
+    {
+      "block": 1,
+      "case": "dense_1024",
+      "cpu": {
+        "count": 100,
+        "mean_us": 2726.68,
+        "median_us": 2626.0,
+        "p95_us": 3286.0
+      },
+      "full_span": false,
+      "motion_bytes": 98304,
+      "motion_calls": 1,
+      "offset_bytes": 16384,
+      "offset_calls": 1
+    },
+    {
+      "block": 2,
+      "case": "dense_1024",
+      "cpu": {
+        "count": 100,
+        "mean_us": 2723.94,
+        "median_us": 2599.0,
+        "p95_us": 3482.0
+      },
+      "full_span": false,
+      "motion_bytes": 98304,
+      "motion_calls": 1,
+      "offset_bytes": 16384,
+      "offset_calls": 1
+    },
+    {
+      "block": 3,
+      "case": "dense_1024",
+      "cpu": {
+        "count": 100,
+        "mean_us": 2822.07,
+        "median_us": 2645.0,
+        "p95_us": 3597.0
+      },
+      "full_span": true,
+      "motion_bytes": 98304,
+      "motion_calls": 1,
+      "offset_bytes": 16384,
+      "offset_calls": 1
+    },
+    {
+      "block": 0,
+      "case": "sixteen_groups",
+      "cpu": {
+        "count": 100,
+        "mean_us": 145.21,
+        "median_us": 138.0,
+        "p95_us": 190.0
+      },
+      "full_span": true,
+      "motion_bytes": 720096,
+      "motion_calls": 1,
+      "offset_bytes": 120016,
+      "offset_calls": 1
+    },
+    {
+      "block": 1,
+      "case": "sixteen_groups",
+      "cpu": {
+        "count": 100,
+        "mean_us": 137.0,
+        "median_us": 133.0,
+        "p95_us": 174.0
+      },
+      "full_span": false,
+      "motion_bytes": 384768,
+      "motion_calls": 8,
+      "offset_bytes": 120016,
+      "offset_calls": 1
+    },
+    {
+      "block": 2,
+      "case": "sixteen_groups",
+      "cpu": {
+        "count": 100,
+        "mean_us": 128.53,
+        "median_us": 128.0,
+        "p95_us": 170.0
+      },
+      "full_span": false,
+      "motion_bytes": 384768,
+      "motion_calls": 8,
+      "offset_bytes": 120016,
+      "offset_calls": 1
+    },
+    {
+      "block": 3,
+      "case": "sixteen_groups",
+      "cpu": {
+        "count": 100,
+        "mean_us": 143.69,
+        "median_us": 140.0,
+        "p95_us": 161.0
+      },
+      "full_span": true,
+      "motion_bytes": 720096,
+      "motion_calls": 1,
+      "offset_bytes": 120016,
+      "offset_calls": 1
+    }
+  ],
+  "scope": "Render-thread motion packing and GPU record uploads; no whole-game FPS claim."
+}

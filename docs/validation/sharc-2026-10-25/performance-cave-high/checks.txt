@@ -1,0 +1,35 @@
+PASS authored route exists: zone11
+PASS benchmark has a settled campaign scene
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": false, "bounces": 2, "frame_ms": { "n": 120, "median": 103.901, "p95": 105.276 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 102.13330078125, "p95": 103.506103515625 }, "update_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "resolve_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "trace_gpu_ms": { "n": 120, "median": 98.448486328125, "p95": 99.52783203125 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": true, "bounces": 2, "frame_ms": { "n": 120, "median": 75.377, "p95": 77.313 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 73.488525390625, "p95": 75.281494140625 }, "update_gpu_ms": { "n": 120, "median": 1.95947265625, "p95": 2.318359375 }, "resolve_gpu_ms": { "n": 120, "median": 0.065673828125, "p95": 0.07177734375 }, "trace_gpu_ms": { "n": 120, "median": 67.97314453125, "p95": 69.718994140625 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": true, "bounces": 2, "frame_ms": { "n": 120, "median": 76.344, "p95": 79.624 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 74.404296875, "p95": 77.931640625 }, "update_gpu_ms": { "n": 120, "median": 1.893798828125, "p95": 2.236572265625 }, "resolve_gpu_ms": { "n": 120, "median": 0.065673828125, "p95": 0.07080078125 }, "trace_gpu_ms": { "n": 120, "median": 68.75341796875, "p95": 71.760986328125 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": false, "bounces": 2, "frame_ms": { "n": 120, "median": 104.867, "p95": 106.469 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 103.06787109375, "p95": 104.60888671875 }, "update_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "resolve_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "trace_gpu_ms": { "n": 120, "median": 99.46484375, "p95": 100.880126953125 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": false, "bounces": 4, "frame_ms": { "n": 120, "median": 112.009, "p95": 117.399 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 110.163818359375, "p95": 115.287353515625 }, "update_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "resolve_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "trace_gpu_ms": { "n": 120, "median": 106.532470703125, "p95": 109.30078125 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": true, "bounces": 4, "frame_ms": { "n": 120, "median": 78.759, "p95": 80.477 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 76.843994140625, "p95": 78.683349609375 }, "update_gpu_ms": { "n": 120, "median": 1.89111328125, "p95": 2.2236328125 }, "resolve_gpu_ms": { "n": 120, "median": 0.065673828125, "p95": 0.103515625 }, "trace_gpu_ms": { "n": 120, "median": 71.096435546875, "p95": 73.1884765625 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": true, "bounces": 4, "frame_ms": { "n": 120, "median": 78.565, "p95": 80.957 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 76.786376953125, "p95": 78.9677734375 }, "update_gpu_ms": { "n": 120, "median": 1.88427734375, "p95": 2.283447265625 }, "resolve_gpu_ms": { "n": 120, "median": 0.06640625, "p95": 0.077880859375 }, "trace_gpu_ms": { "n": 120, "median": 71.225341796875, "p95": 72.976318359375 } }
+PASS benchmark selects requested cache state
+PASS measurement retains the selected PT/NRD path
+PASS measurement has fresh GPU timestamps
+SHARC_PERFORMANCE { "sharc": false, "bounces": 4, "frame_ms": { "n": 120, "median": 112.757, "p95": 114.446 }, "cache_resets": 0, "total_gpu_ms": { "n": 120, "median": 110.92626953125, "p95": 112.541748046875 }, "update_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "resolve_gpu_ms": { "n": 120, "median": 0.0, "p95": 0.0 }, "trace_gpu_ms": { "n": 120, "median": 107.186767578125, "p95": 108.566650390625 } }
+SHARC_PERFORMANCE 26 checks 0 failures

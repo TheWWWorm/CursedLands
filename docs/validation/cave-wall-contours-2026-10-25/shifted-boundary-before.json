@@ -1,0 +1,54 @@
+{
+  "git_head": "2b8103e744c55ff8c3ad5c41b225a3c562be5f44",
+  "game_source_sha256": "592e32bffac1ffc70cb9816515a46098625abd3a90882b999ab4e94b0853fb54",
+  "manifest_sha256": "7e51d18cc2853ab2ea52d3833b5e525ffde5e10158ed6bcace7ec4477d18c5cd",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "terrain_cliff_mesh",
+      "script": "tools/tests/terrain_cliff_mesh.gd",
+      "script_sha256": "946cfca398afabdfe5ef73eef29b43a58bd10f5cbb4856d5a1cf90517dcd518d",
+      "contract": "Tall natural wall contours remain continuous across tile edges and render pieces, preserve original anchors and snow layout, and restore exactly when disabled.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.42,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-contour-shift-negative/terrain_cliff_mesh/fixtures/terrain_cliff_mesh.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-contour-shift-negative/terrain_cliff_mesh/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "terrain_cliff_mesh/run.log",
+      "passed": false,
+      "result": {
+        "checks": 31,
+        "failures": 1
+      },
+      "errors": [
+        "FAIL shifted unsupported boundaries remain stationary: 9",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck",
+    "sha256": "508866ae27a5c69a7ba232b03ade825adfffbfdac1857af8d25b0e176828aba9"
+  },
+  "passed": false
+}

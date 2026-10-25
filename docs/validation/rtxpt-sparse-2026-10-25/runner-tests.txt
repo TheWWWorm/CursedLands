@@ -1,0 +1,28 @@
+{"event": "started", "pid": 1690992, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmp1ehbt05o"}
+{"event": "started", "pid": 1691009, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpgkfns2n1"}
+PT qualification failed: Invalid or protected --env key: NVIDIA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: DXVK_FILTER_DEVICE_NAME
+PT qualification failed: Invalid or protected --env key: __GLX_VENDOR_LIBRARY_NAME
+PT qualification failed: Invalid or protected --env key: VK_ICD_FILENAMES
+PT qualification failed: Invalid or protected --env key: DRI_PRIME
+PT qualification failed: Invalid or protected --env key: __NV_PRIME_RENDER_OFFLOAD
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE
+PT qualification failed: Invalid or protected --env key: VK_DRIVER_FILES
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT
+PT qualification failed: Invalid or protected --env key: CUDA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: VKD3D_FILTER_DEVICE_NAME
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+PT qualification failed: Requested physical GPU is absent from nvidia-smi
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+{"event": "started", "pid": 1691235, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpm784pfdf"}
+{"event": "started", "pid": 1691296, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpl4hurmsr"}
+{"event": "started", "pid": 1691322, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpp5vw7ijq"}
+{"event": "started", "pid": 1691332, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpiuzjm16m"}
+{"event": "started", "pid": 1691344, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpmlq5zrqq"}
+{"event": "started", "pid": 1691367, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmpxdq2vrrz"}
+{"event": "started", "pid": 1691369, "output": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/tmp/tmp30ummvki"}
+----------------------------------------------------------------------
+Ran 23 tests in 5.294s
+
+OK

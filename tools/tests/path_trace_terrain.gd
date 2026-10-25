@@ -7,8 +7,13 @@ var tile_texture: ImageTexture
 var transition_texture: ImageTexture
 var cliff_texture: ImageTexture
 var guard_texture: ImageTexture
+var blend_texture: ImageTexture
+var blend_mask := -1
+var four_donors := false
+var authored_normal := Vector3.BACK
 var normal_texture: Image
 var reference_image: Image
+var reference_normals := false
 var mode := 0 # detailed, pair, junction, cliff
 var rotation := 0
 var tile_index := 0
@@ -33,7 +38,7 @@ func reference_code() -> String:
 	code=code.replace("uniform int transition_junction_materials = 4;","const int transition_junction_materials = 4;")
 	code=code.replace("uniform int transition_relief_passes = 4;","const int transition_relief_passes = 4;")
 	if mode==3:
-		code+=Cliff.FUNCTIONS.replace("uniform sampler2D cliff_tiles : filter_nearest, repeat_disable;","layout(set=0,binding=4) uniform sampler2D cliff_tiles;").replace("uniform sampler2D cliff_flatness : filter_nearest, repeat_disable;","layout(set=0,binding=5) uniform sampler2D cliff_flatness;")
+		code+=Cliff.FUNCTIONS.replace("uniform sampler2D cliff_tiles : filter_nearest, repeat_disable;","layout(set=0,binding=4) uniform sampler2D cliff_tiles;").replace("uniform sampler2D cliff_flatness : filter_nearest, repeat_disable;","layout(set=0,binding=5) uniform sampler2D cliff_flatness;").replace("uniform sampler2D cliff_blends : filter_nearest, repeat_disable;","layout(set=0,binding=6) uniform sampler2D cliff_blends;")
 		code=code.replace("vec3 wx=dFdx(world); vec3 wy=dFdy(world);","vec3 wx=vec3(params.projection.z,0,0); vec3 wy=vec3(0,-params.projection.w,0);")
 	var result:="""#version 450
 layout(local_size_x=8,local_size_y=8,local_size_z=1) in;
@@ -55,6 +60,8 @@ void main() {
  vec4 traits;vec3 colour=ground_sample(ivec2(0),p,vec2(params.projection.z/4.0,0),vec2(0,-params.projection.w/4.0),traits);
 """
 	if mode==3:result+="vec3 world=vec3(point,0)+params.origin.xyz;vec3 planes=cliff_weights(ivec2(0),clamp(p,vec2(0),vec2(1)),vec3(0,0,1),72.0);colour=cliff_albedo(colour,ivec2(0),clamp(p,vec2(0),vec2(1)),world,planes);\n"
+	if reference_normals:
+		result+="colour=cliff_relief_normal(world,vec3(%s,%s,%s),vec3(0,0,1),vec3(0,0,1),planes,8.0,max(params.projection.z,params.projection.w));\n"%[authored_normal.x,authored_normal.y,authored_normal.z]
 	result=result.replace("const float tiles_per_axis=2.0;","const float tiles_per_axis=%s;"%float(atlas_axis))
 	result=result.replace("const float atlas_padding=0.125;","const float atlas_padding=%s;"%atlas_padding)
 	result=result.replace("const float source_texel=1.0/128.0;","const float source_texel=1.0/%s;"%float(atlas_axis*64))
@@ -70,7 +77,7 @@ func reference_render(source: String,params: PackedByteArray) -> void:
 	fmt.usage_bits=RenderingDevice.TEXTURE_USAGE_STORAGE_BIT|RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
 	var target:=rd.texture_create(fmt,RDTextureView.new())
 	var bindings: Array[RDUniform]=[uniforms(RenderingDevice.UNIFORM_TYPE_IMAGE,0,[target])]
-	for row in [[1,atlas,true],[2,tile_texture,false]]+([[3,transition_texture,false]] if mode in [1,2] else [])+([[4,cliff_texture,false],[5,guard_texture,false]] if mode==3 else []):
+	for row in [[1,atlas,true],[2,tile_texture,false]]+([[3,transition_texture,false]] if mode in [1,2] else [])+([[4,cliff_texture,false],[5,guard_texture,false],[6,blend_texture,false]] if mode==3 else []):
 		bindings.append(uniforms(RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE,row[0],[device._samplers[0],RenderingServer.texture_get_rd_texture(row[1].get_rid(),row[2])]))
 	var set:=rd.uniform_set_create(bindings,shader,0)
 	var list:=rd.compute_list_begin();rd.compute_list_bind_compute_pipeline(list,pipeline);rd.compute_list_bind_uniform_set(list,set,0)
@@ -83,7 +90,7 @@ func build_land() -> bool:
 	if device!=null:RenderingServer.call_on_render_thread(device.dispose);await frames(4)
 	device=PathDevice.new();mesh_data.clear()
 	var corners: Array[Vector3]=[Vector3(-2,-2,0),Vector3(2,-2,0),Vector3(2,2,0),Vector3(-2,2,0)]
-	quad(mesh_data,corners,Vector3.BACK,Vector3.ZERO)
+	quad(mesh_data,corners,authored_normal,Vector3.ZERO)
 	for i in 6:
 		var local:=(Vector2(mesh_data[i*16],mesh_data[i*16+1])+Vector2(2,2))/4.0
 		var p:=(local-Vector2(0.5,0.5)).rotated(rotation*PI/2)+Vector2(0.5,0.5)
@@ -107,7 +114,7 @@ func build_land() -> bool:
 	var tiles_data:=PackedInt32Array();tiles_data.resize(land_size.x*land_size.y)
 	tiles_data.fill(((tile_index+1)%(atlas_axis*atlas_axis))|(ground_type<<16))
 	var tile_id:=land_cell.y*land_size.x+land_cell.x
-	tiles_data[tile_id]=code|(ground_type<<16)|((1<<24) if mode==3 else 0)
+	tiles_data[tile_id]=code|(ground_type<<16)|(((1<<24)|((1<<25) if blend_mask>=0 else 0)) if mode==3 else 0)
 	data.append_array(tiles_data.to_byte_array());data.encode_u32(12,data.size())
 	data.append_array(PackedInt32Array([tile_id+1,tile_id+1]).to_byte_array())
 	data.encode_float(16,float(atlas_axis));data.encode_float(20,atlas_padding);data.encode_float(24,1.0/(atlas_axis*64));data.encode_float(28,1)
@@ -124,6 +131,10 @@ func build_land() -> bool:
 	if mode==3:
 		data.encode_u32(40,data.size());data.encode_u32(48,3);data.encode_u32(52,3)
 		data.resize(data.size()+12)
+		var blend_rows:=PackedColorArray([Color(1+((blend_mask>>0)&1),1+((blend_mask>>1)&1),1+((blend_mask>>2)&1),1+((blend_mask>>3)&1)) if blend_mask>=0 else Color(0,0,0,0)])
+		if four_donors:blend_rows[0]=Color(1,2,3,4)
+		if blend_mask>=0:data.append_array(blend_rows.to_byte_array())
+		blend_texture=ImageTexture.create_from_image(Image.create_from_data(1,1,false,Image.FORMAT_RGBAF,blend_rows.to_byte_array()))
 		var eligible:=Image.create(1,1,false,Image.FORMAT_R8);eligible.fill(Color.WHITE);cliff_texture=ImageTexture.create_from_image(eligible)
 		var guards:=Image.create(3,3,false,Image.FORMAT_R8);guard_texture=ImageTexture.create_from_image(guards)
 	device.terrain.data=data;device.terrain.atlas=atlas
@@ -138,14 +149,14 @@ func comparison(label: String) -> void:
 	RenderingServer.call_on_render_thread(reference_render.bind(reference_code(),params));await filtered
 	check(reference_image!=null,"compile independent raster sampler: "+label)
 	if reference_image==null:return
-	var traced:=device.shadow1.get_image();var error:=0.0;var peak:=0.0;var count:=0
+	var traced:=device.guide.get_image() if reference_normals else device.shadow1.get_image();var error:=0.0;var peak:=0.0;var count:=0
 	for y in range(size.y/3,2*size.y/3):
 		for x in range(size.x/3,2*size.x/3):
 			var a:=traced.get_pixel(x,y);var b:=reference_image.get_pixel(x,y)
 			var delta:=maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 			error+=delta;peak=maxf(peak,delta);count+=1
 	report[label]={"mean_error":error/count,"peak_error":peak}
-	check(error/count<0.006 and peak<0.025,"traced colour matches raster sampler: "+label+" "+str(report[label]))
+	check(error/count<0.006 and peak<0.025,"traced material matches raster sampler: "+label+" "+str(report[label]))
 	reference_image=null
 
 func run() -> void:
@@ -177,6 +188,18 @@ func run() -> void:
 		mode=selected;var label: String=["detailed","pair","junction","cliff"][mode]
 		await comparison(label)
 		size=Vector2i(40,24);await comparison(label+"-coarse-mip");size=fixture_size
+	for mask in [4,8,2,1,5,10]:
+		mode=3;blend_mask=mask;await comparison("cliff-two-rock-mask-%d"%mask)
+	four_donors=true;await comparison("cliff-four-material-corners")
+	size=Vector2i(40,24);await comparison("cliff-four-material-coarse-mip");size=fixture_size
+	authored_normal=Vector3(0,0.98,0.2).normalized();await comparison("cliff-upward-lighting-normal")
+	authored_normal=Vector3.BACK;four_donors=false;blend_mask=-1
+	# World-space anti-repeat must agree on negative coordinates and across
+	# distant noise cells, including the projected texture's coarse mips.
+	for position: Vector3 in [Vector3(-17,-5,0),Vector3(103,29,0)]:
+		offset=position;camera.position=offset+Vector3(0,0,72)
+		await comparison("cliff-world-"+str(position))
+		size=Vector2i(40,24);await comparison("cliff-world-coarse-"+str(position));size=fixture_size
 	offset=Vector3(17,5,0);camera.position=offset+Vector3(0,0,72);mode=0;await comparison("shifted-authored-tile")
 	# Constant normals isolate real normal-texture response from colour relief.
 	camera.position=offset+Vector3(0,0,3)
@@ -191,11 +214,11 @@ func run() -> void:
 	check(absf(rough/63.0-0.84)<0.02,"rock type controls traced roughness")
 	ground_type=0;check(await build_land(),"build grass material");await render_many(2)
 	check(absf((int(mean(device.shadow1).a)&63)/63.0-0.96)<0.02,"grass keeps a separate roughness")
-	# A near vertical face must receive relief from its projected rock texture,
+	# A near vertical face must receive world-space rock relief,
 	# even with the procedural normal texture disabled. Check every sampled
 	# normal as well as a visible change; this catches flipped/grazing normals.
 	mode=3;use_normal=false;ground_type=2
-	check(await build_land(),"build near cliff with projected painted relief");await render_many(2)
+	check(await build_land(),"build near cliff with world-space relief");await render_many(2)
 	var cliff_normals:=device.guide.get_image();var valid:=true;var tilted:=0;var samples:=0
 	for y in range(size.y/3,2*size.y/3):
 		for x in range(size.x/3,2*size.x/3):
@@ -204,8 +227,16 @@ func run() -> void:
 			if absf(n.x)>0.01:tilted+=1
 			samples+=1
 	check(valid,"near cliff relief keeps finite outward unit normals")
-	check(tilted>samples/2,"projected rock texture perturbs normals without the noise normal texture")
+	check(tilted>samples/2,"world-space rock relief perturbs normals without the noise normal texture")
 	report["cliff-relief"]={"samples":samples,"tilted":tilted,"valid":valid}
+	# Primary wall shading must agree with the raster receiver, including the
+	# misleading upward normals found on the photographed cave wall.
+	reference_normals=true;offset=Vector3.ZERO;camera.position=Vector3(0,0,8)
+	await comparison("cliff-relief-normal-parity")
+	authored_normal=Vector3(0,0.85,0.52).normalized()
+	await comparison("cliff-relief-upward-normal-parity")
+	offset=Vector3(-17,5,0);camera.position=offset+Vector3(0,0,8)
+	await comparison("cliff-relief-world-normal-parity")
 	RenderingServer.call_on_render_thread(device.dispose);await frames(6)
 	check(device.terrain.atlas==null,"disposing PT releases its retained raster atlas")
 	camera.queue_free()

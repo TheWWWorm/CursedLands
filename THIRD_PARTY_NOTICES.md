@@ -105,6 +105,15 @@ under Optional compiled navigation. Pinned revisions, build commands and the
 RenderingDevice integration are documented in
 `docs/integrations/path-tracing-nrd.md`.
 
+## Optional path-tracing radiance cache
+
+The compiled SHaRC 1.8.3 shaders use the NVIDIA RTX SDKs license, separately
+from the application's license. This software contains source code provided
+by NVIDIA Corporation. Full terms are in
+`game/src/game/fx/shaders/SHARC_NOTICES.txt`. The pinned SDK headers are external
+build inputs and are not redistributed as project source. See
+`docs/integrations/path-tracing-sharc.md` for reproducible builds.
+
 ## Optional NVIDIA DLSS and Reflex
 
 The Windows preview includes NVIDIA DLSS, NGX, Reflex and Streamline 2.14.16

@@ -106,7 +106,7 @@ for match in re.finditer(r'^const (?:SECTION|SR_HELP|QUALITY_HELP|FG_HELP|VERSIO
 # NVIDIA/combined selectors and package-aware credits choose strings dynamically.
 for filename in ('platform/rtx_graphics.gd', 'platform/temporal_graphics.gd', 'ui/graphics_attribution.gd'):
     source = (ROOT / filename).read_text()
-    for match in re.finditer(r'^const (?:SECTION|SR_HELP|FG_HELP|QUALITY_HELP|CHOICES|FG_CHOICES|UNAVAILABLE|NEED_RESTART|NEED_API|NEED_SR|NEED_FG|ENABLE_SR|NVIDIA_CREDIT|NVIDIA_SOURCE|NVIDIA_MARKS|NRD_CREDIT|AMD_CREDIT|AMD_MARKS|LICENSES) := (.+)$', source, re.M):
+    for match in re.finditer(r'^const (?:SECTION|SR_HELP|FG_HELP|QUALITY_HELP|CHOICES|FG_CHOICES|UNAVAILABLE|NEED_RESTART|NEED_API|NEED_SR|NEED_FG|ENABLE_SR|NVIDIA_CREDIT|NVIDIA_SOURCE|NVIDIA_MARKS|NRD_CREDIT|SHARC_CREDIT|AMD_CREDIT|AMD_MARKS|LICENSES) := (.+)$', source, re.M):
         value = json.loads(match[1])
         for key in value if isinstance(value, list) else [value]:
             if key not in entries: errors.append(f'{filename}: missing RU/DE key: {key}')

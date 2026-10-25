@@ -121,7 +121,7 @@ func snapshot(reason: String) -> Dictionary:
 	var cr := CrashReport.instance
 	var worlds := get_tree().get_nodes_in_group(GameWorld.DIAGNOSTIC_GROUP)
 	var render_options := {}
-	for key in ["pt_mode","pt_accumulation","pt_target_fps","rtx_upscaling","rtx_frame_generation",
+	for key in ["pt_mode","pt_accumulation","pt_target_fps","pt_sharc","rtx_upscaling","rtx_frame_generation",
 			"fsr_upscaling","fsr_quality","fsr_frame_generation"]:
 		render_options[key] = GameData.option(key)
 	var result := {

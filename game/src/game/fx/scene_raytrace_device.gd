@@ -181,6 +181,14 @@ func reconstruct(frame: PackedByteArray) -> bool:
 	# The custom presentation filter must not feed its broader blur into history.
 	return _copy_history() and filter_presented(frame)
 
+func trace_frame(_frame_data: PackedByteArray) -> bool:
+	var rays := _rd.raytracing_list_begin()
+	_rd.raytracing_list_bind_raytracing_pipeline(rays,_pipeline)
+	_rd.raytracing_list_bind_uniform_set(rays,_set,0)
+	_rd.raytracing_list_trace_rays(rays,0,_sbt,_size.x,_size.y,1)
+	_rd.raytracing_list_end()
+	return true
+
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
 	if measure_budget:_measure_budget()
@@ -190,11 +198,7 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if not _history_valid: frame.encode_float(82*4,0.0)
 	if not _upload_frame(frame): _render_failed();return
 	_rd.capture_timestamp("Scene RT begin")
-	var rays := _rd.raytracing_list_begin()
-	_rd.raytracing_list_bind_raytracing_pipeline(rays,_pipeline)
-	_rd.raytracing_list_bind_uniform_set(rays,_set,0)
-	_rd.raytracing_list_trace_rays(rays,0,_sbt,size.x,size.y,1)
-	_rd.raytracing_list_end()
+	if not trace_frame(frame): _render_failed();return
 	if _profile_stages: _rd.capture_timestamp("Scene RT rays")
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;

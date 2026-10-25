@@ -14,7 +14,7 @@ var cache_misses := 0
 var _cache_enabled := not OS.get_cmdline_user_args().has("--ei-rt-no-ground-cache")
 
 func configure(source: EITerrain) -> void:
-	var key := [source.get_instance_id(),source._tile_tex,source._cell_tex,Gfx.on("gfx_soft_ground")]
+	var key := [source.get_instance_id(),source._tile_tex,source._cell_tex,Gfx.on("gfx_soft_ground"),source._cliffs]
 	if _cache_enabled and key==_source_key:return
 	_source_key=key;profiles.clear();_sectors.clear();tiles=null;cells=null
 	terrain=source

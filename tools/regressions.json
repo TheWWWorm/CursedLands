@@ -1464,6 +1464,161 @@
       "mode": "headless",
       "args": [],
       "min_checks": 1137
+    },
+    {
+      "id": "path_trace_sparse_updates",
+      "script": "tools/tests/path_trace_sparse_updates.gd",
+      "summary": "PT_SPARSE_UPDATES",
+      "contract": "Sparse motion and lighting uploads preserve GPU records, stopped and rejected history, visibility, and bounded calls; unchanged geometry avoids TLAS rebuilds.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 44
+    },
+    {
+      "id": "path_trace_sharc",
+      "script": "tools/tests/path_trace_sharc.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "SHaRC GPU cache, NRD, invalidation, resize, fallback and resource lifetime",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 25
+    },
+    {
+      "id": "path_trace_sharc_live",
+      "script": "tools/tests/path_trace_sharc_live.gd",
+      "summary": "SHARC_LIVE",
+      "contract": "Optional SHaRC cache in live campaign terrain, local lights, settings switches, travel and NRD.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 18
+    },
+    {
+      "id": "terrain_cliff_blends",
+      "script": "tools/tests/terrain_cliff_blends.gd",
+      "summary": "CLIFF_BLENDS",
+      "contract": "Verified natural cliff donors retain rotated material corners and reject unknown, conflicting, snow or missing-donor inputs.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 82
+    },
+    {
+      "id": "path_trace_terrain",
+      "script": "tools/tests/path_trace_terrain.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Native traced terrain colours and wall relief agree with raster sampling across atlas layouts, mips, material corners, world positions and upward lighting normals.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 117,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_cave_wall",
+      "script": "tools/tests/terrain_cave_wall.gd",
+      "summary": "CAVE_WALL",
+      "contract": "The zone5_1 cave wall has world-projected rock and broad shading relief in raster, PT and cached PT while preserving original terrain records.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 16,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_cliff_pattern",
+      "script": "tools/tests/terrain_cliff_pattern.gd",
+      "summary": "CLIFF_PATTERN",
+      "contract": "Projected wall art and broad relief remain fixed in world space without wrap seams, repeated patches, flipped normals or effects on flat/distant surfaces.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 17
+    },
+    {
+      "id": "terrain_cliff_mesh",
+      "script": "tools/tests/terrain_cliff_mesh.gd",
+      "summary": "CLIFF_MESH",
+      "contract": "Tall natural wall contours remain continuous across tile edges and render pieces, preserve original anchors and snow layout, and restore exactly when disabled.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 31
+    },
+    {
+      "id": "terrain_wall_contours",
+      "script": "tools/tests/terrain_wall_contours.gd",
+      "summary": "WALL_CONTOURS",
+      "contract": "The photographed cave loses broad vertical bands in lit raster, PT and SHaRC output; a straight-face control reproduces them and the walkable floor stays unchanged.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 14,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_sector",
+      "script": "tools/tests/terrain_sector.gd",
+      "summary": "TERRAIN_SECTOR",
+      "contract": "Culled sector pieces preserve tile data, cache ownership and the contiguous input and retained meshes needed by snow deformation.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 17966
+    },
+    {
+      "id": "soft_ground_mesh",
+      "script": "tools/tests/soft_ground_mesh.gd",
+      "summary": "SOFT_GROUND_MESH",
+      "contract": "Native snow mesh jobs match script tessellation and retain active tiles across rebuilds, expiry and world cleanup.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 3044
+    },
+    {
+      "id": "terrain_cliff_composed",
+      "script": "tools/tests/terrain_cliff_render.gd",
+      "summary": "TERRAIN_CLIFF_RENDER",
+      "contract": "Real cliff terrain composes with ground contacts, cached colour, water, clouds and weather.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--cliff-composed"
+      ],
+      "min_checks": 87,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_cliff_composed_gl",
+      "script": "tools/tests/terrain_cliff_render.gd",
+      "summary": "TERRAIN_CLIFF_RENDER",
+      "contract": "Compatibility cliff terrain retains contact and surface composition.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--cliff-composed"
+      ],
+      "min_checks": 20
+    },
+    {
+      "id": "terrain_sun_shadows",
+      "script": "tools/tests/terrain_sun_shadows.gd",
+      "summary": "TERRAIN_SUN_SHADOWS",
+      "contract": "Original hill geometry casts stable sunlight shadows without changing unrelated valley pixels.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 14,
+      "rendering_method": "forward_plus"
     }
   ]
 }

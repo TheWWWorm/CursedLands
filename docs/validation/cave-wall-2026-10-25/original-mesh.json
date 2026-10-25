@@ -1,0 +1,24 @@
+{
+  "evidence_id": "ev_b7efa46ad900424a091d98f1868d6fe49d01863c85d1c61b0593b4d558d4448e",
+  "subject": {
+    "name": "game.exe",
+    "digest": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+    },
+    "format": "pe",
+    "architecture": "x86",
+    "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "procedure": "0x6c1bc0",
+  "observations": [
+    "Tile index is masked with 0x3fff and rotation decoded from the upper two bits.",
+    "The mesh builder requests a table from 0x6c5380, then copies nine UV pairs with V inversion.",
+    "The UV table lookup has no vertex-height input; this is static decompiler evidence, not original source."
+  ],
+  "local_decompilation": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/002c1/6c1bc0_FUN_006c1bc0.c"
+}

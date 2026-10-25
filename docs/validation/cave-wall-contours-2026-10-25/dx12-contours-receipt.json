@@ -1,0 +1,35 @@
+{
+  "exit": 0,
+  "errors": [],
+  "summary": [
+    "WALL_CONTOURS 14 checks 0 failures"
+  ],
+  "seconds": 40.78000974198221,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-contour-final-dx12-terrain_wall_contours/fixtures/terrain_wall_contours.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-contour-final-dx12-terrain_wall_contours"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-windows/runtime.pck": "22a3ca932888cd37bcb28c5b537650fe0f1830bb4f28295be68be0bc00f94251"
+  },
+  "fixture_sha256": "dc8a9a0edbed4fc5b9dda9c988c259d4e37e6970a72faae6a6b27e12f9bba76b"
+}

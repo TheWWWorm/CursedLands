@@ -1,0 +1,26 @@
+PASS qualified hardware RT runtime is available
+PASS build hardware acceleration structure, alpha=false
+PASS RT target dimensions (128, 128)
+PASS HDR colour and alpha survive GPU readback
+PASS closest textured triangle reads red
+PASS miss leaves reflected sky visible
+PASS resize preserves the texture RID bound by water materials
+PASS RT target dimensions (96, 64)
+PASS HDR colour and alpha survive GPU readback
+PASS closest textured triangle reads red
+PASS miss leaves reflected sky visible
+PASS underwater geometry is excluded by the reflection plane
+PASS GPU output is detached after teardown
+PASS build hardware acceleration structure, alpha=true
+PASS RT target dimensions (128, 128)
+PASS HDR colour and alpha survive GPU readback
+PASS alpha-tested front triangle reveals green rear hit
+PASS miss leaves reflected sky visible
+PASS resize preserves the texture RID bound by water materials
+PASS RT target dimensions (96, 64)
+PASS HDR colour and alpha survive GPU readback
+PASS alpha-tested front triangle reveals green rear hit
+PASS miss leaves reflected sky visible
+PASS underwater geometry is excluded by the reflection plane
+PASS GPU output is detached after teardown
+WATER_RT_DEVICE 25 checks 0 failures

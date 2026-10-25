@@ -2,10 +2,10 @@
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
   "builder_sha256": "b8c5c42715bc4a4c517ae3809a924a72af88d649ae88771c81e8271d65cfbe61",
-  "source_sha256": "12b3739c1da5a3d6f57453c56f01366bf5caa4fc31161f34c497d24f186b7e74",
+  "source_sha256": "1b92c7a245545fe0e3d9d73c22658989200f41a76c9aa8d953df8d4f840b87d2",
   "files": {
-    "path_trace_raygen.dxil": "85c6ec3aa7085b18a5cd4823e47dad5bbfe0b0c183162243d124fce9d4ab1508",
-    "path_trace_raygen.spv": "68c3cf924a9563807aca4c3e9c5004fef4d94450e6f10354cf135317fdee956a",
+    "path_trace_raygen.dxil": "2a09d179737c69757e647dd660643f00c52a5473fd09dd2520eb4006f96d7459",
+    "path_trace_raygen.spv": "d959b45361e6fe1ec66e367eb521d64f21613ea974528eaa03b3e319dbdb103a",
     "path_trace_miss.dxil": "9d181346415e526c5942efaf17c0f941a47df05b313a0e2e72f7d3c491f2ea51",
     "path_trace_miss.spv": "92ba54b23e2245c34f2048b3926733df3112d82d2087ef46d03accbadae8869b",
     "path_trace_closest_hit.dxil": "06404e3c8b349b1a4af1e91c5dbf7615e583bf893f7f338b80bcbc8260a6b1ac",
@@ -14,13 +14,13 @@
     "path_trace_any_hit.spv": "019d7249c2854f6611e6be525855d202d9410fb2f1f9616c479c4640819898a9",
     "path_trace_raygen_no_emitters.dxil": "0ac85c6c06627d4daa546f1b3843f5242a17d08d52deb108bccefd424df01ec1",
     "path_trace_raygen_no_emitters.spv": "d48662d39fa93f770db046b32f89926f2918ac64f78a61fd8a64cc2893b1d77f",
-    "path_trace_raygen_deep.dxil": "5e7499954fd5fcca451a5fbbf988b90e69c7ae4cc442d6ecd0cd706096aeb4bf",
-    "path_trace_raygen_deep.spv": "f0895f991a5193e8ea89416cda3990487f3cde0c848d1810d0665e705013b336",
+    "path_trace_raygen_deep.dxil": "e0d045fa5c932c9648a6410a0d643609eff5f87747daca0c994bfd9d483a7f6f",
+    "path_trace_raygen_deep.spv": "9a3043f2e2e668c9ddb8bac795c3b3ee80415ad2db80c3b805def372c3980028",
     "path_trace_raygen_deep_no_emitters.dxil": "12c4e45857086468065fe082f04c7a5aac013675f515fa083c31a3303da5b5bf",
     "path_trace_raygen_deep_no_emitters.spv": "bf57a69b90eab306d3f9bd7bb3ecac78796b1c2031e6b9fa1941491dd0c98c99",
-    "path_trace_closest_hit_terrain.dxil": "7f06c5b167c6dafe428713f3b138176a1e338fbe3417dfe73b4b2572f17aee79",
-    "path_trace_closest_hit_terrain.spv": "857756d22f84229d4f97c452cbcc0ea6cfaa967868780a74df1354803a47ba5f",
-    "path_trace_closest_hit_transitions.dxil": "748b40077668d0fa9a65873fc02f4bcd40a0e0d927b32c71ba2e6007f2a7296b",
-    "path_trace_closest_hit_transitions.spv": "0c82b7fe346b9ef1a4cb4d9069730023ee2f1f89362e98040c7056ee9e4117fc"
+    "path_trace_closest_hit_terrain.dxil": "1e18a0a40d19522e508e96f65678d7f309cc0be905973b537ebc11383961ebe8",
+    "path_trace_closest_hit_terrain.spv": "49ffeff9695e148d52ff61567c187b152c6a73525d1d310cd7601e666f120d0b",
+    "path_trace_closest_hit_transitions.dxil": "285fc3bbafff99c1ac995407eaa02bc763c8d94b6c34d015627b74da64fa57cb",
+    "path_trace_closest_hit_transitions.spv": "116b2e78aa8bccee2e03338b76a158680282dccd680359b3a58e2bea20009902"
   }
 }

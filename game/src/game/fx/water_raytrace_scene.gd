@@ -48,6 +48,7 @@ var _ground := Ground.new()
 const SourceCache = preload("res://src/game/fx/raytrace_source_cache.gd")
 var _sources := SourceCache.new()
 var _soft_ground := false
+var _cliffs: TerrainCliff
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
 var lighting_camera_mask := -1
@@ -59,6 +60,7 @@ func _init() -> void:
 func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_terrain = terrain; center = position; _plane = plane
 	_soft_ground=Gfx.on("gfx_soft_ground");_ground.configure(terrain)
+	_cliffs=terrain._cliffs
 	_detail_options = Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))
 	if path_materials: _terrain_version=PathTerrain.version(terrain)
 	for child in terrain.get_children():
@@ -162,7 +164,7 @@ func _reset_topology_poll() -> void:
 	_topology_seen.clear();_topology_materials.clear()
 
 func topology_changed(budget_us := 0) -> bool:
-	if _soft_ground!=Gfx.on("gfx_soft_ground") \
+	if _soft_ground!=Gfx.on("gfx_soft_ground") or _cliffs!=_terrain._cliffs \
 		or (lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))) \
 		or (path_materials and _terrain_version!=PathTerrain.version(_terrain)):
 		_reset_topology_poll();return true
@@ -207,7 +209,7 @@ func step(budget_us := 6000) -> bool:
 		# lose their mesh before this queued entry reaches the packing budget.
 		if is_instance_valid(node) and node.is_inside_tree() and (entry.land or (node as MeshInstance3D).mesh != null):
 			if entry.land:
-				var arrays: Array = _ground.arrays(node.deformation_arrays(),node.get_instance_id())
+				var arrays: Array = _ground.arrays(node.visual_arrays(),node.get_instance_id())
 				var geometry := _append(arrays,node.global_transform,null,true)
 				if path_materials and geometry>=0:
 					# Follow the actual retained triangles, including shifted MPR

@@ -1,0 +1,265 @@
+{
+  "baseline_commit": "42e3365fb5be6a19ccbe3b11a6c0dd86b3801382",
+  "branch": "perf/pt-sparse-updates-20261025",
+  "source_sha256": {
+    "game/src/game/fx/path_trace_device.gd": "54a8822a8d91b43a252b40a955a5399b06bd8d013402baf11da3bfb0783a62f9",
+    "game/src/game/fx/water_raytrace_device.gd": "9bcea78b6c7b62a1dfe83a6fe4d10f2e3f9e54e2f0e9ed3dab91087b4603ec3b",
+    "game/src/game/fx/shaders/path_trace.hlsl": "12b3739c1da5a3d6f57453c56f01366bf5caa4fc31161f34c497d24f186b7e74",
+    "game/src/game/fx/shaders/path_trace_build.json": "8d5f16e4747bcc49312c3b63f125795c32ab63254be9ffb50cb577ece112a3ec"
+  },
+  "runtime_sha256": {
+    "candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "candidate-native/runtime.pck": "4837f47c3ee0a86198c18588dc2b0a0a660e11340d16aa31cc8882208b910aad",
+    "candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+    "candidate-windows/runtime.pck": "5d3658e2cb28d180b62419441f042168507ddea986fa21e38e2c71c5c8c6353c"
+  },
+  "before": {
+    "checks": 44,
+    "failures": 9,
+    "receipt": "sparse-before.json"
+  },
+  "checks": [
+    {
+      "backend": "Vulkan",
+      "case": "path_trace_motion_cost",
+      "checks": 12,
+      "failures": 0,
+      "receipt": "final-record-checks.json",
+      "pack_sha256": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+    },
+    {
+      "backend": "Vulkan",
+      "case": "path_trace_motion",
+      "checks": 66,
+      "failures": 0,
+      "receipt": "final-record-checks.json",
+      "pack_sha256": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+    },
+    {
+      "backend": "Vulkan",
+      "case": "path_trace_shadow_motion",
+      "checks": 12,
+      "failures": 0,
+      "receipt": "final-live-checks.json",
+      "pack_sha256": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+    },
+    {
+      "backend": "Vulkan",
+      "case": "path_trace_nrd_device",
+      "checks": 26,
+      "failures": 0,
+      "receipt": "final-live-checks.json",
+      "pack_sha256": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+    },
+    {
+      "backend": "Vulkan",
+      "case": "path_trace_history_handoff",
+      "checks": 13,
+      "failures": 0,
+      "receipt": "final-live-checks.json",
+      "pack_sha256": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+    },
+    {
+      "backend": "Vulkan",
+      "case": "dar_leanos_route",
+      "checks": 54,
+      "failures": 0,
+      "receipt": "final-live-checks.json",
+      "pack_sha256": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+    },
+    {
+      "backend": "Vulkan",
+      "case": "path_trace_sparse_updates",
+      "checks": 44,
+      "failures": 0,
+      "receipt": "vulkan-qualification.json",
+      "final_build": true
+    },
+    {
+      "backend": "Vulkan",
+      "case": "body_illumination",
+      "checks": 14,
+      "failures": 0,
+      "receipt": "native-clean-body.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": "4837f47c3ee0a86198c18588dc2b0a0a660e11340d16aa31cc8882208b910aad"
+      }
+    },
+    {
+      "backend": "Vulkan",
+      "case": "water_device",
+      "checks": 25,
+      "failures": 0,
+      "receipt": "native-water_raytrace_device.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+      }
+    },
+    {
+      "backend": "Vulkan",
+      "case": "scene_device",
+      "checks": 17,
+      "failures": 0,
+      "receipt": "native-scene_raytrace_device.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+      }
+    },
+    {
+      "backend": "Vulkan",
+      "case": "lifecycle",
+      "checks": 169,
+      "failures": 0,
+      "receipt": "native-final-lifecycle.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "sparse_updates",
+      "checks": 44,
+      "failures": 0,
+      "receipt": "windows-qualified-path_trace_sparse_updates.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "5d3658e2cb28d180b62419441f042168507ddea986fa21e38e2c71c5c8c6353c"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "motion",
+      "checks": 66,
+      "failures": 0,
+      "receipt": "windows-path_trace_motion.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "38e99635159c9543b662ec87bbbeb1ad7f2e57aebfe38ef08505eb7f4247fc63"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "body_illumination",
+      "checks": 14,
+      "failures": 0,
+      "receipt": "windows-clean-path_trace_body_illumination.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "5d3658e2cb28d180b62419441f042168507ddea986fa21e38e2c71c5c8c6353c"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "water_device",
+      "checks": 25,
+      "failures": 0,
+      "receipt": "windows-water_raytrace_device.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "38e99635159c9543b662ec87bbbeb1ad7f2e57aebfe38ef08505eb7f4247fc63"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "scene_device",
+      "checks": 17,
+      "failures": 0,
+      "receipt": "windows-scene_raytrace_device.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "38e99635159c9543b662ec87bbbeb1ad7f2e57aebfe38ef08505eb7f4247fc63"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "nrd_device",
+      "checks": 26,
+      "failures": 0,
+      "receipt": "windows-path_trace_nrd_device.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "38e99635159c9543b662ec87bbbeb1ad7f2e57aebfe38ef08505eb7f4247fc63"
+      }
+    },
+    {
+      "backend": "DX12/Wine",
+      "case": "lifecycle",
+      "checks": 168,
+      "failures": 0,
+      "receipt": "windows-final-path_trace_lifecycle.json",
+      "runtime_sha256": {
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-windows/runtime.pck": "38e99635159c9543b662ec87bbbeb1ad7f2e57aebfe38ef08505eb7f4247fc63"
+      }
+    }
+  ],
+  "benchmark": {
+    "gpu_job": "1c5367f437184d5e",
+    "device": "NVIDIA GeForce RTX 3090",
+    "scope": "Render-thread motion packing and GPU record uploads; no whole-game FPS claim.",
+    "warmup_per_block": 40,
+    "measured_per_block": 100,
+    "order": [
+      "previous",
+      "new",
+      "new",
+      "previous"
+    ],
+    "comparison": [
+      {
+        "case": "two_distant",
+        "previous_median_us": 100.0,
+        "new_median_us": 31.5,
+        "change_percent": -68.5,
+        "previous_bytes": 917504,
+        "new_bytes": 224
+      },
+      {
+        "case": "dense_1024",
+        "previous_median_us": 2635.5,
+        "new_median_us": 2612.5,
+        "change_percent": -0.873,
+        "previous_bytes": 114688,
+        "new_bytes": 114688
+      },
+      {
+        "case": "sixteen_groups",
+        "previous_median_us": 139.0,
+        "new_median_us": 130.5,
+        "change_percent": -6.115,
+        "previous_bytes": 840112,
+        "new_bytes": 504784
+      }
+    ],
+    "receipt": "benchmark.json"
+  },
+  "runner_unit_tests": {
+    "checks": 23,
+    "failures": 0
+  },
+  "shader_verification": {
+    "files": 18,
+    "result": "shared source and binary hashes match; no shader changes"
+  },
+  "source_stage_comparison": {
+    "gameplay_and_renderer_sources_match": true,
+    "importer_generated_metadata": [
+      "game/assets/materials/surface-detail/bridge00.png.import",
+      "game/assets/materials/surface-detail/columnruins01.png.import",
+      "game/assets/materials/surface-detail/stone03.png.import"
+    ]
+  },
+  "notes": [
+    "Related checks span candidate revisions; each receipt identifies its executed pack. Final offset bookkeeping is covered by the 44-check Vulkan qualification, DX12 sparse test, both body-lighting tests and the final benchmark.",
+    "Original-game PT comparison is inapplicable: these are remake-specific GPU records and acceleration structures.",
+    "Initial test setup hit disk exhaustion and was rerun; no incomplete run counts as a pass.",
+    "Lifecycle count failure reproduced before optimization. Exact pool/membership checks replace the stale 21-image assumption; disposal still requires zero live images.",
+    "Body-lighting fixture now explicitly disposes its device; the final two API runs have no leaked-RID warnings.",
+    "No full-game FPS improvement or native Windows/other GPU vendor qualification is claimed."
+  ],
+  "local_evidence": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025"
+}

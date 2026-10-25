@@ -6,6 +6,13 @@ const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
 const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
 const DIRECT_COMPOSITE = preload("res://src/game/fx/shaders/path_trace_direct_composite.glsl")
+const Sharc = preload("res://src/game/fx/path_trace_sharc.gd")
+var sharc := Sharc.new()
+var sharc_enabled := false
+var sharc_failed := false
+var _sharc_requested := false
+var _sharc_mode := 0 # 0 reference, 1 query, 2 update
+var _sharc_sbts := {}
 var nrd := Nrd.new()
 var nrd_active := false
 var direct_sun := Texture2DRD.new()
@@ -53,6 +60,11 @@ var _variants := {}
 # Each record maps the current rigid surface and shading normal to their
 # previous rendered positions. Unchanged placements take the identity fast path.
 const MOTION_STRIDE := 96
+# Keep small gaps in one transfer, but do not copy a whole city's static
+# records just because two animated objects have distant stable IDs.
+const RECORD_UPLOAD_GAP := 32768
+const RECORD_UPLOAD_LIMIT := 8
+const OFFSET_SPARSE_LIMIT := 128
 var _motion := RID()
 var _motion_data := PackedByteArray()
 var _motion_pending := {}
@@ -64,7 +76,7 @@ func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_CLOSEST_HIT and terrain.data.size()>=Terrain.HEADER and terrain.data.decode_u32(0)>0:
 		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain")
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
-		return shader_prefix()+"raygen"+("_deep" if _deep_paths else "")+("_no_emitters" if not _uses_emitters else "")
+		return shader_prefix()+"raygen"+("_sharc" if _sharc_mode>0 else "")+("_update" if _sharc_mode==2 else "")+("_deep" if _deep_paths and _sharc_mode!=2 else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 2816
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
@@ -133,30 +145,30 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	_emitters = _own(_rd.storage_buffer_create(Emitters.HEADER+Emitters.LIMIT*Emitters.STRIDE))
 	_emitter_lookup = _own(_rd.storage_buffer_create(Emitters.HASH_SLOTS*16))
 	return _instance_geometry.is_valid() and _lighting_offsets.is_valid() and _motion.is_valid() and _emitters.is_valid() and _emitter_lookup.is_valid() \
-		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths)
+		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode)
 
 ## Compile only the needed emitter/deep-path combinations. Every variant
 ## shares hit stages, TLAS, SBT ranges and stable output images.
-func _select_pipeline(enabled: bool,deep: bool) -> bool:
-	if enabled==_uses_emitters and deep==_deep_paths: return true
-	var key := int(enabled)|(int(deep)<<1)
+func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int) -> Dictionary:
+	var key := int(enabled)|(int(deep)<<1)|(sharc_mode<<2)
 	if not _variants.has(key):
-		# Compilation reads these flags and replaces _shader. Do not publish a
-		# requested mode until both its pipeline and SBT transition succeed.
-		var old_enabled := _uses_emitters;var old_deep := _deep_paths;var old_shader := _shader
-		_uses_emitters=enabled;_deep_paths=deep
-		var program := _compile()
-		var shader := _shader
-		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader
-		if program==null: return false
+		var old_enabled := _uses_emitters;var old_deep := _deep_paths;var old_shader := _shader;var old_sharc := _sharc_mode
+		_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode
+		var program := _compile();var shader := _shader
+		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader;_sharc_mode=old_sharc
+		if program==null:return {}
 		var pipeline := _create_pipeline(program)
-		if not pipeline.is_valid(): return false
-		_variants[key] = {"shader":shader,"pipeline":pipeline}
-	if _rd.hit_sbt_set_pipeline(_sbt,_variants[key].pipeline)!=OK: return false
-	_shader=_variants[key].shader;_pipeline=_variants[key].pipeline
-	_uses_emitters=enabled;_deep_paths=deep
-	_release_ray_set()
-	_history_valid = false
+		if not pipeline.is_valid():return {}
+		_variants[key]={"shader":shader,"pipeline":pipeline}
+	return _variants[key]
+
+func _select_pipeline(enabled: bool,deep: bool,sharc_mode := 0) -> bool:
+	if enabled==_uses_emitters and deep==_deep_paths and sharc_mode==_sharc_mode:return true
+	var variant := _pipeline_variant(enabled,deep,sharc_mode)
+	if variant.is_empty() or _rd.hit_sbt_set_pipeline(_sbt,variant.pipeline)!=OK:return false
+	_shader=variant.shader;_pipeline=variant.pipeline
+	_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode
+	_release_ray_set();_history_valid=false
 	return true
 
 func _upload_emitters() -> bool:
@@ -180,6 +192,7 @@ func set_cloud_texture(texture: Texture2D) -> void:
 	_cloud_image=rid
 
 func _release_ray_set() -> void:
+	sharc.release_update_set()
 	if _set.is_valid() and _rd.uniform_set_is_valid(_set):_rd.free_rid(_set)
 	_set=RID()
 
@@ -193,16 +206,25 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 	if _uses_emitters:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
+	if _sharc_mode>0:uniforms.append_array(sharc.uniforms())
 	return uniforms
 
 func update_scene(changes: Dictionary) -> bool:
 	if _closed or not _ready: return false
+	if sharc.active:
+		# Conservative invalidation: moving/deformed blockers and emissive
+		# surfaces must not leave old light in otherwise static cache cells.
+		if not changes.get("poses",[]).is_empty():sharc.invalidate()
+		for placement: Dictionary in changes.get("instances",[]):
+			var old: RDAccelerationStructureInstance=_instances[placement.index]
+			if old.transform!=placement.transform or old.mask!=placement.mask:
+				sharc.invalidate();break
 	if not _update_motion(changes) or not _update_lighting_offsets(changes):
 		_render_failed();return false
 	if not super.update_scene(changes): return false
 	if emitters.update(changes):
 		_history_valid = false
-		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths):
+		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode):
 			_render_failed();return false
 	return true
 
@@ -235,16 +257,51 @@ func _write_lighting_offset(index: int,offset: Vector3) -> void:
 	for axis in 3:_lighting_offset_data.encode_float(index*16+axis*4,offset[axis])
 
 func _update_lighting_offsets(changes: Dictionary) -> bool:
-	var first := _lighting_offset_values.size();var last := -1
-	for placement: Dictionary in changes.get("instances",[]):
+	var placements: Array=changes.get("instances",[])
+	# Offset records are only 16 bytes. For bulk scene updates, collecting
+	# and sorting every changed ID costs more than one bounded span upload.
+	# Keep the original min/max path; small first-person groups use sparsity.
+	if placements.size()>=OFFSET_SPARSE_LIMIT:
+		var first := _lighting_offset_values.size();var last := -1
+		for placement: Dictionary in placements:
+			var index: int=placement.index
+			var offset: Vector3=placement.get("lighting_offset",Vector3.ZERO)
+			if offset==_lighting_offset_values[index]:continue
+			_write_lighting_offset(index,offset)
+			first=mini(first,index);last=maxi(last,index)
+		return true if last<first else _upload_record_range(_lighting_offsets,_lighting_offset_data,first*16,(last+1)*16)
+	var dirty: Array[int]=[]
+	for placement: Dictionary in placements:
 		var index: int=placement.index
 		var offset: Vector3=placement.get("lighting_offset",Vector3.ZERO)
 		if offset==_lighting_offset_values[index]:continue
 		_write_lighting_offset(index,offset)
-		first=mini(first,index);last=maxi(last,index)
-	if last<first:return true
-	return _rd.buffer_update(_lighting_offsets,first*16,(last-first+1)*16,
-		_lighting_offset_data.slice(first*16,(last+1)*16))==OK
+		dirty.append(index)
+	return _upload_records(_lighting_offsets,_lighting_offset_data,dirty,16)
+
+func _upload_records(buffer: RID,data: PackedByteArray,indices: Array,stride: int) -> bool:
+	if indices.is_empty():return true
+	indices.sort()
+	if (indices.back()-indices.front()+1-indices.size())*stride<=RECORD_UPLOAD_GAP:
+		return _upload_record_range(buffer,data,indices.front()*stride,(indices.back()+1)*stride)
+	# Splitting at the largest gaps minimizes bytes within a bounded call
+	# budget. Dense articulated figures retain their single-upload fast path.
+	var gaps: Array[Vector2i]=[]
+	for i in range(1,indices.size()):
+		var gap: int=(indices[i]-indices[i-1]-1)*stride
+		if gap>RECORD_UPLOAD_GAP:gaps.append(Vector2i(gap,i))
+	gaps.sort_custom(func(a: Vector2i,b: Vector2i):return a.x>b.x if a.x!=b.x else a.y<b.y)
+	var cuts: Array[int]=[]
+	for i in mini(gaps.size(),RECORD_UPLOAD_LIMIT-1):cuts.append(gaps[i].y)
+	cuts.sort();cuts.append(indices.size())
+	var first := 0
+	for cut in cuts:
+		if not _upload_record_range(buffer,data,indices[first]*stride,(indices[cut-1]+1)*stride):return false
+		first=cut
+	return true
+
+func _upload_record_range(buffer: RID,data: PackedByteArray,begin: int,end: int) -> bool:
+	return _rd.buffer_update(buffer,begin,end-begin,data.slice(begin,end))==OK
 
 func _write_motion(index: int,position: Transform3D,normal: Basis,valid: bool,moving: bool) -> void:
 	var offset := index*MOTION_STRIDE
@@ -298,18 +355,54 @@ func _update_motion(changes: Dictionary) -> bool:
 	for index: int in dirty:
 		if not _motion_pending.has(index):
 			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
-	if dirty.is_empty(): return true
-	# One bounded upload avoids an API call for every articulated body part.
-	var indices := dirty.keys();indices.sort()
-	var begin: int = indices.front()*MOTION_STRIDE
-	var end: int = (indices.back()+1)*MOTION_STRIDE
-	return _rd.buffer_update(_motion,begin,end-begin,_motion_data.slice(begin,end))==OK
+	return _upload_records(_motion,_motion_data,dirty.keys(),MOTION_STRIDE)
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
-	if not _select_pipeline(_uses_emitters,frame.decode_float(144*4)>2.0 and not _full_paths_reference):
-		_render_failed();return
+	var enabled := frame.decode_float(190*4)>0.5 if frame.decode_float(191*4)>0.5 else sharc_enabled
+	if enabled!=_sharc_requested:sharc_failed=false;_sharc_requested=enabled
+	var requested := enabled and frame.decode_float(145*4)<=8.0 and not sharc_failed
+	if requested and not sharc.setup(_rd):sharc_failed=true;requested=false
+	var deep := frame.decode_float(144*4)>2.0 and not _full_paths_reference
+	if not _select_pipeline(_uses_emitters,deep,1 if requested else 0):
+		if not requested or not _select_pipeline(_uses_emitters,deep,0):_render_failed();return
+		sharc_failed=true;requested=false
+	if not requested and sharc.active:sharc.dispose()
 	super.render(size,frame,changes,texture_filter)
+
+func trace_frame(frame: PackedByteArray) -> bool:
+	if _sharc_mode==1:
+		if not _trace_sharc(frame):
+			# A failed optional pass must leave a usable ordinary PT frame.
+			sharc_failed=true
+			if not _select_pipeline(_uses_emitters,_deep_paths,0):return false
+			sharc.dispose()
+			if not _targets(_size,_sampler):return false
+			frame.encode_float(82*4,0)
+			if not _upload_frame(frame):return false
+	return super.trace_frame(frame)
+
+func _trace_sharc(frame: PackedByteArray) -> bool:
+	if not sharc.prepare(frame,_size):return false
+	var variant := _pipeline_variant(_uses_emitters,false,2)
+	if variant.is_empty():return false
+	var key: int=variant.pipeline.get_id()
+	if not _sharc_sbts.has(key):
+		var sbt := _own(_rd.hit_sbt_create(variant.pipeline,1))
+		if not sbt.is_valid():return false
+		var hit_range := _rd.hit_sbt_range_alloc(sbt,1)
+		_rd.hit_sbt_range_update(sbt,hit_range,0,[0]);_sharc_sbts[key]=sbt
+	var descriptor := sharc.update_set(self,variant.shader)
+	if not descriptor.is_valid():return false
+	var rays := _rd.raytracing_list_begin()
+	_rd.raytracing_list_bind_raytracing_pipeline(rays,variant.pipeline)
+	_rd.raytracing_list_bind_uniform_set(rays,descriptor,0)
+	_rd.raytracing_list_trace_rays(rays,0,_sharc_sbts[key],ceili(_size.x/4.0),ceili(_size.y/4.0),1)
+	_rd.raytracing_list_end()
+	if _profile_stages:_rd.capture_timestamp("SHaRC update")
+	sharc.resolve()
+	if _profile_stages:_rd.capture_timestamp("SHaRC resolve")
+	return true
 
 func _release_spatial() -> void:
 	for rid in _spatial_sets+_spatial_images:
@@ -449,7 +542,7 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 
 func dispose() -> void:
 	direct_sun.texture_rd_rid=RID()
-	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose()
+	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose();sharc.dispose()
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
 	_direct_composite_shader=RID();_direct_composite_pipeline=RID()
@@ -457,6 +550,6 @@ func dispose() -> void:
 	emitters = Emitters.new()
 	terrain = Terrain.new();_terrain_atlas=RID()
 	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()
-	_variants.clear()
+	_variants.clear();_sharc_sbts.clear()
 	_motion=RID();_motion_data.clear();_motion_pending.clear();_geometry_placements.clear()
 	_lighting_offsets=RID();_lighting_offset_data.clear();_lighting_offset_values.clear()

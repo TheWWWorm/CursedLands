@@ -118,3 +118,22 @@ static func masks(image: Image) -> PackedByteArray:
 	var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256)
 	digest.update(pixels.get_data())
 	return String(IDENTITIES.get(digest.finish().hex_encode(),"")).hex_decode()
+
+# The same pinned editor table also identifies the cave's dirt and mossy
+# ground. These are excluded from floor transition reconstruction, but must
+# retain their identity when the geometry is a vertical cliff. Reserved IDs
+# 253 = Grass / Swamp, 254 = Ground / Dirt; water/underwater stay unsupported.
+const CAVE_CORNERS := {
+	"64cf0500ccf1c0bd21ade672bd5bb85f1f12cd00a7b547fb042d032a2e4fba31": "1f1f1f1f1f1f1f1f241f1f1f241f1f1f241f1f1f241f1f1f241f1f1f241f1f1f24241f1f24241f1f24241f1f24241f1f24241f1f24241f1f2424242424242424fefe2424fefe2424fefe2424fefe2424fefe2424fefefefe2424241f2424241f2424241f2424241f2424241f24fe241f24fe241f24fe241f24fe241ffe242424fe242424fe242424fe242424fdfdfdfdfefefe24fefefe24fefefe24fefefe24241f241f241f241f241f241ffdfdfdfd000024240000242400002424fefdfdfdfefdfdfdfefdfdfdfefefdfdfefefdfdfefefdfdfdfdfdfdfdfdfdfdfefefdfdfefefdfdfe2424fdfe2424fdfe2424fd002424240024242424fefdfd24fefdfd",
+	"527be4abf1bf0e754a910f473ceb5d17bd9187485708e9f59826a9e2112af055": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fe24fe24fe24fe24fe24fe242424fefd2424fefd2424fefdfdfdfdfdfdfdfdfdfdfdfdfdfe24fefdfe24fefdfe24fefdfefdfdfdfefdfdfdfefdfdfdfefefefdfefefefdfefefefd2424fdfd2424fdfd2424fdfd00000000000000002400241ffefdfe24fefdfe24fefdfdfdfefdfdfdfdfdfdfdfdfdfdfdfefefefdfefefefd",
+	"e80b76c4d96b55e2768afa73e45f4966ee0a8f04ea3296d43a39cb981fc09f74": "fefd2424fefd24240000002400000024fdfdfefdfdfe2424fdfe2424fdfd2424fdfd2424fefe24fdfe241f1ffefdfdfdfe24fdfdfe24fdfdfdfdfd24fdfefefdfdfefefdfdfdfdfdfdfefdfd24fefefdfefdfefdfefefdfdfefefdfdfefdfdfdfefdfdfdfdfdfe24fdfdfe242424fe1ffdfe24fdfefdfd24241f24fd241f24fdfd2424fd2424fdfdfdfefdfd00fdfdfdfefefd2424fdfdfdfdfd24fdfefe241f24fefdfdfe24fdfd24fe1f1f24fefe1f0024002424fd241ffd24fefdfd242424242424fd0000241ffefdfefd241ffefd24fe24fdfefdfefd24001f1ffefd24fdfe1f1ffd24fdfdfd24fdfdfd00001f1f1ffefefdfdfefe24fe1f1f1f2400001f",
+}
+
+static func blend_corners(image: Image) -> PackedByteArray:
+	if image == null or image.get_size() != Vector2i(512,512): return PackedByteArray()
+	var pixels := image.duplicate() as Image
+	if pixels.is_compressed() and pixels.decompress() != OK: return PackedByteArray()
+	pixels.clear_mipmaps(); pixels.convert(Image.FORMAT_RGBA8)
+	var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(pixels.get_data())
+	var key := digest.finish().hex_encode()
+	return String(CAVE_CORNERS[key]).hex_decode() if CAVE_CORNERS.has(key) else Natural.corners(image)

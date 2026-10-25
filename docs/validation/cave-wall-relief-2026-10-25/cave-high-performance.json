@@ -1,0 +1,318 @@
+{
+	"cave": true,
+	"checks": 26,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"failures": [],
+	"quality": 2,
+	"resolution": [
+		1920,
+		1080
+	],
+	"runs": [
+		{
+			"bounces": 2,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 130.876,
+				"n": 120,
+				"p95": 131.248
+			},
+			"resolve_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			},
+			"sharc": false,
+			"total_gpu_ms": {
+				"median": 129.100830078125,
+				"n": 120,
+				"p95": 129.4091796875
+			},
+			"trace_gpu_ms": {
+				"median": 126.28466796875,
+				"n": 120,
+				"p95": 126.5751953125
+			},
+			"update_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			}
+		},
+		{
+			"bounces": 2,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 88.761,
+				"n": 120,
+				"p95": 88.988
+			},
+			"resolve_gpu_ms": {
+				"median": 0.058349609375,
+				"n": 120,
+				"p95": 0.0595703125
+			},
+			"sharc": true,
+			"total_gpu_ms": {
+				"median": 86.983154296875,
+				"n": 120,
+				"p95": 87.18359375
+			},
+			"trace_gpu_ms": {
+				"median": 81.636474609375,
+				"n": 120,
+				"p95": 81.783935546875
+			},
+			"update_gpu_ms": {
+				"median": 2.544189453125,
+				"n": 120,
+				"p95": 2.5888671875
+			}
+		},
+		{
+			"bounces": 2,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 88.814,
+				"n": 120,
+				"p95": 89.042
+			},
+			"resolve_gpu_ms": {
+				"median": 0.058349609375,
+				"n": 120,
+				"p95": 0.0595703125
+			},
+			"sharc": true,
+			"total_gpu_ms": {
+				"median": 87.070556640625,
+				"n": 120,
+				"p95": 87.222900390625
+			},
+			"trace_gpu_ms": {
+				"median": 81.713134765625,
+				"n": 120,
+				"p95": 81.860595703125
+			},
+			"update_gpu_ms": {
+				"median": 2.5390625,
+				"n": 120,
+				"p95": 2.598388671875
+			}
+		},
+		{
+			"bounces": 2,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 131.162,
+				"n": 120,
+				"p95": 131.448
+			},
+			"resolve_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			},
+			"sharc": false,
+			"total_gpu_ms": {
+				"median": 129.382568359375,
+				"n": 120,
+				"p95": 129.660888671875
+			},
+			"trace_gpu_ms": {
+				"median": 126.614990234375,
+				"n": 120,
+				"p95": 126.888916015625
+			},
+			"update_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			}
+		},
+		{
+			"bounces": 4,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 138.538,
+				"n": 120,
+				"p95": 138.867
+			},
+			"resolve_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			},
+			"sharc": false,
+			"total_gpu_ms": {
+				"median": 136.763671875,
+				"n": 120,
+				"p95": 137.073486328125
+			},
+			"trace_gpu_ms": {
+				"median": 133.999755859375,
+				"n": 120,
+				"p95": 134.283203125
+			},
+			"update_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			}
+		},
+		{
+			"bounces": 4,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 92.101,
+				"n": 120,
+				"p95": 92.372
+			},
+			"resolve_gpu_ms": {
+				"median": 0.058349609375,
+				"n": 120,
+				"p95": 0.059326171875
+			},
+			"sharc": true,
+			"total_gpu_ms": {
+				"median": 90.347900390625,
+				"n": 120,
+				"p95": 90.5107421875
+			},
+			"trace_gpu_ms": {
+				"median": 84.979736328125,
+				"n": 120,
+				"p95": 85.128173828125
+			},
+			"update_gpu_ms": {
+				"median": 2.546142578125,
+				"n": 120,
+				"p95": 2.593017578125
+			}
+		},
+		{
+			"bounces": 4,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 92.193,
+				"n": 120,
+				"p95": 92.852
+			},
+			"resolve_gpu_ms": {
+				"median": 0.058349609375,
+				"n": 120,
+				"p95": 0.0595703125
+			},
+			"sharc": true,
+			"total_gpu_ms": {
+				"median": 90.42529296875,
+				"n": 120,
+				"p95": 91.04443359375
+			},
+			"trace_gpu_ms": {
+				"median": 85.04931640625,
+				"n": 120,
+				"p95": 85.65869140625
+			},
+			"update_gpu_ms": {
+				"median": 2.55029296875,
+				"n": 120,
+				"p95": 2.603515625
+			}
+		},
+		{
+			"bounces": 4,
+			"cache_resets": 0,
+			"frame_ms": {
+				"median": 139.189,
+				"n": 120,
+				"p95": 139.506
+			},
+			"resolve_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			},
+			"sharc": false,
+			"total_gpu_ms": {
+				"median": 137.455322265625,
+				"n": 120,
+				"p95": 137.7119140625
+			},
+			"trace_gpu_ms": {
+				"median": 134.686279296875,
+				"n": 120,
+				"p95": 134.9501953125
+			},
+			"update_gpu_ms": {
+				"median": 0.0,
+				"n": 120,
+				"p95": 0.0
+			}
+		}
+	],
+	"stats": {
+		"accumulation_frames": 8.0,
+		"active": true,
+		"adaptive_changes": 0,
+		"adaptive_gpu_ms": 0.0,
+		"adaptive_scale": 1.0,
+		"adaptive_target_fps": 0,
+		"build_timings": {
+			"extra_ms": 2.084,
+			"materials_ms": 0.455,
+			"placements_ms": 3.806,
+			"program_ms": 2492.135,
+			"resources_ms": 2533.243,
+			"textures_ms": 31.644,
+			"vertices_ms": 3.113
+		},
+		"cpu_update_ms": 0.706,
+		"display_size": [
+			1920,
+			1080
+		],
+		"emissive_candidates": 0,
+		"emissive_triangles": 0,
+		"geometries": 440,
+		"gi_samples": 0,
+		"history_handoffs": 0,
+		"history_limit": 8.0,
+		"history_matched_surfaces": 0,
+		"history_reused": true,
+		"instances": 447,
+		"light_history_limited": false,
+		"lights": 1,
+		"local_light_shadow_samples": 1,
+		"path_bounces": 4,
+		"path_samples": 4,
+		"path_tracing": true,
+		"program_cache_hits": 0,
+		"program_compilations": 5,
+		"quality": 2,
+		"rebuilding": false,
+		"render_scale": 1.0,
+		"render_size": [
+			1920,
+			1080
+		],
+		"shadow_samples": 0,
+		"sharc_active": false,
+		"sharc_failed": false,
+		"sharc_frames": 660,
+		"sharc_resets": 2,
+		"size": [
+			1920,
+			1080
+		],
+		"snapshot_generation": 1,
+		"supported": true,
+		"terrain_material_build_us": 10200,
+		"terrain_material_bytes": 445652,
+		"terrain_material_triangles": 33010,
+		"trace_render_scale": 1.0,
+		"triangles": 49852,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	}
+}

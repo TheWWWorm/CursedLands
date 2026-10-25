@@ -72,6 +72,13 @@ float2 hit_uv(Vertex a,Vertex b,Vertex c,float3 weights) {
                   dot(weights,float3(a.normal_v.w,b.normal_v.w,c.normal_v.w)));
 }
 #if defined(PATH_RAYGEN)
+#ifdef PATH_SHARC
+#include "path_trace_sharc.hlsli"
+SharcHitData sharc_hit(Surface s) {
+    SharcHitData h;h.positionWorld=s.position;h.normalWorld=s.geometric_normal;
+    h.materialDemodulation=max(s.albedo,0.05);h.emissive=0.0;return h;
+}
+#endif
 static const float PI=3.14159265359;
 float3 sky_radiance(float3 direction) {
     if(frame.path.w<0.5)return frame.sky.rgb;
@@ -422,18 +429,83 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
             float3 environment=sky_radiance(direction);
             diffuse+=weight_d*environment;specular+=weight_s*environment;break;
         }
-        float3 direct_d,direct_s,unused_sun;
-        sampler.vertex=depth+1u;
-        direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
         float emission_weight=1.0;
 #ifndef PATH_NO_EMITTERS
         emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
 #endif
+#if defined(PATH_SHARC) && !defined(PATH_SHARC_UPDATE)
+        // Keep the primary direct signal and sharp/leaf transport exact. A
+        // nearby hit smaller than its cache voxel is not a safe lookup.
+        if(current.roughness>=0.6 && current.metalness<0.1 && hit.roughness>=0.6
+            && hit.metalness<0.1 && hit.visible==0.0) {
+            SharcParameters cache=sharc_parameters();
+            float voxel=HashGridGetVoxelSize(HashGridGetLevel(hit.position,cache.hashGridParameters),cache.hashGridParameters);
+            if(segment>voxel) {
+                sharc_count(1u);
+                float3 cached;
+                if(SharcGetCachedRadiance(cache,sharc_hit(hit),cached,false) && all(isfinite(cached))) {
+                    sharc_count(2u);
+                    float3 incoming=hit.emission*emission_weight+max(cached,0.0);
+                    diffuse+=weight_d*incoming;specular+=weight_s*incoming;break;
+                }
+            }
+        }
+        sharc_count(3u);
+#endif
+        float3 direct_d,direct_s,unused_sun;
+        sampler.vertex=depth+1u;
+        direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
         float3 incoming=hit.emission*emission_weight+hit.albedo*direct_d+direct_s;
         diffuse+=weight_d*incoming;specular+=weight_s*incoming;
         current=hit;v=-direction;
     }
 }
+#ifdef PATH_SHARC_UPDATE
+[shader("raygeneration")]
+void main() {
+    uint2 tile=DispatchRaysIndex().xy;
+    uint jitter=sample_hash(tile.x+tile.y*DispatchRaysDimensions().x+sharc_frame.dimensions.y*0x9e3779b9u);
+    uint2 pixel=tile*4u+uint2(jitter&3u,(jitter>>2u)&3u);
+    uint2 size=sharc_frame.dimensions.zw;if(any(pixel>=size))return;
+    float2 uv=(float2(pixel)+0.5)/float2(size);
+    float4 p=mul(frame.inv_projection,float4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0));p/=p.w;
+    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+    float3 forward=-mul(frame.camera_world,float4(0,0,1,0)).xyz;
+    float3 origin=eye,direction=normalize(mul(frame.camera_world,float4(p.xyz,0)).xyz);
+    if(frame.camera.x>0.5){origin=mul(frame.camera_world,float4(p.xyz,1)).xyz;direction=forward;}
+    Surface current=(Surface)0;
+    RayDesc ray={origin,frame.camera.x>0.5?0.001:frame.settings.w/max(dot(direction,forward),0.001),direction,frame.camera.y};
+    TraceRay(scene,RAY_FLAG_NONE,1,0,0,0,ray,current);
+    if(current.hit<0.5)return;
+    current.position+=asfloat(lighting_offsets.Load3(current.instance_id*16u));
+    SharcParameters cache=sharc_parameters();SharcState state;SharcInit(state);
+    PathSampler sampler=path_sampler(sharc_frame.dimensions.y,pixel.x+pixel.y*size.x);
+    float3 view=-direction;float emission_weight=1.0;
+    sharc_count(0u);
+    for(uint depth=0;depth<8u;depth++) {
+        sampler.vertex=depth;
+        float3 d,sp,sunlight;direct_light(current,view,sampler,d,sp,sunlight);
+#ifndef PATH_NO_EMITTERS
+        float3 ed,es;emissive_light(current,view,sampler,ed,es);d+=ed;sp+=es;
+#endif
+        SharcHitData h=sharc_hit(current);h.emissive=current.emission*emission_weight;
+        if(!SharcUpdateHit(cache,state,h,d*current.albedo+sp,path_random(sampler,15u).x))break;
+        direction=sample_bsdf(current,view,sampler);float pdf;
+        bsdf(current,view,direction,d,sp,pdf);
+        float cosine=abs(dot(current.normal,direction));if(pdf<=1e-8||cosine<=0.0)break;
+        SharcSetThroughput(state,(d*current.albedo+sp)*(cosine/pdf));
+        ray.Origin=surface_origin(current,direction);ray.Direction=direction;ray.TMin=0;ray.TMax=frame.camera.w;
+        Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
+        TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
+        if(hit.hit<0.5){SharcUpdateMiss(cache,state,sky_radiance(direction));break;}
+        emission_weight=1.0;
+#ifndef PATH_NO_EMITTERS
+        emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
+#endif
+        current=hit;view=-direction;
+    }
+}
+#else
 [shader("raygeneration")]
 void main() {
     uint2 pixel=DispatchRaysIndex().xy;float2 size=float2(DispatchRaysDimensions().xy);
@@ -486,6 +558,7 @@ void main() {
     shadow_image1[pixel]=float4(primary.albedo,float(surface));
     path_distance[pixel]=float2(diffuse_distance/float(samples),specular_distance==65504.0?0.0:specular_distance);
 }
+#endif // PATH_SHARC_UPDATE
 #elif defined(PATH_MISS)
 [shader("miss")]
 void main(inout Surface result) {result.visible=1.0;}
@@ -605,7 +678,7 @@ float3 cliff_weights(int2 cell,float2 p,float3 normal,float distance_to_eye) {
     if(cliff_eligible(cell)<0.5)return 0.0;
     float3 n=abs(normalize(normal));float side=(1.0-smoothstep(0.57357644,0.76604444,n.y))*(1.0-smoothstep(80.0,140.0,distance_to_eye));
     if(side<=0.0)return 0.0;
-    side*=1.0-smoothstep(0.72,0.95,cliff_guard((float2(cell)+p)*2.0));
+    side*=1.0-smoothstep(0.72,0.95,min(cliff_guard((float2(cell)+p)*2.0),n.y));
     float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
     if(cliff_eligible(cell+int2(step_cell.x,0))<0.5)side*=1.0-2.0*weight.x;
@@ -614,21 +687,100 @@ float3 cliff_weights(int2 cell,float2 p,float3 normal,float distance_to_eye) {
     float2 axes=n.xz*n.xz;axes/=max(axes.x+axes.y,1e-8);axes=max(axes-0.02,0.0);axes/=max(axes.x+axes.y,1e-8);
     return float3(axes.x*side,side,axes.y*side);
 }
-float3 cliff_tile(float code,float3 world,float3 planes,float atlas_lod) {
+// Keep the projection and integer hash identical to TerrainCliffShader.
+float cliff_hash(int2 cell) {
+    uint h=uint(cell.x)*73856093u ^ uint(cell.y)*19349663u;
+    h^=h>>16u;h*=0x7feb352du;h^=h>>15u;h*=0x846ca68bu;h^=h>>16u;
+    return float(h&16777215u)/16777215.0;
+}
+float3 cliff_noise(float2 p) {
+    int2 cell=int2(floor(p));float2 f=frac(p),u=f*f*(3.0-2.0*f),d=6.0*f*(1.0-f);
+    float a=cliff_hash(cell),b=cliff_hash(cell+int2(1,0)),c=cliff_hash(cell+int2(0,1)),e=cliff_hash(cell+int2(1,1));
+    return float3(lerp(lerp(a,b,u.x),lerp(c,e,u.x),u.y),lerp(b-a,e-c,u.y)*d.x,lerp(c-a,e-b,u.x)*d.y);
+}
+// Broad rock relief is measured on the wall, not on its stretched land UVs.
+// Rounded ridges avoid a hard normal discontinuity at each noise zero.
+float2 cliff_rock_slope(float2 p,float footprint) {
+ float3 a=cliff_noise(p*0.85+float2(3.1,-7.9));
+ float3 b=cliff_noise(p*2.3+float2(-12.7,9.2));
+ float ridge=(a.x-0.5)/sqrt((a.x-0.5)*(a.x-0.5)+0.02);
+ return a.yz*(0.85*ridge)*(1.0-smoothstep(0.2,0.6,footprint))
+      +b.yz*0.34*(1.0-smoothstep(0.06,0.2,footprint));
+}
+float3 cliff_relief_normal(float3 world,float3 normal,float3 geometric,float3 to_eye,float3 planes,float distance_to_eye,float footprint) {
+ float fade=1.0-smoothstep(25.0,70.0,distance_to_eye);
+ if (planes.y<=0.0 || fade<=0.0 || footprint>=0.6) { return normal; }
+ float3 slope=0.0;
+ if (planes.x>0.0) { float2 q=cliff_rock_slope(float2(-world.z,world.y),footprint); slope+=float3(0.0,q.y,-q.x)*planes.x; }
+ if (planes.z>0.0) { float2 q=cliff_rock_slope(world.xy,footprint); slope+=float3(q,0.0)*planes.z; }
+ float3 perturbation=-(slope-normal*dot(normal,slope))*fade;
+ // Keep relief shallow and inside both the face and viewing hemispheres.
+ perturbation*=min(1.0,0.6/max(length(perturbation),1e-6));
+ if (dot(geometric,normal)<0.0) { geometric=-geometric; }
+ float limit=1.0,a=-dot(perturbation,geometric),b=-dot(perturbation,to_eye);
+ if (a>0.0) { limit=min(limit,0.8*max(dot(normal,geometric),0.0)/a); }
+ if (b>0.0) { limit=min(limit,0.8*max(dot(normal,to_eye),0.0)/b); }
+ float3 result=normalize(normal+perturbation*limit);
+ return dot(result,geometric)>0.05 && dot(result,to_eye)>0.0 ? result : normal;
+}
+float2 cliff_turn(float2 p) { return float2(0.8*p.x-0.6*p.y,0.6*p.x+0.8*p.y); }
+struct CliffProjection { float4 uv; float2 filter; };
+CliffProjection cliff_project(float2 p,float atlas_lod) {
+    float3 noise=cliff_noise(p*0.43+float2(7.1,-3.7));
+    float2 warp=float2(0.55,-0.385),q=p+warp*(noise.x-0.5);
+    // Ray cones have no anisotropic screen gradients. Bound the two Jacobian
+    // columns, then reapply the atlas gutter cap after increasing the mip.
+    float scale=max(length(float2(1,0)+warp*noise.y*0.43),length(float2(0,1)+warp*noise.z*0.43));
+    CliffProjection result;
+    result.filter.x=min(max(atlas_lod+log2(max(scale,1e-6)),0.0),tile_lod(1e6));
+    result.filter.y=0.15+0.7*smoothstep(0.15,0.85,cliff_noise(p*0.63+float2(-11.3,4.9)).x);
+    result.uv=1.0-abs(frac(float4(q,cliff_turn(q)+float2(0.37,0.83))*0.5)*2.0-1.0);
+    return result;
+}
+float3 cliff_sample(float code,CliffProjection projection) {
+    return lerp(tile_sample(code,projection.uv.xy,projection.filter.x),tile_sample(code,projection.uv.zw,projection.filter.x),projection.filter.y);
+}
+float3 cliff_projected_tile(float code,float3 planes,CliffProjection x,CliffProjection z) {
     float3 colour=0.0;
-    [branch] if(planes.x>0.0)colour+=tile_sample(code,frac(float2(-world.z,world.y)*0.5),atlas_lod)*planes.x;
-    [branch] if(planes.z>0.0)colour+=tile_sample(code,frac(world.xy*0.5),atlas_lod)*planes.z;
+    [branch] if(planes.x>0.0)colour+=cliff_sample(code,x)*planes.x;
+    [branch] if(planes.z>0.0)colour+=cliff_sample(code,z)*planes.z;
+    return colour;
+}
+float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection x,CliffProjection z) {
+    [branch] if((land_tile(cell)&(1u<<25u))==0u)return cliff_projected_tile(tile_info(cell).r,planes,x,z);
+    // Corner donor codes follow the aligned vertex guard array. Only flagged
+    // tiles read this payload; plain snapshots retain their original layout.
+    uint offset=land_detail().z+((land_extra().x*land_extra().y+3u)&~3u);
+    float4 row=asfloat(terrain_data.Load4(offset+16u*(uint(cell.y)*land_layout().x+uint(cell.x))));
+    p=smoothstep(0.2,0.8,saturate(p));
+    float4 weights=float4((1.0-p.x)*(1.0-p.y),p.x*(1.0-p.y),(1.0-p.x)*p.y,p.x*p.y);
+    float3 colour=0.0;
+    // Fixed lanes avoid the Vulkan driver's failure on dynamic vector writes.
+    if(row.x==row.y) { weights.x+=weights.y;weights.y=0.0; }
+    if(row.x==row.z) { weights.x+=weights.z;weights.z=0.0; }
+    if(row.x==row.w) { weights.x+=weights.w;weights.w=0.0; }
+    if(row.y==row.z) { weights.y+=weights.z;weights.z=0.0; }
+    if(row.y==row.w) { weights.y+=weights.w;weights.w=0.0; }
+    if(row.z==row.w) { weights.z+=weights.w;weights.w=0.0; }
+    [branch] if(weights.x>0.0)colour+=cliff_projected_tile(row.x-1.0,planes,x,z)*weights.x;
+    [branch] if(weights.y>0.0)colour+=cliff_projected_tile(row.y-1.0,planes,x,z)*weights.y;
+    [branch] if(weights.z>0.0)colour+=cliff_projected_tile(row.z-1.0,planes,x,z)*weights.z;
+    [branch] if(weights.w>0.0)colour+=cliff_projected_tile(row.w-1.0,planes,x,z)*weights.w;
     return colour;
 }
 float3 cliff_albedo(float3 original,int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
     if(planes.y<=0.0)return original;
-    float3 own=cliff_tile(tile_info(cell).r,world,planes,atlas_lod),colour=own;
+    // Reuse the same world projection across all corner donors/neighbours.
+    CliffProjection x=(CliffProjection)0,z=(CliffProjection)0;
+    [branch] if(planes.x>0.0)x=cliff_project(float2(-world.z,world.y)*0.5,atlas_lod);
+    [branch] if(planes.z>0.0)z=cliff_project(world.xy*0.5,atlas_lod);
+    float3 own=cliff_projected_surface(cell,p,planes,x,z),colour=own;
     float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
-    if(weight.x>0.0&&cliff_eligible(cell+int2(step_cell.x,0))>0.5)colour=lerp(colour,cliff_tile(tile_info(cell+int2(step_cell.x,0)).r,world,planes,atlas_lod),weight.x);
+    if(weight.x>0.0&&cliff_eligible(cell+int2(step_cell.x,0))>0.5)colour=lerp(colour,cliff_projected_surface(cell+int2(step_cell.x,0),p-float2(int2(step_cell.x,0)),planes,x,z),weight.x);
     if(weight.y>0.0) {
-        float3 other=cliff_eligible(cell+int2(0,step_cell.y))>0.5?cliff_tile(tile_info(cell+int2(0,step_cell.y)).r,world,planes,atlas_lod):own;
-        if(weight.x>0.0&&cliff_eligible(cell+step_cell)>0.5)other=lerp(other,cliff_tile(tile_info(cell+step_cell).r,world,planes,atlas_lod),weight.x);
+        float3 other=cliff_eligible(cell+int2(0,step_cell.y))>0.5?cliff_projected_surface(cell+int2(0,step_cell.y),p-float2(int2(0,step_cell.y)),planes,x,z):own;
+        if(weight.x>0.0&&cliff_eligible(cell+step_cell)>0.5)other=lerp(other,cliff_projected_surface(cell+step_cell,p-float2(step_cell),planes,x,z),weight.x);
         colour=lerp(colour,other,weight.y);
     }
     return original*(1.0-planes.y)+colour;
@@ -870,7 +1022,7 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
-    float3 planes=cliff_weights(cell,saturate(local),s.normal,distance);
+    float3 planes=cliff_weights(cell,saturate(local),s.geometric_normal,distance);
     float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
     float fade=1.0-smoothstep(25.0,70.0,distance);
     float3 n=s.normal;
@@ -878,27 +1030,6 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Its four compact atlas taps run below, once, instead of evaluating the
     // complete neighbouring transition field four additional times per hit.
     painted_scale=(1.0-planes.y)*lerp(lerp(1.0,1.15,traits.x),0.45,traits.y)*(1.0-0.8*traits.w);
-    // Test the complete relief fade before fetching the four projected
-    // gradients: coarse secondary hits and donor joins often contribute zero.
-    float edge=smoothstep(0.0,0.15,min(min(local.x,local.y),min(1.0-local.x,1.0-local.y)));
-    float resolved=1.0-smoothstep(0.18,0.65,footprint/grazing);
-    float cliff_relief=planes.y*fade*edge*resolved;
-    [branch] if(cliff_relief>0.0&&planes.y>0.001) {
-        // Cliff detail must follow the vertical projection, not the stretched
-        // land UVs. Use its dominant projection axes with the same atlas mips.
-        float3 tangent=planes.x>planes.z?float3(0,0,-1):float3(1,0,0);
-        float3 bitangent=float3(0,1,0);
-        tangent-=n*dot(n,tangent);bitangent-=n*dot(n,bitangent);
-        float step_world=max(0.0625,footprint/grazing);
-        float3 projection=planes/max(planes.y,1e-6);
-        const float3 lum=float3(0.2126,0.7152,0.0722);
-        float left=sqrt(max(dot(cliff_tile(float(code),s.position-tangent*step_world,projection,cliff_lod),lum),0.0));
-        float right=sqrt(max(dot(cliff_tile(float(code),s.position+tangent*step_world,projection,cliff_lod),lum),0.0));
-        float down=sqrt(max(dot(cliff_tile(float(code),s.position-bitangent*step_world,projection,cliff_lod),lum),0.0));
-        float up=sqrt(max(dot(cliff_tile(float(code),s.position+bitangent*step_world,projection,cliff_lod),lum),0.0));
-        float2 slope=clamp(float2(right-left,up-down)*2.0,-0.30,0.30);
-        n=land_normal(n,-(tangent*slope.x+bitangent*slope.y)*1.5*cliff_relief,s.geometric_normal);
-    }
     [branch] if(fade>0.0) {
         uint normal_layer=land_detail().x;
         [branch] if(normal_layer>0u) {
@@ -919,6 +1050,8 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
             n=land_normal(n,perturbation*relief*fade,s.geometric_normal);
         }
     }
+    // Match the visible wall relief without four full donor-field samples.
+    n=cliff_relief_normal(s.position,n,s.geometric_normal,-WorldRayDirection(),planes,distance,footprint/grazing);
     colour=cliff_albedo(colour,cell,saturate(local),s.position,planes,cliff_lod);
     uint macro_layer=land_detail().y;
     [branch] if(macro_layer>0u) {

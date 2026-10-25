@@ -31,6 +31,11 @@ PROFILE = {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0, "volume_stream": 
 # Deliberately include only self-contained tests. Historical reference-pack
 # benchmarks require their own pinned inputs and are not silently substituted.
 REPORTS = {
+    "sparse_updates": "path-sparse-updates.json",
+    "sharc": "sharc.json",
+    "sharc_live": "sharc-live.json",
+    "sharc_performance": "sharc-performance.json",
+    "sparse_performance": "path-sparse-performance.json",
     "device": "path-device.json", "motion": "path-motion.json", "resolution": "path-resolution.json",
     "lifecycle": "path-lifecycle.json", "controller": "path-controller.json", "detached_live": "path-detached-live.json",
     "resolution_performance": "path-resolution-performance.json", "sustained": "path-sustained-results.json",
@@ -56,7 +61,7 @@ FIXTURES = {"water_live": "water_raytrace_live.gd", "shader_ui": "shader_compila
 GROUPS = {
     "core": ["device", "motion", "lifecycle", "topology", "controller", "detached_live", "resolution", "sustained"],
     "preparation": ["shader_ui", "shader_live", "shader_arena", "shader_scene", "shader_water", "shader_settings"],
-    "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance", "spatial_performance")],
+    "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance", "spatial_performance", "sparse_performance", "sharc_performance")],
     "motion_quality": ["spatial", "light_history", "camera_routes", "camera_modes", "snow_tracks", "lifecycle"],
     "sdk": ["resolution", "fsr", "sustained"],
     "benchmark": ["resolution_performance"],
@@ -451,6 +456,18 @@ def validate_reports(suite: str, report: dict, runtime: dict, driver: str, requi
         if any(not measured_summary(row.get(key, {}), minimum) for row in rows
                for key, minimum in (("frame_ms", 120), ("rt_gpu_ms", 110))):
             problems.append("Spatial benchmark has incomplete or invalid GPU/frame samples")
+    if suite == "sharc_performance":
+        rows = report.get("runs", [])
+        if [(row.get("bounces"), row.get("sharc")) for row in rows] != [
+                (bounces, enabled) for bounces in (2, 4) for enabled in (False, True, True, False)]:
+            problems.append("SHaRC benchmark did not complete all eight ABBA blocks")
+        for index, row in enumerate(rows):
+            keys = ["total_gpu_ms", "trace_gpu_ms"]
+            if row.get("sharc"): keys += ["update_gpu_ms", "resolve_gpu_ms"]
+            if (not measured_summary(row.get("frame_ms", {}), 120)
+                    or any(not measured_summary(row.get(key, {}), 110) for key in keys)
+                    or row.get("cache_resets") != 0):
+                problems.append(f"SHaRC block {index} has incomplete timing evidence or an unstable cache")
     return problems
 
 
@@ -614,7 +631,7 @@ def main(argv=None) -> int:
             user.mkdir(parents=True, exist_ok=False)
             (user / "settings.cfg").write_text(settings("1280x720"))
             thread_args = [] if args.render_thread == "project" else ["--render-thread", args.render_thread]
-            rate_args = [] if suite in ("resolution_performance", "spatial_performance") else ["--max-fps", "30"]
+            rate_args = [] if suite in ("resolution_performance", "spatial_performance", "sharc_performance") else ["--max-fps", "30"]
             command = ([str(args.wine)] if wine else []) + [str(executable)] + thread_args + rate_args + ["--audio-driver", "Dummy",
                        "--gpu-index", str(args.engine_gpu_index), "--rendering-method", "forward_plus", "--rendering-driver", args.driver,
                        "--windowed", "--borderless", "--resolution", "1280x720", "--",

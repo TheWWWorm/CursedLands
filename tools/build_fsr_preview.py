@@ -114,6 +114,11 @@ def build(args):
         "docs/integrations/fsr-experiment.md\ndocs/mod-formulas.md\n"
         "Runtime / Библиотеки / Laufzeit: Microsoft Visual C++ v14 x64\n"
         "https://aka.ms/vc14/vc_redist.x64.exe\n", encoding="utf-8")
+    sharc_notice = game / "src/game/fx/shaders/SHARC_NOTICES.txt"
+    if sharc_notice.exists():
+        sharc_notices = out / "licenses/NVIDIA/SHARC"
+        sharc_notices.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(sharc_notice, sharc_notices)
     if (game / "src/native/bin/libmod_lua.dll").exists():
         from package_mod import package
         native = out / "src/native/bin"

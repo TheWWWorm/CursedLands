@@ -1,0 +1,77 @@
+{
+	"cave": true,
+	"checks": 18,
+	"counters": [
+		1896043,
+		16827691,
+		6542771,
+		10366701
+	],
+	"failures": [],
+	"stats": {
+		"accumulation_frames": 7.0,
+		"active": false,
+		"adaptive_changes": 0,
+		"adaptive_gpu_ms": 0.0,
+		"adaptive_scale": 1.0,
+		"adaptive_target_fps": 0,
+		"build_timings": {
+			"extra_ms": 1.72,
+			"largest_step_ms": 0.677,
+			"materials_ms": 0.588,
+			"placements_ms": 0.859,
+			"program_ms": 0.056,
+			"resources_ms": 4.846,
+			"texture_upload_ms": 4.657,
+			"texture_upload_step_ms": 0.677,
+			"textures_ms": 0.035,
+			"vertices_ms": 1.583
+		},
+		"cpu_update_ms": 1.907,
+		"display_size": [
+			1920,
+			1080
+		],
+		"geometries": 494,
+		"gi_samples": 0,
+		"history_handoffs": 1,
+		"history_limit": 8.0,
+		"history_matched_surfaces": 407,
+		"history_reused": true,
+		"instances": 501,
+		"light_history_limited": false,
+		"lights": 1,
+		"local_light_shadow_samples": 1,
+		"path_bounces": 4,
+		"path_samples": 1,
+		"path_tracing": true,
+		"program_cache_hits": 4,
+		"program_compilations": 5,
+		"quality": 0,
+		"rebuilding": false,
+		"render_scale": 1.0,
+		"render_size": [
+			1920,
+			1080
+		],
+		"shadow_samples": 0,
+		"sharc_active": false,
+		"sharc_failed": false,
+		"sharc_frames": 41,
+		"sharc_resets": 2,
+		"size": [
+			960,
+			540
+		],
+		"snapshot_generation": 2,
+		"supported": true,
+		"terrain_material_build_us": 6411,
+		"terrain_material_bytes": 314000,
+		"terrain_material_triangles": 39438,
+		"trace_render_scale": 1.0,
+		"triangles": 57899,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	}
+}

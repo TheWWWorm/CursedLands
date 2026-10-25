@@ -1,0 +1,1714 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "passed": true,
+  "started_unix": 1792943225.6476228,
+  "repository_commit": "42e3365fb5be6a19ccbe3b11a6c0dd86b3801382",
+  "repository_status": " M docs/path-tracing-qualification.md\n M game/src/game/fx/path_trace_device.gd\n M game/src/game/fx/water_raytrace_device.gd\n M tools/regressions.json\n M tools/tests/path_trace_lifecycle.gd\n M tools/tests/run_path_trace_qualification.py\n M tools/tests/water_raytrace_device.gd\n?? docs/integrations/rtxpt-1.9-sparse-updates-2026-10-25.md\n?? tools/tests/path_trace_sparse_performance.gd\n?? tools/tests/path_trace_sparse_updates.gd\n",
+  "suites_requested": [
+    "sparse_updates"
+  ],
+  "runner": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/repo/tools/tests/run_path_trace_qualification.py",
+    "sha256": "0e4b56c446538a7235d064ce05d76f3ae21a725557279629393b1b7cd0630a9d"
+  },
+  "require_sdk": false,
+  "render_thread": "project",
+  "inputs": {
+    "files": {
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": {
+        "sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "bytes": 82141352
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": {
+        "sha256": "4837f47c3ee0a86198c18588dc2b0a0a660e11340d16aa31cc8882208b910aad",
+        "bytes": 23162860
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libinstaller_lzma.dll": {
+        "sha256": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "bytes": 81920
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libinstaller_lzma.so": {
+        "sha256": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "bytes": 14312
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libinstaller_lzma_android.so": {
+        "sha256": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "bytes": 17232
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libmod_archive.dll": {
+        "sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "bytes": 656896
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libmod_archive.so": {
+        "sha256": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "bytes": 823592
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libmod_archive_android.so": {
+        "sha256": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "bytes": 603088
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libmod_lua.dll": {
+        "sha256": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "bytes": 755712
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libmod_lua.so": {
+        "sha256": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "bytes": 922360
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libpath_nrd.dll": {
+        "sha256": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+        "bytes": 1472000
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libpath_nrd.so": {
+        "sha256": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+        "bytes": 2069776
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libterrain_search.dll": {
+        "sha256": "b715a2e5c2d9adf9de17f4a3502f40e5891e81f9500636c83fc929737bf7c637",
+        "bytes": 2704384
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libterrain_search.so": {
+        "sha256": "8ee3a362e2aaf7db59e2a043baccf227ffba7c6b11661f51afe5f3112982c15b",
+        "bytes": 3499216
+      },
+      "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/src/native/bin/libterrain_search_android.so": {
+        "sha256": "9802878f3396e86479187bff55ca48d61e9079aafb986236388ea7d5fecfe2dc",
+        "bytes": 1609872
+      }
+    },
+    "data": {
+      "path": "/home/llm2x/Documents/EI/inspection/extracted/app",
+      "inventory_kind": "recursive path/size/mtime; original data contents are not rehashed",
+      "files": [
+        {
+          "name": "2dintmmx.dll",
+          "bytes": 94208,
+          "mtime_ns": 948825348000000000
+        },
+        {
+          "name": "3dfpfpu.dll",
+          "bytes": 151552,
+          "mtime_ns": 948825398000000000
+        },
+        {
+          "name": "GameuxInstallHelper.dll",
+          "bytes": 96264,
+          "mtime_ns": 1347627368000000000
+        },
+        {
+          "name": "__support/app/config/keyboard.ini",
+          "bytes": 759,
+          "mtime_ns": 982259792000000000
+        },
+        {
+          "name": "__support/app/config/lightscavegipat.ini",
+          "bytes": 1548,
+          "mtime_ns": 959004312000000000
+        },
+        {
+          "name": "__support/app/config/lightscaveingos.ini",
+          "bytes": 1548,
+          "mtime_ns": 961762968000000000
+        },
+        {
+          "name": "__support/app/config/lightscavesuslanger.ini",
+          "bytes": 1548,
+          "mtime_ns": 959004348000000000
+        },
+        {
+          "name": "__support/app/config/lightsgipat.ini",
+          "bytes": 1699,
+          "mtime_ns": 959860296000000000
+        },
+        {
+          "name": "__support/app/config/lightsingos.ini",
+          "bytes": 1703,
+          "mtime_ns": 959860302000000000
+        },
+        {
+          "name": "__support/app/config/lightssuslanger.ini",
+          "bytes": 1699,
+          "mtime_ns": 959860306000000000
+        },
+        {
+          "name": "__support/app/config/movie.ini",
+          "bytes": 204,
+          "mtime_ns": 969291708000000000
+        },
+        {
+          "name": "autorun.res",
+          "bytes": 1816331,
+          "mtime_ns": 982676542000000000
+        },
+        {
+          "name": "autorunpro.reg",
+          "bytes": 1320,
+          "mtime_ns": 1457724508000000000
+        },
+        {
+          "name": "binkw32.dll",
+          "bytes": 291840,
+          "mtime_ns": 968713750000000000
+        },
+        {
+          "name": "camera/bz10k.cam",
+          "bytes": 216,
+          "mtime_ns": 946331374000000000
+        },
+        {
+          "name": "camera/bz11k.cam",
+          "bytes": 216,
+          "mtime_ns": 946331904000000000
+        },
+        {
+          "name": "camera/bz13h.cam",
+          "bytes": 216,
+          "mtime_ns": 946332242000000000
+        },
+        {
+          "name": "camera/bz14h.cam",
+          "bytes": 216,
+          "mtime_ns": 946332534000000000
+        },
+        {
+          "name": "camera/bz15h.cam",
+          "bytes": 468,
+          "mtime_ns": 946332902000000000
+        },
+        {
+          "name": "camera/bz16h.cam",
+          "bytes": 360,
+          "mtime_ns": 946332986000000000
+        },
+        {
+          "name": "camera/bz18h.cam",
+          "bytes": 360,
+          "mtime_ns": 946333118000000000
+        },
+        {
+          "name": "camera/bz1g.cam",
+          "bytes": 324,
+          "mtime_ns": 935525050000000000
+        },
+        {
+          "name": "camera/bz2g.cam",
+          "bytes": 576,
+          "mtime_ns": 942872346000000000
+        },
+        {
+          "name": "camera/bz3g.cam",
+          "bytes": 108,
+          "mtime_ns": 946333338000000000
+        },
+        {
+          "name": "camera/bz4g.cam",
+          "bytes": 288,
+          "mtime_ns": 946329162000000000
+        },
+        {
+          "name": "camera/bz5g.cam",
+          "bytes": 180,
+          "mtime_ns": 946329646000000000
+        },
+        {
+          "name": "camera/bz6g.cam",
+          "bytes": 360,
+          "mtime_ns": 946330738000000000
+        },
+        {
+          "name": "camera/bz7g.cam",
+          "bytes": 360,
+          "mtime_ns": 946330918000000000
+        },
+        {
+          "name": "camera/bz8k.cam",
+          "bytes": 144,
+          "mtime_ns": 946331204000000000
+        },
+        {
+          "name": "camera/bz9k.cam",
+          "bytes": 288,
+          "mtime_ns": 946331274000000000
+        },
+        {
+          "name": "camera/camera01.cam",
+          "bytes": 14436,
+          "mtime_ns": 947871700000000000
+        },
+        {
+          "name": "camera/mainmenu.cam",
+          "bytes": 252,
+          "mtime_ns": 939822488000000000
+        },
+        {
+          "name": "config/ai.reg",
+          "bytes": 1338,
+          "mtime_ns": 975690730000000000
+        },
+        {
+          "name": "config/keyboard.ini",
+          "bytes": 759,
+          "mtime_ns": 982259792000000000
+        },
+        {
+          "name": "config/lightscavegipat.ini",
+          "bytes": 1548,
+          "mtime_ns": 959004312000000000
+        },
+        {
+          "name": "config/lightscaveingos.ini",
+          "bytes": 1548,
+          "mtime_ns": 961762968000000000
+        },
+        {
+          "name": "config/lightscavesuslanger.ini",
+          "bytes": 1548,
+          "mtime_ns": 959004348000000000
+        },
+        {
+          "name": "config/lightsgipat.ini",
+          "bytes": 1699,
+          "mtime_ns": 959860296000000000
+        },
+        {
+          "name": "config/lightsingos.ini",
+          "bytes": 1703,
+          "mtime_ns": 959860302000000000
+        },
+        {
+          "name": "config/lightssuslanger.ini",
+          "bytes": 1699,
+          "mtime_ns": 959860306000000000
+        },
+        {
+          "name": "config/movie.ini",
+          "bytes": 204,
+          "mtime_ns": 969291708000000000
+        },
+        {
+          "name": "game.exe",
+          "bytes": 3825727,
+          "mtime_ns": 1455286882000000000
+        },
+        {
+          "name": "goggame-1457950224.dll",
+          "bytes": 295504,
+          "mtime_ns": 1458820016000000000
+        },
+        {
+          "name": "goggame-1457950224.hashdb",
+          "bytes": 8085,
+          "mtime_ns": 1458820042000000000
+        },
+        {
+          "name": "goggame-1457950224.ico",
+          "bytes": 138777,
+          "mtime_ns": 1458693862000000000
+        },
+        {
+          "name": "goggame-1457950224.info",
+          "bytes": 629,
+          "mtime_ns": 1458820008000000000
+        },
+        {
+          "name": "maps/basecam-mp.mob",
+          "bytes": 330393,
+          "mtime_ns": 973871998000000000
+        },
+        {
+          "name": "maps/basecam.mob",
+          "bytes": 435282,
+          "mtime_ns": 975513088000000000
+        },
+        {
+          "name": "maps/basegipat.mpr",
+          "bytes": 209122,
+          "mtime_ns": 969548482000000000
+        },
+        {
+          "name": "maps/bz10k.mob",
+          "bytes": 208245,
+          "mtime_ns": 969563714000000000
+        },
+        {
+          "name": "maps/bz10k.mpr",
+          "bytes": 159518,
+          "mtime_ns": 968352334000000000
+        },
+        {
+          "name": "maps/bz11k.mob",
+          "bytes": 207898,
+          "mtime_ns": 969563722000000000
+        },
+        {
+          "name": "maps/bz11k.mpr",
+          "bytes": 170206,
+          "mtime_ns": 969544112000000000
+        },
+        {
+          "name": "maps/bz13h.mob",
+          "bytes": 268275,
+          "mtime_ns": 981048972000000000
+        },
+        {
+          "name": "maps/bz13h.mpr",
+          "bytes": 179774,
+          "mtime_ns": 968352336000000000
+        },
+        {
+          "name": "maps/bz14h-lmp.mob",
+          "bytes": 216698,
+          "mtime_ns": 981048986000000000
+        },
+        {
+          "name": "maps/bz14h.mob",
+          "bytes": 235260,
+          "mtime_ns": 975515016000000000
+        },
+        {
+          "name": "maps/bz14h.mpr",
+          "bytes": 276174,
+          "mtime_ns": 968352336000000000
+        },
+        {
+          "name": "maps/bz15h.mob",
+          "bytes": 253908,
+          "mtime_ns": 969632914000000000
+        },
+        {
+          "name": "maps/bz15h.mpr",
+          "bytes": 149470,
+          "mtime_ns": 968352336000000000
+        },
+        {
+          "name": "maps/bz16h.mob",
+          "bytes": 265447,
+          "mtime_ns": 969567980000000000
+        },
+        {
+          "name": "maps/bz16h.mpr",
+          "bytes": 199262,
+          "mtime_ns": 968355744000000000
+        },
+        {
+          "name": "maps/bz18h.mob",
+          "bytes": 171768,
+          "mtime_ns": 969563780000000000
+        },
+        {
+          "name": "maps/bz18h.mpr",
+          "bytes": 246942,
+          "mtime_ns": 969548482000000000
+        },
+        {
+          "name": "maps/bz2g.mob",
+          "bytes": 307278,
+          "mtime_ns": 970143086000000000
+        },
+        {
+          "name": "maps/bz2g.mpr",
+          "bytes": 189501,
+          "mtime_ns": 968352338000000000
+        },
+        {
+          "name": "maps/bz3g.mob",
+          "bytes": 290707,
+          "mtime_ns": 969563632000000000
+        },
+        {
+          "name": "maps/bz3g.mpr",
+          "bytes": 160397,
+          "mtime_ns": 969371922000000000
+        },
+        {
+          "name": "maps/bz4g.mob",
+          "bytes": 257322,
+          "mtime_ns": 969563644000000000
+        },
+        {
+          "name": "maps/bz4g.mpr",
+          "bytes": 218813,
+          "mtime_ns": 969384362000000000
+        },
+        {
+          "name": "maps/bz5g.mob",
+          "bytes": 205234,
+          "mtime_ns": 969563654000000000
+        },
+        {
+          "name": "maps/bz5g.mpr",
+          "bytes": 257885,
+          "mtime_ns": 969371922000000000
+        },
+        {
+          "name": "maps/bz6g.mob",
+          "bytes": 267967,
+          "mtime_ns": 969563666000000000
+        },
+        {
+          "name": "maps/bz6g.mpr",
+          "bytes": 150701,
+          "mtime_ns": 968776234000000000
+        },
+        {
+          "name": "maps/bz7g-lmp.mob",
+          "bytes": 178525,
+          "mtime_ns": 969565248000000000
+        },
+        {
+          "name": "maps/bz7g.mob",
+          "bytes": 204514,
+          "mtime_ns": 969976830000000000
+        },
+        {
+          "name": "maps/bz7g.mpr",
+          "bytes": 217693,
+          "mtime_ns": 968352340000000000
+        },
+        {
+          "name": "maps/bz8k-lmp.mob",
+          "bytes": 318325,
+          "mtime_ns": 970057422000000000
+        },
+        {
+          "name": "maps/bz8k.mob",
+          "bytes": 355360,
+          "mtime_ns": 970835634000000000
+        },
+        {
+          "name": "maps/bz8k.mpr",
+          "bytes": 170013,
+          "mtime_ns": 968352340000000000
+        },
+        {
+          "name": "maps/bz9k.mob",
+          "bytes": 234400,
+          "mtime_ns": 969563702000000000
+        },
+        {
+          "name": "maps/bz9k.mpr",
+          "bytes": 199245,
+          "mtime_ns": 968352340000000000
+        },
+        {
+          "name": "maps/z12q1.mob",
+          "bytes": 139922,
+          "mtime_ns": 969560310000000000
+        },
+        {
+          "name": "maps/z12q1.mq",
+          "bytes": 4459,
+          "mtime_ns": 985963388000000000
+        },
+        {
+          "name": "maps/z12q2.mob",
+          "bytes": 103795,
+          "mtime_ns": 969560314000000000
+        },
+        {
+          "name": "maps/z12q2.mq",
+          "bytes": 2907,
+          "mtime_ns": 985963400000000000
+        },
+        {
+          "name": "maps/z12q3.mob",
+          "bytes": 94920,
+          "mtime_ns": 969560318000000000
+        },
+        {
+          "name": "maps/z12q3.mq",
+          "bytes": 3883,
+          "mtime_ns": 985963412000000000
+        },
+        {
+          "name": "maps/z13q1.mob",
+          "bytes": 71651,
+          "mtime_ns": 969560438000000000
+        },
+        {
+          "name": "maps/z13q1.mq",
+          "bytes": 3067,
+          "mtime_ns": 985963426000000000
+        },
+        {
+          "name": "maps/z13q2.mob",
+          "bytes": 69966,
+          "mtime_ns": 969560442000000000
+        },
+        {
+          "name": "maps/z13q2.mq",
+          "bytes": 2667,
+          "mtime_ns": 985963442000000000
+        },
+        {
+          "name": "maps/z13q3.mob",
+          "bytes": 76293,
+          "mtime_ns": 969560444000000000
+        },
+        {
+          "name": "maps/z13q3.mq",
+          "bytes": 3339,
+          "mtime_ns": 985963454000000000
+        },
+        {
+          "name": "maps/z17q1.mob",
+          "bytes": 3896,
+          "mtime_ns": 969560638000000000
+        },
+        {
+          "name": "maps/z17q1.mq",
+          "bytes": 3243,
+          "mtime_ns": 985963474000000000
+        },
+        {
+          "name": "maps/z17q2.mob",
+          "bytes": 15402,
+          "mtime_ns": 969560642000000000
+        },
+        {
+          "name": "maps/z17q2.mq",
+          "bytes": 3787,
+          "mtime_ns": 985963486000000000
+        },
+        {
+          "name": "maps/z17q3.mob",
+          "bytes": 4789,
+          "mtime_ns": 969560646000000000
+        },
+        {
+          "name": "maps/z17q3.mq",
+          "bytes": 2283,
+          "mtime_ns": 985963498000000000
+        },
+        {
+          "name": "maps/z18q1.mob",
+          "bytes": 64417,
+          "mtime_ns": 969560808000000000
+        },
+        {
+          "name": "maps/z18q1.mq",
+          "bytes": 3755,
+          "mtime_ns": 985963510000000000
+        },
+        {
+          "name": "maps/z18q2.mob",
+          "bytes": 14532,
+          "mtime_ns": 969560812000000000
+        },
+        {
+          "name": "maps/z18q2.mq",
+          "bytes": 2971,
+          "mtime_ns": 985963522000000000
+        },
+        {
+          "name": "maps/z18q3.mob",
+          "bytes": 22891,
+          "mtime_ns": 969560814000000000
+        },
+        {
+          "name": "maps/z18q3.mq",
+          "bytes": 3227,
+          "mtime_ns": 985963534000000000
+        },
+        {
+          "name": "maps/z18q4.mob",
+          "bytes": 27273,
+          "mtime_ns": 969560818000000000
+        },
+        {
+          "name": "maps/z18q4.mq",
+          "bytes": 2907,
+          "mtime_ns": 985963546000000000
+        },
+        {
+          "name": "maps/z19q1.mob",
+          "bytes": 653447,
+          "mtime_ns": 971100308000000000
+        },
+        {
+          "name": "maps/z19q1.mq",
+          "bytes": 3019,
+          "mtime_ns": 985963558000000000
+        },
+        {
+          "name": "maps/z19q2.mob",
+          "bytes": 655517,
+          "mtime_ns": 971100434000000000
+        },
+        {
+          "name": "maps/z19q2.mq",
+          "bytes": 2603,
+          "mtime_ns": 985963572000000000
+        },
+        {
+          "name": "maps/z19q3.mob",
+          "bytes": 660696,
+          "mtime_ns": 981566968000000000
+        },
+        {
+          "name": "maps/z19q3.mq",
+          "bytes": 3371,
+          "mtime_ns": 985963584000000000
+        },
+        {
+          "name": "maps/z3q1.mob",
+          "bytes": 65357,
+          "mtime_ns": 974308364000000000
+        },
+        {
+          "name": "maps/z3q1.mq",
+          "bytes": 2549,
+          "mtime_ns": 985963598000000000
+        },
+        {
+          "name": "maps/z3q2.mob",
+          "bytes": 44360,
+          "mtime_ns": 974308380000000000
+        },
+        {
+          "name": "maps/z3q2.mq",
+          "bytes": 2581,
+          "mtime_ns": 985963610000000000
+        },
+        {
+          "name": "maps/z3q3.mob",
+          "bytes": 49843,
+          "mtime_ns": 974308398000000000
+        },
+        {
+          "name": "maps/z3q3.mq",
+          "bytes": 3493,
+          "mtime_ns": 985963622000000000
+        },
+        {
+          "name": "maps/z6q1.mob",
+          "bytes": 62087,
+          "mtime_ns": 969559472000000000
+        },
+        {
+          "name": "maps/z6q1.mq",
+          "bytes": 3013,
+          "mtime_ns": 985963634000000000
+        },
+        {
+          "name": "maps/z6q2.mob",
+          "bytes": 74086,
+          "mtime_ns": 969559476000000000
+        },
+        {
+          "name": "maps/z6q2.mq",
+          "bytes": 3141,
+          "mtime_ns": 985963650000000000
+        },
+        {
+          "name": "maps/z6q3.mob",
+          "bytes": 61030,
+          "mtime_ns": 969559480000000000
+        },
+        {
+          "name": "maps/z6q3.mq",
+          "bytes": 3189,
+          "mtime_ns": 985963660000000000
+        },
+        {
+          "name": "maps/z7q1.mob",
+          "bytes": 73824,
+          "mtime_ns": 969559726000000000
+        },
+        {
+          "name": "maps/z7q1.mq",
+          "bytes": 3365,
+          "mtime_ns": 985963672000000000
+        },
+        {
+          "name": "maps/z7q2.mob",
+          "bytes": 71169,
+          "mtime_ns": 969559730000000000
+        },
+        {
+          "name": "maps/z7q2.mq",
+          "bytes": 3013,
+          "mtime_ns": 985963684000000000
+        },
+        {
+          "name": "maps/z7q3.mob",
+          "bytes": 87719,
+          "mtime_ns": 969559734000000000
+        },
+        {
+          "name": "maps/z7q3.mq",
+          "bytes": 3189,
+          "mtime_ns": 985963694000000000
+        },
+        {
+          "name": "maps/z9q1.mob",
+          "bytes": 51443,
+          "mtime_ns": 969560104000000000
+        },
+        {
+          "name": "maps/z9q1.mq",
+          "bytes": 3829,
+          "mtime_ns": 985963706000000000
+        },
+        {
+          "name": "maps/z9q2.mob",
+          "bytes": 48923,
+          "mtime_ns": 969560120000000000
+        },
+        {
+          "name": "maps/z9q2.mq",
+          "bytes": 3317,
+          "mtime_ns": 985963718000000000
+        },
+        {
+          "name": "maps/z9q3.mob",
+          "bytes": 73659,
+          "mtime_ns": 969560116000000000
+        },
+        {
+          "name": "maps/z9q3.mq",
+          "bytes": 2965,
+          "mtime_ns": 985963728000000000
+        },
+        {
+          "name": "maps/zone1.mob",
+          "bytes": 776423,
+          "mtime_ns": 969976210000000000
+        },
+        {
+          "name": "maps/zone1.mpr",
+          "bytes": 768782,
+          "mtime_ns": 969458062000000000
+        },
+        {
+          "name": "maps/zone10.mob",
+          "bytes": 593868,
+          "mtime_ns": 973872384000000000
+        },
+        {
+          "name": "maps/zone10.mpr",
+          "bytes": 544623,
+          "mtime_ns": 973866972000000000
+        },
+        {
+          "name": "maps/zone11.mob",
+          "bytes": 2790678,
+          "mtime_ns": 970835594000000000
+        },
+        {
+          "name": "maps/zone11.mpr",
+          "bytes": 2181583,
+          "mtime_ns": 968352344000000000
+        },
+        {
+          "name": "maps/zone12-lmp.mob",
+          "bytes": 2099972,
+          "mtime_ns": 969564726000000000
+        },
+        {
+          "name": "maps/zone12.mob",
+          "bytes": 2296681,
+          "mtime_ns": 969895086000000000
+        },
+        {
+          "name": "maps/zone12.mpr",
+          "bytes": 1689295,
+          "mtime_ns": 968352348000000000
+        },
+        {
+          "name": "maps/zone12dm1.mob",
+          "bytes": 41378,
+          "mtime_ns": 969556604000000000
+        },
+        {
+          "name": "maps/zone12dm2.mob",
+          "bytes": 41378,
+          "mtime_ns": 969556608000000000
+        },
+        {
+          "name": "maps/zone12magess.mob",
+          "bytes": 8679,
+          "mtime_ns": 970057284000000000
+        },
+        {
+          "name": "maps/zone13-lmp.mob",
+          "bytes": 1953378,
+          "mtime_ns": 969564832000000000
+        },
+        {
+          "name": "maps/zone13.mob",
+          "bytes": 2071924,
+          "mtime_ns": 969996424000000000
+        },
+        {
+          "name": "maps/zone13.mpr",
+          "bytes": 1699575,
+          "mtime_ns": 968352350000000000
+        },
+        {
+          "name": "maps/zone14.mob",
+          "bytes": 633742,
+          "mtime_ns": 969997540000000000
+        },
+        {
+          "name": "maps/zone14.mpr",
+          "bytes": 544815,
+          "mtime_ns": 968352352000000000
+        },
+        {
+          "name": "maps/zone15.mob",
+          "bytes": 1700324,
+          "mtime_ns": 981048806000000000
+        },
+        {
+          "name": "maps/zone15.mpr",
+          "bytes": 1621327,
+          "mtime_ns": 968352354000000000
+        },
+        {
+          "name": "maps/zone15night.mob",
+          "bytes": 44884,
+          "mtime_ns": 969557344000000000
+        },
+        {
+          "name": "maps/zone16.mob",
+          "bytes": 620558,
+          "mtime_ns": 981048848000000000
+        },
+        {
+          "name": "maps/zone16.mpr",
+          "bytes": 727787,
+          "mtime_ns": 968352354000000000
+        },
+        {
+          "name": "maps/zone17-lmp.mob",
+          "bytes": 2429364,
+          "mtime_ns": 969564940000000000
+        },
+        {
+          "name": "maps/zone17.mob",
+          "bytes": 2463262,
+          "mtime_ns": 985203580000000000
+        },
+        {
+          "name": "maps/zone17.mpr",
+          "bytes": 1336047,
+          "mtime_ns": 968352358000000000
+        },
+        {
+          "name": "maps/zone18-lmp.mob",
+          "bytes": 2059712,
+          "mtime_ns": 969565026000000000
+        },
+        {
+          "name": "maps/zone18.mob",
+          "bytes": 2236851,
+          "mtime_ns": 969563364000000000
+        },
+        {
+          "name": "maps/zone18.mpr",
+          "bytes": 1660303,
+          "mtime_ns": 968352360000000000
+        },
+        {
+          "name": "maps/zone18market.mob",
+          "bytes": 13767,
+          "mtime_ns": 969557690000000000
+        },
+        {
+          "name": "maps/zone19-lmp.mob",
+          "bytes": 3290252,
+          "mtime_ns": 981567348000000000
+        },
+        {
+          "name": "maps/zone19.mob",
+          "bytes": 3863048,
+          "mtime_ns": 975513552000000000
+        },
+        {
+          "name": "maps/zone19.mpr",
+          "bytes": 2989231,
+          "mtime_ns": 968352364000000000
+        },
+        {
+          "name": "maps/zone19alarm1.mob",
+          "bytes": 13188,
+          "mtime_ns": 974989082000000000
+        },
+        {
+          "name": "maps/zone19alarm2.mob",
+          "bytes": 28236,
+          "mtime_ns": 969557940000000000
+        },
+        {
+          "name": "maps/zone19q71h.mob",
+          "bytes": 49171,
+          "mtime_ns": 974989098000000000
+        },
+        {
+          "name": "maps/zone2.mob",
+          "bytes": 469874,
+          "mtime_ns": 969561926000000000
+        },
+        {
+          "name": "maps/zone2.mpr",
+          "bytes": 263670,
+          "mtime_ns": 968352366000000000
+        },
+        {
+          "name": "maps/zone20.mob",
+          "bytes": 278342,
+          "mtime_ns": 969563600000000000
+        },
+        {
+          "name": "maps/zone20.mpr",
+          "bytes": 232661,
+          "mtime_ns": 968352366000000000
+        },
+        {
+          "name": "maps/zone3obr-lmp.mob",
+          "bytes": 1342076,
+          "mtime_ns": 969564310000000000
+        },
+        {
+          "name": "maps/zone3obr.mob",
+          "bytes": 1496793,
+          "mtime_ns": 970147304000000000
+        },
+        {
+          "name": "maps/zone3obr.mpr",
+          "bytes": 1236449,
+          "mtime_ns": 969907268000000000
+        },
+        {
+          "name": "maps/zone3obrvoev.mob",
+          "bytes": 7870,
+          "mtime_ns": 969554226000000000
+        },
+        {
+          "name": "maps/zone4.mob",
+          "bytes": 2297357,
+          "mtime_ns": 975515140000000000
+        },
+        {
+          "name": "maps/zone4.mpr",
+          "bytes": 1884862,
+          "mtime_ns": 968352370000000000
+        },
+        {
+          "name": "maps/zone4hadagans.mob",
+          "bytes": 35589,
+          "mtime_ns": 969554358000000000
+        },
+        {
+          "name": "maps/zone5_1.mob",
+          "bytes": 492562,
+          "mtime_ns": 973872098000000000
+        },
+        {
+          "name": "maps/zone5_1.mpr",
+          "bytes": 459528,
+          "mtime_ns": 973866974000000000
+        },
+        {
+          "name": "maps/zone5scrabpoison.mob",
+          "bytes": 2459,
+          "mtime_ns": 969554434000000000
+        },
+        {
+          "name": "maps/zone6-lmp.mob",
+          "bytes": 1252663,
+          "mtime_ns": 969564374000000000
+        },
+        {
+          "name": "maps/zone6.grp",
+          "bytes": 817160,
+          "mtime_ns": 969562210000000000
+        },
+        {
+          "name": "maps/zone6.mob",
+          "bytes": 518876,
+          "mtime_ns": 985202020000000000
+        },
+        {
+          "name": "maps/zone6.mpr",
+          "bytes": 936770,
+          "mtime_ns": 968352372000000000
+        },
+        {
+          "name": "maps/zone6_2.grp",
+          "bytes": 817160,
+          "mtime_ns": 969562270000000000
+        },
+        {
+          "name": "maps/zone6_2.mpr",
+          "bytes": 936940,
+          "mtime_ns": 968352374000000000
+        },
+        {
+          "name": "maps/zone6dkin.mob",
+          "bytes": 5978,
+          "mtime_ns": 969554728000000000
+        },
+        {
+          "name": "maps/zone6flower.mob",
+          "bytes": 14731,
+          "mtime_ns": 969554708000000000
+        },
+        {
+          "name": "maps/zone6gr.mob",
+          "bytes": 5968,
+          "mtime_ns": 969554712000000000
+        },
+        {
+          "name": "maps/zone6van.mob",
+          "bytes": 2913,
+          "mtime_ns": 969554722000000000
+        },
+        {
+          "name": "maps/zone6zs.mob",
+          "bytes": 10441,
+          "mtime_ns": 969554718000000000
+        },
+        {
+          "name": "maps/zone7-lmp.mob",
+          "bytes": 2413168,
+          "mtime_ns": 969564474000000000
+        },
+        {
+          "name": "maps/zone7.mob",
+          "bytes": 2445413,
+          "mtime_ns": 969562372000000000
+        },
+        {
+          "name": "maps/zone7.mpr",
+          "bytes": 2483964,
+          "mtime_ns": 973866976000000000
+        },
+        {
+          "name": "maps/zone7altar.mob",
+          "bytes": 16554,
+          "mtime_ns": 969555058000000000
+        },
+        {
+          "name": "maps/zone7chest.mob",
+          "bytes": 1479,
+          "mtime_ns": 969555052000000000
+        },
+        {
+          "name": "maps/zone7letter.mob",
+          "bytes": 16116,
+          "mtime_ns": 969555048000000000
+        },
+        {
+          "name": "maps/zone7zasada.mob",
+          "bytes": 47620,
+          "mtime_ns": 969555042000000000
+        },
+        {
+          "name": "maps/zone8.mob",
+          "bytes": 1736372,
+          "mtime_ns": 969562452000000000
+        },
+        {
+          "name": "maps/zone8.mpr",
+          "bytes": 1640395,
+          "mtime_ns": 973866978000000000
+        },
+        {
+          "name": "maps/zone8demon.mob",
+          "bytes": 4678,
+          "mtime_ns": 969555814000000000
+        },
+        {
+          "name": "maps/zone9-lmp.mob",
+          "bytes": 2075507,
+          "mtime_ns": 969564582000000000
+        },
+        {
+          "name": "maps/zone9.mob",
+          "bytes": 2146044,
+          "mtime_ns": 981049208000000000
+        },
+        {
+          "name": "maps/zone9.mpr",
+          "bytes": 1504650,
+          "mtime_ns": 968352382000000000
+        },
+        {
+          "name": "maps/zonemainmenunew.mob",
+          "bytes": 60297,
+          "mtime_ns": 969564244000000000
+        },
+        {
+          "name": "maps/zonemainmenunew.mpr",
+          "bytes": 67316,
+          "mtime_ns": 968352382000000000
+        },
+        {
+          "name": "movies/crdt.bik",
+          "bytes": 12474620,
+          "mtime_ns": 970151902000000000
+        },
+        {
+          "name": "movies/crdtfin.bik",
+          "bytes": 1195100,
+          "mtime_ns": 970154704000000000
+        },
+        {
+          "name": "movies/crdtfout.bik",
+          "bytes": 1132768,
+          "mtime_ns": 970154728000000000
+        },
+        {
+          "name": "movies/dcity.bik",
+          "bytes": 21996500,
+          "mtime_ns": 969559802000000000
+        },
+        {
+          "name": "movies/fishtank.bik",
+          "bytes": 7736800,
+          "mtime_ns": 970320512000000000
+        },
+        {
+          "name": "movies/intro.bik",
+          "bytes": 52261312,
+          "mtime_ns": 976819658000000000
+        },
+        {
+          "name": "movies/nival.bik",
+          "bytes": 6754088,
+          "mtime_ns": 969635566000000000
+        },
+        {
+          "name": "movies/outtro1.bik",
+          "bytes": 9745444,
+          "mtime_ns": 968094670000000000
+        },
+        {
+          "name": "movies/outtro2.bik",
+          "bytes": 21146400,
+          "mtime_ns": 968095058000000000
+        },
+        {
+          "name": "movies/progres.bik",
+          "bytes": 243164,
+          "mtime_ns": 981736180000000000
+        },
+        {
+          "name": "movies/progres1.bik",
+          "bytes": 238264,
+          "mtime_ns": 965669800000000000
+        },
+        {
+          "name": "movies/progres2.bik",
+          "bytes": 352808,
+          "mtime_ns": 950645518000000000
+        },
+        {
+          "name": "movies/progres3.bik",
+          "bytes": 397448,
+          "mtime_ns": 968089532000000000
+        },
+        {
+          "name": "movies/progres4.bik",
+          "bytes": 278780,
+          "mtime_ns": 950645820000000000
+        },
+        {
+          "name": "movies/teleprt1.bik",
+          "bytes": 8234652,
+          "mtime_ns": 968094036000000000
+        },
+        {
+          "name": "movies/teleprt2.bik",
+          "bytes": 10120772,
+          "mtime_ns": 968435536000000000
+        },
+        {
+          "name": "movies/teleprt3.bik",
+          "bytes": 22977296,
+          "mtime_ns": 968093526000000000
+        },
+        {
+          "name": "movies/teleprt4.bik",
+          "bytes": 11356144,
+          "mtime_ns": 968094234000000000
+        },
+        {
+          "name": "movies/titles.bik",
+          "bytes": 46816,
+          "mtime_ns": 963863862000000000
+        },
+        {
+          "name": "movies/ttlsfin.bik",
+          "bytes": 1227052,
+          "mtime_ns": 963863948000000000
+        },
+        {
+          "name": "movies/ttlsfout.bik",
+          "bytes": 1234848,
+          "mtime_ns": 963864054000000000
+        },
+        {
+          "name": "mp3dec.asi",
+          "bytes": 126976,
+          "mtime_ns": 925160516000000000
+        },
+        {
+          "name": "mss32.dll",
+          "bytes": 331776,
+          "mtime_ns": 925160402000000000
+        },
+        {
+          "name": "readme.txt",
+          "bytes": 17814,
+          "mtime_ns": 985969670000000000
+        },
+        {
+          "name": "res/aiinfo.res",
+          "bytes": 8385,
+          "mtime_ns": 956947384000000000
+        },
+        {
+          "name": "res/database.res",
+          "bytes": 585207,
+          "mtime_ns": 979848412000000000
+        },
+        {
+          "name": "res/databaselmp.res",
+          "bytes": 347708,
+          "mtime_ns": 979848432000000000
+        },
+        {
+          "name": "res/figures.res",
+          "bytes": 65400958,
+          "mtime_ns": 976817124000000000
+        },
+        {
+          "name": "res/gfx.res",
+          "bytes": 51251,
+          "mtime_ns": 946301988000000000
+        },
+        {
+          "name": "res/materials.res",
+          "bytes": 870,
+          "mtime_ns": 924270778000000000
+        },
+        {
+          "name": "res/menus.res",
+          "bytes": 665264,
+          "mtime_ns": 969973290000000000
+        },
+        {
+          "name": "res/music.reg",
+          "bytes": 650,
+          "mtime_ns": 968431762000000000
+        },
+        {
+          "name": "res/outro.res",
+          "bytes": 59264,
+          "mtime_ns": 985977906000000000
+        },
+        {
+          "name": "res/redress.res",
+          "bytes": 74805729,
+          "mtime_ns": 969460936000000000
+        },
+        {
+          "name": "res/sfx.res",
+          "bytes": 106588228,
+          "mtime_ns": 982854422000000000
+        },
+        {
+          "name": "res/smessbase.reg",
+          "bytes": 94,
+          "mtime_ns": 985274410000000000
+        },
+        {
+          "name": "res/speech.res",
+          "bytes": 123271949,
+          "mtime_ns": 982784414000000000
+        },
+        {
+          "name": "res/streamsn.reg",
+          "bytes": 2961,
+          "mtime_ns": 968431768000000000
+        },
+        {
+          "name": "res/sysmsg.txt",
+          "bytes": 144,
+          "mtime_ns": 985202386000000000
+        },
+        {
+          "name": "res/texts.res",
+          "bytes": 812963,
+          "mtime_ns": 985974526000000000
+        },
+        {
+          "name": "res/textslmp.res",
+          "bytes": 46473,
+          "mtime_ns": 985964944000000000
+        },
+        {
+          "name": "res/textures.res",
+          "bytes": 107649220,
+          "mtime_ns": 970770612000000000
+        },
+        {
+          "name": "starter.exe",
+          "bytes": 225280,
+          "mtime_ns": 980176752000000000
+        },
+        {
+          "name": "stream/attack.mp3",
+          "bytes": 959228,
+          "mtime_ns": 968425914000000000
+        },
+        {
+          "name": "stream/atwar.mp3",
+          "bytes": 1269059,
+          "mtime_ns": 968425906000000000
+        },
+        {
+          "name": "stream/battle.mp3",
+          "bytes": 647312,
+          "mtime_ns": 968425900000000000
+        },
+        {
+          "name": "stream/blood.mp3",
+          "bytes": 1536773,
+          "mtime_ns": 968425894000000000
+        },
+        {
+          "name": "stream/bonus.mp3",
+          "bytes": 1075988,
+          "mtime_ns": 968425936000000000
+        },
+        {
+          "name": "stream/bonus01.mp3",
+          "bytes": 1872458,
+          "mtime_ns": 968425986000000000
+        },
+        {
+          "name": "stream/bonus02.mp3",
+          "bytes": 960479,
+          "mtime_ns": 969885438000000000
+        },
+        {
+          "name": "stream/bonus03.mp3",
+          "bytes": 1769459,
+          "mtime_ns": 968427058000000000
+        },
+        {
+          "name": "stream/bravery.mp3",
+          "bytes": 1505915,
+          "mtime_ns": 968431182000000000
+        },
+        {
+          "name": "stream/briefing.mp3",
+          "bytes": 2180204,
+          "mtime_ns": 968425886000000000
+        },
+        {
+          "name": "stream/chance.mp3",
+          "bytes": 1775297,
+          "mtime_ns": 968425880000000000
+        },
+        {
+          "name": "stream/clash.mp3",
+          "bytes": 2005064,
+          "mtime_ns": 968425876000000000
+        },
+        {
+          "name": "stream/combat.mp3",
+          "bytes": 971321,
+          "mtime_ns": 968425870000000000
+        },
+        {
+          "name": "stream/cool.mp3",
+          "bytes": 2092217,
+          "mtime_ns": 968425864000000000
+        },
+        {
+          "name": "stream/crawler.mp3",
+          "bytes": 710279,
+          "mtime_ns": 968431166000000000
+        },
+        {
+          "name": "stream/death.mp3",
+          "bytes": 994673,
+          "mtime_ns": 968425854000000000
+        },
+        {
+          "name": "stream/desert.mp3",
+          "bytes": 1577222,
+          "mtime_ns": 968431250000000000
+        },
+        {
+          "name": "stream/dungeon.mp3",
+          "bytes": 1930421,
+          "mtime_ns": 968425850000000000
+        },
+        {
+          "name": "stream/east.mp3",
+          "bytes": 2403716,
+          "mtime_ns": 968425842000000000
+        },
+        {
+          "name": "stream/enemies.mp3",
+          "bytes": 1174400,
+          "mtime_ns": 968425836000000000
+        },
+        {
+          "name": "stream/evil.mp3",
+          "bytes": 1303670,
+          "mtime_ns": 968425832000000000
+        },
+        {
+          "name": "stream/fight.mp3",
+          "bytes": 662741,
+          "mtime_ns": 968427364000000000
+        },
+        {
+          "name": "stream/gipath.mp3",
+          "bytes": 2118488,
+          "mtime_ns": 968425820000000000
+        },
+        {
+          "name": "stream/haven.mp3",
+          "bytes": 1592234,
+          "mtime_ns": 968431210000000000
+        },
+        {
+          "name": "stream/horror.mp3",
+          "bytes": 779084,
+          "mtime_ns": 968425814000000000
+        },
+        {
+          "name": "stream/ingos.mp3",
+          "bytes": 3642206,
+          "mtime_ns": 968425792000000000
+        },
+        {
+          "name": "stream/kania.mp3",
+          "bytes": 2859080,
+          "mtime_ns": 968427264000000000
+        },
+        {
+          "name": "stream/main.mp3",
+          "bytes": 829541,
+          "mtime_ns": 968425780000000000
+        },
+        {
+          "name": "stream/murder.mp3",
+          "bytes": 619790,
+          "mtime_ns": 968425776000000000
+        },
+        {
+          "name": "stream/nature.mp3",
+          "bytes": 1920830,
+          "mtime_ns": 968425768000000000
+        },
+        {
+          "name": "stream/rage.mp3",
+          "bytes": 634802,
+          "mtime_ns": 968425764000000000
+        },
+        {
+          "name": "stream/rest.mp3",
+          "bytes": 1363301,
+          "mtime_ns": 968425758000000000
+        },
+        {
+          "name": "stream/sand.mp3",
+          "bytes": 1216517,
+          "mtime_ns": 968425752000000000
+        },
+        {
+          "name": "stream/shop.mp3",
+          "bytes": 1245290,
+          "mtime_ns": 968425746000000000
+        },
+        {
+          "name": "stream/victory.mp3",
+          "bytes": 1055138,
+          "mtime_ns": 968425724000000000
+        },
+        {
+          "name": "stream/village.mp3",
+          "bytes": 1183574,
+          "mtime_ns": 968425718000000000
+        },
+        {
+          "name": "stream/warrior.mp3",
+          "bytes": 972155,
+          "mtime_ns": 968425712000000000
+        },
+        {
+          "name": "stream/wild.mp3",
+          "bytes": 1938761,
+          "mtime_ns": 968425706000000000
+        },
+        {
+          "name": "textures/mo1884p.mmp",
+          "bytes": 172204,
+          "mtime_ns": 1792931061385349302
+        },
+        {
+          "name": "textures/mo699p.mmp",
+          "bytes": 172204,
+          "mtime_ns": 1792931061388295649
+        },
+        {
+          "name": "textures/mo702p.mmp",
+          "bytes": 172204,
+          "mtime_ns": 1792931061391176764
+        },
+        {
+          "name": "textures/prot0p.mmp",
+          "bytes": 172204,
+          "mtime_ns": 1792931061425914606
+        },
+        {
+          "name": "textures/prot0s.mmp",
+          "bytes": 43108,
+          "mtime_ns": 1792931061423242354
+        },
+        {
+          "name": "webcache.zip",
+          "bytes": 269991,
+          "mtime_ns": 1458820044000000000
+        }
+      ]
+    }
+  },
+  "profile": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/qualified-profile",
+  "mandated_settings": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "display": ":109",
+  "inherited_display": true,
+  "xauthority": "/run/gpu-lab-gpu0/display-1/Xauthority",
+  "physical_gpu": {
+    "index": "0",
+    "uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+    "name": "NVIDIA GeForce RTX 3090",
+    "pci_bus_id": "00000000:09:00.0",
+    "driver": "580.178.04"
+  },
+  "engine_gpu_index": 0,
+  "gpu_inventory": [
+    {
+      "index": "0",
+      "uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+      "name": "NVIDIA GeForce RTX 3090",
+      "pci_bus_id": "00000000:09:00.0",
+      "driver": "580.178.04"
+    }
+  ],
+  "runtime_environment": {},
+  "wine": null,
+  "limits": {
+    "suite_seconds": 480,
+    "stress_seconds": 1200,
+    "total_seconds": 7200
+  },
+  "runs": [
+    {
+      "exit_code": 0,
+      "pid": 1720971,
+      "wall_seconds": 9.356067810003879,
+      "stopped": "",
+      "errors": [],
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ],
+      "gpu_uuids_observed": [
+        "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441"
+      ],
+      "wrong_gpu_uuids": [],
+      "physical_gpu_confirmed": true,
+      "telemetry_errors": [],
+      "process_group_clean": true,
+      "teardown": {
+        "descendant_grace_seconds": 5.0,
+        "after_parent_exit_seconds": 0.0917107019922696,
+        "descendants_observed_after_parent_exit": [],
+        "forced_cleanup": false,
+        "live_members_after_cleanup": []
+      },
+      "suite": "sparse_updates",
+      "checks": 44,
+      "fixture_failures": [],
+      "validation_errors": [],
+      "runtime": {
+        "adapter": "NVIDIA GeForce RTX 3090",
+        "display": "X11",
+        "driver": "vulkan",
+        "engine": {
+          "build": "custom_build",
+          "hash": "unknown",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (custom_build)",
+          "timestamp": 0
+        },
+        "fixture": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/qualified/fixtures/path_trace_sparse_updates.gd",
+        "fsr": {
+          "api": false,
+          "engine": false,
+          "fg3": false,
+          "fg4": false,
+          "sr3": false,
+          "sr4": false
+        },
+        "method": "forward_plus",
+        "passed": true,
+        "pid": 1720971,
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "pt_supported": true,
+        "render_thread": {
+          "actual_separate": true,
+          "expected_separate": true,
+          "main_id": 1,
+          "passed": true,
+          "project_model": 2,
+          "render_id": 5,
+          "requested": "project"
+        },
+        "require_sdk": false,
+        "user_data": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/qualified-profile/sparse_updates/data/godot/app_userdata/Cursed Lands",
+        "vendor": "NVIDIA"
+      },
+      "report": "path-sparse-updates.json",
+      "passed": true,
+      "artifacts": {
+        "command.json": "9fb872cf7571adee751ded8f667da2ad240ad52365790d8b01bb394ef7de14bc",
+        "gpu.jsonl": "46800a39344cfc81a47dacffbb235d6dd96dac23c521306145f94cfe9d561538",
+        "path-sparse-updates.json": "ff92dd82f331a8bd704048eb17a2660e6c4f6ef1b8528ab3ff32303515472d00",
+        "qualification-runtime.json": "969d3ffaec31cd4b914f37f7bd91ec3502a57c4e7bbd04d6a816e3f867e979c9",
+        "run.log": "b97ec977335d7d6d7b1910f3730701102d4ae5f772761e2f48ae88365c84866c"
+      }
+    }
+  ],
+  "not_run": [],
+  "failures": [],
+  "scope": "NVIDIA GPU on Linux X11; native Vulkan or Windows DX12 through explicit Wine. GPU allocations are engine counters; nvidia-smi adds driver residency evidence. This does not certify other hardware, native Windows, or a complete campaign playthrough.",
+  "inputs_unchanged": true,
+  "wall_seconds": 9.439299721998395
+}

@@ -1,0 +1,19 @@
+PASS authored route exists: zone11
+PASS ordinary PT prepares actual campaign scene
+PASS production SHaRC option reaches rendered output
+PASS enabling SHaRC retains the current scene acceleration structures
+PASS terrain, cached paths and NRD remain active together
+PASS real campaign uses populated cache cells: [1319402, 3696265, 1361090, 4831857]
+PASS SHaRC changes actual indirect world lighting
+PASS two-bounce query permutation is usable
+PASS moving/recolouring a local light invalidates production cache history
+PASS local-light colour and position change the rendered scene
+PASS removing a transient lamp retains working cached PT
+PASS production Still scene bypasses SHaRC
+PASS returning to Responsive restores SHaRC
+PASS camera travel completes a fresh scene generation
+PASS streamed scene replacement owns a fresh cache and retains NRD
+PASS live Off restores original PT without unloading the scene
+PASS Off releases all cache memory
+PASS leaving PT disposes both scene and cache
+SHARC_LIVE 18 checks 0 failures

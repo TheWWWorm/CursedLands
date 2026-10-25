@@ -1,0 +1,13 @@
+{
+  "game/src/ei/terrain.gd": "9a84b71c33d5df25b84d6e65c68f64622f6ec60d5e4de8db9a92c7842abfb39f",
+  "game/src/ei/terrain_sector.gd": "50bbd1c0cc851af96962bf91e7557b6abb76dddb557c86f1fb6f52a65e235ea6",
+  "game/src/game/fx/terrain_cliff.gd": "63bbc945b919f11f0dd08252ac2112c59bf6ba3a3e370bf25bd6c5b6af667f65",
+  "game/src/game/fx/terrain_cliff_mesh.gd": "4e52a286d1ab44f7454f755e551473249f67c086e90c225691345b1d1b97ad7a",
+  "game/src/game/fx/raytrace_ground.gd": "dd69e1f1e2caaef749afedfb412fe03cb19506c769fafce4100e3d6d46f47cc1",
+  "game/src/game/fx/soft_ground_deform.gd": "cd893660e1f28c3117824c22c0c654805b64c65e9640894b8aaa6a11c4d9d757",
+  "game/src/game/fx/water_raytrace_scene.gd": "c58ed326b42ea483dcf46e9f23d72fcdbcd4471408048aa6462450067e9ffcc5",
+  "tools/tests/terrain_cliff_mesh.gd": "946cfca398afabdfe5ef73eef29b43a58bd10f5cbb4856d5a1cf90517dcd518d",
+  "tools/tests/terrain_wall_contours.gd": "40a939f5b7d18ee699c2e54e8a5b6a82a1980dd848f503a51d2beeb3e28d71e1",
+  "tools/tests/terrain_cliff_render.gd": "1cc6387807fd2555abe73e1eb94e482dbd6e1dc625c6cbd9d99226210a618a10",
+  "tools/regressions.json": "7e51d18cc2853ab2ea52d3833b5e525ffde5e10158ed6bcace7ec4477d18c5cd"
+}

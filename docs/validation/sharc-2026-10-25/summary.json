@@ -1,0 +1,272 @@
+{
+  "source_base": "949f2fa6ca830bdfc2d5a8c51d17fa7015a2daf6",
+  "integration_base": "2a912713f4bc53a77b2903ec4c96dea75809ed07",
+  "date": "2026-10-25",
+  "default": "Off; Responsive accumulation only",
+  "gpu_assertions": 1125,
+  "results": [
+    {
+      "suite": "final-sharc",
+      "checks": 25,
+      "receipt": "final-sharc/result.json"
+    },
+    {
+      "suite": "windows-final-path_trace_sharc",
+      "checks": 25,
+      "receipt": "windows-final-path_trace_sharc/result.json"
+    },
+    {
+      "suite": "sharc-options",
+      "checks": 423,
+      "receipt": "sharc-options/result.json"
+    },
+    {
+      "suite": "live-outdoor",
+      "checks": 18,
+      "receipt": "live-outdoor/result.json"
+    },
+    {
+      "suite": "live-cave",
+      "checks": 18,
+      "receipt": "live-cave/result.json"
+    },
+    {
+      "suite": "performance-outdoor",
+      "checks": 26,
+      "receipt": "performance-outdoor/result.json"
+    },
+    {
+      "suite": "performance-cave",
+      "checks": 26,
+      "receipt": "performance-cave/result.json"
+    },
+    {
+      "suite": "performance-outdoor-high",
+      "checks": 26,
+      "receipt": "performance-outdoor-high/result.json"
+    },
+    {
+      "suite": "performance-cave-high",
+      "checks": 26,
+      "receipt": "performance-cave-high/result.json"
+    },
+    {
+      "suite": "related-path_trace_nrd_device",
+      "checks": 26,
+      "receipt": "related-path_trace_nrd_device/result.json"
+    },
+    {
+      "suite": "related-path_trace_body_illumination",
+      "checks": 14,
+      "receipt": "related-path_trace_body_illumination/result.json"
+    },
+    {
+      "suite": "related-water_raytrace_device",
+      "checks": 25,
+      "receipt": "related-water_raytrace_device/result.json"
+    },
+    {
+      "suite": "related-scene_raytrace_device",
+      "checks": 17,
+      "receipt": "related-scene_raytrace_device/result.json"
+    },
+    {
+      "suite": "glossy",
+      "checks": 31,
+      "receipt": "related-vulkan/glossy/run.json"
+    },
+    {
+      "suite": "emitters",
+      "checks": 38,
+      "receipt": "related-vulkan/emitters/run.json"
+    },
+    {
+      "suite": "foliage",
+      "checks": 13,
+      "receipt": "related-vulkan/foliage/run.json"
+    },
+    {
+      "suite": "terrain",
+      "checks": 69,
+      "receipt": "related-vulkan/terrain/run.json"
+    },
+    {
+      "suite": "sparse_updates",
+      "checks": 44,
+      "receipt": "related-vulkan/sparse_updates/run.json"
+    },
+    {
+      "suite": "motion",
+      "checks": 66,
+      "receipt": "related-vulkan/motion/run.json"
+    },
+    {
+      "suite": "lifecycle",
+      "checks": 169,
+      "receipt": "related-vulkan/lifecycle/run.json"
+    }
+  ],
+  "benchmarks": [
+    {
+      "scene": "outdoor",
+      "quality": 0,
+      "bounces": 2,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "off": {
+        "total_gpu_ms": 1.43017578125,
+        "trace_gpu_ms": 0.7388916015625,
+        "frame_ms": 4.933999999999999
+      },
+      "on": {
+        "total_gpu_ms": 1.877197265625,
+        "trace_gpu_ms": 0.8140869140625,
+        "frame_ms": 5.659000000000001
+      },
+      "pt_gpu_change_percent": 31.256401502219177,
+      "receipt": "performance-outdoor/sharc-performance.json"
+    },
+    {
+      "scene": "outdoor",
+      "quality": 0,
+      "bounces": 4,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "off": {
+        "total_gpu_ms": 1.605712890625,
+        "trace_gpu_ms": 0.904541015625,
+        "frame_ms": 4.68
+      },
+      "on": {
+        "total_gpu_ms": 2.0496826171875,
+        "trace_gpu_ms": 0.9599609375,
+        "frame_ms": 5.3995
+      },
+      "pt_gpu_change_percent": 27.649384217728446,
+      "receipt": "performance-outdoor/sharc-performance.json"
+    },
+    {
+      "scene": "cave",
+      "quality": 0,
+      "bounces": 2,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "off": {
+        "total_gpu_ms": 4.1441650390625,
+        "trace_gpu_ms": 3.151611328125,
+        "frame_ms": 5.9030000000000005
+      },
+      "on": {
+        "total_gpu_ms": 4.686279296875,
+        "trace_gpu_ms": 3.1964111328125,
+        "frame_ms": 6.4725
+      },
+      "pt_gpu_change_percent": 13.081386786061454,
+      "receipt": "performance-cave/sharc-performance.json"
+    },
+    {
+      "scene": "cave",
+      "quality": 0,
+      "bounces": 4,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "off": {
+        "total_gpu_ms": 4.7274169921875,
+        "trace_gpu_ms": 3.81005859375,
+        "frame_ms": 6.558
+      },
+      "on": {
+        "total_gpu_ms": 5.4061279296875,
+        "trace_gpu_ms": 3.76318359375,
+        "frame_ms": 7.0455000000000005
+      },
+      "pt_gpu_change_percent": 14.356908616727338,
+      "receipt": "performance-cave/sharc-performance.json"
+    },
+    {
+      "scene": "outdoor",
+      "quality": 2,
+      "bounces": 2,
+      "gpu": "NVIDIA GeForce RTX 3090 Ti",
+      "off": {
+        "total_gpu_ms": 15.5643310546875,
+        "trace_gpu_ms": 13.277099609375,
+        "frame_ms": 17.517
+      },
+      "on": {
+        "total_gpu_ms": 16.755859375,
+        "trace_gpu_ms": 13.863037109375,
+        "frame_ms": 18.692500000000003
+      },
+      "pt_gpu_change_percent": 7.65550614495345,
+      "receipt": "performance-outdoor-high/sharc-performance.json"
+    },
+    {
+      "scene": "outdoor",
+      "quality": 2,
+      "bounces": 4,
+      "gpu": "NVIDIA GeForce RTX 3090 Ti",
+      "off": {
+        "total_gpu_ms": 17.36669921875,
+        "trace_gpu_ms": 15.060791015625,
+        "frame_ms": 19.317
+      },
+      "on": {
+        "total_gpu_ms": 17.5169677734375,
+        "trace_gpu_ms": 14.605224609375,
+        "frame_ms": 19.447499999999998
+      },
+      "pt_gpu_change_percent": 0.8652683667444538,
+      "receipt": "performance-outdoor-high/sharc-performance.json"
+    },
+    {
+      "scene": "cave",
+      "quality": 2,
+      "bounces": 2,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "off": {
+        "total_gpu_ms": 102.6005859375,
+        "trace_gpu_ms": 98.9566650390625,
+        "frame_ms": 104.384
+      },
+      "on": {
+        "total_gpu_ms": 73.9464111328125,
+        "trace_gpu_ms": 68.36328125,
+        "frame_ms": 75.8605
+      },
+      "pt_gpu_change_percent": -27.927886125467573,
+      "receipt": "performance-cave-high/sharc-performance.json"
+    },
+    {
+      "scene": "cave",
+      "quality": 2,
+      "bounces": 4,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "off": {
+        "total_gpu_ms": 110.5450439453125,
+        "trace_gpu_ms": 106.859619140625,
+        "frame_ms": 112.38300000000001
+      },
+      "on": {
+        "total_gpu_ms": 76.815185546875,
+        "trace_gpu_ms": 71.160888671875,
+        "frame_ms": 78.662
+      },
+      "pt_gpu_change_percent": -30.512320765030342,
+      "receipt": "performance-cave-high/sharc-performance.json"
+    }
+  ],
+  "timing_method": "Mean of ABBA block medians, 40 warm-up and 120 measured frames/block; static 1920x1080 campaign cameras; GPU Lab heavy. Low=50% trace resolution/1 spp, High=100%/4 spp. No universal FPS claim.",
+  "source_sha256": {
+    "game/src/game/fx/path_trace_sharc.gd": "7ad2496d8706151e95eb20a879bccc04c845bef5df4f547f95ad95aa72244632",
+    "game/src/game/fx/path_trace_sharc.gd.uid": "c3c2eea172216ddeead9edf3c11b4f8a3bdabc35d9e821137e03da7a150475d5",
+    "game/src/game/fx/path_trace_device.gd": "b6dd61c1e6673a5e30d26ba734d6e71b60de04953b00f7ce518535bff22ee42a",
+    "game/src/game/fx/shaders/path_trace.hlsl": "141e30e1a8b9564e0a92815a3bc30442c1cb4dd1b22aa3163d3d378c7379f54d",
+    "game/src/game/fx/shaders/path_trace_sharc_build.json": "576ad6a1c84b3f33d98b84b222e03f0054120420dae0a26d1e33d759e5a36557"
+  },
+  "cpu": {
+    "runner_tests": 24,
+    "translation_errors": 0,
+    "spirv_validated": 16,
+    "sharc_binaries_reproduced": 13,
+    "reference_binaries_reproduced": 18
+  },
+  "original_comparison": "Inapplicable: original game has no PT, NRD or radiance cache. Reference is the same remake with SHaRC Off. DX12 was exercised through Wine, not native Windows.",
+  "initial_failures": "Unguarded Godot compute SPIR-V rewrite crashed NVIDIA pipeline creation; guarded module fixes it. Direct DXIL API rejected compute stages; standard SPIR-V compute API fixes DX12. Initial runs are not counted as passing."
+}

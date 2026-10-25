@@ -1,0 +1,37 @@
+{
+  "exit": 1,
+  "errors": [
+    "FAIL only current lighting, direct sun, guide, auxiliary and spatial images remain live",
+    "Missing passing summary: ['SCENE_RT_DEVICE 168 checks 1 failures']"
+  ],
+  "summary": [
+    "SCENE_RT_DEVICE 168 checks 1 failures"
+  ],
+  "seconds": 19.29762526700506,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-lifecycle-diagnostic/fixtures/path_trace_lifecycle.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-lifecycle-diagnostic"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-native/runtime.pck": "c9268b1e06d8ecadbfaa2dfd45648318ede9f40dbd295b450479f3cc58b32c01"
+  },
+  "fixture_sha256": "2920433d6501fb325918f1d45842a28f74fccbf7cdf31b5809616a46fd6c92ce"
+}
