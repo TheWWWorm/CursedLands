@@ -5,6 +5,7 @@ extends RefCounted
 const Tiles = preload("res://src/game/fx/terrain_cliff_tiles.gd")
 const CliffShader = preload("res://src/game/fx/terrain_cliff_shader.gd")
 const Blends = preload("res://src/game/fx/terrain_cliff_blends.gd")
+const WallMesh = preload("res://src/game/fx/terrain_cliff_mesh.gd")
 const MAX_VERTICES := 1100000
 var tiles: ImageTexture
 var flatness: ImageTexture
@@ -21,12 +22,14 @@ var rejected_geometry := 0
 var build_us := 0
 var examples: Array[Dictionary] = []
 var _shaders := {}
+var geometry: RefCounted
 
 
 func _init(terrain: EITerrain = null, verified: Dictionary = {}) -> void:
 	if terrain == null: return
 	var start := Time.get_ticks_usec()
 	_build(terrain, verified)
+	if admitted > 0: geometry = WallMesh.new(terrain, self)
 	build_us = Time.get_ticks_usec() - start
 
 

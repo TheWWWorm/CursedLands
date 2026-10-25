@@ -1,0 +1,15 @@
+{
+	"cached_bands": 0.359635708006052,
+	"checks": 14,
+	"control_bands": 0.348978704627324,
+	"failures": [
+		"lit PT wall has no strong metre-grid columns: 0.359049",
+		"cached PT retains the contour correction: 0.359636",
+		"lit raster wall has no strong metre-grid columns: 0.348979",
+		"wall contour correction removes at least 35 percent of band contrast"
+	],
+	"floor_error": 0.0,
+	"pt_bands": 0.359048891383723,
+	"raster_bands": 0.348978704627324,
+	"terrain_triangles": 33010
+}

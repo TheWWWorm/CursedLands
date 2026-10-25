@@ -112,7 +112,7 @@ func case(map: String, positive := true) -> void:
 		check(terrain._water_mat.shader.code.contains("water_current") and terrain._water_mat.shader.code.contains("water_wave_field"),"water current and wave combination remains installed")
 		check(figure.material_override.shader.code.contains("ei_cloud_sun") and Gfx.on("gfx_materials"),"contact projection composes with cloud and material lighting")
 	check(view.get_render_info(Viewport.RENDER_INFO_TYPE_VISIBLE,Viewport.RENDER_INFO_DRAW_CALLS_IN_FRAME)==draws,"cliff projection adds no draw calls "+map)
-	check(terrain.heights==heights and terrain.land_xy==xy and terrain.land_n==normals,"rendering does not move geometry "+map)
+	check(terrain.heights==heights and terrain.land_xy==xy and terrain.land_n==normals,"rendering preserves original terrain records "+map)
 	if positive:
 		check(diff.changed_pixels>40 and diff.peak_byte_delta>8,"side projection visible on verified steep rock "+map)
 		check(figure.material_override.shader.code.contains("#define EI_TERRAIN_CLIFFS"),"rigid scenery contact compiles shared cliff sampling "+map)
@@ -120,8 +120,19 @@ func case(map: String, positive := true) -> void:
 		check(figure.material_override.get_shader_parameter("cliff_blends")==terrain._cliffs.blends,"contact shares the corner-donor field "+map)
 		var empty := Image.create(terrain._cliffs.tile_size.x,terrain._cliffs.tile_size.y,false,Image.FORMAT_R8)
 		terrain._cliffs.tiles.update(empty)
+		# Eligibility now feeds both the shader and the retained wall mesh.
+		# Rebuild the CPU side from the same empty classification; clearing
+		# only the GPU texture would leave eligible curved walls in this control.
+		var eligible := terrain._cliffs.eligible
+		terrain._cliffs.eligible = empty.get_data()
+		var unclassified := Field.WallMesh.new(terrain,terrain._cliffs)
+		terrain._cliffs.eligible = eligible
+		for sector in terrain.get_children():
+			if sector is EITerrainSector: sector.set_cliff_geometry(unclassified)
 		check(difference(off,await snap(view,map+"-unclassified")).changed_pixels==0,"unsupported tiles preserve exact pixels in enabled source "+map)
 		terrain._cliffs.tiles.update(Image.create_from_data(terrain._cliffs.tile_size.x,terrain._cliffs.tile_size.y,false,Image.FORMAT_R8,terrain._cliffs.eligible))
+		for sector in terrain.get_children():
+			if sector is EITerrainSector: sector.set_cliff_geometry(terrain._cliffs.geometry)
 		check(difference(on,await snap(view,map+"-restored")).changed_pixels==0,"restoring static eligibility restores exact pixels "+map)
 	else:
 		check(diff.changed_pixels==0 and terrain._cliffs.tiles==null and terrain._cliffs.flatness==null,"unverified map remains pixel exact without GPU fields "+map)

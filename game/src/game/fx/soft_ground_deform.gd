@@ -141,6 +141,13 @@ func refresh_rain_cover() -> void:
 		rec.material.set_shader_parameter("rain_cover", terrain._rain_cover)
 
 
+func refresh_geometry() -> void:
+	# Cliff option changes preserve footprints and their retained source mesh.
+	# Join existing workers before republishing the current tile patches.
+	_finish_mesh_jobs(true)
+	for rec: Dictionary in sectors.values(): _rebuild(rec)
+
+
 ## Deformation duplicates the whole sector material. Live terrain effects
 ## must update those receivers too, including untouched ground in the sector.
 func sync_parameter(parameter: StringName, value: Variant) -> void:
@@ -409,6 +416,8 @@ func _rebuild(rec: Dictionary) -> void:
 ## `defer_shadow`: a busy sector's surfaces cost ~3.5 ms each to publish;
 ## the shadow copy follows on the next frame (_finish_mesh_jobs).
 func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array, defer_shadow := false) -> void:
+	if terrain._cliffs != null and terrain._cliffs.geometry != null:
+		arrays = terrain._cliffs.geometry.arrays(arrays)
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	mesh.surface_set_material(0, rec.material)

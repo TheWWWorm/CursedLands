@@ -1,0 +1,40 @@
+{
+  "exit": 1,
+  "errors": [
+    "FAIL lit PT wall has no strong metre-grid columns: 0.359049",
+    "FAIL cached PT retains the contour correction: 0.359636",
+    "FAIL lit raster wall has no strong metre-grid columns: 0.348979",
+    "FAIL wall contour correction removes at least 35 percent of band contrast",
+    "Missing passing summary: ['WALL_CONTOURS 14 checks 4 failures']"
+  ],
+  "summary": [
+    "WALL_CONTOURS 14 checks 4 failures"
+  ],
+  "seconds": 66.17642608197639,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-striped-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-contour-negative/fixtures/terrain_wall_contours.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-contour-negative"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-striped-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-striped-native/runtime.pck": "b86873a1639b24cdd6299e16acaed42a037095eef2d6aaa73951e00eb7348856"
+  },
+  "fixture_sha256": "547417112230efefe7d429162a6cfbe6479bc49a951ca47e9c32394c77a82a31"
+}

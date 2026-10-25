@@ -1,0 +1,155 @@
+{
+  "parent_git_head": "2b8103e744c55ff8c3ad5c41b225a3c562be5f44",
+  "game_source_sha256": "2456a33a14a368f6e3b5092e1745fcf2d8aec1e89c0450fd5ef3784aeb57678b",
+  "native_pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/candidate-native/runtime.pck",
+    "sha256": "543f9aecd6aba226165514139b315c5e37e46b1cafa9c0ab483529e1c56004e7"
+  },
+  "native_cases": [
+    {
+      "id": "terrain_cliff_mesh",
+      "passed": true,
+      "result": {
+        "checks": 31,
+        "failures": 0
+      }
+    },
+    {
+      "id": "raytrace_topology_budget",
+      "passed": true,
+      "result": {
+        "checks": 13,
+        "failures": 0
+      }
+    },
+    {
+      "id": "path_trace_topology",
+      "passed": true,
+      "result": {
+        "checks": 130,
+        "failures": 0
+      }
+    },
+    {
+      "id": "raytrace_source_cache",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      }
+    },
+    {
+      "id": "path_trace_sharc",
+      "passed": true,
+      "result": {
+        "checks": 25,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_cliff_blends",
+      "passed": true,
+      "result": {
+        "checks": 82,
+        "failures": 0
+      }
+    },
+    {
+      "id": "path_trace_terrain",
+      "passed": true,
+      "result": {
+        "checks": 117,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_cave_wall",
+      "passed": true,
+      "result": {
+        "checks": 16,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_cliff_pattern",
+      "passed": true,
+      "result": {
+        "checks": 17,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_wall_contours",
+      "passed": true,
+      "result": {
+        "checks": 14,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_sector",
+      "passed": true,
+      "result": {
+        "checks": 17966,
+        "failures": 0
+      }
+    },
+    {
+      "id": "soft_ground_mesh",
+      "passed": true,
+      "result": {
+        "checks": 3044,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_cliff_composed",
+      "passed": true,
+      "result": {
+        "checks": 87,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_cliff_composed_gl",
+      "passed": true,
+      "result": {
+        "checks": 20,
+        "failures": 0
+      }
+    },
+    {
+      "id": "terrain_sun_shadows",
+      "passed": true,
+      "result": {
+        "checks": 14,
+        "failures": 0
+      }
+    }
+  ],
+  "windows": {
+    "gpu_lab_job": "cb5810ed0fe744d7",
+    "summaries": [
+      [
+        "WALL_CONTOURS 14 checks 0 failures"
+      ],
+      [
+        "CAVE_WALL 16 checks 0 failures"
+      ]
+    ]
+  },
+  "runner_unit_tests": {
+    "checks": 8,
+    "failures": 0
+  },
+  "negative_control": {
+    "pack": "2b8103e7",
+    "checks": 14,
+    "expected_failures": 4
+  },
+  "images": {
+    "after-raster.png": "ba404f1ea8d3cdb5b7cc6dbb11b7894a649ad37aa4e4b7ff8bb3b43b241763d6",
+    "after-sharc.png": "d9992ebf23b0509891624d90f31f3272e9f990adb70507c15ab7aad8a4bf266c",
+    "before-sharc.png": "d57d558a5fbb8d04738b146c7927a501fb7a804f6e158e65149d56116dbb8e8e"
+  }
+}

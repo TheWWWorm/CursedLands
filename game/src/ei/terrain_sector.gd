@@ -19,6 +19,8 @@ var _meshes: Array[ArrayMesh] = []
 var _subdivided := false
 var _deformation_active := false
 var tile_origin := Vector2i.ZERO
+var _cliff_geometry: RefCounted
+var _visual_arrays: Array = []
 
 
 static func preferred() -> bool:
@@ -39,7 +41,31 @@ func configure(arrays: Array, material: Material, layers: int, subdivided: bool)
 
 
 func get_aabb() -> AABB:
-	return _bounds
+	return _bounds.grow(1.0) if _cliff_geometry != null else _bounds
+
+
+func set_cliff_geometry(geometry: RefCounted) -> bool:
+	if _cliff_geometry == geometry: return false
+	_cliff_geometry = geometry
+	_visual_arrays = []
+	if geometry != null: geometry.prepare(_arrays)
+	# Keep the retained mesh objects and children alive: active snow records
+	# own these same sources and must still restore the updated geometry.
+	for i in _meshes.size():
+		var arrays := visual_arrays() if not _subdivided else _piece_arrays((i % 2) * 8, (i / 2) * 8)
+		if _subdivided and geometry != null: arrays = geometry.arrays(arrays)
+		_meshes[i].clear_surfaces()
+		_meshes[i].add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		_meshes[i].surface_set_material(0, _material)
+	return true
+
+
+## Shared presentation input for raster and ray tracing. Deformation keeps
+## its regular authored tile layout and applies these same retained patches.
+func visual_arrays() -> Array:
+	if _cliff_geometry == null: return _arrays
+	if _visual_arrays.is_empty(): _visual_arrays = _cliff_geometry.arrays(_arrays)
+	return _visual_arrays
 
 
 func set_subdivided(value: bool) -> void:
@@ -93,11 +119,12 @@ func _rebuild(subdivided: bool) -> void:
 	_meshes.clear()
 	_subdivided = subdivided
 	if not subdivided:
-		_add_piece(_arrays)
+		_add_piece(visual_arrays())
 		return
 	for y in [0, 8]:
 		for x in [0, 8]:
-			_add_piece(_piece_arrays(x, y))
+			var arrays := _piece_arrays(x, y)
+			_add_piece(_cliff_geometry.arrays(arrays) if _cliff_geometry != null else arrays)
 
 
 func _add_piece(arrays: Array) -> void:

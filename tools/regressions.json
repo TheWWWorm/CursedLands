@@ -1446,7 +1446,7 @@
       "id": "terrain_cave_wall",
       "script": "tools/tests/terrain_cave_wall.gd",
       "summary": "CAVE_WALL",
-      "contract": "The zone5_1 cave wall has world-projected rock and broad shading relief in raster, PT and cached PT without changing terrain geometry.",
+      "contract": "The zone5_1 cave wall has world-projected rock and broad shading relief in raster, PT and cached PT while preserving original terrain records.",
       "data": "base",
       "mode": "rendered",
       "args": [],
@@ -1462,6 +1462,83 @@
       "mode": "rendered",
       "args": [],
       "min_checks": 17
+    },
+    {
+      "id": "terrain_cliff_mesh",
+      "script": "tools/tests/terrain_cliff_mesh.gd",
+      "summary": "CLIFF_MESH",
+      "contract": "Tall natural wall contours remain continuous across tile edges and render pieces, preserve original anchors and snow layout, and restore exactly when disabled.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 31
+    },
+    {
+      "id": "terrain_wall_contours",
+      "script": "tools/tests/terrain_wall_contours.gd",
+      "summary": "WALL_CONTOURS",
+      "contract": "The photographed cave loses broad vertical bands in lit raster, PT and SHaRC output; a straight-face control reproduces them and the walkable floor stays unchanged.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 14,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_sector",
+      "script": "tools/tests/terrain_sector.gd",
+      "summary": "TERRAIN_SECTOR",
+      "contract": "Culled sector pieces preserve tile data, cache ownership and the contiguous input and retained meshes needed by snow deformation.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 17966
+    },
+    {
+      "id": "soft_ground_mesh",
+      "script": "tools/tests/soft_ground_mesh.gd",
+      "summary": "SOFT_GROUND_MESH",
+      "contract": "Native snow mesh jobs match script tessellation and retain active tiles across rebuilds, expiry and world cleanup.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 3044
+    },
+    {
+      "id": "terrain_cliff_composed",
+      "script": "tools/tests/terrain_cliff_render.gd",
+      "summary": "TERRAIN_CLIFF_RENDER",
+      "contract": "Real cliff terrain composes with ground contacts, cached colour, water, clouds and weather.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--cliff-composed"
+      ],
+      "min_checks": 87,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_cliff_composed_gl",
+      "script": "tools/tests/terrain_cliff_render.gd",
+      "summary": "TERRAIN_CLIFF_RENDER",
+      "contract": "Compatibility cliff terrain retains contact and surface composition.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--cliff-composed"
+      ],
+      "min_checks": 20
+    },
+    {
+      "id": "terrain_sun_shadows",
+      "script": "tools/tests/terrain_sun_shadows.gd",
+      "summary": "TERRAIN_SUN_SHADOWS",
+      "contract": "Original hill geometry casts stable sunlight shadows without changing unrelated valley pixels.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 14,
+      "rendering_method": "forward_plus"
     }
   ]
 }
