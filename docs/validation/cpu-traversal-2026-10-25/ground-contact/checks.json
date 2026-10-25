@@ -1,0 +1,82 @@
+{
+  "ground-contact-before": [
+    "FAIL native sole geometry is available",
+    "GROUND_CONTACT_NATIVE checks=1 failures=1"
+  ],
+  "ground-contact-first": [
+    "FAIL authored false walk 0 ll3 native support",
+    "FAIL authored false walk 0 ll3 exact geometry",
+    "FAIL authored false walk 0 ll3 exact ordered keys",
+    "FAIL authored false walk 0 rl3 native support",
+    "FAIL authored false walk 0 rl3 exact geometry",
+    "FAIL authored false walk 0 rl3 exact ordered keys",
+    "FAIL authored false walk 1 ll3 native support",
+    "FAIL authored false walk 1 ll3 exact geometry",
+    "FAIL authored false walk 1 ll3 exact ordered keys",
+    "FAIL authored false walk 1 rl3 native support",
+    "FAIL authored false walk 1 rl3 exact geometry",
+    "FAIL authored false walk 1 rl3 exact ordered keys",
+    "FAIL authored false walk 2 ll3 native support",
+    "FAIL authored false walk 2 ll3 exact geometry",
+    "FAIL authored false walk 2 ll3 exact ordered keys",
+    "GROUND_CONTACT_NATIVE_TIMING [{\"native\":false,\"queries\":1500,\"usec\":18336},{\"native\":true,\"queries\":1500,\"usec\":5249},{\"native\":true,\"queries\":1500,\"usec\":5255},{\"native\":false,\"queries\":1500,\"usec\":18445}]",
+    "GROUND_CONTACT_NATIVE checks=2081 failures=576"
+  ],
+  "ground-contact-authored": [
+    "GROUND_CONTACT_NATIVE_TIMING [{\"native\":false,\"queries\":1500,\"usec\":18027},{\"native\":true,\"queries\":1500,\"usec\":5398},{\"native\":true,\"queries\":1500,\"usec\":4976},{\"native\":false,\"queries\":1500,\"usec\":16893}]",
+    "GROUND_CONTACT_NATIVE checks=2086 failures=0"
+  ],
+  "dar-ground-contact-live-micro": [
+    "STANDARD_ZONE_TRAVERSAL 541 checks 0 failures"
+  ],
+  "dar-ground-contact-legacy-micro": [
+    "STANDARD_ZONE_TRAVERSAL 461 checks 0 failures"
+  ],
+  "ground-contact-footprint_running_scene-forward_plus": [
+    "FOOTPRINT_RUNNING_SCENE checks=14 failures=0 generated=93"
+  ],
+  "ground-contact-footprint_running_scene-gl_compatibility": [
+    "FOOTPRINT_RUNNING_SCENE checks=14 failures=0 generated=93"
+  ],
+  "ground-contact-ingos_direct_feedback-forward_plus": [
+    "INGOS_DIRECT_FEEDBACK {\"checks\":57,\"failures\":[],\"hd\":false,\"measurements\":[{\"contacts\":113,\"new_marks\":4,\"smooth\":false,\"snow_sectors\":1},{\"contacts\":112,\"new_marks\":3,\"smooth\":true,\"snow_sectors\":1},{\"atlas\":\"(256.0, 256.0)\",\"minimap_colours\":\"[(0.0, 1.0, 0.0, 1.0), (1.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.451, 1.0)]\"}]}"
+  ],
+  "ground-contact-arena_ground_ink-gl_compatibility": [],
+  "ground-contact-registered-picking_figures": {
+    "checks": 1403,
+    "failures": 0
+  },
+  "ground-contact-registered-direct_pose_native": {
+    "checks": 7470,
+    "failures": 0
+  },
+  "ground-contact-registered-vegetation_contacts_native": {
+    "checks": 1027,
+    "failures": 0
+  },
+  "ground-contact-registered-ground_contact_native": {
+    "checks": 2086,
+    "failures": 0
+  },
+  "ground-contact-rendered-registered-ground_mark_receivers": {
+    "checks": 13,
+    "failures": 0
+  },
+  "ground-contact-rendered-registered-ground_mark_animation": {
+    "checks": 24,
+    "failures": 0
+  },
+  "ground-contact-windows-vegetation_contacts_native": [
+    "VEGETATION_CONTACTS_NATIVE checks=1027 failures=0"
+  ],
+  "ground-contact-windows-ground_contact_native": [
+    "GROUND_CONTACT_NATIVE checks=2086 failures=0"
+  ],
+  "ground-contact-windows-direct_pose_native": [
+    "DIRECT_POSE_NATIVE checks=7470 failures=0"
+  ],
+  "ground-contact-windows-build": [],
+  "ground-contact-windows-picking_figures": [
+    "PICKING_FIGURES checks=1403 failures=0"
+  ]
+}

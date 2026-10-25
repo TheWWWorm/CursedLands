@@ -1,0 +1,47 @@
+{
+  "gpu_job": "17347eedf3764ea5",
+  "method": "Same live scene, synchronous script/native/native/script after route phases; exact contact checks before and after every block.",
+  "checks": 541,
+  "failures": 0,
+  "script_us_per_query": 7.81875,
+  "native_us_per_query": 4.644958333333333,
+  "saving_percent": 40.59205968558486,
+  "raw": [
+    {
+      "admitted": 58,
+      "feet": 60,
+      "native": false,
+      "queries": 12000,
+      "usec": 94523,
+      "visible_actors": 35,
+      "world_actors": 334
+    },
+    {
+      "admitted": 58,
+      "feet": 60,
+      "native": true,
+      "queries": 12000,
+      "usec": 55427,
+      "visible_actors": 35,
+      "world_actors": 334
+    },
+    {
+      "admitted": 58,
+      "feet": 60,
+      "native": true,
+      "queries": 12000,
+      "usec": 56052,
+      "visible_actors": 35,
+      "world_actors": 334
+    },
+    {
+      "admitted": 58,
+      "feet": 60,
+      "native": false,
+      "queries": 12000,
+      "usec": 93127,
+      "visible_actors": 35,
+      "world_actors": 334
+    }
+  ]
+}

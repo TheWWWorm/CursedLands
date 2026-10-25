@@ -1,0 +1,49 @@
+{
+  "base_commit": "b1cbb922fb9736fe675a8bc55d1b53d709ba7ac7",
+  "source_sha256": {
+    "game/src/game/fx/ground_marks.gd": "537e4ec8925515dece6f746ca6bb9f8e340557380ad4bb3e3cf5bd2408668d4d",
+    "game/src/native/source/ground_contact.h": "dcbb1c1ff727dd6829d1c2a22dcfe96a363807678ee9618385f2f83e6c1d8a65",
+    "game/src/native/source/nav_kernel.cpp": "67d2fa75349a6387e8ce8ffc320a078644122ca4d46a3455f027bfb0f83726e6",
+    "tools/tests/ground_contact_native.gd": "68fef4416dbbccf7a0872373168d75b087abadf2f64be3b0d8e7fbc8e4ee43c4",
+    "tools/regressions.json": "2940aeea7015fb543b288baaa50a6aca3fe168dfb45f2fb628225f60f1f19822"
+  },
+  "packs": {
+    "ground-contact-final-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "0f70013b1285fb39b81be30fcd6d21c9ac153813e6521979ae0092f51eb69ed9",
+      "src/native/bin/libterrain_search_android.so": "d5002091486a56337e2c61265882c553722f03c99575506430b122fa95c1c543",
+      "src/native/bin/libterrain_search.dll": "b22c6965ed9fcb6ee8a659f36acfb31462c8c6450e02ca8559493224293c27f7",
+      "src/native/bin/libterrain_search.so": "f55852fb05b12dc540d0620a39d8b7a58719e6da0c41b35c1340b0558ea3b9dc"
+    },
+    "ground-contact-final-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "27a4e34074befea444984fad2c8f8baa246838ec4e44b3c79a03b8cb1fc3f53f",
+      "src/native/bin/libterrain_search_android.so": "d5002091486a56337e2c61265882c553722f03c99575506430b122fa95c1c543",
+      "src/native/bin/libterrain_search.dll": "b22c6965ed9fcb6ee8a659f36acfb31462c8c6450e02ca8559493224293c27f7",
+      "src/native/bin/libterrain_search.so": "f55852fb05b12dc540d0620a39d8b7a58719e6da0c41b35c1340b0558ea3b9dc"
+    },
+    "ground-contact-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "516bd0f63311d0ba7cdaf648eec61e0230f8828f74641486a03c1bf59f193382",
+      "src/native/bin/libterrain_search_android.so": "d5002091486a56337e2c61265882c553722f03c99575506430b122fa95c1c543",
+      "src/native/bin/libterrain_search.dll": "b22c6965ed9fcb6ee8a659f36acfb31462c8c6450e02ca8559493224293c27f7",
+      "src/native/bin/libterrain_search.so": "f55852fb05b12dc540d0620a39d8b7a58719e6da0c41b35c1340b0558ea3b9dc"
+    }
+  },
+  "runtime_files_compared": 461,
+  "runtime_snapshot": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-game",
+  "differences": [],
+  "android": "ARM64 rebuilt, not executed on device.",
+  "original_sources": [
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00134/534b60_FUN_00534b60.c",
+      "sha256": "056bc48781d1e37faaebecb37e1fbc3264a4741d50c4234c93c871150200c186"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/0016d/56d150_FUN_0056d150.c",
+      "sha256": "21c8f1186895eb4a67e6dd793fa3f7e2f9de9a64855775e55b690306f06e2aee"
+    }
+  ],
+  "original_comparison": "0x534b60 selects authored animation step frames and part extents; 0x56d150 chooses ground rows and handles blood pickup. Those event/lifetime paths are unchanged. The current rendered-sole vertex reduction and soft-ground contact are remake behavior; no identical original-game Wine fixture exists. Windows/Wine validation runs the remake, not an original Dar timing comparison.",
+  "initial_failure": "The first helper declined every scripted node, including ordinary EIAnimPart feet. The authored regression failed 576 assertions. Exact EIAnimPart support was added; custom subclasses still decline. The failing log is retained."
+}

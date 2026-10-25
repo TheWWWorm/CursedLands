@@ -1,0 +1,52 @@
+{
+  "gpu_job": "335b5b3b73064422",
+  "baseline_commit": "b1cbb922fb9736fe675a8bc55d1b53d709ba7ac7",
+  "baseline_method_exact": true,
+  "baseline_method_sha256": "0451671870eec63afc9f22108c8514f67168347665b67ac111a5dc9526b84aad",
+  "method": "Untouched previous _sole_contact method in a separate collector sharing the live world and vertex cache; legacy/native/native/legacy in one unchanged live scene after the route. Exact contacts verified before and after each block.",
+  "checks": 461,
+  "failures": 0,
+  "legacy_us_per_query": 7.428,
+  "native_us_per_query": 4.61635,
+  "saving_us_per_query": 2.81165,
+  "saving_percent": 37.85204631125472,
+  "raw": [
+    {
+      "admitted": 48,
+      "feet": 50,
+      "native": false,
+      "queries": 10000,
+      "usec": 74497,
+      "visible_actors": 29,
+      "world_actors": 334
+    },
+    {
+      "admitted": 48,
+      "feet": 50,
+      "native": true,
+      "queries": 10000,
+      "usec": 45842,
+      "visible_actors": 29,
+      "world_actors": 334
+    },
+    {
+      "admitted": 48,
+      "feet": 50,
+      "native": true,
+      "queries": 10000,
+      "usec": 46485,
+      "visible_actors": 29,
+      "world_actors": 334
+    },
+    {
+      "admitted": 48,
+      "feet": 50,
+      "native": false,
+      "queries": 10000,
+      "usec": 74063,
+      "visible_actors": 29,
+      "world_actors": 334
+    }
+  ],
+  "limits": "Contact queries only, not whole-game FPS."
+}

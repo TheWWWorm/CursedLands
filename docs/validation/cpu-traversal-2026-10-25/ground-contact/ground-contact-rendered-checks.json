@@ -1,0 +1,50 @@
+[
+  {
+    "test": "footprint_running_scene",
+    "renderer": "forward_plus",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "ground-contact-footprint_running_scene-forward_plus",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/footprint_running_scene.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "footprint_running_scene",
+    "renderer": "gl_compatibility",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "ground-contact-footprint_running_scene-gl_compatibility",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/footprint_running_scene.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "ingos_direct_feedback",
+    "renderer": "forward_plus",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "ground-contact-ingos_direct_feedback-forward_plus",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ingos_direct_feedback.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  },
+  {
+    "test": "arena_ground_ink",
+    "renderer": "gl_compatibility",
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run_ground_contact_visual.py",
+      "ground-contact-arena_ground_ink-gl_compatibility",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/arena_ground_ink.gd",
+      "rendered"
+    ],
+    "returncode": 0
+  }
+]

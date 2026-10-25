@@ -88,8 +88,13 @@ var _sole_meshes := {}          # weak mesh reference + its immutable local vert
 var _sole_sweep := 0
 var _rng := RandomNumberGenerator.new()
 static var _dbres: EIResArchive
+static var _sole_kernel: RefCounted = _make_sole_kernel()
 var _projection: GroundMarkProjection
 var _pool_ids := {}
+
+
+static func _make_sole_kernel() -> RefCounted:
+	return ClassDB.instantiate("GroundContactKernel") if ClassDB.class_exists("GroundContactKernel") and not OS.get_cmdline_user_args().has("--ei-script-ground-contact") else null
 
 
 static func of(w: GameWorld) -> GroundMarks:
@@ -748,6 +753,14 @@ func _sole_contact(n: Node3D) -> Dictionary:
 		var centre := box.get_center()
 		if box.position.y > world.terrain.ground_at(centre.x, -centre.z) + 0.09:
 			return {}
+	var contact: Variant = _sole_kernel.sole_geometry(n,_sole_vertices,EIAnimPart) if _sole_kernel != null and get_script().get_base_script() == null else null
+	if contact == null: contact = _sole_geometry(n)
+	if contact.is_empty() or contact.height > world.terrain.ground_at(contact.p.x,contact.p.y) + 0.075:
+		return {}
+	return contact
+
+
+func _sole_geometry(n: Node3D) -> Dictionary:
 	var points := PackedVector3Array()
 	var bottom := INF
 	# Smoothed figures retain the authored part mesh for gameplay geometry,
@@ -785,8 +798,6 @@ func _sole_contact(n: Node3D) -> Dictionary:
 		hi = hi.max(local)
 	var mid := (lo + hi) * 0.5
 	var p := across * mid.x + forward * mid.y
-	if bottom > world.terrain.ground_at(p.x, p.y) + 0.075:
-		return {}
 	var extent := ((hi - lo) * 0.5).clamp(Vector2(0.025, 0.045), Vector2(0.32, 0.46))
 	return {"p": p, "extent": extent, "angle": forward.angle() - PI * 0.5, "height": bottom}
 

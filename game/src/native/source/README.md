@@ -62,6 +62,15 @@ older libraries and `-- --ei-script-vegetation-contacts`. The registered
 `vegetation_contacts_native` test compares ordered contacts, live geometry
 changes, budget boundaries and custom/older-library fallbacks.
 
+`GroundContactKernel` batches the transformed-vertex and sole-band reduction
+used by footprints and soft-ground pressure. It samples current transforms,
+visibility and welded geometry; the existing vertex provider, authored bounds,
+terrain checks, contact history and animation timing remain in script. No
+geometry or scene objects are retained. Custom part/mesh/collector scripts,
+older libraries and `-- --ei-script-ground-contact` preserve scalar geometry.
+The registered `ground_contact_native` test checks exact geometry and terrain
+admission for synthetic vertices and authored rigid/smoothed animated feet.
+
 The terrain instance also owns persistent static block topology: representatives,
 weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
 floor and object changes invalidate it through the existing map revision.

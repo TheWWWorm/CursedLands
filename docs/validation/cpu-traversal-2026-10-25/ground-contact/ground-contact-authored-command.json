@@ -1,0 +1,12 @@
+[
+  "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-authored-linux/runtime.x86_64",
+  "--render-thread",
+  "safe",
+  "--audio-driver",
+  "Dummy",
+  "--headless",
+  "--",
+  "--no-movies",
+  "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+  "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/ground_contact_native.gd"
+]

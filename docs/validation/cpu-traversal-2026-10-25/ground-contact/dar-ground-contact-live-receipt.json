@@ -1,0 +1,17 @@
+{
+  "command": [
+    "python3",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+    "dar-ground-contact-live-micro",
+    "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_ground_contact_micro.gd",
+    "rendered",
+    "--dar-benchmark",
+    "--zone-route-zone=gz31j",
+    "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+    "--zone-route-peaceful",
+    "--zone-route-recording"
+  ],
+  "start": 1792950504.8206646,
+  "finish": 1792950613.6408718,
+  "returncode": 0
+}

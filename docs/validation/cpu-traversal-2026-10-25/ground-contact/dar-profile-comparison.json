@@ -1,0 +1,530 @@
+{
+  "gpu_job": "17347eedf3764ea5",
+  "profiles": {
+    "script": {
+      "legs": [
+        {
+          "leg": 0,
+          "frames": 490,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 4097,
+              "inclusive_us": 52112,
+              "max_us": 77,
+              "ms_per_frame": 0.10635102040816327,
+              "us_per_call": 12.719550890895777
+            },
+            "_sole_geometry": {
+              "calls": 2915,
+              "inclusive_us": 28536,
+              "max_us": 63,
+              "ms_per_frame": 0.05823673469387755,
+              "us_per_call": 9.789365351629502
+            },
+            "_deform_feet": {
+              "calls": 997,
+              "inclusive_us": 73438,
+              "max_us": 250,
+              "ms_per_frame": 0.14987346938775511,
+              "us_per_call": 73.65897693079238
+            },
+            "_step_frames": {
+              "calls": 21666,
+              "inclusive_us": 192674,
+              "max_us": 1042,
+              "ms_per_frame": 0.3932122448979592,
+              "us_per_call": 8.892919782147143
+            },
+            "_drain_units": {
+              "calls": 490,
+              "inclusive_us": 241403,
+              "max_us": 1895,
+              "ms_per_frame": 0.4926591836734694,
+              "us_per_call": 492.6591836734694
+            },
+            "_process": {
+              "calls": 490,
+              "inclusive_us": 390405,
+              "max_us": 2680,
+              "ms_per_frame": 0.7967448979591836,
+              "us_per_call": 796.7448979591836
+            },
+            "_tick": {
+              "calls": 149,
+              "inclusive_us": 133240,
+              "max_us": 1323,
+              "ms_per_frame": 0.2719183673469388,
+              "us_per_call": 894.228187919463
+            },
+            "_update": {
+              "calls": 38103,
+              "inclusive_us": 89811,
+              "max_us": 20,
+              "ms_per_frame": 0.18328775510204082,
+              "us_per_call": 2.3570584993307615
+            }
+          }
+        },
+        {
+          "leg": 1,
+          "frames": 565,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 11386,
+              "inclusive_us": 138086,
+              "max_us": 130,
+              "ms_per_frame": 0.2444,
+              "us_per_call": 12.127700685051819
+            },
+            "_sole_geometry": {
+              "calls": 9160,
+              "inclusive_us": 76570,
+              "max_us": 68,
+              "ms_per_frame": 0.1355221238938053,
+              "us_per_call": 8.359170305676855
+            },
+            "_deform_feet": {
+              "calls": 2785,
+              "inclusive_us": 191954,
+              "max_us": 313,
+              "ms_per_frame": 0.339741592920354,
+              "us_per_call": 68.92423698384201
+            },
+            "_step_frames": {
+              "calls": 21384,
+              "inclusive_us": 391249,
+              "max_us": 1296,
+              "ms_per_frame": 0.6924761061946902,
+              "us_per_call": 18.296343060231948
+            },
+            "_drain_units": {
+              "calls": 565,
+              "inclusive_us": 441284,
+              "max_us": 2383,
+              "ms_per_frame": 0.781033628318584,
+              "us_per_call": 781.0336283185841
+            },
+            "_process": {
+              "calls": 565,
+              "inclusive_us": 595152,
+              "max_us": 3569,
+              "ms_per_frame": 1.0533663716814161,
+              "us_per_call": 1053.366371681416
+            },
+            "_tick": {
+              "calls": 152,
+              "inclusive_us": 136560,
+              "max_us": 1407,
+              "ms_per_frame": 0.24169911504424776,
+              "us_per_call": 898.421052631579
+            },
+            "_update": {
+              "calls": 38912,
+              "inclusive_us": 91958,
+              "max_us": 26,
+              "ms_per_frame": 0.1627575221238938,
+              "us_per_call": 2.363229851973684
+            }
+          }
+        },
+        {
+          "leg": 2,
+          "frames": 594,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 9090,
+              "inclusive_us": 107010,
+              "max_us": 46,
+              "ms_per_frame": 0.18015151515151515,
+              "us_per_call": 11.772277227722773
+            },
+            "_sole_geometry": {
+              "calls": 6882,
+              "inclusive_us": 59271,
+              "max_us": 25,
+              "ms_per_frame": 0.09978282828282828,
+              "us_per_call": 8.612467306015693
+            },
+            "_deform_feet": {
+              "calls": 2233,
+              "inclusive_us": 148729,
+              "max_us": 224,
+              "ms_per_frame": 0.2503855218855219,
+              "us_per_call": 66.60501567398119
+            },
+            "_step_frames": {
+              "calls": 26189,
+              "inclusive_us": 305802,
+              "max_us": 1023,
+              "ms_per_frame": 0.5148181818181818,
+              "us_per_call": 11.676734506854023
+            },
+            "_drain_units": {
+              "calls": 594,
+              "inclusive_us": 361944,
+              "max_us": 2525,
+              "ms_per_frame": 0.6093333333333334,
+              "us_per_call": 609.3333333333334
+            },
+            "_process": {
+              "calls": 594,
+              "inclusive_us": 513703,
+              "max_us": 3437,
+              "ms_per_frame": 0.8648198653198653,
+              "us_per_call": 864.8198653198654
+            },
+            "_tick": {
+              "calls": 147,
+              "inclusive_us": 134321,
+              "max_us": 1441,
+              "ms_per_frame": 0.22612962962962962,
+              "us_per_call": 913.7482993197278
+            },
+            "_update": {
+              "calls": 37632,
+              "inclusive_us": 90920,
+              "max_us": 21,
+              "ms_per_frame": 0.15306397306397307,
+              "us_per_call": 2.416028911564626
+            }
+          }
+        },
+        {
+          "leg": 3,
+          "frames": 398,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 6079,
+              "inclusive_us": 76797,
+              "max_us": 66,
+              "ms_per_frame": 0.1929572864321608,
+              "us_per_call": 12.63316334923507
+            },
+            "_sole_geometry": {
+              "calls": 4436,
+              "inclusive_us": 41227,
+              "max_us": 35,
+              "ms_per_frame": 0.10358542713567839,
+              "us_per_call": 9.293733092876465
+            },
+            "_deform_feet": {
+              "calls": 1488,
+              "inclusive_us": 109622,
+              "max_us": 174,
+              "ms_per_frame": 0.2754321608040201,
+              "us_per_call": 73.67069892473118
+            },
+            "_step_frames": {
+              "calls": 18393,
+              "inclusive_us": 245205,
+              "max_us": 1360,
+              "ms_per_frame": 0.6160929648241206,
+              "us_per_call": 13.331430435491763
+            },
+            "_drain_units": {
+              "calls": 398,
+              "inclusive_us": 290730,
+              "max_us": 2465,
+              "ms_per_frame": 0.7304773869346735,
+              "us_per_call": 730.4773869346734
+            },
+            "_process": {
+              "calls": 398,
+              "inclusive_us": 443871,
+              "max_us": 3139,
+              "ms_per_frame": 1.1152537688442212,
+              "us_per_call": 1115.2537688442212
+            },
+            "_tick": {
+              "calls": 145,
+              "inclusive_us": 139109,
+              "max_us": 1398,
+              "ms_per_frame": 0.34952010050251253,
+              "us_per_call": 959.3724137931034
+            },
+            "_update": {
+              "calls": 37120,
+              "inclusive_us": 93844,
+              "max_us": 28,
+              "ms_per_frame": 0.2357889447236181,
+              "us_per_call": 2.528125
+            }
+          }
+        }
+      ],
+      "weighted_ms_per_frame": {
+        "_sole_contact": 0.18270884220810943,
+        "_sole_geometry": 0.10044162188568638,
+        "_deform_feet": 0.25585881778212016,
+        "_step_frames": 0.5544357596482657,
+        "_drain_units": 0.6523502686858819,
+        "_process": 0.9492579384465071,
+        "_tick": 0.26537860283341475,
+        "_update": 0.17905862237420614
+      }
+    },
+    "native": {
+      "legs": [
+        {
+          "leg": 0,
+          "frames": 478,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 5348,
+              "inclusive_us": 48719,
+              "max_us": 38,
+              "ms_per_frame": 0.10192259414225942,
+              "us_per_call": 9.109760658189977
+            },
+            "_sole_geometry": {
+              "calls": 0,
+              "inclusive_us": 0,
+              "max_us": 0,
+              "ms_per_frame": 0.0,
+              "us_per_call": 0
+            },
+            "_deform_feet": {
+              "calls": 1306,
+              "inclusive_us": 76830,
+              "max_us": 306,
+              "ms_per_frame": 0.16073221757322176,
+              "us_per_call": 58.82848392036753
+            },
+            "_step_frames": {
+              "calls": 22263,
+              "inclusive_us": 209034,
+              "max_us": 1026,
+              "ms_per_frame": 0.43730962343096236,
+              "us_per_call": 9.389300633337825
+            },
+            "_drain_units": {
+              "calls": 478,
+              "inclusive_us": 259318,
+              "max_us": 2043,
+              "ms_per_frame": 0.5425062761506276,
+              "us_per_call": 542.5062761506276
+            },
+            "_process": {
+              "calls": 478,
+              "inclusive_us": 412243,
+              "max_us": 3255,
+              "ms_per_frame": 0.8624330543933054,
+              "us_per_call": 862.4330543933054
+            },
+            "_tick": {
+              "calls": 150,
+              "inclusive_us": 138007,
+              "max_us": 1406,
+              "ms_per_frame": 0.28871757322175734,
+              "us_per_call": 920.0466666666666
+            },
+            "_update": {
+              "calls": 38290,
+              "inclusive_us": 93202,
+              "max_us": 18,
+              "ms_per_frame": 0.19498326359832635,
+              "us_per_call": 2.434108122225124
+            }
+          }
+        },
+        {
+          "leg": 1,
+          "frames": 608,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 7616,
+              "inclusive_us": 65495,
+              "max_us": 48,
+              "ms_per_frame": 0.10772203947368421,
+              "us_per_call": 8.599658613445378
+            },
+            "_sole_geometry": {
+              "calls": 0,
+              "inclusive_us": 0,
+              "max_us": 0,
+              "ms_per_frame": 0.0,
+              "us_per_call": 0
+            },
+            "_deform_feet": {
+              "calls": 1871,
+              "inclusive_us": 102082,
+              "max_us": 222,
+              "ms_per_frame": 0.16789802631578948,
+              "us_per_call": 54.560128273650456
+            },
+            "_step_frames": {
+              "calls": 21797,
+              "inclusive_us": 235045,
+              "max_us": 1087,
+              "ms_per_frame": 0.3865871710526316,
+              "us_per_call": 10.783364683213286
+            },
+            "_drain_units": {
+              "calls": 608,
+              "inclusive_us": 284036,
+              "max_us": 1803,
+              "ms_per_frame": 0.46716447368421055,
+              "us_per_call": 467.1644736842105
+            },
+            "_process": {
+              "calls": 608,
+              "inclusive_us": 441222,
+              "max_us": 2506,
+              "ms_per_frame": 0.7256940789473685,
+              "us_per_call": 725.6940789473684
+            },
+            "_tick": {
+              "calls": 152,
+              "inclusive_us": 139915,
+              "max_us": 1059,
+              "ms_per_frame": 0.23012335526315789,
+              "us_per_call": 920.4934210526316
+            },
+            "_update": {
+              "calls": 38912,
+              "inclusive_us": 94651,
+              "max_us": 21,
+              "ms_per_frame": 0.15567598684210526,
+              "us_per_call": 2.4324372944078947
+            }
+          }
+        },
+        {
+          "leg": 2,
+          "frames": 574,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 8380,
+              "inclusive_us": 77357,
+              "max_us": 37,
+              "ms_per_frame": 0.13476829268292684,
+              "us_per_call": 9.231145584725537
+            },
+            "_sole_geometry": {
+              "calls": 0,
+              "inclusive_us": 0,
+              "max_us": 0,
+              "ms_per_frame": 0.0,
+              "us_per_call": 0
+            },
+            "_deform_feet": {
+              "calls": 2052,
+              "inclusive_us": 119424,
+              "max_us": 200,
+              "ms_per_frame": 0.20805574912891986,
+              "us_per_call": 58.198830409356724
+            },
+            "_step_frames": {
+              "calls": 26616,
+              "inclusive_us": 287379,
+              "max_us": 1336,
+              "ms_per_frame": 0.5006602787456446,
+              "us_per_call": 10.797227231740306
+            },
+            "_drain_units": {
+              "calls": 574,
+              "inclusive_us": 345871,
+              "max_us": 2586,
+              "ms_per_frame": 0.6025627177700349,
+              "us_per_call": 602.5627177700349
+            },
+            "_process": {
+              "calls": 574,
+              "inclusive_us": 500456,
+              "max_us": 3772,
+              "ms_per_frame": 0.8718745644599303,
+              "us_per_call": 871.8745644599303
+            },
+            "_tick": {
+              "calls": 147,
+              "inclusive_us": 137967,
+              "max_us": 1395,
+              "ms_per_frame": 0.24036062717770035,
+              "us_per_call": 938.5510204081633
+            },
+            "_update": {
+              "calls": 37632,
+              "inclusive_us": 93676,
+              "max_us": 23,
+              "ms_per_frame": 0.163198606271777,
+              "us_per_call": 2.489264455782313
+            }
+          }
+        },
+        {
+          "leg": 3,
+          "frames": 415,
+          "scopes": {
+            "_sole_contact": {
+              "calls": 3863,
+              "inclusive_us": 36893,
+              "max_us": 45,
+              "ms_per_frame": 0.08889879518072288,
+              "us_per_call": 9.55034946932436
+            },
+            "_sole_geometry": {
+              "calls": 0,
+              "inclusive_us": 0,
+              "max_us": 0,
+              "ms_per_frame": 0.0,
+              "us_per_call": 0
+            },
+            "_deform_feet": {
+              "calls": 948,
+              "inclusive_us": 58040,
+              "max_us": 138,
+              "ms_per_frame": 0.13985542168674697,
+              "us_per_call": 61.22362869198312
+            },
+            "_step_frames": {
+              "calls": 17787,
+              "inclusive_us": 154028,
+              "max_us": 1392,
+              "ms_per_frame": 0.37115180722891566,
+              "us_per_call": 8.659582841401024
+            },
+            "_drain_units": {
+              "calls": 415,
+              "inclusive_us": 196561,
+              "max_us": 1886,
+              "ms_per_frame": 0.47364096385542165,
+              "us_per_call": 473.64096385542166
+            },
+            "_process": {
+              "calls": 415,
+              "inclusive_us": 350476,
+              "max_us": 3119,
+              "ms_per_frame": 0.8445204819277109,
+              "us_per_call": 844.5204819277109
+            },
+            "_tick": {
+              "calls": 147,
+              "inclusive_us": 140081,
+              "max_us": 1528,
+              "ms_per_frame": 0.337544578313253,
+              "us_per_call": 952.9319727891157
+            },
+            "_update": {
+              "calls": 37632,
+              "inclusive_us": 94942,
+              "max_us": 32,
+              "ms_per_frame": 0.22877590361445782,
+              "us_per_call": 2.522906037414966
+            }
+          }
+        }
+      ],
+      "weighted_ms_per_frame": {
+        "_sole_contact": 0.11010313253012048,
+        "_sole_geometry": 0.0,
+        "_deform_feet": 0.17174746987951806,
+        "_step_frames": 0.4267402409638554,
+        "_drain_units": 0.5232703614457831,
+        "_process": 0.8213961445783133,
+        "_tick": 0.26793734939759034,
+        "_update": 0.18143180722891566
+      }
+    }
+  },
+  "limits": "Inclusive scope comparison; do not sum nested scopes or infer whole-game FPS. Retained script path and native path in one instrumented export. No own CPU builds/checks during measurement."
+}

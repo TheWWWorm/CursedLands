@@ -1,0 +1,91 @@
+{
+	"checks": 14,
+	"failures": 0,
+	"generated": 93,
+	"rows": [
+		{
+			"count": 5,
+			"missing": [],
+			"observed": 2,
+			"speed": 1.0,
+			"step": 35
+		},
+		{
+			"count": 10,
+			"missing": [],
+			"observed": 8,
+			"speed": 1.0,
+			"step": 71
+		},
+		{
+			"count": 15,
+			"missing": [],
+			"observed": 12,
+			"speed": 1.0,
+			"step": 107
+		},
+		{
+			"count": 21,
+			"missing": [],
+			"observed": 18,
+			"speed": 1.0,
+			"step": 143
+		},
+		{
+			"count": 26,
+			"missing": [],
+			"observed": 19,
+			"speed": 1.0,
+			"step": 179
+		},
+		{
+			"count": 31,
+			"missing": [],
+			"observed": 22,
+			"speed": 1.0,
+			"step": 215
+		},
+		{
+			"count": 10,
+			"missing": [],
+			"observed": 8,
+			"speed": 2.0,
+			"step": 35
+		},
+		{
+			"count": 21,
+			"missing": [],
+			"observed": 18,
+			"speed": 2.0,
+			"step": 71
+		},
+		{
+			"count": 31,
+			"missing": [],
+			"observed": 22,
+			"speed": 2.0,
+			"step": 107
+		},
+		{
+			"count": 42,
+			"missing": [],
+			"observed": 25,
+			"speed": 2.0,
+			"step": 143
+		},
+		{
+			"count": 52,
+			"missing": [],
+			"observed": 44,
+			"speed": 2.0,
+			"step": 179
+		},
+		{
+			"count": 62,
+			"missing": [],
+			"observed": 50,
+			"speed": 2.0,
+			"step": 215
+		}
+	]
+}

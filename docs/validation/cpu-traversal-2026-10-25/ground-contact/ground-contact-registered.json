@@ -1,0 +1,149 @@
+{
+  "git_head": "b1cbb922fb9736fe675a8bc55d1b53d709ba7ac7",
+  "game_source_sha256": "8de57f01145f88794b07569cd2761e73e51231a11b1bf9c0d84111d161ad37fc",
+  "manifest_sha256": "2940aeea7015fb543b288baaa50a6aca3fe168dfb45f2fb628225f60f1f19822",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "picking_figures",
+      "script": "tools/tests/picking_figures.gd",
+      "script_sha256": "470dbaa57eff8697bebf25ef6a2019f49b86d82141c293736756ceeab9be89c5",
+      "contract": "One native actor-bounds batch preserves exact ordered part rectangles, union, same-frame pose/visibility/mesh edits and unsupported/older-library fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.37,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/picking_figures/fixtures/picking_figures.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/picking_figures/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "picking_figures/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1403,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "direct_pose_native",
+      "script": "tools/tests/direct_pose_native.gd",
+      "script_sha256": "7c699727e33ccae19bca0624ad37b64a1330ef5834205d619d599f828d21f153",
+      "contract": "Native first-person pose sampling preserves exact ordered values, quaternion conventions, same-frame track and node edits, bounded weak metadata lifetime, and complete unsupported/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.17,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/direct_pose_native/fixtures/direct_pose_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/direct_pose_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "direct_pose_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 7470,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "vegetation_contacts_native",
+      "script": "tools/tests/vegetation_contacts_native.gd",
+      "script_sha256": "e89b29ee116936c06a3c36031f965f1a8270510284e7399ebbd7d37a82d3967c",
+      "contract": "Native vegetation contacts preserve exact ordering, nearest-before-admission budget, live interpolated geometry and visibility, and complete custom/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.82,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/vegetation_contacts_native/fixtures/vegetation_contacts_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/vegetation_contacts_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "vegetation_contacts_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 1027,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "ground_contact_native",
+      "script": "tools/tests/ground_contact_native.gd",
+      "script_sha256": "68fef4416dbbccf7a0872373168d75b087abadf2f64be3b0d8e7fbc8e4ee43c4",
+      "contract": "Native sole geometry preserves exact authored and smoothed foot contacts, live transforms, visibility, terrain admission and custom/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.62,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/ground_contact_native/fixtures/ground_contact_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-registered/ground_contact_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "ground_contact_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 2086,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.pck",
+    "sha256": "0f70013b1285fb39b81be30fcd6d21c9ac153813e6521979ae0092f51eb69ed9"
+  },
+  "passed": true
+}

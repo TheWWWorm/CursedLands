@@ -1407,6 +1407,17 @@
       "rendering_method": "forward_plus",
       "args": [],
       "min_checks": 47
+    },
+    {
+      "id": "ground_contact_native",
+      "script": "tools/tests/ground_contact_native.gd",
+      "summary": "GROUND_CONTACT_NATIVE",
+      "contract": "Native sole geometry preserves exact authored and smoothed foot contacts, live transforms, visibility, terrain admission and custom/older-library fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 2086
     }
   ]
 }

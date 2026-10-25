@@ -1,0 +1,45 @@
+[
+  {
+    "name": "dar-ground-contact-profile-script",
+    "pack": "ground-contact-profile",
+    "script_control": true,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-ground-contact-profile-script",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording",
+      "--ei-script-ground-contact"
+    ],
+    "start": 1792950613.6640756,
+    "finish": 1792950721.310153,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-ground-contact-profile-native",
+    "pack": "ground-contact-profile",
+    "script_control": false,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-ground-contact-profile-native",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording"
+    ],
+    "start": 1792950721.3104298,
+    "finish": 1792950828.7563753,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  }
+]

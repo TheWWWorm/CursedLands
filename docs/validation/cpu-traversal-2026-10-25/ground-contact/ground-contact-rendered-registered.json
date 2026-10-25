@@ -1,0 +1,131 @@
+{
+  "git_head": "b1cbb922fb9736fe675a8bc55d1b53d709ba7ac7",
+  "game_source_sha256": "8de57f01145f88794b07569cd2761e73e51231a11b1bf9c0d84111d161ad37fc",
+  "manifest_sha256": "2940aeea7015fb543b288baaa50a6aca3fe168dfb45f2fb628225f60f1f19822",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "ground_mark_receivers",
+      "script": "tools/tests/ground_mark_receivers.gd",
+      "script_sha256": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67",
+      "contract": "Original footprints, blood and scorch remain visible on slopes and raised floors; lifecycle releases geometry.",
+      "issues": [
+        29,
+        96
+      ],
+      "mode": "rendered",
+      "seconds": 13.64,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_receivers/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_receivers/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_receivers/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_receivers/fixtures/ground_mark_receivers.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_receivers/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "ground_mark_receivers/run.log",
+      "passed": true,
+      "result": {
+        "checks": 13,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "ground_mark_animation",
+      "script": "tools/tests/ground_mark_animation.gd",
+      "script_sha256": "da00cc3b843e73b8e89ec7c64edc250501fd65cfdc1b59297f855f95d3b7351e",
+      "contract": "Animated blood matches the independent CPU-clipped receiver across sizes/angles and after surface changes.",
+      "issues": [
+        29,
+        96
+      ],
+      "mode": "rendered",
+      "seconds": 14.64,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_animation/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_animation/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_animation/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_animation/fixtures/ground_mark_animation.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-rendered-registered/ground_mark_animation/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "ground_mark_animation/run.log",
+      "passed": true,
+      "result": {
+        "checks": 24,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/ground-contact-final-linux/runtime.pck",
+    "sha256": "0f70013b1285fb39b81be30fcd6d21c9ac153813e6521979ae0092f51eb69ed9"
+  },
+  "passed": true
+}

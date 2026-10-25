@@ -877,3 +877,79 @@ therefore compares the retained remake collector exactly; the Wine checks
 above execute the remake. Original Dar runtime/FPS equivalence remains
 unmeasured. Ground-mark processing and first-visible mirror preparation remain
 separate investigation targets.
+
+## Foot-contact geometry
+
+On integrated source `b1cbb922`, ground marks still spend about 0.8–1.2 ms/frame
+in Dar. Part of that is the repeated transformation of sole vertices and
+reduction of the lowest 3.5 cm band into contact bounds. `GroundContactKernel`
+batches that calculation without retaining geometry, poses or nodes. Current
+rigid and welded meshes, transforms, child order and visibility rules stay live.
+Authored coarse bounds, vertex acquisition, final terrain admission, animation
+events, blood pickup, mark lifetime and snow-contact history remain in script.
+Custom part/mesh/collector scripts, older libraries and the diagnostic
+`--ei-script-ground-contact` retain the scalar path.
+
+GPU Lab heavy job `335b5b3b73064422` compares the **untouched previous remake
+method** from `b1cbb922` against the native implementation in one live Dar scene.
+The reference collector shares the same world and vertex cache. Four synchronous
+legacy/native/native/legacy blocks each make 10,000 queries over 50 actual feet;
+48 contacts are admitted. Exact dictionaries are checked before and after
+every block. All **461 route/comparison checks pass**. No own CPU builds or
+other tests run during this measurement, which follows the timed route phases.
+
+| Implementation | First block µs/query | Second block µs/query | Mean µs/query |
+|---|---:|---:|---:|
+| Previous method | 7.450 | 7.406 | 7.428 |
+| Native geometry | 4.584 | 4.649 | 4.616 |
+
+The saving is **2.81 µs per query, or 37.85% of this callback's CPU time**.
+It is not a whole-game FPS percentage. See [the exact baseline comparison](ground-contact/dar-legacy-micro.json),
+including its source hash and unchanged method body. An earlier same-scene
+comparison against the refactored scalar fallback passes 541 checks over
+60 feet and measures 7.819 → 4.645 µs/query. The smaller untouched-baseline
+result above is the primary performance claim; the two live scenes have
+different visible actor counts and are not compared against each other.
+
+Heavy job `17347eedf3764ea5` also runs the fixed standard-rendering route with
+script/native geometry in one instrumented export. Both pass **54 checks**.
+Weighted contact scopes measure 12.20 → 9.06 µs/call, while native runs have
+no calls to the scalar geometry fallback. Observed contact cost is
+0.183 → 0.110 ms/frame, but contact counts differ with live actor movement;
+that entire difference is not attributed to this change. The shared helper
+also serves other zones and Arena. Its benefit depends on active foot queries.
+See [the per-leg scopes](ground-contact/dar-profile-comparison.json).
+
+The new registered exact regression passes **2,086 checks** on Linux and
+Windows under Wine. It includes synthetic and authored animated feet, rigid
+and smoothed figures, live transforms/visibility, welded meshes, sole-band
+and extent boundaries, terrain rejection order, and complete custom/missing
+library fallback. The old library fails its availability contract (one check,
+one failure). The first implementation incorrectly declined ordinary
+`EIAnimPart` nodes; the authored fixture caught 576 failures. Exact support for
+that class was added while preserving fallback for its custom subclasses.
+That initial failure log remains archived.
+
+Related vegetation contacts (1,027), direct pose (7,470) and actor bounds
+(1,403) pass on both platforms. Rendered running trails pass **14 checks each
+on Vulkan and OpenGL**, producing 93 marks each; Ingos contacts, snow and
+figure rebuilding pass **57**; Arena ground ink passes **5**. The registered
+OpenGL receiver/lifecycle fixture passes **13**, and animated blood projection
+passes **24**. Existing virtual-monitor diagnostics are retained in the logs.
+See [check summaries](ground-contact/checks.json),
+[registered headless results](ground-contact/ground-contact-registered.json),
+and [registered rendered results](ground-contact/ground-contact-rendered-registered.json).
+
+All 461 compared runtime files match the final export snapshot. Linux,
+Windows and Android ARM64 libraries were rebuilt; Android was not executed
+on a device. [Provenance](ground-contact/provenance.json) records the source,
+build and pack hashes. No player-facing text or option was added.
+
+Original-code comparison identifies authored frame/part selection at
+`0x534b60` and ground-table/blood pickup at `0x56d150`. The original uses part
+extents; the remake's rendered-sole reduction and soft-ground interaction
+have no identical original-game Wine fixture. Those original-derived event
+and lifetime paths are unchanged. The Wine checks above execute the remake;
+this does not establish original Dar FPS or original foot-contact equivalence.
+Surface projection, mark ageing and first-visible mirror preparation remain
+separate investigation targets.
