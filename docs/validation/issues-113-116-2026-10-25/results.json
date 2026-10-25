@@ -1,0 +1,2047 @@
+{
+  "baseline_commit": "7f2f23bd316b9a2706c6abb4d4e5321da38b3825",
+  "scope": "Linux campaign issue follow-ups 113–116. No platform-wide or full-campaign certification.",
+  "raw_root": "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025",
+  "current_source_hashes": {
+    "CHANGELOG.md": "fc31163dc8237a43ee94c171b2d887fcebba966a45b1430afb824f579431aad0",
+    "docs/regression-checks.md": "175b2fa84ead5a9aa390ef2623a607f0ad4cf249a039ceeb7a094f5ee3965e4c",
+    "game/src/ei/remake_text.gd": "198e5386525742d41cf2efa31596ecaaf0bd6b97dc012091a151088ff084dc61",
+    "game/src/game/ai.gd": "31fdf742c5a85d3cbce434f37f0cb2be4b20296139ccdf3a08efe09032182076",
+    "game/src/game/game.gd": "bf9475c6a9e4f51b6877a009bd9227ef1477727e1f9d8ba2808b253be70d6007",
+    "game/src/game/local_host.gd": "bdbb9ab11cced5d8d58cf43a9f6b4c1feb54631b42040639907d7411d9c5041d",
+    "game/src/game/save_info.gd": "f7584131ba021d685f01beeadcf34046736c2bc26f71fe772065741ee03bb7ee",
+    "game/src/game/unit.gd": "67cca618f914e25f3d471f329b45a6b157cf9f82b8945c1a88b6acbe2005f981",
+    "game/src/ui/load_panel.gd": "c1315590c20b9b809108fbfdec4fceb5a7bdee94b6818e1b0c307410116a8e82",
+    "tools/parity/gameplay_catalog.json": "73ccbb25523e3918335571ee0d9f1eceb26f1732255095c982af0eecf08f0065",
+    "tools/regressions.json": "457bec58af703d24fb14b60366d80f843d47c24a93abc1672341b40c9a33794a",
+    "tools/tests/backstab_hit_reaction.gd": "f697fdcda6b6e8f109a03edf8f395a0b9369f99addc0969925ea45b45ddbad15",
+    "tools/tests/killing_posture_queue.gd": "f2137e663a430f820346ea201f2946b9ccbe18cc8585e5cb4704cf8ed68b6897",
+    "tools/tests/save_rename.gd": "bfc038855d75a0c795ca1da15a7847c3f6d28eb05e1f02b7a4b4eb9f22b4dedc",
+    "tools/tests/worker_travel_clock.gd": "fc3e71ec209173bdd1c9351ac52f89b39775f583a752b7eb2d6b4ec1d908bb8c"
+  },
+  "accepted_runs": [
+    {
+      "capture": "final-confirmation",
+      "report_sha256": "8160dd1e86dc1d99aa3ddbe8ac1eb1840e610206449cf096e6a50565dcb27ea0",
+      "engine": "/home/llm2x/.local/bin/godot-4",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "game_source_sha256": "b438d58091e04af4967cb5062757d037c5acbd8f78ac54550e94bdd7112bcb31",
+      "manifest_sha256": "17122bf4c47760d40e8dd942c888761f11e2e85af4382586d024bb087fa02f0c",
+      "passed": true,
+      "cases": [
+        {
+          "id": "killing_posture_queue",
+          "script": "tools/tests/killing_posture_queue.gd",
+          "script_sha256": "f2137e663a430f820346ea201f2946b9ccbe18cc8585e5cb4704cf8ed68b6897",
+          "contract": "Killing melee impact preserves queued crawl/kneel and plays its transition on authority and replica.",
+          "issues": [
+            113
+          ],
+          "mode": "headless",
+          "seconds": 8.38,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/killing_posture_queue.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "killing_posture_queue/run.log",
+          "passed": true,
+          "result": {
+            "checks": 50,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "backstab_hit_reaction",
+          "script": "tools/tests/backstab_hit_reaction.gd",
+          "script_sha256": "f697fdcda6b6e8f109a03edf8f395a0b9369f99addc0969925ea45b45ddbad15",
+          "contract": "A surviving retaliating target is alert during hit recovery, preventing a second backstab.",
+          "issues": [
+            115
+          ],
+          "mode": "headless",
+          "seconds": 6.88,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/backstab_hit_reaction.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "backstab_hit_reaction/run.log",
+          "passed": true,
+          "result": {
+            "checks": 16,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "worker_travel_clock",
+          "script": "tools/tests/worker_travel_clock.gd",
+          "script_sha256": "fc3e71ec209173bdd1c9351ac52f89b39775f583a752b7eb2d6b4ec1d908bb8c",
+          "contract": "Separate solo authority preserves measured 1x/2x through Ruins/Foothills travel and village return.",
+          "issues": [
+            116
+          ],
+          "mode": "headless",
+          "seconds": 64.58,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/worker_travel_clock.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "worker_travel_clock/run.log",
+          "passed": true,
+          "result": {
+            "checks": 29,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        }
+      ]
+    },
+    {
+      "capture": "save-compatibility-final",
+      "report_sha256": "28608be1762147d6e4e9e41172648c4a646159f2481d8e639ec933686d67c3d2",
+      "engine": "/home/llm2x/.local/bin/godot-4",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "game_source_sha256": "051061d1b5cbce75c520714508b1c0ce51dd092ada071ae073342ea985caa943",
+      "manifest_sha256": "457bec58af703d24fb14b60366d80f843d47c24a93abc1672341b40c9a33794a",
+      "passed": true,
+      "cases": [
+        {
+          "id": "save_rename",
+          "script": "tools/tests/save_rename.gd",
+          "script_sha256": "bfc038855d75a0c795ca1da15a7847c3f6d28eb05e1f02b7a4b4eb9f22b4dedc",
+          "contract": "F2 rename in Load/Save changes only metadata; Unicode, cancel, protected slots and storage errors are covered.",
+          "issues": [
+            114
+          ],
+          "mode": "headless",
+          "seconds": 6.27,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/save_rename.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "save_rename/run.log",
+          "passed": true,
+          "result": {
+            "checks": 67,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "save_rename_en",
+          "script": "tools/tests/save_rename.gd",
+          "script_sha256": "bfc038855d75a0c795ca1da15a7847c3f6d28eb05e1f02b7a4b4eb9f22b4dedc",
+          "contract": "Save renaming and error layout in en.",
+          "issues": [
+            114
+          ],
+          "mode": "rendered",
+          "seconds": 8.63,
+          "command": [
+            "/usr/local/bin/gpu-lab",
+            "run",
+            "--gpu",
+            "auto",
+            "--cwd",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo",
+            "--timeout",
+            "240",
+            "--",
+            "env",
+            "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_en/data",
+            "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_en/config",
+            "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_en/cache",
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "1280x720",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/save_rename.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=rendered",
+            "--texts=/home/llm2x/Documents/EI/inspection/extracted/app/res/texts.res"
+          ],
+          "log": "save_rename_en/run.log",
+          "passed": true,
+          "result": {
+            "checks": 74,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        },
+        {
+          "id": "save_rename_ru",
+          "script": "tools/tests/save_rename.gd",
+          "script_sha256": "bfc038855d75a0c795ca1da15a7847c3f6d28eb05e1f02b7a4b4eb9f22b4dedc",
+          "contract": "Save renaming and error layout in ru.",
+          "issues": [
+            114
+          ],
+          "mode": "rendered",
+          "seconds": 8.63,
+          "command": [
+            "/usr/local/bin/gpu-lab",
+            "run",
+            "--gpu",
+            "auto",
+            "--cwd",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo",
+            "--timeout",
+            "240",
+            "--",
+            "env",
+            "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_ru/data",
+            "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_ru/config",
+            "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_ru/cache",
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "1280x720",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/save_rename.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=rendered",
+            "--texts=/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/languages/ru/app/Res/texts.res"
+          ],
+          "log": "save_rename_ru/run.log",
+          "passed": true,
+          "result": {
+            "checks": 74,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        },
+        {
+          "id": "save_rename_de",
+          "script": "tools/tests/save_rename.gd",
+          "script_sha256": "bfc038855d75a0c795ca1da15a7847c3f6d28eb05e1f02b7a4b4eb9f22b4dedc",
+          "contract": "Save renaming and error layout in de.",
+          "issues": [
+            114
+          ],
+          "mode": "rendered",
+          "seconds": 8.63,
+          "command": [
+            "/usr/local/bin/gpu-lab",
+            "run",
+            "--gpu",
+            "auto",
+            "--cwd",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo",
+            "--timeout",
+            "240",
+            "--",
+            "env",
+            "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_de/data",
+            "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_de/config",
+            "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/save-compatibility-final/save_rename_de/cache",
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "1280x720",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/save_rename.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=rendered",
+            "--texts=/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/languages/de/app/Res/texts.res",
+            "--small-window"
+          ],
+          "log": "save_rename_de/run.log",
+          "passed": true,
+          "result": {
+            "checks": 74,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        }
+      ]
+    },
+    {
+      "capture": "clock-rendered-final",
+      "report_sha256": "98591fa13acff5e2b7f2a0581254f149ec5e9358089891cd6fd0278c525de05c",
+      "engine": "/home/llm2x/.local/bin/godot-4",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "game_source_sha256": "b438d58091e04af4967cb5062757d037c5acbd8f78ac54550e94bdd7112bcb31",
+      "manifest_sha256": "17122bf4c47760d40e8dd942c888761f11e2e85af4382586d024bb087fa02f0c",
+      "passed": true,
+      "cases": [
+        {
+          "id": "worker_travel_clock_rendered",
+          "script": "tools/tests/worker_travel_clock.gd",
+          "script_sha256": "fc3e71ec209173bdd1c9351ac52f89b39775f583a752b7eb2d6b4ec1d908bb8c",
+          "contract": "Separate solo authority preserves measured 1x/2x through Ruins/Foothills travel and village return.",
+          "issues": [
+            116
+          ],
+          "mode": "rendered",
+          "seconds": 93.85,
+          "command": [
+            "/usr/local/bin/gpu-lab",
+            "run",
+            "--gpu",
+            "auto",
+            "--cwd",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo",
+            "--timeout",
+            "420",
+            "--",
+            "env",
+            "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/clock-rendered-final/worker_travel_clock_rendered/data",
+            "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/clock-rendered-final/worker_travel_clock_rendered/config",
+            "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/clock-rendered-final/worker_travel_clock_rendered/cache",
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--display-driver",
+            "x11",
+            "--rendering-method",
+            "gl_compatibility",
+            "--windowed",
+            "--resolution",
+            "1280x720",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/worker_travel_clock.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=rendered"
+          ],
+          "log": "worker_travel_clock_rendered/run.log",
+          "passed": true,
+          "result": {
+            "checks": 29,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        }
+      ]
+    },
+    {
+      "capture": "previous-regressions",
+      "report_sha256": "dd6efb04bed380ff6ef4a40817597ac7d5260632e655bce9496651badd679d4b",
+      "engine": "/home/llm2x/.local/bin/godot-4",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "game_source_sha256": "ad6c40b46fcaff813a2dbcac8d5fdd1dea3a68873ffdf64867033f5a0c1f81ca",
+      "manifest_sha256": "8d0e02ba2e30a1c0b9412f9cc958fafb56da93d95a1902d7077cb66e317a99cb",
+      "passed": true,
+      "cases": [
+        {
+          "id": "attack_path_current_target",
+          "script": "tools/tests/attack_path_current_target.gd",
+          "script_sha256": "fb60a08f1ed0d353896cf46a7d6ac292f9b66d5f2853553e2b08042644f4abe8",
+          "contract": "Live, paused, queued and revealed moving targets use current-position previews; pursuit remains predictive.",
+          "issues": [
+            85
+          ],
+          "mode": "headless",
+          "seconds": 10.43,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/attack_path_current_target.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "attack_path_current_target/run.log",
+          "passed": true,
+          "result": {
+            "checks": 41,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "corpse_memory_save",
+          "script": "tools/tests/corpse_memory_save.gd",
+          "script_sha256": "7acd2e4bf17f6e9194a616ac8da56bcd8d07e928f12e3f9352ca4d501387b0e3",
+          "contract": "Observer discoveries and an active investigation survive save/load.",
+          "issues": [
+            112,
+            103,
+            95,
+            94
+          ],
+          "mode": "headless",
+          "seconds": 33.57,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/corpse_memory_save.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "corpse_memory_save/run.log",
+          "passed": true,
+          "result": {
+            "checks": 30,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "magic_trap_targets",
+          "script": "tools/tests/magic_trap_targets.gd",
+          "script_sha256": "5ee4ad0c0abee5548ef6ac75984466e6b9353c4e18c85d5b111a1879ce76f85f",
+          "contract": "Original diplomacy selects hostile victims and excludes neutral goblins after reload.",
+          "issues": [
+            110,
+            106
+          ],
+          "mode": "headless",
+          "seconds": 16.49,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/magic_trap_targets.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "magic_trap_targets/run.log",
+          "passed": true,
+          "result": {
+            "checks": 17,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "cast_posture_queue",
+          "script": "tools/tests/cast_posture_queue.gd",
+          "script_sha256": "60da326114ad24d2ea93c08791c6615a09b8a948293201805177453527d00092",
+          "contract": "Requested posture follows a locked cast on authority and replica.",
+          "issues": [
+            109
+          ],
+          "mode": "headless",
+          "seconds": 7.83,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/cast_posture_queue.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "cast_posture_queue/run.log",
+          "passed": true,
+          "result": {
+            "checks": 12,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "camp_inventory_ui",
+          "script": "tools/tests/camp_inventory_ui.gd",
+          "script_sha256": "e30d052c865c38670c39a3b81223ff423b6052e6fd2a96bb5abe73e70a7094a0",
+          "contract": "Shift stacks, charge/wear identity, quest-item protection and independent filters survive page changes.",
+          "issues": [
+            100,
+            101,
+            102
+          ],
+          "mode": "headless",
+          "seconds": 14.64,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/camp_inventory_ui.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "camp_inventory_ui/run.log",
+          "passed": true,
+          "result": {
+            "checks": 116,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "camp_transactions",
+          "script": "tools/tests/camp_transactions.gd",
+          "script_sha256": "b6de35a6a514d0e344fa4c8f6e5dbdcf410c0bee74bf0e8838bfba7fba8a8712",
+          "contract": "Co-op repair and swapping preserve private purses and reject stale transactions.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 13.44,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/camp_transactions.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "camp_transactions/run.log",
+          "passed": true,
+          "result": {
+            "checks": 53,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "spell_constructor_transactions",
+          "script": "tools/tests/spell_constructor_transactions.gd",
+          "script_sha256": "6760a902807f0ed824a282c463c34b0a06aef68bd561915eb54fd6434c7195da",
+          "contract": "Paused co-op guest constructs from shop/mixed/bag sources atomically.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 14.89,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/spell_constructor_transactions.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "spell_constructor_transactions/run.log",
+          "passed": true,
+          "result": {
+            "checks": 52,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "repeated_spells_input",
+          "script": "tools/tests/repeated_spells_input.gd",
+          "script_sha256": "e4c6af0078f94fbcba5cf5514167b6595882945d710a18ed74b156d601f3f29c",
+          "contract": "Repeated casts succeed through classic, direct keyboard and controller input.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 35.98,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/repeated_spells_input.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "repeated_spells_input/run.log",
+          "passed": true,
+          "result": {
+            "checks": 371,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dialogue_clock_coop",
+          "script": "tools/tests/dialogue_clock_coop.gd",
+          "script_sha256": "98c13ea9f2d27dd1a5816c21d321116ae5e0bcec9234ae3fc996007f3dad2f33",
+          "contract": "Host resets both peers to normal unpaused dialogue; guest cannot override it.",
+          "issues": [
+            92
+          ],
+          "mode": "headless",
+          "seconds": 13.74,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dialogue_clock_coop.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "dialogue_clock_coop/run.log",
+          "passed": true,
+          "result": {
+            "checks": 12,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dialogue_hold_space",
+          "script": "tools/tests/dialogue_hold_space.gd",
+          "script_sha256": "9e4546d2de10d74eeb8a61dd3db2ba3d46f877f360fe0d2e8fcbd9dd669aa3b4",
+          "contract": "Held Space advances phrases but preserves the final phrase until a fresh press.",
+          "issues": [
+            108
+          ],
+          "mode": "headless",
+          "seconds": 11.03,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dialogue_hold_space.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "dialogue_hold_space/run.log",
+          "passed": true,
+          "result": {
+            "checks": 6,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "issue_ui_controls",
+          "script": "tools/tests/issue_ui_controls.gd",
+          "script_sha256": "1dd819e657a5dcdf7cda5b76249920a97b5cde6cb575451454ea5ff0d403e96f",
+          "contract": "Hovered-list scrolling, quest journal states and EN/RU/DE option strings.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.22,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/issue_ui_controls.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "issue_ui_controls/run.log",
+          "passed": true,
+          "result": {
+            "checks": 198,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "hidden_presentation",
+          "script": "tools/tests/hidden_presentation.gd",
+          "script_sha256": "71ede6a4474ef6a7cd0308f326efdb7b0bdd1945a6f9a8cd49ff10fc129a0d41",
+          "contract": "Hidden replica wakes at its current position without double-counting animation time.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.73,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/hidden_presentation.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "hidden_presentation/run.log",
+          "passed": true,
+          "result": {
+            "checks": 69,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dialogue_mouths",
+          "script": "tools/tests/dialogue_mouths.gd",
+          "script_sha256": "fdd2c160f60a2dfe5aa8ba774a96db70be2ebdbb1824ed1ca30c6909cf6a906d",
+          "contract": "Original body and portrait mouth atlases, speaker changes and stop/skip lifecycle.",
+          "issues": [
+            76
+          ],
+          "mode": "headless",
+          "seconds": 7.73,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dialogue_mouths.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "dialogue_mouths/run.log",
+          "passed": true,
+          "result": {
+            "checks": 90,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "recent_character_controls",
+          "script": "tools/tests/recent_character_controls.gd",
+          "script_sha256": "a09516058f6bfea62966d89716ebab7d19824720c533309276a164a5a1464617",
+          "contract": "Every spell in a real multiplayer kit survives selection/save/admission; View and training Accept/Cancel work.",
+          "issues": [
+            79,
+            81,
+            84,
+            87
+          ],
+          "mode": "headless",
+          "seconds": 8.43,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/recent_character_controls.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "recent_character_controls/run.log",
+          "passed": true,
+          "result": {
+            "checks": 71,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dialogue_feedback",
+          "script": "tools/tests/dialogue_feedback.gd",
+          "script_sha256": "21e13411d88810f0ea23f16469feb2584cd6dbe0def63594f568748be1c73560",
+          "contract": "LiA smith topics, Back, reopening, highlighting and localized reward names.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 11.83,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dialogue_feedback.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=lost_in_astral",
+            "--suite-display=headless"
+          ],
+          "log": "dialogue_feedback/run.log",
+          "passed": true,
+          "result": {
+            "checks": 16,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "campaign_feedback",
+          "script": "tools/tests/campaign_feedback.gd",
+          "script_sha256": "5a375b952af4e1274736688168e4e149b3bebe7dd4e8516d7a41708aca772443",
+          "contract": "Saved clocks, solo defeat and Suslanger revisit quest-state retention.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 58.77,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/campaign_feedback.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "campaign_feedback/run.log",
+          "passed": true,
+          "result": {
+            "checks": 35,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "save_actor_refs",
+          "script": "tools/tests/save_actor_refs.gd",
+          "script_sha256": "873f1db9b5f9323783f64cf925ca58b5d679ae6ad2415249806b00a07c9cc679",
+          "contract": "Saved runtime actor identities remain distinct.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.42,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/save_actor_refs.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "save_actor_refs/run.log",
+          "passed": true,
+          "result": {
+            "checks": 14,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "prison_alarm_state",
+          "script": "tools/tests/prison_alarm_state.gd",
+          "script_sha256": "0eac604d4d2931a8dbcc252bf2c34d214fdf2a55ee211cdf4d42d7ccbce87b98",
+          "contract": "Guard pursuit and prison alarm reset retain native identity.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 7.18,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/prison_alarm_state.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "prison_alarm_state/run.log",
+          "passed": true,
+          "result": {
+            "checks": 70,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "side_quest_lifecycle",
+          "script": "tools/tests/side_quest_lifecycle.gd",
+          "script_sha256": "11f86133396652ce15792db64ab597c0315158bcddca23eb3e26237b3bb865c5",
+          "contract": "Authored side-quest activation, return and completion survive the campaign flow.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 13.14,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/side_quest_lifecycle.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "side_quest_lifecycle/run.log",
+          "passed": true,
+          "result": {
+            "checks": 590,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "performance_log",
+          "script": "tools/tests/performance_log.gd",
+          "script_sha256": "05308a4e1656f2d98b9b1c91d260452f149d79486319c4391b773c50a749ad18",
+          "contract": "Export brief frame stalls without mixing load/background gaps or retaining freed worlds.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 7.63,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/performance_log.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "performance_log/run.log",
+          "passed": true,
+          "result": {
+            "checks": 42,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "moving_lift_navigation",
+          "script": "tools/tests/moving_navigation.gd",
+          "script_sha256": "7bb699e8dac3f85c33280c119c23d373c21d88a6af6872ad46eed3e9fe5d6133",
+          "contract": "Authored Portal lift ascent/descent, atomic moves and distant teleports; incremental heights/passability match fresh builds across all movement classes without eager whole-map floods.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 34.82,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/moving_navigation.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=lost_in_astral",
+            "--suite-display=headless"
+          ],
+          "log": "moving_lift_navigation/run.log",
+          "passed": true,
+          "result": {
+            "checks": 95,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "moving_door_navigation",
+          "script": "tools/tests/moving_navigation.gd",
+          "script_sha256": "7bb699e8dac3f85c33280c119c23d373c21d88a6af6872ad46eed3e9fe5d6133",
+          "contract": "Repeated Catacombs door states update local navigation and late-built movement classes without eager whole-map floods.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 8.93,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/moving_navigation.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=lost_in_astral",
+            "--suite-display=headless",
+            "--zone=gz1d2"
+          ],
+          "log": "moving_door_navigation/run.log",
+          "passed": true,
+          "result": {
+            "checks": 177,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "worker_overload_recovery",
+          "script": "tools/tests/worker_overload_recovery.gd",
+          "script_sha256": "5dbda2370f6a2765acab376a00cf27d04f9ab7a294ae5efe1f1b9bd84f0c4325",
+          "contract": "Worker and inline 1x/2x/55:27 clocks recover from repeated severe stalls without replaying seconds of debt.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.23,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/worker_overload_recovery.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "worker_overload_recovery/run.log",
+          "passed": true,
+          "result": {
+            "checks": 3618,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "nav_local_invalidation",
+          "script": "tools/tests/nav_local_invalidation.gd",
+          "script_sha256": "85707549379d5e68ab209b758672b62319bab21995132518f96a75b14324431f",
+          "contract": "Local native cache invalidation has bounded work on small and large prepared maps and preserves exact fresh-build connectivity.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.73,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/nav_local_invalidation.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "nav_local_invalidation/run.log",
+          "passed": true,
+          "result": {
+            "checks": 120,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "prison_wall_seams",
+          "script": "tools/tests/prison_wall_seams.gd",
+          "script_sha256": "66bb0aa8d9895df882a9987d75a2557c8fae2184266c32c79d91c6b93abf8bdd",
+          "contract": "Authored prison wall intersections have one coplanar surface owner while retaining full visible coverage and original metadata.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 7.83,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/prison_wall_seams.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=lost_in_astral",
+            "--suite-display=headless"
+          ],
+          "log": "prison_wall_seams/run.log",
+          "passed": true,
+          "result": {
+            "checks": 293,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_menu_io",
+          "script": "tools/tests/arena_menu_io.gd",
+          "script_sha256": "a9ec6e7093a4fa5ab21b547e7f129c564f3f88aeafcac8710cfe0f378ff0a03b",
+          "contract": "Multiplayer mode, host and join menu work does not rescan installation folders; reopening refreshes availability in EN/RU/DE.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 13.44,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_menu_io.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "arena_menu_io/run.log",
+          "passed": true,
+          "result": {
+            "checks": 56,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_reserve_moves",
+          "script": "tools/tests/arena_reserve_moves.gd",
+          "script_sha256": "496be993e79196ff7de4d9b5fc4de4d7b19beea2e549225cc67856e10a4bad42",
+          "contract": "Bench movement and swapping preserve slot identity, full benches, undo, save/load and phase restrictions.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.73,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_reserve_moves.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "arena_reserve_moves/run.log",
+          "passed": true,
+          "result": {
+            "checks": 22,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_reserve_moves_online",
+          "script": "tools/tests/arena_reserve_moves_online.gd",
+          "script_sha256": "c3be3baa8c258a0ec498a0576e9de1c5eb36699abc3df664cfe8861bfee081fb",
+          "contract": "Real ENet host and guest bench movement, swaps and undo replicate and reject invalid moves.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 8.38,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_reserve_moves_online.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "arena_reserve_moves_online/run.log",
+          "passed": true,
+          "result": {
+            "checks": 16,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_item_first_click_online",
+          "script": "tools/tests/arena_item_first_click_online.gd",
+          "script_sha256": "0b380b8fde0c711acc71bae095eb73b9b69620a74e2f62fab51bb88f1a32b030",
+          "contract": "Single item reward selections replicate exactly once to real ENet host and guest.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 7.33,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_item_first_click_online.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "arena_item_first_click_online/run.log",
+          "passed": true,
+          "result": {
+            "checks": 9,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "nav_deferred_labels",
+          "script": "tools/tests/nav_deferred_labels.gd",
+          "script_sha256": "c5b8d4a917a19db43787fe4f6a6f08c81a3673aec35ac5e1e36f961a5512c153",
+          "contract": "Lazy native and scalar legacy labels separate and reconnect components after edits.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 5.92,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/nav_deferred_labels.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "nav_deferred_labels/run.log",
+          "passed": true,
+          "result": {
+            "checks": 12,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dead_deer_cast_source",
+          "script": "tools/tests/dead_deer_cast_source.gd",
+          "script_sha256": "af83e8a7933f2502c5692d86fc61169d88c7de01fc4a384a3f23aadb43bea79b",
+          "contract": "All three authored undead deer retain the inspected original body-centre source at casting poses and headings; acid missiles and offset boards agree.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 5.92,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dead_deer_cast_source.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=lost_in_astral",
+            "--suite-display=headless"
+          ],
+          "log": "dead_deer_cast_source/run.log",
+          "passed": true,
+          "result": {
+            "checks": 51,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dead_deer_cast_source_arena",
+          "script": "tools/tests/dead_deer_cast_source.gd",
+          "script_sha256": "af83e8a7933f2502c5692d86fc61169d88c7de01fc4a384a3f23aadb43bea79b",
+          "contract": "Namespaced undead deer use the same original cast-source fallback after arena model fitting.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 5.82,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dead_deer_cast_source.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless",
+            "--astral-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+          ],
+          "log": "dead_deer_cast_source_arena/run.log",
+          "passed": true,
+          "result": {
+            "checks": 52,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_combat_decisions",
+          "script": "tools/tests/arena_combat_decisions.gd",
+          "script_sha256": "8aa9f44b253fcf29fd46e920691a5d79b0d53826abd44f4546db26bd4ce367b7",
+          "contract": "Autochess admits ally-protected area spells, finishes reachable wounded foes and rejects blocked spells while preserving campaign choices.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 7.28,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_combat_decisions.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "arena_combat_decisions/run.log",
+          "passed": true,
+          "result": {
+            "checks": 11,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_popper_balance",
+          "script": "tools/tests/arena_popper_balance.gd",
+          "script_sha256": "59182dda9c87e6eec0045aaf80ba83b3c9358989c842cf7699f4bde97587e207",
+          "contract": "One-use hare burst remains effective through all stars while preserving armor, fuse, target cap, range counter and allied protection.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 7.43,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_popper_balance.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless",
+            "--astral-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+          ],
+          "log": "arena_popper_balance/run.log",
+          "passed": true,
+          "result": {
+            "checks": 29,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "arena_opening_viability",
+          "script": "tools/tests/arena_opening_viability.gd",
+          "script_sha256": "fcae9dc69d9efe8ff36fd358f81d2fee44a63f169359fc194f55500390b04e68",
+          "contract": "Equal-price mirrored opening fights preserve goblin output and melee frontline contribution without mutating campaign data.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 58.57,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/arena_opening_viability.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless",
+            "--astral-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+          ],
+          "log": "arena_opening_viability/run.log",
+          "passed": true,
+          "result": {
+            "checks": 186,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "unit_temporal_motion",
+          "script": "tools/tests/unit_temporal_motion.gd",
+          "script_sha256": "084b87339672a6e2f6304f28b9d717b957439eb9f550c9229f1f73db5d7b97cd",
+          "contract": "Temporal character cutouts write motion while native MSAA, wounds, stealth, fades, previews and translucent wisps survive live switches.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 6.33,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/unit_temporal_motion.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "unit_temporal_motion/run.log",
+          "passed": true,
+          "result": {
+            "checks": 54,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        }
+      ]
+    },
+    {
+      "capture": "clock-related-final",
+      "report_sha256": "09abcfa6dbcaf5bbd9b8a42a2efdb6a558018d94825e50d049a9335ed41d27da",
+      "engine": "/home/llm2x/.local/bin/godot-4",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "game_source_sha256": "536b570eb2216ac835654135d2b4247359ad43b9654194edbb3b5a069289950a",
+      "manifest_sha256": "17122bf4c47760d40e8dd942c888761f11e2e85af4382586d024bb087fa02f0c",
+      "passed": true,
+      "cases": [
+        {
+          "id": "dialogue_clock_coop",
+          "script": "tools/tests/dialogue_clock_coop.gd",
+          "script_sha256": "98c13ea9f2d27dd1a5816c21d321116ae5e0bcec9234ae3fc996007f3dad2f33",
+          "contract": "Host resets both peers to normal unpaused dialogue; guest cannot override it.",
+          "issues": [
+            92
+          ],
+          "mode": "headless",
+          "seconds": 13.94,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dialogue_clock_coop.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "dialogue_clock_coop/run.log",
+          "passed": true,
+          "result": {
+            "checks": 12,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "dialogue_hold_space",
+          "script": "tools/tests/dialogue_hold_space.gd",
+          "script_sha256": "9e4546d2de10d74eeb8a61dd3db2ba3d46f877f360fe0d2e8fcbd9dd669aa3b4",
+          "contract": "Held Space advances phrases but preserves the final phrase until a fresh press.",
+          "issues": [
+            108
+          ],
+          "mode": "headless",
+          "seconds": 11.23,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/dialogue_hold_space.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "dialogue_hold_space/run.log",
+          "passed": true,
+          "result": {
+            "checks": 6,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        },
+        {
+          "id": "campaign_feedback",
+          "script": "tools/tests/campaign_feedback.gd",
+          "script_sha256": "5a375b952af4e1274736688168e4e149b3bebe7dd4e8516d7a41708aca772443",
+          "contract": "Saved clocks, solo defeat and Suslanger revisit quest-state retention.",
+          "issues": [],
+          "mode": "headless",
+          "seconds": 55.41,
+          "command": [
+            "/home/llm2x/.local/bin/godot-4",
+            "--path",
+            "/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/game",
+            "--audio-driver",
+            "Dummy",
+            "--max-fps",
+            "30",
+            "--headless",
+            "--",
+            "--no-movies",
+            "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+            "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+            "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests/campaign_feedback.gd",
+            "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-113-116-20261025/repo/tools/tests",
+            "--suite-campaign=cursed_lands",
+            "--suite-display=headless"
+          ],
+          "log": "campaign_feedback/run.log",
+          "passed": true,
+          "result": {
+            "checks": 35,
+            "failures": 0
+          },
+          "errors": [],
+          "infrastructure_diagnostics": []
+        }
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "capture": "negative-killing",
+      "baseline_commit": "7f2f23bd316b9a2706c6abb4d4e5321da38b3825",
+      "summary": "KILLING_POSTURE_QUEUE 50 checks 24 failures",
+      "log_sha256": "c6322d9c2c00b07f62d760fd52e74f16b0db18203d26000f063647d97f93d29c",
+      "unexpected_errors": []
+    },
+    {
+      "capture": "negative-backstab",
+      "baseline_commit": "7f2f23bd316b9a2706c6abb4d4e5321da38b3825",
+      "summary": "BACKSTAB_HIT_REACTION 16 checks 11 failures",
+      "log_sha256": "9a64bbcf494b111f51d1858413380c8d60784949af05a02e301444c40c2aa24f",
+      "unexpected_errors": []
+    },
+    {
+      "capture": "negative-save-rename",
+      "baseline_commit": "7f2f23bd316b9a2706c6abb4d4e5321da38b3825",
+      "summary": "SAVE_RENAME 2 checks 1 failures",
+      "log_sha256": "f45b98eea8cd04f42a2aa8e32b912cc32768db0c751c0584627a28d2d994535a",
+      "unexpected_errors": []
+    },
+    {
+      "capture": "negative-clock",
+      "baseline_commit": "7f2f23bd316b9a2706c6abb4d4e5321da38b3825",
+      "summary": "WORKER_TRAVEL_CLOCK 29 checks 2 failures",
+      "log_sha256": "27413dc28651b4f2b53408bc0773965672572fe91cb0a1de060b987899b3f868",
+      "unexpected_errors": []
+    }
+  ],
+  "additional_related": [
+    {
+      "name": "worker_clock",
+      "code": 0,
+      "errors": [],
+      "summaries": [
+        "WORKER_CLOCK 8279 checks 0 failures"
+      ],
+      "passed": true
+    },
+    {
+      "name": "local_host_zone_speed",
+      "code": 0,
+      "errors": [],
+      "summaries": [
+        "LOCAL_HOST_ZONE_SPEED 11 checks 0 failures"
+      ],
+      "passed": true
+    },
+    {
+      "name": "zone_speed_retention",
+      "code": 0,
+      "errors": [
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'."
+      ],
+      "summaries": [
+        "ZONE_SPEED_RETENTION 65 checks 0 failures"
+      ],
+      "passed": false
+    },
+    {
+      "name": "save_selection",
+      "code": 0,
+      "errors": [],
+      "summaries": [],
+      "passed": true
+    },
+    {
+      "name": "posture_presentation",
+      "code": 0,
+      "errors": [],
+      "summaries": [],
+      "passed": true
+    },
+    {
+      "name": "direct_attack_stance",
+      "code": 0,
+      "errors": [],
+      "summaries": [
+        "DIRECT_ATTACK_STANCE {\"checks\":39,\"failures\":0}"
+      ],
+      "passed": true
+    },
+    {
+      "name": "creature_alerts",
+      "code": 0,
+      "errors": [],
+      "summaries": [
+        "CREATURE_ALERTS 20 checks 0 failures"
+      ],
+      "passed": true
+    },
+    {
+      "name": "pack_alert_recovery",
+      "code": 0,
+      "errors": [],
+      "summaries": [
+        "PACK_ALERT_RECOVERY 14 checks 0 failures"
+      ],
+      "passed": true
+    },
+    {
+      "name": "direct_accuracy",
+      "code": 0,
+      "errors": [],
+      "summaries": [
+        "DIRECT_ACCURACY 11 checks 0 failures"
+      ],
+      "passed": true
+    }
+  ],
+  "preexisting_surface_weather_failure": [
+    {
+      "capture": "baseline-zone-speed",
+      "sha256": "5ab315874875531c0bf84c37755157154c73be1c95c505967d38fe6918e3431b",
+      "summary": "ZONE_SPEED_RETENTION 65 checks 0 failures",
+      "errors": [
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'."
+      ]
+    },
+    {
+      "capture": "related-zone_speed_retention",
+      "sha256": "5f623e79d3e1e2441baa4da44104130de2ca2e643fd58f47dc7b8be4823ec5cd",
+      "summary": "ZONE_SPEED_RETENTION 65 checks 0 failures",
+      "errors": [
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'."
+      ]
+    },
+    {
+      "capture": "related-zone-speed-rendered",
+      "sha256": "008c2ba7c7e11e5d6036a965c9138b2865d236e26bff61697ff29619f029bdaf",
+      "summary": "ZONE_SPEED_RETENTION 65 checks 0 failures",
+      "errors": [
+        "ERROR: Parameter \"monitors\" is null.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'.",
+        "SCRIPT ERROR: Trying to assign value of type 'Nil' to a variable of type 'PackedInt32Array'."
+      ]
+    },
+    {
+      "capture": "related-zone-speed-original-look",
+      "sha256": "4c5e17e22e7d0f205cf17b758fb73eaf40196ad3bda73a7cf6405936b96b0a4f",
+      "summary": "ZONE_SPEED_RETENTION 65 checks 0 failures",
+      "errors": []
+    }
+  ],
+  "python_unit_tests": {
+    "gameplay_runner": 33,
+    "regression_verdict": 7,
+    "failures": 0
+  },
+  "translations": {
+    "entries": 3525,
+    "errors": 0
+  },
+  "notes": [
+    "The 36-case run followed combat/save changes; clock-specific checks were repeated after the explicit-clock delivery change.",
+    "The first rendered-clock run completed its assertions but its wrapper output tail dropped startup proof; it is superseded by clock-rendered-final, which passes the strict runner.",
+    "No original game binaries, source decompilations, personal saves or withdrawn GPU packages are included."
+  ],
+  "save_selection_final": {
+    "passed": true,
+    "sha256": "673a510e7f8ef209207efc0f2093423d0cd09ee04eae3a2a87f9503881050697",
+    "capture": "save-selection-final"
+  },
+  "original_look_clock_check": {
+    "summary": "ZONE_SPEED_RETENTION 65 checks 0 failures",
+    "errors": [],
+    "sha256": "4c5e17e22e7d0f205cf17b758fb73eaf40196ad3bda73a7cf6405936b96b0a4f"
+  }
+}

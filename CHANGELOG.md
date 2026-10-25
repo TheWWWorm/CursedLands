@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Preserve requested posture changes through a killing melee impact and play the following transition ([#113](https://github.com/TheWWWorm/CursedLands/issues/113)).
+- Enter combat readiness when a surviving enemy selects retaliation, including during its hit animation ([#115](https://github.com/TheWWWorm/CursedLands/issues/115)).
+- Rename existing manual saves with F2 in Load and Save screens; Enter applies and Esc cancels. Preserve the saved world, preview and date ([#114](https://github.com/TheWWWorm/CursedLands/issues/114)).
+- Deliver every explicit single-player speed selection to the simulation authority, including when its restored clock differs from the owner’s last-sent cache ([#116](https://github.com/TheWWWorm/CursedLands/issues/116)).
+
 ## 1.29.0 — 2026-10-25
 
 - Move reserve units into empty bench slots or swap occupied slots with mouse, drag or keyboard controls, including multiplayer. Preserve each unit’s equipment and saved identity.

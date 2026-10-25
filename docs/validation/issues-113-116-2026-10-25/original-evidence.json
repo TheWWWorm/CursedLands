@@ -1,0 +1,53 @@
+{
+  "original_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "edition": "English GOG Evil Islands 1.06",
+  "wine": "11.20 amd64-wow64",
+  "gpu_job": "aa4e24810daa46c4",
+  "separate_prefix": true,
+  "scene": "Foothills, owned autosave, script-positioned hero and explicit attack against wolf 3326; god mode supplied",
+  "runtime_observations": [
+    {
+      "capture": "memory-attack-00.json",
+      "uid": 3326,
+      "alert": 1,
+      "command": 3,
+      "posture": 2
+    },
+    {
+      "capture": "memory-attack-08.json",
+      "uid": 3326,
+      "alert": 1,
+      "command": 3,
+      "posture": 2
+    },
+    {
+      "capture": "memory-attack-14.json",
+      "uid": 3326,
+      "alert": 1,
+      "command": 3,
+      "posture": 2
+    }
+  ],
+  "limits": [
+    "Bounded scripted combat observation, not the exact intermittent Orc clip or a full original campaign playthrough.",
+    "Memory scanning can encounter stale copies; only valid boolean alert, command and posture rows are retained.",
+    "No original binary, game assets or decompiled source is included."
+  ],
+  "static_functions": [
+    {
+      "address": "0x0054d960",
+      "evidence_id": "ev_08ff1837b42296970fc4376145b202695f3bf60fae2785ca422bcb806431be5a",
+      "observation": "Strike setup clears rear-strike eligibility when defender controller combat flag +0x174 is set; posture is requested before striking."
+    },
+    {
+      "address": "0x0054f450",
+      "evidence_id": "ev_009bbd257c794037ec2eea859f0de52b981d1354786d6d8fd01818265c0b1392",
+      "observation": "Melee impact dispatches damage and weapon effects without overwriting a newer gait request."
+    },
+    {
+      "address": "0x005d26d0",
+      "evidence_id": "ev_dfe42fccb466a4a3f941d444f1363b325cea7a4400625e0487823f7c00c7d5cd",
+      "observation": "Aggression entry sets controller +0x174 immediately."
+    }
+  ]
+}

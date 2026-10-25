@@ -3540,7 +3540,8 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 		return
 	world.combat.melee(self, t, roll)
 	world.combat.weapon_spell(self, t)
-	stance = STANCE_NONE
+	# Standing was required when this swing began. A later gait request must
+	# survive its impact, including when the victim dies and no attack follows.
 
 
 ## the original death rule. After a blow refolds the stats

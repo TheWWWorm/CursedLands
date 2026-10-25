@@ -1485,6 +1485,11 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 			and int(logic(u).get("logic_model", 3)) in [0, 4]:
 		fight = "none"   # model 4's Player motivation answers in _player
 	if fight != "none" and world.is_enemy(u, by) and not u.order.get("type", "") in ["attack", "cast"]:
+		# Retaliation has selected Aggression even if the current hit clip
+		# delays its command. Native motivations set readiness on entry;
+		# waiting for _do_attack left this aware victim backstabbable again.
+		_motivation_alert(u)
+		u.alert = true
 		_attack(u, by)
 
 

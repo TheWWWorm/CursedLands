@@ -2892,6 +2892,8 @@ const TEXTS := {
 	"Player name": ["Имя игрока", "Spielername"],
 	"Server address": ["Адрес сервера", "Serveradresse"],
 	"Save name": ["Имя сохранения", "Spielstandname"],
+	"F2: rename the selected save. Enter: apply. Esc: cancel.": ["F2: переименовать выбранное сохранение. Enter: применить. Esc: отменить.", "F2: ausgewählten Spielstand umbenennen. Enter: übernehmen. Esc: abbrechen."],
+	"Could not rename the save. Check free storage and file permissions.": ["Не удалось переименовать сохранение. Проверьте свободное место и права доступа к файлам.", "Spielstand konnte nicht umbenannt werden. Bitte freien Speicher und Dateizugriffsrechte prüfen."],
 	"Export saves": ["Экспорт сохранений", "Spielstände exportieren"],
 	"Import saves": ["Импорт сохранений", "Spielstände importieren"],
 	"Cursed Lands saves": ["Сохранения Cursed Lands", "Cursed-Lands-Spielstände"],

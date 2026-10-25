@@ -86,6 +86,36 @@ func is_protected() -> bool:
 	return slot in ["quick", "autosave", "saveq", "savea", "saveb"]
 
 
+## Rename only the display metadata. Keep the saved world, preview and date.
+## Replace the sidecar atomically so an unsuccessful edit leaves it readable.
+func rename_to(value: String) -> Error:
+	if fresh or error or is_protected() or not FileAccess.file_exists(path(slot)):
+		return ERR_UNAVAILABLE
+	if value.length() > 60 or value.to_utf8_buffer().has(0) or value.contains("\n") or value.contains("\r"):
+		return ERR_INVALID_PARAMETER
+	var temporary := path(slot, "info.sav.rename")
+	var f := FileAccess.open(temporary, FileAccess.WRITE)
+	if f == null: return FileAccess.get_open_error()
+	f.store_32(0x111)
+	f.store_32(3)
+	f.store_float(gtime)
+	for text: String in [allod, zone]:
+		f.store_buffer(text.to_utf8_buffer())
+		f.store_8(0)
+	f.store_32(time)
+	f.store_buffer(value.strip_edges().to_utf8_buffer())
+	f.store_8(0)
+	f.flush()
+	var result := f.get_error()
+	f.close()
+	if result == OK: result = DirAccess.rename_absolute(temporary, path(slot, "info.sav"))
+	if result != OK:
+		DirAccess.remove_absolute(temporary)
+		return result
+	name = value.strip_edges()
+	return OK
+
+
 ##  writes the shot the Save screen took when it opened (from the
 ## frame captured as the game switched to its menus) as shot.sav.
 static func write_shot_image(slot: String, img: Image) -> void:

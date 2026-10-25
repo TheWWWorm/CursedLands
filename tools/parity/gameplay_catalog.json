@@ -2431,7 +2431,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 109,
       "quick": false,
-      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -2451,7 +2451,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 113,
       "quick": false,
-      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -8787,6 +8787,102 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus"
+    },
+    {
+      "id": "animation/killing_posture_queue",
+      "category": "animation",
+      "script": "tools/tests/killing_posture_queue.gd",
+      "marker": "KILLING_POSTURE_QUEUE",
+      "min_checks": 50,
+      "quick": false,
+      "description": "Killing melee impact preserves queued crawl/kneel and plays its transition on authority and replica.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "issues": [
+        113
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "combat/backstab_hit_reaction",
+      "category": "combat",
+      "script": "tools/tests/backstab_hit_reaction.gd",
+      "marker": "BACKSTAB_HIT_REACTION",
+      "min_checks": 16,
+      "quick": false,
+      "description": "A surviving retaliating target is alert during hit recovery, preventing a second backstab.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "issues": [
+        115
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "inventory/save_rename",
+      "category": "inventory",
+      "script": "tools/tests/save_rename.gd",
+      "marker": "SAVE_RENAME",
+      "min_checks": 67,
+      "quick": false,
+      "description": "F2 rename in Load/Save changes only metadata; Unicode, cancel, protected slots and storage errors are covered.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res"
+      ],
+      "issues": [
+        114
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "commands/worker_travel_clock",
+      "category": "commands",
+      "script": "tools/tests/worker_travel_clock.gd",
+      "marker": "WORKER_TRAVEL_CLOCK",
+      "min_checks": 29,
+      "quick": false,
+      "description": "Separate solo authority preserves measured 1x/2x through Ruins/Foothills travel and village return.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mob",
+        "maps/zone1.mpr",
+        "maps/zone3.mob",
+        "maps/zone3.mpr",
+        "res/menus.res",
+        "res/textures.res"
+      ],
+      "issues": [
+        116
+      ],
+      "display": "headless"
     }
   ]
 }

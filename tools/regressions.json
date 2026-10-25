@@ -590,6 +590,125 @@
       "mode": "headless",
       "args": [],
       "min_checks": 54
+    },
+    {
+      "id": "killing_posture_queue",
+      "script": "tools/tests/killing_posture_queue.gd",
+      "summary": "KILLING_POSTURE_QUEUE",
+      "contract": "Killing melee impact preserves queued crawl/kneel and plays its transition on authority and replica.",
+      "issues": [
+        113
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 50,
+      "timeout": 420
+    },
+    {
+      "id": "backstab_hit_reaction",
+      "script": "tools/tests/backstab_hit_reaction.gd",
+      "summary": "BACKSTAB_HIT_REACTION",
+      "contract": "A surviving retaliating target is alert during hit recovery, preventing a second backstab.",
+      "issues": [
+        115
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 16,
+      "timeout": 420
+    },
+    {
+      "id": "save_rename",
+      "script": "tools/tests/save_rename.gd",
+      "summary": "SAVE_RENAME",
+      "contract": "F2 rename in Load/Save changes only metadata; Unicode, cancel, protected slots and storage errors are covered.",
+      "issues": [
+        114
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 67,
+      "timeout": 420
+    },
+    {
+      "id": "worker_travel_clock",
+      "script": "tools/tests/worker_travel_clock.gd",
+      "summary": "WORKER_TRAVEL_CLOCK",
+      "contract": "Separate solo authority preserves measured 1x/2x through Ruins/Foothills travel and village return.",
+      "issues": [
+        116
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 29,
+      "timeout": 420
+    },
+    {
+      "id": "save_rename_en",
+      "script": "tools/tests/save_rename.gd",
+      "summary": "SAVE_RENAME",
+      "contract": "Save renaming and error layout in en.",
+      "issues": [
+        114
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--texts={texts_en}"
+      ],
+      "min_checks": 74,
+      "timeout": 240
+    },
+    {
+      "id": "save_rename_ru",
+      "script": "tools/tests/save_rename.gd",
+      "summary": "SAVE_RENAME",
+      "contract": "Save renaming and error layout in ru.",
+      "issues": [
+        114
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--texts={texts_ru}"
+      ],
+      "min_checks": 74,
+      "timeout": 240
+    },
+    {
+      "id": "save_rename_de",
+      "script": "tools/tests/save_rename.gd",
+      "summary": "SAVE_RENAME",
+      "contract": "Save renaming and error layout in de.",
+      "issues": [
+        114
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--texts={texts_de}",
+        "--small-window"
+      ],
+      "min_checks": 74,
+      "timeout": 240
+    },
+    {
+      "id": "worker_travel_clock_rendered",
+      "script": "tools/tests/worker_travel_clock.gd",
+      "summary": "WORKER_TRAVEL_CLOCK",
+      "contract": "Separate solo authority preserves measured 1x/2x through Ruins/Foothills travel and village return.",
+      "issues": [
+        116
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 29,
+      "timeout": 420
     }
   ]
 }

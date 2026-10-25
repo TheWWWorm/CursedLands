@@ -224,11 +224,11 @@ class SinglePauseObserver extends Node:
 			owner_host._sync_single_clock()
 
 
-func _sync_single_clock() -> void:
+func _sync_single_clock(force := false) -> void:
 	if not frontend or not single_player or not _ready_owner or not CoopProgress.peer_alive(multiplayer, 1):
 		return
 	var value := [get_tree().paused, Engine.time_scale, session.saved_play_clock().paused, session.field_speed]
-	if value != _single_clock:
+	if force or value != _single_clock:
 		_single_clock = value
 		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]), bool(value[2]), int(value[3]))
 

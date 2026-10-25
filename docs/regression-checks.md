@@ -89,3 +89,12 @@ The gameplay catalog also registers `effects/path_trace_material_receivers` as a
 Forward+ rendered check. It explicitly asserts native unfiltered output before
 measuring the PT receiver’s material boundary. DLSS output reconstruction has its
 own evaluation and movement checks; it is not included in this raw receiver test.
+
+The October 25 follow-up for [issues 113–116](validation/issues-113-116-2026-10-25/README.md)
+adds `killing_posture_queue`, `backstab_hit_reaction`, `save_rename` and
+`worker_travel_clock` to both runners. Save renaming also has rendered EN/RU/DE
+cases in the focused manifest; `worker_travel_clock_rendered` measures the real
+solo authority through the visible HUD. The clock test covers a restored fast
+save, a stale owner cache, Ruins/Foothills travel, village return and a 5 FPS
+owner. It asserts actual simulation seconds per wall second, not only the dial
+or `Engine.time_scale`.

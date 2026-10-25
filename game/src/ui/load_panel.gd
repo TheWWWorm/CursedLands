@@ -63,6 +63,8 @@ extends Interface800
 ## Remake: a save without a shot shows its zone's minimap picture instead
 ## (remake-only). Saves are SaveInfo slots (user://saves/<slot>.sav + .info.sav +
 ## .shot.png).
+## Remake: F2 renames an existing manual save in either mode. Enter commits
+## only its display metadata; Esc or a changed selection discards the edit.
 
 signal load_requested(slot: String)
 signal save_requested(slot: String, name: String, frame: Image)
@@ -102,6 +104,7 @@ var _slide := 1.0         # slide-in time, 0..1
 var _edit := ""           #  of the screen: the edit field's text
 var _edited := false
 var _caret := 0
+var _renaming := false
 
 
 func _ready() -> void:
@@ -134,7 +137,7 @@ func _ready() -> void:
 func open(save := false, frame: Image = null, slide := false, fresh: SaveInfo = null) -> void:
 	save_mode = save and fresh != null
 	loading = false
-	sel = -1; selected.clear(); _anchor = -1; _edited = false
+	sel = -1; selected.clear(); _anchor = -1; _edited = false; _renaming = false
 	_frame = frame
 	_refresh_list(fresh)
 	top = 0
@@ -176,6 +179,7 @@ func _max_top() -> int:
 ## clamp, keep the row in view, take its name into the edit
 ## field, reload the preview.
 func _select(i: int, extend := false, toggle := false) -> void:
+	if _renaming: _cancel_rename()
 	var previous := sel
 	sel = clampi(i, 0, saves.size() - 1) if not saves.is_empty() else -1
 	if sel >= 0:
@@ -246,7 +250,40 @@ func _single() -> bool:
 
 
 func _editable() -> bool:
-	return save_mode and _single() and not (saves[sel] as SaveInfo).is_protected()
+	return (save_mode or _renaming) and _single() and not (saves[sel] as SaveInfo).is_protected()
+
+
+func _renameable() -> bool:
+	return _single() and not saves[sel].error and not (saves[sel] as SaveInfo).is_protected()
+
+
+func _begin_rename() -> void:
+	if not _renameable() or saves[sel].fresh: return
+	_renaming = true
+	_edited = false
+	_edit = saves[sel].display_name()
+	_caret = _edit.length()
+	queue_redraw()
+
+
+func _cancel_rename() -> void:
+	_renaming = false
+	_edited = false
+	if _single():
+		_edit = saves[sel].display_name()
+		_caret = _edit.length()
+	queue_redraw()
+
+
+func _commit_rename() -> void:
+	if not _renaming or not _renameable(): return
+	if _edited and (saves[sel] as SaveInfo).rename_to(_edit) != OK:
+		_box = MessageBox.ask(self, "", "", [], true)
+		_box.title = RemakeText.t("Save name")
+		_box.message = RemakeText.t("Could not rename the save. Check free storage and file permissions.")
+		_box.answered.connect(func(_yes: bool): _box = null; queue_redraw())
+		return
+	_cancel_rename()
 
 
 func _draw() -> void:
@@ -266,7 +303,7 @@ func _draw() -> void:
 			break
 		var s: SaveInfo = saves[i]
 		var row_y := 111.0 + 24 * k
-		var name := _edit if i == sel and save_mode and _edited else s.display_name()
+		var name := _edit if i == sel and (save_mode or _renaming) and _edited else s.display_name()
 		text(Rect2(NAME_X, row_y, NAME_W, 21), name, 1, TEXT, HORIZONTAL_ALIGNMENT_LEFT, true)
 		if i == sel and _editable() and not hide_text:
 			_draw_caret(row_y)
@@ -327,13 +364,16 @@ func _get_tooltip(at: Vector2) -> String:
 		"ok": return GameData.text("tip %d" % (60100 if save_mode else 60101)).strip_edges()
 		"delete": return GameData.text("tip 60102").strip_edges()
 		"cancel": return GameData.text("tip 60103").strip_edges()
-		"row": return RemakeText.t("Ctrl-click to select individual saves; Shift-click to select a range.")
+		"row": return RemakeText.t("Ctrl-click to select individual saves; Shift-click to select a range.") + "\n" + RemakeText.t("F2: rename the selected save. Enter: apply. Esc: cancel.")
 	return ""
 
 
 ## Load loads; Save saves the new entry at once and asks before
 ## overwriting another one (message box base).
 func _accept() -> void:
+	if _renaming:
+		_commit_rename()
+		return
 	if not _single():
 		return
 	if not save_mode:
@@ -414,6 +454,9 @@ func _no_space() -> void:
 
 
 func _cancel() -> void:
+	if _renaming:
+		_cancel_rename()
+		return
 	sound("messbox\\cancel")
 	_close()
 
@@ -525,10 +568,11 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or is_instance_valid(_box) or not (e is InputEventKey and e.pressed):
 		return
 	match e.keycode:
+		KEY_F2: _begin_rename()
 		KEY_ENTER, KEY_KP_ENTER: _accept()
 		KEY_ESCAPE: _cancel()
 		KEY_DELETE:
-			if save_mode and _single(): _edit_key(e)
+			if (save_mode or _renaming) and _single(): _edit_key(e)
 			else: _delete()
 		KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
 			sound("save\\select")
@@ -543,7 +587,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 ## The edit field of the Save mode. Rows of quick / auto saves ignore it (the
 ## original edits a hidden copy there that is never shown or saved).
 func _edit_key(e: InputEventKey) -> bool:
-	if not save_mode:
+	if not save_mode and not _renaming:
 		return false
 	var editable := _editable()
 	match e.keycode:
