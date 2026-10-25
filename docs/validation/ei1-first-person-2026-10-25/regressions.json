@@ -1,0 +1,143 @@
+{
+  "source_commit": "e6c63ba90ad2b3ca782d86be885abf9e92c08d0c",
+  "cases": [
+    {
+      "group": "integrated-clock",
+      "id": "worker_travel_clock",
+      "passed": true,
+      "result": {
+        "checks": 29,
+        "failures": 0
+      },
+      "script_sha256": "fc3e71ec209173bdd1c9351ac52f89b39775f583a752b7eb2d6b4ec1d908bb8c",
+      "errors": []
+    },
+    {
+      "group": "integrated-clock",
+      "id": "command_retry",
+      "passed": true,
+      "result": {
+        "checks": 29,
+        "failures": 0
+      },
+      "script_sha256": "0df1509badea8a09384192b79a544ae9e51a765bf17053f3190f5dccb31f9238",
+      "errors": []
+    },
+    {
+      "group": "integrated-clock",
+      "id": "local_host_clock_resync",
+      "passed": true,
+      "result": {
+        "checks": 13,
+        "failures": 0
+      },
+      "script_sha256": "f6375b42503f2378986d991076efd0ff025a4feb911deef4857004c6f8b363ed",
+      "errors": []
+    },
+    {
+      "group": "integrated-clock",
+      "id": "local_host_shader_stall",
+      "passed": true,
+      "result": {
+        "checks": 7,
+        "failures": 0
+      },
+      "script_sha256": "bd63e580bd17f85830352bb2420c47163583bd2d6016a5fcdbeb282dc4c4f756",
+      "errors": []
+    },
+    {
+      "group": "integrated-clock",
+      "id": "local_host_play_clock",
+      "passed": true,
+      "result": {
+        "checks": 28,
+        "failures": 0
+      },
+      "script_sha256": "44c0fbb079261bfe7a5ba243c28ae97c047bf9ced5a7517d04176cb224b9dc1c",
+      "errors": []
+    },
+    {
+      "group": "integrated-rendered",
+      "id": "path_trace_shadow_motion",
+      "passed": false,
+      "result": null,
+      "script_sha256": "9a286c899c3ab880c3254d70148b68814201d66f331e903146a4c13dca264907",
+      "errors": [
+        "Missing or repeated profile/campaign confirmation",
+        "Expected exactly one PT_SHADOW_MOTION summary, found 0",
+        "Process exit: 124"
+      ]
+    },
+    {
+      "group": "integrated-rendered",
+      "id": "path_trace_direct_stability",
+      "passed": true,
+      "result": {
+        "checks": 14,
+        "failures": 0
+      },
+      "script_sha256": "87574086b1fc1282c9abfb19eea3bcaeef82787fa10a354ccfa35ba90029924f",
+      "errors": []
+    },
+    {
+      "group": "integrated-rendered",
+      "id": "path_trace_nrd_device",
+      "passed": true,
+      "result": {
+        "checks": 26,
+        "failures": 0
+      },
+      "script_sha256": "7624486f3f803810a6b6d93074d8742745551d6b361d38933957bb5f17c0bf59",
+      "errors": []
+    },
+    {
+      "group": "integrated-rendered",
+      "id": "path_trace_history_handoff",
+      "passed": true,
+      "result": {
+        "checks": 13,
+        "failures": 0
+      },
+      "script_sha256": "0aaee9398c76353cb3174be955604569e5aa55de64454fba344f16c02fd994ae",
+      "errors": []
+    },
+    {
+      "group": "integrated-rendered",
+      "id": "path_trace_zone_traversal_river",
+      "passed": true,
+      "result": {
+        "checks": 50,
+        "failures": 0
+      },
+      "script_sha256": "db90f94ea1ad1e9b6469c2530a88781cfa4c1c9762eb79793885b6f4d3e9b8bf",
+      "errors": []
+    },
+    {
+      "group": "integrated-rendered",
+      "id": "path_trace_zone_traversal_snow",
+      "passed": true,
+      "result": {
+        "checks": 50,
+        "failures": 0
+      },
+      "script_sha256": "db90f94ea1ad1e9b6469c2530a88781cfa4c1c9762eb79793885b6f4d3e9b8bf",
+      "errors": []
+    },
+    {
+      "group": "shadow-recheck",
+      "id": "path_trace_shadow_motion",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "script_sha256": "9a286c899c3ab880c3254d70148b68814201d66f331e903146a4c13dca264907",
+      "errors": []
+    }
+  ],
+  "infrastructure_note": "The first shadow-motion CLI wrapper exceeded its queue wait before the GPU job started. It remains recorded as failed; the fresh shadow-recheck passed without changing the fixture.",
+  "runner_unit_tests": {
+    "count": 8,
+    "passed": true
+  }
+}

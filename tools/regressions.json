@@ -1140,6 +1140,34 @@
       ],
       "min_checks": 36,
       "timeout": 180
+    },
+    {
+      "id": "path_trace_zone_traversal_river",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "summary": "PT_ZONE_TRAVERSAL",
+      "contract": "Real solo authority and first-person keyboard traversal retain PT/NRD and acknowledge controls across Gipat river terrain.",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "data": "base",
+      "min_checks": 50,
+      "timeout": 420,
+      "args": [
+        "--zone-route-zone=gz7g"
+      ]
+    },
+    {
+      "id": "path_trace_zone_traversal_snow",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "summary": "PT_ZONE_TRAVERSAL",
+      "contract": "Real solo authority and first-person keyboard traversal retain PT/NRD and acknowledge controls across Lost in Astral snow terrain.",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "data": "astral",
+      "min_checks": 50,
+      "timeout": 420,
+      "args": [
+        "--zone-route-zone=gz25k"
+      ]
     }
   ]
 }

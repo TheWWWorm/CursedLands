@@ -135,3 +135,22 @@ the portable registered raster/PT load cases.
 moves twice. It checks the stationary umbra, old/new shadow response within
 three frames, and agreement between full diffuse lighting and the terrain sun
 AOV. It runs through the packaged Forward+ GPU runner.
+
+`path_trace_zone_traversal_river` and `path_trace_zone_traversal_snow` load
+authored Gipat and LiA terrain through the separate solo worker. They inject
+keyboard movement through the production first-person controller, alternate
+forward/downward views and camera pans, and require PT/native NRD and usable
+controls throughout. They also check actual displacement, advancing simulation,
+command acknowledgement, worker survival and a free cursor. They are capped
+visual checks, not performance benchmarks or automated shimmer measurements.
+The [ten-zone audit](validation/ei1-first-person-2026-10-25/README.md) includes
+recordings, image review and the remaining city performance finding.
+
+The shared fixture accepts `--zone-route-zone=ZONE`,
+`--zone-route-save=/absolute/copied-save.sav`, and `--audit-out=/absolute/output`.
+`--zone-route-fg` additionally requires a qualified NVIDIA Windows D3D12 runtime
+and verifies both active FG and the SDK presentation counter during movement.
+`--zone-route-peaceful` creates neutral initial diplomacy only for a synthetic
+zone save; it retains actors, patrols and collisions. This supplemental visual
+mode is not used by the registered cases or the supplied-save check. Every run
+uses an isolated muted profile with FPS visible and the cursor free.

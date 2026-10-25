@@ -1,0 +1,748 @@
+{
+  "source_commit": "e6c63ba90ad2b3ca782d86be885abf9e92c08d0c",
+  "cases": [
+    {
+      "tag": "base-mountains-final",
+      "zone": "gz4g",
+      "campaign": "cursed_lands",
+      "title": "Remote Mountains",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 64.1055865045637,
+      "video_seconds": 85.53,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "totals": {
+        "frames": 2204,
+        "pt_frames": 2204,
+        "nrd_frames": 2204,
+        "first_person_frames": 2204,
+        "controllable_frames": 2204,
+        "fg_frames": 1076,
+        "sdk_presents": 2151,
+        "fg_game_presents": 1076
+      },
+      "fg_presentation_ratio": 1.9990706319702602,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 29.53543536998813,
+          "frame_ms": {
+            "max": 227.949,
+            "median": 33.019,
+            "p95": 44.728
+          },
+          "distance_m": 17.2490730285645
+        },
+        {
+          "phase": "walk-1",
+          "fps": 30.02422564112118,
+          "frame_ms": {
+            "max": 68.482,
+            "median": 32.778,
+            "p95": 44.007
+          },
+          "distance_m": 15.1534547805786
+        },
+        {
+          "phase": "walk-2",
+          "fps": 30.024145734042953,
+          "frame_ms": {
+            "max": 63.597,
+            "median": 32.789,
+            "p95": 42.048
+          },
+          "distance_m": 12.6244201660156
+        },
+        {
+          "phase": "walk-3",
+          "fps": 27.759365284222152,
+          "frame_ms": {
+            "max": 78.981,
+            "median": 34.828,
+            "p95": 50.05
+          },
+          "distance_m": 17.2130489349365
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "b1f3ff25bb5e33ab6034b593e0aa9152b0db45977b22670219a62f8ee8e957a9"
+      },
+      "video": "base-mountains-final/traversal.mp4"
+    },
+    {
+      "tag": "base-river",
+      "zone": "gz7g",
+      "campaign": "cursed_lands",
+      "title": "The river and the islands",
+      "checks": 71,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 69.7038657646626,
+      "video_seconds": 76.57,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "totals": {
+        "frames": 2235,
+        "pt_frames": 2235,
+        "nrd_frames": 2235,
+        "first_person_frames": 2235,
+        "controllable_frames": 2235,
+        "fg_frames": 1119,
+        "sdk_presents": 2237,
+        "fg_game_presents": 1119
+      },
+      "fg_presentation_ratio": 1.999106344950849,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 28.68470853518129,
+          "frame_ms": {
+            "max": 91.849,
+            "median": 33.117,
+            "p95": 54.276
+          },
+          "distance_m": 17.2292175292969
+        },
+        {
+          "phase": "walk-1",
+          "fps": 30.03272318930549,
+          "frame_ms": {
+            "max": 56.226,
+            "median": 32.98,
+            "p95": 44.409
+          },
+          "distance_m": 17.0345611572266
+        },
+        {
+          "phase": "walk-2",
+          "fps": 29.290108455779716,
+          "frame_ms": {
+            "max": 112.176,
+            "median": 31.926,
+            "p95": 51.232
+          },
+          "distance_m": 17.1776752471924
+        },
+        {
+          "phase": "walk-3",
+          "fps": 29.885665269893366,
+          "frame_ms": {
+            "max": 61.835,
+            "median": 33.0,
+            "p95": 43.992
+          },
+          "distance_m": 17.0966415405273
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "11322bf2a853db9a53999c35b7c98528b801c40e914a6efe762b5da3c6c7eaaa"
+      },
+      "video": "base-river/traversal.mp4"
+    },
+    {
+      "tag": "base-cave-final",
+      "zone": "gz5g",
+      "campaign": "cursed_lands",
+      "title": "Cave",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 26.7259747795761,
+      "video_seconds": 56.03,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "totals": {
+        "frames": 1401,
+        "pt_frames": 1401,
+        "nrd_frames": 1401,
+        "first_person_frames": 1401,
+        "controllable_frames": 1401,
+        "fg_frames": 671,
+        "sdk_presents": 1341,
+        "fg_game_presents": 671
+      },
+      "fg_presentation_ratio": 1.9985096870342771,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 30.32434430219817,
+          "frame_ms": {
+            "max": 61.606,
+            "median": 32.598,
+            "p95": 42.832
+          },
+          "distance_m": 7.20598840713501
+        },
+        {
+          "phase": "walk-1",
+          "fps": 30.308747046111456,
+          "frame_ms": {
+            "max": 47.769,
+            "median": 33.249,
+            "p95": 45.456
+          },
+          "distance_m": 7.2330756187439
+        },
+        {
+          "phase": "walk-2",
+          "fps": 30.43094139589673,
+          "frame_ms": {
+            "max": 40.819,
+            "median": 33.283,
+            "p95": 37.353
+          },
+          "distance_m": 7.24838352203369
+        },
+        {
+          "phase": "walk-3",
+          "fps": 30.539780439338497,
+          "frame_ms": {
+            "max": 45.17,
+            "median": 33.246,
+            "p95": 37.025
+          },
+          "distance_m": 4.2557692527771
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "db90f94ea1ad1e9b6469c2530a88781cfa4c1c9762eb79793885b6f4d3e9b8bf"
+      },
+      "video": "base-cave-final/traversal.mp4"
+    },
+    {
+      "tag": "base-snow",
+      "zone": "gz11k",
+      "campaign": "cursed_lands",
+      "title": "City environs",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 69.8432952985168,
+      "video_seconds": 85.53,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "totals": {
+        "frames": 2276,
+        "pt_frames": 2276,
+        "nrd_frames": 2276,
+        "first_person_frames": 2276,
+        "controllable_frames": 2276,
+        "fg_frames": 1140,
+        "sdk_presents": 2279,
+        "fg_game_presents": 1140
+      },
+      "fg_presentation_ratio": 1.999122807017544,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 30.082284684999934,
+          "frame_ms": {
+            "max": 48.941,
+            "median": 33.341,
+            "p95": 44.733
+          },
+          "distance_m": 17.2441673278809
+        },
+        {
+          "phase": "walk-1",
+          "fps": 30.024936588003005,
+          "frame_ms": {
+            "max": 53.745,
+            "median": 33.163,
+            "p95": 43.239
+          },
+          "distance_m": 17.2086029052734
+        },
+        {
+          "phase": "walk-2",
+          "fps": 30.08053539666255,
+          "frame_ms": {
+            "max": 53.008,
+            "median": 32.856,
+            "p95": 42.366
+          },
+          "distance_m": 17.2379093170166
+        },
+        {
+          "phase": "walk-3",
+          "fps": 30.05599933609637,
+          "frame_ms": {
+            "max": 51.524,
+            "median": 33.368,
+            "p95": 40.718
+          },
+          "distance_m": 17.2154960632324
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "b1f3ff25bb5e33ab6034b593e0aa9152b0db45977b22670219a62f8ee8e957a9"
+      },
+      "video": "base-snow/traversal.mp4"
+    },
+    {
+      "tag": "lia-market-final",
+      "zone": "bz5h",
+      "campaign": "lost_in_astral",
+      "title": "Черный рынок",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 52.935147985816,
+      "video_seconds": 65.52,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "totals": {
+        "frames": 1637,
+        "pt_frames": 1637,
+        "nrd_frames": 1637,
+        "first_person_frames": 1637,
+        "controllable_frames": 1637,
+        "fg_frames": 891,
+        "sdk_presents": 1781,
+        "fg_game_presents": 891
+      },
+      "fg_presentation_ratio": 1.998877665544332,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 30.129202629217694,
+          "frame_ms": {
+            "max": 47.242,
+            "median": 31.94,
+            "p95": 42.323
+          },
+          "distance_m": 7.2647008895874
+        },
+        {
+          "phase": "walk-1",
+          "fps": 27.50060507415368,
+          "frame_ms": {
+            "max": 162.629,
+            "median": 34.222,
+            "p95": 49.489
+          },
+          "distance_m": 17.239990234375
+        },
+        {
+          "phase": "walk-2",
+          "fps": 29.886302183648077,
+          "frame_ms": {
+            "max": 93.388,
+            "median": 31.757,
+            "p95": 45.705
+          },
+          "distance_m": 3.89065647125244
+        },
+        {
+          "phase": "walk-3",
+          "fps": 30.3012873838626,
+          "frame_ms": {
+            "max": 44.074,
+            "median": 33.307,
+            "p95": 39.48
+          },
+          "distance_m": 7.22816276550293
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "b1f3ff25bb5e33ab6034b593e0aa9152b0db45977b22670219a62f8ee8e957a9"
+      },
+      "video": "lia-market-final/traversal.mp4"
+    },
+    {
+      "tag": "lia-catacombs-final",
+      "zone": "gz1d2",
+      "campaign": "lost_in_astral",
+      "title": "Катакомбы",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 57.8355367183685,
+      "video_seconds": 65.05,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "totals": {
+        "frames": 1675,
+        "pt_frames": 1675,
+        "nrd_frames": 1675,
+        "first_person_frames": 1675,
+        "controllable_frames": 1675,
+        "fg_frames": 837,
+        "sdk_presents": 1673,
+        "fg_game_presents": 837
+      },
+      "fg_presentation_ratio": 1.998805256869773,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 30.192823008337708,
+          "frame_ms": {
+            "max": 48.365,
+            "median": 33.355,
+            "p95": 46.314
+          },
+          "distance_m": 17.2680225372314
+        },
+        {
+          "phase": "walk-1",
+          "fps": 30.264725367112977,
+          "frame_ms": {
+            "max": 50.27,
+            "median": 33.243,
+            "p95": 36.215
+          },
+          "distance_m": 11.2350702285767
+        },
+        {
+          "phase": "walk-2",
+          "fps": 30.40555791214174,
+          "frame_ms": {
+            "max": 60.448,
+            "median": 33.132,
+            "p95": 36.909
+          },
+          "distance_m": 11.2448444366455
+        },
+        {
+          "phase": "walk-3",
+          "fps": 30.186672924721012,
+          "frame_ms": {
+            "max": 61.441,
+            "median": 33.414,
+            "p95": 37.228
+          },
+          "distance_m": 17.2087936401367
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "3432f51f740ac48c182c06b578eae068887239774924bd44701ff2397ad21739"
+      },
+      "video": "lia-catacombs-final/traversal.mp4"
+    },
+    {
+      "tag": "lia-desert-final",
+      "zone": "gz3h",
+      "campaign": "lost_in_astral",
+      "title": "Пустыня некромантов",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 70.0941880233586,
+      "video_seconds": 71.52,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "totals": {
+        "frames": 1810,
+        "pt_frames": 1810,
+        "nrd_frames": 1810,
+        "first_person_frames": 1810,
+        "controllable_frames": 1810,
+        "fg_frames": 916,
+        "sdk_presents": 1832,
+        "fg_game_presents": 916
+      },
+      "fg_presentation_ratio": 2.0,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 29.698715621463805,
+          "frame_ms": {
+            "max": 62.671,
+            "median": 32.645,
+            "p95": 45.258
+          },
+          "distance_m": 17.2486686706543
+        },
+        {
+          "phase": "walk-1",
+          "fps": 29.341988541294775,
+          "frame_ms": {
+            "max": 170.395,
+            "median": 32.873,
+            "p95": 44.375
+          },
+          "distance_m": 17.2478065490723
+        },
+        {
+          "phase": "walk-2",
+          "fps": 30.025416456615318,
+          "frame_ms": {
+            "max": 65.461,
+            "median": 32.432,
+            "p95": 43.35
+          },
+          "distance_m": 17.2087936401367
+        },
+        {
+          "phase": "walk-3",
+          "fps": 29.828757468557033,
+          "frame_ms": {
+            "max": 57.45,
+            "median": 32.797,
+            "p95": 46.865
+          },
+          "distance_m": 17.2637577056885
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "db90f94ea1ad1e9b6469c2530a88781cfa4c1c9762eb79793885b6f4d3e9b8bf"
+      },
+      "video": "lia-desert-final/traversal.mp4"
+    },
+    {
+      "tag": "lia-river",
+      "zone": "gz16g",
+      "campaign": "lost_in_astral",
+      "title": "Река и острова",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 72.1463247165084,
+      "video_seconds": 75.03,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "totals": {
+        "frames": 1871,
+        "pt_frames": 1871,
+        "nrd_frames": 1871,
+        "first_person_frames": 1871,
+        "controllable_frames": 1871,
+        "fg_frames": 853,
+        "sdk_presents": 1705,
+        "fg_game_presents": 853
+      },
+      "fg_presentation_ratio": 1.9988276670574443,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 29.960324492236442,
+          "frame_ms": {
+            "max": 68.838,
+            "median": 32.461,
+            "p95": 46.807
+          },
+          "distance_m": 17.226957321167
+        },
+        {
+          "phase": "walk-1",
+          "fps": 29.390878619917572,
+          "frame_ms": {
+            "max": 145.792,
+            "median": 32.227,
+            "p95": 49.444
+          },
+          "distance_m": 17.4753532409668
+        },
+        {
+          "phase": "walk-2",
+          "fps": 24.936979914889005,
+          "frame_ms": {
+            "max": 94.632,
+            "median": 37.43,
+            "p95": 64.42
+          },
+          "distance_m": 17.217565536499
+        },
+        {
+          "phase": "walk-3",
+          "fps": 28.852673440633218,
+          "frame_ms": {
+            "max": 177.49,
+            "median": 31.998,
+            "p95": 52.019
+          },
+          "distance_m": 17.2688770294189
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "b1f3ff25bb5e33ab6034b593e0aa9152b0db45977b22670219a62f8ee8e957a9"
+      },
+      "video": "lia-river/traversal.mp4"
+    },
+    {
+      "tag": "lia-snow",
+      "zone": "gz25k",
+      "campaign": "lost_in_astral",
+      "title": "Снежная пустошь",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 69.6789786964655,
+      "video_seconds": 70.52,
+      "neutral_exploration": false,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090",
+      "totals": {
+        "frames": 1845,
+        "pt_frames": 1845,
+        "nrd_frames": 1845,
+        "first_person_frames": 1845,
+        "controllable_frames": 1845,
+        "fg_frames": 924,
+        "sdk_presents": 1847,
+        "fg_game_presents": 924
+      },
+      "fg_presentation_ratio": 1.998917748917749,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 29.963230142961,
+          "frame_ms": {
+            "max": 82.892,
+            "median": 32.999,
+            "p95": 39.467
+          },
+          "distance_m": 17.2640628814697
+        },
+        {
+          "phase": "walk-1",
+          "fps": 30.125671233831348,
+          "frame_ms": {
+            "max": 86.886,
+            "median": 33.254,
+            "p95": 42.239
+          },
+          "distance_m": 17.258716583252
+        },
+        {
+          "phase": "walk-2",
+          "fps": 30.232191697248545,
+          "frame_ms": {
+            "max": 41.286,
+            "median": 33.334,
+            "p95": 37.651
+          },
+          "distance_m": 17.2483367919922
+        },
+        {
+          "phase": "walk-3",
+          "fps": 30.159793395686275,
+          "frame_ms": {
+            "max": 41.979,
+            "median": 33.009,
+            "p95": 38.026
+          },
+          "distance_m": 17.243616104126
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "b1f3ff25bb5e33ab6034b593e0aa9152b0db45977b22670219a62f8ee8e957a9"
+      },
+      "video": "lia-snow/traversal.mp4"
+    },
+    {
+      "tag": "lia-city-explore",
+      "zone": "gz31j",
+      "campaign": "lost_in_astral",
+      "title": "Город Дар-Леанос и окрестности",
+      "checks": 72,
+      "failures": 0,
+      "exit": 0,
+      "distance_m": 67.567038051784,
+      "video_seconds": 75.55,
+      "neutral_exploration": true,
+      "window": "(1920, 1080)",
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "totals": {
+        "frames": 1436,
+        "pt_frames": 1436,
+        "nrd_frames": 1436,
+        "first_person_frames": 1436,
+        "controllable_frames": 1436,
+        "fg_frames": 859,
+        "sdk_presents": 1718,
+        "fg_game_presents": 859
+      },
+      "fg_presentation_ratio": 2.0,
+      "walking_phases": [
+        {
+          "phase": "walk-0",
+          "fps": 16.705305640868623,
+          "frame_ms": {
+            "max": 159.796,
+            "median": 52.408,
+            "p95": 107.462
+          },
+          "distance_m": 17.3037261962891
+        },
+        {
+          "phase": "walk-1",
+          "fps": 18.265806160161034,
+          "frame_ms": {
+            "max": 145.191,
+            "median": 52.853,
+            "p95": 81.412
+          },
+          "distance_m": 17.2628612518311
+        },
+        {
+          "phase": "walk-2",
+          "fps": 23.254062012285413,
+          "frame_ms": {
+            "max": 75.962,
+            "median": 40.571,
+            "p95": 67.861
+          },
+          "distance_m": 17.2204933166504
+        },
+        {
+          "phase": "walk-3",
+          "fps": 24.5906508173276,
+          "frame_ms": {
+            "max": 87.711,
+            "median": 38.512,
+            "p95": 63.262
+          },
+          "distance_m": 7.16601753234863
+        }
+      ],
+      "hashes": {
+        "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+        "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986",
+        "fixture": "db90f94ea1ad1e9b6469c2530a88781cfa4c1c9762eb79793885b6f4d3e9b8bf"
+      },
+      "video": "lia-city-explore/traversal.mp4"
+    }
+  ],
+  "totals": {
+    "checks": 719,
+    "failures": 0,
+    "distance_m": 620.6359365396202,
+    "video_seconds": 726.85,
+    "frames": 18390,
+    "pt_frames": 18390,
+    "nrd_frames": 18390,
+    "first_person_frames": 18390,
+    "controllable_frames": 18390,
+    "fg_frames": 9286,
+    "sdk_presents": 18564
+  }
+}
