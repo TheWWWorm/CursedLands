@@ -27,5 +27,8 @@ func run() -> void:
 		external.transform=Transform3D.IDENTITY;shifted.erase("lighting_offset")
 		var restored:=await capture(mode+"-offset-cleared",{"instances":[external,shifted]})
 		check(restored.mean[0]<0.001,"ordinary placement update clears the first-person lighting offset: "+mode)
+	RenderingServer.call_on_render_thread(device.dispose);await frames(4)
+	check(device._owned.is_empty() and device._raw.is_empty(),"body-lighting fixture releases its GPU resources")
+	camera.queue_free();await frames(2)
 	FileAccess.open(out.path_join("body-illumination.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"measurements":report},"\t"))
 	finish()

@@ -1,0 +1,34 @@
+{
+  "exit": 0,
+  "errors": [],
+  "summary": [
+    "WATER_RT_DEVICE 25 checks 0 failures"
+  ],
+  "seconds": 7.727892066002823,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/native-water_raytrace_device/fixtures/water_raytrace_device.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/native-water_raytrace_device"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+  },
+  "fixture_sha256": "394b29cedcf5ad05682f0d410898b35c0c16c12d5afc9862c37d61d977479ec0"
+}

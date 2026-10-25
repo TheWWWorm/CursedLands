@@ -1,0 +1,34 @@
+{
+  "exit": 0,
+  "errors": [],
+  "summary": [
+    "SCENE_RT_DEVICE 169 checks 0 failures"
+  ],
+  "seconds": 19.595792745996732,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/native-final-lifecycle/fixtures/path_trace_lifecycle.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/native-final-lifecycle"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/candidate-native/runtime.pck": "79fb4e38a7c7505b548eccc3114247e38c495acaf8f2f15ac74ea638377d008c"
+  },
+  "fixture_sha256": "810a983d4d19a6134ebe4ed5347a8c94dfd2d8d7697741913f20ac6dbb739b96"
+}

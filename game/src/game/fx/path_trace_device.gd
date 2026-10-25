@@ -53,6 +53,11 @@ var _variants := {}
 # Each record maps the current rigid surface and shading normal to their
 # previous rendered positions. Unchanged placements take the identity fast path.
 const MOTION_STRIDE := 96
+# Keep small gaps in one transfer, but do not copy a whole city's static
+# records just because two animated objects have distant stable IDs.
+const RECORD_UPLOAD_GAP := 32768
+const RECORD_UPLOAD_LIMIT := 8
+const OFFSET_SPARSE_LIMIT := 128
 var _motion := RID()
 var _motion_data := PackedByteArray()
 var _motion_pending := {}
@@ -235,16 +240,51 @@ func _write_lighting_offset(index: int,offset: Vector3) -> void:
 	for axis in 3:_lighting_offset_data.encode_float(index*16+axis*4,offset[axis])
 
 func _update_lighting_offsets(changes: Dictionary) -> bool:
-	var first := _lighting_offset_values.size();var last := -1
-	for placement: Dictionary in changes.get("instances",[]):
+	var placements: Array=changes.get("instances",[])
+	# Offset records are only 16 bytes. For bulk scene updates, collecting
+	# and sorting every changed ID costs more than one bounded span upload.
+	# Keep the original min/max path; small first-person groups use sparsity.
+	if placements.size()>=OFFSET_SPARSE_LIMIT:
+		var first := _lighting_offset_values.size();var last := -1
+		for placement: Dictionary in placements:
+			var index: int=placement.index
+			var offset: Vector3=placement.get("lighting_offset",Vector3.ZERO)
+			if offset==_lighting_offset_values[index]:continue
+			_write_lighting_offset(index,offset)
+			first=mini(first,index);last=maxi(last,index)
+		return true if last<first else _upload_record_range(_lighting_offsets,_lighting_offset_data,first*16,(last+1)*16)
+	var dirty: Array[int]=[]
+	for placement: Dictionary in placements:
 		var index: int=placement.index
 		var offset: Vector3=placement.get("lighting_offset",Vector3.ZERO)
 		if offset==_lighting_offset_values[index]:continue
 		_write_lighting_offset(index,offset)
-		first=mini(first,index);last=maxi(last,index)
-	if last<first:return true
-	return _rd.buffer_update(_lighting_offsets,first*16,(last-first+1)*16,
-		_lighting_offset_data.slice(first*16,(last+1)*16))==OK
+		dirty.append(index)
+	return _upload_records(_lighting_offsets,_lighting_offset_data,dirty,16)
+
+func _upload_records(buffer: RID,data: PackedByteArray,indices: Array,stride: int) -> bool:
+	if indices.is_empty():return true
+	indices.sort()
+	if (indices.back()-indices.front()+1-indices.size())*stride<=RECORD_UPLOAD_GAP:
+		return _upload_record_range(buffer,data,indices.front()*stride,(indices.back()+1)*stride)
+	# Splitting at the largest gaps minimizes bytes within a bounded call
+	# budget. Dense articulated figures retain their single-upload fast path.
+	var gaps: Array[Vector2i]=[]
+	for i in range(1,indices.size()):
+		var gap: int=(indices[i]-indices[i-1]-1)*stride
+		if gap>RECORD_UPLOAD_GAP:gaps.append(Vector2i(gap,i))
+	gaps.sort_custom(func(a: Vector2i,b: Vector2i):return a.x>b.x if a.x!=b.x else a.y<b.y)
+	var cuts: Array[int]=[]
+	for i in mini(gaps.size(),RECORD_UPLOAD_LIMIT-1):cuts.append(gaps[i].y)
+	cuts.sort();cuts.append(indices.size())
+	var first := 0
+	for cut in cuts:
+		if not _upload_record_range(buffer,data,indices[first]*stride,(indices[cut-1]+1)*stride):return false
+		first=cut
+	return true
+
+func _upload_record_range(buffer: RID,data: PackedByteArray,begin: int,end: int) -> bool:
+	return _rd.buffer_update(buffer,begin,end-begin,data.slice(begin,end))==OK
 
 func _write_motion(index: int,position: Transform3D,normal: Basis,valid: bool,moving: bool) -> void:
 	var offset := index*MOTION_STRIDE
@@ -298,12 +338,7 @@ func _update_motion(changes: Dictionary) -> bool:
 	for index: int in dirty:
 		if not _motion_pending.has(index):
 			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
-	if dirty.is_empty(): return true
-	# One bounded upload avoids an API call for every articulated body part.
-	var indices := dirty.keys();indices.sort()
-	var begin: int = indices.front()*MOTION_STRIDE
-	var end: int = (indices.back()+1)*MOTION_STRIDE
-	return _rd.buffer_update(_motion,begin,end-begin,_motion_data.slice(begin,end))==OK
+	return _upload_records(_motion,_motion_data,dirty.keys(),MOTION_STRIDE)
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return

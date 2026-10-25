@@ -31,6 +31,8 @@ PROFILE = {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0, "volume_stream": 
 # Deliberately include only self-contained tests. Historical reference-pack
 # benchmarks require their own pinned inputs and are not silently substituted.
 REPORTS = {
+    "sparse_updates": "path-sparse-updates.json",
+    "sparse_performance": "path-sparse-performance.json",
     "device": "path-device.json", "motion": "path-motion.json", "resolution": "path-resolution.json",
     "lifecycle": "path-lifecycle.json", "controller": "path-controller.json", "detached_live": "path-detached-live.json",
     "resolution_performance": "path-resolution-performance.json", "sustained": "path-sustained-results.json",
@@ -56,7 +58,7 @@ FIXTURES = {"water_live": "water_raytrace_live.gd", "shader_ui": "shader_compila
 GROUPS = {
     "core": ["device", "motion", "lifecycle", "topology", "controller", "detached_live", "resolution", "sustained"],
     "preparation": ["shader_ui", "shader_live", "shader_arena", "shader_scene", "shader_water", "shader_settings"],
-    "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance", "spatial_performance")],
+    "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance", "spatial_performance", "sparse_performance")],
     "motion_quality": ["spatial", "light_history", "camera_routes", "camera_modes", "snow_tracks", "lifecycle"],
     "sdk": ["resolution", "fsr", "sustained"],
     "benchmark": ["resolution_performance"],

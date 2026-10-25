@@ -41,6 +41,14 @@ valid performance comparisons. See the
 [motion and snow validation](integrations/path-tracing-motion-and-snow-2026-10-24.md)
 for captures, limits and the measured cost.
 
+`--suite sparse_updates` checks actual GPU motion/lighting records across 8,192
+placement IDs, visibility and TLAS updates, history retirement, and partial
+upload failure. It is included in `full`. Run `--suite sparse_performance`
+separately in a **heavy** job: it compares the previous full-span upload with
+bounded sparse uploads in ABBA order, with 40 warm-up and 100 measured updates
+per block. It measures render-thread packing/upload time, not whole-game FPS;
+see [the RTXPT 1.9 comparison](integrations/rtxpt-1.9-sparse-updates-2026-10-25.md).
+
 On the development workstation, submit graphical runs through GPU Lab. Each
 job receives an isolated virtual display; up to three ordinary jobs can share
 each GPU when load and free memory permit. This qualification runner additionally

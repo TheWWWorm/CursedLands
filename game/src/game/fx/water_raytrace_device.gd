@@ -209,7 +209,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		instance.hit_sbt_range = hit_range
 		if instance.mask != 0: _active_instances[_instances.size()] = instance
 		_instances.append(instance)
-	if not incremental_build and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
+	if not incremental_build and not _build_tlas():
 		_notify(&"prepared",[false]); return
 	build_timings["placements_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	var format := RDTextureFormat.new()
@@ -282,7 +282,7 @@ func build_step() -> void:
 		if built>=16 or Time.get_ticks_usec()-started>=1500:break
 	if _build_cursor==_instances.size():
 		_building=false
-		_ready=_rd.tlas_build(_tlas,_active_instances.values())==OK
+		_ready=_build_tlas()
 		_notify(&"prepared",[_ready])
 	build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),(Time.get_ticks_usec()-started)/1000.0)
 
@@ -320,6 +320,9 @@ func _uniform(kind: int, binding: int, ids: Array[RID]) -> RDUniform:
 func _upload_pose(pose: Dictionary) -> bool:
 	return _rd.buffer_update(_vertices,_geometry[pose.geometry].offset*64,pose.data.size(),pose.data)==OK
 
+func _build_tlas() -> bool:
+	return _rd.tlas_build(_tlas,_active_instances.values())==OK
+
 func update_scene(changes: Dictionary) -> bool:
 	if _closed or not _ready: return false
 	var changed := false
@@ -330,16 +333,22 @@ func update_scene(changes: Dictionary) -> bool:
 			_ready = false; _notify(&"prepared",[false]); return false
 		changed = true
 	for placement: Dictionary in changes.get("instances",[]):
-		_instances[placement.index].transform = placement.transform
-		_instances[placement.index].mask = placement.mask
+		var instance := _instances[placement.index]
+		# PT may update only a lighting-origin offset. It does not move the
+		# traced geometry, so neither it nor a duplicate needs another TLAS.
+		if instance.transform==placement.transform and instance.mask==placement.mask:continue
+		var was_visible := instance.mask!=0
+		instance.transform = placement.transform
+		instance.mask = placement.mask
 		if placement.mask != 0:
-			var instance := _instances[placement.index]
 			instance.blas = _geometry_blas(_placement_geometry[placement.index])
 			if not instance.blas.is_valid(): _ready = false; _notify(&"prepared",[false]); return false
 			_active_instances[placement.index] = instance
 		else: _active_instances.erase(placement.index)
-		changed = true
-	if changed and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
+		# Hidden transforms are retained for their next reveal, but there is
+		# no active descriptor to update until visibility changes.
+		changed = changed or was_visible or placement.mask!=0
+	if changed and not _build_tlas():
 		_ready = false; _notify(&"prepared",[false]); return false
 	return true
 
