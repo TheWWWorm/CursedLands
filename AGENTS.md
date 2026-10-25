@@ -3,6 +3,41 @@
 Do not use subagents or delegate to other agents unless the user explicitly asks.
 This preference also applies when a skill recommends parallel agent work.
 
+# Local main and remote updates
+
+On this workstation, the canonical Cursed Lands integration checkout is
+`/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo`,
+on branch `main`. The folder name is historical; it is the current local main.
+`/home/llm2x/Documents/EI` is the workspace, not a Git checkout. Its `publish/`
+checkout and `remake/` tree are legacy locations, not the integration source.
+
+Verify the owning checkout with `git worktree list --porcelain` from the current
+Cursed Lands repository; use the entry for `refs/heads/main`. If it moves,
+update this location in both the workspace and repository `AGENTS.md` files.
+Start new work from the current local main so accepted, unpublished fixes are
+retained; `origin/main` alone can be older than the local integration state.
+
+Before any authorized update to remote `main` or publication:
+
+1. Inspect local main's status and history. Preserve other work and uncommitted
+   changes; do not reset them away or silently stash them.
+2. Fetch `origin` and compare `main...origin/main`. Integrate incoming remote
+   commits and the accepted task branches into local main, using fast-forward
+   merges where possible and resolving divergence without dropping either side.
+   Local main MUST be up to date with remote main and contain the intended local
+   fixes before updating the remote.
+3. Run the required regressions on the integrated source. Build any release
+   artifacts from that same verified commit. Confirm the checkout is on `main`,
+   clean, and still at the verified commit before pushing.
+4. Push from this integration checkout with a normal, non-forced
+   `git push origin main:main`. Do not bypass stale local main by pushing a topic
+   branch directly to remote main. If remote main advances, fetch, integrate and
+   recheck affected behavior before retrying.
+5. Verify that remote `refs/heads/main` matches the intended local main commit.
+   Keep local main synchronized with the final remote state.
+
+These instructions describe the workflow; they do not authorize a push or release.
+
 # Issue and bug fixes
 
 Verify the reported failure before changing behavior. Compare the affected logic
