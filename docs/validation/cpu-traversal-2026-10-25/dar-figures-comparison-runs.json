@@ -1,0 +1,131 @@
+[
+  {
+    "name": "dar-figures-profile-script",
+    "pack": "dar-figure-profile",
+    "script_control": true,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-figures-profile-script",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording",
+      "--ei-script-figure-picking"
+    ],
+    "start": 1792943076.0594888,
+    "finish": 1792943184.3823004,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-figures-profile-native",
+    "pack": "dar-figure-profile",
+    "script_control": false,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-figures-profile-native",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording"
+    ],
+    "start": 1792943184.3826287,
+    "finish": 1792943292.5260859,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-figures-before-1",
+    "pack": "figure-picking-linux",
+    "script_control": true,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-figures-before-1",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording",
+      "--ei-script-figure-picking"
+    ],
+    "start": 1792943292.5263762,
+    "finish": 1792943399.989282,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-figures-after-1",
+    "pack": "figure-picking-linux",
+    "script_control": false,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-figures-after-1",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording"
+    ],
+    "start": 1792943399.989581,
+    "finish": 1792943507.6577032,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-figures-after-2",
+    "pack": "figure-picking-linux",
+    "script_control": false,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-figures-after-2",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording"
+    ],
+    "start": 1792943507.6580586,
+    "finish": 1792943614.9787707,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  },
+  {
+    "name": "dar-figures-before-2",
+    "pack": "figure-picking-linux",
+    "script_control": true,
+    "returncode": 0,
+    "command": [
+      "python3",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+      "dar-figures-before-2",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+      "rendered",
+      "--dar-benchmark",
+      "--zone-route-zone=gz31j",
+      "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+      "--zone-route-peaceful",
+      "--zone-route-recording",
+      "--ei-script-figure-picking"
+    ],
+    "start": 1792943614.979108,
+    "finish": 1792943722.0965052,
+    "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63"
+  }
+]

@@ -4246,6 +4246,8 @@ func screen_rects(cam: Camera3D) -> Array:
 	if model == null or cam == null:
 		return out
 	var view := MeshScreenRect.camera_context(cam)
+	if MeshScreenRect._kernel != null and MeshScreenRect._native_figures:
+		return MeshScreenRect._kernel.figure_rects(_geoms, cam, view, MeshScreenRect.of_context)
 	var union := Rect2i()
 	for g in _geoms:
 		if not is_instance_valid(g) or not (g is MeshInstance3D) or not g.is_visible_in_tree():

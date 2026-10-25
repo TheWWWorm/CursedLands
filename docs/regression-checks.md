@@ -13,6 +13,8 @@ Related scheduler, clock, quest and lever checks and CPU measurements are in
 `picking_retained` also requires the rebuilt extension and compares fused
 mechanism bounds with the existing native and scalar paths, including live
 morph/transform changes, clipping and unsupported-geometry fallbacks.
+`picking_figures` checks the actor batch against the ordered per-part rectangles
+and union, including authored poses, visibility and older-library fallback.
 
 For dense PT city traversal, select `path_trace_motion_cost`,
 `raytrace_topology_budget`, `raytrace_dense_scene`, `path_trace_motion`,
@@ -23,6 +25,9 @@ and follows fixed first-person waypoints with live solo authority. Its normal
 30 FPS cap is for inspection; `--dar-benchmark` removes the cap for an isolated
 GPU Lab heavy benchmark. Timing and negative controls are recorded in
 [the Dar Leanos validation](validation/dar-leanos-2026-10-25/README.md).
+`dar_leanos_standard_route` follows those same waypoints at Very High standard
+rendering, including soft ground and mirror water. It uses
+`--zone-route-standard`; the existing PT case retains its PT/NRD assertions.
 
 ```sh
 python3 tools/check_regressions.py \

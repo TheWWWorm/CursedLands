@@ -1,0 +1,1489 @@
+{
+  "job": "73c7b3d8b6a643e4",
+  "method": "Profile script/native pair followed by uninstrumented script/native/native/script in one GPU Lab heavy job. Same exported production pack, helper library, route fixture and graphics options for the acceptance runs; only --ei-script-figure-picking changes. Metrics reading stays enabled in both modes. No per-phase image capture or recording.",
+  "aggregate": {
+    "before": {
+      "fps": 59.732407112304536,
+      "legs": {
+        "0": {
+          "fps": 53.26023124502993,
+          "p95_ms_mean": 25.112
+        },
+        "1": {
+          "fps": 63.2161029837278,
+          "p95_ms_mean": 22.2935
+        },
+        "2": {
+          "fps": 71.0572674286926,
+          "p95_ms_mean": 18.6175
+        },
+        "3": {
+          "fps": 51.36465049502682,
+          "p95_ms_mean": 25.147
+        }
+      }
+    },
+    "after": {
+      "fps": 71.4702085239626,
+      "legs": {
+        "0": {
+          "fps": 65.01478498875497,
+          "p95_ms_mean": 20.2755
+        },
+        "1": {
+          "fps": 81.75432011624709,
+          "p95_ms_mean": 16.826
+        },
+        "2": {
+          "fps": 83.331894606407,
+          "p95_ms_mean": 15.530000000000001
+        },
+        "3": {
+          "fps": 55.24516587455652,
+          "p95_ms_mean": 22.9155
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "name": "dar-figures-profile-script",
+      "pack": "dar-figure-profile",
+      "script_control": true,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-figures-profile-script",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording",
+        "--ei-script-figure-picking"
+      ],
+      "start": 1792943076.0594888,
+      "finish": 1792943184.3823004,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_fps": 48.36410410063853,
+      "walking_seconds": 32.627504,
+      "walking_frames": 1578,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.201321,
+          "frames": 388,
+          "frame_ms": {
+            "max": 35.417,
+            "median": 20.599,
+            "p95": 27.781
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.125,
+            286.15625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.343291,
+          "frames": 423,
+          "frame_ms": {
+            "max": 36.634,
+            "median": 18.963,
+            "p95": 27.246
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.265625,
+            276.0625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.070765,
+          "frames": 416,
+          "frame_ms": {
+            "max": 30.528,
+            "median": 19.053,
+            "p95": 25.76
+          },
+          "from": [
+            182.375,
+            275.984375
+          ],
+          "to": [
+            188.640625,
+            291.796875
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 8.012127,
+          "frames": 351,
+          "frame_ms": {
+            "max": 34.903,
+            "median": 22.328,
+            "p95": 29.001
+          },
+          "from": [
+            188.6875,
+            291.921875
+          ],
+          "to": [
+            183.109375,
+            276.34375
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ],
+      "scopes": {
+        "held-fg-off": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 369,
+            "inclusive_us": 209302,
+            "max_us": 1974,
+            "ms_per_frame": 0.5672140921409213
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 479,
+            "inclusive_us": 1421225,
+            "max_us": 5711,
+            "ms_per_frame": 3.8515582655826557
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 793,
+            "inclusive_us": 1423319,
+            "max_us": 5715,
+            "ms_per_frame": 3.8572330623306232
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 16948,
+            "inclusive_us": 304012,
+            "max_us": 101,
+            "ms_per_frame": 0.8238807588075882
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 9720,
+            "inclusive_us": 1368953,
+            "max_us": 477,
+            "ms_per_frame": 3.7098997289972897
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 155959,
+            "inclusive_us": 1091254,
+            "max_us": 116,
+            "ms_per_frame": 2.9573279132791326
+          }
+        },
+        "walk-0": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 388,
+            "inclusive_us": 380605,
+            "max_us": 3686,
+            "ms_per_frame": 0.9809407216494845
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 536,
+            "inclusive_us": 1466290,
+            "max_us": 8606,
+            "ms_per_frame": 3.77909793814433
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 850,
+            "inclusive_us": 1468964,
+            "max_us": 8614,
+            "ms_per_frame": 3.7859896907216495
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 21179,
+            "inclusive_us": 377585,
+            "max_us": 141,
+            "ms_per_frame": 0.9731572164948453
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 8771,
+            "inclusive_us": 1402662,
+            "max_us": 903,
+            "ms_per_frame": 3.6151082474226803
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 139208,
+            "inclusive_us": 1145330,
+            "max_us": 471,
+            "ms_per_frame": 2.951881443298969
+          }
+        },
+        "pan-0": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 177,
+            "inclusive_us": 178161,
+            "max_us": 2857,
+            "ms_per_frame": 1.0065593220338982
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 249,
+            "inclusive_us": 559935,
+            "max_us": 4901,
+            "ms_per_frame": 3.1634745762711862
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 390,
+            "inclusive_us": 561342,
+            "max_us": 4906,
+            "ms_per_frame": 3.171423728813559
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 9359,
+            "inclusive_us": 178616,
+            "max_us": 104,
+            "ms_per_frame": 1.009129943502825
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 2576,
+            "inclusive_us": 532986,
+            "max_us": 2069,
+            "ms_per_frame": 3.0112203389830507
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 46716,
+            "inclusive_us": 437372,
+            "max_us": 570,
+            "ms_per_frame": 2.4710282485875705
+          }
+        },
+        "walk-1": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 423,
+            "inclusive_us": 438886,
+            "max_us": 3952,
+            "ms_per_frame": 1.0375555555555556
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 573,
+            "inclusive_us": 1486538,
+            "max_us": 6264,
+            "ms_per_frame": 3.514274231678487
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 921,
+            "inclusive_us": 1489626,
+            "max_us": 6273,
+            "ms_per_frame": 3.5215744680851064
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 20258,
+            "inclusive_us": 318787,
+            "max_us": 127,
+            "ms_per_frame": 0.7536335697399527
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 6828,
+            "inclusive_us": 1431981,
+            "max_us": 1582,
+            "ms_per_frame": 3.3852978723404252
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 129918,
+            "inclusive_us": 1178870,
+            "max_us": 1088,
+            "ms_per_frame": 2.7869267139479907
+          }
+        },
+        "pan-1": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 290,
+            "inclusive_us": 199067,
+            "max_us": 2448,
+            "ms_per_frame": 0.6864379310344827
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 366,
+            "inclusive_us": 458468,
+            "max_us": 3780,
+            "ms_per_frame": 1.5809241379310344
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 618,
+            "inclusive_us": 460315,
+            "max_us": 3784,
+            "ms_per_frame": 1.5872931034482758
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 11112,
+            "inclusive_us": 171707,
+            "max_us": 248,
+            "ms_per_frame": 0.5920931034482759
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 2099,
+            "inclusive_us": 430273,
+            "max_us": 737,
+            "ms_per_frame": 1.4837
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 38254,
+            "inclusive_us": 352716,
+            "max_us": 367,
+            "ms_per_frame": 1.2162620689655173
+          }
+        },
+        "walk-2": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 416,
+            "inclusive_us": 436669,
+            "max_us": 4204,
+            "ms_per_frame": 1.0496850961538462
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 566,
+            "inclusive_us": 1273595,
+            "max_us": 4471,
+            "ms_per_frame": 3.0615264423076924
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 907,
+            "inclusive_us": 1276947,
+            "max_us": 4477,
+            "ms_per_frame": 3.069584134615385
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 23911,
+            "inclusive_us": 468202,
+            "max_us": 2087,
+            "ms_per_frame": 1.125485576923077
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 5699,
+            "inclusive_us": 1201739,
+            "max_us": 1437,
+            "ms_per_frame": 2.888795673076923
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 97846,
+            "inclusive_us": 992455,
+            "max_us": 92,
+            "ms_per_frame": 2.385709134615385
+          }
+        },
+        "pan-2": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 224,
+            "inclusive_us": 180785,
+            "max_us": 2283,
+            "ms_per_frame": 0.8070758928571429
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 298,
+            "inclusive_us": 900480,
+            "max_us": 5090,
+            "ms_per_frame": 4.02
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 485,
+            "inclusive_us": 901985,
+            "max_us": 5095,
+            "ms_per_frame": 4.02671875
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 12532,
+            "inclusive_us": 246860,
+            "max_us": 97,
+            "ms_per_frame": 1.1020535714285713
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 4197,
+            "inclusive_us": 860554,
+            "max_us": 964,
+            "ms_per_frame": 3.8417589285714286
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 71765,
+            "inclusive_us": 714206,
+            "max_us": 68,
+            "ms_per_frame": 3.1884196428571427
+          }
+        },
+        "walk-3": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 351,
+            "inclusive_us": 406523,
+            "max_us": 3380,
+            "ms_per_frame": 1.1581851851851852
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 495,
+            "inclusive_us": 879372,
+            "max_us": 4238,
+            "ms_per_frame": 2.5053333333333336
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 774,
+            "inclusive_us": 881973,
+            "max_us": 4245,
+            "ms_per_frame": 2.51274358974359
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 19319,
+            "inclusive_us": 302582,
+            "max_us": 134,
+            "ms_per_frame": 0.8620569800569801
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 4266,
+            "inclusive_us": 837746,
+            "max_us": 1068,
+            "ms_per_frame": 2.386740740740741
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 75890,
+            "inclusive_us": 689926,
+            "max_us": 817,
+            "ms_per_frame": 1.9656011396011395
+          }
+        },
+        "pan-3": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 211,
+            "inclusive_us": 164532,
+            "max_us": 1794,
+            "ms_per_frame": 0.7797725118483412
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 283,
+            "inclusive_us": 563464,
+            "max_us": 4367,
+            "ms_per_frame": 2.670445497630332
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 458,
+            "inclusive_us": 564973,
+            "max_us": 4372,
+            "ms_per_frame": 2.6775971563981043
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 9872,
+            "inclusive_us": 152447,
+            "max_us": 834,
+            "ms_per_frame": 0.7224976303317535
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 2221,
+            "inclusive_us": 542474,
+            "max_us": 1379,
+            "ms_per_frame": 2.57096682464455
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 50805,
+            "inclusive_us": 448775,
+            "max_us": 1033,
+            "ms_per_frame": 2.126895734597156
+          }
+        },
+        "final-held": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 342,
+            "inclusive_us": 256739,
+            "max_us": 2211,
+            "ms_per_frame": 0.7506988304093567
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 452,
+            "inclusive_us": 798731,
+            "max_us": 2976,
+            "ms_per_frame": 2.335470760233918
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 739,
+            "inclusive_us": 800966,
+            "max_us": 2981,
+            "ms_per_frame": 2.3420058479532164
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 14803,
+            "inclusive_us": 237013,
+            "max_us": 860,
+            "ms_per_frame": 0.6930204678362574
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 3962,
+            "inclusive_us": 768709,
+            "max_us": 526,
+            "ms_per_frame": 2.247687134502924
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 90073,
+            "inclusive_us": 612874,
+            "max_us": 230,
+            "ms_per_frame": 1.792029239766082
+          }
+        }
+      }
+    },
+    {
+      "name": "dar-figures-profile-native",
+      "pack": "dar-figure-profile",
+      "script_control": false,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-figures-profile-native",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording"
+      ],
+      "start": 1792943184.3826287,
+      "finish": 1792943292.5260859,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_fps": 58.91645962681858,
+      "walking_seconds": 32.843114,
+      "walking_frames": 1935,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.31811,
+          "frames": 405,
+          "frame_ms": {
+            "max": 31.313,
+            "median": 20.396,
+            "p95": 25.952
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.109375,
+            286.125
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.532874,
+          "frames": 574,
+          "frame_ms": {
+            "max": 27.356,
+            "median": 14.527,
+            "p95": 19.781
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.28125,
+            276.109375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.05302,
+          "frames": 557,
+          "frame_ms": {
+            "max": 33.352,
+            "median": 14.293,
+            "p95": 17.997
+          },
+          "from": [
+            182.296875,
+            276.09375
+          ],
+          "to": [
+            188.640625,
+            291.8125
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.93911,
+          "frames": 399,
+          "frame_ms": {
+            "max": 30.687,
+            "median": 19.513,
+            "p95": 24.732
+          },
+          "from": [
+            188.6875,
+            291.890625
+          ],
+          "to": [
+            183.125,
+            276.390625
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ],
+      "scopes": {
+        "held-fg-off": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 371,
+            "inclusive_us": 239060,
+            "max_us": 2212,
+            "ms_per_frame": 0.644366576819407
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 481,
+            "inclusive_us": 504279,
+            "max_us": 2196,
+            "ms_per_frame": 1.359242587601078
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 797,
+            "inclusive_us": 507531,
+            "max_us": 2204,
+            "ms_per_frame": 1.3680080862533694
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 16748,
+            "inclusive_us": 351393,
+            "max_us": 143,
+            "ms_per_frame": 0.9471509433962265
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 9009,
+            "inclusive_us": 450432,
+            "max_us": 193,
+            "ms_per_frame": 1.2141024258760107
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 55,
+            "inclusive_us": 1841,
+            "max_us": 50,
+            "ms_per_frame": 0.004962264150943396
+          }
+        },
+        "walk-0": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 405,
+            "inclusive_us": 371326,
+            "max_us": 3326,
+            "ms_per_frame": 0.9168543209876543
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 555,
+            "inclusive_us": 444144,
+            "max_us": 2521,
+            "ms_per_frame": 1.096651851851852
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 885,
+            "inclusive_us": 447823,
+            "max_us": 2534,
+            "ms_per_frame": 1.1057358024691357
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 21872,
+            "inclusive_us": 443319,
+            "max_us": 213,
+            "ms_per_frame": 1.0946148148148147
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 8976,
+            "inclusive_us": 376804,
+            "max_us": 276,
+            "ms_per_frame": 0.9303802469135802
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 75,
+            "inclusive_us": 2362,
+            "max_us": 44,
+            "ms_per_frame": 0.005832098765432099
+          }
+        },
+        "pan-0": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 202,
+            "inclusive_us": 235043,
+            "max_us": 2810,
+            "ms_per_frame": 1.163579207920792
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 274,
+            "inclusive_us": 146188,
+            "max_us": 1085,
+            "ms_per_frame": 0.7237029702970297
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 440,
+            "inclusive_us": 147751,
+            "max_us": 1092,
+            "ms_per_frame": 0.731440594059406
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 9607,
+            "inclusive_us": 184624,
+            "max_us": 183,
+            "ms_per_frame": 0.9139801980198019
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 2503,
+            "inclusive_us": 121359,
+            "max_us": 134,
+            "ms_per_frame": 0.6007871287128713
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 36,
+            "inclusive_us": 1111,
+            "max_us": 46,
+            "ms_per_frame": 0.0055
+          }
+        },
+        "walk-1": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 574,
+            "inclusive_us": 468739,
+            "max_us": 2712,
+            "ms_per_frame": 0.8166184668989547
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 732,
+            "inclusive_us": 477682,
+            "max_us": 1251,
+            "ms_per_frame": 0.832198606271777
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 1227,
+            "inclusive_us": 481433,
+            "max_us": 1258,
+            "ms_per_frame": 0.8387334494773518
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 23374,
+            "inclusive_us": 392609,
+            "max_us": 111,
+            "ms_per_frame": 0.6839878048780488
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 9957,
+            "inclusive_us": 416289,
+            "max_us": 369,
+            "ms_per_frame": 0.7252421602787457
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 79,
+            "inclusive_us": 2374,
+            "max_us": 45,
+            "ms_per_frame": 0.00413588850174216
+          }
+        },
+        "pan-1": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 347,
+            "inclusive_us": 270660,
+            "max_us": 2848,
+            "ms_per_frame": 0.78
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 423,
+            "inclusive_us": 202270,
+            "max_us": 912,
+            "ms_per_frame": 0.5829106628242076
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 732,
+            "inclusive_us": 204296,
+            "max_us": 917,
+            "ms_per_frame": 0.588749279538905
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 12008,
+            "inclusive_us": 190421,
+            "max_us": 103,
+            "ms_per_frame": 0.5487636887608068
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 4314,
+            "inclusive_us": 171161,
+            "max_us": 98,
+            "ms_per_frame": 0.4932593659942363
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 38,
+            "inclusive_us": 1090,
+            "max_us": 35,
+            "ms_per_frame": 0.0031412103746397695
+          }
+        },
+        "walk-2": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 557,
+            "inclusive_us": 476764,
+            "max_us": 2488,
+            "ms_per_frame": 0.8559497307001795
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 709,
+            "inclusive_us": 432485,
+            "max_us": 1254,
+            "ms_per_frame": 0.7764542190305207
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 1190,
+            "inclusive_us": 436042,
+            "max_us": 1259,
+            "ms_per_frame": 0.7828402154398564
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 26847,
+            "inclusive_us": 540124,
+            "max_us": 114,
+            "ms_per_frame": 0.96970197486535
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 8057,
+            "inclusive_us": 354992,
+            "max_us": 145,
+            "ms_per_frame": 0.6373285457809695
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 76,
+            "inclusive_us": 2243,
+            "max_us": 48,
+            "ms_per_frame": 0.004026929982046679
+          }
+        },
+        "pan-2": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 328,
+            "inclusive_us": 196472,
+            "max_us": 2033,
+            "ms_per_frame": 0.599
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 404,
+            "inclusive_us": 296942,
+            "max_us": 1580,
+            "ms_per_frame": 0.905310975609756
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 694,
+            "inclusive_us": 298772,
+            "max_us": 1586,
+            "ms_per_frame": 0.910890243902439
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 15038,
+            "inclusive_us": 297655,
+            "max_us": 874,
+            "ms_per_frame": 0.907484756097561
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 5288,
+            "inclusive_us": 253888,
+            "max_us": 122,
+            "ms_per_frame": 0.7740487804878048
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 38,
+            "inclusive_us": 1125,
+            "max_us": 38,
+            "ms_per_frame": 0.003429878048780488
+          }
+        },
+        "walk-3": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 399,
+            "inclusive_us": 375636,
+            "max_us": 2737,
+            "ms_per_frame": 0.9414436090225564
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 541,
+            "inclusive_us": 237670,
+            "max_us": 945,
+            "ms_per_frame": 0.5956641604010025
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 869,
+            "inclusive_us": 240720,
+            "max_us": 954,
+            "ms_per_frame": 0.6033082706766917
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 19671,
+            "inclusive_us": 306108,
+            "max_us": 110,
+            "ms_per_frame": 0.767187969924812
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 4530,
+            "inclusive_us": 196292,
+            "max_us": 145,
+            "ms_per_frame": 0.49195989974937343
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 71,
+            "inclusive_us": 2146,
+            "max_us": 38,
+            "ms_per_frame": 0.00537844611528822
+          }
+        },
+        "pan-3": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 252,
+            "inclusive_us": 195815,
+            "max_us": 1900,
+            "ms_per_frame": 0.7770436507936508
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 328,
+            "inclusive_us": 120162,
+            "max_us": 718,
+            "ms_per_frame": 0.47683333333333333
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 542,
+            "inclusive_us": 121911,
+            "max_us": 724,
+            "ms_per_frame": 0.4837738095238095
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 10984,
+            "inclusive_us": 160971,
+            "max_us": 97,
+            "ms_per_frame": 0.6387738095238095
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 2013,
+            "inclusive_us": 99995,
+            "max_us": 230,
+            "ms_per_frame": 0.3968055555555555
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 38,
+            "inclusive_us": 1123,
+            "max_us": 39,
+            "ms_per_frame": 0.004456349206349207
+          }
+        },
+        "final-held": {
+          "game/fx/ground_marks.gd:_process": {
+            "calls": 402,
+            "inclusive_us": 310651,
+            "max_us": 1909,
+            "ms_per_frame": 0.7727636815920398
+          },
+          "game/game.gd:_pick_unit": {
+            "calls": 514,
+            "inclusive_us": 217277,
+            "max_us": 784,
+            "ms_per_frame": 0.5404900497512437
+          },
+          "game/game.gd:pick_unit": {
+            "calls": 860,
+            "inclusive_us": 219896,
+            "max_us": 790,
+            "ms_per_frame": 0.5470049751243781
+          },
+          "game/unit.gd:anim_flush": {
+            "calls": 15759,
+            "inclusive_us": 262371,
+            "max_us": 103,
+            "ms_per_frame": 0.6526641791044776
+          },
+          "game/unit.gd:screen_rects": {
+            "calls": 4168,
+            "inclusive_us": 186737,
+            "max_us": 171,
+            "ms_per_frame": 0.4645199004975124
+          },
+          "ui/mesh_screen_rect.gd:of_context": {
+            "calls": 56,
+            "inclusive_us": 1706,
+            "max_us": 71,
+            "ms_per_frame": 0.004243781094527363
+          }
+        }
+      }
+    },
+    {
+      "name": "dar-figures-before-1",
+      "pack": "figure-picking-linux",
+      "script_control": true,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-figures-before-1",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording",
+        "--ei-script-figure-picking"
+      ],
+      "start": 1792943292.5263762,
+      "finish": 1792943399.989282,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_fps": 59.75996088148583,
+      "walking_seconds": 32.563609,
+      "walking_frames": 1946,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.263867,
+          "frames": 441,
+          "frame_ms": {
+            "max": 29.037,
+            "median": 18.314,
+            "p95": 24.673
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.125,
+            286.140625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.304021,
+          "frames": 525,
+          "frame_ms": {
+            "max": 29.396,
+            "median": 15.065,
+            "p95": 22.461
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.21875,
+            276.09375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.033984,
+          "frames": 571,
+          "frame_ms": {
+            "max": 24.226,
+            "median": 13.819,
+            "p95": 18.906
+          },
+          "from": [
+            182.28125,
+            276.0625
+          ],
+          "to": [
+            188.65625,
+            291.8125
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.961737,
+          "frames": 409,
+          "frame_ms": {
+            "max": 30.121,
+            "median": 18.995,
+            "p95": 25.005
+          },
+          "from": [
+            188.65625,
+            291.84375
+          ],
+          "to": [
+            183.125,
+            276.390625
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ]
+    },
+    {
+      "name": "dar-figures-after-1",
+      "pack": "figure-picking-linux",
+      "script_control": false,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-figures-after-1",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording"
+      ],
+      "start": 1792943399.989581,
+      "finish": 1792943507.6577032,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_fps": 72.41669065762864,
+      "walking_seconds": 32.672026,
+      "walking_frames": 2366,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.298002,
+          "frames": 555,
+          "frame_ms": {
+            "max": 25.609,
+            "median": 14.773,
+            "p95": 19.907
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.109375,
+            286.109375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.348552,
+          "frames": 718,
+          "frame_ms": {
+            "max": 21.074,
+            "median": 11.257,
+            "p95": 16.051
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.265625,
+            276.0625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.075874,
+          "frames": 656,
+          "frame_ms": {
+            "max": 22.005,
+            "median": 11.971,
+            "p95": 16.123
+          },
+          "from": [
+            182.28125,
+            276.0625
+          ],
+          "to": [
+            188.65625,
+            291.828125
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.949598,
+          "frames": 437,
+          "frame_ms": {
+            "max": 32.959,
+            "median": 17.791,
+            "p95": 22.871
+          },
+          "from": [
+            188.65625,
+            291.859375
+          ],
+          "to": [
+            183.125,
+            276.375
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ]
+    },
+    {
+      "name": "dar-figures-after-2",
+      "pack": "figure-picking-linux",
+      "script_control": false,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-figures-after-2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording"
+      ],
+      "start": 1792943507.6580586,
+      "finish": 1792943614.9787707,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_fps": 70.52609044021592,
+      "walking_seconds": 32.753836,
+      "walking_frames": 2310,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.298223,
+          "frames": 524,
+          "frame_ms": {
+            "max": 26.015,
+            "median": 15.827,
+            "p95": 20.644
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.109375,
+            286.109375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.580217,
+          "frames": 666,
+          "frame_ms": {
+            "max": 22.242,
+            "median": 12.54,
+            "p95": 17.601
+          },
+          "from": [
+            168.09375,
+            286.046875
+          ],
+          "to": [
+            182.390625,
+            276.21875
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 7.968403,
+          "frames": 681,
+          "frame_ms": {
+            "max": 20.144,
+            "median": 11.565,
+            "p95": 14.937
+          },
+          "from": [
+            182.5,
+            276.078125
+          ],
+          "to": [
+            188.640625,
+            291.796875
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.906993,
+          "frames": 439,
+          "frame_ms": {
+            "max": 29.671,
+            "median": 17.619,
+            "p95": 22.96
+          },
+          "from": [
+            188.65625,
+            291.828125
+          ],
+          "to": [
+            183.109375,
+            276.34375
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ]
+    },
+    {
+      "name": "dar-figures-before-2",
+      "pack": "figure-picking-linux",
+      "script_control": true,
+      "returncode": 0,
+      "command": [
+        "python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/run.py",
+        "dar-figures-before-2",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/dar_standard_metrics.gd",
+        "rendered",
+        "--dar-benchmark",
+        "--zone-route-zone=gz31j",
+        "--zone-route-save=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/dar-standard-profile-astral/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/zone-route.sav",
+        "--zone-route-peaceful",
+        "--zone-route-recording",
+        "--ei-script-figure-picking"
+      ],
+      "start": 1792943614.979108,
+      "finish": 1792943722.0965052,
+      "fixture_sha256": "ad77d878de35c4e426b464bb07694d2d302a270e62c751fafad7128d217aab63",
+      "checks": 54,
+      "failures": 0,
+      "adapter": "NVIDIA GeForce RTX 3090 Ti",
+      "actor_count": 334,
+      "window": "(1920, 1080)",
+      "options_sha256": "fc00b2d9be98ed85b157939d0f56b671e735608b8b5685962c0a2bd1e22d275a",
+      "walking_fps": 59.70482206518058,
+      "walking_seconds": 32.526686,
+      "walking_frames": 1942,
+      "legs": [
+        {
+          "phase": "walk-0",
+          "seconds": 8.25878,
+          "frames": 439,
+          "frame_ms": {
+            "max": 31.211,
+            "median": 18.3,
+            "p95": 25.551
+          },
+          "from": [
+            173.5,
+            302.5
+          ],
+          "to": [
+            168.125,
+            286.15625
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-1",
+          "seconds": 8.305671,
+          "frames": 525,
+          "frame_ms": {
+            "max": 30.21,
+            "median": 15.197,
+            "p95": 22.126
+          },
+          "from": [
+            168.078125,
+            286.046875
+          ],
+          "to": [
+            182.21875,
+            276.109375
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-2",
+          "seconds": 8.03756,
+          "frames": 571,
+          "frame_ms": {
+            "max": 21.448,
+            "median": 13.662,
+            "p95": 18.329
+          },
+          "from": [
+            182.28125,
+            276.0625
+          ],
+          "to": [
+            188.640625,
+            291.796875
+          ],
+          "reroutes": [],
+          "blocked": []
+        },
+        {
+          "phase": "walk-3",
+          "seconds": 7.924675,
+          "frames": 407,
+          "frame_ms": {
+            "max": 29.618,
+            "median": 19.083,
+            "p95": 25.289
+          },
+          "from": [
+            188.65625,
+            291.84375
+          ],
+          "to": [
+            183.109375,
+            276.359375
+          ],
+          "reroutes": [],
+          "blocked": []
+        }
+      ]
+    }
+  ]
+}

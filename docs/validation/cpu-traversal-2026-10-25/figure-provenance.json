@@ -1,0 +1,64 @@
+{
+  "base_commit": "62c590007cfe770c67279ab98f8e75e40495276c",
+  "source_sha256": {
+    "game/src/game/unit.gd": "9781e3c508ca43e19ee64748cc47b524da131a366a12395f8849314073d12b7e",
+    "game/src/ui/mesh_screen_rect.gd": "e0d72facfc12568468a64084819a0ef452a1b3ceeb61470185a004c2be140d86",
+    "game/src/native/source/screen_rect.h": "bc569873a5685ae7f6a3eb3256640d4586b78fc359e3a0f2a01180309d18185d",
+    "tools/tests/picking_figures.gd": "470dbaa57eff8697bebf25ef6a2019f49b86d82141c293736756ceeab9be89c5"
+  },
+  "packs": {
+    "figure-picking-linux": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "8051e717e77c62ca64277570cdde25aed6e3ae91e7a7f24c329515e9c5939f30",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "3533b35bf0be34084ed87b942fed5e0963b24cebc6c3204d47ac573c5f281c19",
+      "src/native/bin/libpath_nrd.dll": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "677026cc42921aa8f5e1ad7ab28c765d28cbf7dce0dbbb900cf6a5129764dbf4",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "c83fd448b5bbf83961e285eb50c647174f7942d79021d8c10551403aeb68842d"
+    },
+    "figure-picking-windows": {
+      "runtime.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+      "runtime.pck": "2ba543a7d68744e5d0146df2955a4373a969e17d5efa6ea672ab696dc8611699",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "3533b35bf0be34084ed87b942fed5e0963b24cebc6c3204d47ac573c5f281c19",
+      "src/native/bin/libpath_nrd.dll": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "677026cc42921aa8f5e1ad7ab28c765d28cbf7dce0dbbb900cf6a5129764dbf4",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "c83fd448b5bbf83961e285eb50c647174f7942d79021d8c10551403aeb68842d"
+    },
+    "dar-figure-profile": {
+      "runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "runtime.pck": "39414da7d9dc71359c8e00a3889c47b2a67667308040c08ac13a69028355a51f",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "3533b35bf0be34084ed87b942fed5e0963b24cebc6c3204d47ac573c5f281c19",
+      "src/native/bin/libpath_nrd.dll": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libterrain_search.dll": "677026cc42921aa8f5e1ad7ab28c765d28cbf7dce0dbbb900cf6a5129764dbf4",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "src/native/bin/libterrain_search.so": "c83fd448b5bbf83961e285eb50c647174f7942d79021d8c10551403aeb68842d"
+    }
+  },
+  "android": "ARM64 library rebuilt, not executed on a device",
+  "original": "Same exact projected-vertex contract verified in original-picking-sources.json; no original Dar route/FPS equivalence claimed."
+}

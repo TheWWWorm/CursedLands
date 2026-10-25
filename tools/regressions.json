@@ -1258,6 +1258,23 @@
       "timeout": 420
     },
     {
+      "id": "dar_leanos_standard_route",
+      "script": "tools/tests/dar_leanos_route.gd",
+      "summary": "STANDARD_ZONE_TRAVERSAL",
+      "contract": "Dar Leanos reaches the same fixed first-person waypoints with live authority, collision and Very High standard rendering throughout the walk.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--zone-route-zone=gz31j",
+        "--zone-route-peaceful",
+        "--zone-route-standard"
+      ],
+      "min_checks": 54,
+      "timeout": 420
+    },
+    {
       "id": "revive_overlay_picking",
       "script": "tools/tests/revive_overlay_picking.gd",
       "summary": "REVIVE_OVERLAY_PICKING",
@@ -1343,7 +1360,19 @@
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 11
+      "min_checks": 11,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "picking_figures",
+      "script": "tools/tests/picking_figures.gd",
+      "summary": "PICKING_FIGURES",
+      "contract": "One native actor-bounds batch preserves exact ordered part rectangles, union, same-frame pose/visibility/mesh edits and unsupported/older-library fallbacks.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1403
     }
   ]
 }

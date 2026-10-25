@@ -63,8 +63,38 @@ protected:
         ClassDB::bind_method(D_METHOD("deformation_state", "instance"), &ScreenRectKernel::deformation_state);
         ClassDB::bind_method(D_METHOD("retained_bounds", "instance", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::retained_bounds);
         ClassDB::bind_method(D_METHOD("pick_mechanisms", "levers", "objects", "morphs", "usable", "fallback", "camera", "view", "point"), &ScreenRectKernel::pick_mechanisms);
+        ClassDB::bind_method(D_METHOD("figure_rects", "parts", "camera", "view", "fallback"), &ScreenRectKernel::figure_rects);
     }
 public:
+    // Preserve the ordered drawn-part rectangles and their exact union. Live
+    // morphs and transforms are read in this call; unsupported meshes use the
+    // existing general path. No actor, pose or visibility result is retained.
+    Array figure_rects(const Array &parts, Node3D *camera, const Dictionary &view,
+            const Callable &fallback) const {
+        Array out;
+        if (!camera || view.is_empty()) return out;
+        const TypedArray<Plane> planes = view["planes"];
+        if (planes.size() != 6) return out;
+        const Projection projection = view["projection"];
+        const Basis inverse_basis = view["inverse_basis"];
+        const Vector3 origin = view["origin"];
+        const Vector2 size = view["size"];
+        Rect2i united;
+        for (int64_t i = 0; i < parts.size(); ++i) {
+            const Variant entry = parts[i];
+            auto *part = Object::cast_to<MeshInstance3D>(entry.get_validated_object());
+            if (!part || !part->is_visible_in_tree() || part->get_mesh().is_null()) continue;
+            Variant result = retained_bounds(part, planes, projection, inverse_basis, origin, size);
+            if (result.get_type() != Variant::RECT2I) result = fallback.call(part, camera, view);
+            const Rect2i rect = result;
+            if (rect.get_size().x <= 0 || rect.get_size().y <= 0) continue;
+            united = out.is_empty() ? rect : united.merge(rect);
+            out.push_back(rect);
+        }
+        if (!out.is_empty()) out.push_front(united);
+        return out;
+    }
+
     // Batch only the presentation query. Permission stays in LeverSystem;
     // unsupported geometry uses the same script cache/oracle as before.
     // No scene references, eligibility or results survive this call.

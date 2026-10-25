@@ -613,3 +613,103 @@ analytic/lifecycle fixture passes 29 checks. See
 the already recognized GPU Lab missing-EDID refresh-rate diagnostic; neither
 has a script error. This Godot volumetric-cloud system is a remake addition,
 so an equivalent original-game Wine callback comparison is inapplicable.
+
+### Dar Leanos actor bounds after integrating local main
+
+Local main `42e3365f` was merged into this branch as `62c59000`, preserving the
+other task's Dar renderer, hidden-pointer, crash and solo-authority changes.
+The location is LiA `gz31j`, with 334 actors. The first standard-rendering
+diagnostic route spends about 2–3 ms/frame in per-part screen bounds. Actor
+queries also rebuild their ordered rectangles and union in script, despite
+the individual geometry helper already being native.
+
+`ScreenRectKernel.figure_rects` now handles that ordered actor query in one
+native call. It uses the same exact current morph/transform/clipping helper;
+unsupported geometry returns to `MeshScreenRect.of_context`. Visibility, part
+order and integer union are unchanged. No pose, actor or selection result is
+cached, and no actors, updates or geometry are removed. Older libraries and
+`--ei-script-figure-picking` use the complete previous loop.
+
+The registered `picking_figures` test passes **1,403 exact checks** on Linux
+and Windows/Wine, and another 1,403 with actual LiA models on Linux. The
+previous pack fails its missing-helper assertion cleanly. Coverage includes
+production dispatch, authored human/winged idle/walk/attack/death poses,
+same-frame transforms and morphs, perspective/orthogonal/frustum views, hidden
+parents, deleted/non-mesh rows, skins, multiple surfaces, missing metadata and
+missing-library fallback. Related retained (2,209), mechanism (5,205), bounds
+(432), deformation (1,558), touch selection (1,352) and arena selection (3,331)
+checks pass on both Linux and Windows/Wine. Linux, Windows and Android ARM64
+libraries are rebuilt; Android has not been executed on a device.
+
+In the isolated 360-query fixture, stationary-camera work takes about 34.2 ms
+with the previous loop and 20.2 ms with the batch; moving-camera work takes
+85.0–85.2 ms and 20.9–21.0 ms respectively. These are CPU microbenchmarks,
+separate from the real traversal below. In the diagnostic Dar pair, actor
+screen rectangles take 3.615, 3.385, 2.889 and 2.387 ms/frame on the four walking
+legs before, versus 0.930, 0.725, 0.637 and 0.492 afterward. Instrumentation
+adds overhead, and inclusive nested scopes must not be added together.
+
+GPU Lab heavy job `73c7b3d8b6a643e4` then runs the **uninstrumented production
+pack** in script/native/native/script order on one RTX 3090 Ti. All four runs
+pass 54 assertions, reach every waypoint, keep controls and solo authority
+alive, and record no route detours or blocked frames. The initial save, options
+hash, 334-actor population and 1920×1080 window match. Very High standard
+rendering retains soft ground, volume clouds and mirror water at 100% render
+scale; PT, RT lighting, reconstruction and frame generation are disabled.
+Real W input drives the production first-person camera and normal simulation.
+God mode and neutral diplomacy isolate traversal. No per-phase PNG encoding,
+video capture, CPU builds or other checks run during these measurements.
+
+| Walking leg | Previous FPS | Native batch FPS | Previous p95 ms | Native batch p95 ms |
+|---|---:|---:|---:|---:|
+| 0 | 53.26 | 65.01 | 25.11 | 20.28 |
+| 1 | 63.22 | 81.75 | 22.29 | 16.83 |
+| 2 | 71.06 | 83.33 | 18.62 | 15.53 |
+| 3 | 51.36 | 55.25 | 25.15 | 22.92 |
+
+Across walking phases, total rendered frames divided by total wall time rises
+from **59.73 to 71.47 FPS (+19.65%)**. The individual before runs are 59.76 and
+59.70 FPS; afterward they are 72.42 and 70.53. Table p95 values average the two
+per-run percentiles, rather than claiming a pooled percentile. This isolates
+the actor batch on top of the combined source; it does not measure all earlier
+CPU changes again. It is not a prediction for another CPU, Windows/D3D12 or
+every zone. The largest walking frame is 31.21 ms before and 32.96 ms after,
+so this is not a claim that every isolated stall is eliminated.
+
+The same projected-vertex and integer-rectangle contract is confirmed in the
+original executable's `5a7640`/`5a7a70` and `4e9010`/`4e86b0`/`4e8900` paths;
+see [the original source evidence](original-picking-sources.json). This change
+only batches the already-validated geometry calls. A fresh original-game Wine
+Dar traversal comparison was not performed: the remake's first-person route
+and synthetic mesh/pose fixtures have no equivalent original entry point.
+The Windows/Wine results above execute the remake. Original runtime/FPS
+equivalence remains unmeasured.
+
+The separate tactical diagnostic is retained as a **failed** run: 54 checks,
+one failure because five frames on walking leg 1 activate the shader preparation
+barrier. All waypoints are reached, but that does not satisfy the unchanged
+continuous-control assertion. It is excluded from the accepted comparison.
+The remaining native-pair scopes include about 0.82–0.94 ms/frame in ground
+marks, 0.44–0.51 in direct-pose composition and 0.68–1.10 in animation flushing;
+these remain investigation targets. The other task's synchronous PT candidate
+activation is a separate path from this standard-rendering improvement.
+
+See [the six-run comparison](dar-figure-comparison.json),
+[exact checks](figure-checks.json), [build/source provenance](figure-provenance.json)
+and the compressed raw logs, per-frame render metrics and scope captures.
+The maintained `dar_leanos_standard_route` uses the same fixed waypoints with
+standard rendering; the existing PT route retains its PT/native-NRD assertions.
+Both registered routes pass **54 checks** on the combined production pack.
+The same registered run passes cold cloud preparation (11), actor bounds (1,403),
+solo clock resynchronization (13), recovery from a 90-second blocking shader
+stall (7), and play-clock behavior (28). The runner's eight Python checks pass.
+See [registered integration results](dar-integrated-registered.json).
+
+The earlier merged-source headless selection also passes expressions (21,575),
+retained bounds (2,209), mechanisms (5,205), vegetation preparation (124), ambient
+ground (5,117), star particles (17,473) and the revival overlay (9); see
+[its receipt](merged-main-headless-registered.json). A first invocation omitted
+`--packaged`, so the release runtime rejected `--path` before executing tests;
+the [failed setup receipt](merged-main-runner-setup-failure.json) is not a game
+regression. All current game scripts, shaders, scenes, resources and native
+libraries were compared with the measured export snapshot without differences.

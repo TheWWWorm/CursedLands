@@ -33,6 +33,14 @@ return nil so `MeshScreenRect` uses its existing general path and cache. The
 registered `picking_retained` check compares exact rectangles, same-frame
 changes and fallbacks against that path and the scalar clipping reference.
 
+`ScreenRectKernel.figure_rects` batches the actor's ordered visible parts and
+their union using the same retained geometry helper. Unsupported meshes keep
+the general cached bounds path. It reads current visibility, transforms and
+morph weights on each query, preserving clicks and live same-frame edits.
+`-- --ei-script-figure-picking` retains the old per-part loop; old libraries
+also retain it automatically. `tools/tests/picking_figures.gd` compares exact
+arrays, fallback and dispatch with real authored humans and winged creatures.
+
 The terrain instance also owns persistent static block topology: representatives,
 weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
 floor and object changes invalidate it through the existing map revision.

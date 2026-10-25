@@ -1,0 +1,54 @@
+{
+  "figure-contract-linux": [
+    "PICKING_FIGURES_TIMING [{\"moving_camera\":false,\"native\":false,\"queries\":360,\"usec\":34211},{\"moving_camera\":false,\"native\":true,\"queries\":360,\"usec\":20198},{\"moving_camera\":false,\"native\":true,\"queries\":360,\"usec\":20180},{\"moving_camera\":false,\"native\":false,\"queries\":360,\"usec\":34236},{\"moving_camera\":true,\"native\":false,\"queries\":360,\"usec\":85022},{\"moving_camera\":true,\"native\":true,\"queries\":360,\"usec\":20961},{\"moving_camera\":true,\"native\":true,\"queries\":360,\"usec\":20885},{\"moving_camera\":true,\"native\":false,\"queries\":360,\"usec\":85240}]",
+    "PICKING_FIGURES checks=1403 failures=0"
+  ],
+  "figure-contract-before": [
+    "FAIL native figure batch available",
+    "PICKING_FIGURES checks=1 failures=1"
+  ],
+  "figure-contract-windows": [
+    "PICKING_FIGURES_TIMING [{\"moving_camera\":false,\"native\":false,\"queries\":360,\"usec\":38945},{\"moving_camera\":false,\"native\":true,\"queries\":360,\"usec\":25545},{\"moving_camera\":false,\"native\":true,\"queries\":360,\"usec\":25598},{\"moving_camera\":false,\"native\":false,\"queries\":360,\"usec\":37671},{\"moving_camera\":true,\"native\":false,\"queries\":360,\"usec\":96337},{\"moving_camera\":true,\"native\":true,\"queries\":360,\"usec\":26498},{\"moving_camera\":true,\"native\":true,\"queries\":360,\"usec\":26413},{\"moving_camera\":true,\"native\":false,\"queries\":360,\"usec\":96403}]",
+    "PICKING_FIGURES checks=1403 failures=0"
+  ],
+  "figure-contract-linux-astral": [
+    "PICKING_FIGURES_TIMING [{\"moving_camera\":false,\"native\":false,\"queries\":360,\"usec\":34292},{\"moving_camera\":false,\"native\":true,\"queries\":360,\"usec\":21329},{\"moving_camera\":false,\"native\":true,\"queries\":360,\"usec\":21389},{\"moving_camera\":false,\"native\":false,\"queries\":360,\"usec\":34034},{\"moving_camera\":true,\"native\":false,\"queries\":360,\"usec\":87269},{\"moving_camera\":true,\"native\":true,\"queries\":360,\"usec\":22314},{\"moving_camera\":true,\"native\":true,\"queries\":360,\"usec\":22048},{\"moving_camera\":true,\"native\":false,\"queries\":360,\"usec\":87065}]",
+    "PICKING_FIGURES checks=1403 failures=0"
+  ],
+  "figure-related-linux-picking_retained": [
+    "PICKING_RETAINED 2209 checks 0 failures"
+  ],
+  "figure-related-linux-picking_mechanisms": [
+    "PICKING_MECHANISMS 5205 checks 0 failures"
+  ],
+  "figure-related-linux-picking_bounds": [
+    "PICKING_BOUNDS checks=432 failures=0"
+  ],
+  "figure-related-linux-picking_deformation": [
+    "PICKING_DEFORMATION checks=1558 failures=0 native_us=454 script_us=6467"
+  ],
+  "figure-related-linux-touch_unit_picking": [
+    "TOUCH_UNIT_PICKING {\"checks\":1352,\"failures\":0}"
+  ],
+  "figure-related-linux-arena_picking": [
+    "ARENA_PICKING checks=3331 failures=0 bounds=59520 -> 27880"
+  ],
+  "figure-related-windows-picking_retained": [
+    "PICKING_RETAINED 2209 checks 0 failures"
+  ],
+  "figure-related-windows-picking_mechanisms": [
+    "PICKING_MECHANISMS 5205 checks 0 failures"
+  ],
+  "figure-related-windows-picking_bounds": [
+    "PICKING_BOUNDS checks=432 failures=0"
+  ],
+  "figure-related-windows-picking_deformation": [
+    "PICKING_DEFORMATION checks=1558 failures=0 native_us=732 script_us=10288"
+  ],
+  "figure-related-windows-touch_unit_picking": [
+    "TOUCH_UNIT_PICKING {\"checks\":1352,\"failures\":0}"
+  ],
+  "figure-related-windows-arena_picking": [
+    "ARENA_PICKING checks=3331 failures=0 bounds=59520 -> 27880"
+  ]
+}

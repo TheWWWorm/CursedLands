@@ -15,6 +15,7 @@ static var _native_deform := _kernel != null and _kernel.has_method("deform_vert
 static var _native_state := _kernel != null and _kernel.has_method("deformation_state")
 static var _native_retained := _kernel != null and _kernel.has_method("retained_bounds")
 static var _native_mechanisms := _kernel != null and _kernel.has_method("pick_mechanisms")
+static var _native_figures := _kernel != null and _kernel.has_method("figure_rects") and not OS.get_cmdline_user_args().has("--ei-script-figure-picking")
 
 
 static func _make_kernel() -> RefCounted:

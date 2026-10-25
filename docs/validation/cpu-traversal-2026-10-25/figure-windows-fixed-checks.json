@@ -1,0 +1,142 @@
+[
+  {
+    "test": "picking_figures",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/picking_figures.gd"
+    ],
+    "summary": [
+      "PICKING_FIGURES checks=1403 failures=0"
+    ]
+  },
+  {
+    "test": "picking_retained",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/picking_retained.gd"
+    ],
+    "summary": [
+      "PICKING_RETAINED 2209 checks 0 failures"
+    ]
+  },
+  {
+    "test": "picking_mechanisms",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/picking_mechanisms.gd"
+    ],
+    "summary": [
+      "PICKING_MECHANISMS 5205 checks 0 failures"
+    ]
+  },
+  {
+    "test": "picking_bounds",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/picking_bounds.gd"
+    ],
+    "summary": [
+      "PICKING_BOUNDS checks=432 failures=0"
+    ]
+  },
+  {
+    "test": "picking_deformation",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/picking_deformation.gd"
+    ],
+    "summary": [
+      "PICKING_DEFORMATION checks=1558 failures=0 native_us=732 script_us=10288"
+    ]
+  },
+  {
+    "test": "touch_unit_picking",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/touch_unit_picking.gd"
+    ],
+    "summary": [
+      "TOUCH_UNIT_PICKING {\"checks\":1352,\"failures\":0}"
+    ]
+  },
+  {
+    "test": "arena_picking",
+    "returncode": 0,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+      "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/figure-picking-windows/runtime.exe",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--",
+      "--no-movies",
+      "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/arena_picking.gd"
+    ],
+    "summary": [
+      "ARENA_PICKING checks=3331 failures=0 bounds=59520 -> 27880"
+    ]
+  }
+]

@@ -1,0 +1,248 @@
+{
+  "git_head": "62c590007cfe770c67279ab98f8e75e40495276c",
+  "game_source_sha256": "0102a538c0b6c8244fc0f7a039b66586c82aa186fc0386a235e801ae4d61ff5d",
+  "manifest_sha256": "df3bb317a8a650b6e654b31fb242910557d803982e2ea20d5e4aef5a31ae7a76",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "revive_overlay_picking",
+      "script": "tools/tests/revive_overlay_picking.gd",
+      "script_sha256": "a0a05b416470a0df4ea56659a07e61575394718f18eae159905a85e9a246fe14",
+      "contract": "Direct movement skips hidden-pointer mouse hit-tests while progress bars, tactical hover and revealed-pointer interaction remain live.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 2.92,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/revive_overlay_picking/fixtures/revive_overlay_picking.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/revive_overlay_picking/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "revive_overlay_picking/run.log",
+      "passed": true,
+      "result": {
+        "checks": 9,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "script_expression_native",
+      "script": "tools/tests/script_expression_native.gd",
+      "script_sha256": "cec70e33a5c3ef82c3fbee5ce9c78d42f71d74c9fd43f5e5f8b91cd9501caa86",
+      "contract": "Native nested script expressions preserve float32 stores, live lever/object/variable reads, fallback side effects and RNG order.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/script_expression_native/fixtures/script_expression_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/script_expression_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "script_expression_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 21575,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "picking_retained",
+      "script": "tools/tests/picking_retained.gd",
+      "script_sha256": "d272cf8dd0c2a0594d9b30b0ffcd21fa504ce411fbd9bf059d5c1baf81264764",
+      "contract": "Fused native mechanism bounds preserve exact clipping, rounding, live morphs/transforms and unsupported-geometry fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/picking_retained/fixtures/picking_retained.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/picking_retained/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "picking_retained/run.log",
+      "passed": true,
+      "result": {
+        "checks": 2209,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "picking_mechanisms",
+      "script": "tools/tests/picking_mechanisms.gd",
+      "script_sha256": "54b0d31bb8e304714cb21d6750b38fc64bd816f698b79df31cb8b31d73395d12",
+      "contract": "Batched native mechanism picking preserves exact rectangles, permission, depth/assist ties, camera and live morph changes, and unsupported/custom fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/picking_mechanisms/fixtures/picking_mechanisms.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/picking_mechanisms/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "picking_mechanisms/run.log",
+      "passed": true,
+      "result": {
+        "checks": 5205,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "vegetation_warmup",
+      "script": "tools/tests/vegetation_warmup.gd",
+      "script_sha256": "ceaad6a7209b21fdeafa0269de056d806a0e2a00b169aa1a35d6e9648a154f11",
+      "contract": "Loading-time vegetation representatives match streamed cover, contact and mound materials, vertex layouts and shadow states without starting streaming work.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 2.92,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/vegetation_warmup/fixtures/vegetation_warmup.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/vegetation_warmup/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "vegetation_warmup/run.log",
+      "passed": true,
+      "result": {
+        "checks": 124,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "ambient_ground_native",
+      "script": "tools/tests/ambient_ground_native.gd",
+      "script_sha256": "721a70e32725909c6ac82043b6d546c26750f6a8a4401f597d2a6dd189c2211a",
+      "contract": "Native ambient ground queries preserve highest authored triangles, ordered ties, jitter, live terrain/material changes, drawn loose-ground interpolation and older-library fallbacks.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.47,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/ambient_ground_native/fixtures/ambient_ground_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/ambient_ground_native/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "ambient_ground_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 5117,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "star_particles",
+      "script": "tools/tests/star_particles.gd",
+      "script_sha256": "78127de7ec446d3c4338c90fa4f9f5bb26bc8fbe03a3a26f3d42ee54e01b88e2",
+      "contract": "Native exit/wisp updates preserve ordered interpolation, random streams, ground/carrier spawning, lifecycle and custom/older-library fallback.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.12,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/star_particles/fixtures/star_particles.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-packaged-headless/star_particles/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "star_particles/run.log",
+      "passed": true,
+      "result": {
+        "checks": 17473,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/combined-main-linux/runtime.pck",
+    "sha256": "13abc6c3a24c563d639450fe3c83b350e83a1930cf2bc553b813c8a5e86f7df4"
+  },
+  "passed": true
+}

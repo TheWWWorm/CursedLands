@@ -7,6 +7,7 @@ var out := ""
 var zone := "gz4g"
 var fixture := ""
 var use_fg := false
+var standard_rendering := false
 var peaceful := false
 var leg_count := 4
 var s: Session
@@ -44,6 +45,10 @@ func write_file(name: String, value: String) -> void:
 
 func inspect_device(device: RefCounted) -> void:
 	inspected.emit.call_deferred({"nrd":device.nrd_active,"closed":device._closed})
+
+func rendering_ready() -> bool:
+	if standard_rendering:return not rt.stats.get("active",false)
+	return rt.stats.get("active",false) and rt.device!=null and rt.device.nrd_active
 
 func reaches_exit(target: Vector2) -> bool:
 	for exit: Dictionary in s.world.zone.get("exits",{}).values():
@@ -127,7 +132,10 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 	var enabled := GameData.option("rtx_frame_generation")!=0
 	var presents := int(sdk_after.get("presented_frames",0))-int(sdk_before.get("presented_frames",0))
 	var game_presents := int(sdk_after.get("game_presents",0))-int(sdk_before.get("game_presents",0))
-	check(active==frames and nrd==frames,label+" keeps PT/native NRD active")
+	if standard_rendering:
+		check(active==0 and nrd==0,label+" stays in standard rendering")
+	else:
+		check(active==frames and nrd==frames,label+" keeps PT/native NRD active")
 	check(body==frames,label+" uses the production first-person body")
 	check(usable==frames,label+" stays in controllable gameplay")
 	if goal.is_finite():check(hero.pos.distance_to(before)>1.0,label+" keyboard input moves the authority-controlled hero")
@@ -151,7 +159,8 @@ func persist() -> void:
 	write_file("zone-traversal.json",JSON.stringify({
 		"checks":checks,"failures":failures,"campaign":GameData.campaign_id,"zone":s.zone_id,"title":s.zone_title(s.zone_id),
 		"rows":rows,"distance":distance,"window":str(DisplayServer.window_get_size()),"status":status(),"neutral_exploration":peaceful,
-		"frame_limit":Engine.max_fps,
+		"frame_limit":Engine.max_fps,"actor_count":s.world.units.size(),"options":GameData.options.duplicate(),
+		"adapter":RenderingServer.get_video_adapter_name(),"renderer":RenderingServer.get_current_rendering_method(),
 		"note":"Real solo worker, normal keyboard steering, live AI and authored geometry; camera turns are scripted. God mode prevents death. Neutral exploration, when flagged, changes the fixture's initial diplomacy. Initial save may be supplied; no route teleportation. frame_limit=0 identifies an uncapped benchmark."},"\t"))
 
 func _ready() -> void:
@@ -161,18 +170,21 @@ func _ready() -> void:
 		if arg.begins_with("--zone-route-zone="):zone=arg.trim_prefix("--zone-route-zone=")
 		if arg.begins_with("--zone-route-save="):fixture=arg.trim_prefix("--zone-route-save=")
 		if arg=="--zone-route-fg":use_fg=true
+		if arg=="--zone-route-standard":standard_rendering=true
 		if arg=="--zone-route-4k":route_resolution=Vector2i(3840,2160)
 		if arg=="--zone-route-peaceful":peaceful=true
 		if arg.begins_with("--zone-route-legs="):leg_count=int(arg.trim_prefix("--zone-route-legs="))
 	if out.is_empty():out=ProjectSettings.globalize_path("user://zone-traversal")
 	DirAccess.make_dir_recursive_absolute(out)
-	GameData.options.merge(GfxPresets.values(GfxPresets.ULTRA),true)
+	GameData.options.merge(GfxPresets.values(GfxPresets.VERY_HIGH if standard_rendering else GfxPresets.ULTRA),true)
 	GameData.options.merge({"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0,
 		"auto_graphics":0,"display_mode":0,"vsync":0,"fps_limit":0,"q_aa":0,"q_shadows":2,"gfx_terrain":1,
 		"gfx_soft_ground":0,"gfx_ground_contact":0,"gfx_depth_of_field":0,"gfx_water_reflections":3,
 		"pt_mode":1,"q_rt_lighting":0,"pt_accumulation":0,"rtx_upscaling":1 if use_fg else 0,"rtx_frame_generation":0,
 		"fsr_upscaling":0,"fsr_frame_generation":0,"autosave":0,"show_tutorial":0,"control_mode":3,
 		"pad_enabled":0,"scroll_border":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
+	if standard_rendering:
+		GameData.options.merge({"gfx_soft_ground":1,"gfx_water_reflections":2,"pt_mode":0,"rt_shadows":0,"rt_gi":0},true)
 	GameData.resolution_size="%dx%d"%[route_resolution.x,route_resolution.y]
 	GameData.options.resolution=maxi(0,GameData.resolutions().find(route_resolution))
 	GameData._window_state.clear();GameData._apply_window()
@@ -210,7 +222,7 @@ func _ready() -> void:
 	get_window().size=route_resolution
 	Engine.max_fps=30
 	rt=g.get_node("SceneRaytrace")
-	check(await until(func():return rt.stats.get("active",false) and rt.device!=null and rt.device.nrd_active and g.direct.usable(),120),"PT and first-person controls are ready")
+	check(await until(func():return rendering_ready() and g.direct.usable(),120),"renderer and first-person controls are ready")
 	check(s.local_host.frontend and s.local_host._process_alive(),"real separate-process solo authority")
 	# Wine/X11 acknowledges an oversized borderless capture window on the
 	# following frames; PT can already be ready before that resize lands.
@@ -222,7 +234,8 @@ func _ready() -> void:
 	var settle_until:=Time.get_ticks_msec()+30000
 	while settled<90 and Time.get_ticks_msec()<settle_until:
 		await RenderingServer.frame_post_draw
-		settled=settled+1 if g.direct.usable() and rt.stats.get("active",false) and not rt.stats.get("rebuilding",false) else 0
+		var renderer_active: bool=not rt.stats.get("active",false) if standard_rendering else rt.stats.get("active",false)
+		settled=settled+1 if g.direct.usable() and renderer_active and not rt.stats.get("rebuilding",false) else 0
 		Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 	check(settled==90,"preparation settles before recording")
 	previous_position=hero.pos;visited.append(hero.pos)
@@ -254,5 +267,5 @@ func _ready() -> void:
 	key(KEY_W,false);drive=false;g.direct.stop_move();await s.local_host.stop()
 	g.queue_free();s.queue_free()
 	for i in 12:await get_tree().process_frame
-	print("PT_ZONE_TRAVERSAL ",checks," checks ",failures," failures")
+	print("STANDARD_ZONE_TRAVERSAL " if standard_rendering else "PT_ZONE_TRAVERSAL ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

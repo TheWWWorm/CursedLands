@@ -1,0 +1,32 @@
+[
+  {
+    "test": "picking_retained",
+    "returncode": 0,
+    "summary": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:41:52 +2716ms] session 27fe8ae772da: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nPICKING_RETAINED_TIMING {\"native\":[8225,8209],\"script\":[17543,17105]}\nPICKING_RETAINED 2209 checks 0 failures\n[trace 16:41:53 +3011ms] clean exit\n\n"
+  },
+  {
+    "test": "picking_mechanisms",
+    "returncode": 0,
+    "summary": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:41:56 +2775ms] session 5cad97765a54: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nPICKING_MECHANISMS_TIMING {\"native\":[21746,21527],\"script\":[27559,26999]}\nPICKING_MECHANISMS 5205 checks 0 failures\n[trace 16:41:57 +4298ms] clean exit\n\n"
+  },
+  {
+    "test": "picking_bounds",
+    "returncode": 0,
+    "summary": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:42:00 +2566ms] session 089f15ed26b6: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nPICKING_BOUNDS checks=432 failures=0\n[trace 16:42:00 +2810ms] clean exit\n\n"
+  },
+  {
+    "test": "picking_deformation",
+    "returncode": 0,
+    "summary": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:42:03 +2522ms] session d53924c37b54: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nPICKING_DEFORMATION checks=1558 failures=0 native_us=454 script_us=6467\n[trace 16:42:04 +3142ms] clean exit\n\n"
+  },
+  {
+    "test": "touch_unit_picking",
+    "returncode": 0,
+    "summary": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:42:07 +2535ms] session 8e1345ddb07d: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nTOUCH_UNIT_PICKING {\"checks\":1352,\"failures\":0}\n[trace 16:42:08 +3695ms] clean exit\n\n"
+  },
+  {
+    "test": "arena_picking",
+    "returncode": 0,
+    "summary": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:42:11 +2505ms] session bace511e3aa4: 1.29.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nARENA_PICKING checks=3331 failures=0 bounds=59520 -> 27880\n[trace 16:42:14 +5813ms] clean exit\n\n"
+  }
+]
