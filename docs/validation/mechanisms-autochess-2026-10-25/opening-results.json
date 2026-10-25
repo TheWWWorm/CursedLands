@@ -1,0 +1,50 @@
+{
+  "git_head": "380a8b321d492f23febae2c9d9f1694c37a332d4",
+  "game_source_sha256": "4241c8550f88fcf0b5ac042042d3fada78d68e267be5a556ba9bceec149a10a0",
+  "manifest_sha256": "4eb227267e1fbdd9c50e2e76ced71b37de94f41c3c3cbc5a7d2daa50642f59bc",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app",
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "arena_opening_viability",
+      "script": "tools/tests/arena_opening_viability.gd",
+      "script_sha256": "fcae9dc69d9efe8ff36fd358f81d2fee44a63f169359fc194f55500390b04e68",
+      "contract": "Equal-price mirrored opening fights preserve goblin output and melee frontline contribution without mutating campaign data.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 61.92,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/arena_opening_viability.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless",
+        "--astral-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+      ],
+      "log": "arena_opening_viability/run.log",
+      "passed": true,
+      "result": {
+        "checks": 186,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": true
+}

@@ -4,6 +4,7 @@ extends NetworkPanel
 ## touch editing, gamepad targets and confirm/back controls.
 signal ready_requested
 var connection: ArenaOnlineSession
+var _expansion_available := false
 var port_text := str(ArenaOnlineSession.PORT)
 const ONLINE_BOOK := "user://autochess-addresses.cfg"
 
@@ -17,6 +18,12 @@ func _ready() -> void:
 	lan.modes = PackedStringArray(["autochess"])
 	_setup_button.hide()
 	max_players = 9
+
+## Installation validation walks the data trees. It belongs at menu entry,
+## never in _rows(), which drawing, layout and pointer hit testing all call.
+func open() -> void:
+	_expansion_available = ArenaExpansion.available()
+	super.open()
 
 func _refresh_start_saves() -> void: pass
 func _rebuild_save_choices() -> void: pass
@@ -53,7 +60,7 @@ func _addr_hint() -> String:
 func _rows() -> Array:
 	var locked := hosting or joining
 	var rows := [{"id":"name","kind":"edit","label":RemakeText.t("Your name"),"value":player_name,"on":not locked,"hint":RemakeText.t("Your name in the autochess tournament.")}]
-	rows.append({"id":"arena_mode","kind":"choice","label":RemakeText.t("Mode"),"value":RemakeText.t("LiA autochess" if GameData.arena_mode == 2 else "Autochess"),"on":not locked and ArenaExpansion.available(),"hint":RemakeText.t("Adds Lost in Astral creatures and characters. Requires both games installed.")})
+	rows.append({"id":"arena_mode","kind":"choice","label":RemakeText.t("Mode"),"value":RemakeText.t("LiA autochess" if GameData.arena_mode == 2 else "Autochess"),"on":not locked and _expansion_available,"hint":RemakeText.t("Adds Lost in Astral creatures and characters. Requires both games installed.")})
 	rows.append({"id":"commander","kind":"choice","label":RemakeText.t("Choose your character"),"value":ArenaCommanders.title(GameData.arena_character),"on":not locked,"hint":RemakeText.t("Your character represents you on the board. This choice does not change your army.")})
 	if ArenaCommanders.skins(GameData.arena_character).size() > 1:
 		rows.append({"id":"skin","kind":"choice","label":RemakeText.t("Skin"),"value":ArenaCommanders.skin_title(GameData.arena_character),"on":not locked,"hint":RemakeText.t("Choose an original story appearance. This only changes your character's look.")})

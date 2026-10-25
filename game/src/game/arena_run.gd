@@ -482,9 +482,19 @@ func deploy(uid: int, point: Vector2) -> String:
 
 
 func bench(uid: int, slot := -1) -> String:
-	if stage != "prepare": return RemakeText.t("Arrange your army between battles.")
+	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
 	var entry := unit(uid)
-	if entry.is_empty() or not entry.deployed: return ""
+	if entry.is_empty(): return RemakeText.t("Choose a creature from your army.")
+	if not entry.deployed:
+		var reserves := reserve_slots()
+		if slot == -1 or slot == int(entry.bench_slot): return ""
+		if slot < 0 or slot >= bench_limit(): return RemakeText.t("Choose a reserve slot.")
+		_checkpoint()
+		if not reserves[slot].is_empty(): reserves[slot].bench_slot = entry.bench_slot
+		entry.bench_slot = slot
+		_touch()
+		return ""
+	if stage != "prepare": return RemakeText.t("Arrange your army between battles.")
 	if bench_count() >= bench_limit(): return RemakeText.t("Bench full. Deploy, evolve or sell a creature first.")
 	var slots := reserve_slots()
 	if slot < 0:

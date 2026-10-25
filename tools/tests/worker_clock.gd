@@ -1,6 +1,6 @@
 extends Node
-## Clock conservation and bounded delivery after real elapsed stalls. This
-## changes only the separate worker's backlog policy, never tick duration.
+## Bounded real elapsed frames and conservation of admitted simulation work.
+## Overload wall time is dropped; supplied/interrupted ticks remain ordered.
 class ClockWorld extends GameWorld:
 	var stop_at := -1
 	var intervals: Array[float] = []
@@ -32,14 +32,14 @@ func _ready() -> void:
 	w._sample_frame(1000,2.0)
 	w._sample_frame(2500,2.0)
 	check(w._logic_step == 10,"fast-mode stall delivers at most ten ticks")
-	check(is_equal_approx(total(w),3.0),"elapsed time retained after stall")
+	check(is_equal_approx(total(w),0.55),"long stall admits only five wall ticks at the selected rate")
 	check(w.logic_fraction() >= 0.0 and w.logic_fraction() < 1.0,"backlog never extrapolates a spline")
 	for i in range(1,21):
 		var before := w._logic_step
 		w._sample_frame(2500+i*10,2.0)
 		check(w._logic_step-before <= 10,"bounded repayment at selected rate")
-		check(absf(total(w)-(3.0+i*0.02)) < 1e-8,"conserved elapsed time")
-	check(w._logic_debt == 0.0 and absf(w.time-3.4) < GameWorld.TICK,"worker catches up")
+		check(absf(total(w)-(0.55+i*0.02)) < 1e-8,"conserved admitted time")
+	check(w._logic_debt == 0.0 and absf(w.time-0.95) < GameWorld.TICK,"worker resumes without replaying the stall")
 	# No queued tick executes during a movie; its wall duration is excluded.
 	var s := Session.new()
 	w.session = s
@@ -47,7 +47,7 @@ func _ready() -> void:
 	var before := total(w)
 	w._sample_frame(3000,2.0)
 	check(s.movie_active(),"movie interrupts the batch")
-	check(absf(total(w)-before-0.6) < 1e-8,"interrupted batch retains undelivered time")
+	check(absf(total(w)-before-0.55) < 1e-8,"interrupted batch retains admitted undelivered time")
 	check(w.logic_fraction() < 1.0,"interrupted fraction is bounded")
 	var steps := w._logic_step
 	before = total(w)

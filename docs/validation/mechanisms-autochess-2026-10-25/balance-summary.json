@@ -1,0 +1,2690 @@
+{
+  "method": "Final roster captures, replacing only family-34 pairings after its damage adjustment. Supports are always base-game families and therefore unchanged by this adjustment. All fights use seeds 8519/16729 and mirrored sides.",
+  "ranks": [
+    {
+      "rank": 0,
+      "rows": 369,
+      "fights": 1476,
+      "families": [
+        {
+          "family": 0,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 0,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 0,
+          "context": "screen",
+          "wins": 10,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.35714285714285715
+        },
+        {
+          "family": 1,
+          "context": "duel",
+          "wins": 16,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.5892857142857143
+        },
+        {
+          "family": 1,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 1,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 2,
+          "context": "duel",
+          "wins": 18,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6428571428571429
+        },
+        {
+          "family": 2,
+          "context": "line",
+          "wins": 17,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.625
+        },
+        {
+          "family": 2,
+          "context": "screen",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 3,
+          "context": "duel",
+          "wins": 23,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.8214285714285714
+        },
+        {
+          "family": 3,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 3,
+          "context": "screen",
+          "wins": 18,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6428571428571429
+        },
+        {
+          "family": 4,
+          "context": "duel",
+          "wins": 3,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.10714285714285714
+        },
+        {
+          "family": 4,
+          "context": "line",
+          "wins": 12,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.44642857142857145
+        },
+        {
+          "family": 4,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 5,
+          "context": "duel",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 5,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 5,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 6,
+          "context": "duel",
+          "wins": 14,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.5178571428571429
+        },
+        {
+          "family": 6,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.35714285714285715
+        },
+        {
+          "family": 6,
+          "context": "screen",
+          "wins": 19,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6785714285714286
+        },
+        {
+          "family": 7,
+          "context": "duel",
+          "wins": 19,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.609375
+        },
+        {
+          "family": 7,
+          "context": "line",
+          "wins": 9,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.28125
+        },
+        {
+          "family": 7,
+          "context": "screen",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 8,
+          "context": "duel",
+          "wins": 27,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.84375
+        },
+        {
+          "family": 8,
+          "context": "line",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 8,
+          "context": "screen",
+          "wins": 21,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.65625
+        },
+        {
+          "family": 9,
+          "context": "duel",
+          "wins": 23,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.71875
+        },
+        {
+          "family": 9,
+          "context": "line",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 9,
+          "context": "screen",
+          "wins": 23,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.71875
+        },
+        {
+          "family": 10,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 10,
+          "context": "line",
+          "wins": 23,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.71875
+        },
+        {
+          "family": 10,
+          "context": "screen",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 11,
+          "context": "duel",
+          "wins": 0,
+          "draws": 4,
+          "fights": 32,
+          "points_rate": 0.0625
+        },
+        {
+          "family": 11,
+          "context": "line",
+          "wins": 20,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.625
+        },
+        {
+          "family": 11,
+          "context": "screen",
+          "wins": 5,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.15625
+        },
+        {
+          "family": 12,
+          "context": "duel",
+          "wins": 19,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.609375
+        },
+        {
+          "family": 12,
+          "context": "line",
+          "wins": 11,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.34375
+        },
+        {
+          "family": 12,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 13,
+          "context": "duel",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 13,
+          "context": "line",
+          "wins": 20,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.7142857142857143
+        },
+        {
+          "family": 13,
+          "context": "screen",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 14,
+          "context": "duel",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 14,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 14,
+          "context": "screen",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 15,
+          "context": "duel",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 15,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 15,
+          "context": "screen",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 16,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 16,
+          "context": "line",
+          "wins": 21,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.75
+        },
+        {
+          "family": 16,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 17,
+          "context": "duel",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 17,
+          "context": "line",
+          "wins": 9,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.3392857142857143
+        },
+        {
+          "family": 17,
+          "context": "screen",
+          "wins": 11,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 18,
+          "context": "duel",
+          "wins": 0,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.0
+        },
+        {
+          "family": 18,
+          "context": "line",
+          "wins": 11,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.4583333333333333
+        },
+        {
+          "family": 18,
+          "context": "screen",
+          "wins": 2,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.08333333333333333
+        },
+        {
+          "family": 19,
+          "context": "duel",
+          "wins": 15,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.625
+        },
+        {
+          "family": 19,
+          "context": "line",
+          "wins": 15,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.6458333333333334
+        },
+        {
+          "family": 19,
+          "context": "screen",
+          "wins": 24,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 1.0
+        },
+        {
+          "family": 20,
+          "context": "duel",
+          "wins": 21,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.875
+        },
+        {
+          "family": 20,
+          "context": "line",
+          "wins": 19,
+          "draws": 3,
+          "fights": 24,
+          "points_rate": 0.8541666666666666
+        },
+        {
+          "family": 20,
+          "context": "screen",
+          "wins": 6,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.25
+        },
+        {
+          "family": 21,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        },
+        {
+          "family": 21,
+          "context": "line",
+          "wins": 19,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.7916666666666666
+        },
+        {
+          "family": 21,
+          "context": "screen",
+          "wins": 15,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.625
+        },
+        {
+          "family": 22,
+          "context": "duel",
+          "wins": 12,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.5208333333333334
+        },
+        {
+          "family": 22,
+          "context": "line",
+          "wins": 3,
+          "draws": 3,
+          "fights": 24,
+          "points_rate": 0.1875
+        },
+        {
+          "family": 22,
+          "context": "screen",
+          "wins": 10,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.4166666666666667
+        },
+        {
+          "family": 23,
+          "context": "duel",
+          "wins": 4,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.25
+        },
+        {
+          "family": 23,
+          "context": "line",
+          "wins": 7,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 23,
+          "context": "screen",
+          "wins": 10,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.65625
+        },
+        {
+          "family": 24,
+          "context": "duel",
+          "wins": 14,
+          "draws": 2,
+          "fights": 16,
+          "points_rate": 0.9375
+        },
+        {
+          "family": 24,
+          "context": "line",
+          "wins": 4,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.28125
+        },
+        {
+          "family": 24,
+          "context": "screen",
+          "wins": 11,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.6875
+        },
+        {
+          "family": 25,
+          "context": "duel",
+          "wins": 5,
+          "draws": 4,
+          "fights": 16,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 25,
+          "context": "line",
+          "wins": 11,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.71875
+        },
+        {
+          "family": 25,
+          "context": "screen",
+          "wins": 3,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.1875
+        },
+        {
+          "family": 26,
+          "context": "duel",
+          "wins": 4,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.25
+        },
+        {
+          "family": 26,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.625
+        },
+        {
+          "family": 26,
+          "context": "screen",
+          "wins": 12,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.78125
+        },
+        {
+          "family": 27,
+          "context": "duel",
+          "wins": 9,
+          "draws": 2,
+          "fights": 16,
+          "points_rate": 0.625
+        },
+        {
+          "family": 27,
+          "context": "line",
+          "wins": 7,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 27,
+          "context": "screen",
+          "wins": 3,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.1875
+        },
+        {
+          "family": 28,
+          "context": "duel",
+          "wins": 19,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 28,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.40625
+        },
+        {
+          "family": 28,
+          "context": "screen",
+          "wins": 17,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.53125
+        },
+        {
+          "family": 30,
+          "context": "duel",
+          "wins": 9,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.32142857142857145
+        },
+        {
+          "family": 30,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 30,
+          "context": "screen",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 31,
+          "context": "duel",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 31,
+          "context": "line",
+          "wins": 20,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.625
+        },
+        {
+          "family": 31,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5
+        },
+        {
+          "family": 32,
+          "context": "duel",
+          "wins": 0,
+          "draws": 4,
+          "fights": 32,
+          "points_rate": 0.0625
+        },
+        {
+          "family": 32,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.375
+        },
+        {
+          "family": 32,
+          "context": "screen",
+          "wins": 12,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.375
+        },
+        {
+          "family": 33,
+          "context": "duel",
+          "wins": 22,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.7857142857142857
+        },
+        {
+          "family": 33,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 33,
+          "context": "screen",
+          "wins": 20,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.7142857142857143
+        },
+        {
+          "family": 34,
+          "context": "duel",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 34,
+          "context": "line",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 34,
+          "context": "screen",
+          "wins": 9,
+          "draws": 3,
+          "fights": 28,
+          "points_rate": 0.375
+        },
+        {
+          "family": 35,
+          "context": "duel",
+          "wins": 15,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.6458333333333334
+        },
+        {
+          "family": 35,
+          "context": "line",
+          "wins": 3,
+          "draws": 3,
+          "fights": 24,
+          "points_rate": 0.1875
+        },
+        {
+          "family": 35,
+          "context": "screen",
+          "wins": 11,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.4583333333333333
+        },
+        {
+          "family": 36,
+          "context": "duel",
+          "wins": 10,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.35714285714285715
+        },
+        {
+          "family": 36,
+          "context": "line",
+          "wins": 7,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.26785714285714285
+        },
+        {
+          "family": 36,
+          "context": "screen",
+          "wins": 11,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.4107142857142857
+        },
+        {
+          "family": 37,
+          "context": "duel",
+          "wins": 4,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.16666666666666666
+        },
+        {
+          "family": 37,
+          "context": "line",
+          "wins": 8,
+          "draws": 2,
+          "fights": 24,
+          "points_rate": 0.375
+        },
+        {
+          "family": 37,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        }
+      ]
+    },
+    {
+      "rank": 1,
+      "rows": 369,
+      "fights": 1476,
+      "families": [
+        {
+          "family": 0,
+          "context": "duel",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 0,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 0,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 1,
+          "context": "duel",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 1,
+          "context": "line",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 1,
+          "context": "screen",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 2,
+          "context": "duel",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 2,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 2,
+          "context": "screen",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 3,
+          "context": "duel",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 3,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 3,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 4,
+          "context": "duel",
+          "wins": 5,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.17857142857142858
+        },
+        {
+          "family": 4,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.35714285714285715
+        },
+        {
+          "family": 4,
+          "context": "screen",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 5,
+          "context": "duel",
+          "wins": 24,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.8571428571428571
+        },
+        {
+          "family": 5,
+          "context": "line",
+          "wins": 18,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6428571428571429
+        },
+        {
+          "family": 5,
+          "context": "screen",
+          "wins": 20,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.7142857142857143
+        },
+        {
+          "family": 6,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 6,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 6,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 7,
+          "context": "duel",
+          "wins": 18,
+          "draws": 2,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 7,
+          "context": "line",
+          "wins": 14,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.453125
+        },
+        {
+          "family": 7,
+          "context": "screen",
+          "wins": 18,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.578125
+        },
+        {
+          "family": 8,
+          "context": "duel",
+          "wins": 27,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.84375
+        },
+        {
+          "family": 8,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.53125
+        },
+        {
+          "family": 8,
+          "context": "screen",
+          "wins": 17,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.546875
+        },
+        {
+          "family": 9,
+          "context": "duel",
+          "wins": 22,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.6875
+        },
+        {
+          "family": 9,
+          "context": "line",
+          "wins": 19,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 9,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5
+        },
+        {
+          "family": 10,
+          "context": "duel",
+          "wins": 17,
+          "draws": 2,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 10,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5
+        },
+        {
+          "family": 10,
+          "context": "screen",
+          "wins": 19,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 11,
+          "context": "duel",
+          "wins": 6,
+          "draws": 4,
+          "fights": 32,
+          "points_rate": 0.25
+        },
+        {
+          "family": 11,
+          "context": "line",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 11,
+          "context": "screen",
+          "wins": 5,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.171875
+        },
+        {
+          "family": 12,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5
+        },
+        {
+          "family": 12,
+          "context": "line",
+          "wins": 13,
+          "draws": 2,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 12,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 13,
+          "context": "duel",
+          "wins": 19,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6785714285714286
+        },
+        {
+          "family": 13,
+          "context": "line",
+          "wins": 24,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.8571428571428571
+        },
+        {
+          "family": 13,
+          "context": "screen",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 14,
+          "context": "duel",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 14,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 14,
+          "context": "screen",
+          "wins": 18,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.6785714285714286
+        },
+        {
+          "family": 15,
+          "context": "duel",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 15,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 15,
+          "context": "screen",
+          "wins": 16,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 16,
+          "context": "duel",
+          "wins": 5,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.19642857142857142
+        },
+        {
+          "family": 16,
+          "context": "line",
+          "wins": 9,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.32142857142857145
+        },
+        {
+          "family": 16,
+          "context": "screen",
+          "wins": 14,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 17,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 17,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 17,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 18,
+          "context": "duel",
+          "wins": 0,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.0
+        },
+        {
+          "family": 18,
+          "context": "line",
+          "wins": 17,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.7291666666666666
+        },
+        {
+          "family": 18,
+          "context": "screen",
+          "wins": 5,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.20833333333333334
+        },
+        {
+          "family": 19,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        },
+        {
+          "family": 19,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        },
+        {
+          "family": 19,
+          "context": "screen",
+          "wins": 23,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.9583333333333334
+        },
+        {
+          "family": 20,
+          "context": "duel",
+          "wins": 17,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.7083333333333334
+        },
+        {
+          "family": 20,
+          "context": "line",
+          "wins": 17,
+          "draws": 2,
+          "fights": 24,
+          "points_rate": 0.75
+        },
+        {
+          "family": 20,
+          "context": "screen",
+          "wins": 5,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.20833333333333334
+        },
+        {
+          "family": 21,
+          "context": "duel",
+          "wins": 18,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.75
+        },
+        {
+          "family": 21,
+          "context": "line",
+          "wins": 15,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.6458333333333334
+        },
+        {
+          "family": 21,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5833333333333334
+        },
+        {
+          "family": 22,
+          "context": "duel",
+          "wins": 12,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5
+        },
+        {
+          "family": 22,
+          "context": "line",
+          "wins": 3,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.125
+        },
+        {
+          "family": 22,
+          "context": "screen",
+          "wins": 11,
+          "draws": 2,
+          "fights": 24,
+          "points_rate": 0.5
+        },
+        {
+          "family": 23,
+          "context": "duel",
+          "wins": 8,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.5
+        },
+        {
+          "family": 23,
+          "context": "line",
+          "wins": 8,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.5
+        },
+        {
+          "family": 23,
+          "context": "screen",
+          "wins": 5,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.3125
+        },
+        {
+          "family": 24,
+          "context": "duel",
+          "wins": 7,
+          "draws": 2,
+          "fights": 16,
+          "points_rate": 0.5
+        },
+        {
+          "family": 24,
+          "context": "line",
+          "wins": 6,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.375
+        },
+        {
+          "family": 24,
+          "context": "screen",
+          "wins": 5,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.3125
+        },
+        {
+          "family": 25,
+          "context": "duel",
+          "wins": 0,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.0
+        },
+        {
+          "family": 25,
+          "context": "line",
+          "wins": 5,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.34375
+        },
+        {
+          "family": 25,
+          "context": "screen",
+          "wins": 9,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 26,
+          "context": "duel",
+          "wins": 9,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 26,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.625
+        },
+        {
+          "family": 26,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.5
+        },
+        {
+          "family": 27,
+          "context": "duel",
+          "wins": 14,
+          "draws": 2,
+          "fights": 16,
+          "points_rate": 0.9375
+        },
+        {
+          "family": 27,
+          "context": "line",
+          "wins": 10,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.65625
+        },
+        {
+          "family": 27,
+          "context": "screen",
+          "wins": 13,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.8125
+        },
+        {
+          "family": 28,
+          "context": "duel",
+          "wins": 15,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.46875
+        },
+        {
+          "family": 28,
+          "context": "line",
+          "wins": 19,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.609375
+        },
+        {
+          "family": 28,
+          "context": "screen",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 30,
+          "context": "duel",
+          "wins": 11,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.39285714285714285
+        },
+        {
+          "family": 30,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 30,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 31,
+          "context": "duel",
+          "wins": 16,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.515625
+        },
+        {
+          "family": 31,
+          "context": "line",
+          "wins": 12,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.390625
+        },
+        {
+          "family": 31,
+          "context": "screen",
+          "wins": 19,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 32,
+          "context": "duel",
+          "wins": 0,
+          "draws": 5,
+          "fights": 32,
+          "points_rate": 0.078125
+        },
+        {
+          "family": 32,
+          "context": "line",
+          "wins": 13,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.421875
+        },
+        {
+          "family": 32,
+          "context": "screen",
+          "wins": 16,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.515625
+        },
+        {
+          "family": 33,
+          "context": "duel",
+          "wins": 24,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.8571428571428571
+        },
+        {
+          "family": 33,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 33,
+          "context": "screen",
+          "wins": 24,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.8928571428571429
+        },
+        {
+          "family": 34,
+          "context": "duel",
+          "wins": 11,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.4107142857142857
+        },
+        {
+          "family": 34,
+          "context": "line",
+          "wins": 7,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.25
+        },
+        {
+          "family": 34,
+          "context": "screen",
+          "wins": 11,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.4107142857142857
+        },
+        {
+          "family": 35,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        },
+        {
+          "family": 35,
+          "context": "line",
+          "wins": 3,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.14583333333333334
+        },
+        {
+          "family": 35,
+          "context": "screen",
+          "wins": 8,
+          "draws": 2,
+          "fights": 24,
+          "points_rate": 0.375
+        },
+        {
+          "family": 36,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 36,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 36,
+          "context": "screen",
+          "wins": 4,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.16071428571428573
+        },
+        {
+          "family": 37,
+          "context": "duel",
+          "wins": 5,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.20833333333333334
+        },
+        {
+          "family": 37,
+          "context": "line",
+          "wins": 10,
+          "draws": 1,
+          "fights": 24,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 37,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "rows": 369,
+      "fights": 1476,
+      "families": [
+        {
+          "family": 0,
+          "context": "duel",
+          "wins": 7,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.25
+        },
+        {
+          "family": 0,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 0,
+          "context": "screen",
+          "wins": 14,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.5178571428571429
+        },
+        {
+          "family": 1,
+          "context": "duel",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 1,
+          "context": "line",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 1,
+          "context": "screen",
+          "wins": 5,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.19642857142857142
+        },
+        {
+          "family": 2,
+          "context": "duel",
+          "wins": 18,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.6785714285714286
+        },
+        {
+          "family": 2,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 2,
+          "context": "screen",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 3,
+          "context": "duel",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 3,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 3,
+          "context": "screen",
+          "wins": 15,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.5535714285714286
+        },
+        {
+          "family": 4,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 4,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 4,
+          "context": "screen",
+          "wins": 22,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.8035714285714286
+        },
+        {
+          "family": 5,
+          "context": "duel",
+          "wins": 21,
+          "draws": 2,
+          "fights": 28,
+          "points_rate": 0.7857142857142857
+        },
+        {
+          "family": 5,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 5,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 6,
+          "context": "duel",
+          "wins": 11,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.39285714285714285
+        },
+        {
+          "family": 6,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 6,
+          "context": "screen",
+          "wins": 9,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.32142857142857145
+        },
+        {
+          "family": 7,
+          "context": "duel",
+          "wins": 14,
+          "draws": 4,
+          "fights": 32,
+          "points_rate": 0.5
+        },
+        {
+          "family": 7,
+          "context": "line",
+          "wins": 19,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 7,
+          "context": "screen",
+          "wins": 15,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.46875
+        },
+        {
+          "family": 8,
+          "context": "duel",
+          "wins": 20,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.625
+        },
+        {
+          "family": 8,
+          "context": "line",
+          "wins": 15,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.46875
+        },
+        {
+          "family": 8,
+          "context": "screen",
+          "wins": 18,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.578125
+        },
+        {
+          "family": 9,
+          "context": "duel",
+          "wins": 22,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.6875
+        },
+        {
+          "family": 9,
+          "context": "line",
+          "wins": 20,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.625
+        },
+        {
+          "family": 9,
+          "context": "screen",
+          "wins": 21,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.65625
+        },
+        {
+          "family": 10,
+          "context": "duel",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 10,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 10,
+          "context": "screen",
+          "wins": 15,
+          "draws": 2,
+          "fights": 32,
+          "points_rate": 0.5
+        },
+        {
+          "family": 11,
+          "context": "duel",
+          "wins": 16,
+          "draws": 4,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 11,
+          "context": "line",
+          "wins": 9,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.28125
+        },
+        {
+          "family": 11,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 12,
+          "context": "duel",
+          "wins": 12,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.375
+        },
+        {
+          "family": 12,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.40625
+        },
+        {
+          "family": 12,
+          "context": "screen",
+          "wins": 21,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.65625
+        },
+        {
+          "family": 13,
+          "context": "duel",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 13,
+          "context": "line",
+          "wins": 18,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6428571428571429
+        },
+        {
+          "family": 13,
+          "context": "screen",
+          "wins": 18,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6428571428571429
+        },
+        {
+          "family": 14,
+          "context": "duel",
+          "wins": 11,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.39285714285714285
+        },
+        {
+          "family": 14,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.35714285714285715
+        },
+        {
+          "family": 14,
+          "context": "screen",
+          "wins": 21,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.75
+        },
+        {
+          "family": 15,
+          "context": "duel",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 15,
+          "context": "line",
+          "wins": 13,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.4642857142857143
+        },
+        {
+          "family": 15,
+          "context": "screen",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 16,
+          "context": "duel",
+          "wins": 9,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.32142857142857145
+        },
+        {
+          "family": 16,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.42857142857142855
+        },
+        {
+          "family": 16,
+          "context": "screen",
+          "wins": 13,
+          "draws": 3,
+          "fights": 28,
+          "points_rate": 0.5178571428571429
+        },
+        {
+          "family": 17,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 17,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.6071428571428571
+        },
+        {
+          "family": 17,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.2857142857142857
+        },
+        {
+          "family": 18,
+          "context": "duel",
+          "wins": 0,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.0
+        },
+        {
+          "family": 18,
+          "context": "line",
+          "wins": 12,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5
+        },
+        {
+          "family": 18,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.3333333333333333
+        },
+        {
+          "family": 19,
+          "context": "duel",
+          "wins": 12,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5
+        },
+        {
+          "family": 19,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5833333333333334
+        },
+        {
+          "family": 19,
+          "context": "screen",
+          "wins": 18,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.75
+        },
+        {
+          "family": 20,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5833333333333334
+        },
+        {
+          "family": 20,
+          "context": "line",
+          "wins": 15,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.625
+        },
+        {
+          "family": 20,
+          "context": "screen",
+          "wins": 11,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.4583333333333333
+        },
+        {
+          "family": 21,
+          "context": "duel",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        },
+        {
+          "family": 21,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5833333333333334
+        },
+        {
+          "family": 21,
+          "context": "screen",
+          "wins": 15,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.625
+        },
+        {
+          "family": 22,
+          "context": "duel",
+          "wins": 20,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.8333333333333334
+        },
+        {
+          "family": 22,
+          "context": "line",
+          "wins": 5,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.20833333333333334
+        },
+        {
+          "family": 22,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.3333333333333333
+        },
+        {
+          "family": 23,
+          "context": "duel",
+          "wins": 6,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.375
+        },
+        {
+          "family": 23,
+          "context": "line",
+          "wins": 6,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.375
+        },
+        {
+          "family": 23,
+          "context": "screen",
+          "wins": 5,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.3125
+        },
+        {
+          "family": 24,
+          "context": "duel",
+          "wins": 10,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.65625
+        },
+        {
+          "family": 24,
+          "context": "line",
+          "wins": 11,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.6875
+        },
+        {
+          "family": 24,
+          "context": "screen",
+          "wins": 0,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.0
+        },
+        {
+          "family": 25,
+          "context": "duel",
+          "wins": 0,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.0
+        },
+        {
+          "family": 25,
+          "context": "line",
+          "wins": 6,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.375
+        },
+        {
+          "family": 25,
+          "context": "screen",
+          "wins": 11,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.6875
+        },
+        {
+          "family": 26,
+          "context": "duel",
+          "wins": 8,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.5
+        },
+        {
+          "family": 26,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.625
+        },
+        {
+          "family": 26,
+          "context": "screen",
+          "wins": 11,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.6875
+        },
+        {
+          "family": 27,
+          "context": "duel",
+          "wins": 15,
+          "draws": 1,
+          "fights": 16,
+          "points_rate": 0.96875
+        },
+        {
+          "family": 27,
+          "context": "line",
+          "wins": 7,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 27,
+          "context": "screen",
+          "wins": 13,
+          "draws": 0,
+          "fights": 16,
+          "points_rate": 0.8125
+        },
+        {
+          "family": 28,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.4375
+        },
+        {
+          "family": 28,
+          "context": "line",
+          "wins": 19,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.59375
+        },
+        {
+          "family": 28,
+          "context": "screen",
+          "wins": 11,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.34375
+        },
+        {
+          "family": 30,
+          "context": "duel",
+          "wins": 7,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.25
+        },
+        {
+          "family": 30,
+          "context": "line",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 30,
+          "context": "screen",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 31,
+          "context": "duel",
+          "wins": 20,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.625
+        },
+        {
+          "family": 31,
+          "context": "line",
+          "wins": 18,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.5625
+        },
+        {
+          "family": 31,
+          "context": "screen",
+          "wins": 18,
+          "draws": 1,
+          "fights": 32,
+          "points_rate": 0.578125
+        },
+        {
+          "family": 32,
+          "context": "duel",
+          "wins": 0,
+          "draws": 8,
+          "fights": 32,
+          "points_rate": 0.125
+        },
+        {
+          "family": 32,
+          "context": "line",
+          "wins": 17,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.53125
+        },
+        {
+          "family": 32,
+          "context": "screen",
+          "wins": 9,
+          "draws": 0,
+          "fights": 32,
+          "points_rate": 0.28125
+        },
+        {
+          "family": 33,
+          "context": "duel",
+          "wins": 24,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.8571428571428571
+        },
+        {
+          "family": 33,
+          "context": "line",
+          "wins": 15,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5357142857142857
+        },
+        {
+          "family": 33,
+          "context": "screen",
+          "wins": 21,
+          "draws": 3,
+          "fights": 28,
+          "points_rate": 0.8035714285714286
+        },
+        {
+          "family": 34,
+          "context": "duel",
+          "wins": 14,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5
+        },
+        {
+          "family": 34,
+          "context": "line",
+          "wins": 11,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.39285714285714285
+        },
+        {
+          "family": 34,
+          "context": "screen",
+          "wins": 5,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.19642857142857142
+        },
+        {
+          "family": 35,
+          "context": "duel",
+          "wins": 18,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.75
+        },
+        {
+          "family": 35,
+          "context": "line",
+          "wins": 10,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.4166666666666667
+        },
+        {
+          "family": 35,
+          "context": "screen",
+          "wins": 8,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.3333333333333333
+        },
+        {
+          "family": 36,
+          "context": "duel",
+          "wins": 10,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.35714285714285715
+        },
+        {
+          "family": 36,
+          "context": "line",
+          "wins": 16,
+          "draws": 0,
+          "fights": 28,
+          "points_rate": 0.5714285714285714
+        },
+        {
+          "family": 36,
+          "context": "screen",
+          "wins": 10,
+          "draws": 1,
+          "fights": 28,
+          "points_rate": 0.375
+        },
+        {
+          "family": 37,
+          "context": "duel",
+          "wins": 4,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.16666666666666666
+        },
+        {
+          "family": 37,
+          "context": "line",
+          "wins": 14,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.5833333333333334
+        },
+        {
+          "family": 37,
+          "context": "screen",
+          "wins": 16,
+          "draws": 0,
+          "fights": 24,
+          "points_rate": 0.6666666666666666
+        }
+      ]
+    }
+  ]
+}

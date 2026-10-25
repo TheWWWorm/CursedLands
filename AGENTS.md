@@ -3,6 +3,14 @@
 Do not use subagents or delegate to other agents unless the user explicitly asks.
 This preference also applies when a skill recommends parallel agent work.
 
+# Regression tests
+
+Every issue or bug fix and every feature addition or change MUST include a
+regression test in the same change. For fixes, the test must exercise the
+reported failure and fail against the unfixed behavior. Register the test in
+the relevant test runner, run it, and run related existing regression tests.
+Do not mark work complete based only on inspection or a manual spot check.
+
 # Withdrawn RTX 30 package
 
 Never publish, upload, mirror, or bundle the withdrawn RTX 30 / `dlssg_for_sm86`

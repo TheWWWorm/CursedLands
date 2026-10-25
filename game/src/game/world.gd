@@ -84,10 +84,10 @@ var time := 0.0
 ## The remainder belongs to this world, including a retained LMP world.
 var _logic_accumulator := 0.0
 var _logic_step := 0
-## A separate simulation process can repay a transient stall without blocking
-## the owner's renderer. Keep a bounded callback budget at each speed, retaining
-## the excess outside the fractional presentation clock. Inline worlds keep
-## the original cap; paused/loading intervals are excluded by _sample_frame.
+## A separate simulation process retains work interrupted within its callback
+## budget, outside the fractional presentation clock. Real elapsed frames are
+## capped for both workers and inline worlds: a long overload must not become
+## seconds of accelerated NPC movement after the stall ends.
 var retain_logic_debt := false
 var _logic_debt := 0.0
 ## Godot4.7 discards time beyond max_physics_steps_per_frame from both its
@@ -344,8 +344,7 @@ func move_object(nid: int, p: Vector3) -> void:
 	if map: p = map.moved_object_position(nid,p)
 	o.position = p
 	node.position = EISpace.pos(p.x, p.y, terrain.height_at(p.x, p.y) + p.z)
-	nav.remove_object(nid)
-	nav.add_object(node)
+	nav.move_object(node)
 
 
 ## A magic trap whose figure (efcu0, an editor marker) has no model still is a
@@ -811,8 +810,7 @@ func _sample_frame(now_ms: int, rate: float, active := true) -> void:
 		return   # the original DWORD clock's backwards-time guard
 	# Bound wall time before applying the selected speed. A fixed five-tick
 	# limit after scaling made fast and normal converge on slow frames.
-	var seconds := float(elapsed) / 1000.0
-	if not retain_logic_debt: seconds = minf(seconds, TICK * 5.0)
+	var seconds := minf(float(elapsed) / 1000.0, TICK * 5.0)
 	_deliver(seconds * rate, rate)
 
 

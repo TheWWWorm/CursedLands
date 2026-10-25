@@ -11,7 +11,7 @@ import time
 import unittest
 import xml.etree.ElementTree as ET
 
-from gameplay import assess, catalog, engine_argv, parse_summary, run_program, save_report
+from gameplay import argument_paths, assess, catalog, engine_argv, missing_assets, parse_summary, run_program, save_report
 from run import HERE, PROFILE, REPO
 
 
@@ -152,6 +152,38 @@ class GameplayResults(unittest.TestCase):
 
 
 class GameplayExecution(unittest.TestCase):
+    def test_companion_campaign_arguments_and_missing_assets(self):
+        spec = dict(SPEC, required_files=["res/base.res"],
+                    extra_data={"lost_in_astral": ["res/figures.res"]},
+                    args=["--astral-path={lost_in_astral}", "--literal=unchanged"])
+        with tempfile.TemporaryDirectory(prefix="data with spaces ") as folder:
+            base, astral = Path(folder) / "base", Path(folder) / "astral"
+            (base / "res").mkdir(parents=True)
+            (base / "res/base.res").write_bytes(b"base")
+            self.assertEqual(missing_assets(spec, {"cursed_lands": base}),
+                             ["lost_in_astral/res/figures.res"])
+            with self.assertRaises(ValueError):
+                argument_paths(spec, {"cursed_lands": base})
+            roots = {"cursed_lands": base, "lost_in_astral": astral}
+            self.assertTrue(missing_assets(spec, roots))
+            (astral / "res").mkdir(parents=True)
+            (astral / "res/figures.res").write_bytes(b"figures")
+            self.assertEqual(missing_assets(spec, roots), [])
+            self.assertEqual(argument_paths(spec, roots),
+                             ["--astral-path=" + str(astral), "--literal=unchanged"])
+            with self.assertRaises(ValueError):
+                argument_paths(dict(spec, extra_data={}), roots)
+
+    def test_companion_assets_cannot_escape_or_use_unknown_campaigns(self):
+        for extra in ({"lost_in_astral": ["../../player.save"]}, {"unknown": ["res/data"]}):
+            rows = copy.deepcopy(catalog()[:1])
+            rows[0]["extra_data"] = extra
+            with tempfile.TemporaryDirectory() as folder:
+                selection = Path(folder) / "selection.json"
+                selection.write_text(json.dumps(rows))
+                with self.assertRaises(ValueError):
+                    catalog(selection)
+
     def test_player_inventory_accounts_for_every_authority_command(self):
         inventory = json.loads((HERE / "player_features.json").read_text())
         source = (REPO / "game/src/game/session.gd").read_text()
@@ -252,14 +284,15 @@ class GameplayExecution(unittest.TestCase):
             self.assertEqual(sentinel.read_text(), "retained")
 
     def test_output_inside_copied_test_tree_is_rejected_before_staging(self):
-        with tempfile.TemporaryDirectory(dir=REPO / "tools/tests") as folder:
-            out = Path(folder) / "must-not-exist"
-            result = subprocess.run([sys.executable, str(HERE / "gameplay.py"), "--out", str(out),
-                                     "--game-dir", folder, "--godot", "must-not-launch"],
-                                    capture_output=True, text=True, timeout=10)
-            self.assertEqual(result.returncode, 2)
-            self.assertIn("source folders", result.stderr)
-            self.assertFalse(out.exists())
+        for source in ("tools/tests", "tools/benchmarks"):
+            with self.subTest(source=source), tempfile.TemporaryDirectory(dir=REPO / source) as folder:
+                out = Path(folder) / "must-not-exist"
+                result = subprocess.run([sys.executable, str(HERE / "gameplay.py"), "--out", str(out),
+                                         "--game-dir", folder, "--godot", "must-not-launch"],
+                                        capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 2)
+                self.assertIn("source folders", result.stderr)
+                self.assertFalse(out.exists())
 
 
 if __name__ == "__main__":

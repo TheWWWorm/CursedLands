@@ -155,7 +155,20 @@ class Layer:
 	var astar := AStarGrid2D.new()
 	var raw := PackedByteArray()
 	var land := PackedByteArray()
-	var comp := PackedInt32Array()   # connected region of each open cell, 0 = closed
+	# Full-map labels are only used by the legacy A* comparison path. Native
+	# routing maintains its own local connectivity. Rebuild on demand so a
+	# moving lift does not flood every cell of every movement class each tick.
+	var label_owner: WeakRef
+	var labels_dirty := false
+	var _comp := PackedInt32Array()
+	var comp: PackedInt32Array:
+		get:
+			if labels_dirty and label_owner and label_owner.get_ref():
+				label_owner.get_ref()._label(self)
+			return _comp
+		set(value):
+			_comp = value
+			labels_dirty = false
 	## A lower bound of the step cost table entries per 8 x 8 block (BLOCK):
 	## the commonest entry or the smallest of the block's other entries
 	## (_block_cmin; only ever lowered when cells change).
@@ -509,6 +522,7 @@ func _build_layer(cls: int) -> Layer:
 			"fixed":_fixed_sets.get(_group(cls), PackedByteArray())})
 		if not built.is_empty():
 			var result := Layer.new()
+			result.label_owner = weakref(self)
 			result.cls = cls
 			result.astar = built.astar
 			result.raw = built.raw
@@ -520,6 +534,7 @@ func _build_layer(cls: int) -> Layer:
 			_paint_layer_units(result)
 			return result
 	var L := Layer.new()
+	L.label_owner = weakref(self)
 	L.cls = cls
 	var n := size.x * size.y
 	L.astar.region = Rect2i(Vector2i.ZERO, size)
@@ -1024,6 +1039,37 @@ func remove_object(nid: int) -> void:
 	_update_region(_fp_rect(fp))
 
 
+## Replace a SetCP footprint atomically: no search can observe the temporary
+## hole. Overlapping old/new regions are updated once. Faces change at every
+## authored height, including moves smaller than one quantized grid step.
+func move_object(o: Node3D) -> void:
+	if size.x == 0:
+		return
+	var nid := int(o.get_meta("ei", {}).get("nid", 0))
+	if not _fp.has(nid):
+		add_object(o)
+		return
+	var old: Dictionary = _fp[nid]
+	var fp := _footprint(o)
+	_take(nid, old)
+	_fp[nid] = fp
+	_fp_nodes[nid] = o
+	_put(nid, fp)
+	var r := _fp_rect(old)
+	var r2 := _fp_rect(fp)
+	if r.size == Vector2i.ZERO:
+		_update_region(r2)
+	elif r2.size == Vector2i.ZERO:
+		_update_region(r)
+	elif r.grow(3).intersects(r2.grow(3)):
+		_update_region(r.merge(r2))
+	else:
+		# SetCP also teleports chests across a map. Updating the empty space
+		# between disjoint footprints would turn that into a map-sized edit.
+		_update_region(r)
+		_update_region(r2)
+
+
 ## Object, from the same target-state part boxes as its footprint.
 func object_radius(nid: int) -> float:
 	return float(_fp[nid].radius) if _fp.has(nid) else NAN
@@ -1140,26 +1186,36 @@ func _update_region(r: Rect2i) -> void:
 		for y in range(g.position.y, g.end.y):
 			for x in range(g.position.x, g.end.x):
 				fs[y * size.x + x] = _closed_at(Vector2i(x, y), key, _dry_raw)
+		# Packed arrays are copy-on-write. Preserve the updated group for a
+		# movement class first requested after a door or lift has moved.
+		_fixed_sets[key] = fs
 	var bw := (size.x + BLOCK - 1) / BLOCK
 	for L: Layer in _layers.values():
+		# Native graphs retain the previous packed arrays. Publish the edited
+		# buffers together after this layer's cells have been refreshed.
+		var raw := L.raw
+		var cost := L.cost
+		var land := L.land
+		var bmin := L.bmin
 		for y in range(r.position.y, r.end.y):
 			for x in range(r.position.x, r.end.x):
 				var i := y * size.x + x
 				var wv := _cell_weight(i, L.cls) if _special[i] else \
 					(0.0 if _dry_raw[i] else (1.0 if L.cls == 0 else _dry_weight[i]))
-				L.raw[i] = 1 if wv <= 0.0 else 0
+				raw[i] = 1 if wv <= 0.0 else 0
 				if wv > 0.0:
 					L.astar.set_point_weight_scale(Vector2i(x, y), wv)
-					L.cost[i] = roundi(wv * 1024.0)
+					cost[i] = roundi(wv * 1024.0)
 					var bi := (y / BLOCK) * bw + x / BLOCK
-					L.bmin[bi] = mini(L.bmin[bi], L.cost[i])
+					bmin[bi] = mini(bmin[bi], cost[i])
 		var key := _group(L.cls)
 		for y in range(g.position.y, g.end.y):
 			for x in range(g.position.x, g.end.x):
 				var i := y * size.x + x
-				L.land[i] = _closed_at(Vector2i(x, y), key, L.raw)
-				L.astar.set_point_solid(Vector2i(x, y), L.land[i] != 0 or _occ[i] != 0)
-		_label(L)
+				land[i] = _closed_at(Vector2i(x, y), key, raw)
+				L.astar.set_point_solid(Vector2i(x, y), land[i] != 0 or _occ[i] != 0)
+		L.raw = raw; L.cost = cost; L.land = land; L.bmin = bmin
+		L.labels_dirty = true
 	if _graphs_rev == map_rev - 1:
 		for cls: int in _native_graphs.keys():
 			if not _native_graphs[cls].update_region(g): _native_graphs.erase(cls)
@@ -1191,8 +1247,9 @@ func _label(L: Layer) -> void:
 	# the old per-cell flood fill took over half a second on a big map.
 	var n := size.x * size.y
 	var w := size.x
-	L.comp.resize(n)
-	L.comp.fill(0)
+	var labels := PackedInt32Array()
+	labels.resize(n)
+	labels.fill(0)
 	var blocked := L.land
 	var rs := PackedInt32Array()   # run start x
 	var re := PackedInt32Array()   # run end x (exclusive)
@@ -1245,7 +1302,8 @@ func _label(L: Layer) -> void:
 		var id := ids[root]
 		var base := ry[r] * w
 		for x in range(rs[r], re[r]):
-			L.comp[base + x] = id
+			labels[base + x] = id
+	L.comp = labels
 
 
 static func _find(parent: PackedInt32Array, r: int) -> int:

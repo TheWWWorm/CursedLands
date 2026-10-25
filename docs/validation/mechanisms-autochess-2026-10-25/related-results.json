@@ -1,0 +1,90 @@
+[
+  {
+    "name": "arena_species",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_SPECIES {\"checks\":2153,\"failures\":[]}"
+    ]
+  },
+  {
+    "name": "arena_roster",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_ROSTER {\"checks\":1548,\"failures\":[]}"
+    ]
+  },
+  {
+    "name": "arena_combat_effects",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_COMBAT_EFFECTS checks=31 failures=[] battle=[1,20.6799999999999,[214.821163368225,456.025750637055],{\"guardian\":2,\"spirit\":1,\"spirit_echo\":2,\"storm\":2,\"thorn\":1,\"ward\":2}]"
+    ]
+  },
+  {
+    "name": "arena_astral",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_ASTRAL checks=1078 failures=[] battle=[0,12.1,[238.463533401489,98.1173868179321],{\"marked\":5,\"popper_armed\":1,\"popper_blast\":1,\"popper_hit\":2}]"
+    ]
+  },
+  {
+    "name": "arena_online_lobby",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_ONLINE_LOBBY 80 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "arena_bot_planner",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_BOT_PLANNER {\"checks\":21,\"failures\":[]}"
+    ]
+  },
+  {
+    "name": "arena_bot_equipment_formation",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "ARENA_BOT_EQUIPMENT_FORMATION {\"checks\":108,\"failures\":[]}"
+    ]
+  },
+  {
+    "name": "creature_projectile_origins",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "CREATURE_PROJECTILE_ORIGINS checks=186 failures=0"
+    ]
+  },
+  {
+    "name": "worker_clock",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "WORKER_CLOCK 8279 checks 0 failures"
+    ]
+  },
+  {
+    "name": "nav_preparation",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "NAV_PREPARATION 6560 checks 0 failures"
+    ]
+  },
+  {
+    "name": "nav_dynamic_topology",
+    "exit_code": 0,
+    "errors": [],
+    "summary": [
+      "NAV_DYNAMIC_TOPOLOGY 11102 checks 0 failures"
+    ]
+  }
+]

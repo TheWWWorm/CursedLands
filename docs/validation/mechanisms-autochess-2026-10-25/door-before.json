@@ -1,0 +1,200 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "vulkan",
+	"rows": [
+		{
+			"frame": 0,
+			"frame_ms": 14.079,
+			"height": 0.0,
+			"update_ms": 10.999
+		},
+		{
+			"frame": 1,
+			"frame_ms": 7.216,
+			"height": 0.0,
+			"update_ms": 4.81
+		},
+		{
+			"frame": 2,
+			"frame_ms": 7.843,
+			"height": 0.0,
+			"update_ms": 5.095
+		},
+		{
+			"frame": 3,
+			"frame_ms": 7.523,
+			"height": 0.0,
+			"update_ms": 4.96
+		},
+		{
+			"frame": 4,
+			"frame_ms": 8.197,
+			"height": 0.0,
+			"update_ms": 5.357
+		},
+		{
+			"frame": 5,
+			"frame_ms": 7.572,
+			"height": 0.0,
+			"update_ms": 4.815
+		},
+		{
+			"frame": 6,
+			"frame_ms": 6.778,
+			"height": 0.0,
+			"update_ms": 4.669
+		},
+		{
+			"frame": 7,
+			"frame_ms": 6.831,
+			"height": 0.0,
+			"update_ms": 4.633
+		},
+		{
+			"frame": 8,
+			"frame_ms": 7.664,
+			"height": 0.0,
+			"update_ms": 4.833
+		},
+		{
+			"frame": 9,
+			"frame_ms": 7.522,
+			"height": 0.0,
+			"update_ms": 4.798
+		},
+		{
+			"frame": 10,
+			"frame_ms": 7.001,
+			"height": 0.0,
+			"update_ms": 4.731
+		},
+		{
+			"frame": 11,
+			"frame_ms": 6.867,
+			"height": 0.0,
+			"update_ms": 4.594
+		},
+		{
+			"frame": 12,
+			"frame_ms": 6.94,
+			"height": 0.0,
+			"update_ms": 4.591
+		},
+		{
+			"frame": 13,
+			"frame_ms": 7.758,
+			"height": 0.0,
+			"update_ms": 4.62
+		},
+		{
+			"frame": 14,
+			"frame_ms": 6.975,
+			"height": 0.0,
+			"update_ms": 4.672
+		},
+		{
+			"frame": 15,
+			"frame_ms": 6.817,
+			"height": 0.0,
+			"update_ms": 4.64
+		},
+		{
+			"frame": 16,
+			"frame_ms": 7.164,
+			"height": 0.0,
+			"update_ms": 4.687
+		},
+		{
+			"frame": 17,
+			"frame_ms": 6.901,
+			"height": 0.0,
+			"update_ms": 4.704
+		},
+		{
+			"frame": 18,
+			"frame_ms": 6.804,
+			"height": 0.0,
+			"update_ms": 4.62
+		},
+		{
+			"frame": 19,
+			"frame_ms": 6.392,
+			"height": 0.0,
+			"update_ms": 4.455
+		},
+		{
+			"frame": 20,
+			"frame_ms": 6.273,
+			"height": 0.0,
+			"update_ms": 4.449
+		},
+		{
+			"frame": 21,
+			"frame_ms": 7.697,
+			"height": 0.0,
+			"update_ms": 4.479
+		},
+		{
+			"frame": 22,
+			"frame_ms": 6.948,
+			"height": 0.0,
+			"update_ms": 4.624
+		},
+		{
+			"frame": 23,
+			"frame_ms": 6.706,
+			"height": 0.0,
+			"update_ms": 4.552
+		},
+		{
+			"frame": 24,
+			"frame_ms": 6.962,
+			"height": 0.0,
+			"update_ms": 4.548
+		},
+		{
+			"frame": 25,
+			"frame_ms": 7.311,
+			"height": 0.0,
+			"update_ms": 4.735
+		},
+		{
+			"frame": 26,
+			"frame_ms": 7.483,
+			"height": 0.0,
+			"update_ms": 4.678
+		},
+		{
+			"frame": 27,
+			"frame_ms": 6.896,
+			"height": 0.0,
+			"update_ms": 4.618
+		},
+		{
+			"frame": 28,
+			"frame_ms": 7.979,
+			"height": 0.0,
+			"update_ms": 4.833
+		},
+		{
+			"frame": 29,
+			"frame_ms": 6.977,
+			"height": 0.0,
+			"update_ms": 4.601
+		},
+		{
+			"frame": 30,
+			"frame_ms": 7.295,
+			"height": 0.0,
+			"update_ms": 4.735
+		},
+		{
+			"frame": 31,
+			"frame_ms": 6.83,
+			"height": 0.0,
+			"update_ms": 4.732
+		}
+	],
+	"scope": "Original mechanism scripts/state updates; other world simulation held, one logic tick per render frame, eight navigation classes. Measures mechanism stalls, not real-time trip duration or full gameplay FPS.",
+	"zone": "gz1d2"
+}

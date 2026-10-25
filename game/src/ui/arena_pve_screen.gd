@@ -755,7 +755,7 @@ func _build_army() -> void:
 	var existing := {}
 	for button: Button in _army_row.get_children(): existing[button.get_meta("slot_key", "")] = button
 	var selected := run.unit(selected_uid)
-	var returning: bool = run.stage == "prepare" and not selected.is_empty() and selected.deployed
+	var returning: bool = not selected.is_empty() and run.can_shop() and (run.stage == "prepare" or not selected.deployed)
 	for i in benched.size():
 		var entry: Dictionary = benched[i] if i < benched.size() else {}
 		var key := "empty:%d" % i if entry.is_empty() else "%d:%s:%d" % [entry.uid, entry.prototype, entry.rank]
@@ -797,7 +797,6 @@ func _build_army() -> void:
 		if not entry.is_empty():
 			var uid := int(entry.uid)
 			button.accessibility_name = ArenaRules.title(entry.prototype, int(entry.family), int(entry.rank))
-			button.set_drag_forwarding(Callable(), _can_drop_item_on_creature.bind(uid), _drop_item_on_creature.bind(uid))
 			var item_slot := button.get_node_or_null("CreatureItemTarget") as ArenaItemSlot
 			if item_slot == null:
 				item_slot = ArenaItemSlot.new()
@@ -831,13 +830,14 @@ func _build_army() -> void:
 			else:
 				item_slot.remove_meta("arena_item_kind")
 				item_slot.remove_meta("arena_help")
+		button.set_drag_forwarding(_begin_reserve_drag.bind(button), _can_drop_on_reserve.bind(button), _drop_on_reserve.bind(button))
 		_army_row.move_child(button, i)
 		button.mouse_filter = Control.MOUSE_FILTER_IGNORE if landing or not run.can_shop() else Control.MOUSE_FILTER_STOP
 		button.disabled = not returning if entry.is_empty() else landing or not run.can_shop()
 		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button.disabled else Control.CURSOR_POINTING_HAND
 		button.set_meta("return_slot", returning and entry.is_empty())
 		button.set_meta("bench_slot", i)
-		button.tooltip_text = (RemakeText.t("Return the selected creature to reserves.") if returning else RemakeText.t("Recruits wait here until you deploy them.")) if entry.is_empty() else ""
+		button.tooltip_text = (RemakeText.t("Move the selected creature to this reserve slot.") if returning else RemakeText.t("Recruits wait here until you deploy them.")) if entry.is_empty() else ""
 		var marker := button.get_node("SlotLine") as ColorRect
 		var active := returning if entry.is_empty() else int(entry.uid) == selected_uid
 		marker.color = GOLD if active else Color(0.72, 0.75, 0.72, 0.32)
@@ -1299,6 +1299,9 @@ func _select(uid: int) -> void:
 	if landing or not run.can_shop(): return
 	var selected := run.unit(selected_uid)
 	var clicked := run.unit(uid)
+	if uid != selected_uid and not selected.is_empty() and not clicked.is_empty() and not selected.deployed and not clicked.deployed:
+		_return_to_reserves(int(clicked.bench_slot))
+		return
 	if run.stage == "prepare" and not selected.is_empty() and not clicked.is_empty() and selected.deployed and not clicked.deployed:
 		var error := run.swap_from_bench(uid, selected_uid)
 		if error.is_empty(): _clear_selection()
@@ -1679,9 +1682,11 @@ func _notification(what: int) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion or event is InputEventMouseButton:
-		_keyboard_navigation = false
-		if is_instance_valid(_modal_layer) and _modal_layer.visible and (event is InputEventMouseMotion or event.pressed):
+		# Clear keyboard focus only when changing input mode. Clearing it on
+		# every tiny pointer motion cancels a Button's in-progress press.
+		if _keyboard_navigation and is_instance_valid(_modal_layer) and _modal_layer.visible:
 			get_viewport().gui_release_focus()
+		_keyboard_navigation = false
 	elif (event is InputEventKey and event.pressed) or (event is InputEventJoypadButton and event.pressed) or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5):
 		_keyboard_navigation = true
 		if is_instance_valid(_modal_layer) and _modal_layer.visible and get_viewport().gui_get_focus_owner() == null:
@@ -1743,7 +1748,7 @@ func _guide() -> void:
 		["Recruitment", "New recruits join the field if there is room, or wait in reserves. Company level determines shop odds. Train for stronger offers, or refresh to find matching copies."],
 		["Shop", "Open the shop during battle to recruit, refresh or buy XP. Reserves can be sold. Deployed creatures and their bonuses stay unchanged until the next round."],
 		["Evolution", "Collect matching creatures to evolve them. Stars mark each stronger form. The creature details show how many you need."],
-		["Your army", "Select a creature, then its place on the field. Select a reserve, then an ally to swap them. An empty reserve slot withdraws a creature. Select a creature to reveal the sell area."],
+		["Your army", "Select a creature, then its place on the field. Select a reserve, then an ally to swap them. Drag reserves between slots, or select one and then its destination. An empty reserve slot withdraws a creature. Select a creature to reveal the sell area."],
 		["Battle", "Both teams fight under AI control. Damaging spells cannot hurt allies in Trials. Hover a creature for details. Space pauses combat; the speed control switches between normal and double speed."],
 		["Alliances", "Different deployed creatures with matching traits activate bonuses. Multiple alliances can be active together. Reserves and duplicates do not add to the count."],
 		["Company", "Visit camp every five rounds for experience, supplies or company upgrades. Survive all thirty waves to unlock harder expeditions."]]
@@ -1877,6 +1882,38 @@ func _highlight_evolution(event: Dictionary) -> void:
 		var tween := button.create_tween().set_parallel()
 		tween.tween_property(glow, "border_color:a", 0.0, 1.6)
 		tween.tween_property(glow, "bg_color:a", 0.0, 1.6)
+
+
+func _begin_reserve_drag(_at: Vector2, button: Button) -> Variant:
+	var uid := int(button.get_meta("arena_creature", {}).get("uid", 0))
+	var entry := run.unit(uid)
+	if landing or not run.can_shop() or _item_uid > 0 or entry.is_empty() or entry.deployed: return null
+	_clear_selection()
+	var preview := Label.new()
+	preview.text = button.accessibility_name
+	preview.add_theme_font_size_override("font_size", 18)
+	button.set_drag_preview(preview)
+	return {"arena_reserve": true, "uid": uid, "run": run.get_instance_id(), "screen": get_instance_id()}
+
+
+func _can_drop_on_reserve(at: Vector2, data: Variant, button: Button) -> bool:
+	if not data is Dictionary: return false
+	if data.get("arena_item", false):
+		return _can_drop_item_on_creature(at, data, int(button.get_meta("arena_creature", {}).get("uid", 0)))
+	if landing or not run.can_shop() or not data.get("arena_reserve", false): return false
+	if int(data.get("run", 0)) != run.get_instance_id() or int(data.get("screen", 0)) != get_instance_id(): return false
+	var entry := run.unit(int(data.get("uid", 0)))
+	return not entry.is_empty() and not entry.deployed
+
+
+func _drop_on_reserve(at: Vector2, data: Variant, button: Button) -> void:
+	if not _can_drop_on_reserve(at, data, button): return
+	if data.get("arena_item", false):
+		_drop_item_on_creature(at, data, int(button.get_meta("arena_creature", {}).get("uid", 0)))
+	else:
+		var error := run.bench(int(data.uid), int(button.get_meta("bench_slot", -1)))
+		if error.is_empty(): _clear_selection()
+		_feedback(error)
 
 
 func _return_to_reserves(slot := -1) -> void:

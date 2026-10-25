@@ -48,6 +48,19 @@ corpse-memory, trap-target, posture and character-control checks, are now also i
 the full gameplay catalog. The multilingual rendered group remains in this
 focused manifest because it requires separate original localized archives.
 
+Every issue or bug fix and every feature addition or change MUST include a
+registered regression test in the same change. Run it and related existing checks.
+A fix must include a test that fails against the unfixed behavior.
+
+Mechanism, prison-wall and Autochess checks also cover distant object teleports,
+deferred topology labels, severe timing overload, reserve rearrangement, first-click
+rewards, original deer cast origins and combat balance. Supply `--astral-data`
+for the LiA recruits even when the test launches the base campaign. The full
+gameplay runner uses `--astral-dir`; catalog entries declare their companion
+archives in `extra_data` and reference their roots by campaign ID in arguments.
+The [follow-up evidence](validation/mechanisms-autochess-2026-10-25/README.md)
+distinguishes original replay, regression assertions and performance/balance fixtures.
+
 For another recurring report, preserve its exact trigger as an assertion: for
 example, a running target as well as a stationary one; unfinished as well as
 completed investigations; a neutral trap neighbor as well as a hostile victim;

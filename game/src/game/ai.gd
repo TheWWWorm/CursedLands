@@ -976,6 +976,11 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 	var n := list.size()
 	var k := int(opt.n1)
 	var ty := int(opt.type)
+	var trials := bool(u.stats.get("trials_budget", false))
+	# A blocked spell must not displace a usable weapon every decision tick.
+	# Campaign option selection retains the original deferred rejection.
+	if trials and ty > 0 and u.cannot_cast():
+		return NO_SCORE
 	var score := 0.0
 	var dd := 0
 	match ty:
@@ -1033,7 +1038,19 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 		return score
 	var d := u.pos.distance_to(c.pos)
 	if ty <= 4:
-		score -= 25.0 * d
+		if trials and ty <= 3:
+			# Open-board combat can use any target already in reach. Penalize
+			# the approach it actually requires, rather than treating a ranged
+			# shot as a walk all the way to the victim. A finishable target can
+			# outweigh the small current-target preference without chasing it
+			# across the board or cancelling an animation already in progress.
+			var reach := float(opt.get("range", 0.0))
+			if ty == 0:
+				reach = float(u.stats.reach) if u.stats.get("ranged", false) else u.melee_reach(c)
+			score -= 25.0 * maxf(0.0, d - reach)
+			if dd >= c.hp and dd > 0: score += 15.0
+		else:
+			score -= 25.0 * d
 	else:
 		score -= 250.0 * maxf(0.0, d - float(opt.range))
 	if ty <= 3 and score >= thr:
@@ -1338,6 +1355,11 @@ func set_post(u: GameUnit, p: Vector2) -> void:
 ## radius (a flying caster skips this).
 func _area_safe(u: GameUnit, opt: Dictionary, t: GameUnit) -> bool:
 	if not opt.type in [2, 3] or _flying(u):
+		return true
+	# Trials damage_target_allowed already excludes both teams' own units.
+	# Applying the campaign's friendly-fire avoidance here left area casters
+	# unable to help their own frontline despite that explicit protection.
+	if world.get_meta("expedition_spell_safety", false):
 		return true
 	if u.pos.distance_to(t.pos) < float(opt.radius):
 		return false

@@ -1,0 +1,1088 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "vulkan",
+	"rows": [
+		{
+			"frame": 0,
+			"frame_ms": 14.942,
+			"height": -0.400000005960464,
+			"update_ms": 0.451
+		},
+		{
+			"frame": 1,
+			"frame_ms": 14.403,
+			"height": -0.400000005960464,
+			"update_ms": 0.139
+		},
+		{
+			"frame": 2,
+			"frame_ms": 4.897,
+			"height": -0.400000005960464,
+			"update_ms": 0.113
+		},
+		{
+			"frame": 3,
+			"frame_ms": 6.489,
+			"height": -0.400000005960464,
+			"update_ms": 0.113
+		},
+		{
+			"frame": 4,
+			"frame_ms": 4.486,
+			"height": -0.400000005960464,
+			"update_ms": 0.097
+		},
+		{
+			"frame": 5,
+			"frame_ms": 693.202,
+			"height": -0.279989242553711,
+			"update_ms": 654.943
+		},
+		{
+			"frame": 6,
+			"frame_ms": 676.446,
+			"height": -0.159978866577148,
+			"update_ms": 630.807
+		},
+		{
+			"frame": 7,
+			"frame_ms": 690.481,
+			"height": -0.0399684906005859,
+			"update_ms": 644.226
+		},
+		{
+			"frame": 8,
+			"frame_ms": 675.635,
+			"height": 0.0800418853759766,
+			"update_ms": 630.962
+		},
+		{
+			"frame": 9,
+			"frame_ms": 654.067,
+			"height": 0.200052261352539,
+			"update_ms": 611.522
+		},
+		{
+			"frame": 10,
+			"frame_ms": 636.486,
+			"height": 0.320062637329102,
+			"update_ms": 598.806
+		},
+		{
+			"frame": 11,
+			"frame_ms": 652.993,
+			"height": 0.440073013305664,
+			"update_ms": 608.878
+		},
+		{
+			"frame": 12,
+			"frame_ms": 621.054,
+			"height": 0.560083389282227,
+			"update_ms": 579.773
+		},
+		{
+			"frame": 13,
+			"frame_ms": 621.559,
+			"height": 0.680093765258789,
+			"update_ms": 581.893
+		},
+		{
+			"frame": 14,
+			"frame_ms": 642.939,
+			"height": 0.800104141235352,
+			"update_ms": 601.153
+		},
+		{
+			"frame": 15,
+			"frame_ms": 628.444,
+			"height": 0.920114517211914,
+			"update_ms": 583.371
+		},
+		{
+			"frame": 16,
+			"frame_ms": 650.002,
+			"height": 1.04012489318848,
+			"update_ms": 606.259
+		},
+		{
+			"frame": 17,
+			"frame_ms": 660.654,
+			"height": 1.16013526916504,
+			"update_ms": 612.815
+		},
+		{
+			"frame": 18,
+			"frame_ms": 653.342,
+			"height": 1.2801456451416,
+			"update_ms": 606.99
+		},
+		{
+			"frame": 19,
+			"frame_ms": 650.031,
+			"height": 1.40015602111816,
+			"update_ms": 606.729
+		},
+		{
+			"frame": 20,
+			"frame_ms": 662.413,
+			"height": 1.52016639709473,
+			"update_ms": 617.256
+		},
+		{
+			"frame": 21,
+			"frame_ms": 652.817,
+			"height": 1.64017677307129,
+			"update_ms": 606.674
+		},
+		{
+			"frame": 22,
+			"frame_ms": 660.979,
+			"height": 1.76018714904785,
+			"update_ms": 618.381
+		},
+		{
+			"frame": 23,
+			"frame_ms": 655.922,
+			"height": 1.88019752502441,
+			"update_ms": 606.502
+		},
+		{
+			"frame": 24,
+			"frame_ms": 679.244,
+			"height": 2.00020790100098,
+			"update_ms": 635.997
+		},
+		{
+			"frame": 25,
+			"frame_ms": 604.036,
+			"height": 2.12021827697754,
+			"update_ms": 565.441
+		},
+		{
+			"frame": 26,
+			"frame_ms": 626.459,
+			"height": 2.2402286529541,
+			"update_ms": 581.391
+		},
+		{
+			"frame": 27,
+			"frame_ms": 641.701,
+			"height": 2.36023902893066,
+			"update_ms": 590.502
+		},
+		{
+			"frame": 28,
+			"frame_ms": 646.085,
+			"height": 2.48024940490723,
+			"update_ms": 603.631
+		},
+		{
+			"frame": 29,
+			"frame_ms": 656.107,
+			"height": 2.60025978088379,
+			"update_ms": 606.397
+		},
+		{
+			"frame": 30,
+			"frame_ms": 646.594,
+			"height": 2.72027015686035,
+			"update_ms": 598.238
+		},
+		{
+			"frame": 31,
+			"frame_ms": 639.218,
+			"height": 2.84028053283691,
+			"update_ms": 596.755
+		},
+		{
+			"frame": 32,
+			"frame_ms": 639.253,
+			"height": 2.96029090881348,
+			"update_ms": 594.499
+		},
+		{
+			"frame": 33,
+			"frame_ms": 644.551,
+			"height": 3.08030128479004,
+			"update_ms": 599.146
+		},
+		{
+			"frame": 34,
+			"frame_ms": 629.857,
+			"height": 3.2003116607666,
+			"update_ms": 588.456
+		},
+		{
+			"frame": 35,
+			"frame_ms": 651.794,
+			"height": 3.32032203674316,
+			"update_ms": 607.44
+		},
+		{
+			"frame": 36,
+			"frame_ms": 664.967,
+			"height": 3.44033241271973,
+			"update_ms": 617.563
+		},
+		{
+			"frame": 37,
+			"frame_ms": 633.796,
+			"height": 3.56034278869629,
+			"update_ms": 590.124
+		},
+		{
+			"frame": 38,
+			"frame_ms": 622.46,
+			"height": 3.68035316467285,
+			"update_ms": 577.133
+		},
+		{
+			"frame": 39,
+			"frame_ms": 637.047,
+			"height": 3.80036354064941,
+			"update_ms": 587.676
+		},
+		{
+			"frame": 40,
+			"frame_ms": 646.713,
+			"height": 3.92037391662598,
+			"update_ms": 600.79
+		},
+		{
+			"frame": 41,
+			"frame_ms": 658.815,
+			"height": 4.04038429260254,
+			"update_ms": 613.176
+		},
+		{
+			"frame": 42,
+			"frame_ms": 631.622,
+			"height": 4.1603946685791,
+			"update_ms": 586.178
+		},
+		{
+			"frame": 43,
+			"frame_ms": 620.673,
+			"height": 4.28040504455566,
+			"update_ms": 580.072
+		},
+		{
+			"frame": 44,
+			"frame_ms": 645.377,
+			"height": 4.40041542053223,
+			"update_ms": 601.489
+		},
+		{
+			"frame": 45,
+			"frame_ms": 636.691,
+			"height": 4.52042579650879,
+			"update_ms": 592.629
+		},
+		{
+			"frame": 46,
+			"frame_ms": 624.6,
+			"height": 4.64043617248535,
+			"update_ms": 584.353
+		},
+		{
+			"frame": 47,
+			"frame_ms": 635.341,
+			"height": 4.76044654846191,
+			"update_ms": 591.144
+		},
+		{
+			"frame": 48,
+			"frame_ms": 640.124,
+			"height": 4.88045692443848,
+			"update_ms": 594.655
+		},
+		{
+			"frame": 49,
+			"frame_ms": 644.983,
+			"height": 5.00046730041504,
+			"update_ms": 602.971
+		},
+		{
+			"frame": 50,
+			"frame_ms": 654.123,
+			"height": 5.1204776763916,
+			"update_ms": 605.178
+		},
+		{
+			"frame": 51,
+			"frame_ms": 651.391,
+			"height": 5.24048805236816,
+			"update_ms": 607.201
+		},
+		{
+			"frame": 52,
+			"frame_ms": 652.622,
+			"height": 5.36049842834473,
+			"update_ms": 611.206
+		},
+		{
+			"frame": 53,
+			"frame_ms": 641.872,
+			"height": 5.48050880432129,
+			"update_ms": 592.784
+		},
+		{
+			"frame": 54,
+			"frame_ms": 668.029,
+			"height": 5.60051727294922,
+			"update_ms": 624.008
+		},
+		{
+			"frame": 55,
+			"frame_ms": 667.85,
+			"height": 5.72052764892578,
+			"update_ms": 626.692
+		},
+		{
+			"frame": 56,
+			"frame_ms": 663.415,
+			"height": 5.84053802490234,
+			"update_ms": 620.678
+		},
+		{
+			"frame": 57,
+			"frame_ms": 646.728,
+			"height": 5.96054840087891,
+			"update_ms": 602.196
+		},
+		{
+			"frame": 58,
+			"frame_ms": 628.989,
+			"height": 6.08055877685547,
+			"update_ms": 589.097
+		},
+		{
+			"frame": 59,
+			"frame_ms": 640.23,
+			"height": 6.20056915283203,
+			"update_ms": 591.1
+		},
+		{
+			"frame": 60,
+			"frame_ms": 666.813,
+			"height": 6.32057952880859,
+			"update_ms": 622.517
+		},
+		{
+			"frame": 61,
+			"frame_ms": 691.792,
+			"height": 6.44058990478516,
+			"update_ms": 647.069
+		},
+		{
+			"frame": 62,
+			"frame_ms": 674.078,
+			"height": 6.56060028076172,
+			"update_ms": 624.118
+		},
+		{
+			"frame": 63,
+			"frame_ms": 723.375,
+			"height": 6.68061065673828,
+			"update_ms": 663.775
+		},
+		{
+			"frame": 64,
+			"frame_ms": 690.72,
+			"height": 6.80062103271484,
+			"update_ms": 649.731
+		},
+		{
+			"frame": 65,
+			"frame_ms": 642.424,
+			"height": 6.92063140869141,
+			"update_ms": 596.699
+		},
+		{
+			"frame": 66,
+			"frame_ms": 632.086,
+			"height": 7.04064178466797,
+			"update_ms": 585.391
+		},
+		{
+			"frame": 67,
+			"frame_ms": 648.529,
+			"height": 7.16065216064453,
+			"update_ms": 603.908
+		},
+		{
+			"frame": 68,
+			"frame_ms": 643.057,
+			"height": 7.28066253662109,
+			"update_ms": 599.635
+		},
+		{
+			"frame": 69,
+			"frame_ms": 649.013,
+			"height": 7.40067291259766,
+			"update_ms": 605.203
+		},
+		{
+			"frame": 70,
+			"frame_ms": 659.886,
+			"height": 7.52068328857422,
+			"update_ms": 615.281
+		},
+		{
+			"frame": 71,
+			"frame_ms": 672.577,
+			"height": 7.64069366455078,
+			"update_ms": 625.526
+		},
+		{
+			"frame": 72,
+			"frame_ms": 614.866,
+			"height": 7.76070404052734,
+			"update_ms": 573.046
+		},
+		{
+			"frame": 73,
+			"frame_ms": 603.714,
+			"height": 7.88071441650391,
+			"update_ms": 564.534
+		},
+		{
+			"frame": 74,
+			"frame_ms": 613.763,
+			"height": 8.00072479248047,
+			"update_ms": 569.647
+		},
+		{
+			"frame": 75,
+			"frame_ms": 630.418,
+			"height": 8.12073516845703,
+			"update_ms": 585.66
+		},
+		{
+			"frame": 76,
+			"frame_ms": 643.857,
+			"height": 8.24074554443359,
+			"update_ms": 593.853
+		},
+		{
+			"frame": 77,
+			"frame_ms": 637.823,
+			"height": 8.36075592041016,
+			"update_ms": 589.219
+		},
+		{
+			"frame": 78,
+			"frame_ms": 628.628,
+			"height": 8.48076629638672,
+			"update_ms": 585.688
+		},
+		{
+			"frame": 79,
+			"frame_ms": 624.892,
+			"height": 8.60077667236328,
+			"update_ms": 585.764
+		},
+		{
+			"frame": 80,
+			"frame_ms": 629.347,
+			"height": 8.72078704833984,
+			"update_ms": 587.997
+		},
+		{
+			"frame": 81,
+			"frame_ms": 622.691,
+			"height": 8.84079742431641,
+			"update_ms": 581.022
+		},
+		{
+			"frame": 82,
+			"frame_ms": 626.508,
+			"height": 8.96080780029297,
+			"update_ms": 588.155
+		},
+		{
+			"frame": 83,
+			"frame_ms": 627.582,
+			"height": 9.08081817626953,
+			"update_ms": 584.285
+		},
+		{
+			"frame": 84,
+			"frame_ms": 608.086,
+			"height": 9.20082855224609,
+			"update_ms": 564.279
+		},
+		{
+			"frame": 85,
+			"frame_ms": 621.874,
+			"height": 9.32083892822266,
+			"update_ms": 582.793
+		},
+		{
+			"frame": 86,
+			"frame_ms": 625.698,
+			"height": 9.44084930419922,
+			"update_ms": 583.191
+		},
+		{
+			"frame": 87,
+			"frame_ms": 626.562,
+			"height": 9.56085968017578,
+			"update_ms": 583.452
+		},
+		{
+			"frame": 88,
+			"frame_ms": 633.021,
+			"height": 9.68087005615234,
+			"update_ms": 594.73
+		},
+		{
+			"frame": 89,
+			"frame_ms": 634.483,
+			"height": 9.80088043212891,
+			"update_ms": 592.507
+		},
+		{
+			"frame": 90,
+			"frame_ms": 616.579,
+			"height": 9.92089080810547,
+			"update_ms": 575.259
+		},
+		{
+			"frame": 91,
+			"frame_ms": 624.363,
+			"height": 10.040901184082,
+			"update_ms": 585.42
+		},
+		{
+			"frame": 92,
+			"frame_ms": 605.947,
+			"height": 10.1609115600586,
+			"update_ms": 565.277
+		},
+		{
+			"frame": 93,
+			"frame_ms": 606.052,
+			"height": 10.2809219360352,
+			"update_ms": 564.588
+		},
+		{
+			"frame": 94,
+			"frame_ms": 602.845,
+			"height": 10.4009323120117,
+			"update_ms": 564.478
+		},
+		{
+			"frame": 95,
+			"frame_ms": 624.561,
+			"height": 10.5209426879883,
+			"update_ms": 576.011
+		},
+		{
+			"frame": 96,
+			"frame_ms": 634.481,
+			"height": 10.6409530639648,
+			"update_ms": 592.546
+		},
+		{
+			"frame": 97,
+			"frame_ms": 636.709,
+			"height": 10.7609634399414,
+			"update_ms": 596.888
+		},
+		{
+			"frame": 98,
+			"frame_ms": 617.219,
+			"height": 10.880973815918,
+			"update_ms": 574.342
+		},
+		{
+			"frame": 99,
+			"frame_ms": 636.427,
+			"height": 11.0009841918945,
+			"update_ms": 594.022
+		},
+		{
+			"frame": 100,
+			"frame_ms": 608.045,
+			"height": 11.1209945678711,
+			"update_ms": 568.883
+		},
+		{
+			"frame": 101,
+			"frame_ms": 620.056,
+			"height": 11.2410049438477,
+			"update_ms": 578.692
+		},
+		{
+			"frame": 102,
+			"frame_ms": 623.097,
+			"height": 11.3610153198242,
+			"update_ms": 582.28
+		},
+		{
+			"frame": 103,
+			"frame_ms": 618.672,
+			"height": 11.4810256958008,
+			"update_ms": 579.883
+		},
+		{
+			"frame": 104,
+			"frame_ms": 605.807,
+			"height": 11.6010360717773,
+			"update_ms": 563.365
+		},
+		{
+			"frame": 105,
+			"frame_ms": 632.423,
+			"height": 11.7210464477539,
+			"update_ms": 589.016
+		},
+		{
+			"frame": 106,
+			"frame_ms": 619.403,
+			"height": 11.8410568237305,
+			"update_ms": 580.338
+		},
+		{
+			"frame": 107,
+			"frame_ms": 605.1,
+			"height": 11.961067199707,
+			"update_ms": 562.516
+		},
+		{
+			"frame": 108,
+			"frame_ms": 606.035,
+			"height": 12.0810775756836,
+			"update_ms": 562.527
+		},
+		{
+			"frame": 109,
+			"frame_ms": 613.303,
+			"height": 12.2010879516602,
+			"update_ms": 571.139
+		},
+		{
+			"frame": 110,
+			"frame_ms": 626.608,
+			"height": 12.3210983276367,
+			"update_ms": 583.237
+		},
+		{
+			"frame": 111,
+			"frame_ms": 661.96,
+			"height": 12.4411087036133,
+			"update_ms": 618.005
+		},
+		{
+			"frame": 112,
+			"frame_ms": 635.582,
+			"height": 12.5611190795898,
+			"update_ms": 596.546
+		},
+		{
+			"frame": 113,
+			"frame_ms": 638.88,
+			"height": 12.6811294555664,
+			"update_ms": 595.192
+		},
+		{
+			"frame": 114,
+			"frame_ms": 651.853,
+			"height": 12.801139831543,
+			"update_ms": 606.59
+		},
+		{
+			"frame": 115,
+			"frame_ms": 626.047,
+			"height": 12.9211502075195,
+			"update_ms": 583.927
+		},
+		{
+			"frame": 116,
+			"frame_ms": 623.027,
+			"height": 13.0411605834961,
+			"update_ms": 575.939
+		},
+		{
+			"frame": 117,
+			"frame_ms": 636.34,
+			"height": 13.1611709594727,
+			"update_ms": 592.34
+		},
+		{
+			"frame": 118,
+			"frame_ms": 658.548,
+			"height": 13.2811813354492,
+			"update_ms": 616.026
+		},
+		{
+			"frame": 119,
+			"frame_ms": 666.256,
+			"height": 13.4011917114258,
+			"update_ms": 616.763
+		},
+		{
+			"frame": 120,
+			"frame_ms": 681.954,
+			"height": 13.5212020874023,
+			"update_ms": 637.598
+		},
+		{
+			"frame": 121,
+			"frame_ms": 653.326,
+			"height": 13.6412124633789,
+			"update_ms": 611.925
+		},
+		{
+			"frame": 122,
+			"frame_ms": 677.545,
+			"height": 13.7612228393555,
+			"update_ms": 625.764
+		},
+		{
+			"frame": 123,
+			"frame_ms": 696.18,
+			"height": 13.881233215332,
+			"update_ms": 646.987
+		},
+		{
+			"frame": 124,
+			"frame_ms": 12.664,
+			"height": 13.881233215332,
+			"update_ms": 0.27
+		},
+		{
+			"frame": 125,
+			"frame_ms": 686.123,
+			"height": 14.0,
+			"update_ms": 638.556
+		},
+		{
+			"frame": 126,
+			"frame_ms": 693.855,
+			"height": 14.1000003814697,
+			"update_ms": 644.852
+		},
+		{
+			"frame": 127,
+			"frame_ms": 22.321,
+			"height": 14.1000003814697,
+			"update_ms": 0.275
+		},
+		{
+			"frame": 128,
+			"frame_ms": 13.892,
+			"height": 14.1000003814697,
+			"update_ms": 0.256
+		},
+		{
+			"frame": 129,
+			"frame_ms": 13.927,
+			"height": 14.1000003814697,
+			"update_ms": 0.269
+		},
+		{
+			"frame": 130,
+			"frame_ms": 31.64,
+			"height": 14.1000003814697,
+			"update_ms": 0.425
+		},
+		{
+			"frame": 131,
+			"frame_ms": 24.672,
+			"height": 14.1000003814697,
+			"update_ms": 0.301
+		},
+		{
+			"frame": 132,
+			"frame_ms": 28.649,
+			"height": 14.1000003814697,
+			"update_ms": 0.28
+		},
+		{
+			"frame": 133,
+			"frame_ms": 25.966,
+			"height": 14.1000003814697,
+			"update_ms": 0.2
+		},
+		{
+			"frame": 134,
+			"frame_ms": 28.46,
+			"height": 14.1000003814697,
+			"update_ms": 0.211
+		},
+		{
+			"frame": 135,
+			"frame_ms": 28.132,
+			"height": 14.1000003814697,
+			"update_ms": 0.198
+		},
+		{
+			"frame": 136,
+			"frame_ms": 27.818,
+			"height": 14.1000003814697,
+			"update_ms": 0.239
+		},
+		{
+			"frame": 137,
+			"frame_ms": 6.205,
+			"height": 14.1000003814697,
+			"update_ms": 0.182
+		},
+		{
+			"frame": 138,
+			"frame_ms": 8.11,
+			"height": 14.1000003814697,
+			"update_ms": 0.141
+		},
+		{
+			"frame": 139,
+			"frame_ms": 8.541,
+			"height": 14.1000003814697,
+			"update_ms": 0.186
+		},
+		{
+			"frame": 140,
+			"frame_ms": 6.23,
+			"height": 14.1000003814697,
+			"update_ms": 0.293
+		},
+		{
+			"frame": 141,
+			"frame_ms": 7.602,
+			"height": 14.1000003814697,
+			"update_ms": 0.635
+		},
+		{
+			"frame": 142,
+			"frame_ms": 5.678,
+			"height": 14.1000003814697,
+			"update_ms": 0.187
+		},
+		{
+			"frame": 143,
+			"frame_ms": 8.119,
+			"height": 14.1000003814697,
+			"update_ms": 0.185
+		},
+		{
+			"frame": 144,
+			"frame_ms": 6.684,
+			"height": 14.1000003814697,
+			"update_ms": 0.331
+		},
+		{
+			"frame": 145,
+			"frame_ms": 9.041,
+			"height": 14.1000003814697,
+			"update_ms": 0.227
+		},
+		{
+			"frame": 146,
+			"frame_ms": 12.427,
+			"height": 14.1000003814697,
+			"update_ms": 0.271
+		},
+		{
+			"frame": 147,
+			"frame_ms": 9.107,
+			"height": 14.1000003814697,
+			"update_ms": 0.22
+		},
+		{
+			"frame": 148,
+			"frame_ms": 6.295,
+			"height": 14.1000003814697,
+			"update_ms": 0.23
+		},
+		{
+			"frame": 149,
+			"frame_ms": 7.418,
+			"height": 14.1000003814697,
+			"update_ms": 0.224
+		},
+		{
+			"frame": 150,
+			"frame_ms": 5.485,
+			"height": 14.1000003814697,
+			"update_ms": 0.284
+		},
+		{
+			"frame": 151,
+			"frame_ms": 5.744,
+			"height": 14.1000003814697,
+			"update_ms": 0.204
+		},
+		{
+			"frame": 152,
+			"frame_ms": 6.572,
+			"height": 14.1000003814697,
+			"update_ms": 0.249
+		},
+		{
+			"frame": 153,
+			"frame_ms": 6.877,
+			"height": 14.1000003814697,
+			"update_ms": 0.17
+		},
+		{
+			"frame": 154,
+			"frame_ms": 7.866,
+			"height": 14.1000003814697,
+			"update_ms": 0.17
+		},
+		{
+			"frame": 155,
+			"frame_ms": 6.397,
+			"height": 14.1000003814697,
+			"update_ms": 0.237
+		},
+		{
+			"frame": 156,
+			"frame_ms": 7.936,
+			"height": 14.1000003814697,
+			"update_ms": 0.186
+		},
+		{
+			"frame": 157,
+			"frame_ms": 5.872,
+			"height": 14.1000003814697,
+			"update_ms": 0.225
+		},
+		{
+			"frame": 158,
+			"frame_ms": 5.639,
+			"height": 14.1000003814697,
+			"update_ms": 0.216
+		},
+		{
+			"frame": 159,
+			"frame_ms": 7.887,
+			"height": 14.1000003814697,
+			"update_ms": 0.192
+		},
+		{
+			"frame": 160,
+			"frame_ms": 5.405,
+			"height": 14.1000003814697,
+			"update_ms": 0.285
+		},
+		{
+			"frame": 161,
+			"frame_ms": 10.068,
+			"height": 14.1000003814697,
+			"update_ms": 0.179
+		},
+		{
+			"frame": 162,
+			"frame_ms": 6.14,
+			"height": 14.1000003814697,
+			"update_ms": 0.209
+		},
+		{
+			"frame": 163,
+			"frame_ms": 6.153,
+			"height": 14.1000003814697,
+			"update_ms": 0.239
+		},
+		{
+			"frame": 164,
+			"frame_ms": 8.134,
+			"height": 14.1000003814697,
+			"update_ms": 0.227
+		},
+		{
+			"frame": 165,
+			"frame_ms": 5.856,
+			"height": 14.1000003814697,
+			"update_ms": 0.227
+		},
+		{
+			"frame": 166,
+			"frame_ms": 8.044,
+			"height": 14.1000003814697,
+			"update_ms": 0.226
+		},
+		{
+			"frame": 167,
+			"frame_ms": 5.681,
+			"height": 14.1000003814697,
+			"update_ms": 0.222
+		},
+		{
+			"frame": 168,
+			"frame_ms": 5.086,
+			"height": 14.1000003814697,
+			"update_ms": 0.182
+		},
+		{
+			"frame": 169,
+			"frame_ms": 8.987,
+			"height": 14.1000003814697,
+			"update_ms": 0.168
+		},
+		{
+			"frame": 170,
+			"frame_ms": 5.703,
+			"height": 14.1000003814697,
+			"update_ms": 0.274
+		},
+		{
+			"frame": 171,
+			"frame_ms": 7.668,
+			"height": 14.1000003814697,
+			"update_ms": 0.175
+		},
+		{
+			"frame": 172,
+			"frame_ms": 5.523,
+			"height": 14.1000003814697,
+			"update_ms": 0.225
+		},
+		{
+			"frame": 173,
+			"frame_ms": 5.675,
+			"height": 14.1000003814697,
+			"update_ms": 0.203
+		},
+		{
+			"frame": 174,
+			"frame_ms": 8.08,
+			"height": 14.1000003814697,
+			"update_ms": 0.198
+		},
+		{
+			"frame": 175,
+			"frame_ms": 11.203,
+			"height": 14.1000003814697,
+			"update_ms": 0.185
+		},
+		{
+			"frame": 176,
+			"frame_ms": 7.745,
+			"height": 14.1000003814697,
+			"update_ms": 0.243
+		},
+		{
+			"frame": 177,
+			"frame_ms": 5.053,
+			"height": 14.1000003814697,
+			"update_ms": 0.194
+		},
+		{
+			"frame": 178,
+			"frame_ms": 8.228,
+			"height": 14.1000003814697,
+			"update_ms": 0.176
+		},
+		{
+			"frame": 179,
+			"frame_ms": 7.186,
+			"height": 14.1000003814697,
+			"update_ms": 0.209
+		}
+	],
+	"scope": "Original mechanism scripts/state updates; other world simulation held, one logic tick per render frame, eight navigation classes. Measures mechanism stalls, not real-time trip duration or full gameplay FPS.",
+	"zone": "gz1h"
+}

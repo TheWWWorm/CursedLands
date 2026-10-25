@@ -43,10 +43,36 @@ def catalog(selection=None):
                 or row.get("display", "headless") not in ("headless", "rendered")
                 or row.get("rendering_method", "gl_compatibility") not in ("gl_compatibility", "mobile", "forward_plus")):
             raise ValueError("Every entry must declare evidence type and nonzero minimum coverage")
-        for name in row["required_files"]:
-            if Path(name).is_absolute() or ".." in Path(name).parts:
-                raise ValueError("Required assets must stay within the campaign folder")
+        for campaign, files in required_assets(row).items():
+            if campaign not in ("cursed_lands", "lost_in_astral"):
+                raise ValueError("Unknown additional campaign")
+            for name in files:
+                if Path(name).is_absolute() or ".." in Path(name).parts:
+                    raise ValueError("Required assets must stay within the campaign folder")
+        argument_paths(row, {key: Path("/data") / key for key in required_assets(row)})
     return rows
+
+
+def required_assets(spec):
+    assets = {spec["campaign"]: list(spec["required_files"])}
+    for campaign, files in spec.get("extra_data", {}).items():
+        assets.setdefault(campaign, []).extend(files)
+    return assets
+
+
+def argument_paths(spec, data_roots):
+    """Resolve explicitly declared companion installations as individual argv values."""
+    def replace(match):
+        campaign = match.group(1)
+        if campaign not in required_assets(spec) or campaign not in data_roots:
+            raise ValueError("Argument requires declared campaign data: " + campaign)
+        return str(data_roots[campaign])
+    return [re.sub(r"\{([a-z_]+)\}", replace, value) for value in spec["args"]]
+
+
+def missing_assets(spec, data_roots):
+    return [f"{campaign}/{name}" for campaign, files in required_assets(spec).items()
+            for name in files if campaign not in data_roots or not (data_roots[campaign] / name).is_file()]
 
 
 def engine_argv(godot, runtime, display="headless", rendering_method="gl_compatibility"):
@@ -273,7 +299,7 @@ def main():
     if args.timeout is not None and args.timeout < 1:
         parser.error("--timeout must be positive")
     source, data, output = args.game_source.resolve(), args.game_dir.resolve(), args.out.resolve()
-    for input_tree in (source, (REPO / "tools/tests").resolve()):
+    for input_tree in (source, (REPO / "tools/tests").resolve(), (REPO / "tools/benchmarks").resolve()):
         if output == input_tree or input_tree in output.parents:
             raise ValueError("Results must be outside the game and test source folders")
     output.mkdir(parents=True, exist_ok=False)
@@ -284,6 +310,7 @@ def main():
     try:
         runtime, _ = stage_game(source, output)
         shutil.copytree(REPO / "tools/tests", runtime / "tools/tests")
+        shutil.copytree(REPO / "tools/benchmarks", runtime / "tools/benchmarks")
         shutil.copy2(HERE / "gameplay_bootstrap.gd", runtime / "tools/gameplay_bootstrap.gd")
         manifest = {p.relative_to(runtime).as_posix(): file_hash(p)
                     for p in sorted(runtime.rglob("*")) if p.is_file()}
@@ -298,7 +325,7 @@ def main():
             data_roots["lost_in_astral"] = args.astral_dir.resolve()
         report["campaign_data"] = {campaign: {
             "root":str(folder), "files": {name:file_hash(folder / name) for name in
-            sorted({name for row in tests if row["campaign"] == campaign for name in row["required_files"]})
+            sorted({name for row in tests for name in required_assets(row).get(campaign, [])})
             if (folder / name).is_file()}} for campaign, folder in data_roots.items()}
         name = re.search(r'^config/name="([^"/\\]+)"', (runtime / "project.godot").read_text(), re.M)[1]
         engine = engine_argv(shutil.which(args.godot) or Path(args.godot).resolve(), runtime)
@@ -324,10 +351,9 @@ def main():
             directory.mkdir(parents=True)
             log = directory / "run.log"
             test_data = data_roots.get(spec["campaign"])
-            missing = spec["required_files"] if test_data is None else [
-                file for file in spec["required_files"] if not (test_data / file).is_file()]
+            missing = missing_assets(spec, data_roots)
             if missing:
-                message = f"Missing {spec['campaign']} data: {', '.join(missing)}"
+                message = f"Missing campaign data: {', '.join(missing)}"
                 log.write_text(message + "\n")
                 report["tests"].append(dict(spec, status="error", checks=0, failures=0, error=message,
                     diagnostics=[], failure_messages=[], log=log.relative_to(output).as_posix()))
@@ -351,7 +377,7 @@ def main():
             argv = engine_argv(engine[0], runtime, display, spec.get("rendering_method", "gl_compatibility")) + ["--", "--no-movies", "--ei-path=" + str(test_data),
                              "--tool=res://tools/gameplay_bootstrap.gd", "--suite-script=res://" + spec["script"],
                              "--suite-seed=" + str(args.seed), "--suite-campaign=" + spec["campaign"],
-                             "--suite-display=" + display, *spec["args"]]
+                             "--suite-display=" + display, *argument_paths(spec, data_roots)]
             start = time.monotonic()
             exit_code, error = run_program(argv, log, env, args.timeout or spec["timeout"])
             result = dict(spec, **assess(log.read_text(errors="replace"), spec, exit_code, error))

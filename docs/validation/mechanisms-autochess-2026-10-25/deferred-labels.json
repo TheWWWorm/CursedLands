@@ -1,0 +1,48 @@
+{
+  "git_head": "380a8b321d492f23febae2c9d9f1694c37a332d4",
+  "game_source_sha256": "7f379c430e081aadb4912e4b63e1b3f399405c726d097928dbf6c8876b41621a",
+  "manifest_sha256": "4c88aac857701d48fb2d443ca4d143edea3c8b399dde98d4d8f29d399372291b",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "nav_deferred_labels",
+      "script": "tools/tests/nav_deferred_labels.gd",
+      "script_sha256": "c5b8d4a917a19db43787fe4f6a6f08c81a3673aec35ac5e1e36f961a5512c153",
+      "contract": "Lazy native and scalar legacy labels separate and reconnect components after edits.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 6.07,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests/nav_deferred_labels.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "nav_deferred_labels/run.log",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": true
+}

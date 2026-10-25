@@ -370,6 +370,215 @@
       "mode": "headless",
       "args": [],
       "min_checks": 42
+    },
+    {
+      "id": "moving_lift_navigation",
+      "script": "tools/tests/moving_navigation.gd",
+      "summary": "MOVING_NAVIGATION",
+      "contract": "Authored Portal lift ascent/descent, atomic moves and distant teleports; incremental heights/passability match fresh builds across all movement classes without eager whole-map floods.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 95
+    },
+    {
+      "id": "moving_door_navigation",
+      "script": "tools/tests/moving_navigation.gd",
+      "summary": "MOVING_NAVIGATION",
+      "contract": "Repeated Catacombs door states update local navigation and late-built movement classes without eager whole-map floods.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [
+        "--zone=gz1d2"
+      ],
+      "min_checks": 177
+    },
+    {
+      "id": "worker_overload_recovery",
+      "script": "tools/tests/worker_overload_recovery.gd",
+      "summary": "WORKER_OVERLOAD_RECOVERY",
+      "contract": "Worker and inline 1x/2x/55:27 clocks recover from repeated severe stalls without replaying seconds of debt.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 3618
+    },
+    {
+      "id": "nav_local_invalidation",
+      "script": "tools/tests/nav_local_invalidation.gd",
+      "summary": "NAV_LOCAL_INVALIDATION",
+      "contract": "Local native cache invalidation has bounded work on small and large prepared maps and preserves exact fresh-build connectivity.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 120,
+      "timeout": 420
+    },
+    {
+      "id": "prison_wall_seams",
+      "script": "tools/tests/prison_wall_seams.gd",
+      "summary": "PRISON_WALL_SEAMS",
+      "contract": "Authored prison wall intersections have one coplanar surface owner while retaining full visible coverage and original metadata.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 293,
+      "timeout": 420
+    },
+    {
+      "id": "arena_menu_io",
+      "script": "tools/tests/arena_menu_io.gd",
+      "summary": "ARENA_MENU_IO",
+      "contract": "Multiplayer mode, host and join menu work does not rescan installation folders; reopening refreshes availability in EN/RU/DE.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 56,
+      "timeout": 420
+    },
+    {
+      "id": "arena_reserve_moves",
+      "script": "tools/tests/arena_reserve_moves.gd",
+      "summary": "ARENA_RESERVE_MOVES",
+      "contract": "Bench movement and swapping preserve slot identity, full benches, undo, save/load and phase restrictions.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 22,
+      "timeout": 420
+    },
+    {
+      "id": "arena_reserve_moves_online",
+      "script": "tools/tests/arena_reserve_moves_online.gd",
+      "summary": "ARENA_RESERVE_MOVES_ONLINE",
+      "contract": "Real ENet host and guest bench movement, swaps and undo replicate and reject invalid moves.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 16,
+      "timeout": 420
+    },
+    {
+      "id": "arena_reserve_moves_ui",
+      "script": "tools/tests/arena_reserve_moves_ui.gd",
+      "summary": "ARENA_RESERVE_MOVES_UI",
+      "contract": "Mouse selection, native drag and keyboard bench movement work in EN/RU/DE and reject stale drag context.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 33,
+      "timeout": 420
+    },
+    {
+      "id": "arena_item_first_click",
+      "script": "tools/tests/arena_item_first_click.gd",
+      "summary": "ARENA_ITEM_FIRST_CLICK",
+      "contract": "Each of three item rewards accepts its first click with small held-button mouse motion; owned item selection remains intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 10,
+      "timeout": 420
+    },
+    {
+      "id": "arena_item_first_click_online",
+      "script": "tools/tests/arena_item_first_click_online.gd",
+      "summary": "ARENA_ITEM_FIRST_CLICK_ONLINE",
+      "contract": "Single item reward selections replicate exactly once to real ENet host and guest.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 9,
+      "timeout": 420
+    },
+    {
+      "id": "nav_deferred_labels",
+      "script": "tools/tests/nav_deferred_labels.gd",
+      "summary": "NAV_DEFERRED_LABELS",
+      "contract": "Lazy native and scalar legacy labels separate and reconnect components after edits.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 12,
+      "timeout": 420
+    },
+    {
+      "id": "dead_deer_cast_source",
+      "script": "tools/tests/dead_deer_cast_source.gd",
+      "summary": "DEAD_DEER_CAST_SOURCE",
+      "contract": "All three authored undead deer retain the inspected original body-centre source at casting poses and headings; acid missiles and offset boards agree.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 51,
+      "timeout": 420
+    },
+    {
+      "id": "dead_deer_cast_source_arena",
+      "script": "tools/tests/dead_deer_cast_source.gd",
+      "summary": "DEAD_DEER_CAST_SOURCE",
+      "contract": "Namespaced undead deer use the same original cast-source fallback after arena model fitting.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 52,
+      "timeout": 420
+    },
+    {
+      "id": "arena_combat_decisions",
+      "script": "tools/tests/arena_combat_decisions.gd",
+      "summary": "ARENA_COMBAT_DECISIONS",
+      "contract": "Autochess admits ally-protected area spells, finishes reachable wounded foes and rejects blocked spells while preserving campaign choices.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 11,
+      "timeout": 420
+    },
+    {
+      "id": "arena_popper_balance",
+      "script": "tools/tests/arena_popper_balance.gd",
+      "summary": "ARENA_POPPER_BALANCE",
+      "contract": "One-use hare burst remains effective through all stars while preserving armor, fuse, target cap, range counter and allied protection.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 29,
+      "timeout": 420
+    },
+    {
+      "id": "arena_opening_viability",
+      "script": "tools/tests/arena_opening_viability.gd",
+      "summary": "ARENA_OPENING_VIABILITY",
+      "contract": "Equal-price mirrored opening fights preserve goblin output and melee frontline contribution without mutating campaign data.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 186,
+      "timeout": 420
     }
   ]
 }

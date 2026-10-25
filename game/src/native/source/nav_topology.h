@@ -3,6 +3,8 @@
 // records: no scene objects, actor occupancy, callbacks or saved game state.
 private:
     bool topology_ready = false;
+    int update_blocks_visited = 0;
+    int update_labels_probed = 0;
     int topology_next_component = 0;
     std::vector<Vector2i> topology_representatives;
     std::vector<uint16_t> topology_connection_bits; // bit 8 means initialized
@@ -101,8 +103,17 @@ public:
         }
         const Rect2i changed = rect.grow(1);
         const int bw = width / 8, bh = height / 8;
-        for (int y = 0; y < bh; ++y) {
-            for (int x = 0; x < bw; ++x) {
+        update_blocks_visited = 0; update_labels_probed = 0;
+        // All cached windows are anchored on an 8-cell block: 9x9 for
+        // representatives, 25x25 for connections/seeds. Visit only anchors
+        // whose largest dependency window can touch this edit.
+        const int x0 = std::max(0, (changed.position.x - 25) / 8);
+        const int y0 = std::max(0, (changed.position.y - 25) / 8);
+        const int x1 = std::min(bw, (changed.position.x + changed.size.x + 16) / 8 + 1);
+        const int y1 = std::min(bh, (changed.position.y + changed.size.y + 16) / 8 + 1);
+        for (int y = y0; y < y1; ++y) {
+            for (int x = x0; x < x1; ++x) {
+                ++update_blocks_visited;
                 // Raw edges search 25x25 cells and use neighbouring 9x9
                 // representatives. Extra padding also covers incoming edges.
                 if (!Rect2i(Vector2i(x * 8 - 16, y * 8 - 16), Vector2i(41, 41)).intersects(changed)) continue;
@@ -110,12 +121,14 @@ public:
                 topology_representatives[i] = Vector2i(-1, -1);
                 topology_connection_bits[i] = 0;
                 block_ready[i] = 0;
+                for (const int extent : {9, 25}) {
+                    const Vector2i origin(x * 8 - (extent == 25 ? 8 : 0),
+                                          y * 8 - (extent == 25 ? 8 : 0));
+                    if (!Rect2i(origin, Vector2i(extent, extent)).intersects(changed)) continue;
+                    ++update_labels_probed;
+                    topology_labels.erase(std::make_tuple(origin.x, origin.y, extent, extent));
+                }
             }
-        }
-        for (auto it = topology_labels.begin(); it != topology_labels.end();) {
-            const auto &[x, y, w, h] = it->first;
-            if (Rect2i(Vector2i(x, y), Vector2i(w, h)).intersects(changed)) it = topology_labels.erase(it);
-            else ++it;
         }
         std::fill(topology_components.begin(), topology_components.end(), 0);
         topology_next_component = 0;
@@ -282,6 +295,8 @@ public:
         out["representatives"] = std::count_if(topology_representatives.begin(), topology_representatives.end(), [](Vector2i p) { return p.x >= 0; });
         out["components"] = std::count_if(topology_components.begin(), topology_components.end(), [](int c) { return c != 0; });
         out["labels"] = int64_t(topology_labels.size());
+        out["update_blocks_visited"] = update_blocks_visited;
+        out["update_labels_probed"] = update_labels_probed;
         out["seeds"] = int64_t(topology_seed_cache[0].size() + topology_seed_cache[1].size());
         out["weighted_blocks"] = std::count(block_ready.begin(), block_ready.end(), uint8_t(1));
         return out;

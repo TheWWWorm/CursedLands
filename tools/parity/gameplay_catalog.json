@@ -2431,7 +2431,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 109,
       "quick": false,
-      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -2451,7 +2451,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 113,
       "quick": false,
-      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -5610,7 +5610,7 @@
       "marker": "WORKER_CLOCK",
       "min_checks": 8200,
       "quick": true,
-      "description": "Original 55ms simulation cadence, retained time and bounded catch-up across lifecycle events",
+      "description": "Original 55ms cadence, bounded wall-stall admission and retained admitted work across lifecycle events",
       "kind": "remake_regression",
       "timeout": 300,
       "args": [],
@@ -8390,6 +8390,367 @@
         "res/texts.res"
       ],
       "issues": []
+    },
+    {
+      "id": "pathing/moving_lift_navigation",
+      "category": "pathing",
+      "script": "tools/tests/moving_navigation.gd",
+      "marker": "MOVING_NAVIGATION",
+      "min_checks": 95,
+      "quick": false,
+      "description": "Authored Portal lift ascent/descent, atomic moves and distant teleports; incremental heights/passability match fresh builds across all movement classes without eager whole-map floods.",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "pathing/moving_door_navigation",
+      "category": "pathing",
+      "script": "tools/tests/moving_navigation.gd",
+      "marker": "MOVING_NAVIGATION",
+      "min_checks": 177,
+      "quick": false,
+      "description": "Repeated Catacombs door states update local navigation and late-built movement classes without eager whole-map floods.",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [
+        "--zone=gz1d2"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1dun2.mob",
+        "maps/zone1dun2.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "commands/worker_overload_recovery",
+      "category": "commands",
+      "script": "tools/tests/worker_overload_recovery.gd",
+      "marker": "WORKER_OVERLOAD_RECOVERY",
+      "min_checks": 3618,
+      "quick": true,
+      "description": "Worker and inline 1x/2x/55:27 clocks recover from repeated severe stalls without replaying seconds of debt.",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "pathing/nav_local_invalidation",
+      "category": "pathing",
+      "script": "tools/tests/nav_local_invalidation.gd",
+      "marker": "NAV_LOCAL_INVALIDATION",
+      "min_checks": 120,
+      "quick": false,
+      "description": "Local native cache invalidation has bounded work on small and large prepared maps and preserves exact fresh-build connectivity.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "effects/prison_wall_seams",
+      "category": "effects",
+      "script": "tools/tests/prison_wall_seams.gd",
+      "marker": "PRISON_WALL_SEAMS",
+      "min_checks": 293,
+      "quick": false,
+      "description": "Authored prison wall intersections have one coplanar surface owner while retaining full visible coverage and original metadata.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone3dun1.mob",
+        "maps/zone3dun1.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_menu_io",
+      "category": "arena",
+      "script": "tools/tests/arena_menu_io.gd",
+      "marker": "ARENA_MENU_IO",
+      "min_checks": 56,
+      "quick": false,
+      "description": "Multiplayer mode, host and join menu work does not rescan installation folders; reopening refreshes availability in EN/RU/DE.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_reserve_moves",
+      "category": "arena",
+      "script": "tools/tests/arena_reserve_moves.gd",
+      "marker": "ARENA_RESERVE_MOVES",
+      "min_checks": 22,
+      "quick": false,
+      "description": "Bench movement and swapping preserve slot identity, full benches, undo, save/load and phase restrictions.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_reserve_moves_online",
+      "category": "arena",
+      "script": "tools/tests/arena_reserve_moves_online.gd",
+      "marker": "ARENA_RESERVE_MOVES_ONLINE",
+      "min_checks": 16,
+      "quick": false,
+      "description": "Real ENet host and guest bench movement, swaps and undo replicate and reject invalid moves.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_reserve_moves_ui",
+      "category": "arena",
+      "script": "tools/tests/arena_reserve_moves_ui.gd",
+      "marker": "ARENA_RESERVE_MOVES_UI",
+      "min_checks": 33,
+      "quick": false,
+      "description": "Mouse selection, native drag and keyboard bench movement work in EN/RU/DE and reject stale drag context.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_item_first_click",
+      "category": "arena",
+      "script": "tools/tests/arena_item_first_click.gd",
+      "marker": "ARENA_ITEM_FIRST_CLICK",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Each of three item rewards accepts its first click with small held-button mouse motion; owned item selection remains intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_item_first_click_online",
+      "category": "arena",
+      "script": "tools/tests/arena_item_first_click_online.gd",
+      "marker": "ARENA_ITEM_FIRST_CLICK_ONLINE",
+      "min_checks": 9,
+      "quick": false,
+      "description": "Single item reward selections replicate exactly once to real ENet host and guest.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "pathing/nav_deferred_labels",
+      "category": "pathing",
+      "script": "tools/tests/nav_deferred_labels.gd",
+      "marker": "NAV_DEFERRED_LABELS",
+      "min_checks": 12,
+      "quick": true,
+      "description": "Lazy native and scalar legacy labels separate and reconnect components after edits.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "effects/dead_deer_cast_source",
+      "category": "effects",
+      "script": "tools/tests/dead_deer_cast_source.gd",
+      "marker": "DEAD_DEER_CAST_SOURCE",
+      "min_checks": 51,
+      "quick": true,
+      "description": "All three authored undead deer retain the inspected original body-centre source at casting poses and headings; acid missiles and offset boards agree.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "effects/dead_deer_cast_source_arena",
+      "category": "effects",
+      "script": "tools/tests/dead_deer_cast_source.gd",
+      "marker": "DEAD_DEER_CAST_SOURCE",
+      "min_checks": 52,
+      "quick": true,
+      "description": "Namespaced undead deer use the same original cast-source fallback after arena model fitting.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
+    },
+    {
+      "id": "arena/arena_combat_decisions",
+      "category": "arena",
+      "script": "tools/tests/arena_combat_decisions.gd",
+      "marker": "ARENA_COMBAT_DECISIONS",
+      "min_checks": 11,
+      "quick": true,
+      "description": "Autochess admits ally-protected area spells, finishes reachable wounded foes and rejects blocked spells while preserving campaign choices.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_popper_balance",
+      "category": "arena",
+      "script": "tools/tests/arena_popper_balance.gd",
+      "marker": "ARENA_POPPER_BALANCE",
+      "min_checks": 29,
+      "quick": true,
+      "description": "One-use hare burst remains effective through all stars while preserving armor, fuse, target cap, range counter and allied protection.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
+    },
+    {
+      "id": "arena/arena_opening_viability",
+      "category": "arena",
+      "script": "tools/tests/arena_opening_viability.gd",
+      "marker": "ARENA_OPENING_VIABILITY",
+      "min_checks": 186,
+      "quick": false,
+      "description": "Whole-price cohorts and mirrored native fights prevent opening goblins and frontline recruits from losing their useful contribution.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
     }
   ]
 }

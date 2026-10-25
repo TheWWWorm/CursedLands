@@ -5,7 +5,9 @@ extends RefCounted
 const PREFIX := "arena-lia/"
 const FAMILIES := [30, 31, 32, 33, 34, 35, 36, 37]
 const POPPER := 32
-const POPPER_DAMAGE := [30, 55, 120]
+# A one-use frontline slot pays its whole value in one blast. Follow the
+# health promotion curve so three-star targets do not outgrow that blast.
+const POPPER_DAMAGE := [60, 125, 300]
 const POPPER_FUSE := 0.6
 const POPPER_RADIUS := 2.5
 const POPPER_TARGETS := 3

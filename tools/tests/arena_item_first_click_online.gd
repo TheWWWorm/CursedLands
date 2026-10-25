@@ -1,0 +1,20 @@
+extends "arena_equipment_online.gd"
+## The choice UI submits once; the authoritative reply selects precisely one.
+func _ready()->void:
+	var host:=ArenaOnlineSession.new();host.player_name="Host";add_child(host)
+	var guest:=ArenaOnlineSession.new();guest.player_name="Guest";add_child(guest)
+	check(host.host(29832,false)==OK,"host listens")
+	check(guest.join("127.0.0.1:29832")==OK,"guest connects")
+	check(await wait_for(func():return guest.my_seat==1),"guest seat")
+	guest.request("ready");check(await wait_for(func():return host.members.values().all(func(m):return m.ready)),"ready delivered")
+	check(host.start_game(7319).is_empty(),"start")
+	check(await wait_for(func():return guest.started and not guest.last_state.is_empty()),"state delivered")
+	host.game.set_process(false)
+	var company:=host.game.run.company(1);company.offer_items_after(3);host.game.updated.emit()
+	check(await wait_for(func():return guest.view.item_offers.size()==3),"choices delivered")
+	var kind:=String(guest.view.item_offers[2]);guest.view.choose_item(2)
+	check(await wait_for(func():return guest.view.item_offers.is_empty() and guest.view.items.size()==1),"single choice request resolves")
+	check(company.items.size()==1 and company.items[0].kind==kind and guest.view.items[0].kind==kind,"one correct reward on both peers")
+	guest.close();host.close();guest.queue_free();host.queue_free();await frames(3)
+	print("ARENA_ITEM_FIRST_CLICK_ONLINE ",JSON.stringify({"checks":checks,"failures":failures}))
+	get_tree().quit(0 if failures.is_empty() else 1)

@@ -1,0 +1,26 @@
+[
+	{
+		"family": 4,
+		"fights": 28,
+		"points": 10.5,
+		"rate": 0.375
+	},
+	{
+		"family": 22,
+		"fights": 48,
+		"points": 10.5,
+		"rate": 0.21875
+	},
+	{
+		"family": 34,
+		"fights": 56,
+		"points": 13.5,
+		"rate": 0.241071428571429
+	},
+	{
+		"family": 35,
+		"fights": 48,
+		"points": 6.5,
+		"rate": 0.135416666666667
+	}
+]
