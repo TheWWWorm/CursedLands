@@ -1,0 +1,151 @@
+{
+	"checks": 117,
+	"failures": [],
+	"results": {
+		"atlas-2-tile-3": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"atlas-3-tile-8": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"atlas-8-tile-63": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"cliff": {
+			"mean_error": 0.0000728967054834906,
+			"peak_error": 0.0003662109375
+		},
+		"cliff-coarse-mip": {
+			"mean_error": 0.0000269963191105769,
+			"peak_error": 0.0001220703125
+		},
+		"cliff-four-material-coarse-mip": {
+			"mean_error": 0.00000498845027043269,
+			"peak_error": 0.0001220703125
+		},
+		"cliff-four-material-corners": {
+			"mean_error": 0.0000213047243514151,
+			"peak_error": 0.000244140625
+		},
+		"cliff-relief": {
+			"samples": 1590,
+			"tilted": 1548,
+			"valid": true
+		},
+		"cliff-relief-normal-parity": {
+			"mean_error": 0.000000549562322268696,
+			"peak_error": 0.00048828125
+		},
+		"cliff-relief-upward-normal-parity": {
+			"mean_error": 0.00297586355569228,
+			"peak_error": 0.012420654296875
+		},
+		"cliff-relief-world-normal-parity": {
+			"mean_error": 0.00425585482105519,
+			"peak_error": 0.012664794921875
+		},
+		"cliff-two-rock-mask-1": {
+			"mean_error": 0.0000577818672612028,
+			"peak_error": 0.0003662109375
+		},
+		"cliff-two-rock-mask-10": {
+			"mean_error": 0.0000407476845027516,
+			"peak_error": 0.000244140625
+		},
+		"cliff-two-rock-mask-2": {
+			"mean_error": 0.0000552867193641903,
+			"peak_error": 0.000244140625
+		},
+		"cliff-two-rock-mask-4": {
+			"mean_error": 0.0000585400083529874,
+			"peak_error": 0.0003662109375
+		},
+		"cliff-two-rock-mask-5": {
+			"mean_error": 0.0000428397700471698,
+			"peak_error": 0.0003662109375
+		},
+		"cliff-two-rock-mask-8": {
+			"mean_error": 0.0000575419491941824,
+			"peak_error": 0.000244140625
+		},
+		"cliff-upward-lighting-normal": {
+			"mean_error": 0.000584862667059748,
+			"peak_error": 0.00250244140625
+		},
+		"cliff-world-(-17.0, -5.0, 0.0)": {
+			"mean_error": 0.000106216526631289,
+			"peak_error": 0.00048828125
+		},
+		"cliff-world-(103.0, 29.0, 0.0)": {
+			"mean_error": 0.0000520718172661164,
+			"peak_error": 0.000244140625
+		},
+		"cliff-world-coarse-(-17.0, -5.0, 0.0)": {
+			"mean_error": 0.00006103515625,
+			"peak_error": 0.000244140625
+		},
+		"cliff-world-coarse-(103.0, 29.0, 0.0)": {
+			"mean_error": 0.0000786414513221154,
+			"peak_error": 0.000244140625
+		},
+		"coarse-padded-mip": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"coarse-unpadded-mip": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"junction": {
+			"mean_error": 0.000000211127898977987,
+			"peak_error": 0.0001220703125
+		},
+		"junction-coarse-mip": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"land-grid-(16, 3)-last-cell": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"land-grid-(17, 3)-last-cell": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"land-grid-(256, 256)-last-cell": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"pair": {
+			"mean_error": 0.0000000767737814465409,
+			"peak_error": 0.0001220703125
+		},
+		"pair-coarse-mip": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-0": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-1": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-2": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-3": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"shifted-authored-tile": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		}
+	}
+}

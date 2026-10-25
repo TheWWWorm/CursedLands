@@ -13,6 +13,7 @@ var four_donors := false
 var authored_normal := Vector3.BACK
 var normal_texture: Image
 var reference_image: Image
+var reference_normals := false
 var mode := 0 # detailed, pair, junction, cliff
 var rotation := 0
 var tile_index := 0
@@ -59,6 +60,8 @@ void main() {
  vec4 traits;vec3 colour=ground_sample(ivec2(0),p,vec2(params.projection.z/4.0,0),vec2(0,-params.projection.w/4.0),traits);
 """
 	if mode==3:result+="vec3 world=vec3(point,0)+params.origin.xyz;vec3 planes=cliff_weights(ivec2(0),clamp(p,vec2(0),vec2(1)),vec3(0,0,1),72.0);colour=cliff_albedo(colour,ivec2(0),clamp(p,vec2(0),vec2(1)),world,planes);\n"
+	if reference_normals:
+		result+="colour=cliff_relief_normal(world,vec3(%s,%s,%s),vec3(0,0,1),vec3(0,0,1),planes,8.0,max(params.projection.z,params.projection.w));\n"%[authored_normal.x,authored_normal.y,authored_normal.z]
 	result=result.replace("const float tiles_per_axis=2.0;","const float tiles_per_axis=%s;"%float(atlas_axis))
 	result=result.replace("const float atlas_padding=0.125;","const float atlas_padding=%s;"%atlas_padding)
 	result=result.replace("const float source_texel=1.0/128.0;","const float source_texel=1.0/%s;"%float(atlas_axis*64))
@@ -146,14 +149,14 @@ func comparison(label: String) -> void:
 	RenderingServer.call_on_render_thread(reference_render.bind(reference_code(),params));await filtered
 	check(reference_image!=null,"compile independent raster sampler: "+label)
 	if reference_image==null:return
-	var traced:=device.shadow1.get_image();var error:=0.0;var peak:=0.0;var count:=0
+	var traced:=device.guide.get_image() if reference_normals else device.shadow1.get_image();var error:=0.0;var peak:=0.0;var count:=0
 	for y in range(size.y/3,2*size.y/3):
 		for x in range(size.x/3,2*size.x/3):
 			var a:=traced.get_pixel(x,y);var b:=reference_image.get_pixel(x,y)
 			var delta:=maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 			error+=delta;peak=maxf(peak,delta);count+=1
 	report[label]={"mean_error":error/count,"peak_error":peak}
-	check(error/count<0.006 and peak<0.025,"traced colour matches raster sampler: "+label+" "+str(report[label]))
+	check(error/count<0.006 and peak<0.025,"traced material matches raster sampler: "+label+" "+str(report[label]))
 	reference_image=null
 
 func run() -> void:
@@ -211,11 +214,11 @@ func run() -> void:
 	check(absf(rough/63.0-0.84)<0.02,"rock type controls traced roughness")
 	ground_type=0;check(await build_land(),"build grass material");await render_many(2)
 	check(absf((int(mean(device.shadow1).a)&63)/63.0-0.96)<0.02,"grass keeps a separate roughness")
-	# A near vertical face must receive relief from its projected rock texture,
+	# A near vertical face must receive world-space rock relief,
 	# even with the procedural normal texture disabled. Check every sampled
 	# normal as well as a visible change; this catches flipped/grazing normals.
 	mode=3;use_normal=false;ground_type=2
-	check(await build_land(),"build near cliff with projected painted relief");await render_many(2)
+	check(await build_land(),"build near cliff with world-space relief");await render_many(2)
 	var cliff_normals:=device.guide.get_image();var valid:=true;var tilted:=0;var samples:=0
 	for y in range(size.y/3,2*size.y/3):
 		for x in range(size.x/3,2*size.x/3):
@@ -224,8 +227,16 @@ func run() -> void:
 			if absf(n.x)>0.01:tilted+=1
 			samples+=1
 	check(valid,"near cliff relief keeps finite outward unit normals")
-	check(tilted>samples/2,"projected rock texture perturbs normals without the noise normal texture")
+	check(tilted>samples/2,"world-space rock relief perturbs normals without the noise normal texture")
 	report["cliff-relief"]={"samples":samples,"tilted":tilted,"valid":valid}
+	# Primary wall shading must agree with the raster receiver, including the
+	# misleading upward normals found on the photographed cave wall.
+	reference_normals=true;offset=Vector3.ZERO;camera.position=Vector3(0,0,8)
+	await comparison("cliff-relief-normal-parity")
+	authored_normal=Vector3(0,0.85,0.52).normalized()
+	await comparison("cliff-relief-upward-normal-parity")
+	offset=Vector3(-17,5,0);camera.position=offset+Vector3(0,0,8)
+	await comparison("cliff-relief-world-normal-parity")
 	RenderingServer.call_on_render_thread(device.dispose);await frames(6)
 	check(device.terrain.atlas==null,"disposing PT releases its retained raster atlas")
 	camera.queue_free()

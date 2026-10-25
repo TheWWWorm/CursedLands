@@ -698,6 +698,31 @@ float3 cliff_noise(float2 p) {
     float a=cliff_hash(cell),b=cliff_hash(cell+int2(1,0)),c=cliff_hash(cell+int2(0,1)),e=cliff_hash(cell+int2(1,1));
     return float3(lerp(lerp(a,b,u.x),lerp(c,e,u.x),u.y),lerp(b-a,e-c,u.y)*d.x,lerp(c-a,e-b,u.x)*d.y);
 }
+// Broad rock relief is measured on the wall, not on its stretched land UVs.
+// Rounded ridges avoid a hard normal discontinuity at each noise zero.
+float2 cliff_rock_slope(float2 p,float footprint) {
+ float3 a=cliff_noise(p*0.85+float2(3.1,-7.9));
+ float3 b=cliff_noise(p*2.3+float2(-12.7,9.2));
+ float ridge=(a.x-0.5)/sqrt((a.x-0.5)*(a.x-0.5)+0.02);
+ return a.yz*(0.85*ridge)*(1.0-smoothstep(0.2,0.6,footprint))
+      +b.yz*0.34*(1.0-smoothstep(0.06,0.2,footprint));
+}
+float3 cliff_relief_normal(float3 world,float3 normal,float3 geometric,float3 to_eye,float3 planes,float distance_to_eye,float footprint) {
+ float fade=1.0-smoothstep(25.0,70.0,distance_to_eye);
+ if (planes.y<=0.0 || fade<=0.0 || footprint>=0.6) { return normal; }
+ float3 slope=0.0;
+ if (planes.x>0.0) { float2 q=cliff_rock_slope(float2(-world.z,world.y),footprint); slope+=float3(0.0,q.y,-q.x)*planes.x; }
+ if (planes.z>0.0) { float2 q=cliff_rock_slope(world.xy,footprint); slope+=float3(q,0.0)*planes.z; }
+ float3 perturbation=-(slope-normal*dot(normal,slope))*fade;
+ // Keep relief shallow and inside both the face and viewing hemispheres.
+ perturbation*=min(1.0,0.6/max(length(perturbation),1e-6));
+ if (dot(geometric,normal)<0.0) { geometric=-geometric; }
+ float limit=1.0,a=-dot(perturbation,geometric),b=-dot(perturbation,to_eye);
+ if (a>0.0) { limit=min(limit,0.8*max(dot(normal,geometric),0.0)/a); }
+ if (b>0.0) { limit=min(limit,0.8*max(dot(normal,to_eye),0.0)/b); }
+ float3 result=normalize(normal+perturbation*limit);
+ return dot(result,geometric)>0.05 && dot(result,to_eye)>0.0 ? result : normal;
+}
 float2 cliff_turn(float2 p) { return float2(0.8*p.x-0.6*p.y,0.6*p.x+0.8*p.y); }
 struct CliffProjection { float4 uv; float2 filter; };
 CliffProjection cliff_project(float2 p,float atlas_lod) {
@@ -742,12 +767,6 @@ float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection 
     [branch] if(weights.z>0.0)colour+=cliff_projected_tile(row.z-1.0,planes,x,z)*weights.z;
     [branch] if(weights.w>0.0)colour+=cliff_projected_tile(row.w-1.0,planes,x,z)*weights.w;
     return colour;
-}
-float3 cliff_surface(int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
-    CliffProjection x=(CliffProjection)0,z=(CliffProjection)0;
-    [branch] if(planes.x>0.0)x=cliff_project(float2(-world.z,world.y)*0.5,atlas_lod);
-    [branch] if(planes.z>0.0)z=cliff_project(world.xy*0.5,atlas_lod);
-    return cliff_projected_surface(cell,p,planes,x,z);
 }
 float3 cliff_albedo(float3 original,int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
     if(planes.y<=0.0)return original;
@@ -1011,27 +1030,6 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Its four compact atlas taps run below, once, instead of evaluating the
     // complete neighbouring transition field four additional times per hit.
     painted_scale=(1.0-planes.y)*lerp(lerp(1.0,1.15,traits.x),0.45,traits.y)*(1.0-0.8*traits.w);
-    // Test the complete relief fade before fetching the four projected
-    // gradients: coarse secondary hits and donor joins often contribute zero.
-    float edge=smoothstep(0.0,0.15,min(min(local.x,local.y),min(1.0-local.x,1.0-local.y)));
-    float resolved=1.0-smoothstep(0.18,0.65,footprint/grazing);
-    float cliff_relief=planes.y*fade*edge*resolved;
-    [branch] if(cliff_relief>0.0&&planes.y>0.001) {
-        // Cliff detail must follow the vertical projection, not the stretched
-        // land UVs. Use its dominant projection axes with the same atlas mips.
-        float3 tangent=planes.x>planes.z?float3(0,0,-1):float3(1,0,0);
-        float3 bitangent=float3(0,1,0);
-        tangent-=n*dot(n,tangent);bitangent-=n*dot(n,bitangent);
-        float step_world=max(0.0625,footprint/grazing);
-        float3 projection=planes/max(planes.y,1e-6);
-        const float3 lum=float3(0.2126,0.7152,0.0722);
-        float left=sqrt(max(dot(cliff_surface(cell,local,s.position-tangent*step_world,projection,cliff_lod),lum),0.0));
-        float right=sqrt(max(dot(cliff_surface(cell,local,s.position+tangent*step_world,projection,cliff_lod),lum),0.0));
-        float down=sqrt(max(dot(cliff_surface(cell,local,s.position-bitangent*step_world,projection,cliff_lod),lum),0.0));
-        float up=sqrt(max(dot(cliff_surface(cell,local,s.position+bitangent*step_world,projection,cliff_lod),lum),0.0));
-        float2 slope=clamp(float2(right-left,up-down)*2.0,-0.30,0.30);
-        n=land_normal(n,-(tangent*slope.x+bitangent*slope.y)*1.5*cliff_relief,s.geometric_normal);
-    }
     [branch] if(fade>0.0) {
         uint normal_layer=land_detail().x;
         [branch] if(normal_layer>0u) {
@@ -1052,6 +1050,8 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
             n=land_normal(n,perturbation*relief*fade,s.geometric_normal);
         }
     }
+    // Match the visible wall relief without four full donor-field samples.
+    n=cliff_relief_normal(s.position,n,s.geometric_normal,-WorldRayDirection(),planes,distance,footprint/grazing);
     colour=cliff_albedo(colour,cell,saturate(local),s.position,planes,cliff_lod);
     uint macro_layer=land_detail().y;
     [branch] if(macro_layer>0u) {

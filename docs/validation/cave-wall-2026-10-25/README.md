@@ -1,5 +1,8 @@
 # Cave wall mapping and repetition
 
+This report records `56774890`. The later [wall shading relief report](../cave-wall-relief-2026-10-25/README.md)
+addresses the remaining smooth vertical lighting bands and updates PT costs.
+
 The reported view is the Gipath cave entrance (`zone5_1`, campaign `gz5g`).
 The fixed camera is at `(20.15,17.51792,-76.1)`, looking toward the party at
 `(14.15,10.51792,-83.1)`, in a 1920×1080 window. The task branch includes SHaRC,

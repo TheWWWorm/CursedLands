@@ -1,0 +1,37 @@
+{
+  "exit": 1,
+  "errors": [
+    "FAIL wall shading has broad vertical relief rather than painted columns: 0.003661",
+    "Missing passing summary: ['CAVE_WALL 16 checks 1 failures']"
+  ],
+  "summary": [
+    "CAVE_WALL 16 checks 1 failures"
+  ],
+  "seconds": 68.62988468797994,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-painted-native/runtime.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--display-driver",
+    "x11",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-before/fixtures/terrain_cave_wall.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-relief-before"
+  ],
+  "runtime_sha256": {
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-painted-native/runtime.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-sharc-20261025/wall-painted-native/runtime.pck": "c2b4f4bac83d06335eea7066882bdb70ef2a9ea03556be662f14b68d17c52d79"
+  },
+  "fixture_sha256": "fad7614164565ead9828bbc71050a843e92937de04d47a142978f593ac545c33"
+}

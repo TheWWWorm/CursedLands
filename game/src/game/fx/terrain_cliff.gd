@@ -1,6 +1,6 @@
 class_name TerrainCliff
 extends RefCounted
-## Optional albedo coordinates only. Identity rules refer to untouched original
+## Optional wall coordinates and bounded relief. Identity rules use original
 ## atlases; neither HD art nor a map name can classify unknown artwork.
 const Tiles = preload("res://src/game/fx/terrain_cliff_tiles.gd")
 const CliffShader = preload("res://src/game/fx/terrain_cliff_shader.gd")

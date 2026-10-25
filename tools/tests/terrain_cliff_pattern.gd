@@ -37,6 +37,7 @@ func run() -> void:
 	var shader:=Shader.new()
 	shader.code="""shader_type canvas_item;
 uniform vec2 origin=vec2(0.0);
+uniform int normal_mode=0;
 vec4 tile_info(ivec2 cell) { return vec4(0.0); }
 // Opposite edges deliberately disagree; a wrapped projection must not
 // depend on a specially seamless source texture to pass this fixture.
@@ -47,6 +48,10 @@ vec3 tile_sample(float code,vec2 p,vec2 dx,vec2 dy) {
 void fragment() {
  vec2 p=(UV-0.5)*vec2(16.0,8.0)+origin;
  vec3 c=cliff_tile(0.0,vec3(p,0.0),vec3(0.0,1.0,1.0),vec3(1.0/64.0,0.0,0.0),vec3(0.0,1.0/64.0,0.0));
+ if(normal_mode>0) {
+  vec3 planes=normal_mode==2?vec3(0.0):vec3(0.0,1.0,1.0);
+  c=cliff_relief_normal(vec3(p,0.0),vec3(0,0,1),vec3(0,0,1),vec3(0,0,1),planes,normal_mode==3?100.0:10.0,normal_mode==4?1.0:1.0/64.0)*0.5+0.5;
+ }
  COLOR=vec4(c,1.0);
 }
 """
@@ -80,6 +85,32 @@ void fragment() {
 		for x in range(0,960,3):error=maxf(error,delta(image.get_pixel(x+64,y),shifted.get_pixel(x,y)))
 	check(error<0.008,"moving the view keeps the pattern fixed in world space: %.6f"%error)
 	report["world_lock_error"]=error;report["checks"]=checks;report["failures"]=failures
+	material.set_shader_parameter("origin",Vector2.ZERO);material.set_shader_parameter("normal_mode",1)
+	var normals:=await capture(view,"cliff-relief")
+	var variation:=0.0;var count:=0;var valid:=true;var jump:=0.0
+	for y in range(0,480,2):
+		for x in range(0,1023,2):
+			var c:=normals.get_pixel(x,y);var direction:=Vector3(c.r,c.g,c.b)*2.0-Vector3.ONE
+			valid=valid and direction.is_finite() and direction.z>0.8 and absf(direction.length()-1.0)<0.015
+			variation+=delta(c,normals.get_pixel(x,y+24));count+=1
+			jump=maxf(jump,maxf(delta(c,normals.get_pixel(x+1,y)),delta(c,normals.get_pixel(x,y+1))))
+	variation/=count
+	check(variation>0.02,"wall normals vary over height instead of forming painted columns: %.6f"%variation)
+	check(valid,"rock relief retains bounded outward unit normals")
+	check(jump<0.1,"rock relief has no hard noise-cell or ridge seams: %.6f"%jump)
+	material.set_shader_parameter("origin",Vector2(1,0))
+	var shifted_normals:=await capture(view,"cliff-relief-shifted");error=0.0
+	for y in range(0,512,3):
+		for x in range(0,960,3):error=maxf(error,delta(normals.get_pixel(x+64,y),shifted_normals.get_pixel(x,y)))
+	check(error<0.008,"moving the camera keeps relief fixed to the wall: %.6f"%error)
+	for mode in [2,3,4]:
+		material.set_shader_parameter("normal_mode",mode)
+		var neutral:=await capture(view,"cliff-relief-neutral-%d"%mode);var peak:=0.0
+		for y in range(0,512,5):
+			for x in range(0,1024,5):peak=maxf(peak,delta(neutral.get_pixel(x,y),Color(0.5,0.5,1.0)))
+		check(peak<0.008,"relief preserves flat, distant or unresolved surfaces (%d): %.6f"%[mode,peak])
+	report["relief"]={"vertical_variation":variation,"valid":valid,"jump":jump,"world_lock_error":error}
+	report["checks"]=checks;report["failures"]=failures
 	FileAccess.open(out.path_join("cliff-pattern.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	view.queue_free()
 	print("CLIFF_PATTERN ",checks," checks ",failures," failures")

@@ -39,6 +39,38 @@ func vertical_detail(a: Image,rect: Rect2i) -> float:
 			total+=(absf(d.r)+absf(d.g)+absf(d.b))/3.0
 	return total/(rect.size.x*rect.size.y)
 
+func wall_normal_variation() -> float:
+	# Inspect the production shading normal, independently of texture colour
+	# and lamps. The painted-wall version has fine albedo but nearly constant
+	# normals along each long vertical column.
+	var saved:=[];var shaders:={}
+	if t.color_cache!=null:t.color_cache.prepare(camera);t.color_cache.set_process(false)
+	for mesh: Node in t.find_children("*","MeshInstance3D",true,false):
+		var original:=mesh.get_active_material(0) as ShaderMaterial
+		if original==null or not original.shader.code.contains("#define EI_TERRAIN_LIGHT"):continue
+		var material:=original.duplicate() as ShaderMaterial
+		var key:=original.shader.get_instance_id()
+		if not shaders.has(key):
+			var shader:=Shader.new()
+			shader.code=Gfx._function_tail(original.shader.code.replace("render_mode ","render_mode unshaded, fog_disabled, "),"fragment","""
+	ALBEDO=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz)*0.5+0.5;
+	EMISSION=vec3(0.0);FOG=vec4(0.0);
+""")
+			shaders[key]=shader
+		material.shader=shaders[key]
+		saved.append([mesh,mesh.get_surface_override_material(0)])
+		mesh.set_surface_override_material(0,material)
+	await frames(12);var normal_image:=await capture("wall-normals")
+	var variation:=0.0
+	for y in range(60,236):
+		for x in range(760,1020):
+			var d:=normal_image.get_pixel(x,y)-normal_image.get_pixel(x,y+24)
+			variation+=(absf(d.r)+absf(d.g)+absf(d.b))/3.0
+	variation/=176.0*260.0
+	for row: Array in saved:row[0].set_surface_override_material(0,row[1])
+	await frames(8)
+	return variation
+
 func run() -> void:
 	cave=true
 	var context:=await setup_sharc()
@@ -89,6 +121,8 @@ func run() -> void:
 	GameData.options.pt_mode=0;Gfx.apply_env(game._env);await frames(30)
 	check(rt.device==null and not Gfx.path_trace_active,"leaving corrected PT releases the scene and cache")
 	var raster:=await capture("wall-raster")
+	var normal_variation:=await wall_normal_variation()
+	check(normal_variation>0.012,"wall shading has broad vertical relief rather than painted columns: %.6f"%normal_variation)
 	var blank:=Image.create(field.tile_size.x,field.tile_size.y,false,Image.FORMAT_R8)
 	field.tiles.update(blank);await frames(8)
 	var original:=await capture("wall-original-mapping")
@@ -102,7 +136,7 @@ func run() -> void:
 	check(region_difference(raster,await capture("wall-restored"),wall)<0.002,"restoring cliff eligibility restores the corrected wall")
 	check(t.heights==heights and t.land_xy==xy and t.land_n==normals and t.land_tile==codes,"mapping leaves geometry, authored lighting normals and tile codes unchanged")
 	var report:={"map":t.resource_prefix,"camera":str(camera.global_transform),"checks":checks,"failures":failures,"probes":probes,
-		"wall_difference":changed,"floor_difference":retained,"vertical_detail_before":detail_before,"vertical_detail_after":detail_after}
+		"wall_difference":changed,"floor_difference":retained,"vertical_detail_before":detail_before,"vertical_detail_after":detail_after,"normal_vertical_variation":normal_variation}
 	FileAccess.open(out.path_join("cave-wall.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	game.queue_free();session.queue_free();await frames(16);TexUpscale.shutdown()
 	print("CAVE_WALL ",checks," checks ",failures.size()," failures");get_tree().quit(0 if failures.is_empty() else 1)

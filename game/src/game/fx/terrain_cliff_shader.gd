@@ -47,6 +47,31 @@ vec3 cliff_noise(vec2 p) {
  float a=cliff_hash(cell),b=cliff_hash(cell+ivec2(1,0)),c=cliff_hash(cell+ivec2(0,1)),e=cliff_hash(cell+ivec2(1));
  return vec3(mix(mix(a,b,u.x),mix(c,e,u.x),u.y),mix(b-a,e-c,u.y)*d.x,mix(c-a,e-b,u.x)*d.y);
 }
+// Broad rock relief is measured on the wall, not on its stretched land UVs.
+// Rounded ridges avoid a hard normal discontinuity at each noise zero.
+vec2 cliff_rock_slope(vec2 p,float footprint) {
+ vec3 a=cliff_noise(p*0.85+vec2(3.1,-7.9));
+ vec3 b=cliff_noise(p*2.3+vec2(-12.7,9.2));
+ float ridge=(a.x-0.5)/sqrt((a.x-0.5)*(a.x-0.5)+0.02);
+ return a.yz*(0.85*ridge)*(1.0-smoothstep(0.2,0.6,footprint))
+      +b.yz*0.34*(1.0-smoothstep(0.06,0.2,footprint));
+}
+vec3 cliff_relief_normal(vec3 world,vec3 normal,vec3 geometric,vec3 to_eye,vec3 planes,float distance_to_eye,float footprint) {
+ float fade=1.0-smoothstep(25.0,70.0,distance_to_eye);
+ if (planes.y<=0.0 || fade<=0.0 || footprint>=0.6) { return normal; }
+ vec3 slope=vec3(0.0);
+ if (planes.x>0.0) { vec2 q=cliff_rock_slope(vec2(-world.z,world.y),footprint); slope+=vec3(0.0,q.y,-q.x)*planes.x; }
+ if (planes.z>0.0) { vec2 q=cliff_rock_slope(world.xy,footprint); slope+=vec3(q,0.0)*planes.z; }
+ vec3 perturbation=-(slope-normal*dot(normal,slope))*fade;
+ // Keep relief shallow and inside both the face and viewing hemispheres.
+ perturbation*=min(1.0,0.6/max(length(perturbation),1e-6));
+ if (dot(geometric,normal)<0.0) { geometric=-geometric; }
+ float limit=1.0,a=-dot(perturbation,geometric),b=-dot(perturbation,to_eye);
+ if (a>0.0) { limit=min(limit,0.8*max(dot(normal,geometric),0.0)/a); }
+ if (b>0.0) { limit=min(limit,0.8*max(dot(normal,to_eye),0.0)/b); }
+ vec3 result=normalize(normal+perturbation*limit);
+ return dot(result,geometric)>0.05 && dot(result,to_eye)>0.0 ? result : normal;
+}
 vec2 cliff_turn(vec2 p) { return vec2(0.8*p.x-0.6*p.y,0.6*p.x+0.8*p.y); }
 struct CliffProjection { vec4 uv; vec4 gx; vec4 gy; float blend; };
 CliffProjection cliff_project(vec2 p,vec2 dx,vec2 dy) {
@@ -124,5 +149,9 @@ static func source(original: String) -> String:
 		vec3 cliff_planes=cliff_weights(tile,clamp(local,vec2(0.0),vec2(1.0)),cliff_normal,length(VERTEX))*detail;
 		float stone = traits.x;""")
 	code = code.replace("* frame_scale * painted_relief * fade", "* frame_scale * painted_relief * fade * (1.0-cliff_planes.y)")
-	code = code.replace("// large, soft brightness variation", "c=cliff_albedo(c,tile,clamp(local,vec2(0.0),vec2(1.0)),wpos,cliff_planes);\n\t\t// large, soft brightness variation")
+	code = code.replace("// large, soft brightness variation", """c=cliff_albedo(c,tile,clamp(local,vec2(0.0),vec2(1.0)),wpos,cliff_planes);
+		vec3 cliff_shading=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
+		cliff_shading=cliff_relief_normal(wpos,cliff_shading,cliff_normal,normalize((INV_VIEW_MATRIX*vec4(VIEW,0.0)).xyz),cliff_planes,length(VERTEX),max(length(dFdx(wpos)),length(dFdy(wpos))));
+		NORMAL=normalize((VIEW_MATRIX*vec4(cliff_shading,0.0)).xyz);
+		// large, soft brightness variation""")
 	return code
