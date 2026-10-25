@@ -1,0 +1,211 @@
+{
+  "version": "1.29.0",
+  "publication": {
+    "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.29.0",
+    "tag": "v1.29.0",
+    "tag_commit": "6d84813834640097f45e1d297f1c59a4d5201a9e",
+    "isDraft": false,
+    "isPrerelease": false,
+    "published_at": "2026-10-25T01:37:53Z",
+    "verified_at": "2026-10-25T01:38:14Z",
+    "all_asset_names_sizes_and_server_sha256_match": true,
+    "checksum_download_matches": true,
+    "asset_policy_check": "passed before upload for every asset",
+    "assets": [
+      {
+        "name": "CursedLands-1.29.0-android.apk",
+        "size": 50001418,
+        "digest": "sha256:7543646a4d700738403393d2dc118eff3e1b836e0ab8cd709ef4bb24657458fd",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/CursedLands-1.29.0-android.apk"
+      },
+      {
+        "name": "CursedLands-1.29.0-linux-x86_64.tar.gz",
+        "size": 59491309,
+        "digest": "sha256:6ed0a714a699891e13786d206fe1e9883d1e92cf1d84ff6536198d256d69a1dd",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/CursedLands-1.29.0-linux-x86_64.tar.gz"
+      },
+      {
+        "name": "CursedLands-1.29.0-macos-universal.zip",
+        "size": 87187138,
+        "digest": "sha256:bf282e987e5fcda5640f0feb7b7ea24fd6165d0d611c5f49b9f58e1fead59e37",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/CursedLands-1.29.0-macos-universal.zip"
+      },
+      {
+        "name": "CursedLands-1.29.0-tools.zip",
+        "size": 69338,
+        "digest": "sha256:982adaddb9eb181ef3a73008dc3eccc7d0cc381a82b01ebc2473e0a65d90245f",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/CursedLands-1.29.0-tools.zip"
+      },
+      {
+        "name": "CursedLands-1.29.0-web.zip",
+        "size": 189026347,
+        "digest": "sha256:108c8e2bf475b852ef0f5957b76d1311caac8b932cad1f72036f3b590ab22add",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/CursedLands-1.29.0-web.zip"
+      },
+      {
+        "name": "CursedLands-1.29.0-windows-x86_64.zip",
+        "size": 146188293,
+        "digest": "sha256:7c644e261155f79b9e47214e361e4918c0398210d3f1cb4c381f2ca24d5aaf25",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/CursedLands-1.29.0-windows-x86_64.zip"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "size": 599,
+        "digest": "sha256:37799a54a33d5be2fb8a032d7e4d2a2537ad4701dbcb8e8fc4312a8b9039fd81",
+        "browser_download_url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.29.0/SHA256SUMS.txt"
+      }
+    ]
+  },
+  "closed_issues": [
+    {
+      "number": 109,
+      "state": "CLOSED",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/109",
+      "closed_at": "2026-10-25T01:38:47Z",
+      "comment": "fixed in #1.29.0",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/109#issuecomment-6392037671"
+    },
+    {
+      "number": 110,
+      "state": "CLOSED",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/110",
+      "closed_at": "2026-10-25T01:38:49Z",
+      "comment": "fixed in #1.29.0",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/110#issuecomment-6392038022"
+    },
+    {
+      "number": 111,
+      "state": "CLOSED",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/111",
+      "closed_at": "2026-10-25T01:38:52Z",
+      "comment": "fixed in #1.29.0",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/111#issuecomment-6392038386"
+    },
+    {
+      "number": 112,
+      "state": "CLOSED",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/112",
+      "closed_at": "2026-10-25T01:38:55Z",
+      "comment": "fixed in #1.29.0",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/112#issuecomment-6392038753"
+    }
+  ],
+  "hosted_browser": {
+    "site": "https://cursedlands.wwworm.com/",
+    "commit": "6d84813834640097f45e1d297f1c59a4d5201a9e",
+    "version": "1.29.0",
+    "previous_stable": "v1.28.0",
+    "verified_at": "2026-10-25T01:40:56Z",
+    "live_files": {
+      "data-worker.js": {
+        "bytes": 1568,
+        "sha256": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+        "isolation_headers": true
+      },
+      "files.js": {
+        "bytes": 14821,
+        "sha256": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+        "isolation_headers": true
+      },
+      "icon-192.png": {
+        "bytes": 50904,
+        "sha256": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
+        "isolation_headers": true
+      },
+      "icon-512.png": {
+        "bytes": 324019,
+        "sha256": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+        "isolation_headers": true
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 45361,
+        "sha256": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
+        "isolation_headers": true
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+        "isolation_headers": true
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+        "isolation_headers": true
+      },
+      "index.html": {
+        "bytes": 6220,
+        "sha256": "892afdc2117a2e5e5503cf9907c31e883643a6513c8f3f49adcc11e2bea059a7",
+        "isolation_headers": true
+      },
+      "index.icon.png": {
+        "bytes": 7516,
+        "sha256": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
+        "isolation_headers": true
+      },
+      "index.js": {
+        "bytes": 279815,
+        "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+        "isolation_headers": true
+      },
+      "index.pck": {
+        "bytes": 22301216,
+        "sha256": "25f3870dbe45d7ac3e904a75b3e45d66436bfe1571f3225b5ad4e88a30037ce7",
+        "isolation_headers": true
+      },
+      "index.png": {
+        "bytes": 340337,
+        "sha256": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+        "isolation_headers": true
+      },
+      "index.wasm": {
+        "bytes": 39509339,
+        "sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+        "isolation_headers": true
+      },
+      "installer-worker.js": {
+        "bytes": 16243,
+        "sha256": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+        "isolation_headers": true
+      },
+      "manifest.webmanifest": {
+        "bytes": 483,
+        "sha256": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+        "isolation_headers": true
+      },
+      "storage.js": {
+        "bytes": 5685,
+        "sha256": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+        "isolation_headers": true
+      },
+      "service-worker.js": {
+        "bytes": 7282,
+        "sha256": "7779af8ab2491b3723e0f4a0f97a3dd0268d8c0185a02384fb7c12e34bad55a9",
+        "isolation_headers": true
+      },
+      "BUILD-INFO.json": {
+        "bytes": 607,
+        "sha256": "d1cf35697868c18170a26b1a0fcae0c31116722d2c0c429ac91c372f6d343a2c",
+        "isolation_headers": true
+      },
+      "wiki/BUILD-INFO.json": {
+        "bytes": 2285154,
+        "sha256": "f522d630d705dc7d95829e45de2f9b9ad7b9d2ce8c6b3accae34f335a6092c3b",
+        "isolation_headers": true
+      },
+      "index.wasm.part0": {
+        "bytes": 20971520,
+        "sha256": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+        "isolation_headers": true
+      },
+      "index.wasm.part1": {
+        "bytes": 18537819,
+        "sha256": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+        "isolation_headers": true
+      }
+    },
+    "all_live_hashes_match": true,
+    "scope": "Every changed hosted asset since 1.28.0, complete service-worker engine cache, build metadata, all split parts and reassembled files"
+  },
+  "platform_validation": "release-1.29.0-2026-10-25.json",
+  "scope": "The release tag and assets are immutable. This follow-up records completed publication and live deployment without changing the game or hosted asset bytes."
+}
