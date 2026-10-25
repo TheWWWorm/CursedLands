@@ -1,0 +1,442 @@
+[
+  {
+    "tag": "accepted-before-1",
+    "checks": 76,
+    "failures": 0,
+    "adapter": {
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "vendor": "10de",
+      "device": "2203",
+      "uuid": "0eee028eb998532f095be936c7f6191d"
+    },
+    "window": "(1920, 1080)",
+    "frame_limit": 0,
+    "walks": [
+      {
+        "phase": "walk-0",
+        "seconds": 8.317167,
+        "frames": 207,
+        "frame_ms": {
+          "max": 118.184,
+          "median": 37.528,
+          "p95": 57.666
+        },
+        "from": [
+          173.5,
+          302.5
+        ],
+        "to": [
+          168.109375,
+          286.109375
+        ],
+        "goal": "(167.8734, 285.402)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-1",
+        "seconds": 8.67201,
+        "frames": 220,
+        "frame_ms": {
+          "max": 108.303,
+          "median": 36.814,
+          "p95": 63.674
+        },
+        "from": [
+          168.046875,
+          285.9375
+        ],
+        "to": [
+          182.296875,
+          276.109375
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-2",
+        "seconds": 8.122262,
+        "frames": 220,
+        "frame_ms": {
+          "max": 86.448,
+          "median": 34.871,
+          "p95": 56.532
+        },
+        "from": [
+          182.375,
+          276.046875
+        ],
+        "to": [
+          188.671875,
+          291.84375
+        ],
+        "goal": "(188.9388, 292.5357)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-3",
+        "seconds": 8.047953,
+        "frames": 224,
+        "frame_ms": {
+          "max": 67.729,
+          "median": 33.609,
+          "p95": 54.697
+        },
+        "from": [
+          188.71875,
+          291.96875
+        ],
+        "to": [
+          183.109375,
+          276.359375
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      }
+    ],
+    "replacement_failures": [
+      "snapshot_budget"
+    ],
+    "final_generation": 1,
+    "max_instances": 3961,
+    "final_source_cache": {
+      "bytes": 133422096,
+      "entries": 705,
+      "hits": 16094,
+      "misses": 1255
+    },
+    "fixture_hashes": {
+      "dar_fixed_benchmark.gd": "c204f5904dd5ae70c13e4388c949b4a5ed97818af8fd1202196e784e7c21dd2d",
+      "dar_leanos_route.gd": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "path_trace_zone_traversal.gd": "0a3e89b1b8d155a73cc81250dec6c35711725d806a00bc78197f8254452afab6"
+    }
+  },
+  {
+    "tag": "accepted-after-1",
+    "checks": 76,
+    "failures": 0,
+    "adapter": {
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "vendor": "10de",
+      "device": "2203",
+      "uuid": "0eee028eb998532f095be936c7f6191d"
+    },
+    "window": "(1920, 1080)",
+    "frame_limit": 0,
+    "walks": [
+      {
+        "phase": "walk-0",
+        "seconds": 8.333669,
+        "frames": 231,
+        "frame_ms": {
+          "max": 101.796,
+          "median": 35.196,
+          "p95": 46.162
+        },
+        "from": [
+          173.5,
+          302.5
+        ],
+        "to": [
+          168.09375,
+          286.046875
+        ],
+        "goal": "(167.8734, 285.402)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-1",
+        "seconds": 8.417312,
+        "frames": 261,
+        "frame_ms": {
+          "max": 211.824,
+          "median": 30.002,
+          "p95": 40.415
+        },
+        "from": [
+          168.046875,
+          285.9375
+        ],
+        "to": [
+          182.265625,
+          276.109375
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-2",
+        "seconds": 8.129842,
+        "frames": 239,
+        "frame_ms": {
+          "max": 215.801,
+          "median": 31.76,
+          "p95": 44.069
+        },
+        "from": [
+          182.359375,
+          276.03125
+        ],
+        "to": [
+          188.640625,
+          291.796875
+        ],
+        "goal": "(188.9388, 292.5357)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-3",
+        "seconds": 8.090393,
+        "frames": 224,
+        "frame_ms": {
+          "max": 203.203,
+          "median": 33.449,
+          "p95": 46.671
+        },
+        "from": [
+          188.71875,
+          291.953125
+        ],
+        "to": [
+          183.109375,
+          276.359375
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      }
+    ],
+    "replacement_failures": [],
+    "final_generation": 6,
+    "max_instances": 4383,
+    "final_source_cache": {
+      "bytes": 159936288,
+      "entries": 769,
+      "hits": 17201,
+      "misses": 774
+    },
+    "fixture_hashes": {
+      "dar_fixed_benchmark.gd": "c204f5904dd5ae70c13e4388c949b4a5ed97818af8fd1202196e784e7c21dd2d",
+      "dar_leanos_route.gd": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "path_trace_zone_traversal.gd": "0a3e89b1b8d155a73cc81250dec6c35711725d806a00bc78197f8254452afab6"
+    }
+  },
+  {
+    "tag": "accepted-after-2",
+    "checks": 76,
+    "failures": 0,
+    "adapter": {
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "vendor": "10de",
+      "device": "2203",
+      "uuid": "0eee028eb998532f095be936c7f6191d"
+    },
+    "window": "(1920, 1080)",
+    "frame_limit": 0,
+    "walks": [
+      {
+        "phase": "walk-0",
+        "seconds": 8.281128,
+        "frames": 244,
+        "frame_ms": {
+          "max": 93.751,
+          "median": 33.051,
+          "p95": 41.948
+        },
+        "from": [
+          173.5,
+          302.5
+        ],
+        "to": [
+          168.125,
+          286.15625
+        ],
+        "goal": "(167.8734, 285.402)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-1",
+        "seconds": 8.41083,
+        "frames": 265,
+        "frame_ms": {
+          "max": 209.484,
+          "median": 29.447,
+          "p95": 48.031
+        },
+        "from": [
+          168.046875,
+          285.9375
+        ],
+        "to": [
+          182.234375,
+          276.078125
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-2",
+        "seconds": 8.134941,
+        "frames": 236,
+        "frame_ms": {
+          "max": 211.989,
+          "median": 32.196,
+          "p95": 44.118
+        },
+        "from": [
+          182.34375,
+          276.0
+        ],
+        "to": [
+          188.640625,
+          291.796875
+        ],
+        "goal": "(188.9388, 292.5357)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-3",
+        "seconds": 8.014107,
+        "frames": 225,
+        "frame_ms": {
+          "max": 190.169,
+          "median": 33.149,
+          "p95": 46.007
+        },
+        "from": [
+          188.6875,
+          291.90625
+        ],
+        "to": [
+          183.125,
+          276.390625
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      }
+    ],
+    "replacement_failures": [],
+    "final_generation": 6,
+    "max_instances": 4407,
+    "final_source_cache": {
+      "bytes": 159936288,
+      "entries": 769,
+      "hits": 17236,
+      "misses": 774
+    },
+    "fixture_hashes": {
+      "dar_fixed_benchmark.gd": "c204f5904dd5ae70c13e4388c949b4a5ed97818af8fd1202196e784e7c21dd2d",
+      "dar_leanos_route.gd": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "path_trace_zone_traversal.gd": "0a3e89b1b8d155a73cc81250dec6c35711725d806a00bc78197f8254452afab6"
+    }
+  },
+  {
+    "tag": "accepted-before-2",
+    "checks": 76,
+    "failures": 0,
+    "adapter": {
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "vendor": "10de",
+      "device": "2203",
+      "uuid": "0eee028eb998532f095be936c7f6191d"
+    },
+    "window": "(1920, 1080)",
+    "frame_limit": 0,
+    "walks": [
+      {
+        "phase": "walk-0",
+        "seconds": 8.267073,
+        "frames": 199,
+        "frame_ms": {
+          "max": 106.563,
+          "median": 39.515,
+          "p95": 60.439
+        },
+        "from": [
+          173.5,
+          302.5
+        ],
+        "to": [
+          168.125,
+          286.15625
+        ],
+        "goal": "(167.8734, 285.402)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-1",
+        "seconds": 8.399212,
+        "frames": 203,
+        "frame_ms": {
+          "max": 97.615,
+          "median": 39.309,
+          "p95": 59.584
+        },
+        "from": [
+          168.09375,
+          286.046875
+        ],
+        "to": [
+          182.25,
+          276.078125
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-2",
+        "seconds": 8.149711,
+        "frames": 209,
+        "frame_ms": {
+          "max": 83.544,
+          "median": 37.265,
+          "p95": 60.117
+        },
+        "from": [
+          182.375,
+          275.984375
+        ],
+        "to": [
+          188.65625,
+          291.8125
+        ],
+        "goal": "(188.9388, 292.5357)",
+        "reroutes": []
+      },
+      {
+        "phase": "walk-3",
+        "seconds": 9.006906,
+        "frames": 227,
+        "frame_ms": {
+          "max": 70.049,
+          "median": 37.462,
+          "p95": 59.295
+        },
+        "from": [
+          188.6875,
+          291.921875
+        ],
+        "to": [
+          183.421875,
+          276.046875
+        ],
+        "goal": "(182.8603, 275.6479)",
+        "reroutes": []
+      }
+    ],
+    "replacement_failures": [
+      "snapshot_budget"
+    ],
+    "final_generation": 1,
+    "max_instances": 3961,
+    "final_source_cache": {
+      "bytes": 133386496,
+      "entries": 705,
+      "hits": 16094,
+      "misses": 1255
+    },
+    "fixture_hashes": {
+      "dar_fixed_benchmark.gd": "c204f5904dd5ae70c13e4388c949b4a5ed97818af8fd1202196e784e7c21dd2d",
+      "dar_leanos_route.gd": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "path_trace_zone_traversal.gd": "0a3e89b1b8d155a73cc81250dec6c35711725d806a00bc78197f8254452afab6"
+    }
+  }
+]

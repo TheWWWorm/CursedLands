@@ -1,0 +1,34 @@
+{
+  "exit": 1,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/proton/GE-Proton11-11-x86_64/files/bin/wine",
+    "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/windows-runtime/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/source-cache-before/fixtures/raytrace_source_cache.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/source-cache-before"
+  ],
+  "summary": [
+    "FAIL dense city geometry and 110 normalized layers survive a neighboring snapshot",
+    "FAIL larger city working set remains inside the explicit cache budget",
+    "RT_SOURCE_CACHE 12 checks 2 failures"
+  ],
+  "hashes": {
+    "CursedLands.exe": "1512c381a5553735901c7846b311daccd680e6a2671afa04c17c17b83ce0a3bb",
+    "CursedLands.pck": "b7758c59ff32f875f0b530aa78300715bf28c1e9d753b46bc5af7f92cc3aa986"
+  }
+}

@@ -40,6 +40,18 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def engine_arguments(engine, case, packaged=False):
+    command = [engine]
+    if not packaged:
+        command += ["--path", str(REPO / "game")]
+    command += ["--audio-driver", "Dummy", "--max-fps", "30"]
+    if case["mode"] == "headless":
+        return command + ["--headless"]
+    return command + ["--display-driver", "x11", "--rendering-method",
+                      case.get("rendering_method", "gl_compatibility"),
+                      "--windowed", "--resolution", "1280x720"]
+
+
 def verdict(log, case, returncode):
     """A clean exit alone is insufficient: require the named assertion result."""
     errors = []
@@ -83,6 +95,8 @@ def verdict(log, case, returncode):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", default="godot", help="Godot executable, preferably the release engine")
+    parser.add_argument("--packaged", action="store_true",
+                        help="Test the engine's adjacent exported PCK; stage external test scripts")
     parser.add_argument("--base-data", type=Path)
     parser.add_argument("--astral-data", type=Path)
     for language in ("en", "ru", "de"):
@@ -107,6 +121,9 @@ def main():
     engine = shutil.which(args.engine)
     if not engine:
         parser.error("Engine not found: " + args.engine)
+    pack = Path(engine).with_suffix(".pck")
+    if args.packaged and not pack.is_file():
+        parser.error("--packaged requires an adjacent PCK: " + str(pack))
     paths = {key: str(value.resolve()) for key, value in vars(args).items()
              if isinstance(value, Path) and key != "output"}
     # Validate the whole selection before running anything. Missing archives are
@@ -135,6 +152,8 @@ def main():
         "game_source_sha256": source_hash.hexdigest(), "manifest_sha256": digest(MANIFEST),
         "engine": engine, "engine_sha256": digest(engine), "data": paths, "cases": [],
     }
+    if args.packaged:
+        report["pack"] = {"path": str(pack), "sha256": digest(pack)}
     for case in selected:
         profile = output / case["id"]
         settings = profile / "data/godot/app_userdata/Cursed Lands/settings.cfg"
@@ -143,20 +162,23 @@ def main():
         isolated = {"XDG_DATA_HOME": str(profile / "data"),
                     "XDG_CONFIG_HOME": str(profile / "config"),
                     "XDG_CACHE_HOME": str(profile / "cache")}
-        command = [engine, "--path", str(REPO / "game"), "--audio-driver", "Dummy", "--max-fps", "30"]
-        if case["mode"] == "headless":
-            command += ["--headless"]
-        else:
-            command += ["--display-driver", "x11", "--rendering-method", "gl_compatibility",
-                        "--windowed", "--resolution", "1280x720"]
+        command = engine_arguments(engine, case, args.packaged)
+        scripts = REPO / "tools/tests"
+        script = REPO / case["script"]
+        if args.packaged:
+            scripts = profile / "fixtures"
+            scripts.mkdir()
+            for source in (REPO / "tools/tests").glob("*.gd"):
+                (scripts / source.name).write_text(source.read_text().replace("res://tools/tests/", str(scripts) + "/"))
+            script = scripts / script.name
         expected = {"campaign": "cursed_lands" if case["data"] == "base" else "lost_in_astral",
-                    "display": case["mode"], "script": str(REPO / case["script"]),
+                    "display": case["mode"], "script": str(script),
                     "profile": {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
                                 "volume_stream": 0, "volume_voice": 0}}
         case = {**case, "expected_start": expected}
         command += ["--", "--no-movies", "--ei-path=" + paths[case["data"] + "_data"],
                     "--tool=" + str(REPO / "tools/parity/gameplay_bootstrap.gd"),
-                    "--suite-script=" + expected["script"], "--suite-script-root=" + str(REPO / "tools/tests"),
+                    "--suite-script=" + expected["script"], "--suite-script-root=" + str(scripts),
                     "--suite-campaign=" + expected["campaign"], "--suite-display=" + case["mode"]]
         command += [arg.format(**paths) for arg in case.get("args", [])]
         timeout = case.get("timeout", 420)

@@ -1,0 +1,18 @@
+{
+	"checks": 12,
+	"failures": [],
+	"measurements": [
+		{
+			"direct_sun": 0.00218963623046875,
+			"move": 0,
+			"new_shadow": 0.0034942626953125,
+			"old_shadow": 0.99462890625
+		},
+		{
+			"direct_sun": 0.00669097900390625,
+			"move": 1,
+			"new_shadow": 0.0082855224609375,
+			"old_shadow": 0.9951171875
+		}
+	]
+}

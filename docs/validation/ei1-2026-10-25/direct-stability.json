@@ -1,0 +1,9 @@
+{
+	"checks": 14,
+	"energy_ratio": 0.997316700352181,
+	"failures": [],
+	"filtered_error": 1.97065886761731,
+	"raw_error": 2054.61886260764,
+	"raw_sun_error": 9.36809743473927,
+	"sun_error": 0.0104731671563853
+}

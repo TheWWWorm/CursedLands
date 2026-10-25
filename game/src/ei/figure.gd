@@ -386,7 +386,10 @@ static func surface_geometry(mesh: Mesh, surface: int) -> Array:
 		return mesh.get_meta(GEOMETRY_META)
 	# Procedural/third-party meshes may not have been built by this loader.
 	var arrays := mesh.surface_get_arrays(surface)
-	return [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]]
+	# Unindexed surfaces store Nil, not an empty packed array. Consumers use
+	# typed arrays and sequential triples for these meshes (including LiA's
+	# procedural scenery). A Nil typed assignment can crash release builds.
+	return [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] is PackedInt32Array else PackedInt32Array()]
 
 
 ## Camera occlusion needs triangle faces, but Mesh.get_faces() reads back the

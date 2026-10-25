@@ -5186,6 +5186,10 @@ func _rpc_players(p: Dictionary) -> void:
 ## A zone build stalls the main loop for several seconds (no polling), longer
 ## than ENet's default 5 s minimum timeout; allow a peer up to a minute.
 const PEER_TIMEOUT_MS := 60000
+## The local owner can stop polling inside one blocking driver compilation.
+## Keep its authenticated loopback connection for the same grace as movies;
+## ordinary remote peers retain their one-minute timeout.
+const LOCAL_PEER_TIMEOUT_MS := MOVIE_TIMEOUT_MS
 
 func _on_peer_connected(pid: int) -> void:
 	_relax_timeout(pid)
@@ -5197,7 +5201,9 @@ func _relax_timeout(pid: int) -> void:
 		return   # clients have a direct ENet transport only to their server
 	var p := enet.get_peer(pid)
 	if p:
-		p.set_timeout(0, PEER_TIMEOUT_MS, PEER_TIMEOUT_MS)
+		var local_owner := local_host != null and ((local_host.frontend and pid == 1) or local_host.authorized(pid))
+		var timeout := LOCAL_PEER_TIMEOUT_MS if local_owner else PEER_TIMEOUT_MS
+		p.set_timeout(0, timeout, timeout)
 		# ENet's RTT-based throttle mistakes a busy/loading frontend for link
 		# congestion. It can fall to zero and discard party snapshots for
 		# seconds after frames recover. We already bound snapshot cadence and

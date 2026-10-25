@@ -12,6 +12,15 @@ spec.loader.exec_module(runner)
 class VerdictTests(unittest.TestCase):
     case = {"summary": "PROBE", "min_checks": 3, "mode": "headless"}
 
+    def test_exported_runtime_and_required_renderer(self):
+        case = {"mode": "rendered", "rendering_method": "forward_plus"}
+        command = runner.engine_arguments("/qualified/game", case, packaged=True)
+        self.assertNotIn("--path", command)
+        self.assertEqual(command[command.index("--rendering-method") + 1], "forward_plus")
+        self.assertEqual(command[command.index("--display-driver") + 1], "x11")
+        self.assertEqual(command[command.index("--audio-driver") + 1], "Dummy")
+        self.assertIn("--path", runner.engine_arguments("godot", self.case))
+
     def verdict(self, text, code=0, **overrides):
         return runner.verdict(text, {**self.case, **overrides}, code)
 

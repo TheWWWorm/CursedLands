@@ -1,0 +1,26 @@
+{
+	"checks": 12,
+	"failures": [
+		"small stationary shadow retains its umbra",
+		"move 0 clears the previous shadow within three frames",
+		"move 0 places the new shadow within three frames",
+		"move 0 full light and terrain sun use consistent shadow history",
+		"move 1 clears the previous shadow within three frames",
+		"move 1 places the new shadow within three frames",
+		"move 1 full light and terrain sun use consistent shadow history"
+	],
+	"measurements": [
+		{
+			"direct_sun": 0.0,
+			"move": 0,
+			"new_shadow": 0.92724609375,
+			"old_shadow": 0.822265625
+		},
+		{
+			"direct_sun": 0.0,
+			"move": 1,
+			"new_shadow": 0.9228515625,
+			"old_shadow": 0.81494140625
+		}
+	]
+}

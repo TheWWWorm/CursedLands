@@ -126,13 +126,13 @@ func _process(dt: float) -> void:
 	# Refresh the bounded light list before this frame, without rebuilding meshes.
 	if _path_mode:_collect_lights(camera.global_position)
 	_poll -= dt
-	if _scene != null and _poll<=0.0 and not terrain_preparing:
+	if _scene != null and (_poll<=0.0 or _scene.topology_pending) and not terrain_preparing:
 		_poll = 1.0
 		if not _path_mode:_collect_lights(camera.global_position)
 		# Keep the working region lit while changed membership/equipment is
 		# gathered. Instance updates immediately mask removed/replaced meshes;
 		# a new scene is published only after its first complete frame.
-		if _scene.topology_changed():
+		if _scene.topology_changed(500):
 			_topology_pending=true
 	if _profile_cpu:
 		stats["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
@@ -400,9 +400,9 @@ func _allow_retry(position: Vector3,dt: float) -> bool:
 	if _retry_delay>0.0: return false
 	if _failure_reason in ["pipeline_failed","snapshot_empty"]: return true
 	_failure_poll-=dt
-	if _failure_watch!=null and _failure_poll<=0.0:
+	if _failure_watch!=null and (_failure_poll<=0.0 or _failure_watch.topology_pending):
 		_failure_poll=1.0
-		return _failure_watch.topology_changed()
+		return _failure_watch.topology_changed(500)
 	return false
 
 func _reject_candidate(reason: String) -> void:

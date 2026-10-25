@@ -31,5 +31,25 @@ func _ready() -> void:
 	check(blue.get_pixel(0,0).b>0.99 and blue!=red,"texture update invalidates normalized cached pixels")
 	cache.clear()
 	check(cache._entries.is_empty() and cache._bytes==0,"explicit teardown releases source images and arrays")
+	# A dense city's normalized albedo layers alone can fill the old 128 MiB
+	# cache, evicting geometry before the next nearby snapshot reads it again.
+	var crowd_mesh := BoxMesh.new();cache.surface(crowd_mesh,0)
+	var textures: Array[ImageTexture]=[]
+	for i in 110:
+		var pixels:=Image.create(4,4,false,Image.FORMAT_RGBA8);pixels.fill(Color.from_hsv(i/110.0,0.5,1.0))
+		var source:=ImageTexture.create_from_image(pixels);textures.append(source)
+		cache.image(source,-1,512)
+	var cold_misses:=cache.misses
+	cache.surface(crowd_mesh,0)
+	for source in textures:cache.image(source,-1,512)
+	check(cache.misses==cold_misses,"dense city geometry and 110 normalized layers survive a neighboring snapshot")
+	check(cache._bytes>128*1024*1024 and cache._bytes<=Cache.MAX_BYTES,"larger city working set remains inside the explicit cache budget")
+	# Force eviction cheaply through the cache's accounting, without allocating
+	# another hundreds of MiB solely to test the limit.
+	var oversized:=ImageTexture.create_from_image(Image.create(4,4,false,Image.FORMAT_RGBA8))
+	cache._store(oversized,"budget-test",true,Cache.MAX_BYTES)
+	check(cache._bytes==Cache.MAX_BYTES and cache._entries.size()==1,"cache pressure still evicts old sources at the hard byte limit")
+	cache.clear()
+	check(cache._entries.is_empty() and cache._bytes==0,"dense cache teardown releases all normalized images and source watches")
 	print("RT_SOURCE_CACHE ",checks," checks ",failures," failures")
 	get_tree().quit(0 if failures==0 else 1)

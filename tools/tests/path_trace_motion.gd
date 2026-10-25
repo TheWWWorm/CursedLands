@@ -139,7 +139,7 @@ func native_sequence() -> void:
 	value=await native_frame()
 	check(value.a>1.9 and value.a<2.1,"deformation rejection retires once the new surface is stationary")
 	# Hide low IDs; exercise adjacent IDs above FP16's exact integer range.
-	for index in [2048,2049,4095]:
+	for index in [2048,2049,4095,4096,8191]:
 		var swaps:=[{"index":motion_index,"transform":restarted,"mask":0},{"index":index,"transform":Transform3D.IDENTITY,"mask":7}]
 		value=await native_frame({"instances":swaps});motion_index=index
 		check(value.a<1.01,"native placement swap rejects history for ID "+str(index))
@@ -148,6 +148,8 @@ func native_sequence() -> void:
 		for i in 7:await native_frame()
 		value=await native_frame()
 		check(value.a>7.5,"high placement ID can accumulate history "+str(index))
+		value=await native_frame({"instances":[{"index":index,"transform":moved,"mask":7}]})
+		check(value.a>7.5,"high placement ID retains history while moving "+str(index))
 	report["native_motion_ages"]=ages
 	var identity_target: RID=device._filter_auxiliary[3]
 	size=Vector2i(128,72);value=await native_frame()
@@ -164,12 +166,12 @@ func run() -> void:
 	sun_energy=0;sky_energy=1;bounces=1
 	quad(mesh_data,[Vector3(-30,-30,0),Vector3(30,-30,0),Vector3(30,30,0),Vector3(-30,30,0)],Vector3.BACK,Vector3.ZERO)
 	geometries=[{"offset":0,"count":6,"standard":true,"opaque":true,"surface":Vector3(1,0,0)}]
-	for i in 4096:placements.append({"geometry":0,"transform":Transform3D.IDENTITY,"mask":7 if i==0 else 0})
+	for i in 8192:placements.append({"geometry":0,"transform":Transform3D.IDENTITY,"mask":7 if i==0 else 0})
 	var white:=Image.create(2,2,false,Image.FORMAT_RGBA8);white.fill(Color.WHITE)
 	var images: Array[Image]=[white];device=PathDevice.new()
 	if custom_history:device.nrd.available=false
 	RenderingServer.call_on_render_thread(device.build.bind(mesh_data.to_byte_array(),images,geometries,placements))
-	check(await device.prepared,"build shared geometry with the full 4096 stable placement IDs")
+	check(await device.prepared,"build shared geometry with the full 8192 stable placement IDs")
 	if not device._ready:finish();return
 	var translated:=Transform3D(Basis.IDENTITY,Vector3(0.3,0,0.4))
 	var rotated:=Transform3D(Basis(Vector3.UP,0.4),Vector3(0.3,0,0.4))

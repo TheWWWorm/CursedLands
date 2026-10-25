@@ -14,6 +14,16 @@ Related scheduler, clock, quest and lever checks and CPU measurements are in
 mechanism bounds with the existing native and scalar paths, including live
 morph/transform changes, clipping and unsupported-geometry fallbacks.
 
+For dense PT city traversal, select `path_trace_motion_cost`,
+`raytrace_topology_budget`, `raytrace_dense_scene`, `path_trace_motion`,
+`path_trace_topology`, `raytrace_source_cache`, `water_raytrace_rebuild`,
+`path_trace_shadow_motion`, `water_raytrace_live`, `path_trace_history_handoff`
+and `revive_overlay_picking`. `dar_leanos_route` additionally requires LiA data
+and follows fixed first-person waypoints with live solo authority. Its normal
+30 FPS cap is for inspection; `--dar-benchmark` removes the cap for an isolated
+GPU Lab heavy benchmark. Timing and negative controls are recorded in
+[the Dar Leanos validation](validation/dar-leanos-2026-10-25/README.md).
+
 ```sh
 python3 tools/check_regressions.py \
   --engine /absolute/path/to/godot \
@@ -21,7 +31,7 @@ python3 tools/check_regressions.py \
   --astral-data /absolute/path/to/owned/lost-in-astral \
   --output /absolute/path/to/new-results
 
-# Real OpenGL checks, automatically submitted to GPU Lab on this workstation.
+# Rendered checks, automatically submitted to GPU Lab on this workstation.
 python3 tools/check_regressions.py --tier rendered \
   --engine /absolute/path/to/godot \
   --base-data /absolute/path/to/owned/base-game \
@@ -118,3 +128,48 @@ menu and Options. Caption checks compare preserved glyphs and relief with the
 owned archive and require better edge contrast than bilinear enlargement. The
 EN/RU/DE runs select the remake UI language; painted captions continue to use
 the supplied edition's own localized artwork.
+
+Exported engines can be tested against their adjacent PCK with `--packaged`.
+The runner stages the external fixtures, records the PCK hash and omits the
+editor-only `--path`. Use the qualified custom runtime for ray-tracing checks;
+the stock editor does not expose the project's native ray APIs. Rendered cases
+may declare `rendering_method: forward_plus`; ordinary UI checks retain their
+Compatibility default. Unsupported hardware is not a passing trace check.
+
+The October 25 EI1 selection includes unindexed weather-cover geometry, repeated
+LiA save loads in raster/PT modes, direct-light stability, incremental water
+replacement, crash-report hover, clock resynchronization and a 90-second local
+transport stall. Expected baseline
+failures and measurements are recorded in
+[the investigation](validation/ei1-2026-10-25/README.md). The LiA fixture accepts
+`--save-fixture=/absolute/copied-save.sav` when launched directly; it copies that
+save into its disposable profile before running two ordinary worker loads.
+
+The LiA fixture also accepts `--lia-fg` in a Windows D3D12 runtime with NVIDIA FG
+available. Each load must activate FG and increment the SDK presentation counter;
+a requested setting alone does not pass. This hardware check is supplemental to
+the portable registered raster/PT load cases.
+
+`path_trace_shadow_motion` keeps receiver history valid while a small sun caster
+moves twice. It checks the stationary umbra, old/new shadow response within
+three frames, and agreement between full diffuse lighting and the terrain sun
+AOV. It runs through the packaged Forward+ GPU runner.
+
+`path_trace_zone_traversal_river` and `path_trace_zone_traversal_snow` load
+authored Gipat and LiA terrain through the separate solo worker. They inject
+keyboard movement through the production first-person controller, alternate
+forward/downward views and camera pans, and require PT/native NRD and usable
+controls throughout. They also check actual displacement, advancing simulation,
+command acknowledgement, worker survival and a free cursor. They are capped
+visual checks, not performance benchmarks or automated shimmer measurements.
+The [ten-zone audit](validation/ei1-first-person-2026-10-25/README.md) includes
+recordings, image review and the remaining city performance finding.
+
+The shared fixture accepts `--zone-route-zone=ZONE`,
+`--zone-route-save=/absolute/copied-save.sav`, and `--audit-out=/absolute/output`.
+`--zone-route-fg` additionally requires a qualified NVIDIA Windows D3D12 runtime
+and verifies both active FG and the SDK presentation counter during movement.
+`--zone-route-peaceful` creates neutral initial diplomacy only for a synthetic
+zone save; it retains actors, patrols and collisions. This supplemental visual
+mode is not used by the registered cases or the supplied-save check. Every run
+uses an isolated muted profile with FPS visible and the cursor free.

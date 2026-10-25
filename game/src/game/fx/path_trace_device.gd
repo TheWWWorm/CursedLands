@@ -5,9 +5,18 @@ const PATH_FILTER = preload("res://src/game/fx/shaders/path_trace_filter.glsl")
 const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
 const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
+const DIRECT_COMPOSITE = preload("res://src/game/fx/shaders/path_trace_direct_composite.glsl")
 var nrd := Nrd.new()
 var nrd_active := false
 var direct_sun := Texture2DRD.new()
+var _direct_images: Array[RID] = []
+var _direct_auxiliary: Array[RID] = []
+var _direct_set := RID()
+var _direct_frame := RID()
+var _direct_composite_set := RID()
+var _direct_composite_shader := RID()
+var _direct_composite_pipeline := RID()
+var _direct_valid := false
 var _nrd_failed := false
 var defer_nrd := false
 var history_handoffs := 0
@@ -73,13 +82,15 @@ func published_targets() -> Array[RID]:
 func _publish_targets() -> void:
 	# The base transaction retains the previous published raw AOV on resize
 	# until this complete frame has safely replaced every public image.
-	if direct_sun.texture_rd_rid!=_raw[6]:direct_sun.texture_rd_rid=_raw[6]
+	var sunlight := _direct_images[0] if _direct_valid else _raw[6]
+	if direct_sun.texture_rd_rid!=sunlight:direct_sun.texture_rd_rid=sunlight
 	super._publish_targets()
 func filter_auxiliary_formats() -> Array[int]:
 	return [RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,
 		RenderingDevice.DATA_FORMAT_R16_SFLOAT,RenderingDevice.DATA_FORMAT_R16_SFLOAT]
-func extra_filter_uniforms() -> Array[RDUniform]:
-	return [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,17,[_motion])]
+func extra_filter_uniforms(raw_targets: Array[RID]) -> Array[RDUniform]:
+	return [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,17,[_motion]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,18,[raw_targets[0]])]
 
 # Geometry is shared by several placements. Lights need their unique, stable
 # placement ID, including when hidden instances are removed from the TLAS.
@@ -214,6 +225,9 @@ func adopt_history(previous: RefCounted,matches: PackedInt32Array) -> void:
 			history_matched_surfaces+=1
 		else:_history_reject.append(i)
 	nrd_active=true;_history_valid=true
+	# NRD remaps the old scene's history; the separate direct history still
+	# belongs to the candidate's private frame and different placement IDs.
+	_direct_valid=false
 	history_handoffs=previous.history_handoffs+1
 
 func _write_lighting_offset(index: int,offset: Vector3) -> void:
@@ -248,16 +262,17 @@ func _update_motion(changes: Dictionary) -> bool:
 	# Otherwise a stopped actor keeps walking backwards through stale history.
 	var dirty := _motion_pending
 	_motion_pending = {}
-	for index: int in dirty:
-		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
+	# A moving part already receives its final record below. Clearing it first
+	# doubled packing work for every articulated limb in crowded scenes.
+	var rejected := {}
+	for index in _history_reject:rejected[index]=true
 	var deformed := {}
 	for pose: Dictionary in changes.get("poses",[]):
 		for index: int in _geometry_placements[pose.geometry]:
 			deformed[index] = true
-			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
-			dirty[index] = true;_motion_pending[index] = true
 	for placement: Dictionary in changes.get("instances",[]):
 		var index: int = placement.index
+		if rejected.has(index):continue
 		var previous: Transform3D = _instances[index].transform
 		var current: Transform3D = placement.transform
 		var valid: bool = (_instances[index].mask&1)!=0 and (placement.mask&1)!=0 and not deformed.has(index)
@@ -272,10 +287,17 @@ func _update_motion(changes: Dictionary) -> bool:
 				normal = (current*previous.affine_inverse()).basis.transposed()
 		_write_motion(index,position,normal,valid,moving)
 		dirty[index] = true;_motion_pending[index] = true
-	for index in _history_reject:
+	for index in deformed:
+		if _motion_pending.has(index) or rejected.has(index):continue
+		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
+		dirty[index]=true;_motion_pending[index]=true
+	for index in rejected:
 		_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,false,false)
 		dirty[index]=true;_motion_pending[index]=true
 	_history_reject.clear()
+	for index: int in dirty:
+		if not _motion_pending.has(index):
+			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
 	if dirty.is_empty(): return true
 	# One bounded upload avoids an API call for every articulated body part.
 	var indices := dirty.keys();indices.sort()
@@ -296,10 +318,79 @@ func _release_spatial() -> void:
 
 func _targets(size: Vector2i,sampler: RID) -> bool:
 	# Descriptors must retire before the textures they refer to during resize.
-	if size!=_size:_release_spatial();nrd.release_targets()
+	if size!=_size:_release_spatial();nrd.release_targets();_release_direct(true)
 	return super._targets(size,sampler)
 
+func _release_direct(retain_output := false) -> void:
+	for rid in [_direct_set,_direct_composite_set]:
+		if rid.is_valid() and _rd.uniform_set_is_valid(rid):_rd.free_rid(rid)
+	_direct_set=RID();_direct_composite_set=RID()
+	for rid in _direct_images+_direct_auxiliary:
+		if retain_output and rid==direct_sun.texture_rd_rid:_retired_outputs.append(rid)
+		elif rid.is_valid():_rd.free_rid(rid)
+	_direct_images.clear();_direct_auxiliary.clear();_direct_valid=false
+
+## Analytic BRDF evaluation still uses random area-light/shadow samples.
+## NRD excludes this direct glossy term, so reconstruct it independently with
+## the same geometric, material, motion and disocclusion checks as PT history.
+## The sunlight AOV used by terrain/grass must follow the same reconstruction.
+func _reconstruct_direct(frame: PackedByteArray) -> bool:
+	if not _direct_set.is_valid():
+		if not _direct_frame.is_valid():_direct_frame=_own(_rd.uniform_buffer_create(frame_bytes()))
+		if not _direct_frame.is_valid():return false
+		for i in 8:_direct_images.append(_lighting_texture(_size))
+		for format: int in filter_auxiliary_formats():_direct_auxiliary.append(_lighting_texture(_size,format))
+		if not (_direct_images+_direct_auxiliary).all(func(rid: RID):return rid.is_valid()):return false
+		var bindings: Array[RDUniform]=[]
+		var inputs: Array[RID]=[_raw[6],_raw[1],_raw[5],_raw[3]]
+		for i in 4:
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i,[inputs[i]]))
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+4,[_direct_images[i+4]]))
+			bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+8,[_direct_images[i]]))
+		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,12,[_direct_frame]))
+		for i in _direct_auxiliary.size():bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,13+i,[_direct_auxiliary[i]]))
+		bindings.append_array(extra_filter_uniforms(_raw))
+		_direct_set=_target_set(bindings,_filter_shader)
+		if not _direct_set.is_valid():return false
+	# The filter-only frame selects a compact direct-light kernel. Keep this
+	# buffer separate so the ray and NRD passes retain their original frame.
+	var direct_frame:=frame.duplicate();direct_frame.encode_float(147*4,2.0)
+	if not _direct_valid:direct_frame.encode_float(82*4,0.0)
+	if _rd.buffer_update(_direct_frame,0,direct_frame.size(),direct_frame)!=OK:return false
+	var list:=_rd.compute_list_begin()
+	_rd.compute_list_bind_compute_pipeline(list,_filter_pipeline)
+	_rd.compute_list_bind_uniform_set(list,_direct_set,0)
+	_rd.compute_list_dispatch(list,ceili(_size.x/8.0),ceili(_size.y/8.0),1)
+	_rd.compute_list_end()
+	var extent:=Vector3(_size.x,_size.y,1)
+	for i in 4:
+		if _rd.texture_copy(_direct_images[i],_direct_images[i+4],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK:return false
+	for i in range(0,_direct_auxiliary.size(),2):
+		if _rd.texture_copy(_direct_auxiliary[i+1],_direct_auxiliary[i],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK:return false
+	_direct_valid=true
+	return true
+
+func _composite_direct() -> bool:
+	if not _direct_composite_shader.is_valid():
+		_direct_composite_shader=_own(_rd.shader_create_from_spirv(DIRECT_COMPOSITE.get_spirv(),"PT direct light composite"))
+		if not _direct_composite_shader.is_valid():return false
+		_direct_composite_pipeline=_own(_rd.compute_pipeline_create(_direct_composite_shader))
+	if not _direct_composite_pipeline.is_valid():return false
+	if not _direct_composite_set.is_valid():
+		var bindings: Array[RDUniform]=[]
+		var inputs: Array[RID]=[_raw[5],_direct_images[2],_history[2],_direct_images[0],_history[0]]
+		for i in inputs.size():bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i,[inputs[i]]))
+		_direct_composite_set=_target_set(bindings,_direct_composite_shader)
+	if not _direct_composite_set.is_valid():return false
+	var list:=_rd.compute_list_begin()
+	_rd.compute_list_bind_compute_pipeline(list,_direct_composite_pipeline)
+	_rd.compute_list_bind_uniform_set(list,_direct_composite_set,0)
+	_rd.compute_list_dispatch(list,ceili(_size.x/8.0),ceili(_size.y/8.0),1)
+	_rd.compute_list_end()
+	return true
+
 func reconstruct(frame: PackedByteArray) -> bool:
+	if not _reconstruct_direct(frame):return false
 	var previous := nrd_active
 	var failed_now := false
 	nrd_active=false
@@ -308,7 +399,7 @@ func reconstruct(frame: PackedByteArray) -> bool:
 		if nrd.configure(_rd,_size,_raw,_history,_frame,_motion) and nrd.render(frame):
 			nrd_active=true
 			if _profile_stages:_rd.capture_timestamp("Scene RT reconstruct")
-			return true
+			return _composite_direct()
 		# Disable only this device's NRD session. Reset the custom history before
 		# using its output; never interpret NRD's private history as custom history.
 		_nrd_failed=true;failed_now=true;nrd.dispose()
@@ -358,9 +449,11 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 
 func dispose() -> void:
 	direct_sun.texture_rd_rid=RID()
-	if _rd!=null:_release_ray_set();_release_spatial();nrd.dispose()
+	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose()
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
+	_direct_composite_shader=RID();_direct_composite_pipeline=RID()
+	_direct_frame=RID()
 	emitters = Emitters.new()
 	terrain = Terrain.new();_terrain_atlas=RID()
 	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()

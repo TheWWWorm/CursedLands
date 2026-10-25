@@ -1,0 +1,73 @@
+{
+  "git_head": "6f32b8fc1386eef29f7bcabfcba7a63cf5ca6450",
+  "game_source_sha256": "d4bf45d780134e1aa737f5d92b4ebd3958bbe5d35ca35133d048f9a3ec2ce9e2",
+  "manifest_sha256": "684c75e196dd7eb5283a2161e6d78873f50c498174b17f93bc4f2dc83d87ccd9",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+  "engine_sha256": "feccf7be7d35360677cf239d46f53ef07545758c32deeb82f1dd79170d018f33",
+  "data": {
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "dar_leanos_route",
+      "script": "tools/tests/dar_leanos_route.gd",
+      "script_sha256": "5c75ff1bcd690fef081b2473d98eb090162e4c6ee568de27cde60df6579b8b73",
+      "contract": "Dar Leanos reaches fixed first-person waypoints with live authority, collision, PT and native NRD throughout the walk.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 150.97,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-registered-route/dar_leanos_route/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-registered-route/dar_leanos_route/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-registered-route/dar_leanos_route/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-registered-route/dar_leanos_route/fixtures/dar_leanos_route.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-registered-route/dar_leanos_route/fixtures",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--zone-route-zone=gz31j",
+        "--zone-route-peaceful"
+      ],
+      "log": "dar_leanos_route/run.log",
+      "passed": true,
+      "result": {
+        "checks": 54,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/ei1-investigation-20261025/dar-leanos/combined-native/check-engine.pck",
+    "sha256": "9f1a747271060c6660e25e8967bb66980eb08aa73923ac78dc15e3749f66b5e5"
+  },
+  "passed": true
+}

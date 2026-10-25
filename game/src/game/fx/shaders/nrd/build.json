@@ -8,7 +8,7 @@
   "native": {
     "linux": {
       "file": "game/src/native/bin/libpath_nrd.so",
-      "sha256": "94fed7a3304081e81d5df7d6c1e27a24707c42dae6ebeeeef81cad8357491a96",
+      "sha256": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
       "sources": {
         "game/src/native/nrd/CMakeLists.txt": "0d07f406e5d25ce277f3df8fa76902f708ef4f81f3dab53695599559accc8cb5",
         "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
@@ -17,12 +17,12 @@
         "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
         "game/src/native/nrd/path_nrd.cpp": "4422045b7042147496915bb28e9d288da83e2f53dfea7bb960a33cdd5beff178",
         "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
-        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "9bdc4d8f1af4883a7deb01dc08d2ab128719f4ccaa41351f238a7e1f4cd228f9"
+        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "6fa1b60a5e01e3763d44b63778c97703912ec9bac9db29fc0ca011273d4d3221"
       }
     },
     "windows": {
       "file": "game/src/native/bin/libpath_nrd.dll",
-      "sha256": "d431352cea749efe36c3ca77a7c807884addb03fa20e011c04bf9cf6aa22ecb2",
+      "sha256": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
       "sources": {
         "game/src/native/nrd/CMakeLists.txt": "0d07f406e5d25ce277f3df8fa76902f708ef4f81f3dab53695599559accc8cb5",
         "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
@@ -31,7 +31,7 @@
         "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
         "game/src/native/nrd/path_nrd.cpp": "4422045b7042147496915bb28e9d288da83e2f53dfea7bb960a33cdd5beff178",
         "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
-        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "9bdc4d8f1af4883a7deb01dc08d2ab128719f4ccaa41351f238a7e1f4cd228f9"
+        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "6fa1b60a5e01e3763d44b63778c97703912ec9bac9db29fc0ca011273d4d3221"
       }
     }
   },
@@ -43,7 +43,7 @@
     "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
     "game/src/native/nrd/path_nrd.cpp": "4422045b7042147496915bb28e9d288da83e2f53dfea7bb960a33cdd5beff178",
     "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
-    "game/src/game/fx/shaders/path_trace_nrd.hlsl": "9bdc4d8f1af4883a7deb01dc08d2ab128719f4ccaa41351f238a7e1f4cd228f9"
+    "game/src/game/fx/shaders/path_trace_nrd.hlsl": "6fa1b60a5e01e3763d44b63778c97703912ec9bac9db29fc0ca011273d4d3221"
   },
   "files": {
     "game/src/game/fx/shaders/nrd/e1e3844a6842b2eff161cb9dc9e368af1df7c661b99f845d333207686625882f.spv": "1606d99b26f5d72875f97b37245910f964d1294d7b1df61c7df00b56cac72950",
@@ -60,7 +60,7 @@
     "game/src/game/fx/shaders/nrd/9a1d91ac648fcf58a4c31f2ac0e7c3fdd40916a635a860230d930b188498ffce.spv": "db02f2dfb155c0a8f70e7cc7ea733353091aa1c5efe93eb898865aa7385fef85",
     "game/src/game/fx/shaders/nrd/1cc53bfca39baf58b0dac149fda5e53be1a36d88fac31f63d9a44395e3a99119.spv": "bf46d778049865e8848aa276508d2165fac4ff81c47faf43205864696fb1c46d",
     "game/src/game/fx/shaders/nrd/c5adcabda307bdb3e08681b16e1d2304ebd93eadca46871c273452e5b021b052.spv": "8d697d5a400db9812cf29d1458b2524c73eadc80422b544611d1b1c4e6ec8fbd",
-    "game/src/game/fx/shaders/nrd/pack.spv": "74c3627deb63eff4dfc2e037474c206151382e00c1a24b4eec7c2332f9e36433",
+    "game/src/game/fx/shaders/nrd/pack.spv": "5c8c6a9bd846efe93e3297693ce6ee373b233b5a2e089972190dc56eeb260e69",
     "game/src/game/fx/shaders/nrd/resolve.spv": "031776416d2b8c417ad3375b7a2e4b7c82db40b5c820e82a3af12b3f1148e199"
   },
   "layouts": {
@@ -302,7 +302,8 @@
         10,
         11,
         12,
-        13
+        13,
+        14
       ]
     },
     "resolve": {

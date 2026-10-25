@@ -47,7 +47,7 @@ func raw_formats() -> Array[int]:
 ## Optional reconstruction-only textures, in previous/result pairs. They use
 ## bindings 13 onward and are copied together with the stable lighting outputs.
 func filter_auxiliary_formats() -> Array[int]: return []
-func extra_filter_uniforms() -> Array[RDUniform]: return []
+func extra_filter_uniforms(_raw_targets: Array[RID]) -> Array[RDUniform]: return []
 func published_targets() -> Array[RID]:
 	return [output.texture_rd_rid,guide.texture_rd_rid,shadow0.texture_rd_rid,shadow1.texture_rd_rid]
 ## A new device becomes display-ready only after a complete successful render.
@@ -119,7 +119,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+8,[history[i]]))
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,12,[_frame]))
 		for i in auxiliary.size(): bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,13+i,[auxiliary[i]]))
-		bindings.append_array(extra_filter_uniforms())
+		bindings.append_array(extra_filter_uniforms(raw))
 		var filter_set := _target_set(bindings,_filter_shader)
 		if not filter_set.is_valid():
 			_free_targets(raw+history+auxiliary);return false
