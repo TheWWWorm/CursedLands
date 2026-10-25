@@ -32,11 +32,21 @@ func coverage(label: String) -> void:
 	debug_material("coverage");await capture(label)
 	var image: Image=audit.get_viewport().get_texture().get_image()
 	var matched:=0;var missing:=0
-	for y in image.get_height():
-		for x in image.get_width():
+	var bounds:=Rect2()
+	for row: Array in materials:
+		var mesh: MeshInstance3D=row[0]
+		var box:=mesh.get_aabb()
+		for i in 8:
+			var p: Vector2=audit.camera.unproject_position(mesh.global_transform*box.get_endpoint(i))
+			bounds=Rect2(p,Vector2.ONE) if bounds.size==Vector2.ZERO else bounds.expand(p)
+	var roi:=Rect2i(bounds.grow(2.0)).intersection(Rect2i(Vector2i.ZERO,image.get_size()))
+	for y in range(roi.position.y,roi.end.y):
+		for x in range(roi.position.x,roi.end.x):
 			var p:=image.get_pixel(x,y)
-			if p.g>0.8 and p.r<0.2 and p.b<0.2:matched+=1
-			if p.r>0.8 and p.b>0.8 and p.g<0.2:missing+=1
+			# The actual filmic colour grading mixes channels. Test dominant
+			# diagnostic colour inside the projected actor, excluding HUD icons.
+			if p.g>0.5 and p.g>p.r*1.25 and p.g>p.b*1.25:matched+=1
+			if minf(p.r,p.b)>0.5 and p.r>p.g*1.25 and p.b>p.g*1.25:missing+=1
 	audit.check(matched>200 and missing<matched*0.02,"rear character PT receiver coverage: %s matched=%s missing=%s"%[label,matched,missing])
 	restore_materials()
 
