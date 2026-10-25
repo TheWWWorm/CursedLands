@@ -13,6 +13,26 @@ architectures must exclude this extension and its binaries to use the script
 implementation. Published packages may predate the Android native helpers;
 the ARM64 build has been tested in a separate private Retroid Pocket 5 app.
 
+`ScriptExpressionKernel` evaluates nested read-only campaign expressions in a
+single native traversal: arithmetic/comparisons, variables, object lookup and
+lever state. Numeric nodes retain the interpreter's float32 storage boundary.
+No expression results or world references are cached. Unknown calls and lazy
+forms return to the interpreter before evaluating arguments, preserving writes,
+RNG consumption and argument order. The scheduler and statements stay in script.
+Derived VMs and older libraries retain the original evaluator. The per-process
+diagnostic `-- --ei-script-expressions` selects it explicitly; automatic solo
+worker children do not inherit that flag. `tools/tests/script_expression_native.gd`
+compares values and state transitions against the script evaluator, including
+the arithmetic fixture observed in the original executable under Wine.
+
+`ScreenRectKernel.retained_bounds` combines current morphs, world transforms
+and exact clipping/projection for authored mechanism meshes in one call. It
+reads the retained CPU upload arrays and keeps no pose or resource cache.
+Skins, multi-surface meshes, missing metadata and meshes over 2,048 vertices
+return nil so `MeshScreenRect` uses its existing general path and cache. The
+registered `picking_retained` check compares exact rectangles, same-frame
+changes and fallbacks against that path and the scalar clipping reference.
+
 The terrain instance also owns persistent static block topology: representatives,
 weighted edges, connectivity, labels and bounded endpoint-seed caches. Door,
 floor and object changes invalidate it through the existing map revision.

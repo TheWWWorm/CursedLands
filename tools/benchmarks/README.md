@@ -411,3 +411,26 @@ python3 docs/validation/trials-balance-depth-2026-10-19/analyze.py
 
 See [the balance depth report](../../docs/validation/trials-balance-depth-2026-10-19.md)
 for the interpretation, remaining outliers and rendered planning-view checks.
+
+## Multi-area CPU expression comparison (25 October 2026)
+
+`campaign_cpu.gd` is the version-3 fixed-work companion to
+`portal_throughput.gd`. Add `"zone":"gz1h"` and `"units":415` to the same
+configuration shape; `ticks` can be 600 for a 33-second simulation window.
+Each run requires the specified authored population and headless authority.
+The result includes per-tick percentiles, the complete window, party health,
+quest globals and whether native expressions were selected. Keep profiles
+muted with the cursor free and FPS enabled as required for other fixtures.
+
+Compare the same frozen export with and without `--ei-script-expressions`.
+The flag selects the script evaluator in that process; automatic solo worker
+children do not inherit it. For rendered worker comparisons use separate frozen
+packs with the original and accelerated VM, with all other changes identical.
+Use reversed order, fresh profiles, matching saves/settings, and record hashes.
+Do not interpret instrumented runs as performance measurements. Animation
+callbacks and wall-time budgets can vary state/RNG across separate runs even
+without a code change; use the expression and scheduler regressions for semantic
+equivalence. Simulation time is not rendered frame time or an FPS prediction.
+
+The five-area results and original-code comparison are retained in
+`docs/validation/cpu-traversal-2026-10-25/`.

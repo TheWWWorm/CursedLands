@@ -1668,6 +1668,13 @@ func pick_lever(p: Vector2) -> int:
 		return _lever_pick_hit
 	_lever_pick_key = key
 	var view := GameUnit.MeshScreenRect.camera_context(cam)
+	var bounds := GameUnit.MeshScreenRect
+	# Keep the original path for older native libraries and custom permission
+	# scripts. The built-in predicate only reads the live mechanism state.
+	if bounds._kernel != null and bounds._native_mechanisms and world.lever_sys != null and world.lever_sys.get_script() == LeverSystem:
+		_lever_pick_hit = bounds._kernel.pick_mechanisms(world.levers, world.objects, world.lever_sys._morph,
+			world.lever_sys.usable, bounds.of_context, cam, view, p)
+		return _lever_pick_hit
 	var to_view := cam.get_camera_transform().affine_inverse()
 	var best := -1
 	var depth := INF
@@ -1685,7 +1692,7 @@ func pick_lever(p: Vector2) -> int:
 		# currently morphed part bounds as creature selection. The small
 		# origin assist remains a fallback for distant switches and chests.
 		for mi: MeshInstance3D in world.lever_sys._morph.get(nid, {}).get("meshes", []):
-			var rect := GameUnit.MeshScreenRect.of_context(mi, cam, view)
+			var rect := GameUnit.MeshScreenRect.of_retained_context(mi, cam, view)
 			if not _in_rect(rect, p): continue
 			var z := maxf(0.0, -(to_view * mi.global_position).z)
 			if z < depth:

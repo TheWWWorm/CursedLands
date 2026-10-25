@@ -13,6 +13,8 @@ const META_LIMIT := 4096
 static var _kernel: RefCounted = _make_kernel()
 static var _native_deform := _kernel != null and _kernel.has_method("deform_vertices")
 static var _native_state := _kernel != null and _kernel.has_method("deformation_state")
+static var _native_retained := _kernel != null and _kernel.has_method("retained_bounds")
+static var _native_mechanisms := _kernel != null and _kernel.has_method("pick_mechanisms")
 
 
 static func _make_kernel() -> RefCounted:
@@ -368,6 +370,16 @@ static func _clip(poly: PackedVector3Array, planes: Array[Plane]) -> PackedVecto
 
 static func of(mi: MeshInstance3D, cam: Camera3D) -> Rect2i:
 	return of_context(mi, cam, camera_context(cam))
+
+
+## Mechanism picking visits many small authored meshes as the camera moves.
+## The native helper consumes the same retained vertices and current morphs;
+## unsupported geometry keeps the general path and its exact cache.
+static func of_retained_context(mi: MeshInstance3D, cam: Camera3D, view: Dictionary) -> Rect2i:
+	if _kernel != null and _native_retained and cam != null and not view.is_empty():
+		var rect = _kernel.retained_bounds(mi, view.planes, view.projection, view.inverse_basis, view.origin, view.size)
+		if rect is Rect2i: return rect
+	return of_context(mi, cam, view)
 
 
 ## One context can serve every part in one synchronous screen_rects call.

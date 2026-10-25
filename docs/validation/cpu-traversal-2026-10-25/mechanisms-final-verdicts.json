@@ -1,0 +1,115 @@
+[
+  {
+    "test": "picking_mechanisms",
+    "campaign": "base",
+    "profile": "mechanisms-final-dispatch-linux",
+    "passed": true,
+    "result": {
+      "checks": 5205,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "picking_retained",
+    "campaign": "base",
+    "profile": "mechanisms-check-picking_retained-base",
+    "passed": true,
+    "result": {
+      "checks": 2209,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "picking_bounds",
+    "campaign": "base",
+    "profile": "mechanisms-check-picking_bounds-base",
+    "passed": true,
+    "result": {
+      "checks": 432,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "picking_deformation",
+    "campaign": "base",
+    "profile": "mechanisms-check-picking_deformation-base",
+    "passed": true,
+    "result": {
+      "checks": 1558,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "ingos_interactions",
+    "campaign": "base",
+    "profile": "mechanisms-check-ingos_interactions-base",
+    "passed": false,
+    "result": {
+      "checks": 63,
+      "failures": 2
+    },
+    "errors": [
+      "FAIL reloaded zone snapshot carries changed interaction lock",
+      "FAIL late join receives the already-unlocked labyrinth gate",
+      "Process exit: 1",
+      "Assertion result does not satisfy the manifest"
+    ],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "exhausted_interactions",
+    "campaign": "base",
+    "profile": "mechanisms-check-exhausted_interactions-base",
+    "passed": true,
+    "result": {
+      "checks": 378,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "exhausted_interactions",
+    "campaign": "astral",
+    "profile": "mechanisms-check-exhausted_interactions-astral",
+    "passed": true,
+    "result": {
+      "checks": 2391,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "astral_torch",
+    "campaign": "astral",
+    "profile": "mechanisms-check-astral_torch-astral",
+    "passed": true,
+    "result": {
+      "checks": 17,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  },
+  {
+    "test": "astral_chest_permission",
+    "campaign": "astral",
+    "profile": "mechanisms-check-astral_chest_permission-astral",
+    "passed": true,
+    "result": {
+      "checks": 32,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": []
+  }
+]

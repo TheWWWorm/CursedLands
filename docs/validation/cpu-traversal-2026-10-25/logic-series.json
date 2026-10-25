@@ -1,0 +1,706 @@
+[
+  {
+    "name": "logic-gz1h-0-script",
+    "zone": "gz1h",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 5.134823,
+    "tick_seconds": 3.715684,
+    "tick_ms": {
+      "max": 40.262,
+      "p50": 6.215,
+      "p95": 7.864
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(255.65, 50.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(257.15, 50.75)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 2092182796,
+    "state_sha256": "80eff9a383582d97d045fdc1e8f60fa690312ed04157fa711a58417a58fd60d6"
+  },
+  {
+    "name": "logic-gz1h-1-native",
+    "zone": "gz1h",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 4.108557,
+    "tick_seconds": 2.799124,
+    "tick_ms": {
+      "max": 35.474,
+      "p50": 4.502,
+      "p95": 6.336
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(255.65, 50.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(257.15, 50.75)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 1840120597,
+    "state_sha256": "da67e9512ca41290e829cc3d9ff0cbea5a9cb7987b7a4a0b5bda9e9e2c8befb5"
+  },
+  {
+    "name": "logic-gz1h-2-native",
+    "zone": "gz1h",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 3.930341,
+    "tick_seconds": 2.670866,
+    "tick_ms": {
+      "max": 35.122,
+      "p50": 4.193,
+      "p95": 6.105
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(255.65, 50.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(257.15, 50.75)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 2748540799,
+    "state_sha256": "8e9ede47c75d3932e4c106c7b3299401b002d71aa87081acb4085fadfb9300d6"
+  },
+  {
+    "name": "logic-gz1h-3-script",
+    "zone": "gz1h",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 4.655783,
+    "tick_seconds": 3.32922,
+    "tick_ms": {
+      "max": 34.872,
+      "p50": 5.369,
+      "p95": 7.316
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(255.65, 50.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(257.15, 50.75)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 588527669,
+    "state_sha256": "92f9752026045d72ffbc339f01eebb1802bceb585705aac557ec3903471da4f3"
+  },
+  {
+    "name": "logic-gz1h-4-script",
+    "zone": "gz1h",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 5.005178,
+    "tick_seconds": 3.6117,
+    "tick_ms": {
+      "max": 33.533,
+      "p50": 5.854,
+      "p95": 7.803
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(255.65, 50.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(257.15, 50.75)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 55969831,
+    "state_sha256": "ad506d6554a9555683b8fcfc33f7d538066013864a5d2041350bb73de37d4a60"
+  },
+  {
+    "name": "logic-gz1h-5-native",
+    "zone": "gz1h",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 4.000369,
+    "tick_seconds": 2.696571,
+    "tick_ms": {
+      "max": 34.085,
+      "p50": 4.246,
+      "p95": 6.221
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(255.65, 50.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(257.15, 50.75)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 4123962494,
+    "state_sha256": "4350f98eaf1841b533dc1f1efbe3e3581be3be2be7582807924b98f1281d8a9c"
+  },
+  {
+    "name": "logic-gz2h-0-script",
+    "zone": "gz2h",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 4.214316,
+    "tick_seconds": 3.117854,
+    "tick_ms": {
+      "max": 42.248,
+      "p50": 4.874,
+      "p95": 7.369
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(308.5, 75.0)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(310.0, 75.0)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 2568593361,
+    "state_sha256": "5d8d87739dafea87e6c3b7334b7cdade30d40e31ffcbf1054dec73d90255cf72"
+  },
+  {
+    "name": "logic-gz2h-1-native",
+    "zone": "gz2h",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 3.525901,
+    "tick_seconds": 2.528254,
+    "tick_ms": {
+      "max": 47.01,
+      "p50": 3.881,
+      "p95": 6.208
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(308.5, 75.0)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(310.0, 75.0)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 108829203,
+    "state_sha256": "610681a20577db5c4758ba46b605ad7f12e97bbadb456aeb636ad042631da19b"
+  },
+  {
+    "name": "logic-gz2h-2-native",
+    "zone": "gz2h",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 3.692762,
+    "tick_seconds": 2.684149,
+    "tick_ms": {
+      "max": 43.456,
+      "p50": 4.226,
+      "p95": 6.195
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(308.5, 75.0)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(310.0, 75.0)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 1178391424,
+    "state_sha256": "5464833a4f0ac6c1e40699232cfd6e0a44ae204fcdfc55d1658458840384a3c4"
+  },
+  {
+    "name": "logic-gz2h-3-script",
+    "zone": "gz2h",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 4.026114,
+    "tick_seconds": 3.019754,
+    "tick_ms": {
+      "max": 42.31,
+      "p50": 4.812,
+      "p95": 6.699
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(308.5, 75.0)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(310.0, 75.0)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 3658827415,
+    "state_sha256": "c150065a411c088461ef3ab807a94b29c134fd8eabf32787d777ebc4e0d4c15f"
+  },
+  {
+    "name": "logic-gz16g-0-script",
+    "zone": "gz16g",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 3.524196,
+    "tick_seconds": 2.649723,
+    "tick_ms": {
+      "max": 26.28,
+      "p50": 4.256,
+      "p95": 5.788
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(155.0, 302.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(156.5, 302.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 1876279297,
+    "state_sha256": "d18e508b240e7d8fa5bc8c4334f954f59684b027b00f699c5e0fa905c71562cc"
+  },
+  {
+    "name": "logic-gz16g-1-native",
+    "zone": "gz16g",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 2.359616,
+    "tick_seconds": 1.629779,
+    "tick_ms": {
+      "max": 23.838,
+      "p50": 2.49,
+      "p95": 3.737
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(155.0, 302.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(156.5, 302.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 125329650,
+    "state_sha256": "28b2bfb2f6c946dbd53eec23555abdc5beae8142d3c34927bd8411ace4aa4ac4"
+  },
+  {
+    "name": "logic-gz16g-2-native",
+    "zone": "gz16g",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 2.448077,
+    "tick_seconds": 1.682788,
+    "tick_ms": {
+      "max": 25.516,
+      "p50": 2.54,
+      "p95": 3.858
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(155.0, 302.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(156.5, 302.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 3618525638,
+    "state_sha256": "b01bd2a9a25c6a6e5148c022aa6b2dba95ff5c29fccd43c9704db203df41ac7e"
+  },
+  {
+    "name": "logic-gz16g-3-script",
+    "zone": "gz16g",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 2.809641,
+    "tick_seconds": 2.106301,
+    "tick_ms": {
+      "max": 22.352,
+      "p50": 3.255,
+      "p95": 4.626
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(155.0, 302.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(156.5, 302.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 100309484,
+    "state_sha256": "562bffc0cf8e2c2900ef88891abbbd4fa855aee8782be3a9229c1ec5334889cb"
+  },
+  {
+    "name": "logic-gz7g-0-script",
+    "zone": "gz7g",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 2.515752,
+    "tick_seconds": 1.828955,
+    "tick_ms": {
+      "max": 20.831,
+      "p50": 2.769,
+      "p95": 4.559
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(206.0, 297.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(207.5, 297.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 474011401,
+    "state_sha256": "01fa5ee9b48903a90f2472927dce9044f1d6ac38a7f047bbb1fa0193fab5f9f7"
+  },
+  {
+    "name": "logic-gz7g-1-native",
+    "zone": "gz7g",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 2.282096,
+    "tick_seconds": 1.579527,
+    "tick_ms": {
+      "max": 19.244,
+      "p50": 2.507,
+      "p95": 3.648
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(206.0, 297.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(207.5, 297.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 1992280936,
+    "state_sha256": "df0158cb800eded3476d12cf5b224a81e07703c9335ed2336324958d613fe3f8"
+  },
+  {
+    "name": "logic-gz7g-2-native",
+    "zone": "gz7g",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 1.643808,
+    "tick_seconds": 1.1512,
+    "tick_ms": {
+      "max": 15.6,
+      "p50": 1.763,
+      "p95": 2.378
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(206.0, 297.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(207.5, 297.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 2719961611,
+    "state_sha256": "f354c9788a50e7e39719e38f3eab08efa83aeaa437f632faf7831132916f634f"
+  },
+  {
+    "name": "logic-gz7g-3-script",
+    "zone": "gz7g",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 2.242729,
+    "tick_seconds": 1.615453,
+    "tick_ms": {
+      "max": 23.835,
+      "p50": 2.451,
+      "p95": 3.608
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(206.0, 297.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(207.5, 297.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 2591291701,
+    "state_sha256": "323974e27b3b5c2149eef6df2ff9a19a537d58c895d3d375429e0cef0133139b"
+  },
+  {
+    "name": "logic-gz21k-0-script",
+    "zone": "gz21k",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 1.942927,
+    "tick_seconds": 1.356484,
+    "tick_ms": {
+      "max": 12.259,
+      "p50": 2.126,
+      "p95": 2.868
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(335.5, 257.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(337.0, 257.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 2910694323,
+    "state_sha256": "587883c3ec044dc3d456a0b3af52ef38537cf3f2014f3ee62a7f7178ff6841f7"
+  },
+  {
+    "name": "logic-gz21k-1-native",
+    "zone": "gz21k",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 1.757697,
+    "tick_seconds": 1.172318,
+    "tick_ms": {
+      "max": 12.828,
+      "p50": 1.794,
+      "p95": 2.627
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(335.5, 257.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(337.0, 257.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 325529842,
+    "state_sha256": "ff0807d37e75fe1d751ebc480909404612a739ac1b9d0b67be52549ece89551f"
+  },
+  {
+    "name": "logic-gz21k-2-native",
+    "zone": "gz21k",
+    "mode": "native",
+    "returncode": 0,
+    "wall_seconds": 1.910327,
+    "tick_seconds": 1.287397,
+    "tick_ms": {
+      "max": 12.953,
+      "p50": 1.956,
+      "p95": 3.119
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(335.5, 257.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(337.0, 257.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": true,
+    "rng_next": 2366753263,
+    "state_sha256": "d640cacbb88ccee2aea59461339d74257896e5dcbeaddead030b62bdd84c3ca6"
+  },
+  {
+    "name": "logic-gz21k-3-script",
+    "zone": "gz21k",
+    "mode": "script",
+    "returncode": 0,
+    "wall_seconds": 1.926594,
+    "tick_seconds": 1.365792,
+    "tick_ms": {
+      "max": 12.953,
+      "p50": 2.149,
+      "p95": 2.927
+    },
+    "sim_seconds": 32.9999999999999,
+    "events": 0,
+    "party": [
+      {
+        "dead": false,
+        "hp": 23.7262706756592,
+        "pos": "(335.5, 257.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5180902481079,
+        "pos": "(337.0, 257.5)",
+        "uid": 1000059185
+      }
+    ],
+    "expression_native": false,
+    "rng_next": 3517065078,
+    "state_sha256": "f34095bde716e40a4f163b92987cf52d49ef97786d447fbbae8072b8fec55085"
+  }
+]

@@ -5,6 +5,15 @@ Use this selection before accepting changes near recent campaign/UI repairs.
 campaign, renderer requirement and minimum assertion count. It supplements the
 [full gameplay suite](gameplay-testing.md); it does not certify every closed issue.
 
+`script_expression_native` requires the rebuilt terrain extension. It compares
+native and script evaluation, live variables/objects/levers, float32 boundaries,
+RNG, lazy forms and side effects, including an original-game Wine fixture.
+Related scheduler, clock, quest and lever checks and CPU measurements are in
+[the CPU traversal validation](validation/cpu-traversal-2026-10-25/README.md).
+`picking_retained` also requires the rebuilt extension and compares fused
+mechanism bounds with the existing native and scalar paths, including live
+morph/transform changes, clipping and unsupported-geometry fallbacks.
+
 ```sh
 python3 tools/check_regressions.py \
   --engine /absolute/path/to/godot \

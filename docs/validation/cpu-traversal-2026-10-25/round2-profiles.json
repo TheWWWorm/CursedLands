@@ -1,0 +1,107 @@
+[
+  {
+    "name": "round2-profile-gz1h",
+    "zone": "gz1h",
+    "returncode": 0,
+    "scopes": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/round2-profile-gz1h/data/godot/app_userdata/Cursed Lands/cpu-scopes.json",
+    "fps": 84.2688388488145,
+    "frame_ms": {
+      "max": 1457.56,
+      "p50": 11.018,
+      "p95": 15.239,
+      "p99": 17.968
+    },
+    "sim_seconds": 34.8149999999998,
+    "wall_seconds": 35.007009,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(255.6875, 66.75)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(257.1875, 66.75)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 415
+  },
+  {
+    "name": "round2-profile-gz16g",
+    "zone": "gz16g",
+    "returncode": 0,
+    "scopes": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/round2-profile-gz16g/data/godot/app_userdata/Cursed Lands/cpu-scopes.json",
+    "fps": 126.491827993738,
+    "frame_ms": {
+      "max": 563.432,
+      "p50": 7.444,
+      "p95": 10.964,
+      "p99": 13.064
+    },
+    "sim_seconds": 34.8149999999998,
+    "wall_seconds": 35.006214,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(155.0, 286.5)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(156.5, 286.5)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 294
+  },
+  {
+    "name": "round2-profile-gz21k",
+    "zone": "gz21k",
+    "returncode": 0,
+    "scopes": "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/runs/round2-profile-gz21k/data/godot/app_userdata/Cursed Lands/cpu-scopes.json",
+    "fps": 138.038345978373,
+    "frame_ms": {
+      "max": 1518.886,
+      "p50": 6.487,
+      "p95": 10.022,
+      "p99": 11.671
+    },
+    "sim_seconds": 34.9249999999998,
+    "wall_seconds": 35.004766,
+    "viewport_size": [
+      1920,
+      1080
+    ],
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "controlled": [
+      {
+        "dead": false,
+        "hp": 23.75,
+        "pos": "(337.5625, 242.2656)",
+        "uid": 1500000128
+      },
+      {
+        "dead": false,
+        "hp": 11.5,
+        "pos": "(337.0, 241.5)",
+        "uid": 1000059185
+      }
+    ],
+    "units": 207
+  }
+]

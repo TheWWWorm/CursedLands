@@ -22,6 +22,7 @@
 
 #include "window_frontier.h"
 #include "unit_simulation_state.h"
+#include "script_expression.h"
 #include "unit_query.h"
 #include "perception_batch.h"
 #include "terrain_color.h"
@@ -557,6 +558,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(DiscordIpc);
         GDREGISTER_CLASS(TerrainWindowFrontier); GDREGISTER_CLASS(TerrainSearchKernel);
         GDREGISTER_CLASS(UnitSimulationState); GDREGISTER_CLASS(UnitSimulationLease);
+        GDREGISTER_CLASS(ScriptExpressionKernel);
         GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);
         GDREGISTER_CLASS(PerceptionKernel);
         GDREGISTER_CLASS(TerrainColorField);

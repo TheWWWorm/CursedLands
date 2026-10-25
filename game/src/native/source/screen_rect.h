@@ -16,6 +16,8 @@
 #include <godot_cpp/variant/plane.hpp>
 #include <godot_cpp/variant/projection.hpp>
 #include <godot_cpp/variant/rect2i.hpp>
+#include <godot_cpp/variant/callable.hpp>
+#include <godot_cpp/variant/dictionary.hpp>
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -59,8 +61,102 @@ protected:
         ClassDB::bind_method(D_METHOD("bounds", "surfaces", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::bounds);
         ClassDB::bind_method(D_METHOD("deform_vertices", "base", "shapes", "shape_weights", "normalized", "bones", "weights", "poses"), &ScreenRectKernel::deform_vertices);
         ClassDB::bind_method(D_METHOD("deformation_state", "instance"), &ScreenRectKernel::deformation_state);
+        ClassDB::bind_method(D_METHOD("retained_bounds", "instance", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::retained_bounds);
+        ClassDB::bind_method(D_METHOD("pick_mechanisms", "levers", "objects", "morphs", "usable", "fallback", "camera", "view", "point"), &ScreenRectKernel::pick_mechanisms);
     }
 public:
+    // Batch only the presentation query. Permission stays in LeverSystem;
+    // unsupported geometry uses the same script cache/oracle as before.
+    // No scene references, eligibility or results survive this call.
+    int64_t pick_mechanisms(const Dictionary &levers, const Dictionary &objects,
+            const Dictionary &morphs, const Callable &usable, const Callable &fallback,
+            Node3D *camera, const Dictionary &view, Vector2 point) const {
+        if (!camera || view.is_empty()) return -1;
+        const TypedArray<Plane> planes = view["planes"];
+        const Projection projection = view["projection"];
+        const Basis inverse_basis = view["inverse_basis"];
+        const Vector3 origin = view["origin"];
+        const Vector2 size = view["size"];
+        const Transform3D to_view = Transform3D(camera->call("get_camera_transform")).affine_inverse();
+        int64_t best = -1, nearby = -1;
+        double depth = INFINITY, distance = 40.;
+        const Array ids = levers.keys();
+        for (int64_t i = 0; i < ids.size(); ++i) {
+            const Variant id = ids[i];
+            if (!bool(usable.call(id))) continue;
+            const Variant object = objects.get(id, Variant());
+            auto *node = Object::cast_to<Node3D>(object.get_validated_object());
+            if (!node || !node->is_visible_in_tree()) continue;
+            const Dictionary morph = morphs.get(id, Dictionary());
+            const Array meshes = morph.get("meshes", Array());
+            for (int64_t j = 0; j < meshes.size(); ++j) {
+                const Variant entry = meshes[j];
+                auto *part = Object::cast_to<MeshInstance3D>(entry.get_validated_object());
+                if (!part) continue;
+                Variant result = retained_bounds(part, planes, projection, inverse_basis, origin, size);
+                if (result.get_type() != Variant::RECT2I) result = fallback.call(part, camera, view);
+                const Rect2i rect = result;
+                const Vector2i end = rect.get_end();
+                // Original PtInRect: right/bottom edges are exclusive.
+                if (!(point.x >= rect.position.x && point.y >= rect.position.y && point.x < end.x && point.y < end.y)) continue;
+                const double z = std::max(0., -double(to_view.xform(part->get_global_position()).z));
+                if (z < depth) { depth = z; best = int64_t(id); }
+            }
+            // Preserve Camera3D's adjusted projection and behind-near-plane
+            // test, including orthographic/frustum cameras and h/v offsets.
+            const Vector3 at = node->get_global_position() + Vector3(0.f, .6f, 0.f);
+            if (bool(camera->call("is_position_behind", at))) continue;
+            const Vector2 projected = camera->call("unproject_position", at);
+            const double d = projected.distance_to(point);
+            if (d < distance) { distance = d; nearby = int64_t(id); }
+        }
+        return best >= 0 ? best : nearby;
+    }
+
+    // Scenery mechanisms retain their uploaded vertex arrays. Fuse their
+    // live morph, world transform and exact clipping in one native call.
+    // Nil means unsupported: the existing general/cache path remains the
+    // oracle for skins, third-party meshes and multi-surface figures.
+    Variant retained_bounds(MeshInstance3D *instance, const TypedArray<Plane> &planes,
+            const Projection &projection, const Basis &inverse_basis,
+            const Vector3 &origin, const Vector2 &size) const {
+        if (!instance || !instance->is_inside_tree() || !instance->is_visible_in_tree()) return Rect2i();
+        const Ref<Mesh> mesh = instance->get_mesh();
+        if (mesh.is_null()) return Rect2i();
+        if (!mesh->is_class("ArrayMesh") || instance->get_skin().is_valid() || mesh->get_surface_count() != 1 ||
+                mesh->has_meta("ei_cpu_surfaces") || !mesh->has_meta("ei_cpu_geometry")) return Variant();
+        const Variant stored = mesh->get_meta("ei_cpu_geometry");
+        if (stored.get_type() != Variant::ARRAY) return Variant();
+        const Array geometry = stored;
+        if (geometry.size() != 2 || geometry[0].get_type() != Variant::PACKED_VECTOR3_ARRAY ||
+                (geometry[1].get_type() != Variant::NIL && geometry[1].get_type() != Variant::PACKED_INT32_ARRAY)) return Variant();
+        PackedVector3Array vertices = geometry[0];
+        // Large static mechanisms benefit more from the existing exact cache.
+        if (vertices.size() > 2048) return Variant();
+        const int count = instance->get_blend_shape_count();
+        if (count > 0) {
+            if (!mesh->has_meta("ei_cpu_shapes")) return Variant();
+            const Variant stored_shapes = mesh->get_meta("ei_cpu_shapes");
+            if (stored_shapes.get_type() != Variant::ARRAY) return Variant();
+            const Array shapes = stored_shapes;
+            if (shapes.size() != count) return Variant();
+            PackedFloat64Array weights; weights.resize(count);
+            for (int i = 0; i < count; ++i) weights.set(i, instance->get_blend_shape_value(i));
+            vertices = deform_vertices(vertices, shapes, weights,
+                int(mesh->get("blend_shape_mode")) == Mesh::BLEND_SHAPE_MODE_NORMALIZED,
+                PackedInt32Array(), PackedFloat32Array(), TypedArray<Transform3D>());
+        }
+        const Transform3D transform = instance->get_global_transform_interpolated();
+        Vector3 *out = vertices.ptrw();
+        for (int64_t i = 0; i < vertices.size(); ++i) out[i] = transform.xform(out[i]);
+        Array surface;
+        surface.push_back(vertices);
+        surface.push_back(geometry[1].get_type() == Variant::PACKED_INT32_ARRAY ? geometry[1] : Variant(PackedInt32Array()));
+        surface.push_back(mesh->call("surface_get_primitive_type", 0));
+        Array surfaces; surfaces.push_back(surface);
+        return bounds(surfaces, planes, projection, inverse_basis, origin, size);
+    }
+
     // Read the same current renderer inputs in one native call. Morph-heavy
     // creatures otherwise cross the script boundary hundreds of times merely
     // to validate an unchanged cached rectangle. No pose is cached here.

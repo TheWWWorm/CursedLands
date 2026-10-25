@@ -1,0 +1,14 @@
+{
+  "old": {
+    "whole_fps_median": 81.57617313573749,
+    "after5_fps_median": 84.713168384324,
+    "after5_p95_median": 15.1675,
+    "after5_p99_median": 17.384
+  },
+  "fused": {
+    "whole_fps_median": 99.5583844026772,
+    "after5_fps_median": 103.98280393617452,
+    "after5_p95_median": 12.864,
+    "after5_p99_median": 14.656
+  }
+}

@@ -1267,6 +1267,39 @@
       "mode": "headless",
       "args": [],
       "min_checks": 9
+    },
+    {
+      "id": "script_expression_native",
+      "script": "tools/tests/script_expression_native.gd",
+      "summary": "SCRIPT_EXPRESSION_NATIVE",
+      "contract": "Native nested script expressions preserve float32 stores, live lever/object/variable reads, fallback side effects and RNG order.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 21000
+    },
+    {
+      "id": "picking_retained",
+      "script": "tools/tests/picking_retained.gd",
+      "summary": "PICKING_RETAINED",
+      "contract": "Fused native mechanism bounds preserve exact clipping, rounding, live morphs/transforms and unsupported-geometry fallbacks.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 2200
+    },
+    {
+      "id": "picking_mechanisms",
+      "script": "tools/tests/picking_mechanisms.gd",
+      "summary": "PICKING_MECHANISMS",
+      "contract": "Batched native mechanism picking preserves exact rectangles, permission, depth/assist ties, camera and live morph changes, and unsupported/custom fallbacks.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 5205
     }
   ]
 }

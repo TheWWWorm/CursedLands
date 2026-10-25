@@ -1,0 +1,120 @@
+{
+  "git_head": "8f8dfd775a79599944b5434596eb944a7fc29f3e",
+  "game_source_sha256": "8afbde530f4cd5699e5d94c06f992088e8d975a057fc6e241ad5aedd5505be4c",
+  "manifest_sha256": "c9844ee7da801d29c91214df9238df973f559e92deb529a89adc2d8038e743b7",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "dialogue_clock_coop",
+      "script": "tools/tests/dialogue_clock_coop.gd",
+      "script_sha256": "98c13ea9f2d27dd1a5816c21d321116ae5e0bcec9234ae3fc996007f3dad2f33",
+      "contract": "Host resets both peers to normal unpaused dialogue; guest cannot override it.",
+      "issues": [
+        92
+      ],
+      "mode": "headless",
+      "seconds": 14.14,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/dialogue_clock_coop.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "dialogue_clock_coop/run.log",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "side_quest_lifecycle",
+      "script": "tools/tests/side_quest_lifecycle.gd",
+      "script_sha256": "11f86133396652ce15792db64ab597c0315158bcddca23eb3e26237b3bb865c5",
+      "contract": "Authored side-quest activation, return and completion survive the campaign flow.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 11.08,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/side_quest_lifecycle.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "side_quest_lifecycle/run.log",
+      "passed": true,
+      "result": {
+        "checks": 590,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "script_expression_native",
+      "script": "tools/tests/script_expression_native.gd",
+      "script_sha256": "cec70e33a5c3ef82c3fbee5ce9c78d42f71d74c9fd43f5e5f8b91cd9501caa86",
+      "contract": "Native nested script expressions preserve float32 stores, live lever/object/variable reads, fallback side effects and RNG order.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 6.12,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests/script_expression_native.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/cpu-traversal-20261025/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "script_expression_native/run.log",
+      "passed": true,
+      "result": {
+        "checks": 21575,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": true
+}

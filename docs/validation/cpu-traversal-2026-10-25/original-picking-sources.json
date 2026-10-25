@@ -1,0 +1,61 @@
+{
+  "kind": "pre-existing local Ghidra export; inspected for this change",
+  "files": [
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/disassembly/functions/005a7/5a7640_FUN_005a7640.asm",
+      "sha256": "e5926176e7f59c6f8fc78f4afcafbb25034534a875864e4c046bc294a1edb6b2",
+      "bytes": 11825
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/001a7/5a7640_FUN_005a7640.c",
+      "sha256": "14c087e76db3744fc93240dd0b844491db20052fd63415f62b822399c0b1febc",
+      "bytes": 6539
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/disassembly/functions/005a7/5a7a70_FUN_005a7a70.asm",
+      "sha256": "d78fd62e6b305d2a82cc2b9dd75d9f16e6065ed784c12acff5177a797ea16dd9",
+      "bytes": 46209
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/001a7/5a7a70_FUN_005a7a70.c",
+      "sha256": "5eb731c65b821ce2dc79b1e05f78eb6821917f0941d7f47a9f3f7573ee57bdc0",
+      "bytes": 24907
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/disassembly/functions/004e9/4e9010_FUN_004e9010.asm",
+      "sha256": "ede500907e9e0bc86fae554db6cfd7dfe347240e5e13920ee2bb53af95a337bc",
+      "bytes": 31196
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/000e9/4e9010_FUN_004e9010.c",
+      "sha256": "ee5d0c5feff815ab47911125a7e3495a8f680a6dad122f5938b90c50602c2152",
+      "bytes": 15343
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/disassembly/functions/004e8/4e86b0_FUN_004e86b0.asm",
+      "sha256": "056f305198967b2c35af9ed97424f42b5df786639a735f266effb99e04e68095",
+      "bytes": 7088
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/000e8/4e86b0_FUN_004e86b0.c",
+      "sha256": "f0cdee885b50df68aeb7b9440a7f84c8254fd214d50d70942c7f7a79b60cd1e4",
+      "bytes": 2496
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/disassembly/functions/004e8/4e8900_FUN_004e8900.asm",
+      "sha256": "c360d89c80bdc2d839e3a1d4c50486a329052ab9dc08e33d5bec315fce2142aa",
+      "bytes": 21237
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/000e8/4e8900_FUN_004e8900.c",
+      "sha256": "68fc2d45cd4afe1f16f6a099ea38ce43fcc71ee015bfda46961b349a7ab7e23e",
+      "bytes": 7345
+    }
+  ],
+  "confirmed": [
+    "5a7640 and 5a7a70 copy the renderer rectangle at +0x15c after 4e9010",
+    "4e9010 calls TLP +0x94/+0x88 before 4e86b0 on the partial-clipping path",
+    "4e8900 collects projected extrema on the wholly-inside path; both extrema routines round to integer rectangle coordinates"
+  ],
+  "limits": "No fresh Wine runtime instrumentation of original picking; synthetic Godot mesh metadata and projection fixtures have no direct original-engine entry point."
+}
