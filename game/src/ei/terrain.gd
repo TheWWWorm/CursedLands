@@ -1314,6 +1314,7 @@ func apply_gfx() -> void:
 		_cliffs.bind(_land_mat)
 	else:
 		_land_mat.set_shader_parameter("cliff_tiles",null)
+		_land_mat.set_shader_parameter("cliff_blends",null)
 		_land_mat.set_shader_parameter("cliff_flatness",null)
 	var transition_base := ""
 	if Transitions.requested():

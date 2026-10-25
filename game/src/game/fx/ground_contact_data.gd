@@ -4,7 +4,7 @@ extends RefCounted
 ## budget. Static fields share one array; dynamic tracks and roof maps retain
 ## their existing resources. Forward+ and Mobile retain individual bindings.
 const FIELDS := ["query_vertices", "query_normals", "query_light_inputs",
-	"terrain_tiles", "terrain_cells", "cliff_tiles", "cliff_flatness", "transition_tiles"]
+	"terrain_tiles", "terrain_cells", "cliff_tiles", "cliff_flatness", "cliff_blends", "transition_tiles"]
 var texture := Texture2DArray.new()
 var sizes := {}
 var layers := {}

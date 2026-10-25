@@ -117,6 +117,7 @@ func case(map: String, positive := true) -> void:
 		check(diff.changed_pixels>40 and diff.peak_byte_delta>8,"side projection visible on verified steep rock "+map)
 		check(figure.material_override.shader.code.contains("#define EI_TERRAIN_CLIFFS"),"rigid scenery contact compiles shared cliff sampling "+map)
 		check(figure.material_override.get_shader_parameter("cliff_tiles")==terrain._cliffs.tiles,"land and contact share same eligibility field "+map)
+		check(figure.material_override.get_shader_parameter("cliff_blends")==terrain._cliffs.blends,"contact shares the corner-donor field "+map)
 		var empty := Image.create(terrain._cliffs.tile_size.x,terrain._cliffs.tile_size.y,false,Image.FORMAT_R8)
 		terrain._cliffs.tiles.update(empty)
 		check(difference(off,await snap(view,map+"-unclassified")).changed_pixels==0,"unsupported tiles preserve exact pixels in enabled source "+map)
@@ -139,7 +140,7 @@ func case(map: String, positive := true) -> void:
 	check(difference(off,await snap(view,map+"-disabled")).changed_pixels==0,"disable restores exact original terrain/contact pixels "+map)
 	if is_instance_valid(terrain.color_cache):
 		for entry: Dictionary in terrain.color_cache._resident.values():
-			check(entry.material.get_shader_parameter("cliff_tiles")==null and entry.material.get_shader_parameter("cliff_flatness")==null,"cached material releases old projection textures "+map)
+			check(entry.material.get_shader_parameter("cliff_tiles")==null and entry.material.get_shader_parameter("cliff_flatness")==null and entry.material.get_shader_parameter("cliff_blends")==null,"cached material releases old projection textures "+map)
 	GameData.options.gfx_terrain=0; terrain.apply_gfx(); await frames()
 	var original := await snap(view,map+"-original")
 	GameData.options.gfx_terrain_cliffs=1; terrain.apply_gfx()
@@ -154,11 +155,11 @@ func case(map: String, positive := true) -> void:
 func _ready() -> void:
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]]=0
-	GameData.options.merge({"gfx_terrain_cliffs":0,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":3},true)
+	GameData.options.merge({"gfx_terrain_cliffs":0,"auto_graphics":0,"confine_mouse":0,"vsync":0,"fps_limit":1},true)
 	if "--cliff-composed" in OS.get_cmdline_user_args():
 		for key in ["gfx_materials","gfx_clouds","gfx_cloud_shadows","gfx_cloud_reflections","gfx_weather_surfaces","gfx_water","gfx_water_caustics","gfx_water_current","gfx_water_interaction","gfx_water_waves"]:
 			GameData.options[key]=1
-	Gfx.ensure_globals(); Engine.time_scale=0; Engine.max_fps=120; process_mode=Node.PROCESS_MODE_ALWAYS
+	Gfx.ensure_globals(); Engine.time_scale=0; Engine.max_fps=30; process_mode=Node.PROCESS_MODE_ALWAYS
 	Gfx.apply_surface_options()
 	if "--cliff-compile" in OS.get_cmdline_user_args():
 		var land := Gfx.make_shader(Field.CliffShader.source(EITerrain.TERRAIN_SHADER),true,true)

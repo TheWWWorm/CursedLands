@@ -108,6 +108,7 @@ func _copy_parameters(material:ShaderMaterial)->void:
 		material.set_shader_parameter("transition_tiles",null)
 	if terrain._cliffs==null or terrain._cliffs.admitted==0:
 		material.set_shader_parameter("cliff_tiles",null)
+		material.set_shader_parameter("cliff_blends",null)
 		material.set_shader_parameter("cliff_flatness",null)
 	if terrain._caustics==null or terrain._caustics.admitted==0:
 		material.set_shader_parameter("caustic_bed",null)

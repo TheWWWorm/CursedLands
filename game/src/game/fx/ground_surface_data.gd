@@ -130,6 +130,7 @@ func _metadata_images(terrain: EITerrain) -> Dictionary:
 	var cliff := terrain._cliffs
 	if cliff and cliff.admitted > 0:
 		images.cliff_tiles = Image.create_from_data(cliff.tile_size.x, cliff.tile_size.y, false, Image.FORMAT_R8, cliff.eligible)
+		images.cliff_blends = Image.create_from_data(cliff.tile_size.x, cliff.tile_size.y, false, Image.FORMAT_RGBAF, cliff.blend_rows.to_byte_array())
 		images.cliff_flatness = Image.create_from_data(cliff.grid_size.x, cliff.grid_size.y, false, Image.FORMAT_R8, cliff.guards)
 	var transition := terrain._transitions
 	if transition and transition.admitted > 0:

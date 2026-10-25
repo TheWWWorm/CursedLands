@@ -364,7 +364,7 @@ static func source(original: String, cliffs := false) -> String:
 		helpers = helpers.replace("// Terrain's native light model", TerrainCliff.CliffShader.FUNCTIONS + "\n// Terrain's native light model")
 		# Compute projection weights from the base mesh normal before painted
 		# relief, and suppress that relief on the projected share like land.
-		helpers = helpers.replace("\t\tvec3 average=", "\t\tvec3 planes=cliff_weights(tile,local,result.normal,distance_to_eye)*detail;\n\t\tvec3 average=")
+		helpers = helpers.replace("\t\tvec3 average=", "\t\tvec3 planes=cliff_weights(tile,local,normalize(vec3(-height_gradient.x,1.0,height_gradient.y)),distance_to_eye)*detail;\n\t\tvec3 average=")
 		helpers = helpers.replace("*painted_relief*fade);", "*painted_relief*fade*(1.0-planes.y));")
 		helpers = helpers.replace("\t\tfloat macro=", "\t\talbedo=cliff_albedo(albedo,tile,local,vec3(folded.x,height,-folded.y),planes);\n\t\tfloat macro=")
 	code = code.replace("void vertex() {", helpers + "\nvoid vertex() {\n\tcontact_band=min(0.4,max(0.01,dot(abs(vec3(MODEL_MATRIX[0].y,MODEL_MATRIX[1].y,MODEL_MATRIX[2].y)),contact_extent)*0.125));")

@@ -678,7 +678,7 @@ float3 cliff_weights(int2 cell,float2 p,float3 normal,float distance_to_eye) {
     if(cliff_eligible(cell)<0.5)return 0.0;
     float3 n=abs(normalize(normal));float side=(1.0-smoothstep(0.57357644,0.76604444,n.y))*(1.0-smoothstep(80.0,140.0,distance_to_eye));
     if(side<=0.0)return 0.0;
-    side*=1.0-smoothstep(0.72,0.95,cliff_guard((float2(cell)+p)*2.0));
+    side*=1.0-smoothstep(0.72,0.95,min(cliff_guard((float2(cell)+p)*2.0),n.y));
     float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
     if(cliff_eligible(cell+int2(step_cell.x,0))<0.5)side*=1.0-2.0*weight.x;
@@ -687,21 +687,81 @@ float3 cliff_weights(int2 cell,float2 p,float3 normal,float distance_to_eye) {
     float2 axes=n.xz*n.xz;axes/=max(axes.x+axes.y,1e-8);axes=max(axes-0.02,0.0);axes/=max(axes.x+axes.y,1e-8);
     return float3(axes.x*side,side,axes.y*side);
 }
-float3 cliff_tile(float code,float3 world,float3 planes,float atlas_lod) {
+// Keep the projection and integer hash identical to TerrainCliffShader.
+float cliff_hash(int2 cell) {
+    uint h=uint(cell.x)*73856093u ^ uint(cell.y)*19349663u;
+    h^=h>>16u;h*=0x7feb352du;h^=h>>15u;h*=0x846ca68bu;h^=h>>16u;
+    return float(h&16777215u)/16777215.0;
+}
+float3 cliff_noise(float2 p) {
+    int2 cell=int2(floor(p));float2 f=frac(p),u=f*f*(3.0-2.0*f),d=6.0*f*(1.0-f);
+    float a=cliff_hash(cell),b=cliff_hash(cell+int2(1,0)),c=cliff_hash(cell+int2(0,1)),e=cliff_hash(cell+int2(1,1));
+    return float3(lerp(lerp(a,b,u.x),lerp(c,e,u.x),u.y),lerp(b-a,e-c,u.y)*d.x,lerp(c-a,e-b,u.x)*d.y);
+}
+float2 cliff_turn(float2 p) { return float2(0.8*p.x-0.6*p.y,0.6*p.x+0.8*p.y); }
+struct CliffProjection { float4 uv; float2 filter; };
+CliffProjection cliff_project(float2 p,float atlas_lod) {
+    float3 noise=cliff_noise(p*0.43+float2(7.1,-3.7));
+    float2 warp=float2(0.55,-0.385),q=p+warp*(noise.x-0.5);
+    // Ray cones have no anisotropic screen gradients. Bound the two Jacobian
+    // columns, then reapply the atlas gutter cap after increasing the mip.
+    float scale=max(length(float2(1,0)+warp*noise.y*0.43),length(float2(0,1)+warp*noise.z*0.43));
+    CliffProjection result;
+    result.filter.x=min(max(atlas_lod+log2(max(scale,1e-6)),0.0),tile_lod(1e6));
+    result.filter.y=0.15+0.7*smoothstep(0.15,0.85,cliff_noise(p*0.63+float2(-11.3,4.9)).x);
+    result.uv=1.0-abs(frac(float4(q,cliff_turn(q)+float2(0.37,0.83))*0.5)*2.0-1.0);
+    return result;
+}
+float3 cliff_sample(float code,CliffProjection projection) {
+    return lerp(tile_sample(code,projection.uv.xy,projection.filter.x),tile_sample(code,projection.uv.zw,projection.filter.x),projection.filter.y);
+}
+float3 cliff_projected_tile(float code,float3 planes,CliffProjection x,CliffProjection z) {
     float3 colour=0.0;
-    [branch] if(planes.x>0.0)colour+=tile_sample(code,frac(float2(-world.z,world.y)*0.5),atlas_lod)*planes.x;
-    [branch] if(planes.z>0.0)colour+=tile_sample(code,frac(world.xy*0.5),atlas_lod)*planes.z;
+    [branch] if(planes.x>0.0)colour+=cliff_sample(code,x)*planes.x;
+    [branch] if(planes.z>0.0)colour+=cliff_sample(code,z)*planes.z;
     return colour;
+}
+float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection x,CliffProjection z) {
+    [branch] if((land_tile(cell)&(1u<<25u))==0u)return cliff_projected_tile(tile_info(cell).r,planes,x,z);
+    // Corner donor codes follow the aligned vertex guard array. Only flagged
+    // tiles read this payload; plain snapshots retain their original layout.
+    uint offset=land_detail().z+((land_extra().x*land_extra().y+3u)&~3u);
+    float4 row=asfloat(terrain_data.Load4(offset+16u*(uint(cell.y)*land_layout().x+uint(cell.x))));
+    p=smoothstep(0.2,0.8,saturate(p));
+    float4 weights=float4((1.0-p.x)*(1.0-p.y),p.x*(1.0-p.y),(1.0-p.x)*p.y,p.x*p.y);
+    float3 colour=0.0;
+    // Fixed lanes avoid the Vulkan driver's failure on dynamic vector writes.
+    if(row.x==row.y) { weights.x+=weights.y;weights.y=0.0; }
+    if(row.x==row.z) { weights.x+=weights.z;weights.z=0.0; }
+    if(row.x==row.w) { weights.x+=weights.w;weights.w=0.0; }
+    if(row.y==row.z) { weights.y+=weights.z;weights.z=0.0; }
+    if(row.y==row.w) { weights.y+=weights.w;weights.w=0.0; }
+    if(row.z==row.w) { weights.z+=weights.w;weights.w=0.0; }
+    [branch] if(weights.x>0.0)colour+=cliff_projected_tile(row.x-1.0,planes,x,z)*weights.x;
+    [branch] if(weights.y>0.0)colour+=cliff_projected_tile(row.y-1.0,planes,x,z)*weights.y;
+    [branch] if(weights.z>0.0)colour+=cliff_projected_tile(row.z-1.0,planes,x,z)*weights.z;
+    [branch] if(weights.w>0.0)colour+=cliff_projected_tile(row.w-1.0,planes,x,z)*weights.w;
+    return colour;
+}
+float3 cliff_surface(int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
+    CliffProjection x=(CliffProjection)0,z=(CliffProjection)0;
+    [branch] if(planes.x>0.0)x=cliff_project(float2(-world.z,world.y)*0.5,atlas_lod);
+    [branch] if(planes.z>0.0)z=cliff_project(world.xy*0.5,atlas_lod);
+    return cliff_projected_surface(cell,p,planes,x,z);
 }
 float3 cliff_albedo(float3 original,int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
     if(planes.y<=0.0)return original;
-    float3 own=cliff_tile(tile_info(cell).r,world,planes,atlas_lod),colour=own;
+    // Reuse the same world projection across all corner donors/neighbours.
+    CliffProjection x=(CliffProjection)0,z=(CliffProjection)0;
+    [branch] if(planes.x>0.0)x=cliff_project(float2(-world.z,world.y)*0.5,atlas_lod);
+    [branch] if(planes.z>0.0)z=cliff_project(world.xy*0.5,atlas_lod);
+    float3 own=cliff_projected_surface(cell,p,planes,x,z),colour=own;
     float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
-    if(weight.x>0.0&&cliff_eligible(cell+int2(step_cell.x,0))>0.5)colour=lerp(colour,cliff_tile(tile_info(cell+int2(step_cell.x,0)).r,world,planes,atlas_lod),weight.x);
+    if(weight.x>0.0&&cliff_eligible(cell+int2(step_cell.x,0))>0.5)colour=lerp(colour,cliff_projected_surface(cell+int2(step_cell.x,0),p-float2(int2(step_cell.x,0)),planes,x,z),weight.x);
     if(weight.y>0.0) {
-        float3 other=cliff_eligible(cell+int2(0,step_cell.y))>0.5?cliff_tile(tile_info(cell+int2(0,step_cell.y)).r,world,planes,atlas_lod):own;
-        if(weight.x>0.0&&cliff_eligible(cell+step_cell)>0.5)other=lerp(other,cliff_tile(tile_info(cell+step_cell).r,world,planes,atlas_lod),weight.x);
+        float3 other=cliff_eligible(cell+int2(0,step_cell.y))>0.5?cliff_projected_surface(cell+int2(0,step_cell.y),p-float2(int2(0,step_cell.y)),planes,x,z):own;
+        if(weight.x>0.0&&cliff_eligible(cell+step_cell)>0.5)other=lerp(other,cliff_projected_surface(cell+step_cell,p-float2(step_cell),planes,x,z),weight.x);
         colour=lerp(colour,other,weight.y);
     }
     return original*(1.0-planes.y)+colour;
@@ -943,7 +1003,7 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
-    float3 planes=cliff_weights(cell,saturate(local),s.normal,distance);
+    float3 planes=cliff_weights(cell,saturate(local),s.geometric_normal,distance);
     float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
     float fade=1.0-smoothstep(25.0,70.0,distance);
     float3 n=s.normal;
@@ -965,10 +1025,10 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
         float step_world=max(0.0625,footprint/grazing);
         float3 projection=planes/max(planes.y,1e-6);
         const float3 lum=float3(0.2126,0.7152,0.0722);
-        float left=sqrt(max(dot(cliff_tile(float(code),s.position-tangent*step_world,projection,cliff_lod),lum),0.0));
-        float right=sqrt(max(dot(cliff_tile(float(code),s.position+tangent*step_world,projection,cliff_lod),lum),0.0));
-        float down=sqrt(max(dot(cliff_tile(float(code),s.position-bitangent*step_world,projection,cliff_lod),lum),0.0));
-        float up=sqrt(max(dot(cliff_tile(float(code),s.position+bitangent*step_world,projection,cliff_lod),lum),0.0));
+        float left=sqrt(max(dot(cliff_surface(cell,local,s.position-tangent*step_world,projection,cliff_lod),lum),0.0));
+        float right=sqrt(max(dot(cliff_surface(cell,local,s.position+tangent*step_world,projection,cliff_lod),lum),0.0));
+        float down=sqrt(max(dot(cliff_surface(cell,local,s.position-bitangent*step_world,projection,cliff_lod),lum),0.0));
+        float up=sqrt(max(dot(cliff_surface(cell,local,s.position+bitangent*step_world,projection,cliff_lod),lum),0.0));
         float2 slope=clamp(float2(right-left,up-down)*2.0,-0.30,0.30);
         n=land_normal(n,-(tangent*slope.x+bitangent*slope.y)*1.5*cliff_relief,s.geometric_normal);
     }

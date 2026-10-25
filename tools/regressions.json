@@ -1420,6 +1420,37 @@
       "mode": "headless",
       "args": [],
       "min_checks": 7470
+    },
+    {
+      "id": "terrain_cliff_blends",
+      "script": "tools/tests/terrain_cliff_blends.gd",
+      "summary": "CLIFF_BLENDS",
+      "contract": "Verified natural cliff donors retain rotated material corners and reject unknown, conflicting, snow or missing-donor inputs.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 82
+    },
+    {
+      "id": "terrain_cave_wall",
+      "script": "tools/tests/terrain_cave_wall.gd",
+      "summary": "CAVE_WALL",
+      "contract": "The reported zone5_1 cave wall receives vertical rock mapping in raster, PT and cached PT without changing terrain geometry.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 15,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_cliff_pattern",
+      "script": "tools/tests/terrain_cliff_pattern.gd",
+      "summary": "CLIFF_PATTERN",
+      "contract": "Projected wall art has no wrap seams or identical 2/4 metre repeats and remains fixed in world space.",
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 10
     }
   ]
 }

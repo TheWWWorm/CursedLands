@@ -37,7 +37,9 @@ func collect(scene: RefCounted, terrain: EITerrain) -> void:
 		var code := terrain.land_tile[i]
 		var type := terrain.tile_types[code&16383] if (code&16383)<terrain.tile_types.size() else 0
 		tiles[i] = (code&65535) | (clampi(type,0,255)<<16)
-		if cliff != null and cliff.admitted>0 and cliff.eligible[i]>0: tiles[i] |= 1<<24
+		if cliff != null and cliff.admitted>0 and cliff.eligible[i]>0:
+			tiles[i] |= 1<<24
+			if cliff.blend_rows[i].a>0: tiles[i] |= 1<<25
 	data.encode_u32(0,size.x);data.encode_u32(4,size.y);data.encode_u32(8,data.size())
 	data.append_array(tiles.to_byte_array())
 	data.encode_u32(12,data.size())
@@ -57,6 +59,7 @@ func collect(scene: RefCounted, terrain: EITerrain) -> void:
 	if cliff != null and cliff.admitted>0:
 		data.encode_u32(40,data.size());data.encode_u32(48,cliff.grid_size.x);data.encode_u32(52,cliff.grid_size.y)
 		data.append_array(cliff.guards);data.resize((data.size()+3)&~3)
+		if cliff.mixed>0: data.append_array(cliff.blend_rows.to_byte_array())
 	var transition := terrain._transitions
 	if transition != null and transition.admitted>0:
 		data.encode_u32(56,data.size());data.append_array(transition.rows.to_byte_array())

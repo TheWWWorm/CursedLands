@@ -89,6 +89,11 @@ update/resolve/query sequence pass on native Vulkan and DX12 through Wine.
 
 ## Measured cost
 
+The table below records the initial SHaRC integration, before the subsequent
+cave-wall material correction. The final combined change has additional wall
+sampling work; its measurements are recorded in the
+[cave-wall validation report](../validation/cave-wall-2026-10-25/README.md).
+
 These are static campaign comparisons at a 1920×1080 window, with actor
 animations paused, in GPU Lab heavy jobs. Each result averages two block
 medians from Off/On/On/Off order (40 warm-up and 120 measured frames per block).

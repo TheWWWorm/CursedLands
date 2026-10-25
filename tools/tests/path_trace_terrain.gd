@@ -7,6 +7,10 @@ var tile_texture: ImageTexture
 var transition_texture: ImageTexture
 var cliff_texture: ImageTexture
 var guard_texture: ImageTexture
+var blend_texture: ImageTexture
+var blend_mask := -1
+var four_donors := false
+var authored_normal := Vector3.BACK
 var normal_texture: Image
 var reference_image: Image
 var mode := 0 # detailed, pair, junction, cliff
@@ -33,7 +37,7 @@ func reference_code() -> String:
 	code=code.replace("uniform int transition_junction_materials = 4;","const int transition_junction_materials = 4;")
 	code=code.replace("uniform int transition_relief_passes = 4;","const int transition_relief_passes = 4;")
 	if mode==3:
-		code+=Cliff.FUNCTIONS.replace("uniform sampler2D cliff_tiles : filter_nearest, repeat_disable;","layout(set=0,binding=4) uniform sampler2D cliff_tiles;").replace("uniform sampler2D cliff_flatness : filter_nearest, repeat_disable;","layout(set=0,binding=5) uniform sampler2D cliff_flatness;")
+		code+=Cliff.FUNCTIONS.replace("uniform sampler2D cliff_tiles : filter_nearest, repeat_disable;","layout(set=0,binding=4) uniform sampler2D cliff_tiles;").replace("uniform sampler2D cliff_flatness : filter_nearest, repeat_disable;","layout(set=0,binding=5) uniform sampler2D cliff_flatness;").replace("uniform sampler2D cliff_blends : filter_nearest, repeat_disable;","layout(set=0,binding=6) uniform sampler2D cliff_blends;")
 		code=code.replace("vec3 wx=dFdx(world); vec3 wy=dFdy(world);","vec3 wx=vec3(params.projection.z,0,0); vec3 wy=vec3(0,-params.projection.w,0);")
 	var result:="""#version 450
 layout(local_size_x=8,local_size_y=8,local_size_z=1) in;
@@ -70,7 +74,7 @@ func reference_render(source: String,params: PackedByteArray) -> void:
 	fmt.usage_bits=RenderingDevice.TEXTURE_USAGE_STORAGE_BIT|RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
 	var target:=rd.texture_create(fmt,RDTextureView.new())
 	var bindings: Array[RDUniform]=[uniforms(RenderingDevice.UNIFORM_TYPE_IMAGE,0,[target])]
-	for row in [[1,atlas,true],[2,tile_texture,false]]+([[3,transition_texture,false]] if mode in [1,2] else [])+([[4,cliff_texture,false],[5,guard_texture,false]] if mode==3 else []):
+	for row in [[1,atlas,true],[2,tile_texture,false]]+([[3,transition_texture,false]] if mode in [1,2] else [])+([[4,cliff_texture,false],[5,guard_texture,false],[6,blend_texture,false]] if mode==3 else []):
 		bindings.append(uniforms(RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE,row[0],[device._samplers[0],RenderingServer.texture_get_rd_texture(row[1].get_rid(),row[2])]))
 	var set:=rd.uniform_set_create(bindings,shader,0)
 	var list:=rd.compute_list_begin();rd.compute_list_bind_compute_pipeline(list,pipeline);rd.compute_list_bind_uniform_set(list,set,0)
@@ -83,7 +87,7 @@ func build_land() -> bool:
 	if device!=null:RenderingServer.call_on_render_thread(device.dispose);await frames(4)
 	device=PathDevice.new();mesh_data.clear()
 	var corners: Array[Vector3]=[Vector3(-2,-2,0),Vector3(2,-2,0),Vector3(2,2,0),Vector3(-2,2,0)]
-	quad(mesh_data,corners,Vector3.BACK,Vector3.ZERO)
+	quad(mesh_data,corners,authored_normal,Vector3.ZERO)
 	for i in 6:
 		var local:=(Vector2(mesh_data[i*16],mesh_data[i*16+1])+Vector2(2,2))/4.0
 		var p:=(local-Vector2(0.5,0.5)).rotated(rotation*PI/2)+Vector2(0.5,0.5)
@@ -107,7 +111,7 @@ func build_land() -> bool:
 	var tiles_data:=PackedInt32Array();tiles_data.resize(land_size.x*land_size.y)
 	tiles_data.fill(((tile_index+1)%(atlas_axis*atlas_axis))|(ground_type<<16))
 	var tile_id:=land_cell.y*land_size.x+land_cell.x
-	tiles_data[tile_id]=code|(ground_type<<16)|((1<<24) if mode==3 else 0)
+	tiles_data[tile_id]=code|(ground_type<<16)|(((1<<24)|((1<<25) if blend_mask>=0 else 0)) if mode==3 else 0)
 	data.append_array(tiles_data.to_byte_array());data.encode_u32(12,data.size())
 	data.append_array(PackedInt32Array([tile_id+1,tile_id+1]).to_byte_array())
 	data.encode_float(16,float(atlas_axis));data.encode_float(20,atlas_padding);data.encode_float(24,1.0/(atlas_axis*64));data.encode_float(28,1)
@@ -124,6 +128,10 @@ func build_land() -> bool:
 	if mode==3:
 		data.encode_u32(40,data.size());data.encode_u32(48,3);data.encode_u32(52,3)
 		data.resize(data.size()+12)
+		var blend_rows:=PackedColorArray([Color(1+((blend_mask>>0)&1),1+((blend_mask>>1)&1),1+((blend_mask>>2)&1),1+((blend_mask>>3)&1)) if blend_mask>=0 else Color(0,0,0,0)])
+		if four_donors:blend_rows[0]=Color(1,2,3,4)
+		if blend_mask>=0:data.append_array(blend_rows.to_byte_array())
+		blend_texture=ImageTexture.create_from_image(Image.create_from_data(1,1,false,Image.FORMAT_RGBAF,blend_rows.to_byte_array()))
 		var eligible:=Image.create(1,1,false,Image.FORMAT_R8);eligible.fill(Color.WHITE);cliff_texture=ImageTexture.create_from_image(eligible)
 		var guards:=Image.create(3,3,false,Image.FORMAT_R8);guard_texture=ImageTexture.create_from_image(guards)
 	device.terrain.data=data;device.terrain.atlas=atlas
@@ -177,6 +185,18 @@ func run() -> void:
 		mode=selected;var label: String=["detailed","pair","junction","cliff"][mode]
 		await comparison(label)
 		size=Vector2i(40,24);await comparison(label+"-coarse-mip");size=fixture_size
+	for mask in [4,8,2,1,5,10]:
+		mode=3;blend_mask=mask;await comparison("cliff-two-rock-mask-%d"%mask)
+	four_donors=true;await comparison("cliff-four-material-corners")
+	size=Vector2i(40,24);await comparison("cliff-four-material-coarse-mip");size=fixture_size
+	authored_normal=Vector3(0,0.98,0.2).normalized();await comparison("cliff-upward-lighting-normal")
+	authored_normal=Vector3.BACK;four_donors=false;blend_mask=-1
+	# World-space anti-repeat must agree on negative coordinates and across
+	# distant noise cells, including the projected texture's coarse mips.
+	for position: Vector3 in [Vector3(-17,-5,0),Vector3(103,29,0)]:
+		offset=position;camera.position=offset+Vector3(0,0,72)
+		await comparison("cliff-world-"+str(position))
+		size=Vector2i(40,24);await comparison("cliff-world-coarse-"+str(position));size=fixture_size
 	offset=Vector3(17,5,0);camera.position=offset+Vector3(0,0,72);mode=0;await comparison("shifted-authored-tile")
 	# Constant normals isolate real normal-texture response from colour relief.
 	camera.position=offset+Vector3(0,0,3)
