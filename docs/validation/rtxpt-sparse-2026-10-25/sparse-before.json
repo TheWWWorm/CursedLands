@@ -1,0 +1,83 @@
+{
+  "git_head": "42e3365fb5be6a19ccbe3b11a6c0dd86b3801382",
+  "game_source_sha256": "211e18fa7fb937bf6217a3efa524d7d64a5a7c7365be64207de13eb67b753840",
+  "manifest_sha256": "1ffba8fd4ea076e1027128347fcf4a363c3bde97929bc473fc5a023f4532ce97",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-native/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "path_trace_sparse_updates",
+      "script": "tools/tests/path_trace_sparse_updates.gd",
+      "script_sha256": "085e18057698b5f0d795d8444cf5d5eed27b8b87d095731afae5e09638646963",
+      "contract": "Sparse motion and lighting uploads preserve GPU records, stopped and rejected history, visibility, and bounded calls; unchanged geometry avoids TLAS rebuilds.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 19.15,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/before-final-fixture/path_trace_sparse_updates/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/before-final-fixture/path_trace_sparse_updates/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/before-final-fixture/path_trace_sparse_updates/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-native/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/before-final-fixture/path_trace_sparse_updates/fixtures/path_trace_sparse_updates.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/before-final-fixture/path_trace_sparse_updates/fixtures",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "path_trace_sparse_updates/run.log",
+      "passed": false,
+      "result": {
+        "checks": 44,
+        "failures": 9
+      },
+      "errors": [
+        "FAIL two distant motion records upload only 192 bytes",
+        "FAIL two distant lighting offsets upload only 32 bytes",
+        "FAIL stopping clears just the two pending records without a TLAS rebuild",
+        "FAIL lighting-only update avoids rebuilding unchanged geometry",
+        "FAIL repeated unchanged records do not rebuild or reupload offsets",
+        "FAIL moving a fully hidden placement only updates its cached transform",
+        "FAIL bounded batching still skips substantial unchanged data",
+        "FAIL deformation sparsely rejects both affected placement histories",
+        "FAIL handoff rejection and simultaneous motion share sparse updates",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/pt-rtxpt-20261025/baseline-native/runtime.pck",
+    "sha256": "c9268b1e06d8ecadbfaa2dfd45648318ede9f40dbd295b450479f3cc58b32c01"
+  },
+  "passed": false
+}

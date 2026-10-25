@@ -51,7 +51,8 @@ func run() -> void:
 		if ok:
 			var material_texture := RID()
 			for size: Vector2i in [Vector2i(128,128),Vector2i(96,64)]:
-				var changes := {"instances":[{"index":0,"transform":Transform3D.IDENTITY,"mask":255}]}
+				var pose := Transform3D(Basis.IDENTITY,Vector3(0.05,0,0)) if material_texture.is_valid() else Transform3D.IDENTITY
+				var changes := {"instances":[{"index":0,"transform":pose,"mask":255}]}
 				RenderingServer.call_on_render_thread(device.render.bind(size,frame.to_byte_array(),changes))
 				await frames(8); await RenderingServer.frame_post_draw
 				var image := device.output.get_image()

@@ -223,10 +223,14 @@ func failure_probe(kind: String,bytes: PackedByteArray) -> void:
 	probed.emit.call_deferred()
 
 func live_image_probe() -> void:
-	var live_images:=0
+	var live: Array[RID]=[]
 	for rid: RID in device.images_created:
-		if device._rd.texture_is_valid(rid):live_images+=1
-	probe={"live_images":live_images}
+		if device._rd.texture_is_valid(rid):live.append(rid)
+	var current: Array[RID]=device._raw+device._history+device._filter_auxiliary+device._spatial_images+device._direct_images+device._direct_auxiliary
+	probe={"live_images":live.size(),"current_images":current.size(),
+		"unexpected_images":live.filter(func(rid: RID):return not current.has(rid)).size(),
+		"missing_images":current.filter(func(rid: RID):return not live.has(rid)).size(),
+		"groups":[device._raw.size(),device._history.size(),device._filter_auxiliary.size(),device._spatial_images.size(),device._direct_images.size(),device._direct_auxiliary.size()]}
 	probed.emit.call_deferred()
 
 func sustained_switches() -> void:
@@ -248,7 +252,15 @@ func sustained_switches() -> void:
 		check(device._owned.size()==resources,"cycle "+str(cycle)+" retains the bounded pipeline and scene resource pool")
 	check(successful,"repeated resize, emitter and bounce changes produce finite fresh histories")
 	RenderingServer.call_on_render_thread(live_image_probe);await probed
-	check(probe.live_images==21,"only current lighting, direct sun, guide, auxiliary and spatial images remain live")
+	report["sustained_images"]=probe.duplicate()
+	print("LIFECYCLE_IMAGES ",JSON.stringify(probe))
+	# The separate direct-light reconstruction owns eight image and four
+	# auxiliary targets even with NRD disabled. Check each pool and exact live
+	# ownership, so neither a missing current target nor a leaked old one can
+	# hide behind the total (the pre-direct-reconstruction count was 21).
+	check(probe.groups==[7,8,4,2,8,4],"each lighting, history, guide, spatial and direct-light pool retains its exact bound")
+	check(probe.live_images==33 and probe.unexpected_images==0 and probe.missing_images==0,
+		"only current lighting, direct sun, guide, auxiliary and spatial images remain live")
 
 func run() -> void:
 	for arg in OS.get_cmdline_user_args():
