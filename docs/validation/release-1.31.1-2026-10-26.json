@@ -1,0 +1,210 @@
+{
+  "version": "1.31.1",
+  "release_type": "stable",
+  "date": "2026-10-26",
+  "source_commit": "5bf8a7d18516d25eba45c0e47b9046c876121c72",
+  "game_tree": "0a7bc20ec5ce282164dd61132841590d48aabf71",
+  "acceptance_passed": true,
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "Final executable and PCK: 12 focused cases, Vulkan Forward+ and OpenGL, including 108 high-resolution UI assertions, spell lights in both campaigns and PT loading, water, emission and lightning.",
+      "coverage_origin": "Inherited from 1.31.0 after exact game payload/native-code comparison; source changes are version metadata and packaging validation only."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_fg_tested": false,
+      "scope": "Final EXE/PCK and standard signed RR runtime under GE-Proton11-11/VKD3D: real RR, RTXDI with RR and refraction with RR; native 4K output, motion, resize, streaming and fallback.",
+      "coverage_origin": "Inherited from 1.31.0 after exact game payload/native-code comparison; source changes are version metadata and packaging validation only."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Unsigned Intel/Apple-silicon package, embedded branding, version metadata, archive integrity and compiled-script parity audited; macOS runtime unavailable.",
+      "coverage_origin": "Inherited from 1.31.0 after exact game payload/native-code comparison; source changes are version metadata and packaging validation only."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 export, version code 66, unchanged signing certificate and production Java/native libraries, identical compiled game scripts; device runtime not exercised.",
+      "coverage_origin": "Inherited from 1.31.0 after exact game payload/native-code comparison; source changes are version metadata and packaging validation only."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh engine startup and published 1.31.0 cache upgrade, preserving IndexedDB; complete 13,819-file offline wiki compared byte for byte in archive."
+    }
+  },
+  "change": "Restore the complete offline wiki in the standalone browser archive. Hosted wiki and gameplay are unchanged.",
+  "original_comparison": "Original-game Wine comparison is inapplicable to distribution of the remake public wiki. The previous 1.30.0 archive and committed hosted wiki provide direct references.",
+  "regression": {
+    "browser_fixture_retry": "Initial copied browser fixture still expected 1.30.0 and rejected the verified 1.31.0 baseline before update. Corrected baseline version; unchanged cache-hash and IndexedDB assertions pass.",
+    "negative_control": "Published 1.31.0 standalone web ZIP fails: 13,819 wiki files missing. Original immutable artifact retained.",
+    "fixed_prearchive": {
+      "passed": true,
+      "wiki_files": 13819,
+      "wiki_tree_sha256": "9fcedaa330e3f0e53ba4ac45f591f3add5b492d3b01a87bbec9dbbcfec02d44e"
+    },
+    "unit_test": "test_web_release: omitted, partial and changed wiki bundles fail; complete bundle passes.",
+    "final_archive_check": "archive_release.py executes tools/check_web_release.py before the withdrawal-policy checks and publication."
+  },
+  "five_platform_script_parity": {
+    "version": "1.31.1",
+    "compiled_scripts": 446,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 66,
+    "debuggable": false,
+    "apk_sha256": "d4785acf703c6c653308c4568c9f1f44535fa909cb29d596940f227e477659f1",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "game_payload_comparison": {
+    "all_payloads_except_version_and_scene_ids_identical": true,
+    "platforms": {
+      "linux-x86_64": {
+        "resources": 1603,
+        "changed_resources": [
+          ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+          "project.binary"
+        ],
+        "only_version_string_and_generated_root_node_id_differ": true
+      },
+      "windows-x86_64": {
+        "resources": 1603,
+        "changed_resources": [
+          ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+          "project.binary"
+        ],
+        "only_version_string_and_generated_root_node_id_differ": true
+      },
+      "macos-universal": {
+        "resources": 1599,
+        "changed_resources": [
+          ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+          "project.binary"
+        ],
+        "only_version_string_and_generated_root_node_id_differ": true
+      },
+      "web": {
+        "resources": 1485,
+        "changed_resources": [
+          ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+          "project.binary"
+        ],
+        "only_version_string_and_generated_root_node_id_differ": true
+      }
+    },
+    "windows_engine_sections_except_resources": {
+      ".text": "3c9b571b7711bf2aa569cb05f6fe2f465ffa251b94fcac6e9461dd3a1ed406d0",
+      ".data": "50f0203670f6397e6dbad2b15a12b38227934fad357658a042a2852081fff087",
+      ".rdata": "4a7daf1451ca72896689e4bf4e3078d4592e40b07316722e7e74282d29373a7c",
+      "pck": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      ".pdata": "a7e9531dd6fdf30170654738d88957eb9ae676a567a3ed61f7f10d51725f5f8a",
+      ".xdata": "7f9caf6944f9ffc9f20754c762bcd61c7dcc34a517a61e2a4fb9ecb018c7437d",
+      ".bss": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      ".edata": "3953aeb3b9b2c7747a632e5645c1d7010029e4b93ec0e53ffbf0f205535c8361",
+      ".idata": "52d791f809f3c7c329c2afc795e207724dac26ee6c9b211c342e34261e6a44ba",
+      ".CRT": "33333843d12095849ffeaa130e173c996c31fc6c855699f07371c91ed3e12e4c",
+      ".tls": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+      ".reloc": "aebccd8395b9f6168f2dc8a4f1ef24d2f36a8b1a528480f369addc29d1325740"
+    }
+  },
+  "inherited_runtime_validation": "release-1.31.0-2026-10-26.json",
+  "inherited_assertions": 628,
+  "additional_packaged_smoke": [
+    {
+      "id": "attack_after_action",
+      "script": "tools/tests/attack_after_action.gd",
+      "script_sha256": "53b2927371025045a01de94f7c6362f4f15e564b4b423d4dab6d21295629bbaf",
+      "contract": "Queued direct and targeted dagger attacks select combat clips after completed casts/hits; snapshots retain the same posture.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.52,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/CursedLands-1.31.1-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/smoke/attack_after_action/tools/tests/attack_after_action.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/smoke/attack_after_action/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "attack_after_action/run.log",
+      "passed": true,
+      "result": {
+        "checks": 25,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "browser": {
+    "fresh": true,
+    "previous_version": "1.31.0",
+    "cache_upgrade": true,
+    "profile_preserved": true
+  },
+  "known_open_reports": [
+    "LiA mountain flashes remain unresolved.",
+    "The exact recorded PT delay and two stutters are not fully attributed. The fixed loading race and verified shader-preparation stalls do not prove those exact recording events are resolved."
+  ],
+  "limits": [
+    "Native Windows OS, macOS runtime and Android device runtime not exercised here.",
+    "Standard RTX 30 RR was exercised; standard NVIDIA FG is not supported on these test GPUs. No RR plus FG qualification or performance claim.",
+    "Path tracing and its new optional modes remain experimental."
+  ],
+  "evidence_directory": "release-1.31.1",
+  "engine_build": {
+    "build_complete": true,
+    "path": "/home/llm2x/Documents/EI/local/runtime/toolchains/cursed-lands-rr-20261026/godot.windows.template_release.x86_64.exe",
+    "sha256": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+    "bytes": 94239232,
+    "patch_count": 23,
+    "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88; qualified 22-patch Windows production stack plus standard DLSS Ray Reconstruction bridge",
+    "provenance_file": "/home/llm2x/Documents/EI/local/runtime/toolchains/cursed-lands-rr-20261026/rr-engine-build.json",
+    "command": [
+      "python3",
+      "-m",
+      "SCons",
+      "-j6",
+      "platform=windows",
+      "arch=x86_64",
+      "target=template_release",
+      "debug_symbols=no",
+      "lto=none",
+      "production=yes",
+      "optimize=speed",
+      "use_mingw=yes",
+      "use_static_cpp=yes",
+      "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+      "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/dependencies/mesa-x86_64-gcc",
+      "use_pix=no",
+      "module_mono_enabled=no",
+      "module_openxr_enabled=no",
+      "accesskit=no",
+      "use_fsr_sdk=yes",
+      "d3d12=yes",
+      "agility_sdk_path=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/engine/bin/build_deps/agility_sdk",
+      "use_streamline=yes"
+    ],
+    "native_windows_runtime_tested": false
+  }
+}

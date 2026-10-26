@@ -1,0 +1,21 @@
+{
+  "console": [
+    {
+      "level": "log",
+      "message": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+      "url": "http://127.0.0.1:30991/index.js"
+    },
+    {
+      "level": "log",
+      "message": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+      "url": "http://127.0.0.1:30991/index.js"
+    },
+    {
+      "level": "log",
+      "message": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+      "url": "http://127.0.0.1:30991/index.js"
+    }
+  ],
+  "page_errors": [],
+  "failed_responses": []
+}

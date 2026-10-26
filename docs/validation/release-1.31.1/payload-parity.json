@@ -1,0 +1,51 @@
+{
+  "all_payloads_except_version_and_scene_ids_identical": true,
+  "platforms": {
+    "linux-x86_64": {
+      "resources": 1603,
+      "changed_resources": [
+        ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+        "project.binary"
+      ],
+      "only_version_string_and_generated_root_node_id_differ": true
+    },
+    "windows-x86_64": {
+      "resources": 1603,
+      "changed_resources": [
+        ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+        "project.binary"
+      ],
+      "only_version_string_and_generated_root_node_id_differ": true
+    },
+    "macos-universal": {
+      "resources": 1599,
+      "changed_resources": [
+        ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+        "project.binary"
+      ],
+      "only_version_string_and_generated_root_node_id_differ": true
+    },
+    "web": {
+      "resources": 1485,
+      "changed_resources": [
+        ".godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn",
+        "project.binary"
+      ],
+      "only_version_string_and_generated_root_node_id_differ": true
+    }
+  },
+  "windows_engine_sections_except_resources": {
+    ".text": "3c9b571b7711bf2aa569cb05f6fe2f465ffa251b94fcac6e9461dd3a1ed406d0",
+    ".data": "50f0203670f6397e6dbad2b15a12b38227934fad357658a042a2852081fff087",
+    ".rdata": "4a7daf1451ca72896689e4bf4e3078d4592e40b07316722e7e74282d29373a7c",
+    "pck": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    ".pdata": "a7e9531dd6fdf30170654738d88957eb9ae676a567a3ed61f7f10d51725f5f8a",
+    ".xdata": "7f9caf6944f9ffc9f20754c762bcd61c7dcc34a517a61e2a4fb9ecb018c7437d",
+    ".bss": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".edata": "3953aeb3b9b2c7747a632e5645c1d7010029e4b93ec0e53ffbf0f205535c8361",
+    ".idata": "52d791f809f3c7c329c2afc795e207724dac26ee6c9b211c342e34261e6a44ba",
+    ".CRT": "33333843d12095849ffeaa130e173c996c31fc6c855699f07371c91ed3e12e4c",
+    ".tls": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+    ".reloc": "aebccd8395b9f6168f2dc8a4f1ef24d2f36a8b1a528480f369addc29d1325740"
+  }
+}

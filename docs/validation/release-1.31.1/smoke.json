@@ -1,0 +1,52 @@
+{
+  "git_head": "5bf8a7d18516d25eba45c0e47b9046c876121c72",
+  "game_source_sha256": "55b0ab85baff564cd99fe64d6bf54a2139267030aa5b3ed55223d2f30dad0a57",
+  "manifest_sha256": "07c2ef3c2c062b0c00e659ce828d8c66ab027631dad8eb30a49d879580e68783",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/CursedLands-1.31.1-linux-x86_64/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "attack_after_action",
+      "script": "tools/tests/attack_after_action.gd",
+      "script_sha256": "53b2927371025045a01de94f7c6362f4f15e564b4b423d4dab6d21295629bbaf",
+      "contract": "Queued direct and targeted dagger attacks select combat clips after completed casts/hits; snapshots retain the same posture.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.52,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/CursedLands-1.31.1-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/smoke/attack_after_action/tools/tests/attack_after_action.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/smoke/attack_after_action/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "attack_after_action/run.log",
+      "passed": true,
+      "result": {
+        "checks": 25,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.1-20261026/release/CursedLands-1.31.1-linux-x86_64/CursedLands.pck",
+    "sha256": "c07f11737ef15fb700fcdb434cc2e65299f75c955780c2d09204eb58478130e3"
+  },
+  "passed": true
+}
