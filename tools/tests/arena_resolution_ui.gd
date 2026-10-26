@@ -92,7 +92,7 @@ func _ready() -> void:
 		screen = ArenaPveScreen.new()
 		add_child(screen)
 		await frames(12)
-		var scale := maxf(1, minf(float(spec[1].x) / 1280, float(spec[1].y) / 800))
+		var scale := maxf(1, minf(float(spec[1].x) / 1440, float(spec[1].y) / 900))
 		check(is_equal_approx(screen._ui_scale, scale), tag + " coherent HUD scale")
 		bounded(screen._landing_start, tag + " landing action")
 		bounded(screen._landing_panel, tag + " expedition setup")
@@ -189,7 +189,7 @@ func _ready() -> void:
 		check(screen.field._pick(enemy_marker) == enemy, tag + " health marker picks enemy in a crowded fight")
 		await move(enemy_marker)
 		await get_tree().create_timer(0.4).timeout
-		check(screen._inspected_unit == enemy and screen._live_health.text.contains("%d/%d" % [maxi(0, ceili(enemy.hp)), ceili(enemy.max_hp)]), tag + " enemy inspector shows current health")
+		check(screen._inspected_unit == enemy and screen._live_health.text.contains(RemakeText.t("Remaining health: %d") % maxi(0, ceili(enemy.hp)) if enemy.hp < enemy.max_hp else str(ceili(enemy.max_hp))), tag + " enemy inspector shows current health")
 		screen._clear_selection()
 		# The outcome fixture exercises layout; it is not balance evidence.
 		screen.run.resolve(0, 32, [103.0, 21.0])

@@ -9,6 +9,10 @@ func fresh(seed_value := 1741) -> ArenaRun:
 	var run := ArenaRun.new(); run.auto_save = false; run.begin(seed_value)
 	return run
 func _ready() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--astral-path="):
+			GameData.campaign_roots[CampaignProfile.ASTRAL] = arg.trim_prefix("--astral-path=")
+			check(ArenaExpansion.mount(), "installed expansion roster is available to localization checks")
 	var native := hash(GameData.db.tables)
 	var run := fresh()
 	var other := fresh()
@@ -52,7 +56,7 @@ func _ready() -> void:
 	check(run.alliances()==counts,"evolution stars do not inflate alliance progress")
 	for entry in run.army: entry.deployed = false
 	check(run.alliances().values().all(func(n):return n == 0),"reserves never activate an alliance")
-	# Preparation applies recruit budgets; behavioral alliances start at the bell.
+	# Preparation previews the same stat bonuses as combat; procs wait for the bell.
 	run = fresh(); run.training = 126; run.wave = 25
 	for family in [0,3,4,11,13,14,19,21,22]: run._recruit(family,0,1)
 	run.arrange()
@@ -73,9 +77,14 @@ func _ready() -> void:
 			var family := int(run.unit(placement.run_uid).family)
 			# Alliances modify the recruit budget, not campaign boss statistics.
 			var recruit:=ArenaUnitInfo.values(unit.info.prototype,null,family,0)
-			check(is_equal_approx(unit.stats.dmg_min,recruit.min),"Beasts keep their own attack budgets")
-			check(is_equal_approx(unit.max_hp,recruit.max_hp),"Horde keeps recruit health budgets")
-			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]),"Warrior armor activates at the bell")
+			var traits := ArenaAlliances.traits(family)
+			var levels := run.alliances()
+			var beasts := ArenaAlliances.rank("beast", levels.beast) if "beast" in traits else 0
+			var horde := ArenaAlliances.rank("horde", levels.horde) if "horde" in traits else 0
+			var warriors := ArenaAlliances.rank("warrior", levels.warrior) if "warrior" in traits else 0
+			check(is_equal_approx(unit.stats.dmg_min,recruit.min*(1.0+beasts*0.10)),"Beast preview applies the published bonus to recruit damage")
+			check(is_equal_approx(unit.max_hp,recruit.max_hp*(1.0+horde*0.15)),"Horde preview applies the published bonus to recruit health")
+			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]*(1.0+warriors*0.30)),"Warrior preview applies the published physical armor bonus")
 			check(is_equal_approx(unit.stats.to_hit,recruit.attack),"Hunters keep native accuracy")
 			check(is_equal_approx(unit.stats.armor[3],recruit.armor[3]),"Spirits keep recruit resistance budgets")
 	for repeat in 4: battle.prepare()
@@ -148,13 +157,14 @@ func check_localized_roster() -> void:
 	# Run with each edition's archives: native names come from texts.res, not
 	# RemakeText. Proper names may legitimately match between EN and DE.
 	var ids := {}
-	for family: Dictionary in ArenaRules.FAMILIES:
+	for family_id: int in ArenaRules.active_families(ArenaExpansion.mounted()):
+		var family: Dictionary = ArenaRules.FAMILIES[family_id]
 		for id: String in family.forms: ids[id] = true
 	for row: Array in ArenaRules.WAVES:
 		for id: String in row.slice(1): ids[id] = true
 	for id: String in ArenaRules.COMPANIONS: ids[id] = true
 	for id: String in ids:
-		var title := GameUnit.unit_title(id)
+		var title := ArenaRules.title(id)
 		check(not title.is_empty() and title!=id, "native creature has a localized display name: " + id)
 		for spell: String in GameData.db.find("monster_prototypes",id).get("spells",[]):
 			var parsed := Spells.parse(spell)

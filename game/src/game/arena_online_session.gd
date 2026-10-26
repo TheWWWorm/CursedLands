@@ -14,7 +14,7 @@ const PORT := 27016
 const LAN_PORT := 27018   # 27016 is the autochess game socket / campaign discovery port
 # Equipment ownership and summoned actor state require matching builds, even
 # while an unpublished branch still carries the previous public version.
-const PROTOCOL := 4
+const PROTOCOL := 5
 const MAX_PACKET := 1048576
 const HELLO_TIMEOUT := 15.0
 const ERRORS := ["Online autochess requires the same game version and original game data.", "This online game has already started.", "This online game is full.", "Incorrect password.", "Connection to the host was lost.", "Could not connect to the host.", "Invalid online action.", "You have been eliminated. You can keep watching.", "The round changed. Try the action again.", "Wait for every player to be ready.", "Too many actions. Try again in a moment.", "The shop changed. Choose an offer again.", "The sale value changed. Select the creature again."]

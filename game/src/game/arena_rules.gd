@@ -3,7 +3,7 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Original prototypes remain immutable. Budgets apply only to Trials actors.
 
-const VERSION := 16
+const VERSION := 17
 const PREPARATION_SECONDS := 60.0
 const BATTLE_SECONDS := 90.0
 const WAVE_COUNT := 30
@@ -33,7 +33,7 @@ const SHOP_ODDS := {
 # copies stay out of it until sold or their company is eliminated.
 const POOL_COPIES := [45, 30, 25, 20, 10]
 const COMPANIONS := ["orcfemalem3", "orcfemalem5", "octopuskaniam12", "octopushadaganm15"]
-const ACTIVE_FAMILIES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]
+const ACTIVE_FAMILIES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 38]
 # Family 29 remains readable in saved armies, but has no new shop copies.
 # A recruit line occupies one price tier. All ranks retain its species and role.
 # A second role of an existing species must have a distinct kit and native outfit.
@@ -57,7 +57,7 @@ const FAMILIES := [
 	{"name":"Harpies","role":"Magic","cost":3,"tier":3,"copies":[3,3],"forms":["succubredm9","succubredm10","succubredm11"],"health":0.9,"damage":0.96,"armor":0.8,"hook":"Fire walls punish enemies that gather together."},
 	{"name":"Hyenas","role":"Melee","cost":3,"tier":3,"copies":[3,3],"forms":["hyenaf6","hyenaf6","hyenaf6"],"health":1.08,"damage":1.38,"armor":0.75,"hook":"An aggressive hunter with little protection."},
 	{"name":"Evileyes","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["evileyesimplem5","evileyesimplem6","evileyesimplem7"],"health":0.9,"damage":1.08,"armor":0.8,"hook":"Split fire bolts pressure several enemies."},
-	{"name":"Banshees","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["bansheedarkm12","bansheedarkm14","bansheedarkm16"],"health":1.1,"damage":1.18,"armor":0.85,"hook":"Lightning damage and lightning resistance."},
+	{"name":"Banshees","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["bansheedarkm12","bansheedarkm14","bansheedarkm16"],"health":0.98,"damage":1.18,"armor":0.85,"hook":"Lightning damage and lightning resistance."},
 	{"name":"Unicorns","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["unicornwhitem15","unicornwhitem15","unicornwhitem15"],"health":1.0,"damage":0.95,"armor":0.8,"hook":"Lightning and healing support a protected team."},
 	{"name":"Wisps","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["willowispm1","willowispm3","willowispm5"],"health":0.8,"damage":1.1,"armor":0.6,"hook":"A fragile spirit with powerful fire bolts."},
 	{"name":"Elementals","role":"Melee","cost":4,"tier":4,"copies":[3,3],"forms":["elementalicef9","elementalicef11","elementalicef15"],"health":1.4,"damage":0.85,"armor":1.2,"hook":"A durable spirit with steady crushing damage."},
@@ -73,9 +73,10 @@ const FAMILIES := [
 	{"name":"Exploding hares","role":"Melee","cost":2,"tier":2,"copies":[3,3],"forms":["arena-lia/popper1","arena-lia/popper2","arena-lia/popper3"],"health":0.6,"damage":0.15,"armor":0.6,"hook":"Explodes once on death. Near an enemy, detonates after 0.6 s. Deals 60/125/300 fire damage to up to 3 enemies within 2.5 m.","expansion":true},
 	{"name":"Undead deer","role":"Magic","cost":3,"tier":3,"copies":[3,3],"forms":["arena-lia/deer1","arena-lia/deer2","arena-lia/deer3"],"health":1.02,"damage":0.90,"armor":0.85,"hook":"An undead beast that fires acid rays from behind the frontline.","expansion":true},
 	{"name":"Jigran wolves","role":"Melee","cost":3,"tier":3,"copies":[3,3],"forms":["arena-lia/jwolf1","arena-lia/jwolf2","arena-lia/jwolf3"],"health":1.08,"damage":1.32,"armor":0.8,"hook":"A heavy hunter with strong sustained damage and a vulnerable hide.","expansion":true},
-	{"name":"Jun lizards","role":"Melee","cost":4,"tier":4,"copies":[3,3],"forms":["arena-lia/jun1","arena-lia/jun2","arena-lia/jun3"],"health":1.45,"damage":0.78,"armor":1.2,"hook":"A durable Jun guardian that holds the frontline.","expansion":true},
+	{"name":"Jun lizards","role":"Melee","cost":4,"tier":4,"copies":[3,3],"forms":["arena-lia/jun1","arena-lia/jun2","arena-lia/jun3"],"health":1.45,"damage":0.86,"armor":1.2,"hook":"A durable Jun guardian that holds the frontline.","expansion":true},
 	{"name":"Undead warriors","role":"Melee","cost":3,"tier":3,"copies":[3,3],"forms":["arena-lia/wight1","arena-lia/wight2","arena-lia/wight3"],"health":1.13,"damage":0.96,"armor":1.1,"hook":"An armored revenant that weakens enemies with its weapon.","expansion":true},
 	{"name":"Undead mages","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["arena-lia/plague1","arena-lia/plague2","arena-lia/plague3"],"health":0.9,"damage":0.72,"armor":0.8,"hook":"A fragile plague caster. Spread out to avoid its acid spells.","expansion":true},
+	{"name":"Orc archers","role":"Ranged","cost":3,"tier":3,"copies":[3,3],"forms":["orcfemalea3","orcfemalea5","orcfemalea7"],"health":1.08,"damage":1.05,"armor":0.9,"hook":"A durable Horde archer with heavy arrows and a slow draw."},
 ]
 # Exact schema-12 contents remain available for validating and migrating saves.
 const EXPERIMENT_FORMS := [["boarredf1","trollbluef9","golemverticalf20"],["goblinf1","orcmalef5","cyclopsa20"],["wolfgreyf1","tigerwhitef10","unicornwhitem15"],["human hadagan students a10","orcfemalea5","human mercenary kania archer"],["batredm1","succubredm9","dragonbrownm16"],["toadm2","scrabmotherpoisonedf6","elementalearthf8"],["willowispm1","bansheedarkm12","dragonbluem14"],["driadsnowa7","human hadagan students m10","elementalicef15"],["evileyesimplem5","succubgreym13","dragongreenm12"],["hyenaf6","ogrehadaganf17","golemhorizontalf20"],["ratsmallf1","spiderf10","evileyeredm16"],["orcfemalem3","succubbluem10","octopushadaganm17"],["skeletonf2","bansheelightf4","shadowm20"],["driadgreena7","human hadagan citizens a1","human kania npc sorceress m11"],["doggreyf6","human kania hunter f7","human mercenary bodyguard"],["human gipath warlord f2","human kania sorceress bodyguard f9","human mercenary kania paladin"],["dragonkinbeastmenf3","ogregipatf9","trollblackslowf16"],["human gipath brigand a1","human kania ranger f9","human mercenary hadagan rogue"],["human hadagan guards m14","evileyegreenm17","ancientcursem25"],["human gipath brigand f1","human kania gang f9","human mercenary hadagan warrior"],["human kania police f8","human hadagan guards a14","human kania npc captain f14"],["zombiemalef10","undeadf17","elementallavaf12"],["human hadagan peasants a1","human gipath npc wife m3","human mercenary hadagan thief"],["human kania citizen a7","driaddarka7","human mercenary thief"],["human mercenary shaivar","driaddarkm9","human hadagan necromancer m17"],["human gipath brigand deputy f1","human kania police karansul f8","human mercenary warrior"],["human kania woodcutter f8","human kania police f10","human hadagan overseerba f14"],["human kania goldminer f7","human hadagan students f10","human gipath npc expeditor f15"],["human kania gang spear f10","human kania gang f11","human mercenary kania thief"],["human kania police a8","human hadagan overseer f14","human hadagan npc lieutenant f15"]]
@@ -351,6 +352,7 @@ static func recruit_prototype(family: int, rank: int, proto: Dictionary) -> Dict
 
 
 static func title(id: String, family := -1, rank := 0) -> String:
+	if family == 38: return RemakeText.t("Orc archer")
 	if id.begins_with(ArenaExpansion.PREFIX): return ArenaExpansion.title(id)
 	return RemakeText.t(GameUnit.unit_title(ArenaAppearance.name_prototype(id, family, rank)))
 
@@ -440,7 +442,7 @@ static func tier_price_label(tier: int) -> String:
 
 
 static func saved_family_count(version: int) -> int:
-	return LEGACY_FORMS.size() if version < 11 else EXPERIMENT_FORMS.size() if version < 13 else 28 if version == 13 else 30 if version < 16 else FAMILIES.size()
+	return LEGACY_FORMS.size() if version < 11 else EXPERIMENT_FORMS.size() if version < 13 else 28 if version == 13 else 30 if version < 16 else 38 if version == 16 else FAMILIES.size()
 
 static func saved_prototype(version: int, family: int, rank: int) -> String:
 	if version < 11: return LEGACY_FORMS[family][rank]

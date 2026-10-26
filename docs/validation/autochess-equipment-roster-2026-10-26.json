@@ -1,0 +1,812 @@
+{
+  "date": "2026-10-26",
+  "base_commit": "9ce1440ebfc82a76171fefc3004c17c45ba60efb",
+  "local_main_before_integration": "36ebe0b2",
+  "engine": "Godot 4.7 stable official 5b4e0cb0f",
+  "passed": true,
+  "cases": [
+    {
+      "id": "arena_combat_decisions",
+      "mode": "headless",
+      "result": {
+        "checks": 11,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.07,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_popper_balance",
+      "mode": "headless",
+      "result": {
+        "checks": 29,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.53,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_rank_stats",
+      "mode": "headless",
+      "result": {
+        "checks": 1060,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.58,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_horde_roster",
+      "mode": "headless",
+      "result": {
+        "checks": 31,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 6.32,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_opening_viability",
+      "mode": "headless",
+      "result": {
+        "checks": 194,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 65.08,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_horde_balance",
+      "mode": "headless",
+      "result": {
+        "checks": 395,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 116.96,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_720",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 81.3,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_1080",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 74.29,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_1440",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 76.74,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_2160",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 81.75,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_720",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 76.75,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_1080",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 74.28,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_1440",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 76.24,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_2160",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 81.3,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_720",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 81.29,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_1080",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 73.78,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_1440",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 76.78,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_2160",
+      "mode": "rendered",
+      "result": {
+        "checks": 57,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 82.29,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "related-arena_equipment",
+      "marker": "ARENA_EQUIPMENT",
+      "mode": "headless",
+      "result": {
+        "checks": 51,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 6.872336240950972,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_equipment_localization",
+      "marker": "ARENA_EQUIPMENT_LOCALIZATION",
+      "mode": "headless",
+      "result": {
+        "checks": 1077,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 6.966430237982422,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_equipment_online",
+      "marker": "ARENA_EQUIPMENT_ONLINE",
+      "mode": "headless",
+      "result": {
+        "checks": 29,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 8.827126968011726,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_combat_effects",
+      "marker": "ARENA_COMBAT_EFFECTS",
+      "mode": "headless",
+      "result": {
+        "checks": 31,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 8.99693094799295,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_roster",
+      "marker": "ARENA_ROSTER",
+      "mode": "headless",
+      "result": {
+        "checks": 1557,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 6.855849400977604,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_recruitment",
+      "marker": "ARENA_RECRUITMENT",
+      "mode": "headless",
+      "result": {
+        "checks": 2396,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 22.378635698987637,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_tournament",
+      "marker": "ARENA_TOURNAMENT",
+      "mode": "headless",
+      "result": {
+        "checks": 166,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 93.32452296704287,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_bot_equipment_formation",
+      "marker": "ARENA_BOT_EQUIPMENT_FORMATION",
+      "mode": "headless",
+      "result": {
+        "checks": 108,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.145702123991214,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_online",
+      "marker": "ARENA_ONLINE",
+      "mode": "headless",
+      "result": {
+        "checks": 80,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 33.17224200803321,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_formation",
+      "marker": "ARENA_FORMATION",
+      "mode": "headless",
+      "result": {
+        "checks": 22,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.696885393990669,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_reserve_moves",
+      "marker": "ARENA_RESERVE_MOVES",
+      "mode": "headless",
+      "result": {
+        "checks": 22,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 6.296638173982501,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "related-arena_item_first_click_online",
+      "marker": "ARENA_ITEM_FIRST_CLICK_ONLINE",
+      "mode": "headless",
+      "result": {
+        "checks": 9,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.665036481979769,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-species",
+      "marker": "ARENA_SPECIES",
+      "mode": "headless",
+      "result": {
+        "checks": 2181,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 8.838722680986393,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-rank-appearance",
+      "marker": "ARENA_RANK_APPEARANCE",
+      "mode": "headless",
+      "result": {
+        "checks": 1383,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 8.55633521702839,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-alliances-base",
+      "marker": "ARENA_ALLIANCES",
+      "mode": "headless",
+      "result": {
+        "checks": 619,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 8.740457020001486,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-alliances-expanded",
+      "marker": "ARENA_ALLIANCES",
+      "mode": "headless",
+      "result": {
+        "checks": 656,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 8.849790405947715,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-planner-base",
+      "marker": "ARENA_BOT_PLANNER",
+      "mode": "headless",
+      "result": {
+        "checks": 21,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.344573094043881,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-planner-expanded",
+      "marker": "ARENA_BOT_PLANNER",
+      "mode": "headless",
+      "result": {
+        "checks": 22,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.5443385490216315,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-shared-pool",
+      "marker": "ARENA_SHARED_POOL",
+      "mode": "headless",
+      "result": {
+        "checks": 77,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 7.626955193991307,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-flat-equipment",
+      "marker": "ARENA_FLAT_EQUIPMENT",
+      "mode": "headless",
+      "result": {
+        "checks": 180,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 9.10105537000345,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-combat-budgets",
+      "marker": "ARENA_COMBAT_BUDGETS",
+      "mode": "headless",
+      "result": {
+        "checks": 915,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 11.90680593700381,
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "verified-equipment-ui",
+      "marker": "ARENA_EQUIPMENT_UI",
+      "mode": "rendered",
+      "result": {
+        "checks": 89,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 57.67582910199417,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "id": "related-rendered-arena_reserve_moves_ui",
+      "marker": "ARENA_RESERVE_MOVES_UI",
+      "mode": "rendered",
+      "result": {
+        "checks": 33,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 45.6781648399774,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "id": "related-rendered-arena_item_first_click",
+      "marker": "ARENA_ITEM_FIRST_CLICK",
+      "mode": "rendered",
+      "result": {
+        "checks": 10,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 48.254624208959285,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "id": "repaired-resolution-ui",
+      "marker": "ARENA_RESOLUTION_UI",
+      "mode": "rendered",
+      "result": {
+        "checks": 39,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 49.206798874016386,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "id": "verified-expansion-ui-final",
+      "marker": "ARENA_EXPANSION_UI",
+      "mode": "rendered",
+      "result": {
+        "checks": 232,
+        "failures": 0
+      },
+      "passed": true,
+      "seconds": 53.71572247397853,
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    }
+  ],
+  "case_count": 44,
+  "checks": 14409,
+  "python_runner_checks": 33,
+  "translations": {
+    "entries": 3550,
+    "dynamic_arena": 201,
+    "errors": 0
+  },
+  "negative_controls": [
+    {
+      "name": "negative-legal-ui",
+      "code": 1,
+      "failures": [
+        "FAIL reachable target family 11 rank 1",
+        "FAIL reachable target family 11 rank 2",
+        "FAIL native drag equips Woodsfolk star 2",
+        "FAIL equipped Woodsfolk receives Swift Boots speed",
+        "FAIL native drag equips Woodsfolk star 3",
+        "FAIL equipped Woodsfolk receives Swift Boots speed"
+      ],
+      "expected_failure": true
+    },
+    {
+      "name": "negative-banshee-health",
+      "code": 1,
+      "failures": [
+        "FAIL viable but counterable team contribution 19 star 1: 0.82291666666667",
+        "FAIL viable but counterable team contribution 19 star 2: 0.8125"
+      ],
+      "expected_failure": true
+    }
+  ],
+  "alliance_negative_control": {
+    "code": 1,
+    "failures": [
+      "FAIL Beasts roster stays reachable while moving from badge"
+    ]
+  },
+  "balance": {
+    "baseline_fights": 4428,
+    "expanded_scan_fights": 4716,
+    "final_jun_recheck_fights": 432,
+    "matched_seeds": [
+      8519,
+      16729
+    ],
+    "additional_seeds": [
+      29033,
+      41047
+    ],
+    "contexts": [
+      "duel",
+      "line",
+      "screen"
+    ],
+    "matched_team_rates": {
+      "balance-r0": {
+        "19": {
+          "points": 39.5,
+          "fights": 48,
+          "rate": 0.8229166666666666
+        },
+        "35": {
+          "points": 15.5,
+          "fights": 48,
+          "rate": 0.3229166666666667
+        },
+        "38": null
+      },
+      "balance-r1": {
+        "19": {
+          "points": 39,
+          "fights": 48,
+          "rate": 0.8125
+        },
+        "35": {
+          "points": 12.5,
+          "fights": 48,
+          "rate": 0.2604166666666667
+        },
+        "38": null
+      },
+      "balance-r2": {
+        "19": {
+          "points": 32,
+          "fights": 48,
+          "rate": 0.6666666666666666
+        },
+        "35": {
+          "points": 18,
+          "fights": 48,
+          "rate": 0.375
+        },
+        "38": null
+      },
+      "verified-combined-r0": {
+        "19": {
+          "points": 33.5,
+          "fights": 48,
+          "rate": 0.6979166666666666
+        },
+        "35": {
+          "points": 15.5,
+          "fights": 48,
+          "rate": 0.3229166666666667
+        },
+        "38": {
+          "points": 31,
+          "fights": 64,
+          "rate": 0.484375
+        }
+      },
+      "verified-combined-r1": {
+        "19": {
+          "points": 30,
+          "fights": 48,
+          "rate": 0.625
+        },
+        "35": {
+          "points": 24.5,
+          "fights": 48,
+          "rate": 0.5104166666666666
+        },
+        "38": {
+          "points": 39.0,
+          "fights": 64,
+          "rate": 0.609375
+        }
+      },
+      "verified-combined-r2": {
+        "19": {
+          "points": 27,
+          "fights": 48,
+          "rate": 0.5625
+        },
+        "35": {
+          "points": 25,
+          "fights": 48,
+          "rate": 0.5208333333333334
+        },
+        "38": {
+          "points": 38.0,
+          "fights": 64,
+          "rate": 0.59375
+        }
+      }
+    },
+    "combined_provenance": "Full expanded scan with affected Jun rows replaced from the final four-seed recheck, restricted to matched seeds. Base-family support selection never includes Jun. Full raw data and all-family rates retained locally."
+  },
+  "tournaments": [
+    {
+      "seed": 7319,
+      "rounds": 26,
+      "winner": 8,
+      "placements": [
+        9,
+        4,
+        7,
+        6,
+        5,
+        3,
+        2,
+        8,
+        1
+      ],
+      "expansion": false,
+      "encounters": 212
+    },
+    {
+      "seed": 8316,
+      "rounds": 30,
+      "winner": 1,
+      "placements": [
+        8,
+        1,
+        6,
+        3,
+        7,
+        2,
+        5,
+        9,
+        4
+      ],
+      "expansion": true,
+      "encounters": 233
+    },
+    {
+      "seed": 9313,
+      "rounds": 29,
+      "winner": 4,
+      "placements": [
+        5,
+        3,
+        4,
+        8,
+        1,
+        2,
+        7,
+        6,
+        9
+      ],
+      "expansion": true,
+      "encounters": 225
+    }
+  ],
+  "retained_evidence": "/home/llm2x/Documents/EI/local/validation/autochess-equipment-roster-2026-10-26",
+  "original_comparison": "Autochess is remake-only; no original Wine counterpart. Native prototype inspection and spell-damage execution retained.",
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "rendered_runner": "GPU Lab automatic GPU allocation; x11, Dummy audio, 30 FPS cap; no physical desktop changes."
+}

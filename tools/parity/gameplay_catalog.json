@@ -4690,13 +4690,23 @@
       "description": "Arena alliances behavior and boundaries",
       "kind": "remake_regression",
       "timeout": 240,
-      "args": [],
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
       "campaign": "cursed_lands",
       "required_files": [
         "res/database.res",
         "res/texts.res"
       ],
-      "display": "headless"
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
     },
     {
       "id": "arena/arena_economy",
@@ -5050,13 +5060,23 @@
       "description": "Seeded opponent recruitment and formation decisions",
       "kind": "remake_regression",
       "timeout": 240,
-      "args": [],
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
       "campaign": "cursed_lands",
       "required_files": [
         "res/database.res",
         "res/texts.res"
       ],
-      "display": "headless"
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
     },
     {
       "id": "dialogue/gipat_captive_dialogue_hermit_first",
@@ -9383,6 +9403,83 @@
       ],
       "issues": [],
       "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_stats",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_stats.gd",
+      "marker": "ARENA_RANK_STATS",
+      "min_checks": 1060,
+      "quick": true,
+      "description": "All-star live statistics, highlighted rank, spell damage and original-record immutability.",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
+    },
+    {
+      "id": "arena/arena_horde_roster",
+      "category": "arena",
+      "script": "tools/tests/arena_horde_roster.gd",
+      "marker": "ARENA_HORDE_ROSTER",
+      "min_checks": 31,
+      "quick": true,
+      "description": "Original Orc archer roles, promotions, equipment, schema-16 compatibility and matching network rules.",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_horde_balance",
+      "category": "arena",
+      "script": "tools/tests/arena_horde_balance.gd",
+      "marker": "ARENA_HORDE_BALANCE",
+      "min_checks": 395,
+      "quick": false,
+      "description": "Mirrored same-cost team guardrails for Horde archers and Banshee counters at all stars.",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--astral-path={lost_in_astral}"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "extra_data": {
+        "lost_in_astral": [
+          "res/database.res",
+          "res/figures.res",
+          "res/textures.res",
+          "res/redress.res"
+        ]
+      }
     }
   ]
 }

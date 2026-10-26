@@ -2,6 +2,10 @@ class_name ArenaPortraits
 extends RefCounted
 ## Direct 64 px renders of original models, with no repainting.
 const IMAGES := {
+	"orcfemalea3": preload("res://assets/arena/portraits/38-0.png"),
+	"orcfemalea5": preload("res://assets/arena/portraits/38-1.png"),
+	"orcfemalea7": preload("res://assets/arena/portraits/38-2.png"),
+
 	"driaddarkm11": preload("res://assets/arena/portraits/29-2.png"),
 	"driadsnowm9": preload("res://assets/arena/portraits/29-1.png"),
 	"driadgreenm7": preload("res://assets/arena/portraits/29-0.png"),
@@ -124,6 +128,7 @@ const RANK_IMAGES := [
 	[preload("res://assets/arena/portraits/35-0.png"), preload("res://assets/arena/portraits/35-1.png"), preload("res://assets/arena/portraits/35-2.png")],
 	[preload("res://assets/arena/portraits/36-0.png"), preload("res://assets/arena/portraits/36-1.png"), preload("res://assets/arena/portraits/36-2.png")],
 	[preload("res://assets/arena/portraits/37-0.png"), preload("res://assets/arena/portraits/37-1.png"), preload("res://assets/arena/portraits/37-2.png")],
+	[preload("res://assets/arena/portraits/38-0.png"), preload("res://assets/arena/portraits/38-1.png"), preload("res://assets/arena/portraits/38-2.png")],
 ]
 
 static func texture(id: String, family := -1, rank := 0) -> Texture2D:
