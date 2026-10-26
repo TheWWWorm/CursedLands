@@ -1,0 +1,56 @@
+[
+  {
+    "path": "release-de-3840.png",
+    "pixels": [
+      3840,
+      2160
+    ],
+    "sha256": "b59d104c9d298a83f3f361f32a8e81f1b11acd6f0e04f926876ad7a0bd4b1f57",
+    "bytes": 11016870
+  },
+  {
+    "path": "release-de-800.png",
+    "pixels": [
+      800,
+      600
+    ],
+    "sha256": "9894122d4d8b4c5d3906e11134f300552ad0b06724fb4d457ae75b38243a75c0",
+    "bytes": 867213
+  },
+  {
+    "path": "release-en-3840.png",
+    "pixels": [
+      3840,
+      2160
+    ],
+    "sha256": "5babb1392d02c7a30adc2d72a6644ef7ca5d117c06a65e07772d5f27af738562",
+    "bytes": 11010420
+  },
+  {
+    "path": "release-en-800.png",
+    "pixels": [
+      800,
+      600
+    ],
+    "sha256": "7d27a88a7db2897bdd6975b55a5594e788519533698b3bea004720f1b8845858",
+    "bytes": 867209
+  },
+  {
+    "path": "release-ru-3840.png",
+    "pixels": [
+      3840,
+      2160
+    ],
+    "sha256": "325e4472ec55c0f2a7188b6b1b278143f3eab69d6a3df7b9f7fb4678930d8a7a",
+    "bytes": 11029030
+  },
+  {
+    "path": "release-ru-800.png",
+    "pixels": [
+      800,
+      600
+    ],
+    "sha256": "d98477ecc4e2979d1be93bb0b47f04fe7d032350f46a504b9ecd9a3c61f64127",
+    "bytes": 869196
+  }
+]

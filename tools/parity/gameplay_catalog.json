@@ -9383,6 +9383,54 @@
       ],
       "issues": [],
       "display": "rendered"
+    },
+    {
+      "id": "interface/release_check",
+      "category": "interface",
+      "script": "tools/tests/release_check.gd",
+      "min_checks": 50,
+      "quick": false,
+      "description": "Stable release discovery, SemVer ordering, cached checks, network backoff and non-blocking loopback HTTP.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "headless",
+      "marker": "RELEASE_CHECK"
+    },
+    {
+      "id": "interface/release_check_ui",
+      "category": "interface",
+      "script": "tools/tests/release_check_ui.gd",
+      "min_checks": 650,
+      "quick": false,
+      "description": "Localized main-menu update states and release actions remain readable at 800p, portrait, 1440p and 4K.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "issues": [],
+      "display": "rendered",
+      "marker": "RELEASE_CHECK_UI"
     }
   ]
 }

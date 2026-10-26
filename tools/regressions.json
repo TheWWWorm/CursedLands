@@ -2140,6 +2140,30 @@
       ],
       "min_checks": 160,
       "timeout": 420
+    },
+    {
+      "id": "release_check",
+      "script": "tools/tests/release_check.gd",
+      "summary": "RELEASE_CHECK",
+      "contract": "Stable release discovery, SemVer ordering, cache/backoff and non-blocking HTTP transport.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 50,
+      "timeout": 240
+    },
+    {
+      "id": "release_check_ui",
+      "script": "tools/tests/release_check_ui.gd",
+      "summary": "RELEASE_CHECK_UI",
+      "contract": "EN/RU/DE main-menu update states fit normal, portrait, 1440p and 4K windows and retain controller actions.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 650,
+      "timeout": 240
     }
   ]
 }
