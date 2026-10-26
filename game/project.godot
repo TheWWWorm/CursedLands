@@ -25,7 +25,7 @@ boot_splash/bg_color=Color(0.0667, 0.0588, 0.0471, 1)
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.31.1"
+config/version="1.32.0"
 config/project_settings_override.android="user://renderer.cfg"
 config/project_settings_override.windows="user://renderer.cfg"
 

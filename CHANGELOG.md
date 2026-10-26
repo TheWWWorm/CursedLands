@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 1.32.0 — 2026-10-26
+
+- Add main-menu checks for stable Cursed Lands updates, with localized download and retry buttons.
+- Add Balanced and Quality path-tracing presets, preserve independent upscaling and frame-generation settings, and retain the existing fallback when Ray Reconstruction is unavailable.
+- Stabilize path-traced ground-detail lighting and scene handoffs; budget resource gathering and retirement, reduce repeated texture and geometry readbacks, and keep nearby water reflections visible from higher camera positions.
+- Smooth admitted natural snow contours while preserving authored terrain heights, collision and material boundaries, and preserve walking stride through attack and cast recovery.
+- Improve Autochess equipment placement in full formations and alliance roster controls. Show rank-by-rank creature and spell statistics, add the Horde orc archer, and adjust Banshee and Jun lizard balance.
+- Improve original painted menu lettering at high resolutions and refresh utility-button glyph sampling after layout changes.
+
 ## 1.31.1 — 2026-10-26
 
 - Restore the complete offline wiki in the standalone browser download; check the archive’s wiki file set and contents against the committed site.
