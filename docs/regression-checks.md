@@ -61,6 +61,8 @@ and Autochess authority workers; rendered checks retain the package's renderer
 thread settings. A rendered case cannot become a headless pass. The normal 30 FPS cap
 is supplied; legacy fixtures may explicitly choose a different cap.
 
+`path_trace_water` and `path_trace_water_live` explicitly select Forward+ because their hardware ray-tracing transport is unavailable in OpenGL. The runner unit suite checks these registered commands; the water options layout remains a separate UI check.
+
 Every case requires exactly one named completion result, its minimum assertion
 count, no failed assertions, a successful process exit and no script/game errors.
 The existing full-suite summary parser is reused. The exact GPU Lab X11 missing

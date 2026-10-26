@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Release validation</title>
+<style>body{font:18px system-ui;max-width:1000px;margin:40px auto;padding:20px;background:#eef1e9;color:#243329}button,a{display:inline-block;padding:14px;margin:8px;font:inherit}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:20px}#state{font-weight:bold}</style>
+<h1>Cursed Lands release validation</h1><p>This private local fixture checks an isolated browser origin.</p>
+<button id="setup">Prepare muted test profile</button><button id="seed">Save test data and baseline</button><button id="update">Request engine update</button><button id="verify">Verify upgraded cache and saved data</button><a href="/">Open game</a><p id="state" role="status">Ready</p><pre id="report"></pre>
+<script src="/storage.js"></script><script>
+const state=document.querySelector('#state'),report=document.querySelector('#report');
+const sha=async b=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',b)),x=>x.toString(16).padStart(2,'0')).join('');
+const req=q=>new Promise((r,j)=>{q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
+async function snapshot(){
+ const encode=async v=>{
+  if(v instanceof Blob)return {blob:Array.from(new Uint8Array(await v.arrayBuffer()))};
+  if(ArrayBuffer.isView(v))return {bytes:Array.from(new Uint8Array(v.buffer,v.byteOffset,v.byteLength))};
+  if(v instanceof ArrayBuffer)return {bytes:Array.from(new Uint8Array(v))};
+  if(v instanceof Date)return {date:v.toISOString()};
+  if(Array.isArray(v))return Promise.all(v.map(encode));
+  if(v&&typeof v==='object'){const o={};for(const k of Object.keys(v).sort())o[k]=await encode(v[k]);return o}return v;
+ };
+ const result={};
+ for(const {name} of (await indexedDB.databases()).sort((a,b)=>a.name.localeCompare(b.name))){
+  const db=await req(indexedDB.open(name)),data={};
+  for(const store of Array.from(db.objectStoreNames).sort()){
+   const os=db.transaction(store).objectStore(store),[keys,values]=await Promise.all([req(os.getAllKeys()),req(os.getAll())]);data[store]=await encode(keys.map((k,i)=>[k,values[i]]));
+  }db.close();result[name]=data;
+ }return result;
+}
+async function details(){
+ const keys=await caches.keys(),packs={};for(const key of keys){const p=await(await caches.open(key)).match(new URL('index.pck',location.href).href);if(p)packs[key]=await sha(await p.arrayBuffer())}
+ const registration=await navigator.serviceWorker.getRegistration();return {keys,packs,worker:registration?.active?.state,waiting:registration?.waiting?.state||null,isolated:crossOriginIsolated};
+}
+const check=(ok,msg)=>{if(!ok)throw Error(msg)};
+async function action(fn){try{state.textContent='Checking…';await fn()}catch(e){state.textContent='FAILED: '+e.message;report.textContent=e.stack}}
+document.querySelector('#setup').onclick=()=>action(async()=>{
+ const request=indexedDB.open('/userfs',21);
+ request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains('FILE_DATA')){const store=db.createObjectStore('FILE_DATA');store.createIndex('timestamp','timestamp',{unique:false});}};
+ const db=await req(request);
+ await new Promise((resolve,reject)=>{const tx=db.transaction('FILE_DATA','readwrite');tx.objectStore('FILE_DATA').put({timestamp:new Date(),mode:33206,contents:new TextEncoder().encode('[options]\nconfine_mouse=0\nshow_fps=1\nvolume_sfx=0\nvolume_stream=0\nvolume_voice=0\n')},'/userfs/settings.cfg');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();
+ state.textContent='Test profile ready: cursor free, FPS shown, all audio muted';
+});
+document.querySelector('#seed').onclick=()=>action(async()=>{
+ await putData('files','release-qa/private-data',new Blob(['private game data sentinel']));await putData('meta','release-qa',{version:'1.30.0',preserve:true});
+ const db=await req(indexedDB.open('/userfs'));check(db.objectStoreNames.contains('FILE_DATA'),'Game save store missing; start the previous game first');
+ await new Promise((r,j)=>{const tx=db.transaction('FILE_DATA','readwrite');tx.objectStore('FILE_DATA').put({timestamp:new Date('2026-10-25T00:00:00Z'),mode:33206,contents:new Uint8Array([1,15,0,49])},'/userfs/release-qa-save');tx.oncomplete=r;tx.onerror=()=>j(tx.error)});db.close();
+ const before=await snapshot(),cache=await details();const expected=await(await fetch('/__previous')).json();check(expected.version==='1.30.0'&&cache.keys.length===1&&cache.keys[0]===expected.cache,'Expected original published 1.30.0 engine cache');check(cache.packs[expected.cache]===expected.pck,'Previous cached pack hash mismatch');
+ localStorage.setItem('release-qa-baseline',JSON.stringify({before,cache}));report.textContent=JSON.stringify(cache,null,2);state.textContent='Baseline saved: game data and save-file sentinels';
+});
+document.querySelector('#update').onclick=()=>action(async()=>{
+ const registration=await navigator.serviceWorker.getRegistration();await registration.update();
+ const timer=setInterval(async()=>{const current=await details();report.textContent=JSON.stringify(current,null,2);if(current.waiting==='installed'){clearInterval(timer);state.textContent='Update installed and waiting; previous game remains active'}},250);
+});
+document.querySelector('#verify').onclick=()=>action(async()=>{
+ const baseline=JSON.parse(localStorage.getItem('release-qa-baseline')),after=await snapshot(),cache=await details(),expected=await(await fetch('/__expected')).json();
+ check(JSON.stringify(after)===JSON.stringify(baseline.before),'Stored game files or saves changed');check(baseline.cache.keys[0]!==expected.cache,'Release must install a different engine cache');check(cache.keys.length===1&&cache.keys[0]===expected.cache,'New engine cache is not active');check(cache.packs[expected.cache]===expected.pck,'Cached pack hash mismatch');check(cache.isolated,'Missing isolation headers');
+ const result={version:'1.31.0',previous_version:'1.30.0',cache_upgrade:{passed:true,old_cache:baseline.cache.keys[0],new_cache:expected.cache,indexeddb_preserved:true,database_names:Object.keys(after),pck_sha256:expected.pck,old_tab_wait_verified:true},cache};
+ await fetch('/__result',{method:'POST',body:JSON.stringify(result,null,2)});report.textContent=JSON.stringify(result,null,2);state.textContent='PASSED: new engine cache, all stored game data and saves preserved';
+});
+</script></html>

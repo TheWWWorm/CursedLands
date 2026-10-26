@@ -1,0 +1,90 @@
+{
+	"checks": 26,
+	"failures": 0,
+	"rows": [
+		{
+			"changed_pixels": 15903,
+			"demon": false,
+			"new_pipelines": 0,
+			"parameter": -7.0,
+			"script": false
+		},
+		{
+			"changed_pixels": 32643,
+			"demon": false,
+			"new_pipelines": 0,
+			"parameter": 5.0,
+			"script": false
+		},
+		{
+			"changed_pixels": 27923,
+			"demon": false,
+			"new_pipelines": 0,
+			"parameter": 0.0,
+			"script": false
+		},
+		{
+			"changed_pixels": 16700,
+			"demon": true,
+			"new_pipelines": 0,
+			"parameter": -7.0,
+			"script": false
+		},
+		{
+			"changed_pixels": 32277,
+			"demon": true,
+			"new_pipelines": 0,
+			"parameter": 5.0,
+			"script": false
+		},
+		{
+			"changed_pixels": 29003,
+			"demon": true,
+			"new_pipelines": 0,
+			"parameter": 0.0,
+			"script": false
+		},
+		{
+			"changed_pixels": 15964,
+			"demon": false,
+			"new_pipelines": 0,
+			"parameter": -7.0,
+			"script": true
+		},
+		{
+			"changed_pixels": 31405,
+			"demon": false,
+			"new_pipelines": 0,
+			"parameter": 5.0,
+			"script": true
+		},
+		{
+			"changed_pixels": 27959,
+			"demon": false,
+			"new_pipelines": 0,
+			"parameter": 0.0,
+			"script": true
+		},
+		{
+			"changed_pixels": 15816,
+			"demon": true,
+			"new_pipelines": 0,
+			"parameter": -7.0,
+			"script": true
+		},
+		{
+			"changed_pixels": 31386,
+			"demon": true,
+			"new_pipelines": 0,
+			"parameter": 5.0,
+			"script": true
+		},
+		{
+			"changed_pixels": 26203,
+			"demon": true,
+			"new_pipelines": 0,
+			"parameter": 0.0,
+			"script": true
+		}
+	]
+}

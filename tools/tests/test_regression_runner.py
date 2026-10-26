@@ -32,6 +32,14 @@ class VerdictTests(unittest.TestCase):
         rendered = runner.engine_arguments("/qualified/game", {"mode": "rendered"}, packaged=True)
         self.assertNotIn("--render-thread", rendered)
 
+    def test_registered_pt_water_executes_with_hardware_ray_tracing(self):
+        cases = {case["id"]: case for case in json.loads(runner.MANIFEST.read_text())["cases"]}
+        for name in ("path_trace_water", "path_trace_water_live"):
+            with self.subTest(case=name):
+                command = runner.engine_arguments("/qualified/game", cases[name], packaged=True)
+                self.assertEqual(command[command.index("--rendering-method") + 1], "forward_plus",
+                                 "PT water transport requires the hardware ray-tracing renderer")
+
     def verdict(self, text, code=0, **overrides):
         return runner.verdict(text, {**self.case, **overrides}, code)
 

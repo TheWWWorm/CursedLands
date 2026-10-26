@@ -1,0 +1,125 @@
+{
+  "git_head": "a1f0050779a04148c2e73346598c9f467b104c13",
+  "game_source_sha256": "3109ff188e0f390f7943017498be81ca79c6831bb6b061e8dfd81f457a7d4842",
+  "manifest_sha256": "07c2ef3c2c062b0c00e659ce828d8c66ab027631dad8eb30a49d879580e68783",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "path_trace_water",
+      "script": "tools/tests/path_trace_water.gd",
+      "script_sha256": "a9c8c250edd9f793aa05c41a29c19dec6a88ed91a95520fdf0a6436f20502193",
+      "contract": "PT-lit water preserves four-sample coverage, HDR emission, underwater secondary transport, NRD modes, fog and target lifetime.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 32.17,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water/tools/tests/path_trace_water.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "path_trace_water/run.log",
+      "passed": true,
+      "result": {
+        "checks": 22,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "path_trace_water_live",
+      "script": "tools/tests/path_trace_water_live.gd",
+      "script_sha256": "35235dd9a3e4cd0c76b491e12e545e06f7d2521be7928c90d10f2955d95fa16d",
+      "contract": "Real campaign water switches RT/PT, uses full materials and local lights, keeps independent directional history and retires streamed generations.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 84.31,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water_live/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water_live/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water_live/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water_live/tools/tests/path_trace_water_live.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-water-fixed/path_trace_water_live/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "path_trace_water_live/run.log",
+      "passed": true,
+      "result": {
+        "checks": 16,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.pck",
+    "sha256": "8cd2e3a28b52a786a4169b2d7e9afc40f3bbcb6f4135f5159f3b91d9be06156e"
+  },
+  "passed": true
+}

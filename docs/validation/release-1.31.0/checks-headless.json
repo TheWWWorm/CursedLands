@@ -1,0 +1,158 @@
+{
+  "git_head": "a1f0050779a04148c2e73346598c9f467b104c13",
+  "game_source_sha256": "3109ff188e0f390f7943017498be81ca79c6831bb6b061e8dfd81f457a7d4842",
+  "manifest_sha256": "44a3dbacd49bb67d244ee3692c295554b787cdb5668cab6d715b562ffb766389",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app",
+    "astral_data": "/home/llm2x/Documents/EI/local/scratchpad/lia-kel-checkpoints-20261023/original/game"
+  },
+  "cases": [
+    {
+      "id": "attack_after_action",
+      "script": "tools/tests/attack_after_action.gd",
+      "script_sha256": "53b2927371025045a01de94f7c6362f4f15e564b4b423d4dab6d21295629bbaf",
+      "contract": "Queued direct and targeted dagger attacks select combat clips after completed casts/hits; snapshots retain the same posture.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.52,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/attack_after_action/tools/tests/attack_after_action.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/attack_after_action/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "attack_after_action/run.log",
+      "passed": true,
+      "result": {
+        "checks": 25,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "spell_effect_lighting",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "script_sha256": "235cebdc6138f057bcfd97ef9de6674493a9dd47778fc5b82b76063d33e0ce7f",
+      "contract": "Every installed spell has a bounded casting light; healing tracks visible body sparks without stacking or stale illumination, using shared PT/raster sources.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.37,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/spell_effect_lighting/tools/tests/spell_effect_lighting.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/spell_effect_lighting/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "spell_effect_lighting/run.log",
+      "passed": true,
+      "result": {
+        "checks": 134,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "spell_effect_lighting_lia",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "script_sha256": "235cebdc6138f057bcfd97ef9de6674493a9dd47778fc5b82b76063d33e0ce7f",
+      "contract": "Audit every installed LiA spell through casting and impact/status dispatchers; shared bounded lights, hidden actors and expiry remain correct.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.42,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/local/scratchpad/lia-kel-checkpoints-20261023/original/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/spell_effect_lighting_lia/tools/tests/spell_effect_lighting.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/spell_effect_lighting_lia/tools/tests",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=headless"
+      ],
+      "log": "spell_effect_lighting_lia/run.log",
+      "passed": true,
+      "result": {
+        "checks": 134,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "healing_presentation",
+      "script": "tools/tests/healing_presentation.gd",
+      "script_sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+      "contract": "Preserve existing healing presentation regression.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 8.83,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/healing_presentation/tools/tests/healing_presentation.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-headless/healing_presentation/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "healing_presentation/run.log",
+      "passed": true,
+      "result": {
+        "checks": 22,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/CursedLands-1.31.0-linux-x86_64/CursedLands.pck",
+    "sha256": "8cd2e3a28b52a786a4169b2d7e9afc40f3bbcb6f4135f5159f3b91d9be06156e"
+  },
+  "passed": true
+}

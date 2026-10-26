@@ -1,0 +1,280 @@
+{
+  "version": "1.31.0",
+  "release_type": "stable",
+  "date": "2026-10-26",
+  "source_commit": "a1f0050779a04148c2e73346598c9f467b104c13",
+  "game_tree": "aec2ec0e55a5c56036d52f4a918e877433c062be",
+  "accepted_fixes_commit": "562f5e78edd7201795ca589c48d5453e5dc68ec0",
+  "acceptance_passed": true,
+  "qualification_scope": "Final exported package checks plus retained integrated-source regressions. Approval covers publication of these verified changes, not resolution of every original report.",
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "Final executable and PCK: 12 focused cases, Vulkan Forward+ and OpenGL, including 108 high-resolution UI assertions, spell lights in both campaigns and PT loading, water, emission and lightning."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_fg_tested": false,
+      "scope": "Final EXE/PCK and standard signed RR runtime under GE-Proton11-11/VKD3D: real RR, RTXDI with RR and refraction with RR; native 4K output, motion, resize, streaming and fallback."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Unsigned Intel/Apple-silicon package, embedded branding, version metadata, archive integrity and compiled-script parity audited; macOS runtime unavailable."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 APK, increasing version code 65, unchanged signing certificate/application identity, native hashes, production Java and compiled-script parity audited; device runtime unavailable."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium engine startup and an upgrade from the published 1.30.0 service-worker cache preserve IndexedDB. No original campaign imported in this browser check."
+    }
+  },
+  "final_package_regressions": {
+    "linux": [
+      {
+        "case": "attack_after_action",
+        "checks": 25,
+        "result": "checks-headless.json",
+        "log": "logs/checks-headless-attack_after_action.log.gz"
+      },
+      {
+        "case": "spell_effect_lighting",
+        "checks": 134,
+        "result": "checks-headless.json",
+        "log": "logs/checks-headless-spell_effect_lighting.log.gz"
+      },
+      {
+        "case": "spell_effect_lighting_lia",
+        "checks": 134,
+        "result": "checks-headless.json",
+        "log": "logs/checks-headless-spell_effect_lighting_lia.log.gz"
+      },
+      {
+        "case": "healing_presentation",
+        "checks": 22,
+        "result": "checks-headless.json",
+        "log": "logs/checks-headless-healing_presentation.log.gz"
+      },
+      {
+        "case": "path_trace_transmission_gl_fallback",
+        "checks": 9,
+        "result": "checks-rendered.json",
+        "log": "logs/checks-rendered-path_trace_transmission_gl_fallback.log.gz"
+      },
+      {
+        "case": "high_resolution_ui",
+        "checks": 108,
+        "result": "checks-rendered.json",
+        "log": "logs/checks-rendered-high_resolution_ui.log.gz"
+      },
+      {
+        "case": "path_trace_loading_recenter",
+        "checks": 14,
+        "result": "checks-rendered.json",
+        "log": "logs/checks-rendered-path_trace_loading_recenter.log.gz"
+      },
+      {
+        "case": "path_trace_healing_glow",
+        "checks": 8,
+        "result": "checks-rendered.json",
+        "log": "logs/checks-rendered-path_trace_healing_glow.log.gz"
+      },
+      {
+        "case": "lightning_pipeline_warmup",
+        "checks": 26,
+        "result": "checks-rendered.json",
+        "log": "logs/checks-rendered-lightning_pipeline_warmup.log.gz"
+      },
+      {
+        "case": "path_trace_emitter_deep_sharc_rtxdi",
+        "checks": 15,
+        "result": "checks-rendered.json",
+        "log": "logs/checks-rendered-path_trace_emitter_deep_sharc_rtxdi.log.gz"
+      },
+      {
+        "case": "path_trace_water",
+        "checks": 22,
+        "result": "checks-water-fixed.json",
+        "log": "logs/checks-water-fixed-path_trace_water.log.gz"
+      },
+      {
+        "case": "path_trace_water_live",
+        "checks": 16,
+        "result": "checks-water-fixed.json",
+        "log": "logs/checks-water-fixed-path_trace_water_live.log.gz"
+      }
+    ],
+    "windows_proton_dx12": [
+      {
+        "case": "path_trace_rr_live",
+        "checks": 32,
+        "result": "logs/windows-path_trace_rr_live-result.json.gz",
+        "log": "logs/windows-path_trace_rr_live.log.gz",
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090",
+          "vendor": "10de",
+          "device": "2204",
+          "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+          "capabilities_overridden": false
+        }
+      },
+      {
+        "case": "path_trace_rtxdi_live",
+        "checks": 38,
+        "result": "logs/windows-path_trace_rtxdi_live-result.json.gz",
+        "log": "logs/windows-path_trace_rtxdi_live.log.gz",
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090",
+          "vendor": "10de",
+          "device": "2204",
+          "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+          "capabilities_overridden": false
+        }
+      },
+      {
+        "case": "path_trace_transmission_live",
+        "checks": 25,
+        "result": "logs/windows-path_trace_transmission_live-result.json.gz",
+        "log": "logs/windows-path_trace_transmission_live.log.gz",
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090",
+          "vendor": "10de",
+          "device": "2204",
+          "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+          "capabilities_overridden": false
+        }
+      }
+    ],
+    "total_assertions": 628,
+    "cases": 15,
+    "failures": 0
+  },
+  "cpu_tests": {
+    "count": 20,
+    "passed": true,
+    "coverage": [
+      "release asset exclusion",
+      "DLSS camera contract",
+      "regression runner including PT water renderer selection"
+    ]
+  },
+  "five_platform_script_parity": {
+    "version": "1.31.0",
+    "compiled_scripts": 446,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 65,
+    "debuggable": false,
+    "apk_sha256": "85d66cddb493afe1ad71b24155c0aa15c7794aa8ac564d0e1e416cfd53663afb",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.31.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "fresh": true,
+    "previous_version": "1.30.0",
+    "cache_upgrade": true,
+    "local_storage_preserved": true
+  },
+  "prior_evidence": [
+    "e2-2026-10-26/README.md",
+    "e2-2026-10-26/runs/main-integration/summary.json",
+    "pt-transport-2026-10-26/rr-validation.md",
+    "pt-transport-2026-10-26/water-validation.md",
+    "pt-transport-2026-10-26/rtxdi-validation.md",
+    "pt-transport-2026-10-26/transmission-validation.md"
+  ],
+  "prior_evidence_note": "E2 aggregate 2390 assertions and combined integration 369 assertions overlap other renderer evidence; they are not summed into the final-package count. Game code is unchanged since the accepted fix commit; only release metadata differs.",
+  "failures_investigated": [
+    {
+      "failure": "PT water registered without Forward+, so the standard runner launched OpenGL and failed its capability assertion.",
+      "initial_records": [
+        {
+          "case": "path_trace_water",
+          "errors": [
+            "FAIL qualified PT water runtime",
+            "Invalid/incomplete counts: checks=1, failures=1, minimum=22",
+            "Process exit: 1"
+          ],
+          "record": "checks-rendered.json"
+        }
+      ],
+      "fix": "Register path_trace_water and path_trace_water_live with rendering_method forward_plus. No game behavior changed.",
+      "negative_control": "New runner unit test fails both cases before the registration fix.",
+      "final_control": "Both real GPU water suites pass with the corrected registry; all runner unit tests pass.",
+      "original_comparison": "Inapplicable: this is the remake test-launch renderer configuration, not original gameplay."
+    }
+  ],
+  "known_open_reports": [
+    "LiA mountain flashes remain unresolved.",
+    "The exact recorded PT delay and two stutters are not fully attributed. The fixed loading race and verified shader-preparation stalls do not prove those exact recording events are resolved."
+  ],
+  "limits": [
+    "Native Windows OS, macOS runtime and Android device runtime not exercised here.",
+    "Standard RTX 30 RR was exercised; standard NVIDIA FG is not supported on these test GPUs. No RR plus FG qualification or performance claim.",
+    "Path tracing and its new optional modes remain experimental."
+  ],
+  "recording": "../../../Evidence/e2/fixes-20261026/ui/ui-4k-recording.mp4 (local workstation evidence, 3840x2160; original E2 validation)",
+  "evidence_directory": "release-1.31.0",
+  "public_browser_build_sha256": "cd5a812aa29be7e0d9bb475873fbbf2518d86bf8fb8f65270b3e29598c6fc989",
+  "engine_build": {
+    "build_complete": true,
+    "path": "/home/llm2x/Documents/EI/local/runtime/toolchains/cursed-lands-rr-20261026/godot.windows.template_release.x86_64.exe",
+    "sha256": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+    "bytes": 94239232,
+    "patch_count": 23,
+    "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88; qualified 22-patch Windows production stack plus standard DLSS Ray Reconstruction bridge",
+    "provenance_file": "/home/llm2x/Documents/EI/local/runtime/toolchains/cursed-lands-rr-20261026/rr-engine-build.json",
+    "command": [
+      "python3",
+      "-m",
+      "SCons",
+      "-j6",
+      "platform=windows",
+      "arch=x86_64",
+      "target=template_release",
+      "debug_symbols=no",
+      "lto=none",
+      "production=yes",
+      "optimize=speed",
+      "use_mingw=yes",
+      "use_static_cpp=yes",
+      "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+      "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/dependencies/mesa-x86_64-gcc",
+      "use_pix=no",
+      "module_mono_enabled=no",
+      "module_openxr_enabled=no",
+      "accesskit=no",
+      "use_fsr_sdk=yes",
+      "d3d12=yes",
+      "agility_sdk_path=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/engine/bin/build_deps/agility_sdk",
+      "use_streamline=yes"
+    ],
+    "native_windows_runtime_tested": false
+  }
+}

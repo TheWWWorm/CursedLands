@@ -1,0 +1,15 @@
+{
+	"captures": [
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-en-1920x1080.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-ru-1920x1080.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-de-1920x1080.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-en-2560x1440.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-ru-2560x1440.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-de-2560x1440.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-en-3840x2160.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-ru-3840x2160.png",
+		"/home/llm2x/Documents/EI/local/scratchpad/release-1.31.0-20261026/release/checks-rendered/high_resolution_ui/data/godot/app_userdata/Cursed Lands/high-resolution-de-3840x2160.png"
+	],
+	"checks": 108,
+	"failures": []
+}

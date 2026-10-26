@@ -114,6 +114,16 @@ by NVIDIA Corporation. Full terms are in
 build inputs and are not redistributed as project source. See
 `docs/integrations/path-tracing-sharc.md` for reproducible builds.
 
+## Optional RTXDI direct lighting
+
+The compiled RTXDI 3.1.0 shaders use the NVIDIA RTX SDKs license, separately
+from the application's license. This software contains source code provided
+by NVIDIA Corporation. Complete terms are in
+`game/src/game/fx/shaders/RTXDI_NOTICES.txt` and desktop distributions include
+that notice in `licenses/NVIDIA/RTXDI/`. External SDK headers are pinned in
+`engine_patches/rtxdi-sdk.json`; reproducible builds are documented in
+`docs/integrations/path-tracing-rtxdi.md`.
+
 ## Optional NVIDIA DLSS and Reflex
 
 The Windows preview includes NVIDIA DLSS, NGX, Reflex and Streamline 2.14.16
@@ -125,9 +135,11 @@ This software contains source code provided by NVIDIA Corporation.
 The restored engine integration derives from NVIDIA's Godot fork, commit
 `54c99593e0abd3126eb6974abc2d843f015b288a`, with local capability, resource,
 Agility, presentation-owner and fallback handling. It implements DLSS Super
-Resolution, DLAA and an optional 2x frame-generation path. It does not implement
-DLSS Ray Reconstruction or Multi Frame Generation. NRD remains the path-tracing
-denoiser, with its separate notices above.
+Resolution, DLAA, optional DLSS Ray Reconstruction and an optional 2x
+frame-generation path. Ray Reconstruction uses the standard signed
+Streamline `sl.dlss_d.dll` and NGX `nvngx_dlssd.dll` production runtimes.
+Multi Frame Generation is not implemented. NRD remains available with its
+separate notices above. See `docs/integrations/dlss-ray-reconstruction.md`.
 
 NVIDIA, the NVIDIA logo, GeForce RTX and DLSS are trademarks and/or registered
 trademarks of NVIDIA Corporation in the U.S. and other countries. Their artwork

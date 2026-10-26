@@ -1,0 +1,124 @@
+{
+	"checks": 16,
+	"failures": [],
+	"stages": [
+		{
+			"hits": 31100,
+			"label": "water-rt",
+			"stats": {
+				"active": true,
+				"build": {
+					"extra_ms": 0.024,
+					"largest_step_ms": 0.643,
+					"materials_ms": 1.744,
+					"placements_ms": 2.294,
+					"program_ms": 342.67,
+					"resources_ms": 368.454,
+					"texture_upload_ms": 6.195,
+					"texture_upload_step_ms": 0.628,
+					"textures_ms": 0.037,
+					"vertices_ms": 21.678
+				},
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"path_traced": false,
+				"quality": 0,
+				"radius": 96.0,
+				"rebuilding": false,
+				"samples_per_pixel": 4,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"texture_anisotropy": 16,
+				"textures": 46,
+				"triangles": 147395,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			}
+		},
+		{
+			"hits": 31100,
+			"label": "water-pt",
+			"stats": {
+				"active": true,
+				"bounces": 2,
+				"build": {
+					"extra_ms": 5.732,
+					"largest_step_ms": 0.942,
+					"materials_ms": 1.786,
+					"placements_ms": 2.705,
+					"program_ms": 3849.695,
+					"resources_ms": 3869.234,
+					"texture_upload_ms": 6.875,
+					"texture_upload_step_ms": 0.942,
+					"textures_ms": 5.575,
+					"vertices_ms": 3.737
+				},
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 1,
+				"native_scene": true,
+				"nrd_directional": false,
+				"path_traced": true,
+				"quality": 0,
+				"radius": 96.0,
+				"rebuilding": false,
+				"samples_per_pixel": 4,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"texture_anisotropy": 16,
+				"textures": 46,
+				"triangles": 150449,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			}
+		},
+		{
+			"hits": 31100,
+			"label": "water-pt-directional",
+			"stats": {
+				"active": true,
+				"bounces": 4,
+				"build": {
+					"extra_ms": 5.732,
+					"largest_step_ms": 0.942,
+					"materials_ms": 1.786,
+					"placements_ms": 2.705,
+					"program_ms": 3849.695,
+					"resources_ms": 3869.234,
+					"texture_upload_ms": 6.875,
+					"texture_upload_step_ms": 0.942,
+					"textures_ms": 5.575,
+					"vertices_ms": 3.737
+				},
+				"geometries": 2040,
+				"instances": 2171,
+				"lights": 10,
+				"native_scene": true,
+				"nrd_directional": true,
+				"path_traced": true,
+				"quality": 0,
+				"radius": 96.0,
+				"rebuilding": false,
+				"samples_per_pixel": 4,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"texture_anisotropy": 16,
+				"textures": 46,
+				"triangles": 150449,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			}
+		}
+	]
+}

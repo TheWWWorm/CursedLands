@@ -1,0 +1,15 @@
+{
+  "windows_icon_sizes": [
+    16,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "windows_icon_pixels_exact": true,
+  "windows_version": "1.31.0.0",
+  "macos_icon_exact": true,
+  "web_icons_exact": true,
+  "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+}
