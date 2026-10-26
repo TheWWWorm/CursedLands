@@ -36,6 +36,7 @@ var _wiki_hint: Label
 var _arena_pve_button: Button
 var _coop_button: Button
 var _opening_panel := false
+var _font_layout_scale := -1.0
 ## The startup recovery probe renders this screen without running calibration.
 var detect_graphics := true
 
@@ -280,12 +281,16 @@ func _select_campaign(id: String) -> void:
 
 func _process(_dt: float) -> void:
 	if _campaign_bar:
-		_campaign_bar.visible = not _scene or pad_menu_free()
+		var show_campaign := not _scene or pad_menu_free()
+		var returning := show_campaign and not _campaign_bar.visible
+		_campaign_bar.visible = show_campaign
 		_utility_bar.visible = _campaign_bar.visible
 		var wiki_key := EIKeymap.key_of("wiki_context")
 		_wiki_hint.text = "%s · %s" % [wiki_key, RemakeText.t("Game wiki")]
 		_wiki_hint.visible = _campaign_bar.visible and not wiki_key.is_empty()
 		_version.visible = _campaign_bar.visible
+		if returning:
+			_refresh_font_sampling.call_deferred()
 
 
 func _layout_campaign_bar() -> void:
@@ -305,6 +310,18 @@ func _layout_campaign_bar() -> void:
 		_wiki_hint.scale = Vector2.ONE * ui_scale
 		_wiki_hint.size = Vector2(footer_width, 20)
 		_wiki_hint.position = Vector2(_utility_bar.position.x, safe.end.y - 30 * ui_scale - _version.footer_height())
+	if not is_equal_approx(_font_layout_scale, ui_scale):
+		_font_layout_scale = ui_scale
+		_refresh_font_sampling.call_deferred()
+
+
+func _refresh_font_sampling() -> void:
+	if not is_inside_tree(): return
+	# Godot 4.7 leaves descendants' sampling unchanged when only their
+	# container scales. Re-propagate after layout, also on a panel return.
+	# Keep the existing logical font sizes, artwork and control rectangles.
+	oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_DISABLED
+	oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
 
 
 func campaign_pad_targets() -> Array:

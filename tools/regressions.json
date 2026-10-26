@@ -3,6 +3,18 @@
   "scope": "Focused recent campaign/UI regressions; not a certification of all historical issues or platforms.",
   "cases": [
     {
+      "id": "menu_utility_glyphs",
+      "script": "tools/tests/menu_utility_glyphs.gd",
+      "summary": "MENU_UTILITY_GLYPHS",
+      "contract": "Actual EN/RU/DE utility labels retain native glyph density after live 720p to 1440p and 4K resizing, cold starts and Options returns; independent draw-time caches distinguish the direct F7 hint and preserve fonts, artwork and control geometry.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 303,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "path_trace_water_bounds",
       "script": "tools/tests/path_trace_water_bounds.gd",
       "summary": "PT_WATER_BOUNDS",
