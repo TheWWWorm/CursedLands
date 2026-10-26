@@ -61,7 +61,12 @@ func _ready() -> void:
 	await shot("equipment-crowded-%s-%d" % [lang, dimensions.x])
 	screen._cancel_item()
 	var badge: Control = screen._alliance_list.get_node("beast")
+	# A synthetic motion alone leaves the virtual display's physical pointer
+	# elsewhere. Align it first so a later native event cannot undo the hover.
+	Input.warp_mouse(badge.get_global_rect().get_center())
+	await frames(4)
 	await move(badge.get_global_rect().get_center()); await frames(15)
+	check(get_viewport().gui_get_hovered_control() == badge, "pointer stays over the Beast badge")
 	check(screen._rail.visible, "Beasts hover opens roster")
 	await click_control(badge)
 	var start := badge.get_global_rect().get_center()
