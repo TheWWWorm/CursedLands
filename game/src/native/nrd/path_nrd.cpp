@@ -17,6 +17,7 @@ using namespace godot;
 class PathNrd : public RefCounted {
     GDCLASS(PathNrd, RefCounted)
     nrd::Instance *instance = nullptr;
+    bool directional = false;
     bool first = true;
     float smoothed_ms = 16.667f;
     static Array pool(const nrd::TextureDesc *textures, uint32_t count) {
@@ -29,14 +30,18 @@ class PathNrd : public RefCounted {
     }
 protected:
     static void _bind_methods() {
-        ClassDB::bind_method(D_METHOD("describe"), &PathNrd::describe);
+        ClassDB::bind_method(D_METHOD("describe", "directional"), &PathNrd::describe, DEFVAL(false));
         ClassDB::bind_method(D_METHOD("dispatches", "matrices", "size", "frame_index", "reset", "milliseconds", "lighting_limit"), &PathNrd::dispatches);
     }
 public:
     ~PathNrd() { if (instance) nrd::DestroyInstance(*instance); }
-    Dictionary describe() {
+    Dictionary describe(bool use_directional) {
+        if (instance && directional != use_directional) {
+            nrd::DestroyInstance(*instance); instance = nullptr; first = true;
+        }
+        directional = use_directional;
         if (!instance) {
-            nrd::DenoiserDesc denoiser{0, nrd::Denoiser::REBLUR_DIFFUSE_SPECULAR};
+            nrd::DenoiserDesc denoiser{0, directional ? nrd::Denoiser::REBLUR_DIFFUSE_SPECULAR_SH : nrd::Denoiser::REBLUR_DIFFUSE_SPECULAR};
             nrd::InstanceCreationDesc creation{};
             creation.denoisers = &denoiser; creation.denoisersNum = 1;
             if (nrd::CreateInstance(creation, instance) != nrd::Result::SUCCESS) return {};
@@ -53,6 +58,7 @@ public:
         result["transient"] = pool(d.transientPool, d.transientPoolSize);
         result["constant_bytes"] = int(d.constantBufferMaxDataSize);
         result["version"] = "4.18.0";
+        result["directional"] = directional;
         Dictionary resources;
         resources["motion"] = int(nrd::ResourceType::IN_MV);
         resources["normal"] = int(nrd::ResourceType::IN_NORMAL_ROUGHNESS);
@@ -63,6 +69,16 @@ public:
         resources["confidence_specular"] = int(nrd::ResourceType::IN_SPEC_CONFIDENCE);
         resources["out_diffuse"] = int(nrd::ResourceType::OUT_DIFF_RADIANCE_HITDIST);
         resources["out_specular"] = int(nrd::ResourceType::OUT_SPEC_RADIANCE_HITDIST);
+        if (directional) {
+            resources["diffuse"] = int(nrd::ResourceType::IN_DIFF_SH0);
+            resources["specular"] = int(nrd::ResourceType::IN_SPEC_SH0);
+            resources["diffuse_sh1"] = int(nrd::ResourceType::IN_DIFF_SH1);
+            resources["specular_sh1"] = int(nrd::ResourceType::IN_SPEC_SH1);
+            resources["out_diffuse"] = int(nrd::ResourceType::OUT_DIFF_SH0);
+            resources["out_specular"] = int(nrd::ResourceType::OUT_SPEC_SH0);
+            resources["out_diffuse_sh1"] = int(nrd::ResourceType::OUT_DIFF_SH1);
+            resources["out_specular_sh1"] = int(nrd::ResourceType::OUT_SPEC_SH1);
+        }
         resources["permanent"] = int(nrd::ResourceType::PERMANENT_POOL);
         resources["transient"] = int(nrd::ResourceType::TRANSIENT_POOL);
         result["resources"] = resources;

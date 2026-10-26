@@ -105,9 +105,11 @@ def main():
         run([*common, *flags, wrapper, '-Fo', target])
         files[str((OUTPUT / name).relative_to(ROOT))] = sha(target)
         layouts[target.stem] = layout(target)
-    for mode in ('pack', 'resolve'):
+    for mode in ('pack', 'resolve', 'pack_sh', 'resolve_sh'):
         target = staging / (mode + '.spv')
-        run([*common, '-D', 'NRD_' + mode.upper(), SHADERS / 'path_trace_nrd.hlsl', '-Fo', target])
+        flags = ['-D', 'NRD_' + mode.split('_')[0].upper()]
+        if mode.endswith('_sh'): flags += ['-D', 'NRD_DIRECTIONAL']
+        run([*common, *flags, SHADERS / 'path_trace_nrd.hlsl', '-Fo', target])
         files[str((OUTPUT / target.name).relative_to(ROOT))] = sha(target)
         layouts[target.stem] = layout(target)
     platform = 'windows' if args.toolchain else 'linux'

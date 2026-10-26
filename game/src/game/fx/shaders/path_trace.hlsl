@@ -24,6 +24,11 @@
 // part its detailed blade shadows block without darkening indirect light.
 [[vk::binding(20,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_sun : register(u2000000);
 [[vk::binding(21,0)]] ByteAddressBuffer lighting_offsets : register(t2100000);
+// First angular moments of the radiance being denoised. These are light/path
+// directions, never receiver normals. XYZ is the weighted mean (not unit
+// length); W is its energy. SHARC owns bindings 22 through 27.
+[[vk::binding(28,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_diffuse_direction : register(u2800000);
+[[vk::binding(29,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_specular_direction : register(u2900000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -80,6 +85,18 @@ SharcHitData sharc_hit(Surface s) {
 }
 #endif
 static const float PI=3.14159265359;
+void add_direction(float3 radiance,float3 direction,inout float4 moment) {
+    // NRD SH stores the first-order moment of YCoCg luminance. Preserve its
+    // magnitude when combining samples: normalizing would turn broad or
+    // opposing illumination into an artificially sharp directional lobe.
+    float energy=dot(max(radiance,0.0),float3(0.25,0.5,0.25));
+    moment+=float4(direction*energy,energy);
+}
+float4 mean_direction(float4 moment,float3 radiance) {
+    // The authored ambient floor is isotropic and contributes no first moment.
+    float energy=dot(max(radiance,0.0),float3(0.25,0.5,0.25));
+    return float4(moment.xyz/max(max(energy,moment.w),1e-10),min(energy,60000.0));
+}
 float3 sky_radiance(float3 direction) {
     if(frame.path.w<0.5)return frame.sky.rgb;
     // Continuous at the horizon. The directional sun is sampled separately;
@@ -253,7 +270,7 @@ float local_weight(Surface s,uint i) {
     if(lamp.w<=0.0||distance2<0.000025)return 0.0;
     return dot(frame.local_colour[i].rgb,float3(0.2126,0.7152,0.0722))*max(1.0-distance2/(lamp.w*lamp.w),0.0);
 }
-void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float weight,inout float3 diffuse,inout float3 specular) {
+void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float weight,inout float3 diffuse,inout float3 specular,inout float4 diffuse_moment) {
     float3 delta=lamp.xyz-s.position;float distance=length(delta);
     if(lamp.w<=0.0||distance>=lamp.w||distance<0.005)return;
     float3 direction=area_ray(delta/distance,abs(colour.w)/distance,u);
@@ -263,9 +280,11 @@ void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float wei
     float3 incoming=colour.rgb*(weight*PI*abs(dot(s.normal,direction))*
         max(1.0-distance*distance/(lamp.w*lamp.w),0.0)*visibility(s,direction,distance,false));
     diffuse+=d*incoming;specular+=sp*incoming;
+    add_direction(d*incoming,direction,diffuse_moment);
 }
-void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight) {
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight,out float4 diffuse_moment) {
     diffuse=0.0;specular=0.0;sunlight=0.0;
+    diffuse_moment=0.0;
     if(any(frame.sun.rgb>0.0)) {
         float3 direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,0u));
         float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
@@ -275,12 +294,12 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
         }
     }
     if(frame.local_state.w<0.5) {
-        for(uint i=0;i<7;i++)point_light(s,v,frame.point_position[i],frame.point_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular);
+        for(uint i=0;i<7;i++)point_light(s,v,frame.point_position[i],frame.point_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular,diffuse_moment);
         return;
     }
     uint count=min(uint(frame.local_state.x),64u);
     if(count<=7u) {
-        for(uint i=0;i<count;i++)point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular);
+        for(uint i=0;i<count;i++)point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular,diffuse_moment);
         return;
     }
     // Four stratified importance samples keep crowded fire/spell scenes at a
@@ -296,10 +315,13 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
     for(uint i=0;i<count&&draw<4u;i++) {
         float weight=local_weight(s,i);cumulative+=weight;
         while(draw<4u&&thresholds[draw]<cumulative&&weight>0.0) {
-            point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,draw+1u),total/(4.0*weight),diffuse,specular);
+            point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,draw+1u),total/(4.0*weight),diffuse,specular,diffuse_moment);
             draw++;
         }
     }
+}
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight) {
+    float4 unused;direct_light(s,v,sampler,diffuse,specular,sunlight,unused);
 }
 #ifndef PATH_NO_EMITTERS
 // One light sample and one BSDF sample use the power heuristic. Selection
@@ -331,8 +353,9 @@ float emitter_hit_pdf(Surface hit,float3 origin) {
     }
     return 0.0;
 }
-void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
+void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 light_direction) {
     diffuse=0.0;specular=0.0;
+    light_direction=0.0;
     uint count=emitters.Load(0);if(count==0u)return;
     float choice=path_random(sampler,8u).x;uint low=0u,high=count;
     while(low<high) {
@@ -371,10 +394,15 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,4,0,0,0,ray,visible);
     float3 incoming=emission*(abs(dot(s.normal,direction))*visible.visible*mis_weight(pdf,bsdf_pdf)/pdf);
     diffuse=d*incoming;specular=sp*incoming;
+    light_direction=direction;
+}
+void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
+    float3 unused;emissive_light(s,v,sampler,diffuse,specular,unused);
 }
 #endif
-void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular,out float3 sunlight) {
-    direct_light(primary,view,sampler,diffuse,specular,sunlight);
+void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular,out float3 sunlight,out float4 diffuse_moment,out float4 specular_moment) {
+    direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment);
+    specular_moment=0.0;
     direct_specular=specular;
     hit_distance=0.0;
     Surface current=primary;
@@ -383,16 +411,20 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
     // more of their tail while allowing diffuse receivers the larger saving.
     float roulette_floor=lerp(0.25,0.75,primary.metalness*(1.0-primary.roughness));
 #endif
-    float3 v=view,weight_d=1.0,weight_s=1.0;
+    float3 v=view,weight_d=1.0,weight_s=1.0,first_direction=0.0;
     uint bounces=clamp(uint(frame.path.x),1u,4u);
     for(uint depth=0;depth<bounces;depth++) {
         sampler.vertex=depth;
 #ifndef PATH_NO_EMITTERS
-        float3 emitter_d,emitter_s;emissive_light(current,v,sampler,emitter_d,emitter_s);
-        if(depth==0) {diffuse+=emitter_d;specular+=emitter_s;}
+        float3 emitter_d,emitter_s,emitter_direction;emissive_light(current,v,sampler,emitter_d,emitter_s,emitter_direction);
+        if(depth==0) {
+            diffuse+=emitter_d;specular+=emitter_s;
+            add_direction(emitter_d,emitter_direction,diffuse_moment);add_direction(emitter_s,emitter_direction,specular_moment);
+        }
         else {
             float3 incoming=emitter_d*current.albedo+emitter_s;
             diffuse+=weight_d*incoming;specular+=weight_s*incoming;
+            add_direction(weight_d*incoming,first_direction,diffuse_moment);add_direction(weight_s*incoming,first_direction,specular_moment);
         }
 #endif
         float3 direction=sample_bsdf(current,v,sampler),d,sp;float pdf;
@@ -400,6 +432,7 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         float cosine=abs(dot(current.normal,direction));
         if(pdf<=1e-8||cosine<=0.0)break;
         if(depth==0) {
+            first_direction=direction;
             weight_d=d*(cosine/pdf);weight_s=sp*(cosine/pdf);
         } else {
             float3 weight=(d*current.albedo+sp)*(cosine/pdf);
@@ -427,7 +460,8 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         if(depth==0)hit_distance=float2(segment,segment);
         if(hit.hit<0.5) {
             float3 environment=sky_radiance(direction);
-            diffuse+=weight_d*environment;specular+=weight_s*environment;break;
+            diffuse+=weight_d*environment;specular+=weight_s*environment;
+            add_direction(weight_d*environment,first_direction,diffuse_moment);add_direction(weight_s*environment,first_direction,specular_moment);break;
         }
         float emission_weight=1.0;
 #ifndef PATH_NO_EMITTERS
@@ -446,7 +480,8 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
                 if(SharcGetCachedRadiance(cache,sharc_hit(hit),cached,false) && all(isfinite(cached))) {
                     sharc_count(2u);
                     float3 incoming=hit.emission*emission_weight+max(cached,0.0);
-                    diffuse+=weight_d*incoming;specular+=weight_s*incoming;break;
+                    diffuse+=weight_d*incoming;specular+=weight_s*incoming;
+                    add_direction(weight_d*incoming,first_direction,diffuse_moment);add_direction(weight_s*incoming,first_direction,specular_moment);break;
                 }
             }
         }
@@ -457,6 +492,7 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
         float3 incoming=hit.emission*emission_weight+hit.albedo*direct_d+direct_s;
         diffuse+=weight_d*incoming;specular+=weight_s*incoming;
+        add_direction(weight_d*incoming,first_direction,diffuse_moment);add_direction(weight_s*incoming,first_direction,specular_moment);
         current=hit;v=-direction;
     }
 }
@@ -520,6 +556,7 @@ void main() {
     TraceRay(scene,RAY_FLAG_NONE,1,0,0,0,ray,primary);
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
     indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;path_direct_sun[pixel]=0.0;
+    path_diffuse_direction[pixel]=0.0;path_specular_direction[pixel]=0.0;
     if(primary.hit<0.5)return;
     // Camera clearance moves only the first-person presentation mesh. Trace
     // its illumination at the matching authored surface, where the complete
@@ -528,11 +565,14 @@ void main() {
     // Keep guide/depth and reprojection at the displayed position above.
     primary.position+=asfloat(lighting_offsets.Load3(primary.instance_id*16u));
     float3 diffuse=0.0,specular=0.0,direct_specular=0.0,sunlight=0.0;
+    float4 diffuse_moment=0.0,specular_moment=0.0;
     float diffuse_distance=0.0,specular_distance=65504.0;
     uint samples=clamp(uint(frame.settings.y),1u,16u);
     for(uint i=0;i<samples;i++) {
         PathSampler sampler=path_sampler(uint(frame.settings.x)*samples+i,pixel.x+pixel.y*uint(size.x));
-        float3 d,s,direct_s,direct_sun;float2 distance;path_sample(primary,-direction,sampler,d,s,distance,direct_s,direct_sun);diffuse+=d;specular+=s;direct_specular+=direct_s;sunlight+=direct_sun;
+        float3 d,s,direct_s,direct_sun;float2 distance;float4 dm,sm;
+        path_sample(primary,-direction,sampler,d,s,distance,direct_s,direct_sun,dm,sm);
+        diffuse+=d;specular+=s;direct_specular+=direct_s;sunlight+=direct_sun;diffuse_moment+=dm;specular_moment+=sm;
         diffuse_distance+=distance.x;
         // NRD's specular tracking uses the minimum valid first-bounce distance
         // across samples. The primary camera hit must never enter this value.
@@ -551,6 +591,8 @@ void main() {
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
     path_direct_specular[pixel]=float4(direct_specular/float(samples),0.0);
     path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
+    path_diffuse_direction[pixel]=mean_direction(diffuse_moment/float(samples),max(diffuse-sunlight/float(samples),0.0));
+    path_specular_direction[pixel]=mean_direction(specular_moment/float(samples),max((specular-direct_specular)/float(samples),0.0));
     // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
     // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).
     uint surface=uint(round(saturate(primary.roughness)*63.0))|

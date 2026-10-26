@@ -1006,6 +1006,30 @@
       "rendering_method": "forward_plus"
     },
     {
+      "id": "path_trace_nrd_directional",
+      "script": "tools/tests/path_trace_nrd_directional.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Traced directional light moments, actual NRD SH/SG reconstruction, mode switches, sky misses, resize and resource retirement.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 21,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_nrd_live",
+      "script": "tools/tests/path_trace_nrd_live.gd",
+      "summary": "NRD_LIVE",
+      "contract": "Production campaign with NRD SH/SG, live saved-option transitions, streamed replacements and Still scene bypass.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 12,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "path_trace_grazing_normals",
       "script": "tools/tests/path_trace_grazing_normals.gd",
       "summary": "SCENE_RT_DEVICE",

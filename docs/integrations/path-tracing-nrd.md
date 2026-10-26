@@ -31,6 +31,48 @@ textures retain stable handles; replacement pools are private until complete.
 Still scene retains the custom exact progressive accumulator. Unsupported or
 failed NRD initialization falls back to the existing custom reconstruction.
 
+## Directional SH/SG mode
+
+The RT/PT options page offers **PT denoising: Radiance / Directional**. Radiance
+keeps the established `REBLUR_DIFFUSE_SPECULAR` path and is the saved-setting
+default. Directional selects the SDK's `REBLUR_DIFFUSE_SPECULAR_SH` planner,
+packs both SH0/SH1 pairs with `REBLUR_FrontEnd_PackSh`, and resolves the filtered
+signals with `NRD_SG_ResolveDiffuse` and `NRD_SG_ResolveSpecular`. The existing
+Still scene accumulator and failure fallback remain independent of this choice.
+
+The tracer records two additional RGBA16F targets. Each contains a
+radiance-weighted mean light direction and its energy, using NRD's YCoCg
+luminance weights. Local diffuse lights and primary emissive-light proposals
+use their actual sampled directions. Every contribution after the first
+continuation, including SHaRC cache results, uses that first continuation's
+direction at the receiver. Multiple samples retain the magnitude of their
+first moment; opposing directions are never normalized into a false sharp
+lobe. The cave ambient floor has no directional moment. Sun diffuse and
+analytic specular stay in their existing separate direct-light reconstruction.
+Misses clear both new targets.
+
+The native adapter describes both modes explicitly. Changing modes releases
+and rebuilds NRD pools, and a region replacement cannot adopt another mode's
+history. Both sets of shader permutations are built from the same pinned SDK.
+`--ei-pt-nrd-radiance` provides a same-build diagnostic override. The production
+controller passes the selected mode through its render-thread update packet;
+the `nrd_directional` statistic reports an active directional denoiser.
+
+SG resolve is an approximation and can change brightness. It resolves at the
+PT tracing resolution, before the existing presentation upsampling. The first
+moment is luminance-only; material demodulation scales the colour signal and
+does not recompute a separate angular distribution for each colour channel.
+The controlled off-axis lamp regression measured 0.496 mean diffuse brightness
+with SH/SG versus 0.588 with the radiance mode on the tested Vulkan runtime.
+Directional mode also allocates four additional external NRD images and the
+SDK's SH history pools. These costs are reasons to keep the choice explicit.
+
+`path_trace_nrd_directional.gd` exercises real traced directions, opposing
+lights, both planner modes, glossy sky transport, sky clearing, odd-size resize
+and disposal. Related NRD motion, light-response, fallback, SHaRC and exact
+resource-lifetime regressions cover the shared paths. The settings regression
+checks all choices and help in EN/RU/DE, including 2560×1440 and 3840×2160.
+
 Godot 4.7's optional Vulkan re-spirv optimizer corrupts one REBLUR temporal
 stabilization shader on the qualified NVIDIA driver. The build generates a
 default-true specialization guard for NRD entry points. Godot preserves the

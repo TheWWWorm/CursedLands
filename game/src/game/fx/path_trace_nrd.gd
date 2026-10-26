@@ -8,6 +8,8 @@ const FORMATS := {0:RenderingDevice.DATA_FORMAT_R8_UNORM,4:RenderingDevice.DATA_
 	22:RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,27:RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT,
 	28:RenderingDevice.DATA_FORMAT_R32_UINT,30:RenderingDevice.DATA_FORMAT_R32_SFLOAT}
 var available := false
+var directional := not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+var _mode := ""
 var rendered_frames := 0
 var last_dispatch_count := 0
 var _rd: RenderingDevice
@@ -84,12 +86,13 @@ func _descriptor(program: Dictionary,index: int,uniforms: Array[RDUniform]) -> R
 func configure(rd: RenderingDevice,size: Vector2i,raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
 	if not available:return false
 	_rd=rd
-	if _size==size:
+	if _size==size and _description.get("directional",false)==directional:
 		return true if _input_frame==frame else rebind(raw,outputs,frame,motion)
 	release_targets()
 	_native=ClassDB.instantiate("PathNrd")
-	_description=_native.describe()
+	_description=_native.describe(directional)
 	if _description.is_empty():return false
+	_mode="_sh" if directional else ""
 	var manifest: Variant=JSON.parse_string(FileAccess.get_file_as_string(SHADERS+"build.json"))
 	if not manifest is Dictionary or manifest.get("version")!=_description.version:return false
 	_layouts=manifest.layouts
@@ -105,6 +108,9 @@ func configure(rd: RenderingDevice,size: Vector2i,raw: Array[RID],outputs: Array
 		["confidence_diffuse",17],["out_diffuse",27],["out_specular",27]]:
 		_external[types[entry[0]]]=_texture(size,FORMATS[entry[1]])
 	_external[types.confidence_specular]=_external[types.confidence_diffuse]
+	if directional:
+		for name in ["diffuse_sh1","specular_sh1","out_diffuse_sh1","out_specular_sh1"]:
+			_external[types[name]]=_texture(size,FORMATS[27])
 	for pool_name in ["permanent","transient"]:
 		var target: Array[RID]=_permanent if pool_name=="permanent" else _transient
 		for desc: Dictionary in _description[pool_name]:
@@ -112,7 +118,7 @@ func configure(rd: RenderingDevice,size: Vector2i,raw: Array[RID],outputs: Array
 			var dimensions := Vector2i(ceili(float(size.x)/desc.scale),ceili(float(size.y)/desc.scale))
 			target.append(_texture(dimensions,FORMATS[desc.format]))
 	if not _textures.all(func(rid: RID):return rid.is_valid()):return false
-	var pack := _program("pack");var resolve := _program("resolve")
+	var pack := _program("pack"+_mode);var resolve := _program("resolve"+_mode)
 	if pack.is_empty() or resolve.is_empty():return false
 	_size=size;_restart=true
 	return rebind(raw,outputs,frame,motion)
@@ -126,19 +132,29 @@ func rebind(raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
 				if _sets[key]==rid:_sets.erase(key)
 			if _rd.uniform_set_is_valid(rid):_rd.free_rid(rid)
 	var types: Dictionary=_description.resources
-	var pack: Dictionary=_programs.pack;var resolve: Dictionary=_programs.resolve
+	var pack: Dictionary=_programs["pack"+_mode];var resolve: Dictionary=_programs["resolve"+_mode]
 	var inputs: Array[RDUniform]=[]
 	for i in 5:inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,i,raw[i]))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,motion))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,6,frame))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,13,raw[5]))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,raw[6]))
+	if _description.directional:
+		if raw.size()<9:return false
+		inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,15,raw[7]))
+		inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,16,raw[8]))
 	var packed: Array[RDUniform]=inputs.duplicate()
 	var names := ["motion","normal","depth","diffuse","specular","confidence_diffuse"]
 	for i in names.size():packed.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+7,_external[types[names[i]]]))
+	if _description.directional:
+		packed.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,17,_external[types.diffuse_sh1]))
+		packed.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,18,_external[types.specular_sh1]))
 	_pack=_descriptor(pack,0,packed)
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,7,_external[types.out_diffuse]))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,8,_external[types.out_specular]))
+	if _description.directional:
+		inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,17,_external[types.out_diffuse_sh1]))
+		inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,18,_external[types.out_specular_sh1]))
 	for i in 4:inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,9+i,outputs[i]))
 	_resolve=_descriptor(resolve,0,inputs)
 	if not _pack.is_valid() or not _resolve.is_valid():return false
@@ -220,11 +236,11 @@ func render(frame: PackedByteArray) -> bool:
 			if not constants.is_valid():return false
 		jobs.append({"program":program,"sets":[resources,constants],"grid":dispatch.grid})
 	var grid := Vector2i(ceili(_size.x/8.0),ceili(_size.y/8.0))
-	_dispatch(_programs.pack,[_pack],grid)
+	_dispatch(_programs["pack"+_mode],[_pack],grid)
 	for job: Dictionary in jobs:
 		var sets: Array[RID]=[];sets.assign(job.sets)
 		_dispatch(job.program,sets,job.grid)
-	_dispatch(_programs.resolve,[_resolve],grid)
+	_dispatch(_programs["resolve"+_mode],[_resolve],grid)
 	_restart=false;rendered_frames+=1;last_dispatch_count=jobs.size()
 	return true
 

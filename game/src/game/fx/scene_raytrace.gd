@@ -98,7 +98,7 @@ func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
-	var mode := "%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc")]
+	var mode := "%s:%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc"),GameData.option("pt_denoiser")]
 	if mode != _mode or terrain != _terrain:
 		if terrain != _terrain or path_mode!=_path_mode: _release()
 		_path_mode=path_mode
@@ -237,6 +237,7 @@ func _process(dt: float) -> void:
 	stats["program_cache_hits"]=_programs.hits
 	if device!=null:stats["build_timings"]=device.build_timings.duplicate()
 	if device is PathDevice:
+		stats["nrd_directional"]=device.nrd_active and device.nrd.directional
 		stats["sharc_active"]=device.sharc.active
 		stats["sharc_failed"]=device.sharc_failed
 		stats["sharc_frames"]=device.sharc.frames
@@ -265,6 +266,7 @@ func _end_preparation() -> void:
 	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
 
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
+	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
 	if target is PathDevice:Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
 	# An active device is the visible target even while a recenter replacement
 	# builds. With no active scene, the candidate must finish privately first.
@@ -322,6 +324,7 @@ func _queue_candidate() -> void:
 	if _path_mode:
 		_pending_device.defer_nrd=device is PathDevice and device.nrd_active
 		_pending_device.sharc_enabled=GameData.option("pt_sharc")>0
+		_pending_device.nrd.directional=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
 	var id := _pending_device.get_instance_id()
 	_pending_device.prepared.connect(_prepared.bind(id))
 	_pending_device.rendered.connect(_rendered.bind(id))

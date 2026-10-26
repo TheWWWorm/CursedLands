@@ -1,0 +1,497 @@
+{
+  "status": "NRD directional component implemented and verified; remaining four renderer components still in progress",
+  "source_base": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "gpu_jobs": [
+    "58cd04774e9a42bd",
+    "e6416d3666534a32",
+    "2899456b85294aa5",
+    "f2c634b07ced4714",
+    "6eaf2ff3642148f4",
+    "3a96d25094054fc2",
+    "731b2135d827416c"
+  ],
+  "checks": [
+    {
+      "suite": "final-linux-path_trace_nrd_live",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "NRD_LIVE 12 checks 0 failures"
+      ],
+      "seconds": 55.11,
+      "fixture_sha256": "772a16312f02a78fab298a6713898b45692a37061c7a74ec536f41abff167123",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "7008771e2cca91f7d906d37cb1ea6bda7d4bbd1f77eae3deaed56e8c96b98448",
+        "CursedLands.pck": "b39d58abf96eb08760b775ed0a700c7b8db028e47eba4223fa7f0cf9f59ffe6a",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_glossy",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 31 checks 0 failures"
+      ],
+      "seconds": 11.08,
+      "fixture_sha256": "f2e09b6ed158dd060fdf6b4ccba3ae6cc1325611ef3e6fd2703fd8f9fe29afc6",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "7008771e2cca91f7d906d37cb1ea6bda7d4bbd1f77eae3deaed56e8c96b98448",
+        "CursedLands.pck": "b39d58abf96eb08760b775ed0a700c7b8db028e47eba4223fa7f0cf9f59ffe6a",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_lifecycle",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 169 checks 0 failures"
+      ],
+      "seconds": 20.3,
+      "fixture_sha256": "7a15b77e634da7a926c27d7573d173b79cb4ffb2bca9ed68e5dc960c9b09ee71",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "CursedLands.pck": "cd616492e07f27d66fc5081b92123119f8506969936344893b807310a257fdaa",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_nrd_device",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 26 checks 0 failures"
+      ],
+      "seconds": 13.99,
+      "fixture_sha256": "b272e22784910cc7b9ca2b135fc553367ac46b1a747f3e5d10cc67d7192874f6",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "CursedLands.pck": "cd616492e07f27d66fc5081b92123119f8506969936344893b807310a257fdaa",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_nrd_directional",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 20 checks 0 failures"
+      ],
+      "seconds": 10.83,
+      "fixture_sha256": "0d885ea22ad60bc84708c7ed8b299af46f1e2c78fb74bf6056a69d905f73460b",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "CursedLands.pck": "cd616492e07f27d66fc5081b92123119f8506969936344893b807310a257fdaa",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_nrd_live",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "NRD_LIVE 12 checks 0 failures"
+      ],
+      "seconds": 65.08,
+      "fixture_sha256": "ab4c4d4c4a10f26b7c80c584e4d646d043d23bd231772fdb28d8943cf8edc1dd",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "7008771e2cca91f7d906d37cb1ea6bda7d4bbd1f77eae3deaed56e8c96b98448",
+        "CursedLands.pck": "b39d58abf96eb08760b775ed0a700c7b8db028e47eba4223fa7f0cf9f59ffe6a",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_nrd_motion",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 42 checks 0 failures"
+      ],
+      "seconds": 10.88,
+      "fixture_sha256": "07e08e9bfbce37a3ebdaf743ff716663a55838bb9bbbf55031894d8b094b2006",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "CursedLands.pck": "cd616492e07f27d66fc5081b92123119f8506969936344893b807310a257fdaa",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-path_trace_sharc",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 25 checks 0 failures"
+      ],
+      "seconds": 26.96,
+      "fixture_sha256": "8e697b6310b56b115221e10342acbc03cb67d5e0761a9c2b5a48b1cf889093ff",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "CursedLands.pck": "cd616492e07f27d66fc5081b92123119f8506969936344893b807310a257fdaa",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "linux-scene_raytrace_options",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_OPTIONS 550 checks 0 failures"
+      ],
+      "seconds": 37.32,
+      "fixture_sha256": "9bd7ea27d5f828e424b6d07cf8940c37e4cd38ce71131bf3ca1f8bff74bb3714",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "7008771e2cca91f7d906d37cb1ea6bda7d4bbd1f77eae3deaed56e8c96b98448",
+        "CursedLands.pck": "b39d58abf96eb08760b775ed0a700c7b8db028e47eba4223fa7f0cf9f59ffe6a",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "packet-linux-path_trace_nrd_directional",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 21 checks 0 failures"
+      ],
+      "seconds": 18.99,
+      "fixture_sha256": "9413a1ffafe4cadb332068a7c2ae8cda12752d937810969c218fb50ffdc2c23f",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "7008771e2cca91f7d906d37cb1ea6bda7d4bbd1f77eae3deaed56e8c96b98448",
+        "CursedLands.pck": "b39d58abf96eb08760b775ed0a700c7b8db028e47eba4223fa7f0cf9f59ffe6a",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      },
+      "adapter": null
+    },
+    {
+      "suite": "packet-windows-path_trace_nrd_directional",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 21 checks 0 failures"
+      ],
+      "seconds": 16.54,
+      "fixture_sha256": "af36e4dfeb5dbae01e28ea0cc1f3b11b5deab636de413c469595c784c8947991",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "a756024c7616edbf52fc3eb349589e9eebaa627735611b5601457a36a7f40527",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "a080724df97c06b1ada2ec8d13e6c794d94ae4cead7c4c96783dd20b5fdcb01b",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      },
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "suite": "windows-path_trace_nrd_device",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 26 checks 0 failures"
+      ],
+      "seconds": 15.04,
+      "fixture_sha256": "e06ae996374b6f33f65d988045cbe717f9e9b4ae26c53fbc2f1a9687838b95a6",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "a756024c7616edbf52fc3eb349589e9eebaa627735611b5601457a36a7f40527",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "a080724df97c06b1ada2ec8d13e6c794d94ae4cead7c4c96783dd20b5fdcb01b",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      },
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "suite": "windows-path_trace_nrd_directional",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 20 checks 0 failures"
+      ],
+      "seconds": 13.18,
+      "fixture_sha256": "b6d6bd76fca66005d4685739a72234ab78df97db9fde99868b32094ed057b509",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "a756024c7616edbf52fc3eb349589e9eebaa627735611b5601457a36a7f40527",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "a080724df97c06b1ada2ec8d13e6c794d94ae4cead7c4c96783dd20b5fdcb01b",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      },
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "suite": "windows-path_trace_nrd_motion",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 42 checks 0 failures"
+      ],
+      "seconds": 8.58,
+      "fixture_sha256": "855192b14590182c479faebd407820f65c59be2c7918e49b91e340e6e16508a8",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "a756024c7616edbf52fc3eb349589e9eebaa627735611b5601457a36a7f40527",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "a080724df97c06b1ada2ec8d13e6c794d94ae4cead7c4c96783dd20b5fdcb01b",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      },
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "suite": "windows-path_trace_sharc",
+      "exit": 0,
+      "errors": [],
+      "summary": [
+        "SCENE_RT_DEVICE 25 checks 0 failures"
+      ],
+      "seconds": 22.8,
+      "fixture_sha256": "d1f0cdc7c0691398825e0a26b4b6a0e9d817cbf0c141f49b728a90aeccc29268",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "a756024c7616edbf52fc3eb349589e9eebaa627735611b5601457a36a7f40527",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "a080724df97c06b1ada2ec8d13e6c794d94ae4cead7c4c96783dd20b5fdcb01b",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      },
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    }
+  ],
+  "original_comparison": "New PT denoising feature; original game has no corresponding implementation. Existing original assets and material intent are unchanged.",
+  "visual_review": "EN/RU/DE labels and help readable at 1440p and 4K; captured UI inspected. Actual snowy campaign radiance and SH/SG views also inspected; world lighting remains recognizable and finite. Screenshot frame counters are not performance benchmarks.",
+  "limitations": [
+    "SG resolve is approximate and changes brightness (controlled Vulkan lamp: 0.496 vs 0.588).",
+    "Directional mode uses additional GPU storage.",
+    "RR, water PT, RTXDI and refraction remain separate pending work."
+  ]
+}

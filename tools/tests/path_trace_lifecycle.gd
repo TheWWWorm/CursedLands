@@ -258,8 +258,10 @@ func sustained_switches() -> void:
 	# auxiliary targets even with NRD disabled. Check each pool and exact live
 	# ownership, so neither a missing current target nor a leaked old one can
 	# hide behind the total (the pre-direct-reconstruction count was 21).
-	check(probe.groups==[7,8,4,2,8,4],"each lighting, history, guide, spatial and direct-light pool retains its exact bound")
-	check(probe.live_images==33 and probe.unexpected_images==0 and probe.missing_images==0,
+	# Two raw first-moment images accompany the seven existing radiance/guide
+	# targets. Retain the exact ownership check for every pool.
+	check(probe.groups==[9,8,4,2,8,4],"each lighting, history, guide, spatial and direct-light pool retains its exact bound")
+	check(probe.live_images==35 and probe.unexpected_images==0 and probe.missing_images==0,
 		"only current lighting, direct sun, guide, auxiliary and spatial images remain live")
 
 func run() -> void:

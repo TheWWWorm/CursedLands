@@ -83,12 +83,17 @@ func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
 func raw_formats() -> Array[int]:
 	var formats := super.raw_formats();formats.append(RenderingDevice.DATA_FORMAT_R16G16_SFLOAT)
 	formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT)
-	formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT);return formats
+	formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT)
+	# Radiance-weighted first angular moments for directional NRD.
+	for i in 2:formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT)
+	return formats
 func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
 	var bindings := super._ray_bindings(raw,sampler)
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,18,[raw[4]]))
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,19,[raw[5]]))
-	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,20,[raw[6]]));return bindings
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,20,[raw[6]]))
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,28,[raw[7]]))
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,29,[raw[8]]));return bindings
 func published_targets() -> Array[RID]:
 	var result := super.published_targets();result.append(direct_sun.texture_rd_rid);return result
 func _publish_targets() -> void:
@@ -210,6 +215,7 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 	return uniforms
 
 func update_scene(changes: Dictionary) -> bool:
+	if changes.has("nrd_directional"):nrd.directional=changes.nrd_directional
 	if _closed or not _ready: return false
 	if sharc.active:
 		# Conservative invalidation: moving/deformed blockers and emissive
@@ -231,7 +237,8 @@ func update_scene(changes: Dictionary) -> bool:
 func adopt_history(previous: RefCounted,matches: PackedInt32Array) -> void:
 	defer_nrd=false
 	if _closed or previous==null or previous._closed or not previous.nrd_active \
-		or _size!=previous._size or _uses_emitters!=previous._uses_emitters or _deep_paths!=previous._deep_paths:return
+		or _size!=previous._size or _uses_emitters!=previous._uses_emitters or _deep_paths!=previous._deep_paths \
+		or nrd.directional!=previous.nrd.directional:return
 	if matches.size()!=_instances.size():return
 	var unused := nrd
 	nrd=previous.nrd;previous.nrd=unused;previous.nrd_active=false

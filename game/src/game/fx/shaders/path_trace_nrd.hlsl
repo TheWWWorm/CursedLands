@@ -17,6 +17,10 @@
 // Reconstruct it separately so long indirect history cannot leave an old
 // animal shadow behind or erase a newly arriving shadow.
 [[vk::binding(14,0)]] Texture2D<float4> direct_sun : register(t14);
+#ifdef NRD_DIRECTIONAL
+[[vk::binding(15,0)]] Texture2D<float4> diffuse_direction : register(t15);
+[[vk::binding(16,0)]] Texture2D<float4> specular_direction : register(t16);
+#endif
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -38,11 +42,14 @@ float3 world_at(uint2 pixel,float depth,uint2 size) {
     float3 view=frame.camera.x>0.5?float3(p.xy,-depth):p.xyz*(depth/-p.z);
     return mul(frame.camera_world,float4(view,1.0)).xyz;
 }
+float3 view_at(float3 world) {
+    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+    return frame.camera.x>0.5?mul(frame.camera_world,float4(0,0,1,0)).xyz:normalize(eye-world);
+}
 void factors(uint2 pixel,float3 world,float3 normal,out float roughness,out float3 diffuse,out float3 specular) {
     float4 material=raw_material[pixel];uint packed=uint(round(material.w));
     roughness=float(packed&63u)/63.0;float metalness=float(packed>>6u)/31.0;
-    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
-    float3 view=frame.camera.x>0.5?mul(frame.camera_world,float4(0,0,1,0)).xyz:normalize(eye-world);
+    float3 view=view_at(world);
     // Diffuse has already been divided by base colour in the integrator. Use
     // white here so material texture detail stays in the raster receiver.
     NRD_MaterialFactors(normal,view,1.0,lerp(0.04.xxx,material.rgb,metalness),roughness,diffuse,specular);
@@ -80,6 +87,10 @@ float lighting_confidence(float3 world) {
 [[vk::binding(10,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_diffuse : register(u10);
 [[vk::binding(11,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_specular : register(u11);
 [[vk::binding(12,0),vk::image_format("r16f")]] RWTexture2D<float> out_confidence : register(u12);
+#ifdef NRD_DIRECTIONAL
+[[vk::binding(17,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_diffuse_sh1 : register(u17);
+[[vk::binding(18,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_specular_sh1 : register(u18);
+#endif
 [numthreads(8,8,1)]
 void main(uint2 pixel:SV_DispatchThreadID) {
     if(!ei_nrd_dispatch)return;
@@ -87,7 +98,11 @@ void main(uint2 pixel:SV_DispatchThreadID) {
     float4 guide=raw_guide[pixel];
     if(guide.w<=0.0) {
         out_depth[pixel]=65504.0;out_motion[pixel]=0.0;out_normal[pixel]=float4(0,0,1,1);
-        out_diffuse[pixel]=0.0;out_specular[pixel]=0.0;out_confidence[pixel]=0.0;return;
+        out_diffuse[pixel]=0.0;out_specular[pixel]=0.0;out_confidence[pixel]=0.0;
+#ifdef NRD_DIRECTIONAL
+        out_diffuse_sh1[pixel]=0.0;out_specular_sh1[pixel]=0.0;
+#endif
+        return;
     }
     float3 world=world_at(pixel,guide.w,size),normal=normalize(guide.xyz);
     float roughness;float3 df,sf;factors(pixel,world,normal,roughness,df,sf);
@@ -105,8 +120,17 @@ void main(uint2 pixel:SV_DispatchThreadID) {
     float2 distance=raw_distance[pixel];
     float2 norm_distance=float2(REBLUR_FrontEnd_GetNormHitDist(distance.x,guide.w,float3(3,0.1,20),1.0),
         REBLUR_FrontEnd_GetNormHitDist(distance.y,guide.w,float3(3,0.1,20),roughness));
-    out_diffuse[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(max(raw_diffuse[pixel].rgb-direct_sun[pixel].rgb,0.0)/df,norm_distance.x,true);
-    out_specular[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(max(raw_specular[pixel].rgb-direct_specular[pixel].rgb,0.0)/sf,norm_distance.y,true);
+    float3 d=max(raw_diffuse[pixel].rgb-direct_sun[pixel].rgb,0.0)/df;
+    float3 s=max(raw_specular[pixel].rgb-direct_specular[pixel].rgb,0.0)/sf;
+#ifdef NRD_DIRECTIONAL
+    float4 d1,s1;
+    out_diffuse[pixel]=REBLUR_FrontEnd_PackSh(d,norm_distance.x,diffuse_direction[pixel].xyz,d1,true);
+    out_specular[pixel]=REBLUR_FrontEnd_PackSh(s,norm_distance.y,specular_direction[pixel].xyz,s1,true);
+    out_diffuse_sh1[pixel]=d1;out_specular_sh1[pixel]=s1;
+#else
+    out_diffuse[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(d,norm_distance.x,true);
+    out_specular[pixel]=REBLUR_FrontEnd_PackRadianceAndNormHitDist(s,norm_distance.y,true);
+#endif
 }
 #else
 [[vk::binding(7,0)]] Texture2D<float4> denoised_diffuse : register(t7);
@@ -115,6 +139,10 @@ void main(uint2 pixel:SV_DispatchThreadID) {
 [[vk::binding(10,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_guide : register(u10);
 [[vk::binding(11,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_specular : register(u11);
 [[vk::binding(12,0),vk::image_format("rgba16f")]] RWTexture2D<float4> out_material : register(u12);
+#ifdef NRD_DIRECTIONAL
+[[vk::binding(17,0)]] Texture2D<float4> denoised_diffuse_sh1 : register(t17);
+[[vk::binding(18,0)]] Texture2D<float4> denoised_specular_sh1 : register(t18);
+#endif
 [numthreads(8,8,1)]
 void main(uint2 pixel:SV_DispatchThreadID) {
     if(!ei_nrd_dispatch)return;
@@ -123,9 +151,18 @@ void main(uint2 pixel:SV_DispatchThreadID) {
     // NRD deliberately doesn't touch out-of-range pixels; never present old
     // terrain lighting in newly exposed sky or an untraced receiver.
     if(guide.w<=0.0){out_diffuse[pixel]=0.0;out_specular[pixel]=0.0;return;}
-    float roughness;float3 df,sf;factors(pixel,world_at(pixel,guide.w,size),normalize(guide.xyz),roughness,df,sf);
+    float3 world=world_at(pixel,guide.w,size),normal=normalize(guide.xyz);
+    float roughness;float3 df,sf;factors(pixel,world,normal,roughness,df,sf);
+#ifdef NRD_DIRECTIONAL
+    NRD_SG diffuse_sg=REBLUR_BackEnd_UnpackSh(denoised_diffuse[pixel],denoised_diffuse_sh1[pixel].xyz);
+    NRD_SG specular_sg=REBLUR_BackEnd_UnpackSh(denoised_specular[pixel],denoised_specular_sh1[pixel].xyz);
+    float3 view=view_at(world);
+    float4 d=float4(NRD_SG_ResolveDiffuse(diffuse_sg,normal,view,roughness),diffuse_sg.normHitDist);
+    float4 s=float4(NRD_SG_ResolveSpecular(specular_sg,normal,view,roughness),specular_sg.normHitDist);
+#else
     float4 d=REBLUR_BackEnd_UnpackRadianceAndNormHitDist(denoised_diffuse[pixel]);
     float4 s=REBLUR_BackEnd_UnpackRadianceAndNormHitDist(denoised_specular[pixel]);
+#endif
     out_diffuse[pixel]=float4(clamp(d.rgb*df,0.0,60000.0),max(d.w,1.0));
     out_specular[pixel]=float4(clamp(s.rgb*sf+direct_specular[pixel].rgb,0.0,60000.0),max(s.w,1.0));
 }

@@ -8,30 +8,30 @@
   "native": {
     "linux": {
       "file": "game/src/native/bin/libpath_nrd.so",
-      "sha256": "27f319631899ce690382764d70f13f3ec5bf582a302f0d1f2d21441e9a973947",
+      "sha256": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
       "sources": {
         "game/src/native/nrd/CMakeLists.txt": "0d07f406e5d25ce277f3df8fa76902f708ef4f81f3dab53695599559accc8cb5",
         "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
         "game/src/native/nrd/build_profile.json": "65e8e59e7e464609d22a9d13a7a80ffd99579b2fa27ecfac70418228c054edd0",
         "game/src/native/nrd/mingw_math.hpp": "f85a667583efc1c25bbdd264115bf8ea549236e3be2e243ec2756d0c4451ac48",
-        "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
-        "game/src/native/nrd/path_nrd.cpp": "4422045b7042147496915bb28e9d288da83e2f53dfea7bb960a33cdd5beff178",
-        "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
-        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "6fa1b60a5e01e3763d44b63778c97703912ec9bac9db29fc0ca011273d4d3221"
+        "game/src/native/nrd/nrd_shaders.cpp": "11960af3f767c716f2b8a29b6c9b0499c53d1ae13a1c8ae1e3b1b9b27723051f",
+        "game/src/native/nrd/path_nrd.cpp": "1453a9e82b6ff2f8546d7d4c483d004428c3e8c898622f7545821781e635a622",
+        "tools/build_path_nrd.py": "fa5873519f8f849f3405709e1dbdf3de481f376fff8da1b44acab9343c5d47c3",
+        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "2afe7677e45ea81457403a60748c45e159f6dcf09d405e8733a454b4b3fea60b"
       }
     },
     "windows": {
       "file": "game/src/native/bin/libpath_nrd.dll",
-      "sha256": "edf552984ff5035bab2820d86fa9cb7d43511ad43598d8f567eb069902f9441d",
+      "sha256": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
       "sources": {
         "game/src/native/nrd/CMakeLists.txt": "0d07f406e5d25ce277f3df8fa76902f708ef4f81f3dab53695599559accc8cb5",
         "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
         "game/src/native/nrd/build_profile.json": "65e8e59e7e464609d22a9d13a7a80ffd99579b2fa27ecfac70418228c054edd0",
         "game/src/native/nrd/mingw_math.hpp": "f85a667583efc1c25bbdd264115bf8ea549236e3be2e243ec2756d0c4451ac48",
-        "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
-        "game/src/native/nrd/path_nrd.cpp": "4422045b7042147496915bb28e9d288da83e2f53dfea7bb960a33cdd5beff178",
-        "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
-        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "6fa1b60a5e01e3763d44b63778c97703912ec9bac9db29fc0ca011273d4d3221"
+        "game/src/native/nrd/nrd_shaders.cpp": "11960af3f767c716f2b8a29b6c9b0499c53d1ae13a1c8ae1e3b1b9b27723051f",
+        "game/src/native/nrd/path_nrd.cpp": "1453a9e82b6ff2f8546d7d4c483d004428c3e8c898622f7545821781e635a622",
+        "tools/build_path_nrd.py": "fa5873519f8f849f3405709e1dbdf3de481f376fff8da1b44acab9343c5d47c3",
+        "game/src/game/fx/shaders/path_trace_nrd.hlsl": "2afe7677e45ea81457403a60748c45e159f6dcf09d405e8733a454b4b3fea60b"
       }
     }
   },
@@ -40,28 +40,38 @@
     "game/src/native/nrd/NRDConfig.hlsli": "d9e9e60cd85f153de2dd2f0bc86f9daeebdf14d745900852a54cfe7f35b35dab",
     "game/src/native/nrd/build_profile.json": "65e8e59e7e464609d22a9d13a7a80ffd99579b2fa27ecfac70418228c054edd0",
     "game/src/native/nrd/mingw_math.hpp": "f85a667583efc1c25bbdd264115bf8ea549236e3be2e243ec2756d0c4451ac48",
-    "game/src/native/nrd/nrd_shaders.cpp": "8d3be59917e5faf23a77d6c970cdd7f76119dd7128e2a585d43fadb69a381979",
-    "game/src/native/nrd/path_nrd.cpp": "4422045b7042147496915bb28e9d288da83e2f53dfea7bb960a33cdd5beff178",
-    "tools/build_path_nrd.py": "0f442ce99b71c3910ea0113983d4fd19199cf8ac651a759a77801ab3a11d135a",
-    "game/src/game/fx/shaders/path_trace_nrd.hlsl": "6fa1b60a5e01e3763d44b63778c97703912ec9bac9db29fc0ca011273d4d3221"
+    "game/src/native/nrd/nrd_shaders.cpp": "11960af3f767c716f2b8a29b6c9b0499c53d1ae13a1c8ae1e3b1b9b27723051f",
+    "game/src/native/nrd/path_nrd.cpp": "1453a9e82b6ff2f8546d7d4c483d004428c3e8c898622f7545821781e635a622",
+    "tools/build_path_nrd.py": "fa5873519f8f849f3405709e1dbdf3de481f376fff8da1b44acab9343c5d47c3",
+    "game/src/game/fx/shaders/path_trace_nrd.hlsl": "2afe7677e45ea81457403a60748c45e159f6dcf09d405e8733a454b4b3fea60b"
   },
   "files": {
     "game/src/game/fx/shaders/nrd/e1e3844a6842b2eff161cb9dc9e368af1df7c661b99f845d333207686625882f.spv": "1606d99b26f5d72875f97b37245910f964d1294d7b1df61c7df00b56cac72950",
     "game/src/game/fx/shaders/nrd/3c4864f0759dbb544085846ffad61d909a16855f4b1fa4f99a5a913bf5f79c1a.spv": "9873fd33e711f8f34ece0cc380c8d03ab85a2a3b5239c4b8486d85636328832a",
     "game/src/game/fx/shaders/nrd/0f02cd3db253dfbee77876d3f8f992330c85693c181a9f5a4af9fe437426bfd7.spv": "b6261206f1544857a465edb53ec198f6ca305c7b025d97ad8c1aded81b164056",
+    "game/src/game/fx/shaders/nrd/d42a979a04870f7db63d38bc7bcd0e029f147970cb8b88195f9b61594238e966.spv": "a703f467e055c2a61d3049a5ec5a000f92cf9b44f2893e85688804371fcbb870",
     "game/src/game/fx/shaders/nrd/5184961aaa05e6230d7c0a269308ba95039ad22bdee9994c0b5e07d7adf5d665.spv": "7593c9288dedace6b0bccbd2206a719ae78ee2587eb28df7c7c2733459745bbd",
     "game/src/game/fx/shaders/nrd/bc431bac486878cd1c45baf051b507d37cd0fc44e68c88cdc5fe13f2ecb1dee4.spv": "bfba73398fca411bdffff7e8a85936deb6a79c2c1cfb9da5d44d0b52c7a49bce",
+    "game/src/game/fx/shaders/nrd/899d0cd0a25f2a09e293ddbdbc92383e5098d782f3fcd43e014b6c3a60cb1c2b.spv": "3bd0963a237365502ee0b26be57b52dbe53cbd7585aa31d13eafcbe72d3b51a1",
     "game/src/game/fx/shaders/nrd/4aeb0e2031303cb77be5f033f77ba9402150f471c41ebf39543fb021bddeb2f6.spv": "96ca2824ddcb47fe432e3b49ffeb4bc1b193ee1189a3bc8489497b60c2cdbf16",
     "game/src/game/fx/shaders/nrd/de89db9ec4eb9c8eea0dba0885ab431c1e45ff13bcae8301fd09a6de67f3af22.spv": "358719c4a496c155cbeb003d469d502c843e7b52e8894894341c4e19efbc0a0f",
     "game/src/game/fx/shaders/nrd/116f2c4755c61cf17da0fa6a5a73b3711f2fe228ba229a8d15681390a76a65e2.spv": "4eee03372c93c8a8b4c5bebae9201e967fa4d010b56a8a384923cee5d0edf429",
     "game/src/game/fx/shaders/nrd/3c3dbee1689d7642509ccbb8be312a239996712777e561607203bad2a7cae5a8.spv": "128f582e9e92650b45a4d6f6b4b87caac4f46485b138649f906b3c2c766103aa",
+    "game/src/game/fx/shaders/nrd/fb4a9713c68a7b4e6583c79831b48596abbd14ab25ea0105146bb66b973be7d8.spv": "39b0f9686efb39dda91878e1cee307b5b9c3e050c2584b916c2fc4de0bb78ded",
+    "game/src/game/fx/shaders/nrd/cb4f3795d4b892a7299f1e12adc1f78414fc8e954da58c642a8b5d6311bd1bde.spv": "b53dcc63dee11d2b3a47b7dee19a46e8dd24cc3656c864598ec82b640b234db1",
     "game/src/game/fx/shaders/nrd/e195a79737e3d10ab29d317a3899e56cf07d2d79d0f13540fa521bf39850c107.spv": "42c39d8a1fb6c64f0215f668822838d66307e09dc0315ae043bcefe7ff6945b8",
+    "game/src/game/fx/shaders/nrd/3a6b20e6c3f2f8d7c57c1207ddf1a40aaf479ef37254368075f04e464d77f488.spv": "8fd202faea6fee1942cff56b85365414d181730c2fd7ec34beed5367dae80ff7",
     "game/src/game/fx/shaders/nrd/739fd9d395ced8c7dfaf3edc8db9f408a08f08c316485e7c3bf71c2821b06ccf.spv": "812c831f0b3a08ef3656637179dba19f11c93b75e79cd5b15a189c6d031f5241",
+    "game/src/game/fx/shaders/nrd/2b8b6ea34ed6576fdb39bb0460805dae4792e4b6fac25b0b1e025c5c612520b6.spv": "5eb867e1f8625b3217d99cb7422189373b2187c3583f2a8ba84890b7fa4975d5",
     "game/src/game/fx/shaders/nrd/9a1d91ac648fcf58a4c31f2ac0e7c3fdd40916a635a860230d930b188498ffce.spv": "db02f2dfb155c0a8f70e7cc7ea733353091aa1c5efe93eb898865aa7385fef85",
+    "game/src/game/fx/shaders/nrd/2141ecb11b9a795bd4de791c95fbb54751863a3908d08002d1af63ef23d5e5b9.spv": "488ce5f7fdf20b7d0245aa91013c96d6c157cb70e5f7fc055dc3f5a7e46e770c",
     "game/src/game/fx/shaders/nrd/1cc53bfca39baf58b0dac149fda5e53be1a36d88fac31f63d9a44395e3a99119.spv": "bf46d778049865e8848aa276508d2165fac4ff81c47faf43205864696fb1c46d",
+    "game/src/game/fx/shaders/nrd/ecf3697d6beea2a4b476bb7b2074dc31225f43917dc0750fe2245d04958d2691.spv": "15acaab55f56b5b5ca8efd7137dd699ced601e2beb8c29907450c0c27e5b1493",
     "game/src/game/fx/shaders/nrd/c5adcabda307bdb3e08681b16e1d2304ebd93eadca46871c273452e5b021b052.spv": "8d697d5a400db9812cf29d1458b2524c73eadc80422b544611d1b1c4e6ec8fbd",
-    "game/src/game/fx/shaders/nrd/pack.spv": "5c8c6a9bd846efe93e3297693ce6ee373b233b5a2e089972190dc56eeb260e69",
-    "game/src/game/fx/shaders/nrd/resolve.spv": "031776416d2b8c417ad3375b7a2e4b7c82db40b5c820e82a3af12b3f1148e199"
+    "game/src/game/fx/shaders/nrd/pack.spv": "3c0d4cdedd917e5e4ded5c1394c68c3c75d49c635695bb68b5da4323466c96fe",
+    "game/src/game/fx/shaders/nrd/resolve.spv": "5800f09e1ff1315d71d993449e4e24dac05fdd4b1a0c9bb99a6fe8e7615a51f7",
+    "game/src/game/fx/shaders/nrd/pack_sh.spv": "2614cd8504de3aaf8dd3014dbc1e8e265a5c2131a28bdb864c7a6f5552072f2f",
+    "game/src/game/fx/shaders/nrd/resolve_sh.spv": "dfae73b77e99fb878d3d593afd9fc7ca676b9b3a27275f66ed36ccce1341efd8"
   },
   "layouts": {
     "e1e3844a6842b2eff161cb9dc9e368af1df7c661b99f845d333207686625882f": {
@@ -96,6 +106,26 @@
         2
       ]
     },
+    "d42a979a04870f7db63d38bc7bcd0e029f147970cb8b88195f9b61594238e966": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "1": [
+        2
+      ]
+    },
     "5184961aaa05e6230d7c0a269308ba95039ad22bdee9994c0b5e07d7adf5d665": {
       "0": [
         3,
@@ -120,6 +150,30 @@
         26,
         27,
         28
+      ],
+      "1": [
+        2
+      ]
+    },
+    "899d0cd0a25f2a09e293ddbdbc92383e5098d782f3fcd43e014b6c3a60cb1c2b": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
       ],
       "1": [
         2
@@ -188,6 +242,51 @@
         2
       ]
     },
+    "fb4a9713c68a7b4e6583c79831b48596abbd14ab25ea0105146bb66b973be7d8": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "1": [
+        2
+      ]
+    },
+    "cb4f3795d4b892a7299f1e12adc1f78414fc8e954da58c642a8b5d6311bd1bde": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "1": [
+        2
+      ]
+    },
     "e195a79737e3d10ab29d317a3899e56cf07d2d79d0f13540fa521bf39850c107": {
       "0": [
         3,
@@ -203,6 +302,25 @@
         2
       ]
     },
+    "3a6b20e6c3f2f8d7c57c1207ddf1a40aaf479ef37254368075f04e464d77f488": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "1": [
+        2
+      ]
+    },
     "739fd9d395ced8c7dfaf3edc8db9f408a08f08c316485e7c3bf71c2821b06ccf": {
       "0": [
         3,
@@ -210,6 +328,22 @@
         20,
         21,
         22
+      ],
+      "1": [
+        2
+      ]
+    },
+    "2b8b6ea34ed6576fdb39bb0460805dae4792e4b6fac25b0b1e025c5c612520b6": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        20,
+        21,
+        22,
+        23,
+        24
       ],
       "1": [
         2
@@ -248,6 +382,45 @@
         2
       ]
     },
+    "2141ecb11b9a795bd4de791c95fbb54751863a3908d08002d1af63ef23d5e5b9": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "1": [
+        0,
+        1,
+        2
+      ]
+    },
     "1cc53bfca39baf58b0dac149fda5e53be1a36d88fac31f63d9a44395e3a99119": {
       "0": [
         3,
@@ -266,6 +439,34 @@
         27,
         28,
         29
+      ],
+      "1": [
+        1,
+        2
+      ]
+    },
+    "ecf3697d6beea2a4b476bb7b2074dc31225f43917dc0750fe2245d04958d2691": {
+      "0": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31
       ],
       "1": [
         1,
@@ -318,6 +519,45 @@
         11,
         12,
         13
+      ]
+    },
+    "pack_sh": {
+      "0": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    "resolve_sh": {
+      "0": [
+        1,
+        3,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        17,
+        18
       ]
     }
   },

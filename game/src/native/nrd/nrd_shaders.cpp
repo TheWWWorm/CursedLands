@@ -1,9 +1,9 @@
 #include <NRD.h>
 #include <cstdio>
 int main() {
-    nrd::DenoiserDesc denoiser{0, nrd::Denoiser::REBLUR_DIFFUSE_SPECULAR};
+    nrd::DenoiserDesc denoisers[] = {{0, nrd::Denoiser::REBLUR_DIFFUSE_SPECULAR}, {1, nrd::Denoiser::REBLUR_DIFFUSE_SPECULAR_SH}};
     nrd::InstanceCreationDesc creation{};
-    creation.denoisers = &denoiser; creation.denoisersNum = 1;
+    creation.denoisers = denoisers; creation.denoisersNum = 2;
     nrd::Instance *instance = nullptr;
     if (nrd::CreateInstance(creation, instance) != nrd::Result::SUCCESS) return 1;
     const auto &desc = *nrd::GetInstanceDesc(*instance);
