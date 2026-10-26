@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 1.31.0 — 2026-10-26
+
+- Light spell particles and impacts in conventional rendering and path tracing, with bounded intensity, range and lifetime. Healing uses blue-violet light matching its particles; effects across both campaigns share the same bounded light pool.
+- Rasterize interface text and tutorial book icons at their displayed scale, and centre the book artwork within its control. Retain readable padding and layout across normal, 1440p and 4K displays in English, Russian and German.
+- Select weapon-appropriate combat readiness after spell casts and hit reactions, including knives, while preserving queued posture transitions.
+- Preserve path-tracing preparation through camera recentring during loads. Reuse immutable compute programs and prepare lightning vertex layouts and emitter variants before their first visible use.
+- Add optional Directional NRD denoising, retaining Radiance as the default, and extend path-traced water reflections with shared material lighting and denoising.
+- Add optional standard DLSS Ray Reconstruction for the main path-traced view on supported Windows Direct3D 12 systems using DLSS/DLAA and Responsive accumulation. Unsupported configurations retain the selected NRD mode.
+- Add optional RTXDI ReSTIR direct-light sampling with bounded history and fresh visibility checks. It works with radiance or directional NRD, SHaRC and Ray Reconstruction; Still accumulation retains the reference sampler.
+- Add optional path-traced refraction for finite water surfaces and explicitly authored glass, with bounded dielectric transmission and absorption. Existing water composition and the Off path remain available.
+
 ## 1.30.0 — 2026-10-26
 
 - Add an optional SHaRC radiance cache for experimental path tracing, with translated settings and fallback to ordinary path tracing.
