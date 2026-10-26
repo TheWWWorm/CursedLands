@@ -2431,7 +2431,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 109,
       "quick": false,
-      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -2451,7 +2451,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 113,
       "quick": false,
-      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -9214,6 +9214,174 @@
         "res/figures.res",
         "res/textures.res"
       ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_caption_4k_base_en",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "marker": "MENU_CAPTION_4K",
+      "min_checks": 160,
+      "quick": false,
+      "description": "Original painted lettering gains displayed edge contrast at native 1080p, 1440p and 4K; fidelity, hover, picking, actual paused Escape, reopening and Options remain intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--menu-locale=en"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_caption_4k_astral_en",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "marker": "MENU_CAPTION_4K",
+      "min_checks": 160,
+      "quick": false,
+      "description": "Original painted lettering gains displayed edge contrast at native 1080p, 1440p and 4K; fidelity, hover, picking, actual paused Escape, reopening and Options remain intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--menu-locale=en"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zonezero.mob",
+        "maps/zonezero.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_caption_4k_base_ru",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "marker": "MENU_CAPTION_4K",
+      "min_checks": 160,
+      "quick": false,
+      "description": "Original painted lettering gains displayed edge contrast at native 1080p, 1440p and 4K; fidelity, hover, picking, actual paused Escape, reopening and Options remain intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_caption_4k_astral_ru",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "marker": "MENU_CAPTION_4K",
+      "min_checks": 160,
+      "quick": false,
+      "description": "Original painted lettering gains displayed edge contrast at native 1080p, 1440p and 4K; fidelity, hover, picking, actual paused Escape, reopening and Options remain intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zonezero.mob",
+        "maps/zonezero.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_caption_4k_base_de",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "marker": "MENU_CAPTION_4K",
+      "min_checks": 160,
+      "quick": false,
+      "description": "Original painted lettering gains displayed edge contrast at native 1080p, 1440p and 4K; fidelity, hover, picking, actual paused Escape, reopening and Options remain intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--menu-locale=de"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "issues": [],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_caption_4k_astral_de",
+      "category": "interface",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "marker": "MENU_CAPTION_4K",
+      "min_checks": 160,
+      "quick": false,
+      "description": "Original painted lettering gains displayed edge contrast at native 1080p, 1440p and 4K; fidelity, hover, picking, actual paused Escape, reopening and Options remain intact.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--menu-locale=de"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr",
+        "maps/zonezero.mob",
+        "maps/zonezero.mpr"
+      ],
+      "issues": [],
       "display": "rendered"
     }
   ]

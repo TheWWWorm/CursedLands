@@ -1,11 +1,42 @@
 class_name MenuCaptions
 extends RefCounted
 ## The lettering is original artwork, including its bevel, shadow and stone.
-## Reconstruct that atlas once with Lanczos rather than stretching its 256²
-## texels with bilinear filtering at desktop resolutions. Never redraw glyphs
-## or paint over their backgrounds. Native geometry, UVs and materials stay.
+## Recover edge contrast in its native samples before reconstructing the atlas.
+## Lanczos alone enlarges the painted blur along with the glyphs at 4K. The
+## bounded, luminance-only correction retains the original shapes and relief;
+## no replacement font, repainted background or extra rendering pass is used.
 
-const CACHE := &"menu_caption_enlargement"
+const CACHE := &"menu_caption_edge_enlargement"
+
+
+static func _edges(image: Image) -> Image:
+	var out := image.duplicate() as Image
+	var w := image.get_width()
+	var h := image.get_height()
+	for y in h:
+		for x in w:
+			var c := image.get_pixel(x, y)
+			if c.a < 0.99: continue
+			var n := image.get_pixel(x, maxi(0, y - 1))
+			var s := image.get_pixel(x, mini(h - 1, y + 1))
+			var e := image.get_pixel(mini(w - 1, x + 1), y)
+			var v := image.get_pixel(maxi(0, x - 1), y)
+			# Keep alpha silhouettes and their transparent RGB padding untouched.
+			if minf(minf(n.a, s.a), minf(e.a, v.a)) < 0.99: continue
+			var l := c.get_luminance()
+			var ln := n.get_luminance()
+			var ls := s.get_luminance()
+			var le := e.get_luminance()
+			var lv := v.get_luminance()
+			var lo := minf(l, minf(minf(ln, ls), minf(le, lv)))
+			var hi := maxf(l, maxf(maxf(ln, ls), maxf(le, lv)))
+			# Leave quiet stone grain alone. Sharpen the existing bright/dark
+			# painted edges, with a cap that protects the palette and bevels.
+			var delta := clampf((l - (ln + ls + le + lv) * 0.25) * 0.55
+				* smoothstep(0.12, 0.32, hi - lo), -0.12, 0.12)
+			out.set_pixel(x, y, Color(clampf(c.r + delta, 0.0, 1.0),
+				clampf(c.g + delta, 0.0, 1.0), clampf(c.b + delta, 0.0, 1.0), c.a))
+	return out
 
 
 static func enlarged(source: Texture2D) -> Texture2D:
@@ -19,7 +50,11 @@ static func enlarged(source: Texture2D) -> Texture2D:
 	image.clear_mipmaps()
 	# Keep alpha-tested edges clean without changing any opaque artwork.
 	image.fix_alpha_edges()
-	var factor := minf(4.0, 1024.0 / maxi(image.get_width(), image.get_height()))
+	image = _edges(image)
+	# Eight samples per original texel keep the reconstructed edges resolved
+	# when the small original atlas covers a 2160-pixel-tall menu. Existing HD
+	# mod textures (1024+) keep their authored pixels and original mip chain.
+	var factor := minf(8.0, 2048.0 / maxi(image.get_width(), image.get_height()))
 	image.resize(roundi(image.get_width() * factor), roundi(image.get_height() * factor), Image.INTERPOLATE_LANCZOS)
 	image.generate_mipmaps()
 	var texture := ImageTexture.create_from_image(image)

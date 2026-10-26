@@ -1,0 +1,128 @@
+{
+  "git_head": "ea1919d6a75f57b55f993adcf0aaa472e6545e18",
+  "game_source_sha256": "1eaf4f76832ce590e0fac9adad8d3d110ac2e446636360bac5f5f766e2ae58c6",
+  "manifest_sha256": "af58c23ea9b09faef42cecf9d2e891801f215391fbda9561d38846ab2484ecca",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/runtime/CursedLands.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app",
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "menu_captions_astral_ru",
+      "script": "tools/tests/menu_caption_quality.gd",
+      "script_sha256": "88b6b88ac8535765ef7b2086dc37342bd4af6a7f82e772a65ef086ba4d89cbd2",
+      "contract": "Original caption artwork retains its glyphs, colors and relief with sharper enlargement in the main menu, actual paused Escape menu and Options; animation and input remain functional.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 46.74,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "300",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_captions_astral_ru/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_captions_astral_ru/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_captions_astral_ru/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/runtime/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_captions_astral_ru/tools/tests/menu_caption_quality.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_captions_astral_ru/tools/tests",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--menu-locale=ru"
+      ],
+      "log": "menu_captions_astral_ru/run.log",
+      "passed": true,
+      "result": {
+        "checks": 71,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "menu_caption_4k_astral_ru",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "script_sha256": "32660619a34ffd954744b220686f0d36f5123c55359c0a8ca88521256dd20687",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 53.75,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_caption_4k_astral_ru/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_caption_4k_astral_ru/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_caption_4k_astral_ru/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/runtime/CursedLands.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_caption_4k_astral_ru/tools/tests/menu_caption_4k.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/candidate-first/menu_caption_4k_astral_ru/tools/tests",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=rendered",
+        "--menu-locale=ru"
+      ],
+      "log": "menu_caption_4k_astral_ru/run.log",
+      "passed": true,
+      "result": {
+        "checks": 169,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/menu-clarity-fix-20261026/runtime/CursedLands.pck",
+    "sha256": "aff5b5b40eb23328b9c91cbfb758b5782fcedabb60b095ab9d9b2f815c07c3e6"
+  },
+  "passed": true
+}

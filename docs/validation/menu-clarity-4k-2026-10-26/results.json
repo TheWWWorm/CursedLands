@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-26",
+  "source_before": "ea1919d6a75f57b55f993adcf0aaa472e6545e18",
+  "cases": [
+    {
+      "suite": "candidate-first",
+      "id": "menu_captions_astral_ru",
+      "passed": true,
+      "result": {
+        "checks": 71,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "candidate-first",
+      "id": "menu_caption_4k_astral_ru",
+      "passed": true,
+      "result": {
+        "checks": 169,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "base-acceptance",
+      "id": "menu_captions_base_en",
+      "passed": true,
+      "result": {
+        "checks": 67,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "base-acceptance",
+      "id": "menu_captions_base_ru",
+      "passed": true,
+      "result": {
+        "checks": 67,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "base-acceptance",
+      "id": "menu_captions_base_de",
+      "passed": true,
+      "result": {
+        "checks": 67,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "base-acceptance",
+      "id": "menu_caption_4k_base_en",
+      "passed": true,
+      "result": {
+        "checks": 175,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "base-acceptance",
+      "id": "menu_caption_4k_base_ru",
+      "passed": true,
+      "result": {
+        "checks": 175,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "base-acceptance",
+      "id": "menu_caption_4k_base_de",
+      "passed": true,
+      "result": {
+        "checks": 175,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "astral-acceptance",
+      "id": "menu_captions_astral_en",
+      "passed": true,
+      "result": {
+        "checks": 71,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "astral-acceptance",
+      "id": "menu_captions_astral_de",
+      "passed": true,
+      "result": {
+        "checks": 71,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "astral-acceptance",
+      "id": "menu_caption_4k_astral_en",
+      "passed": true,
+      "result": {
+        "checks": 169,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "astral-acceptance",
+      "id": "menu_caption_4k_astral_de",
+      "passed": true,
+      "result": {
+        "checks": 169,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "forward-acceptance",
+      "id": "menu_caption_4k_base_en",
+      "passed": true,
+      "result": {
+        "checks": 175,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "forward-acceptance",
+      "id": "menu_caption_4k_astral_ru",
+      "passed": true,
+      "result": {
+        "checks": 169,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "related-acceptance",
+      "id": "menu_alignment_base",
+      "passed": true,
+      "result": {
+        "checks": 51,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "related-acceptance",
+      "id": "menu_alignment_astral",
+      "passed": true,
+      "result": {
+        "checks": 51,
+        "failures": 0
+      },
+      "errors": []
+    },
+    {
+      "suite": "related-acceptance",
+      "id": "menu_clarity_related_pause_menu_clock",
+      "passed": false,
+      "result": {
+        "checks": 25,
+        "failures": 2
+      },
+      "errors": [
+        "FAIL reopened menu plays its full duration at scale 1.000",
+        "FAIL reopened menu plays its full duration at scale 2.037",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ]
+    },
+    {
+      "suite": "related-acceptance",
+      "id": "menu_clarity_related_pause_menu_frames",
+      "passed": true,
+      "result": {
+        "checks": 28,
+        "failures": 0
+      },
+      "errors": []
+    }
+  ],
+  "passing_assertions": 1945,
+  "4k_displayed_edge_energy_ratio": {
+    "min": 1.28524786597701,
+    "max": 1.63381967327056,
+    "samples": 84
+  },
+  "native_artwork_mae": {
+    "min": 0.01323568059786,
+    "max": 0.02653171121744,
+    "existing_limit": 0.035
+  },
+  "clock_30fps_baseline": "Same two reopened-duration assertions fail on unchanged source and candidate; 60-Hz invocation retains all 25 assertions and passes.",
+  "production_source_changes": [
+    "game/src/ui/menu_captions.gd"
+  ],
+  "player_visible_text_changed": false,
+  "new_test_registered_both_runners": true,
+  "clock_60hz": {
+    "gpu_job": "a7dd0bda4e0a4840",
+    "checks": 25,
+    "failures": 0,
+    "fixture_change": "Scratch wrapper selects the existing 60-FPS option, then calls the unchanged clock fixture. No assertion/tolerance edits."
+  },
+  "original": {
+    "version": "LiA official 1.02",
+    "exe_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+    "new_wine_menu_capture": "original-main-1.02.png",
+    "fresh_run": "Loaded original main menu and entered campaign in Wine 11.20 via GPU Lab; unrelated GDI Russian prose used western code page. The 8-minute native suite timed out before a fresh settled Escape capture.",
+    "existing_escape_comparison": "../menu-patrol-text-2026-10-25/README.md documents the original 1.00 Escape/Options execution under Wine.",
+    "menus_archive_matches_original_disc": true,
+    "harness_setup": "Copied only the writable LiA seed/profile and thin game sandbox; populated missing Wine builtins from the shared verified runtime. E: maps to the registered owned CD2 reference. Its EICD2 media label differs from the seed EICAD2 expectation, so this suite registry explicitly uses the mounted EICD2 label. Shared runtime, seed and game data were unchanged."
+  },
+  "identity": {
+    "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "pck_sha256": "aff5b5b40eb23328b9c91cbfb758b5782fcedabb60b095ab9d9b2f815c07c3e6",
+    "baseline_pck_sha256": "a51b117312dc7030aec4f7186702e770e73b34f7cb01be2b46aae5e0f2e31230",
+    "source_sha256": "baa50dc169ecadc33a538cda1fe2f5c40e71615736e36bdb0c2228782784a9cc",
+    "test_sha256": "32660619a34ffd954744b220686f0d36f5123c55359c0a8ca88521256dd20687"
+  },
+  "limits": [
+    "Linux OpenGL and Vulkan were rendered; native Windows, browser, macOS and Android were not executed for this change.",
+    "This restores painted-edge contrast and sampling resolution; it does not invent missing detail or replace the original font.",
+    "The existing clock fixture has two reopened-duration failures at the runner 30-FPS setting on both unchanged source and candidate. It retains all 25 assertions and passes with the existing 60-FPS option.",
+    "Initial negative-control setup omitted the installer helper shared library. A second unchanged-source run with the complete runtime reproduced all 30 new clarity failures, with no game errors."
+  ]
+}

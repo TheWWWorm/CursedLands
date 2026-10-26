@@ -2056,6 +2056,90 @@
       "contract": "Deep PT with SHaRC and actual RTXDI prepares both emitter states before gameplay; appearing, moving and expiring emission compiles no new programs.",
       "rendering_method": "forward_plus",
       "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_base_en",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=en"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_astral_en",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=en"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_base_ru",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_astral_ru",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_base_de",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=de"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_astral_de",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=de"
+      ],
+      "min_checks": 160,
+      "timeout": 420
     }
   ]
 }
