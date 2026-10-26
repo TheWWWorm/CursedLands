@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.31.1 — 2026-10-26
+
+- Restore the complete offline wiki in the standalone browser download; check the archive’s wiki file set and contents against the committed site.
+
 ## 1.31.0 — 2026-10-26
 
 - Light spell particles and impacts in conventional rendering and path tracing, with bounded intensity, range and lifetime. Healing uses blue-violet light matching its particles; effects across both campaigns share the same bounded light pool.
