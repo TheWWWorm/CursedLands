@@ -52,6 +52,8 @@ func frame_bytes() -> int: return FRAME_BYTES
 func instance_id(geometry_index: int, _placement_index: int) -> int: return geometry_index
 func build_extra(_data: PackedByteArray, _placements: Array) -> bool: return true
 
+func reflection_output() -> Texture2DRD: return output
+
 func output_ready() -> bool:
 	return not _closed and _ready and output.texture_rd_rid.is_valid()
 

@@ -1,0 +1,478 @@
+{
+  "component": "PT lighting in water reflections",
+  "status": "passed: Vulkan/DX12 transport, native 4K targets and campaign controller; related regressions and EN/RU/DE help",
+  "base_commit": "07977801",
+  "tests": [
+    {
+      "case": "water-related-path_trace_water_options",
+      "job": "9197dd704d214d04",
+      "summary": [
+        "PT_WATER_OPTIONS 28 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "cca7f90a39fde4a04ad2e52198c735118d2b04c178c8c0ee090f1c1ff87992bb",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "4607199ee247ebd4d7e3d471d9d555180add29621cee7872cec22f174428b17e",
+        "CursedLands.pck": "25450b680781520f06c059f70d853050ca3c10f2661c7fb1057a56f22c479301",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water-related-water_raytrace_quality",
+      "job": "9197dd704d214d04",
+      "summary": [
+        "WATER_RT_DEVICE 50 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "5eeefe5f9a6efddca35f398151e143f6821853d469d45a2fa80685893b94db01",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "4607199ee247ebd4d7e3d471d9d555180add29621cee7872cec22f174428b17e",
+        "CursedLands.pck": "25450b680781520f06c059f70d853050ca3c10f2661c7fb1057a56f22c479301",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water-related-path_trace_nrd_directional",
+      "job": "9197dd704d214d04",
+      "summary": [
+        "SCENE_RT_DEVICE 21 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "3d4e2fee691a581f2edbaec8a683137875ba0a8bacf69c47dc776726191f9349",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "4607199ee247ebd4d7e3d471d9d555180add29621cee7872cec22f174428b17e",
+        "CursedLands.pck": "25450b680781520f06c059f70d853050ca3c10f2661c7fb1057a56f22c479301",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water-related-path_trace_lifecycle",
+      "job": "9197dd704d214d04",
+      "summary": [
+        "SCENE_RT_DEVICE 169 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "54ee12f2c537359133baed95a1e04701fd25224b867e98fb821409d83943b40c",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "4607199ee247ebd4d7e3d471d9d555180add29621cee7872cec22f174428b17e",
+        "CursedLands.pck": "25450b680781520f06c059f70d853050ca3c10f2661c7fb1057a56f22c479301",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water3-regression-path_trace_water",
+      "job": "f31f8d64d3534a8c",
+      "summary": [
+        "PATH_TRACE_WATER 22 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "6954c23cca62b0e1c718b7c55f6a3cc46932c784e703da7ef8aaf9370883a327",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "d6e9b94de339dd8feabf341b6e8ac11c930c4bb88b5001eb34ab7287fad8f59b",
+        "CursedLands.pck": "ebf9a393dbc2353012ec91b2076dffc28cc3ba1b1c58c0f40d0aff6b4c51d7e1",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water3-regression-water_raytrace_live",
+      "job": "f31f8d64d3534a8c",
+      "summary": [
+        "WATER_RT_LIVE 15 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "626051845f8280656a2fe5731e6d10727a2848d27e5c2f9cd4b7622006bc144a",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "d6e9b94de339dd8feabf341b6e8ac11c930c4bb88b5001eb34ab7287fad8f59b",
+        "CursedLands.pck": "ebf9a393dbc2353012ec91b2076dffc28cc3ba1b1c58c0f40d0aff6b4c51d7e1",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water3-regression-water_raytrace_rebuild",
+      "job": "f31f8d64d3534a8c",
+      "summary": [
+        "WATER_RT_REBUILD 16 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "5d2968e4d4943525546a8474aae1caff00191dd3b41a420e7e42089dd01cd3fe",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "d6e9b94de339dd8feabf341b6e8ac11c930c4bb88b5001eb34ab7287fad8f59b",
+        "CursedLands.pck": "ebf9a393dbc2353012ec91b2076dffc28cc3ba1b1c58c0f40d0aff6b4c51d7e1",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water3-linux-path_trace_water_live",
+      "job": "bc5e4fdd5882453d",
+      "summary": [
+        "PATH_TRACE_WATER_LIVE 16 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "2e83a5e95a6b71e9744c1b2659aca31dc73317b64ff948c823d680c2c55d2ee3",
+      "runtime_sha256": {
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+        "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "runtime-provenance.json": "d6e9b94de339dd8feabf341b6e8ac11c930c4bb88b5001eb34ab7287fad8f59b",
+        "CursedLands.pck": "ebf9a393dbc2353012ec91b2076dffc28cc3ba1b1c58c0f40d0aff6b4c51d7e1",
+        "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+        "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+        "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+        "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+        "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+        "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+        "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+      }
+    },
+    {
+      "case": "water3-windows-path_trace_water",
+      "job": "e2141f7ba83340e1",
+      "summary": [
+        "PATH_TRACE_WATER 22 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "38a704ceb09c9ae54d62c1ab9ab0aa92a5841534309f1c0fa86d495bc11fb017",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "90678480eba232504b9974c5bc3e84e52237df7c779d09a7bd650b40452ca28e",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "9f74baa65f56d3201632ee6327bb76750f001b50212060990ae016836bd9d891",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      }
+    },
+    {
+      "case": "water3-windows-path_trace_water_live",
+      "job": "bbb33183f7fa4567",
+      "summary": [
+        "PATH_TRACE_WATER_LIVE 16 checks 0 failures"
+      ],
+      "exit": 0,
+      "errors": [],
+      "fixture_sha256": "47f444023f149d0109d6363f8ae2d3f4c821beea4e5339a45c30e6ab3bd4b26d",
+      "runtime_sha256": {
+        "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+        "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+        "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "runtime-provenance.json": "90678480eba232504b9974c5bc3e84e52237df7c779d09a7bd650b40452ca28e",
+        "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+        "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+        "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+        "CursedLands.pck": "9f74baa65f56d3201632ee6327bb76750f001b50212060990ae016836bd9d891",
+        "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+        "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+        "CursedLands.exe": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70",
+        "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+        "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+        "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+        "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+        "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+        "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+        "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+        "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+      }
+    }
+  ],
+  "images": {
+    "water-rt-world.png": "95a16c03194db8a3fe88f3e384c57f7288cb5a153a53409d67d9abae9a1bb116",
+    "water-pt-world.png": "0ac373a36f18ee0ce28d68eb348aaad04ea4a8887631f0121f142f441870f66b",
+    "water-pt-directional-world.png": "ea33bb648852d3298ad29012ba57cae0d1e9b04c7eb5596f2630be2ffde1ba00",
+    "water-emissive-bounce.png": "7d9cec74d244a1166264839dd790d7142b685878fbf3fe805ff5e5e36a172cbd",
+    "water-help-en-2560x1440.png": "9468b70d68b6ac2ec38d249f5800c27f3a68292958a08d114734cffad7cf6289",
+    "water-help-en-3840x2160.png": "1cb616f922a0b8f7b42f0e21fe812547acc4a4c439f3ff050c4c2bf2f6e45185",
+    "water-help-ru-2560x1440.png": "9baf1b528f6d64a8572dc7c5fb85dea86fc4cd0a0f11caa9e4070fec498d5f37",
+    "water-help-ru-3840x2160.png": "b7b33a021c28d985378e80a746c6b2f0c59649b0ce0886b1a59f58edad9cd94d",
+    "water-help-de-2560x1440.png": "2127d1662c82ee7b4b90d948600b0b29191fd0ed30de71905c30a31124c58ba6",
+    "water-help-de-3840x2160.png": "aae2b9afab9f20b8ea2b7e6653e33d428b210d573586d634674c504fe8d163f1"
+  },
+  "failed_attempts": [
+    {
+      "job": "ec69e8912b474395",
+      "reason": "Shader-stage frame sizes differed; moved water parameters to a dedicated uniform block."
+    },
+    {
+      "job": "cf03f4b4397e4461",
+      "reason": "Same interface mismatch on DX12; corrected by the shared shader fix."
+    },
+    {
+      "job": "44cb78aaa7654ded",
+      "reason": "19 transport checks passed; next process failed at Vulkan device creation before loading the test. Re-run in a fresh GPU Lab job passed the complete campaign suite."
+    }
+  ],
+  "observations": {
+    "checks": 22,
+    "failures": [],
+    "measured": {
+      "legacy_bank": "(0.0, 0.0, 0.0, 1.0)",
+      "primary_emission": "(2.0, 0.5, 0.25, 1.0)",
+      "red_bounce": "(0.3341, 0.0, 0.0, 1.0)",
+      "underwater_emission": "(0.0, 0.4064, 0.0, 1.0)"
+    }
+  },
+  "campaign": {
+    "checks": 16,
+    "failures": [],
+    "stages": [
+      {
+        "hits": 31100,
+        "label": "water-rt",
+        "stats": {
+          "active": true,
+          "build": {
+            "extra_ms": 0.03,
+            "largest_step_ms": 0.707,
+            "materials_ms": 2.198,
+            "placements_ms": 2.488,
+            "program_ms": 340.913,
+            "resources_ms": 373.678,
+            "texture_upload_ms": 5.787,
+            "texture_upload_step_ms": 0.571,
+            "textures_ms": 0.037,
+            "vertices_ms": 28.005
+          },
+          "geometries": 2040,
+          "instances": 2171,
+          "lights": 1,
+          "native_scene": true,
+          "path_traced": false,
+          "quality": 0,
+          "radius": 96.0,
+          "rebuilding": false,
+          "samples_per_pixel": 4,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "texture_anisotropy": 16,
+          "textures": 46,
+          "triangles": 147395,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        }
+      },
+      {
+        "hits": 31100,
+        "label": "water-pt",
+        "stats": {
+          "active": true,
+          "bounces": 2,
+          "build": {
+            "extra_ms": 5.364,
+            "largest_step_ms": 0.77,
+            "materials_ms": 1.795,
+            "placements_ms": 2.154,
+            "program_ms": 3771.525,
+            "resources_ms": 3790.357,
+            "texture_upload_ms": 6.684,
+            "texture_upload_step_ms": 0.66,
+            "textures_ms": 5.611,
+            "vertices_ms": 3.904
+          },
+          "geometries": 2040,
+          "instances": 2171,
+          "lights": 1,
+          "native_scene": true,
+          "nrd_directional": false,
+          "path_traced": true,
+          "quality": 0,
+          "radius": 96.0,
+          "rebuilding": false,
+          "samples_per_pixel": 4,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "texture_anisotropy": 16,
+          "textures": 46,
+          "triangles": 150449,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        }
+      },
+      {
+        "hits": 31100,
+        "label": "water-pt-directional",
+        "stats": {
+          "active": true,
+          "bounces": 4,
+          "build": {
+            "extra_ms": 5.364,
+            "largest_step_ms": 0.77,
+            "materials_ms": 1.795,
+            "placements_ms": 2.154,
+            "program_ms": 3771.525,
+            "resources_ms": 3790.357,
+            "texture_upload_ms": 6.684,
+            "texture_upload_step_ms": 0.66,
+            "textures_ms": 5.611,
+            "vertices_ms": 3.904
+          },
+          "geometries": 2040,
+          "instances": 2171,
+          "lights": 10,
+          "native_scene": true,
+          "nrd_directional": true,
+          "path_traced": true,
+          "quality": 0,
+          "radius": 96.0,
+          "rebuilding": false,
+          "samples_per_pixel": 4,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "texture_anisotropy": 16,
+          "textures": 46,
+          "triangles": 150449,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        }
+      }
+    ]
+  },
+  "implementation_sha256": {
+    "game/src/ei/game_data.gd": "48fdb989cb537aafba4f7c2f824bd4f541be7c333066916c82ea351a19393234",
+    "game/src/ei/remake_text.gd": "410351f0bdca2d7387099a2a3081647525cbde5794b970e6c684d222be0425b6",
+    "game/src/game/fx/scene_raytrace.gd": "f6c92b82dc19044c20d9b7de8aada879c53478d616542a2686bc3355670d9af8",
+    "game/src/game/fx/shaders/path_trace.hlsl": "7edc133be51270a6996446200a60779946cdd59624d1823554584231ac44010f",
+    "game/src/game/fx/shaders/path_trace_build.json": "a3d443716bda91db8cbe41042b2a26064b575633de585cc405245e0c7f8cd917",
+    "game/src/game/fx/shaders/path_trace_sharc_build.json": "fab8e15b9519d62d30229d3821265944dccec46d7b17cf3afe15fd24d4fec953",
+    "game/src/game/fx/shaders/scene_raytrace_build.json": "b572da70fca88ead4b5ca5d57d4e26549cf30ed973b76e75ff798c3378e679a1",
+    "game/src/game/fx/shaders/water_raytrace_build.json": "2539808e0132d05a04946e7fa01fdc4572223df8f049371f2299acbc7c74f148",
+    "game/src/game/fx/water_raytrace_device.gd": "1bbd7aae292695d1ab888e2e572c6585ae2441dc59b370048fdfc0a48172e72f",
+    "game/src/game/fx/water_reflection.gd": "63185d2f8442611400e86fb74fbd6ae4edc98a39f05030d81ac5f1000f378450",
+    "tools/build_water_rt_shaders.py": "f5a77c75ec0d90461f6681460fd744dfa8bba563fbf622a0e497aa1a99923172",
+    "tools/regressions.json": "e3a6f3914199f74c9f48f52642a10d28ff3630701da041c0b3a455dd0644999f",
+    "game/src/game/fx/path_trace_water_device.gd": "a09395d946d27f09fb29502099caba4e34f5714ee788a63703432855f2eb1228",
+    "game/src/game/fx/shaders/path_trace_raygen_water.dxil": "64812925a803fffe0608b505490d1b26731629a41f29a4877c144c0086d2311b",
+    "game/src/game/fx/shaders/path_trace_raygen_water.spv": "d834864cc2c71b9d9b9dcdc3ecc285e0d547349544a3bf41116801d9d6f30adb",
+    "game/src/game/fx/shaders/path_trace_raygen_water_deep.dxil": "324657dc818fa784f4096fc6354142e681aa0687457b4c7d03cee87e2be329ee",
+    "game/src/game/fx/shaders/path_trace_raygen_water_deep.spv": "ff603131fd5fe377d9630c06bdfd5490177580b3ba0d2d4865c44ee388e640c8",
+    "game/src/game/fx/shaders/path_trace_raygen_water_deep_no_emitters.dxil": "15317e45d511bad098ca552546f6a60406aa83cbc330139a814ecf9b22edc4cc",
+    "game/src/game/fx/shaders/path_trace_raygen_water_deep_no_emitters.spv": "26e12f1087b8bdbb26c9ec6d093bd8c3a55ee17c302f50ba5ddbee5fcd18dd59",
+    "game/src/game/fx/shaders/path_trace_raygen_water_no_emitters.dxil": "48e14653562ba6e2d850c633dcbcca244a314df8ac550c2029962724eafca462",
+    "game/src/game/fx/shaders/path_trace_raygen_water_no_emitters.spv": "dc11bc491ddd80474d476ad4365576ceada67fb4ee4d489f5203defcdf481310",
+    "game/src/game/fx/shaders/path_trace_water_composite.glsl": "a3fef93909d76d3b853242680b777f2fad7b0f9225a7b151d839a3fa7cead558",
+    "tools/tests/path_trace_water.gd": "a9c8c250edd9f793aa05c41a29c19dec6a88ed91a95520fdf0a6436f20502193",
+    "tools/tests/path_trace_water_live.gd": "35235dd9a3e4cd0c76b491e12e545e06f7d2521be7928c90d10f2955d95fa16d",
+    "tools/tests/path_trace_water_options.gd": "17c77c0e1a925971fe50ebc4e5f4e5c6551ac44b53fda34e320f888b2a047cbe"
+  },
+  "validation_notes": [
+    "All test jobs ran on automatic GPU Lab virtual displays; no adapter feature spoofing.",
+    "Screenshots and frame counters are functional evidence, not benchmarks.",
+    "The final production frame producer includes rigid-instance changes in Still-scene invalidation. Related pre-change UI/NRD/legacy-RT checks do not execute that new PT-water branch.",
+    "Original-game PT comparison is inapplicable; synthetic energy/occlusion tests and the retained legacy RT shader are the references."
+  ]
+}

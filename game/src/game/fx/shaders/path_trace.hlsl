@@ -29,6 +29,12 @@
 // length); W is its energy. SHARC owns bindings 22 through 27.
 [[vk::binding(28,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_diffuse_direction : register(u2800000);
 [[vk::binding(29,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_specular_direction : register(u2900000);
+#ifdef PATH_WATER_REFLECTION
+[[vk::binding(30,0),vk::image_format("rgba16f")]] RWTexture2D<float4> water_emission_coverage : register(u3000000);
+[[vk::binding(31,0),vk::image_format("rgba16f")]] RWTexture2D<float4> water_edge_colour : register(u3100000);
+struct WaterFrame { float4 plane_fog; float4 sky; };
+[[vk::binding(32,0)]] ConstantBuffer<WaterFrame> water_frame : register(b3200000);
+#endif
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -540,6 +546,84 @@ void main() {
 #endif
         current=hit;view=-direction;
     }
+}
+#elif defined(PATH_WATER_REFLECTION)
+[shader("raygeneration")]
+void main() {
+    uint2 pixel=DispatchRaysIndex().xy;float2 size=float2(DispatchRaysDimensions().xy);
+    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+    float3 forward=-mul(frame.camera_world,float4(0,0,1,0)).xyz;
+    Surface guide=(Surface)0;
+    float3 diffuse_colour=0.0,specular=0.0,sun_colour=0.0,direct_specular=0.0;
+    float3 albedo=0.0,emission=0.0,edge_colour=0.0;
+    float4 diffuse_moment=0.0,specular_moment=0.0;
+    float diffuse_distance=0.0,specular_distance=65504.0,coverage=0.0;
+    uint hits=0u;bool mixed=false;
+    uint samples=clamp(uint(frame.settings.y),1u,16u);
+    // Preserve the existing four fixed spatial samples. Mixed silhouettes
+    // publish their exact premultiplied average, bypassing denoiser guesses
+    // across different surfaces. Interior pixels retain full PT/NRD history.
+    for(uint tap=0u;tap<4u;tap++) {
+        float2 uv=(float2(pixel)+(float2(tap&1u,tap>>1u)+0.5)*0.5)/size;
+        float4 p=mul(frame.inv_projection,float4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0));p/=p.w;
+        float3 origin=eye,direction=normalize(mul(frame.camera_world,float4(p.xyz,0)).xyz);
+        if(frame.camera.x>0.5){origin=mul(frame.camera_world,float4(p.xyz,1)).xyz;direction=forward;}
+        Surface primary=(Surface)0;
+        if(direction.y>0.00001) {
+            float entry=(water_frame.plane_fog.x-origin.y)/direction.y;
+            if(entry>0.0&&entry<frame.camera.y) {
+                RayDesc ray={origin+direction*(entry+0.025),0.001,direction,max(frame.camera.y-entry-0.025,0.001)};
+                TraceRay(scene,RAY_FLAG_NONE,1,0,0,0,ray,primary);
+            }
+        }
+        if(primary.hit<0.5){mixed=true;continue;}
+        if(hits==0u)guide=primary;
+        else if(primary.instance_id!=guide.instance_id||dot(primary.normal,guide.normal)<0.98||
+                abs(primary.roughness-guide.roughness)>0.05||abs(primary.metalness-guide.metalness)>0.05)mixed=true;
+        hits++;
+        float3 d=0.0,s=0.0,sun=0.0,ds=0.0;
+        float4 dm=0.0,sm=0.0;
+        for(uint i=0u;i<samples;i++) {
+            PathSampler sampler=path_sampler(uint(frame.settings.x)*samples+i,(pixel.x+pixel.y*uint(size.x))*4u+tap);
+            float3 one_d,one_s,one_ds,one_sun;float2 distance;float4 one_dm,one_sm;
+            path_sample(primary,-direction,sampler,one_d,one_s,distance,one_ds,one_sun,one_dm,one_sm);
+            d+=one_d;s+=one_s;ds+=one_ds;sun+=one_sun;dm+=one_dm;sm+=one_sm;
+            diffuse_distance+=distance.x/float(samples);
+            if(distance.y>0.0)specular_distance=min(specular_distance,distance.y);
+        }
+        float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+        d=max(d/float(samples),ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
+        s/=float(samples);sun/=float(samples);ds/=float(samples);
+        diffuse_colour+=d*primary.albedo;specular+=s;sun_colour+=sun*primary.albedo;direct_specular+=ds;
+        diffuse_moment+=dm/float(samples);specular_moment+=sm/float(samples);
+        albedo+=primary.albedo;emission+=primary.emission;
+        float fade=frame.center_radius.w>0.0?1.0-smoothstep(frame.center_radius.w-12.0,frame.center_radius.w,length(primary.position-frame.center_radius.xyz)):1.0;
+        float fog=saturate((dot(primary.position-eye,forward)-water_frame.plane_fog.y)/max(water_frame.plane_fog.z-water_frame.plane_fog.y,0.001));
+        edge_colour+=lerp(d*primary.albedo+s+primary.emission,water_frame.sky.rgb,fog)*fade*0.25;
+        coverage+=fade*0.25;
+    }
+    guide_image[pixel]=float4(guide.normal,hits>0u?dot(guide.position-eye,forward):0.0);
+    indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;
+    path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;path_direct_sun[pixel]=0.0;
+    path_diffuse_direction[pixel]=0.0;path_specular_direction[pixel]=0.0;
+    water_emission_coverage[pixel]=0.0;water_edge_colour[pixel]=0.0;
+    if(hits==0u)return;
+    // Demodulate only after averaging shaded samples; composing with this
+    // same average albedo preserves their colour and energy before filtering.
+    float3 diffuse=diffuse_colour/max(albedo,1e-6);
+    float3 sunlight=sun_colour/max(albedo,1e-6);
+    specular/=float(hits);direct_specular/=float(hits);albedo/=float(hits);
+    indirect_image[pixel]=float4(min(diffuse,60000.0),f16tof32(0x3c00u+guide.instance_id));
+    shadow_image0[pixel]=float4(min(specular,60000.0),1.0);
+    path_direct_specular[pixel]=float4(min(direct_specular,60000.0),0.0);
+    path_direct_sun[pixel]=float4(min(sunlight,60000.0),0.0);
+    path_diffuse_direction[pixel]=mean_direction(diffuse_moment/float(hits),max(diffuse-sunlight,0.0));
+    path_specular_direction[pixel]=mean_direction(specular_moment/float(hits),max(specular-direct_specular,0.0));
+    uint surface=uint(round(saturate(guide.roughness)*63.0))|(uint(round(saturate(guide.metalness)*31.0))<<6u);
+    shadow_image1[pixel]=float4(albedo,float(surface));
+    path_distance[pixel]=float2(diffuse_distance/float(hits),specular_distance==65504.0?0.0:specular_distance);
+    water_emission_coverage[pixel]=float4(min(emission/float(hits),60000.0),coverage);
+    water_edge_colour[pixel]=float4(min(edge_colour,60000.0),float(mixed));
 }
 #else
 [shader("raygeneration")]

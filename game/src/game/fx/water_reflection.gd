@@ -20,6 +20,8 @@ const RT_RESOLUTION_SCALES := [0.5, 0.75, 1.0]
 const RT_SAMPLE_GRID := 2
 const RayDevice = preload("res://src/game/fx/water_raytrace_device.gd")
 const RayScene = preload("res://src/game/fx/water_raytrace_scene.gd")
+const PathWater = preload("res://src/game/fx/path_trace_water_device.gd")
+const Lighting = preload("res://src/game/fx/scene_raytrace.gd")
 const CLIP := """
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
  if (!IN_SHADOW_PASS && (CAMERA_VISIBLE_LAYERS & 1048576u) != 0u &&
@@ -43,6 +45,13 @@ var _rt_pending: RayDevice
 var _rt_pending_scene: RayScene
 var _rt_pending_ready := false
 var _rt_pending_plane := INF
+var _rt_path_mode := false
+# Off-tree frame producers share the main view's sky, cloud, local-light and
+# history contracts. They never process, build a scene or publish main-view
+# globals. Each reflected generation owns its own reprojection state.
+var _rt_frame: Lighting
+var _rt_pending_frame: Lighting
+var _frame_delta := 1.0/60.0
 var _rt_build_stage := -1
 var _rt_geometries := []
 var _rt_placements := []
@@ -121,7 +130,7 @@ func _active() -> bool:
 
 
 func _sync_settings() -> void:
-	var settings_key := "%s:%s:%s:%s" % [GameData.option("gfx_water"), GameData.option("gfx_water_reflections"), GameData.option("q_water_rt_quality"), GameData.graphics_revision]
+	var settings_key := "%s:%s:%s:%s:%s:%s:%s" % [GameData.option("gfx_water"), GameData.option("gfx_water_reflections"), GameData.option("q_water_rt_quality"), GameData.graphics_revision,GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_denoiser")]
 	if settings_key != _settings_key:
 		_finish_preparation()
 		_settings_key = settings_key
@@ -130,10 +139,14 @@ func _sync_settings() -> void:
 		# A settings request cannot acknowledge geometry gathered under the
 		# previous materials, nor wait for the ordinary topology poll interval.
 		if _rt_scene != null or _rt_pending != null: _cancel_raytrace_candidate()
+		var path_mode := GameData.option("pt_mode")>0
+		if path_mode!=_rt_path_mode:
+			_rt_path_mode=path_mode
 		_needs_preparation = Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
 
 
 func _process(dt: float) -> void:
+	_frame_delta=dt
 	_sync_settings()
 	_rt_topology_poll -= dt
 	if not _active():
@@ -317,12 +330,16 @@ func _update_raytrace(source: Camera3D) -> void:
 	# Recompiling pipelines and revealing every initially masked BLAS on its
 	# first render used to turn each recenter into an unbounded frame spike.
 	if not _rt_failed and _rt_scene == null and _rt_pending == null and (changed \
-			or source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25):
+			or source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25 or (_rt is PathWater)!=_rt_path_mode):
 		_rt_pending_plane = plane
 		_rt_scene = RayScene.new()
 		_rt_scene._sources = _rt_sources
 		_rt_scene._ground = _rt_ground
-		_rt_scene.begin(terrain,source.global_position,plane)
+		_rt_scene.path_materials=_rt_path_mode
+		if _rt_path_mode:_rt_scene.lighting_camera_mask=reflection_mask(source.cull_mask)
+		# The water plane clips only the primary reflected ray. Underwater
+		# geometry remains available to secondary paths and shadow rays.
+		_rt_scene.begin(terrain,source.global_position,-INF if _rt_path_mode else plane)
 	if _rt_scene != null and _rt_scene.step(1500 if _rt != null else 6000):
 		_queue_raytrace_candidate()
 	elif _rt_pending != null and _rt_build_stage >= 0:
@@ -336,7 +353,7 @@ func _update_raytrace(source: Camera3D) -> void:
 			_promote_raytrace_candidate()
 	if _rt_ready:
 		_render_raytrace(source,_rt,_rt_live,_rt_center)
-		terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
+		terrain._water_mat.set_shader_parameter("planar_texture",_rt.reflection_output())
 		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 		rt_stats["active"] = true
 	if _rt_pending_ready:
@@ -353,7 +370,11 @@ func _queue_raytrace_candidate() -> void:
 		rt_stats["replacement_failure"] = "snapshot_budget"
 		_cancel_raytrace_candidate()
 		return
-	_rt_pending = RayDevice.new()
+	_rt_pending = PathWater.new() if _rt_path_mode else RayDevice.new()
+	if _rt_path_mode:
+		_rt_pending.nrd.directional=GameData.option("pt_denoiser")>0
+		_rt_pending_frame=Lighting.new(terrain.game_world().get_parent() as Game)
+		_rt_pending_frame._path_mode=true;_rt_pending_frame._terrain=terrain
 	_rt_pending.programs = _rt_programs
 	_rt_pending.incremental_build = true
 	_rt_pending.prepared.connect(_raytrace_prepared.bind(_rt_pending.get_instance_id()))
@@ -367,10 +388,16 @@ func _prepare_raytrace_candidate() -> void:
 		_rt_pending.initial_poses = initial.poses
 		for geometry: Dictionary in _rt_pending_scene.geometries:
 			_rt_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,
-				"cutoff":geometry.cutoff,"standard":geometry.standard})
+				"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
+				"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
 		for entry: Dictionary in _rt_pending_scene.instances:
 			_rt_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask})
 		_rt_build_stage = 1
+	elif _rt_build_stage==1 and _rt_pending is PathWater:
+		_rt_pending.terrain.collect(_rt_pending_scene,terrain)
+		if _rt_pending_scene.failed:
+			_rt_failed=true;rt_stats["replacement_failure"]="terrain_budget";_cancel_raytrace_candidate();return
+		_rt_build_stage=2
 	else:
 		RayDevice.dispatch(_rt_pending,&"build",[_rt_pending_scene.vertices.to_byte_array(),_rt_pending_scene.images,_rt_geometries,_rt_placements])
 		_rt_geometries = []; _rt_placements = []; _rt_build_stage = -1
@@ -379,6 +406,8 @@ func _prepare_raytrace_candidate() -> void:
 
 func _promote_raytrace_candidate() -> void:
 	var previous := _rt
+	if _rt_frame!=null:_rt_frame.free()
+	_rt_frame=_rt_pending_frame;_rt_pending_frame=null
 	_rt = _rt_pending; _rt_live = _rt_pending_scene
 	_rt_center = _rt_live.center; _rt_plane = _rt_pending_plane; _rt_ready = true
 	_rt_pending = null; _rt_pending_scene = null; _rt_pending_ready = false
@@ -386,7 +415,7 @@ func _promote_raytrace_candidate() -> void:
 		"radius":RayScene.RADIUS,"geometries":_rt_live.geometries.size(),"instances":_rt_live.instances.size(),
 		"native_scene":_rt_live._kernel != null,"build":_rt.build_timings},true)
 	# Rebind before retiring the device that owns the sampled output.
-	terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
+	terrain._water_mat.set_shader_parameter("planar_texture",_rt.reflection_output())
 	if previous != null: RayDevice.dispatch(previous,&"dispose")
 
 
@@ -394,6 +423,9 @@ func _render_raytrace(source: Camera3D, target_device: RayDevice, scene: RayScen
 	var size := source.get_viewport().get_visible_rect().size
 	var quality := clampi(GameData.option("q_water_rt_quality"), 0, RT_RESOLUTION_SCALES.size() - 1)
 	var target := raytrace_target_size(size, quality)
+	if target_device is PathWater:
+		_render_path_water(target_device,scene,center,target,quality)
+		return
 	var frame := PackedFloat32Array()
 	var inverse := camera.get_camera_projection().inverse()
 	var transform := Projection(camera.global_transform)
@@ -420,33 +452,67 @@ func _render_raytrace(source: Camera3D, target_device: RayDevice, scene: RayScen
 			frame.append_array(PackedFloat32Array([0,0,0,0])); colours.append_array(PackedFloat32Array([0,0,0,0]))
 	frame.append_array(colours)
 	var changes := scene.updates()
+	_submit_frame(target_device,target,frame.to_byte_array(),changes)
+	rt_stats["path_traced"] = false
+	_update_render_stats(changes,target,quality)
+
+
+func _render_path_water(target_device: PathWater,scene: RayScene,center: Vector3,target: Vector2i,quality: int) -> void:
+	var producer := _rt_frame if target_device==_rt else _rt_pending_frame
+	if producer==null:return
+	producer._center=center;producer._lights=_rt_lights
+	producer._mode="water:%s:%s:%s:%s"%[plane,GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_denoiser")]
+	var changes := scene.updates()
+	changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+	# Four fixed primary samples each trace a continuation path. Water quality
+	# changes resolution; it does not silently multiply four into sixteen paths.
+	var bytes := producer._frame(camera,target,0,not changes.instances.is_empty() or not changes.poses.is_empty(),_frame_delta,false)
+	bytes.encode_float(67*4,1.0);bytes.encode_float(75*4,1.0)
+	var fog := Gfx.fog_sky.srgb_to_linear()
+	bytes.append_array(PackedFloat32Array([plane,Gfx.fog_depth.x,Gfx.fog_depth.y,0,fog.r,fog.g,fog.b,0]).to_byte_array())
+	RayDevice.dispatch(target_device,&"set_cloud_texture",[producer._path_cloud_texture()])
+	_submit_frame(target_device,target,bytes,changes)
+	rt_stats["path_traced"]=true;rt_stats["bounces"]=GameData.option("pt_mode")*2
+	rt_stats["nrd_directional"]=target_device.nrd_active and target_device.nrd.directional
+	_update_render_stats(changes,target,quality)
+
+
+func _submit_frame(target_device: RayDevice,target: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
 	var filtering := clampi(GameData.option("q_aniso"),0,4)
 	if _preparing and not _preparation_submitted and (target_device == _rt_pending \
 			or (target_device == _rt and _rt_scene == null and _rt_pending == null)):
 		_preparation_submitted = true
 		ShaderCompilationScreen.update(_preparation_owner, ShaderCompilationScreen.FIRST_FRAME)
-		RayDevice.dispatch(target_device,&"render_preparation",[_preparation_serial,target,frame.to_byte_array(),changes,filtering])
+		RayDevice.dispatch(target_device,&"render_preparation",[_preparation_serial,target,frame,changes,filtering])
 	else:
-		RayDevice.dispatch(target_device,&"render",[target,frame.to_byte_array(),changes,filtering])
+		RayDevice.dispatch(target_device,&"render",[target,frame,changes,filtering])
+
+
+func _update_render_stats(changes: Dictionary,target: Vector2i,quality: int) -> void:
 	rt_stats["updated_instances"] = changes.instances.size()
 	rt_stats["updated_morphs"] = changes.poses.size()
 	rt_stats["lights"] = _rt_lights.size()
 	rt_stats["size"] = [target.x,target.y]
 	rt_stats["quality"] = quality
 	rt_stats["samples_per_pixel"] = RT_SAMPLE_GRID * RT_SAMPLE_GRID
-	rt_stats["texture_anisotropy"] = 1 << filtering
+	rt_stats["texture_anisotropy"] = 1 << clampi(GameData.option("q_aniso"),0,4)
 
 
 func _collect_raytrace_lights(focus: Vector3) -> void:
 	var found := []
 	for node in get_tree().get_nodes_in_group(Gfx.POINT_LIGHT_GROUP):
 		var light := node as OmniLight3D
-		if light == null or not light.is_visible_in_tree() or light.light_energy <= 0.0: continue
+		if light == null or not light.is_visible_in_tree() or light.light_energy <= 0.0 or light.light_negative: continue
 		var distance := maxf(light.global_position.distance_to(focus)-light.omni_range,0.0)
 		if distance < RayScene.RADIUS: found.append([distance,light])
 	found.sort_custom(func(a: Array,b: Array) -> bool: return a[0] < b[0])
+	if _rt_path_mode:
+		if found.size()>Lighting.PATH_LIGHT_LIMIT:
+			found.sort_custom(func(a: Array,b: Array) -> bool:return Lighting._light_priority(a[1],focus)>Lighting._light_priority(b[1],focus))
+			found.resize(Lighting.PATH_LIGHT_LIMIT)
+		found.sort_custom(func(a: Array,b: Array) -> bool:return a[1].get_instance_id()<b[1].get_instance_id())
 	_rt_lights.clear()
-	for i in mini(found.size(),4): _rt_lights.append(weakref(found[i][1]))
+	for i in mini(found.size(),Lighting.PATH_LIGHT_LIMIT if _rt_path_mode else 4): _rt_lights.append(weakref(found[i][1]))
 
 
 func _raytrace_prepared(ok: bool, id: int) -> void:
@@ -470,6 +536,7 @@ func _raytrace_prepared(ok: bool, id: int) -> void:
 
 
 func _cancel_raytrace_candidate() -> void:
+	if _rt_pending_frame!=null:_rt_pending_frame.free();_rt_pending_frame=null
 	_rt_scene = null; _rt_pending_scene = null; _rt_pending_ready = false
 	_rt_geometries = []; _rt_placements = []; _rt_build_stage = -1
 	if _rt_pending != null:
@@ -479,6 +546,7 @@ func _cancel_raytrace_candidate() -> void:
 
 
 func _release_raytrace() -> void:
+	if _rt_frame!=null:_rt_frame.free();_rt_frame=null
 	_rt_sources.clear();_rt_ground=RayScene.Ground.new()
 	_cancel_raytrace_candidate()
 	_rt_ready = false

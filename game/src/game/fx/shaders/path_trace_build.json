@@ -1,8 +1,8 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "b8c5c42715bc4a4c517ae3809a924a72af88d649ae88771c81e8271d65cfbe61",
-  "source_sha256": "8a7577cca734f90e9d957d891a28ddcefa9d94615c9ee47b474f5da6cd2ee3a8",
+  "builder_sha256": "f5a77c75ec0d90461f6681460fd744dfa8bba563fbf622a0e497aa1a99923172",
+  "source_sha256": "7edc133be51270a6996446200a60779946cdd59624d1823554584231ac44010f",
   "files": {
     "path_trace_raygen.dxil": "2183a781771c698fe6ae82e353319037fcdeafa18774721095ff1be606facd75",
     "path_trace_raygen.spv": "c526c76f2f8858e05fa86292d76c6e23cef3e78066f4323805437e8229c454d7",
@@ -21,6 +21,14 @@
     "path_trace_closest_hit_terrain.dxil": "1e18a0a40d19522e508e96f65678d7f309cc0be905973b537ebc11383961ebe8",
     "path_trace_closest_hit_terrain.spv": "49ffeff9695e148d52ff61567c187b152c6a73525d1d310cd7601e666f120d0b",
     "path_trace_closest_hit_transitions.dxil": "285fc3bbafff99c1ac995407eaa02bc763c8d94b6c34d015627b74da64fa57cb",
-    "path_trace_closest_hit_transitions.spv": "116b2e78aa8bccee2e03338b76a158680282dccd680359b3a58e2bea20009902"
+    "path_trace_closest_hit_transitions.spv": "116b2e78aa8bccee2e03338b76a158680282dccd680359b3a58e2bea20009902",
+    "path_trace_raygen_water.dxil": "64812925a803fffe0608b505490d1b26731629a41f29a4877c144c0086d2311b",
+    "path_trace_raygen_water.spv": "d834864cc2c71b9d9b9dcdc3ecc285e0d547349544a3bf41116801d9d6f30adb",
+    "path_trace_raygen_water_no_emitters.dxil": "48e14653562ba6e2d850c633dcbcca244a314df8ac550c2029962724eafca462",
+    "path_trace_raygen_water_no_emitters.spv": "dc11bc491ddd80474d476ad4365576ceada67fb4ee4d489f5203defcdf481310",
+    "path_trace_raygen_water_deep.dxil": "324657dc818fa784f4096fc6354142e681aa0687457b4c7d03cee87e2be329ee",
+    "path_trace_raygen_water_deep.spv": "ff603131fd5fe377d9630c06bdfd5490177580b3ba0d2d4865c44ee388e640c8",
+    "path_trace_raygen_water_deep_no_emitters.dxil": "15317e45d511bad098ca552546f6a60406aa83cbc330139a814ecf9b22edc4cc",
+    "path_trace_raygen_water_deep_no_emitters.spv": "26e12f1087b8bdbb26c9ec6d093bd8c3a55ee17c302f50ba5ddbee5fcd18dd59"
   }
 }

@@ -1653,6 +1653,39 @@
       "args": [],
       "min_checks": 14,
       "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_water",
+      "script": "tools/tests/path_trace_water.gd",
+      "summary": "PATH_TRACE_WATER",
+      "contract": "PT-lit water preserves four-sample coverage, HDR emission, underwater secondary transport, NRD modes, fog and target lifetime.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 22
+    },
+    {
+      "id": "path_trace_water_live",
+      "script": "tools/tests/path_trace_water_live.gd",
+      "summary": "PATH_TRACE_WATER_LIVE",
+      "contract": "Real campaign water switches RT/PT, uses full materials and local lights, keeps independent directional history and retires streamed generations.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 16
+    },
+    {
+      "id": "path_trace_water_options",
+      "script": "tools/tests/path_trace_water_options.gd",
+      "summary": "PT_WATER_OPTIONS",
+      "contract": "Updated water PT help is translated and readable in EN/RU/DE at 720p, 1440p and 4K.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 28
     }
   ]
 }

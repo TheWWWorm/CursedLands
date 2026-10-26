@@ -456,7 +456,7 @@ func _path_cloud_frame() -> PackedFloat32Array:
 	for i in 4:data[i]=state[i];data[4+i]=phases[i];data[8+i]=domain[i]
 	return data
 
-func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0) -> PackedByteArray:
+func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0,publish_points := true) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
 	var view := Projection(transform.affine_inverse())
 	var projection := camera.get_camera_projection()
@@ -496,7 +496,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		local_positions.append_array(pos);local_colours.append_array(rgb)
 		if i<7:
 			data.append_array(pos);colours.append_array(rgb)
-			RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
+			if publish_points:RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
 		else:extra_signature.append_array(pos);extra_signature.append_array(rgb)
 	data.append_array(colours)
 	if _path_mode:

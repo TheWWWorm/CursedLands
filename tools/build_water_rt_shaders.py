@@ -32,6 +32,11 @@ def main():
         stages.append(('raygen_deep_no_emitters', 'raygen', ['PATH_ROULETTE', 'PATH_NO_EMITTERS']))
         stages.append(('closest_hit_terrain', 'closest_hit', ['PATH_TERRAIN_MATERIALS']))
         stages.append(('closest_hit_transitions', 'closest_hit', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS']))
+        for deep in (False, True):
+            for no_emitters in (False, True):
+                name = 'raygen_water' + ('_deep' if deep else '') + ('_no_emitters' if no_emitters else '')
+                definitions = ['PATH_WATER_REFLECTION'] + (['PATH_ROULETTE'] if deep else []) + (['PATH_NO_EMITTERS'] if no_emitters else [])
+                stages.append((name, 'raygen', definitions))
     prefix = args.shader + '_'
     source = SHADERS / (args.shader + '.hlsl')
     manifest_path = SHADERS / (args.shader + '_build.json')
