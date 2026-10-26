@@ -28,6 +28,17 @@ func _ready() -> void:
 			check(is_equal_approx(selected,2.0),"foreground stream survives broad pool at %.1f, pitch %.1f" % [pool_height,pitch])
 	terrain.water.fill(6.0)
 	check(not is_finite(reflection._select_plane(camera)),"surfaces above the eye cannot disable a lower mirror")
+	# Tactical zoom must not cross a spherical cutoff above a visible lake.
+	# Use both paths: the gameplay scan caches the liquid cells between views.
+	terrain.water.fill(0.0);terrain.liquid_ground.fill(11)
+	reflection.request_refresh();camera.far=200
+	for altitude: float in [60.0,63.0,64.0,65.0,80.0,120.0]:
+		camera.position=Vector3(64,altitude,-32)
+		for pitch: float in [-PI/2.0,-1.15]:
+			camera.rotation=Vector3(pitch,0,0);reflection.plane=-INF
+			var selected := reflection._select_plane(camera)
+			check(is_equal_approx(selected,0.0),"visible lake survives tactical height %.1f pitch %.2f" % [altitude,pitch])
+			check(is_equal_approx(reflection._select_plane(camera,true),0.0),"indexed lake survives tactical height %.1f pitch %.2f" % [altitude,pitch])
 	var native := EITerrain.load_map("zone13");add_child(native);native.set_process(false);reflection.terrain=native
 	var at := Vector2(424,208);var level := native.water_at(at.x,at.y)
 	camera.position=Vector3(at.x,level+1.6,-at.y)

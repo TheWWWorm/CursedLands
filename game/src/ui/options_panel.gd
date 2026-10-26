@@ -249,7 +249,7 @@ func _ready() -> void:
 func open(frame: Image = null, slide := false) -> void:
 	_snapshot.clear()
 	for o: Array in GameData.OPTIONS:
-		_snapshot[o[0]] = GameData.option(o[0])
+		_snapshot[o[0]] = _preference(o[0])
 	_values = _snapshot.duplicate()
 	if frame:
 		_dim.use(frame)
@@ -356,6 +356,31 @@ static func _remake_tip(pair: Array) -> String:
 	return RemakeText.t("%s\n%s\n(Remake option.)") % RemakeText.tl(pair)
 
 
+## Preset-derived values are runtime choices, not edits to the stored RT
+## quality or diagnostic tuning. Apply/Cancel must compare preferences.
+func _preference(name: String) -> int:
+	if not GameData.PathTraceSettings.tuning_enabled() and GameData.PathTraceSettings.retained(name):
+		return int(GameData.options.get(name, 0))
+	return GameData.option(name)
+
+
+func _path_preset_rows() -> void:
+	var preset: Dictionary = _rows[3]
+	var standalone := [_rows[0], _rows[1], _rows[2]]
+	_rows.clear()
+	preset.label = RemakeText.t(GameData.PathTraceSettings.LABEL)
+	preset.tip = _remake_tip(GameData.REMAKE_OPTIONS.pt_preset)
+	if not preload("res://src/game/fx/scene_raytrace_device.gd").supported():
+		preset.tip += "\n\n" + RemakeText.t(preload("res://src/game/fx/scene_raytrace.gd").REASON)
+	preset.choices = GameData.option_choices("pt_preset")
+	_rows[0] = preset
+	_rows[1] = {"kind":"link", "name":"", "to":SCREEN_GROUP,
+		"label":RemakeText.t(GameData.PathTraceSettings.SCREEN_LABEL),
+		"tip":_remake_tip([GameData.PathTraceSettings.SCREEN_LABEL, GameData.PathTraceSettings.SCREEN_HELP])}
+	if int(_values.get("pt_mode", 0)) == 0:
+		for i in standalone.size(): _rows[i + 3] = standalone[i]
+
+
 ## the page's rows; the first row with a control is selected.
 func _show_group(g: int) -> void:
 	_group = g if PARENT.has(g) or g in TAB_ORDER else 0
@@ -416,6 +441,8 @@ func _show_group(g: int) -> void:
 				row.max = TemporalGraphics.FG_CHOICES.size()
 				row.disabled = TemporalGraphics.fg_selection(_values) == 0 and [1,2,3].all(func(value): return not TemporalGraphics.fg_reason(value,_values).is_empty())
 			if reason != "": row.tip += "\n\n" + RemakeText.t(reason)
+	if _group == SCENE_RT_GROUP and not GameData.PathTraceSettings.tuning_enabled():
+		_path_preset_rows()
 	for a: Array in EIKeymap.ACTIONS:
 		if int(a[2]) != _group:
 			continue
@@ -792,7 +819,7 @@ func _apply() -> void:
 	var changes := {}
 	for n in _values:
 		if ModSchema.RULES.has(n) and (_values[n] == _snapshot.get(n) or ModStore.editable(n) != ""): continue
-		if int(_values[n]) != GameData.option(n):
+		if int(_values[n]) != _preference(n):
 			changes[n] = int(_values[n])
 	GameData.set_options(changes)
 	if (renderer or RtxGraphics.needs_restart(_values)) and get_parent():

@@ -4,6 +4,7 @@ extends Node
 ## are applied to those assets in memory.
 
 const CONFIG_PATH := "user://settings.cfg"
+const PathTraceSettings = preload("res://src/platform/path_trace_settings.gd")
 ## Files that must exist in a valid installation (relative to its root).
 const REQUIRED := ["res/textures.res", "res/figures.res", "res/redress.res", "res/database.res",
 	"res/texts.res", "maps/zone1.mpr", "maps/zone1.mob"]
@@ -288,6 +289,7 @@ const DISPLAY_CHOICES := {
 	"q_rt_lighting": ["Low (50 %)", "Medium (75 %)", "High (100 %)"],
 	"rt_shadows": ["Off", "On"], "rt_gi": ["Off", "On"],
 	"pt_mode": ["Off", "2 bounces", "4 bounces"],
+	"pt_preset": PathTraceSettings.CHOICES,
 	"pt_accumulation": ["Responsive", "Still scene"],
 	"pt_target_fps": ["Off", "30 FPS", "45 FPS", "60 FPS"],
 	"pt_sharc": ["Off", "On"],
@@ -331,6 +333,7 @@ const REMAKE_OPTIONS := {
 	"rt_gi": ["RT indirect light (test)", "Trace one diffuse bounce from the sun, nearby lights and emissive surfaces, with sky visibility. Replaces flat ambient light on supported nearby surfaces. Experimental: moving light can be noisy. This is not multi-bounce path tracing."],
 	"q_rt_lighting": ["RT lighting quality", "Low uses 50 % width and height with one sample, Medium 75 % with two, High 100 % with four. Path tracing follows the 3D render resolution, including Render scale and FSR; RT lighting follows the window. Depth-aware reconstruction smooths the result. Higher quality costs more GPU time. Independent of water reflection quality."],
 	"pt_mode": ["Path tracing (test)", "Trace direct light and up to two or four surface bounces, including glossy reflections. Replaces RT shadows and indirect light on supported nearby surfaces; their saved choices are preserved. Uses RT lighting quality. Water and particles keep their own rendering. Experimental and GPU intensive."],
+	"pt_preset": [PathTraceSettings.LABEL, PathTraceSettings.HELP],
 	"pt_sharc": ["SHaRC indirect lighting", "Reuses indirect lighting between nearby surfaces to reduce noise and extend light bounces. Uses about 44 MiB of additional video memory per active scene. Moving geometry and abrupt lighting changes clear the cache. Only available with Responsive path accumulation. Performance depends on the scene."],
 	"pt_ray_reconstruction": ["DLSS Ray Reconstruction", RtxGraphics.RR_HELP],
 	"pt_refraction": ["PT refraction", "Traces bent rays through water and explicitly authored glass, with colour absorption over distance. Uses extra GPU time and memory. Water follows its base surface; small waves stay visual details. Moving views can be noisy. Ordinary transparency remains available outside the traced scene."],
@@ -460,7 +463,7 @@ const REMAKE_OPTIONS := {
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_weather_mist": ["Local water mist", "Thin drifting mist above verified water and swamp surfaces, strongest on misty mornings and after rain. Requires Volumetric fog and the Forward+ renderer."],
 	"gfx_depth_of_field": ["Depth of field", "Softens the distant background at low camera angles. Focus follows the visible scene smoothly; tactical views stay sharp. Requires a compatible Forward+ or Mobile build. Off by default."],
-	"gfx_terrain_cliffs": ["Steep terrain textures", "Blend side-projected textures onto steep natural rock, grass and moss to reduce stretching. Requires Terrain detail. Preserves flat ground, paths, painted material boundaries and geometry."],
+	"gfx_terrain_cliffs": ["Steep terrain detail", "Rounds tall natural cliffs, including snowy slopes, and reduces texture stretching on rock, grass and moss. Requires Terrain detail. Keeps original collision heights, flat ground, paths and painted material boundaries."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
 	"resolution": ["Resolution", "Window size when windowed; in fullscreen the 3D view is rendered at this size and scaled to the screen (the interface stays sharp)."],
@@ -914,7 +917,7 @@ func save_settings() -> void:
 func option(name: String) -> int:
 	if FIXED_OPTIONS.has(name):
 		return FIXED_OPTIONS[name]
-	return ModStore.option(name, int(options.get(name, 0)))
+	return ModStore.option(name, PathTraceSettings.value(name, options, PathTraceSettings.tuning_enabled()))
 
 
 func set_option(name: String, value: int) -> void:

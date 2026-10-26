@@ -23,7 +23,7 @@ func run() -> void:
 	camera.size=8;camera.position=Vector3(0,0,6);camera.current=true
 	var mesh:=QuadMesh.new();mesh.size=Vector2(16,10)
 	var material:=ShaderMaterial.new();material.shader=Shader.new()
-	var lookup:="ei_rt_sample_surface(world,normal,target,gi,a,b)" if Receiver.COMMON.contains("bool ei_rt_sample_surface(") else "ei_rt_sample(world,normal,gi,a,b)"
+	var lookup:="ei_rt_sample_surface(world,normal,target,ei_rt_view_projection,ei_rt_inverse_view_projection,gi,a,b)"
 	material.shader.code="shader_type spatial; render_mode unshaded,cull_disabled,fog_disabled;\nconst vec3 ei_ambient=vec3(0);\nvec3 ei_lin(vec3 c){return c;}\n"+Receiver.COMMON+"""
 uniform bool rough_only=false;
 void fragment(){

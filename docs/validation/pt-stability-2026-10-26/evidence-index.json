@@ -1,0 +1,391 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-26T13:21:10.397500+00:00",
+  "status": "Final local 7d97 candidate: 555/555 D3D12 and 102/102 Vulkan staging/adjacent checks; exact PathWater 50/2 negative then 50/0, actual shadow 49/49, clean 1024-query profile 86/86, five ordinary 4K routes 245/245 with 8,604 measured frames below 50 ms and actual approximately 2x FG. Qualification is bounded to these routes/hardware; original recording timestamp attribution and universal guarantees remain excluded.",
+  "evidence_root": "C:\\projects\\local\\evidence\\pt-stability-20261026",
+  "copied_files": 1046,
+  "copied_bytes": 203147979,
+  "groups": {
+    "performance-earlier-2x": {
+      "files": 16,
+      "bytes": 1592591
+    },
+    "performance-qualified-camera": {
+      "files": 14,
+      "bytes": 3861149
+    },
+    "presentation-qualified": {
+      "files": 3,
+      "bytes": 49769
+    },
+    "presentation-unqualified": {
+      "files": 31,
+      "bytes": 2921682
+    },
+    "functional-prior": {
+      "files": 77,
+      "bytes": 228692
+    },
+    "negative-controls": {
+      "files": 116,
+      "bytes": 7487735
+    },
+    "rejected-findings": {
+      "files": 39,
+      "bytes": 676772
+    },
+    "functional-cpu": {
+      "files": 19,
+      "bytes": 22335
+    },
+    "unsupported-mode-diagnostics": {
+      "files": 8,
+      "bytes": 8985
+    },
+    "saved-scene": {
+      "files": 20,
+      "bytes": 62418204
+    },
+    "functional-final-export": {
+      "files": 50,
+      "bytes": 245700
+    },
+    "pending-final-functional": {
+      "files": 6,
+      "bytes": 51878
+    },
+    "ui": {
+      "files": 9,
+      "bytes": 5523285
+    },
+    "reference": {
+      "files": 12,
+      "bytes": 20316127
+    },
+    "harness": {
+      "files": 53,
+      "bytes": 669400
+    },
+    "functional-small-details": {
+      "files": 50,
+      "bytes": 7180157
+    },
+    "natural-probes-prior": {
+      "files": 68,
+      "bytes": 13724354
+    },
+    "performance-qualified-player-prior": {
+      "files": 6,
+      "bytes": 739642
+    },
+    "performance-instrumented": {
+      "files": 43,
+      "bytes": 25243400
+    },
+    "functional-gait": {
+      "files": 31,
+      "bytes": 2083652
+    },
+    "functional-grass-shadow": {
+      "files": 31,
+      "bytes": 8379552
+    },
+    "live-ground-diagnostics": {
+      "files": 26,
+      "bytes": 8034055
+    },
+    "functional-retained-sources": {
+      "files": 10,
+      "bytes": 32059
+    },
+    "functional-ground-indirect": {
+      "files": 36,
+      "bytes": 323261
+    },
+    "live-ground-filtered": {
+      "files": 38,
+      "bytes": 7567478
+    },
+    "functional-retained-textures": {
+      "files": 16,
+      "bytes": 66012
+    },
+    "performance-ordinary-baseline": {
+      "files": 5,
+      "bytes": 330545
+    },
+    "qualification-followup": {
+      "files": 3,
+      "bytes": 115519
+    },
+    "functional-ground-reconstruction": {
+      "files": 15,
+      "bytes": 354197
+    },
+    "live-ground-reconstructed": {
+      "files": 55,
+      "bytes": 9772670
+    },
+    "functional-final-staging": {
+      "files": 87,
+      "bytes": 880661
+    },
+    "performance-qualified-final": {
+      "files": 26,
+      "bytes": 1667537
+    },
+    "qualification-final": {
+      "files": 1,
+      "bytes": 146891
+    },
+    "local-handoff": {
+      "files": 9,
+      "bytes": 209011
+    },
+    "cleanup-support": {
+      "files": 17,
+      "bytes": 10223022
+    }
+  },
+  "manifest_sha256": "7e95b0379f959fb6cb836b49acf7db82592843c549005fd4a00431c8d413ad1f",
+  "source_state_sha256": "fb56cb983fecca54c1c5c4ac59fd3a68320d5973732ad7285928110e23e3deef",
+  "performance_summary_sha256": "178c9b7b22c87113b327a52332694127ad0d62a4c5dfab13c68cf3cb8fd2bb97",
+  "session_state_sha256": "55721398441b7458a46dd521e657a8464ebe5ddcdd3bc0cad1463ca306c3133c",
+  "session_state_unlocked_sha256": "d6fd689fb8a1795f54a129d414f458c2253777b1b4702433cd8d5777d39de17a",
+  "session_power_events_sha256": "82fe1230fb95ae675ca77e94962c7974cbf2a67ae277f30d625d15775dd7063c",
+  "test_summary_sha256": "3567ce49a67f9848ff0194692ad20a2335cebe2afeb70017e6fbbda4e8b91de4",
+  "base_commit": "ea1919d6a75f57b55f993adcf0aaa472e6545e18",
+  "final_saved_scene_pck_sha256": "09af725a1a2d1f205e5f226985e87ffa3180220c424bce8e736b06cb63a92faa",
+  "final_performance_qualified": true,
+  "controller_current_checks": 49,
+  "controller_current_failures": 0,
+  "transmission_current_checks": 25,
+  "transmission_current_failures": 0,
+  "no_files_deleted": true,
+  "updated_utc": "2026-10-26T19:16:49.795937+00:00",
+  "qualified_camera_comparison": true,
+  "qualified_focused_sr_fg": true,
+  "overall_task_complete": false,
+  "presentation_summary_sha256": "ec1f2d14006cad250ef6d572d69c6245a585d6d504d2517b9023736f515c7ef6",
+  "final_small_details_pck_sha256": "a7d7bf4546d5061360bdde0a9f5954fdea0c0ccfa00f196ade809f6f417d60e7",
+  "small_detail_native_checks": 67,
+  "small_detail_native_failures": 0,
+  "qualified_awake_player_routes": true,
+  "small_details_summary_sha256": "efa7f07a860843feb54c8a603d5c2c77e852d5bf68b8ad31c28ba816e9b36ade",
+  "small_details_source_state_sha256": "1cc7f5c0d2cd97ce22569e43677dc52c7c7d9603686087a8ce69be7a55db3105",
+  "player_route_summary_sha256": "fa162836f7ad28668a4de9c55484174270202664e5e4f1859fa84367607a60d2",
+  "profile_comparison_summary_sha256": "c7354339ef8bca1537d8a45370d8653b983a2d8ca36e8eda959209b59c65c596",
+  "ground_indirect_helper_qualified": true,
+  "gait": {
+    "cpu_checks": 132,
+    "isolated_unfixed_failures": 51,
+    "packaged_native_checks": 132,
+    "packaged_native_failures": 0,
+    "matched_native_checks": 17,
+    "matched_native_unfixed_failures": 3,
+    "matched_native_fixed_failures": 0,
+    "pck_sha256": "78d3025f28fed89403adf8bbf84acb2897b54d02861d43e7c634fa5c0d954862"
+  },
+  "grass_shadow": {
+    "checks": 49,
+    "failures": 0,
+    "production_changed": false,
+    "conclusion": "Actual caster shadows remain in native opaque and completed RR output after both-channel reconstruction. Earlier soft-shadow diagnosis remains separate from fixed raw-light flicker.",
+    "pck_sha256": "7d97fab075b84503dfea8da9e75cda480eca8e8e8b9c23154eca2fca31beaf2d",
+    "final_native_strength_correlation": 0.87821797256731,
+    "strong_core_final_darkening_percent": 22.296243322919807
+  },
+  "retained_sources": {
+    "native_checks": 19,
+    "d3d12_failures": 0,
+    "vulkan_failures": 0,
+    "cold_region_surface_readbacks": 0,
+    "additional_packed_bytes": 826900
+  },
+  "raw_grass": {
+    "rr_checks": 80,
+    "nrd_checks": 79,
+    "off_checks": 79,
+    "held_rr_indirect_cv_percent": [
+      40.0,
+      44.2
+    ],
+    "held_nrd_indirect_cv_percent": [
+      0.73,
+      1.3
+    ],
+    "helper_qualified": true,
+    "qualification_note": "Original raw v2 diagnosis remains unchanged. Indirect and direct reconstruction are now independently qualified for the recorded ground routes; generated FG images and final whole-build/performance checks remain separate."
+  },
+  "provisional_engine_profile_runs": [
+    "river-publication-engine-profile",
+    "stable-river-engine-profile",
+    "river-gather-detail-profile",
+    "retained-river-engine-profile"
+  ],
+  "instrumented_timing_caveat": "Provisional: this --gpu-profile run exceeded256 timestamp queries, truncating spans and producing repeated logging that can perturb frame-time percentiles/maxima. Functional counters remain useful; final timing needs ordinary no-profile validation.",
+  "gait_evidence_sha256": "4af7bc76b80a73147b56af1656f2de24aee0af32f99740823fe355f184b73b9e",
+  "grass_shadow_evidence_sha256": "6efa87696439392d6dc30355fcb5ce217ab2ecc9461b5ce22113104fc581432e",
+  "raw_grass_comparison_sha256": "e9c4aa980def1fda5540e27095fdcb38969c8838050bf2d2780a2203ad71baca",
+  "retained_source_comparison_sha256": "bfe34e8e72a30d22035d8cebeb82c89ef40f34758b154118ec7ce0cbc4b3394d",
+  "profiler_capacity_audit_sha256": "1780ed671c9b06708ee85afde854d8824ed780116f49b4b4cef651f355038633",
+  "physical_bytes_at_followup_curation": 153780068,
+  "ground_texture_followup_sha256": "6c4f99967ec4fe6ea2651db2490d03b45634d5e367f2c2aa87028ada5c288262",
+  "all_ground_flicker_resolved": false,
+  "ground_indirect": {
+    "registered_checks": 57,
+    "d3d12_failures": 0,
+    "vulkan_failures": 0,
+    "negative_checks": 57,
+    "negative_failures": 12,
+    "negative_pck": "1fdcd4c3b3ade2be6a1c1441fe1fecf1e29e2f3ec70740f5df4482e4db5da092",
+    "related_checks": 517,
+    "related_failures": 0,
+    "river_checks": 80,
+    "cave_checks": 95,
+    "cave_failures": 0,
+    "nrd_cave_checks": 94,
+    "nrd_cave_coverage_failures": 2,
+    "residual_direct_sun_blink": true,
+    "residual_direct_sun_blink_scope": "Confirmed on the earlier indirect-only export; addressed by the separately qualified two-channel run below. Original evidence is preserved."
+  },
+  "retained_textures": {
+    "native_checks": 41,
+    "d3d12_failures": 0,
+    "vulkan_failures": 0,
+    "original_negative_failures": 7,
+    "source_cache_checks": 12,
+    "redress_checks": 42,
+    "hd_checks": 127,
+    "hard_packed_byte_cap": 67108864,
+    "observed_six_source_bytes": 1572856,
+    "ordinary_after_timing_pending": false
+  },
+  "clean_1024_diagnostic": {
+    "checks": 86,
+    "failures": 0,
+    "capacity": 1024,
+    "peak_timestamps": 315,
+    "whole_log_overflow_errors": 0,
+    "override_restored": true,
+    "ordinary_performance_acceptance": false
+  },
+  "ordinary_baseline_no_capture": {
+    "checks": 49,
+    "failures": 0,
+    "png_count": 0,
+    "profiler": false,
+    "foreground": true,
+    "fg_game_sdk_pairs": [
+      [
+        430,
+        857
+      ],
+      [
+        140,
+        280
+      ],
+      [
+        235,
+        470
+      ]
+    ],
+    "candidate_pair_pending": false
+  },
+  "physical_bytes_at_ground_texture_curation": 169283540,
+  "qualified_indirect_source_receipt_sha256": "87ac839512f51aa9aa0195b2bc981ebe03ae0b13eeac819c69df90fa7c525f79",
+  "ground_reconstruction_summary_sha256": "87a26afdd9929d5d58322e6a9bcd94cf05b40bdd2738dfa92096272829e4e02b",
+  "ground_direct_helper_qualified": true,
+  "ground_reconstruction": {
+    "pck_sha256": "a541812aad71138184f64880dbeef88dc07528c9de1bc6e16e090577242a21df",
+    "registered_checks": 97,
+    "d3d12_failures": 0,
+    "vulkan_failures": 0,
+    "negative_checks": 97,
+    "negative_failures": 7,
+    "negative_pck": "da40da272c0f8fd88ea7f81f0ca1b85c997c8569f8c89ac3205cb39c49d9e4f7",
+    "same_staged_fixture_sha256": "84847cddceb9d87eaf3796779a6e3baacb4baca125ad9632025e41706b6829e0",
+    "river_checks": 80,
+    "river_frames": 994,
+    "cave_checks": 95,
+    "cave_frames": 867,
+    "live_failures": 0,
+    "audit_errors": 0,
+    "root_validity_toggles": 0,
+    "geometry_changes": 0,
+    "physical_output_changes": 0,
+    "recorded_promotions_river_cave": [
+      2,
+      4
+    ],
+    "image_bytes_at_1920x1080": 82944000,
+    "generated_fg_pixels_qualified": false,
+    "actual_latest_grass_shadow_control_pending": false,
+    "performance_qualified": false,
+    "pathwater_staging_correction_pending": false,
+    "performance_qualification_scope": "The a541 appearance readback routes are not timing measurements. Final7d97 ordinary route timing is separately qualified in final_ordinary_routes."
+  },
+  "physical_bytes_at_ground_direct_curation": 179636389,
+  "final_qualification_summary_sha256": "3280711dcc7f43f770149deb3cd29fccb5cb601be6a213fc1d343f25dc2f81ca",
+  "final_qualified_pck_sha256": "7d97fab075b84503dfea8da9e75cda480eca8e8e8b9c23154eca2fca31beaf2d",
+  "final_performance_scope": "Five measured4K ordinary routes on the recorded RTX4090Laptop system; no setup/loading/FG-activation-wait samples, no profiler or phase PNGs. Not universal performance/latency or generated-FG-pixel qualification.",
+  "validation_complete": true,
+  "final_staging": {
+    "pck_sha256": "7d97fab075b84503dfea8da9e75cda480eca8e8e8b9c23154eca2fca31beaf2d",
+    "d3d12_cases": 14,
+    "d3d12_checks": 555,
+    "vulkan_cases": 4,
+    "vulkan_checks": 102,
+    "failures": 0,
+    "pathwater_exact_negative_checks": 50,
+    "pathwater_exact_negative_failures": 2,
+    "same_fixture_sha256": "b03565d44000e98bb90c4493afcca0d2c99b854d74c3f391ca87919201c2c534"
+  },
+  "final_clean_profile": {
+    "checks": 86,
+    "failures": 0,
+    "capacity": 1024,
+    "peak_timestamps": 315,
+    "overflow_errors": 0,
+    "override_restored": true,
+    "cold_retained_images": 6,
+    "cold_gpu_getters": 0,
+    "ordinary_performance_acceptance": false,
+    "two_channel_ground_gpu_ms": {
+      "samples": 1758,
+      "median": 0.382976,
+      "p95": 1.266688,
+      "max": 1.538048
+    }
+  },
+  "final_ordinary_routes": {
+    "cases": 5,
+    "checks": 245,
+    "failures": 0,
+    "measured_frames": 8604,
+    "over_50ms": 0,
+    "output_size": [
+      3840,
+      2160
+    ],
+    "pt_input_size": [
+      1920,
+      1080
+    ],
+    "full_time_rr": true,
+    "foreground": true,
+    "actual_fg_approximately_2x": true,
+    "png_count": 0,
+    "profiler": false,
+    "baseline_river_worst_ms": 158.498,
+    "current_river_worst_ms": 45.345
+  },
+  "physical_bytes_at_final_curation": 196250874,
+  "local_launcher": "C:\\projects\\local\\artifacts\\pt-stability-20261026\\Play-test.cmd",
+  "local_launcher_verified": true,
+  "local_handoff_summary_sha256": "de4645f15004698ec019c15708714c9a8f2d85a95598c95fe7bb4a2f2bc0a3c4",
+  "cleanup_summary_sha256": "27dac0cc9dcf80faa4f26d4c8d957561f368720c30c967a20b4d9e4a471127a6",
+  "origin_integration_pending": true,
+  "origin_integration_blocker": "Stale empty .git/index.lock; automatic review rejected deletion, user action pending.",
+  "fetched_origin_main": "8475ed9b"
+}

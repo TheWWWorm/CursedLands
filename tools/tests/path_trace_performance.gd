@@ -7,6 +7,11 @@ func ready_snapshot(owner: Node) -> bool:
 	for i in 1800:
 		await frames(1)
 		if owner._failed:return false
+		# Fresh validation resets the scene's incremental cursor. Let the
+		# controller finish its active poll first, or this observer can prevent
+		# it from ever reaching a removed source late in the root list.
+		if owner._scene!=null and owner._scene.topology_pending:
+			stable=0;continue
 		if owner.stats.get("active",false) and owner._scene!=null and not owner._scene.topology_changed():stable+=1
 		else:stable=0
 		if stable>=30:return true

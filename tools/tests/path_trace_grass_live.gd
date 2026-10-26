@@ -52,7 +52,7 @@ func run(a: Node) -> void:
 			var shader := Shader.new()
 			var result: String = "vec3(valid ? 0.0 : 1.0,valid ? 1.0 : 0.0,0.0)" if mode=="valid" else {"total":"gi","sun":"v0.rgb","indirect":"max(gi-v0.rgb,vec3(0.0))"}[mode]
 			shader.code=Gfx._function_tail(original[i].code.replace("render_mode ","render_mode unshaded, fog_disabled, "),"fragment",
-				"\n vec3 gi;vec4 v0,v1;bool valid=ei_rt_ground_sample(gi,v0,v1);ALBEDO="+result+";EMISSION=vec3(0.0);FOG=vec4(0.0);\n")
+				"\n vec3 gi;vec4 v0,v1;bool valid=ei_rt_ground_sample(ei_rt_view_projection,ei_rt_inverse_view_projection,gi,v0,v1);ALBEDO="+result+";EMISSION=vec3(0.0);FOG=vec4(0.0);\n")
 			materials[i].shader=shader
 		await capture(a,"grass-debug-"+mode)
 	for i in materials.size(): materials[i].shader=original[i]

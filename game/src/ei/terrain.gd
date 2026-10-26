@@ -792,13 +792,17 @@ void fragment() {
 		ALPHA = A;
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
 		vec3 transmitted;
-		if (ei_transmission(wpos, gn, 1.0, PROJECTION_MATRIX * VIEW_MATRIX, transmitted)) {
+		float transport_weight = ei_water_transmission_weight(wpos);
+		if (transport_weight > 0.0 && ei_transmission(wpos, gn, 1.0, PROJECTION_MATRIX * VIEW_MATRIX, transmitted)) {
 			// Replace only the transmitted background. Preserve the original
 			// surface pigment, sediment, foam, glints and chosen reflection.
-			ALBEDO *= A;
-			ei_wave_scale *= A;
-			EMISSION = w * R + G + (1.0 - A) * transmitted;
-			ALPHA = 1.0;
+			// Blend premultiplied colour at the bounded scene's edge so the
+			// untraced background takes over without a grid of missing bed.
+			float opacity = mix(A, 1.0, transport_weight);
+			ALBEDO *= A / max(opacity, 1e-3);
+			ei_wave_scale *= A / max(opacity, 1e-3);
+			EMISSION = (w * R + G + (1.0 - A) * transport_weight * transmitted) / max(opacity, 1e-3);
+			ALPHA = opacity;
 		}
 #endif
 	}

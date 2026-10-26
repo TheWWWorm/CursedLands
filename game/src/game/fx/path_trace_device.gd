@@ -27,6 +27,7 @@ var nrd := Nrd.new()
 var nrd_active := false
 var ray_reconstruction := false
 var raw_reconstruction_frames := 0
+var presentation_handoffs := 0
 var direct_sun := Texture2DRD.new()
 var _direct_images: Array[RID] = []
 var _direct_auxiliary: Array[RID] = []
@@ -82,6 +83,7 @@ var _motion := RID()
 var _motion_data := PackedByteArray()
 var _motion_pending := {}
 var _geometry_placements: Array[Array] = []
+var _build_extra_phase := 0
 # Same-build reconstruction reference; normal play follows articulated meshes.
 var _rigid_history := not OS.get_cmdline_user_args().has("--ei-camera-only-history")
 func shader_prefix() -> String: return "res://src/game/fx/shaders/path_trace_"
@@ -115,9 +117,43 @@ func _publish_targets() -> void:
 	var sunlight := _direct_images[0] if _direct_valid else _raw[6]
 	if direct_sun.texture_rd_rid!=sunlight:direct_sun.texture_rd_rid=sunlight
 	super._publish_targets()
+
+## Called only on the render thread, before queueing the replacement's first
+## visible RR frame. Keep the physical global sampler images and RS wrappers;
+## rebinding them invalidates every dependent raster material/surface cache.
+## No image copies or additional resident images are needed for this handoff.
+func adopt_presentation(previous: RefCounted) -> bool:
+	if previous==null or previous==self or _rd==null or _rd!=previous._rd \
+		or not output_ready() or not previous.output_ready() \
+		or not ray_reconstruction or not previous.ray_reconstruction or _size!=previous._size \
+		or _history.size()!=4 or previous._history.size()!=4 or _raw.size()!=9 or previous._raw.size()!=9 \
+		or _direct_valid or previous._direct_valid or transmission_enabled!=previous.transmission_enabled \
+		or not transmission.presentation_compatible(previous.transmission):return false
+	if published_targets()!=_history+[_raw[6]] or previous.published_targets()!=previous._history+[previous._raw[6]]:return false
+	var raw: Array[RID]=_raw.duplicate();raw[6]=previous._raw[6]
+	var replacement_set:=_target_set(_ray_bindings(raw,_sampler),_shader)
+	if not replacement_set.is_valid():return false
+	var transmission_set:=RID()
+	if transmission.active:
+		transmission_set=transmission.prepare_presentation(self,previous.transmission)
+		if not transmission_set.is_valid():_rd.free_rid(replacement_set);return false
+	# All fallible work is complete. Swap whole owners, never mutate a public
+	# Texture2DRD's backing. The prior owner retires only after queued work.
+	var spare_history:=_history;_history=previous._history;previous._history=spare_history
+	var spare_sun:=_raw[6];_raw[6]=previous._raw[6];previous._raw[6]=spare_sun
+	for name in ["output","guide","shadow0","shadow1","direct_sun"]:
+		var spare: Texture2DRD=get(name);set(name,previous.get(name));previous.set(name,spare)
+	sharc.release_update_set()
+	if _set.is_valid():_rd.free_rid(_set)
+	_set=replacement_set
+	transmission.commit_presentation(previous.transmission,transmission_set)
+	_transmission_dirty=true
+	presentation_handoffs=previous.presentation_handoffs+1
+	return true
 func filter_auxiliary_formats() -> Array[int]:
 	return [RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,
 		RenderingDevice.DATA_FORMAT_R16_SFLOAT,RenderingDevice.DATA_FORMAT_R16_SFLOAT]
+func uses_filter_targets() -> bool: return not ray_reconstruction
 func extra_filter_uniforms(raw_targets: Array[RID]) -> Array[RDUniform]:
 	return [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,17,[_motion]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,18,[raw_targets[0]])]
@@ -130,6 +166,23 @@ func instance_mask(geometry_index: int, mask: int) -> int:
 	return (8 if (mask&1)!=0 else 0) if not _geometry[geometry_index].get("dielectric",PackedFloat32Array()).is_empty() else mask
 
 func build_extra(data: PackedByteArray, placements: Array) -> bool:
+	return _build_environment() and _build_placement_data(placements) and _build_emitters(data,placements)
+
+func build_extra_step(data: PackedByteArray,placements: Array) -> int:
+	if not incremental_build:return super.build_extra_step(data,placements)
+	var started:=Time.get_ticks_usec();var ok:=false
+	var label: String=["environment","motion","emitters"][_build_extra_phase]
+	match _build_extra_phase:
+		0:ok=_build_environment()
+		1:ok=_build_placement_data(placements)
+		2:ok=_build_emitters(data,placements)
+	build_timings["extra_stage"]=label
+	build_timings["extra_"+label+"_ms"]=(Time.get_ticks_usec()-started)/1000.0
+	if not ok:return ERR_CANT_CREATE
+	_build_extra_phase+=1
+	return OK if _build_extra_phase==3 else ERR_BUSY
+
+func _build_environment() -> bool:
 	if terrain.data.is_empty(): terrain.data.resize(Terrain.HEADER)
 	_terrain_data = _own(_rd.storage_buffer_create(terrain.data.size(),terrain.data))
 	# Borrow the immutable raster atlas, with a retained TextureLayered owner.
@@ -149,6 +202,9 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	if not _clear_cloud.is_valid() or not _cloud_sampler.is_valid():return false
 	_cloud_image=_clear_cloud
 	_variants[0] = {"shader":_shader,"pipeline":_pipeline}
+	return true
+
+func _build_placement_data(placements: Array) -> bool:
 	var mapping := _placement_geometry.to_byte_array()
 	_instance_geometry = _own(_rd.storage_buffer_create(mapping.size(),mapping))
 	_lighting_offset_data.resize(placements.size()*16)
@@ -156,16 +212,27 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	for i in placements.size():
 		_write_lighting_offset(i,placements[i].get("lighting_offset",Vector3.ZERO))
 	_lighting_offsets = _own(_rd.storage_buffer_create(_lighting_offset_data.size(),_lighting_offset_data))
-	_motion_data.resize(placements.size()*MOTION_STRIDE)
+	_motion_data=_initial_motion(placements.size())
 	for i in _geometry.size(): _geometry_placements.append([])
 	for i in placements.size():
 		_geometry_placements[placements[i].geometry].append(i)
-		_write_motion(i,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
 	_motion = _own(_rd.storage_buffer_create(_motion_data.size(),_motion_data))
+	return _instance_geometry.is_valid() and _lighting_offsets.is_valid() and _motion.is_valid()
+
+## The initial transform, normal and validity record is identical for every
+## placement. Copy its exact bytes instead of encoding 24 scalar fields per
+## object; later motion updates keep their existing per-record path.
+static func _initial_motion(count: int) -> PackedByteArray:
+	var neutral:=PackedFloat32Array([1,0,0,0,0,1,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,1,0]).to_byte_array()
+	var data:=PackedByteArray()
+	for i in count:data.append_array(neutral)
+	return data
+
+func _build_emitters(data: PackedByteArray,placements: Array) -> bool:
 	emitters.setup(data,_geometry,placements,_opaque_fast_path)
 	_emitters = _own(_rd.storage_buffer_create(Emitters.HEADER+Emitters.LIMIT*Emitters.STRIDE))
 	_emitter_lookup = _own(_rd.storage_buffer_create(Emitters.HASH_SLOTS*16))
-	return _instance_geometry.is_valid() and _lighting_offsets.is_valid() and _motion.is_valid() and _emitters.is_valid() and _emitter_lookup.is_valid() \
+	return _emitters.is_valid() and _emitter_lookup.is_valid() \
 		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode)
 
 ## Every variant shares hit stages, TLAS, SBT ranges and stable output images.
@@ -229,8 +296,8 @@ func set_cloud_texture(texture: Texture2D) -> void:
 	_cloud_image=rid
 
 func _release_ray_set() -> void:
-	sharc.release_update_set()
-	if _set.is_valid() and _rd.uniform_set_is_valid(_set):_rd.free_rid(_set)
+	sharc.release_update_set(_release_rid if _defer_retirement_release else Callable())
+	if _set.is_valid() and _rd.uniform_set_is_valid(_set):_release_rid(_set)
 	_set=RID()
 
 func extra_ray_uniforms() -> Array[RDUniform]:
@@ -402,8 +469,23 @@ func _update_motion(changes: Dictionary) -> bool:
 			_write_motion(index,Transform3D.IDENTITY,Basis.IDENTITY,true,false)
 	return _upload_records(_motion,_motion_data,dirty.keys(),MOTION_STRIDE)
 
+## Only private live replacements use this entry point. Preparing targets is
+## not a render: readiness and public Texture2DRD bindings remain untouched.
+func render_candidate(size: Vector2i,frame: PackedByteArray,changes: Dictionary = {},texture_filter := 4) -> void:
+	if _closed or not _ready:return
+	if not _published_valid and _raw.is_empty() and bool(changes.get("ray_reconstruction",false)):
+		if not _raw_targets_staged(size):
+			# The collector consumes pose/visibility deltas every frame. Keep
+			# applying them while targets prepare so no live changes are lost.
+			if not update_scene(changes):return
+			_stage_raw_targets(size);return
+		# Keep the final allocation step separate from the first trace. The
+		# normal transactional _targets path consumes this complete pool.
+	render(size,frame,changes,texture_filter)
+
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	if _profile_stages:_rd.capture_timestamp("PT preflight %d:%d"%[get_instance_id(),completed_renders])
 	if changes.has("transmission") and transmission_enabled!=bool(changes.transmission):
 		transmission_enabled=changes.transmission;transmission_failed=false;_transmission_dirty=true
 	if not transmission_enabled and transmission.active:transmission.dispose()
@@ -481,21 +563,22 @@ func _trace_sharc(frame: PackedByteArray) -> bool:
 
 func _release_spatial() -> void:
 	for rid in _spatial_sets+_spatial_images:
-		if rid.is_valid():_rd.free_rid(rid)
+		if rid.is_valid():_release_rid(rid)
 	_spatial_sets.clear();_spatial_images.clear();_spatial_source=RID()
 
 func _targets(size: Vector2i,sampler: RID) -> bool:
 	# Descriptors must retire before the textures they refer to during resize.
-	if size!=_size:_release_spatial();nrd.release_targets();_release_direct(true)
+	if size!=_size or (ray_reconstruction and _history.size()>4):
+		_release_spatial();nrd.release_targets();_release_direct(true)
 	return super._targets(size,sampler)
 
 func _release_direct(retain_output := false) -> void:
 	for rid in [_direct_set,_direct_composite_set]:
-		if rid.is_valid() and _rd.uniform_set_is_valid(rid):_rd.free_rid(rid)
+		if rid.is_valid() and _rd.uniform_set_is_valid(rid):_release_rid(rid)
 	_direct_set=RID();_direct_composite_set=RID()
 	for rid in _direct_images+_direct_auxiliary:
 		if retain_output and rid==direct_sun.texture_rd_rid:_retired_outputs.append(rid)
-		elif rid.is_valid():_rd.free_rid(rid)
+		elif rid.is_valid():_release_rid(rid)
 	_direct_images.clear();_direct_auxiliary.clear();_direct_valid=false
 
 ## Analytic BRDF evaluation still uses random area-light/shadow samples.
@@ -623,9 +706,10 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 	return true
 
 func dispose() -> void:
-	transmission.dispose()
+	var release:=_release_rid if _defer_retirement_release else Callable()
+	transmission.dispose(release)
 	direct_sun.texture_rd_rid=RID()
-	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose();sharc.dispose();rtxdi.dispose()
+	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose(release);sharc.dispose(release);rtxdi.dispose(release)
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
 	_direct_composite_shader=RID();_direct_composite_pipeline=RID()

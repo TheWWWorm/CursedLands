@@ -68,6 +68,7 @@ var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-h
 # Diagnostic comparison against the old display-resolution PT workload.
 var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
 var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var _profile_prepare := {}
 var _ground_cache := Scene.Ground.new()
 var _source_cache := Scene.SourceCache.new()
 var _programs := Device.Programs.new()
@@ -80,7 +81,12 @@ var _rr_original: Compositor
 var _rr_compositor: Compositor
 var _rr_active := false
 var _rr_failed := false
+var _rr_reset := true
 var _transmission_mode := false
+var _retired_devices: Array[Dictionary] = []
+var _retired_scenes: Array[Scene] = []
+var _retirement_last_frames := 0
+var _retirement_last_ms := 0.0
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -103,6 +109,12 @@ static func target_size(viewport: Vector2,quality: int,render_scale := 1.0) -> V
 func _process(dt: float) -> void:
 	var cpu_start := Time.get_ticks_usec() if _profile_cpu else 0
 	var cpu_stage := cpu_start
+	var cpu_timings := {}
+	if _profile_cpu:
+		cpu_timings={"gather_detail":{},"prepare_detail":{},"topology_detail":{},"publish_topology_detail":{}}
+	_service_retirement()
+	if _profile_cpu:
+		cpu_timings["cpu_retirement_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
@@ -147,8 +159,9 @@ func _process(dt: float) -> void:
 		# a new scene is published only after its first complete frame.
 		if _scene.topology_changed(500):
 			_topology_pending=true
+		if _profile_cpu:cpu_timings["topology_detail"]=_scene.profile_topology.duplicate(true)
 	if _profile_cpu:
-		stats["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
+		cpu_timings["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var building := _gather if _gather!=null else _pending_scene
 	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
 		# A saved/first-person camera may settle after loading has started a
@@ -166,17 +179,26 @@ func _process(dt: float) -> void:
 	# their old geometry or acknowledge its shaders before their bounded work.
 	if terrain_preparing: return
 	if _gather==null and _pending_device==null and may_retry \
+		and _retired_devices.is_empty() and _retired_scenes.is_empty() \
 		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>16.0):
 		_begin_snapshot(terrain,camera)
 	if _profile_cpu:
-		stats["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
+		cpu_timings["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	# Loading can use the larger preparation budget. Live travel shares the
 	# frame with rendering and simulation, while the previous scene stays lit.
-	if _gather!=null and _gather.step(1500 if device!=null else 6000): _queue_candidate()
+	if _gather!=null:
+		var complete:=_gather.step(1500 if device!=null else 6000)
+		if _profile_cpu:cpu_timings["gather_detail"]=_gather.profile_gather.duplicate(true)
+		if complete:_queue_candidate()
 	if _pending_stage>=0:
+		var prepare_started:=Time.get_ticks_usec() if _profile_cpu else 0
 		_prepare_candidate(terrain,camera)
+		if _profile_cpu:
+			_profile_prepare["total_us"]=Time.get_ticks_usec()-prepare_started
+			cpu_timings["prepare_detail"]=_profile_prepare.duplicate(true)
 	elif _pending_device!=null and not _pending_ready:Device.dispatch(_pending_device,&"build_step")
-	if _profile_cpu:stats["cpu_gather_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0
+	if _profile_cpu:
+		cpu_timings["cpu_gather_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
 	var viewport := camera.get_viewport()
 	var display_size := viewport.get_visible_rect().size
@@ -199,11 +221,22 @@ func _process(dt: float) -> void:
 		size=_budget.size(size)
 	elif device!=null:device.measure_budget=false
 	if _pending_ready and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
-		if _pending_scene.topology_changed():
+		var validation_started:=Time.get_ticks_usec()
+		var changed:=_pending_scene.topology_changed()
+		if _profile_cpu:
+			cpu_timings["cpu_publish_validation_ms"]=(Time.get_ticks_usec()-validation_started)/1000.0
+			cpu_timings["publish_topology_detail"]=_pending_scene.profile_topology.duplicate(true)
+		var activate_started:=Time.get_ticks_usec()
+		if changed:
 			var keep_cover := not _preparation_owner.is_empty()
 			_cancel_candidate()
 			if keep_cover: _begin_preparation()
 		else: _activate_candidate()
+		if _profile_cpu:cpu_timings["cpu_publish_activate_ms"]=(Time.get_ticks_usec()-activate_started)/1000.0
+	elif _profile_cpu:
+		cpu_timings["cpu_publish_validation_ms"]=0.0;cpu_timings["cpu_publish_activate_ms"]=0.0
+	if _profile_cpu:
+		cpu_timings["cpu_publish_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var frame := PackedByteArray()
 	if _ready_gpu and device!=null:
 		_scene.lighting_camera_mask = camera.cull_mask
@@ -227,6 +260,8 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
 			stats["active"]=true
 		stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
+	if _profile_cpu:
+		cpu_timings["cpu_active_render_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	if _pending_ready:
 		_pending_scene.lighting_camera_mask=camera.cull_mask
 		var changes := _pending_scene.updates()
@@ -236,8 +271,23 @@ func _process(dt: float) -> void:
 		frame.encode_float(82*4,0.0)
 		for axis in 3: frame.encode_float((84+axis)*4,_pending_scene.center[axis])
 		_render(_pending_device,size,frame,changes)
+	if _profile_cpu:cpu_timings["cpu_pending_render_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0
 	stats["rebuilding"]=_gather!=null or _pending_device!=null
 	stats["snapshot_generation"]=_snapshot_generation
+	stats["retirement_device_queue"]=_retired_devices.size()
+	stats["retirement_scene_queue"]=_retired_scenes.size()
+	stats["retirement_last_frames"]=_retirement_last_frames
+	stats["retirement_last_ms"]=_retirement_last_ms
+	stats["retirement_age_frames"]=0
+	stats["retirement_resources_pending"]=0
+	stats["retirement_native_step_ms"]=0.0
+	stats["retirement_native_steps"]=0
+	if not _retired_devices.is_empty():
+		var retired: Device=_retired_devices[0].device
+		stats["retirement_age_frames"]=Engine.get_process_frames()-int(_retired_devices[0].started_frame)
+		stats["retirement_resources_pending"]=retired.retirement_resources_pending()
+		stats["retirement_native_step_ms"]=retired.retirement_step_ms
+		stats["retirement_native_steps"]=retired.retirement_steps
 	stats["size"]=[size.x,size.y]; stats["quality"]=quality
 	var render_size := internal_render_size(display_size,render_scale)
 	stats["display_size"]=[int(display_size.x),int(display_size.y)]
@@ -260,6 +310,7 @@ func _process(dt: float) -> void:
 	if device is PathDevice:
 		stats["ray_reconstruction"]=device.ray_reconstruction
 		stats["rr_raw_frames"]=device.raw_reconstruction_frames
+		stats["rr_presentation_handoffs"]=device.presentation_handoffs
 		stats["transmission_active"]=device.transmission.active
 		stats["transmission_frames"]=device.transmission.frames
 		stats["transmission_resets"]=device.transmission.resets
@@ -276,7 +327,11 @@ func _process(dt: float) -> void:
 		stats["history_handoffs"]=device.history_handoffs
 		stats["history_matched_surfaces"]=device.history_matched_surfaces
 	_settle_preparation(size)
-	if _profile_cpu:stats["cpu_total_ms"]=(Time.get_ticks_usec()-cpu_start)/1000.0
+	if _profile_cpu:
+		# Promotion replaces stats. Merge this frame's timings afterward so a
+		# slow handoff cannot discard its own diagnosis or reuse stale stages.
+		stats.merge(cpu_timings,true)
+		stats["cpu_total_ms"]=(Time.get_ticks_usec()-cpu_start)/1000.0
 
 func _begin_preparation() -> void:
 	_end_preparation()
@@ -299,7 +354,10 @@ func _end_preparation() -> void:
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
 	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
 	if target is PathDevice:
-		changes["ray_reconstruction"]=_rr_active and target==device
+		# Private replacements need the same raw-input contract as the visible
+		# RR view. Denoising their first frame allocates a second full-size NRD
+		# pool and direct histories which are discarded as soon as promoted.
+		changes["ray_reconstruction"]=_rr_active
 		changes["rtxdi"]=GameData.option("pt_restir")>0
 		changes["transmission"]=_transmission_mode
 		Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
@@ -319,8 +377,10 @@ func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dicti
 
 func _dispatch_render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary,token := -1) -> void:
 	if _rr_active and target==device and _rr_effect!=null:
-		Device.dispatch(_rr_effect,&"queue_frame",[target,size,frame,changes,GameData.option("q_aniso"),token])
+		Device.dispatch(_rr_effect,&"queue_frame",[target,size,frame,changes,GameData.option("q_aniso"),token,_rr_reset])
 	elif token>=0:Device.dispatch(target,&"render_preparation",[token,size,frame,changes,GameData.option("q_aniso")])
+	elif target is PathDevice and target!=device and target.incremental_build:
+		Device.dispatch(target,&"render_candidate",[size,frame,changes,GameData.option("q_aniso")])
 	else:Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")])
 
 func _set_ray_reconstruction(camera: Camera3D,active: bool) -> void:
@@ -361,12 +421,13 @@ func _settle_preparation(size: Vector2i) -> void:
 func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_failed=false
 	_gather=Scene.new();_gather.lighting_camera_mask=camera.cull_mask
+	_gather.profile_cpu=_profile_cpu
 	_gather._ground=_ground_cache
 	_gather._sources=_source_cache
 	_gather.path_materials=_path_mode
 	_gather.path_transmission=_transmission_mode
 	# No water-plane clipping: ceilings and underground rooms participate.
-	_gather.begin(terrain,camera.global_position,-1.0e20)
+	_gather.begin(terrain,camera.global_position,-1.0e20,device!=null)
 	if device==null: _center=camera.global_position
 
 func _queue_candidate() -> void:
@@ -394,48 +455,92 @@ func _queue_candidate() -> void:
 ## Keep the old scene visible while these independent stages take separate
 ## frames. The candidate is still revalidated before its atomic promotion.
 func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
+	var profile_part:=Time.get_ticks_usec() if _profile_cpu else 0
+	if _profile_cpu:_profile_prepare={"stage":_pending_stage,"parts_us":{},"instances":_pending_scene.instances.size(),"geometries":_pending_scene.geometries.size(),"triangles":_pending_scene.triangles}
 	match _pending_stage:
 		0:
 			var initial := _pending_scene.updates(true)
 			_pending_device.initial_poses=initial.poses
+			if _profile_cpu:
+				_profile_prepare.parts_us.initial_updates=Time.get_ticks_usec()-profile_part;profile_part=Time.get_ticks_usec()
 			for geometry: Dictionary in _pending_scene.geometries:
 				_pending_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
 					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer,"dielectric":geometry.get("dielectric",PackedFloat32Array())})
+			if _profile_cpu:
+				_profile_prepare.parts_us.geometry_headers=Time.get_ticks_usec()-profile_part;profile_part=Time.get_ticks_usec()
 			for entry: Dictionary in _pending_scene.instances:
 				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask,
 					"lighting_offset":entry.get("lighting_offset",Vector3.ZERO)})
+			if _profile_cpu:_profile_prepare.parts_us.placements=Time.get_ticks_usec()-profile_part
 			_pending_stage=1
 		1:
 			if _path_mode:
 				_pending_device.terrain.collect(_pending_scene,terrain)
+				if _profile_cpu:_profile_prepare.parts_us.terrain_collect=Time.get_ticks_usec()-profile_part
 				if _pending_scene.failed: _reject_candidate("snapshot_budget");return
 				_pending_stats["terrain_material_bytes"]=_pending_device.terrain.data.size()
 				_pending_stats["terrain_material_build_us"]=_pending_device.terrain.build_us
 				_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
 			_pending_stage=2
 		2:
-			Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,_pending_geometries,_pending_placements])
+			var packed_vertices:=_pending_scene.vertices.to_byte_array()
+			if _profile_cpu:
+				_profile_prepare.parts_us.vertex_bytes=Time.get_ticks_usec()-profile_part;profile_part=Time.get_ticks_usec()
+			Device.dispatch(_pending_device,&"build",[packed_vertices,_pending_scene.images,_pending_geometries,_pending_placements])
+			if _profile_cpu:
+				_profile_prepare.parts_us.dispatch=Time.get_ticks_usec()-profile_part;profile_part=Time.get_ticks_usec()
 			_pending_geometries=[];_pending_placements=[];_pending_stage=-1
 			_collect_lights(camera.global_position)
+			if _profile_cpu:_profile_prepare.parts_us.lights=Time.get_ticks_usec()-profile_part
 
 func _bind_outputs() -> void:
 	if _bound: return
-	RenderingServer.global_shader_parameter_set(&"ei_rt_gi",device.output)
-	RenderingServer.global_shader_parameter_set(&"ei_rt_guide",device.guide)
-	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
-	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
-	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",device.direct_sun if device is PathDevice else null)
-	if device is PathDevice:
-		RenderingServer.global_shader_parameter_set(&"ei_pt_trans_colour",device.transmission.colour)
-		RenderingServer.global_shader_parameter_set(&"ei_pt_trans_guide",device.transmission.guide)
+	_bind_device_outputs(device)
+	_bound=true
+
+static func _bind_device_outputs(target: Device) -> void:
+	RenderingServer.global_shader_parameter_set(&"ei_rt_gi",target.output)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_guide",target.guide)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",target.shadow0)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",target.shadow1)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",target.direct_sun if target is PathDevice else null)
+	if target is PathDevice:
+		RenderingServer.global_shader_parameter_set(&"ei_pt_trans_colour",target.transmission.colour)
+		RenderingServer.global_shader_parameter_set(&"ei_pt_trans_guide",target.transmission.guide)
+
+static func _publish_rr_handoff(target: PathDevice,previous: PathDevice) -> void:
+	# The render-thread transaction decides whether transfer succeeded. On
+	# incompatibility/allocation failure, bind the complete private output
+	# before material preparation, using the ordinary publication path.
+	if not target.adopt_presentation(previous):_bind_device_outputs(target)
+
+func _bind_handoff_outputs(previous: PathDevice) -> void:
+	# Bound arguments retain both owners through execution. This runs after
+	# prior frame submissions and before queue_frame and old-owner retirement.
+	RenderingServer.call_on_render_thread(_publish_rr_handoff.bind(device,previous))
 	_bound=true
 
 func _activate_candidate() -> void:
 	var previous := device
+	# Keep the old CPU snapshot alive while replacing the active reference.
+	# Releasing all geometry dictionaries here creates the same traversal
+	# hitch as freeing the old native scene in a single promotion frame.
+	if _scene!=null:_retired_scenes.append(_scene)
 	var preserve := previous is PathDevice and _pending_device is PathDevice and GameData.option("pt_accumulation")==0
+	var rr_handoff:=preserve and _rr_active and _rr_effect!=null
 	if preserve:
-		Device.dispatch(_pending_device,&"adopt_history",[previous,_pending_scene.history_matches(_scene)])
-		_handoff_updates=true
+		if rr_handoff:
+			# RR owns screen-space history in the native viewport, independently
+			# of placement IDs. Preserve it across this atomic scene handoff;
+			# the next frame still validates camera, size and lighting changes.
+			Device.dispatch(_rr_effect,&"adopt_target",[previous,_pending_device])
+		else:
+			Device.dispatch(_pending_device,&"adopt_history",[previous,_pending_scene.history_matches(_scene)])
+		# NRD restores previous-instance transforms to remap its motion history.
+		# RR only transfers the camera-history owner; its private candidate has
+		# already consumed every preparation delta. Replaying all static parts
+		# there also dirties thousands of motion records on the following frame.
+		_handoff_updates=not rr_handoff
 	elif _pending_device is PathDevice:_pending_device.defer_nrd=false
 	device=_pending_device;_scene=_pending_scene;_center=_scene.center;stats=_pending_stats
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={}
@@ -444,8 +549,9 @@ func _activate_candidate() -> void:
 	_snapshot_generation+=1;_clear_failure()
 	_topology_pending=false
 	# Replace global bindings before retiring their previous GPU owners.
-	_bind_outputs()
-	_retire_device(previous)
+	if rr_handoff:_bind_handoff_outputs(previous)
+	else:_bind_outputs()
+	_retire_device(previous,true)
 
 func _clear_failure() -> void:
 	_failed=false;_failure_reason="";_failure_watch=null;_retry_delay=0.0
@@ -487,7 +593,7 @@ func _cancel_candidate() -> void:
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={};_gather=null
 	_pending_stage=-1;_pending_geometries=[];_pending_placements=[]
 
-func _retire_device(retired: Device) -> void:
+func _retire_device(retired: Device,incremental := false) -> void:
 	if retired==null: return
 	var ready_callback := _prepared.bind(retired.get_instance_id())
 	if retired.prepared.is_connected(ready_callback): retired.prepared.disconnect(ready_callback)
@@ -496,7 +602,27 @@ func _retire_device(retired: Device) -> void:
 	if retired is PathDevice:
 		var emitter_callback := _emitter_stats.bind(retired.get_instance_id())
 		if retired.emitter_stats.is_connected(emitter_callback): retired.emitter_stats.disconnect(emitter_callback)
-	Device.dispatch(retired,&"dispose")
+	if incremental:
+		Device.dispatch(retired,&"begin_retirement")
+		_retired_devices.append({"device":retired,"after":Engine.get_process_frames()+2,
+			"started_frame":Engine.get_process_frames(),"started_usec":Time.get_ticks_usec()})
+	else:Device.dispatch(retired,&"dispose")
+
+func _service_retirement() -> void:
+	if not _retired_scenes.is_empty() and _retired_scenes[0].retire_step(1000):_retired_scenes.pop_front()
+	if not _retired_devices.is_empty():
+		var item:=_retired_devices[0]
+		var retired: Device=item.device
+		if Engine.get_process_frames()>=item.after:
+			Device.dispatch(retired,&"retire_step")
+			if retired.retirement_complete():
+				_retirement_last_frames=Engine.get_process_frames()-int(item.started_frame)
+				_retirement_last_ms=(Time.get_ticks_usec()-int(item.started_usec))/1000.0
+				_retired_devices.pop_front()
+
+func _flush_retirement() -> void:
+	for item: Dictionary in _retired_devices:Device.dispatch(item.device,&"dispose")
+	_retired_devices.clear();_retired_scenes.clear()
 
 func _path_cloud_texture() -> Texture2D:
 	if _terrain==null or game._sky_cave or not Gfx.Clouds.shadows_enabled() or Gfx._cloud_owner!=_terrain.get_instance_id():return null
@@ -605,6 +731,12 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4) or bytes.slice(116*4)!=_path_signature.slice(116*4)
 			if local_changed or weather_fading:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
 		var reuse := history and same_projection and same_cloud_mode and (stationary if progressive else same_lighting or gentle_change)
+		# RR reconstructs current radiance using raster motion/depth. A moving
+		# torch must not invalidate every distant pixel as it does our bounded
+		# lighting caches. Keep the stricter cache reset in data[82], but reset
+		# RR only for view discontinuities and abrupt global illumination.
+		_rr_reset=not (history and same_projection and same_cloud_mode and (same_lighting \
+			or _small_lighting_change(bytes,_path_signature,outdoor_tolerance,false)))
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
 		stats["history_reused"]=reuse;stats["history_limit"]=limit
@@ -629,13 +761,14 @@ func _weather_fading() -> bool:
 	return not game._sky_cave and is_instance_valid(game.sound) and game.sound.weather!=null \
 		and game.sound.weather.world==game.world and game.sound.weather._fade>0.0
 
-static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray, outdoor_tolerance := 0.002) -> bool:
+static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray, outdoor_tolerance := 0.002, include_local := true) -> bool:
 	# Signature floats 76..103 are the seven linear RGB/source-size records.
 	# Projection is checked by the caller; ordinary camera motion reprojects.
 	# Region and local-light positions/ranges stay exact. The campaign clock
 	# advances sunlight and sky every frame, even with a stationary camera.
 	if current.size()!=previous.size() or current.size()<116*4 or (current.size()-116*4)%32!=0: return false
-	if current.slice(44*4,76*4)!=previous.slice(44*4,76*4): return false
+	if current.slice(44*4,48*4)!=previous.slice(44*4,48*4): return false
+	if include_local and current.slice(48*4,76*4)!=previous.slice(48*4,76*4): return false
 	for offset in [32,40,104,108,112]:
 		if current.decode_float((offset+3)*4)!=previous.decode_float((offset+3)*4): return false
 		var old := Vector3(previous.decode_float(offset*4),previous.decode_float((offset+1)*4),previous.decode_float((offset+2)*4))
@@ -654,6 +787,7 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	# At most 0.057 degrees per frame; responsive history remains bounded to
 	# eight frames. Abrupt weather/time changes still reject it immediately.
 	if not direction.is_finite() or not old_direction.is_finite() or direction.distance_squared_to(old_direction)>0.000001: return false
+	if not include_local:return true
 	var colour_offsets: Array[int]=[]
 	for i in 7:colour_offsets.append((76+i*4)*4)
 	for offset in range(116*4,current.size(),32):
@@ -720,6 +854,7 @@ func _emitter_stats(count: int,candidates: int,id: int) -> void:
 	target["emissive_triangles"]=count;target["emissive_candidates"]=candidates
 
 func _release() -> void:
+	_flush_retirement()
 	_set_ray_reconstruction(null,false)
 	_set_gi_active(false)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)

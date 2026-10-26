@@ -71,7 +71,7 @@ func crossings(result: Array) -> int:
 					and orientation(b[0],b[1],a[0])*orientation(b[0],b[1],a[1]) < -1e-12:count+=1
 	return count
 
-func inspect(source: Array, result: Array) -> void:
+func inspect(source: Array, result: Array, preserve_anchors := true, max_offset := 0.60001) -> void:
 	var shared := {}; var seams := 0; var moved := 0; var bad := 0; var folded := 0
 	var points: PackedVector3Array=result[Mesh.ARRAY_VERTEX]
 	var uv: PackedVector2Array=result[Mesh.ARRAY_TEX_UV]
@@ -84,9 +84,9 @@ func inspect(source: Array, result: Array) -> void:
 			seams+=1
 			if p.distance_to(shared[grid])>0.00001: bad+=1
 		else: shared[grid]=p
-		if original.has(grid) and p!=original[grid]: bad+=1
+		if preserve_anchors and original.has(grid) and p!=original[grid]: bad+=1
 		if Vector2(p.x,-p.z).distance_to(grid)>0.001:moved+=1
-		if not p.is_finite() or Vector2(p.x,-p.z).distance_to(grid)>0.60001: bad+=1
+		if not p.is_finite() or Vector2(p.x,-p.z).distance_to(grid)>max_offset: bad+=1
 	for i in range(0,ids.size(),3):
 		var a:=points[ids[i]];var b:=points[ids[i+1]];var c:=points[ids[i+2]]
 		var grid:Vector2=(uv[ids[i]]+uv[ids[i+1]]+uv[ids[i+2]])/3.0
@@ -95,7 +95,7 @@ func inspect(source: Array, result: Array) -> void:
 		if f.x+f.y>1.0:pa=original[cell+Vector2.ONE];var swap:=pb;pb=pc;pc=swap
 		if (c-a).cross(b-a).dot((pb-pa).cross(pc-pa))<=0.0000001:folded+=1
 	check(moved>100,"tall staircase walls gain curved contours")
-	check(seams>1000 and bad==0,"shared edges are continuous, anchors exact and offsets bounded: %d"%bad)
+	check(seams>1000 and bad==0,("shared edges are continuous, anchors exact and offsets bounded: %d" if preserve_anchors else "shared edges are continuous and presentation offsets bounded: %d")%bad)
 	check(folded==0,"refined wall faces retain their 3D orientation: %d"%folded)
 	var intersecting:=crossings(result)
 	check(intersecting==0,"curved wall sections do not cross each other: %d"%intersecting)

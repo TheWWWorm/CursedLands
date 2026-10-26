@@ -116,7 +116,8 @@ class PackagedFixtureTests(unittest.TestCase):
                                    if arg.startswith("--suite-script=")))
                 base = script.parent / "../benchmarks/base.gd"
                 self.assertTrue(base.is_file(), "relative benchmark superclass was not staged")
-                self.assertIn(str(script.parent / "helper.gd"), base.read_text())
+                self.assertIn((script.parent / "helper.gd").as_posix(), base.read_text())
+                self.assertNotIn("\\", base.read_text(), "GDScript imports must not contain Windows escape sequences")
                 self.assertNotIn("res://tools/", base.read_text())
                 self.assertEqual((script.parent / "fixtures/original.json").read_bytes(), payload)
                 self.assertIn("res://src/game/session.gd", (script.parent / "helper.gd").read_text())

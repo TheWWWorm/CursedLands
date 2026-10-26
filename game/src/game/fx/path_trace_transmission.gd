@@ -65,8 +65,10 @@ func _program(owner: RefCounted) -> bool:
 	history=0
 	return true
 
-func _release_set() -> void:
-	if _set.is_valid() and _rd.uniform_set_is_valid(_set):_rd.free_rid(_set)
+func _release_set(release: Callable=Callable()) -> void:
+	if _set.is_valid() and _rd.uniform_set_is_valid(_set):
+		if release.is_valid():release.call(_set)
+		else:_rd.free_rid(_set)
 	_set=RID()
 
 func _uniform(kind: int,binding: int,ids: Array[RID]) -> RDUniform:
@@ -97,6 +99,28 @@ func _bindings(owner: RefCounted,images: Array[RID]) -> Array[RDUniform]:
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[owner._emitters]))
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[owner._emitter_lookup]))
 	return bindings
+
+func presentation_compatible(previous: RefCounted) -> bool:
+	if previous==null or active!=previous.active:return false
+	if not active:return _images.is_empty() and previous._images.is_empty()
+	return _rd==previous._rd and _size==previous._size and _images.size()==3 and previous._images.size()==3 \
+		and colour.texture_rd_rid==_images[0] and guide.texture_rd_rid==_images[1] \
+		and previous.colour.texture_rd_rid==previous._images[0] and previous.guide.texture_rd_rid==previous._images[1]
+
+## Stage descriptors before any image/wrapper ownership changes. The opaque
+## owner commits both transactions only once every allocation has succeeded.
+func prepare_presentation(owner: RefCounted,previous: RefCounted) -> RID:
+	return owner._target_set(_bindings(owner,previous._images),_shader)
+
+func commit_presentation(previous: RefCounted,replacement_set: RID) -> void:
+	var spare_colour:=colour;colour=previous.colour;previous.colour=spare_colour
+	var spare_guide:=guide;guide=previous.guide;previous.guide=spare_guide
+	if not active:return
+	var spare:=_images;_images=previous._images;previous._images=spare
+	_release_set();_set=replacement_set
+	# The physical targets contain the previously visible view. The next trace
+	# writes all channels without reusing a different generation's refraction.
+	history=0
 
 func render(owner: RefCounted,frame: PackedByteArray,dirty: bool) -> bool:
 	if not _setup(owner):return false
@@ -147,13 +171,15 @@ func render(owner: RefCounted,frame: PackedByteArray,dirty: bool) -> bool:
 	active=true;frames+=1;history=mini(history+1,31)
 	return true
 
-func dispose() -> void:
+func dispose(release: Callable=Callable()) -> void:
 	colour.texture_rd_rid=RID();guide.texture_rd_rid=RID();active=false
 	if _rd!=null:
-		_release_set()
+		_release_set(release)
 		for r in _images+[_sbt,_metadata,_control]:
-			if r.is_valid():_rd.free_rid(r)
-	if _own_programs and _programs!=null:_programs.dispose()
+			if r.is_valid():
+				if release.is_valid():release.call(r)
+				else:_rd.free_rid(r)
+	if _own_programs and _programs!=null:_programs.dispose(release)
 	_images.clear();_sbt=RID();_metadata=RID();_control=RID();_shader=RID();_pipeline=RID()
 	_programs=null;_own_programs=false;_rd=null;_size=Vector2i.ZERO;_sampler=RID();_cloud=RID()
 	_signature=PackedByteArray();history=0;bytes=0;_empty=false

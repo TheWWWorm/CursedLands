@@ -1,5 +1,9 @@
 # Optional SHaRC indirect lighting
 
+The current player presets manage this setting. The individual control below
+is available for renderer diagnostics with `-- --ei-pt-tuning`; see the
+[player preset and tuning contract](path-tracing-experiment.md#controls).
+
 Added on 25 October 2026, starting from local integration `2a912713` and
 retaining the sparse scene-upload change `2a7cd054`.
 

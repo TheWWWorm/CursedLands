@@ -418,6 +418,17 @@ func _rebuild(rec: Dictionary) -> void:
 func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array, defer_shadow := false) -> void:
 	if terrain._cliffs != null and terrain._cliffs.geometry != null:
 		arrays = terrain._cliffs.geometry.arrays(arrays)
+		if shadow_arrays[Mesh.ARRAY_INDEX] != null:
+			# The shadow contains only the appended dense footprint vertices.
+			# Sample their final presentation geometry while retaining its exact
+			# coverage, UVs and material channels. Deferred native publication
+			# must also retain this transformed snapshot rather than the worker's
+			# original straight cliff/cap surface.
+			var first: int = rec.arrays[Mesh.ARRAY_VERTEX].size()
+			var count: int = shadow_arrays[Mesh.ARRAY_VERTEX].size()
+			shadow_arrays = shadow_arrays.duplicate()
+			for channel in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL]:
+				shadow_arrays[channel] = arrays[channel].slice(first,first+count)
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	mesh.surface_set_material(0, rec.material)

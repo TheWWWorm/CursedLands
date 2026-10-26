@@ -1177,7 +1177,10 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Quarter turns and V inversion preserve length. Reuse the world-space
     // UV density already needed by the base material and painted relief.
     float density=uv_density*per_row/interior;
-    float grazing=max(abs(dot(s.normal,WorldRayDirection())),0.1);
+    // World-space texture derivatives depend on the intersected triangle,
+    // not its bent lighting normal. Using the latter overfilters cliff
+    // relief and makes detail LOD change as smooth normals approach the eye.
+    float grazing=max(abs(dot(s.geometric_normal,WorldRayDirection())),0.1);
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);

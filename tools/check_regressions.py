@@ -60,7 +60,7 @@ def stage_packaged_tests(destination):
         shutil.copytree(REPO / "tools" / name, destination / name,
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     for script in destination.rglob("*.gd"):
-        script.write_text(script.read_text().replace("res://tools/", str(destination) + "/"))
+        script.write_text(script.read_text().replace("res://tools/", destination.as_posix() + "/"))
     return destination / "tests"
 
 

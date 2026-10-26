@@ -13,6 +13,7 @@ var blends: ImageTexture
 var blend_rows := PackedColorArray()
 var mixed := 0
 var eligible := PackedByteArray()
+var geometry_eligible := PackedByteArray()
 var guards := PackedByteArray()
 var tile_size := Vector2i.ZERO
 var grid_size := Vector2i.ZERO
@@ -23,13 +24,14 @@ var build_us := 0
 var examples: Array[Dictionary] = []
 var _shaders := {}
 var geometry: RefCounted
+var _snow_tall := false
 
 
 func _init(terrain: EITerrain = null, verified: Dictionary = {}) -> void:
 	if terrain == null: return
 	var start := Time.get_ticks_usec()
 	_build(terrain, verified)
-	if admitted > 0: geometry = WallMesh.new(terrain, self)
+	if admitted > 0 or _snow_tall: geometry = WallMesh.new(terrain, self)
 	build_us = Time.get_ticks_usec() - start
 
 
@@ -58,6 +60,7 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 			if not corners.is_empty(): rules[atlas] = corners
 	blend_rows = Blends.build(terrain, rules)
 	eligible.resize(terrain.land_tile.size())
+	geometry_eligible.resize(terrain.land_tile.size())
 	var needed := PackedByteArray(); needed.resize(count)
 	for ty in tile_size.y:
 		for tx in tile_size.x:
@@ -67,18 +70,28 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 			var atlas := (code >> 6) & 255
 			var slot := code & 63
 			var plain: bool = masks.has(atlas) and masks[atlas].size() == 64 and masks[atlas][slot] == 1
-			if not plain and blend_rows[i].a == 0: continue
 			var type_id := atlas * 64 + slot
 			if type_id >= terrain.tile_types.size(): continue
-			# Snow/ice/liquid metadata may reuse original rock artwork. Retain
-			# its authored surface even when that atlas is otherwise recognised.
 			var ground := terrain.tile_types[type_id]
-			if not Blends.ground_allowed(ground): continue
-			classified += 1
+			var projected := (plain or blend_rows[i].a > 0) and Blends.ground_allowed(ground)
+			var snowy := snow_geometry(rules.get(atlas, PackedByteArray()), slot, ground)
+			if not projected and not snowy: continue
+			if projected: classified += 1
 			if not _valid_tile(terrain, tx * 2, ty * 2):
 				blend_rows[i] = Color(0,0,0,0)
 				rejected_geometry += 1
 				continue
+			geometry_eligible[i] = 255
+			if snowy and not _snow_tall:
+				for dy in 2:
+					for dx in 2:
+						var a := (ty * 2 + dy) * grid_size.x + tx * 2 + dx
+						for tri: Vector3i in [Vector3i(a,a+1,a+grid_size.x),Vector3i(a+1,a+grid_size.x+1,a+grid_size.x)]:
+							var h := Vector3(terrain.heights[tri.x],terrain.heights[tri.y],terrain.heights[tri.z])
+							if maxf(h.x,maxf(h.y,h.z))-minf(h.x,minf(h.y,h.z))>WallMesh.MIN_SPAN:_snow_tall=true
+			# Known snowy hills need the same contour refinement, but their
+			# painted snow/rock boundaries must keep the original projection.
+			if not projected: continue
 			eligible[i] = 255
 			if blend_rows[i].a > 0: mixed += 1
 			for y in range(maxi(ty * 2 - 1, 0), mini(ty * 2 + 3, grid_size.y - 1)):
@@ -128,6 +141,18 @@ func _build(terrain: EITerrain, verified: Dictionary) -> void:
 	tiles = ImageTexture.create_from_image(Image.create_from_data(tile_size.x, tile_size.y, false, Image.FORMAT_R8, eligible))
 	flatness = ImageTexture.create_from_image(Image.create_from_data(grid_size.x, grid_size.y, false, Image.FORMAT_R8, guards))
 	blends = ImageTexture.create_from_image(Image.create_from_data(tile_size.x, tile_size.y, false, Image.FORMAT_RGBAF, blend_rows.to_byte_array()))
+
+
+static func snow_geometry(corners: PackedByteArray, slot: int, ground: int) -> bool:
+	if corners.size() != 256 or not (ground in [9,12] or Blends.ground_allowed(ground)): return false
+	var snow := false
+	for family in corners.slice(slot * 4, slot * 4 + 4):
+		if family <= 0 or family >= Tiles.Natural.FAMILIES.size(): return false
+		var name: String = Tiles.Natural.FAMILIES[family]
+		var snowy := name.begins_with("snow /") or name == "rock / snow"
+		if not snowy and not Blends.supported(family): return false
+		snow = snow or snowy
+	return snow
 
 
 func _point(terrain: EITerrain, index: int) -> Vector3:

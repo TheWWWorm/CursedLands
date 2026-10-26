@@ -68,6 +68,11 @@ rt_source = (ROOT / 'game/fx/scene_raytrace.gd').read_text()
 for match in re.finditer(r'^const REASON := (' + STRING + r')$', rt_source, re.M):
     key = json.loads(match[1])
     if key not in entries: errors.append(f'Scene RT availability missing RU/DE key: {key}')
+# Player PT presets and their Screen link are selected without literal t() calls.
+pt_source = (ROOT / 'platform/path_trace_settings.gd').read_text()
+for match in re.finditer(r'^const (?:LABEL|HELP|SCREEN_LABEL|SCREEN_HELP) := (' + STRING + r')$', pt_source, re.M):
+    key = json.loads(match[1])
+    if key not in entries: errors.append(f'Path tracing preset missing RU/DE key: {key}')
 # Online errors cross the wire as English keys and translate on each client.
 online_source = (ROOT / 'game/arena_online_session.gd').read_text()
 for key in json.loads(re.search(r'^const ERRORS := (\[.*\])$', online_source, re.M)[1]):

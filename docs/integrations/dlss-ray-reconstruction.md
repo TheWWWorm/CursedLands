@@ -1,12 +1,13 @@
 # DLSS Ray Reconstruction
 
-The optional **Remake → Ray tracing / Path tracing → DLSS Ray Reconstruction**
-setting reconstructs the noisy main campaign image with NVIDIA's RR model.
-It starts Off. Enable DLSS/DLAA in a Windows Forward+ Direct3D 12 session, path
-tracing, and Responsive accumulation first. Missing native support, an absent
-RR runtime, or Still accumulation retains the selected NRD mode. Linux keeps
-its existing NRD path. Labels, choices, help and unavailable reasons are in
-English, Russian and German.
+Player PT presets automatically request NVIDIA Ray Reconstruction when
+DLSS/DLAA is selected in a supported Windows Forward+ Direct3D 12 session.
+Missing native support or an absent RR runtime retains radiance NRD; Linux
+keeps its NRD path. The diagnostic launch flag `-- --ei-pt-tuning` restores the
+individual **DLSS Ray Reconstruction** setting and the saved NRD/accumulation
+choices. Still accumulation bypasses RR. Labels, choices, help and unavailable
+reasons are in English, Russian and German. See the
+[player preset and tuning contract](path-tracing-experiment.md#controls).
 
 This implementation uses the signed production Streamline **2.14.16** release,
 including `sl.dlss_d.dll` and `nvngx_dlssd.dll`. The runtime reports
@@ -55,6 +56,14 @@ pre-transparency colour inputs are not supplied to RR. This implementation
 does not claim full translucent-material reconstruction, mirror primary-surface
 replacement, XR, HDR, or RR plus frame-generation qualification. The tested
 RTX 30 hardware supports standard RR but does not expose standard DLSS FG.
+
+Subsequent [Windows stability validation](../validation/pt-stability-2026-10-26/README.md)
+records RR with standard DLSS frame generation on an RTX 4090 Laptop GPU.
+Unlocked foreground runs confirm actual generated presentation in the saved
+camera route and live river/snow traversal. Further scene-handoff and small-detail
+stability work is in progress; the linked record separates completed checks from
+remaining qualification. This validation is separate from the original RTX 30
+qualification above.
 
 ## Engine and verification
 

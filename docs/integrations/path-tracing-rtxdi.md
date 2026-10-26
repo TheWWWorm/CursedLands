@@ -1,5 +1,9 @@
 # Optional RTXDI direct lighting
 
+The current player presets manage this setting. The individual control below
+is available for renderer diagnostics with `-- --ei-pt-tuning`; see the
+[player preset and tuning contract](path-tracing-experiment.md#controls).
+
 **Remake → Ray tracing / Path tracing → ReSTIR direct lighting** enables
 NVIDIA RTXDI 3.1.0 in the main path-traced view. It defaults to Off and requires
 Responsive accumulation. Labels, choices, help and attribution are translated

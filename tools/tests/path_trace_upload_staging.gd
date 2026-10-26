@@ -30,6 +30,18 @@ func make_upload_device(events: Array, fail_after := -1) -> UploadDevice:
 	PathDevice.dispatch(result,&"build",[mesh_data.to_byte_array(),pixels,geometries,placements])
 	return result
 
+func wait_upload_resources(target: UploadDevice) -> bool:
+	# Texture upload assertions begin at the same actual stage on both eager
+	# and staged resource builders. Do not consume the first array upload.
+	for i in 120:
+		if target._closed or target._ready:return false
+		var resources_done:=not target.has_method("_build_resource_phase") or int(target.get("_build_resource_stage"))<0
+		if target._building and target._colours.is_valid() and resources_done:
+			return target.uploaded==0 and not target._pending_images.is_empty()
+		if target._building:PathDevice.dispatch(target,&"build_step")
+		await frames(1)
+	return false
+
 func read_layers(target: UploadDevice, expected: Array[Image]) -> void:
 	var matching := 0
 	for i in expected.size():
@@ -55,7 +67,8 @@ func run() -> void:
 		pixels.append(image)
 	var prepared := []
 	device=make_upload_device(prepared);await frames(3)
-	check(prepared.is_empty() and not device.output_ready(),"allocated but unuploaded scene remains private")
+	var resources_ready:=await wait_upload_resources(device as UploadDevice)
+	check(resources_ready and prepared.is_empty() and not device.output_ready(),"allocated but unuploaded scene remains private")
 	PathDevice.dispatch(device,&"build_step")
 	PathDevice.dispatch(device,&"render",[size,frame(false)]);await frames(3)
 	check(device.uploaded>0 and device.uploaded<=4 and prepared.is_empty(),"one frame uploads only a bounded part of the array")
@@ -72,18 +85,20 @@ func run() -> void:
 	var live_output := device.output.texture_rd_rid
 	var cancelled_events := []
 	var cancelled := make_upload_device(cancelled_events);await frames(3)
+	var cancel_resources_ready:=await wait_upload_resources(cancelled)
 	PathDevice.dispatch(cancelled,&"build_step")
 	PathDevice.dispatch(cancelled,&"dispose")
 	PathDevice.dispatch(cancelled,&"build_step");await frames(4)
-	check(cancelled.uploaded>0 and cancelled.uploaded<pixels.size(),"cancellation interrupts a real partial upload")
+	check(cancel_resources_ready and cancelled.uploaded>0 and cancelled.uploaded<pixels.size(),"cancellation interrupts a real partial upload")
 	check(cancelled_events.is_empty() and not cancelled.output_ready() and not cancelled._building,"queued work cannot promote a cancelled scene")
 	check(cancelled._pending_images.is_empty() and cancelled._owned.is_empty() and cancelled.freed_array,"cancellation releases CPU snapshots and the incomplete GPU array")
 	var failed_events := []
 	var failing := make_upload_device(failed_events,2);await frames(3)
+	var fail_resources_ready:=await wait_upload_resources(failing)
 	for i in 10:
 		PathDevice.dispatch(failing,&"build_step");await frames(1)
 		if not failed_events.is_empty():break
-	check(failed_events==[false] and not failing.output_ready() and not failing._building,"upload failure rejects the private candidate exactly once")
+	check(fail_resources_ready and failed_events==[false] and not failing.output_ready() and not failing._building,"upload failure rejects the private candidate exactly once")
 	PathDevice.dispatch(failing,&"dispose");await frames(3)
 	check(failing._pending_images.is_empty() and failing._owned.is_empty() and failing.freed_array,"failed upload releases pending CPU and GPU resources")
 	await render_many(2)

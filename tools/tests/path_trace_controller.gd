@@ -34,8 +34,14 @@ func await_pending(owner: Node) -> Object:
 func inject_budget(owner: Node,game: Game) -> void:
 	owner.set_process(false);owner._release()
 	owner._begin_snapshot(game.world.terrain,camera)
+	var gathered:=false
+	for i in 4096:
+		if owner._gather.step(6000):gathered=true;break
+	check(gathered and not owner._gather.failed and owner._gather.triangles>0 and not owner._gather._nodes.is_empty()
+		and not owner._gather.vertices.is_empty() and not owner._gather.images.is_empty(),
+		"budget injection starts with complete source membership and packed geometry")
 	owner._gather.failed=true
-	owner._queue_candidate(game.world.terrain,camera)
+	owner._queue_candidate()
 	check(owner._failed and owner.stats.get("fallback","")=="snapshot_budget","injected over-budget snapshot enters conventional fallback")
 	check(owner.device==null and owner._failure_watch!=null and not owner._failure_watch._nodes.is_empty(),"failed snapshot retains a source-membership watch")
 	check(owner._failure_watch.vertices.is_empty() and owner._failure_watch.images.is_empty() \

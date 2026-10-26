@@ -30,6 +30,9 @@ var _morph_geometries: Array[int] = []
 var _terrain: EITerrain
 var _plane := 0.0
 var _cursor := 0
+var _gather_roots: Array[WeakRef] = []
+var _gather_root_cursor := 0
+var _gather_materials := {}
 var _kernel: Object
 var _watching := false
 var _detail_options := Vector4i.ZERO
@@ -49,18 +52,26 @@ const PathTerrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Ground = preload("res://src/game/fx/raytrace_ground.gd")
 var _ground := Ground.new()
 const SourceCache = preload("res://src/game/fx/raytrace_source_cache.gd")
+const Retirement = preload("res://src/game/fx/raytrace_retirement.gd")
 var _sources := SourceCache.new()
+var _retirement: Retirement
 var _soft_ground := false
 var _cliffs: TerrainCliff
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
 var lighting_camera_mask := -1
+# Observation-only live diagnostics. The controller enables these solely for
+# --ei-profile-rt; plain values can be retained after a candidate is promoted.
+var profile_cpu := false
+var profile_gather := {}
+var profile_topology := {}
+var _profile_gather_active := false
 
 func _init() -> void:
 	if ClassDB.class_exists("WaterRaytraceKernel") and not OS.get_cmdline_user_args().has("--ei-script-water-rt"):
 		_kernel = ClassDB.instantiate("WaterRaytraceKernel")
 
-func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
+func begin(terrain: EITerrain, position: Vector3, plane: float, incremental := false) -> void:
 	_terrain = terrain; center = position; _plane = plane
 	_soft_ground=Gfx.on("gfx_soft_ground");_ground.configure(terrain)
 	_cliffs=terrain._cliffs
@@ -72,10 +83,17 @@ func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 			pending.append({"node":weakref(child),"land":true})
 		elif path_transmission and Gfx.on("gfx_water") and child is MeshInstance3D and child.mesh!=null and child.get_active_material(0)==terrain._water_mat and _near(child.global_transform*child.get_aabb(),false):
 			pending.append({"node":weakref(child),"land":false,"water":true})
-	var materials := {}
-	for mesh: MeshInstance3D in _scene_meshes(true):
-		pending.append({"node":weakref(mesh),"land":false})
-		_nodes[mesh.get_instance_id()] = _mesh_version(mesh,materials)
+	if incremental:
+		# Discovering every articulated mesh and its material versions can itself
+		# take several milliseconds. Include that work in the live gather budget;
+		# capturing weak roots here does not retain objects that leave the world.
+		for root: Node3D in _scene_roots():
+			if is_instance_valid(root): _gather_roots.append(weakref(root))
+	else:
+		var materials := {}
+		for mesh: MeshInstance3D in _scene_meshes(true):
+			pending.append({"node":weakref(mesh),"land":false})
+			_nodes[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 
 func _scene_roots() -> Array:
 	var world := _terrain.game_world()
@@ -172,26 +190,73 @@ func _reset_topology_poll() -> void:
 	_topology_seen.clear();_topology_materials.clear()
 
 func topology_changed(budget_us := 0) -> bool:
+	var profile_start:=Time.get_ticks_usec() if profile_cpu else 0
+	if profile_cpu:
+		profile_topology={"budget_us":budget_us,"fresh":budget_us<=0,"cursor_before":_topology_cursor,
+			"roots_before":_topology_roots.size(),"root_count":0,"mesh_count":0,"collect_us":0,"versions_us":0,"roots_us":0,"max_root":{}}
 	if (path_transmission and (_water_version!=_terrain._level or _water_enabled!=Gfx.on("gfx_water"))) or _soft_ground!=Gfx.on("gfx_soft_ground") or _cliffs!=_terrain._cliffs \
 		or (lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))) \
 		or (path_materials and _terrain_version!=PathTerrain.version(_terrain)):
-		_reset_topology_poll();return true
+		_reset_topology_poll()
+		if profile_cpu:_profile_topology_end(profile_start,"settings",true)
+		return true
 	if budget_us<=0:_reset_topology_poll()
+	var profile_roots:=Time.get_ticks_usec() if profile_cpu else 0
 	if not topology_pending:
 		for root: Node3D in _scene_roots():
 			if is_instance_valid(root):_topology_roots.append(weakref(root))
 		topology_pending=true
+	if profile_cpu:profile_topology.roots_us=Time.get_ticks_usec()-profile_roots
 	var deadline := Time.get_ticks_usec()+budget_us
 	while _topology_cursor<_topology_roots.size():
 		var root: Node3D=_topology_roots[_topology_cursor].get_ref();_topology_cursor+=1
-		for mesh: MeshInstance3D in _root_meshes(root):
+		var profile_root:=Time.get_ticks_usec() if profile_cpu else 0
+		var meshes:=_root_meshes(root)
+		var profile_versions:=Time.get_ticks_usec() if profile_cpu else 0
+		if profile_cpu:
+			profile_topology.collect_us+=profile_versions-profile_root
+			profile_topology.root_count+=1
+		for mesh: MeshInstance3D in meshes:
+			if profile_cpu:profile_topology.mesh_count+=1
 			var id := mesh.get_instance_id()
 			if _nodes.get(id)!=_mesh_version(mesh,_topology_materials):
-				_reset_topology_poll();return true
+				if profile_cpu:_profile_topology_root(root,profile_root,profile_versions)
+				_reset_topology_poll()
+				if profile_cpu:_profile_topology_end(profile_start,"mesh",true)
+				return true
 			_topology_seen[id]=true
-		if budget_us>0 and Time.get_ticks_usec()>=deadline:return false
+		if profile_cpu:_profile_topology_root(root,profile_root,profile_versions)
+		if budget_us>0 and Time.get_ticks_usec()>=deadline:
+			if profile_cpu:_profile_topology_end(profile_start,"budget",false)
+			return false
 	var changed := _topology_seen.size()!=_nodes.size()
-	_reset_topology_poll();return changed
+	if profile_cpu:
+		profile_topology.seen_meshes=_topology_seen.size();profile_topology.expected_meshes=_nodes.size()
+		profile_topology.materials=_topology_materials.size()
+	_reset_topology_poll()
+	if profile_cpu:_profile_topology_end(profile_start,"complete",changed)
+	return changed
+
+func _profile_topology_root(root: Node3D,started: int,versions_started: int) -> void:
+	var now:=Time.get_ticks_usec()
+	profile_topology.versions_us+=now-versions_started
+	var elapsed:=now-started
+	if elapsed>int(profile_topology.max_root.get("us",-1)):
+		profile_topology.max_root={"us":elapsed,"owner":_profile_owner(root)}
+
+func _profile_topology_end(started: int,reason: String,changed: bool) -> void:
+	profile_topology.total_us=Time.get_ticks_usec()-started
+	profile_topology.reason=reason;profile_topology.changed=changed
+	profile_topology.cursor_after=_topology_cursor
+
+static func _profile_owner(node: Node) -> Dictionary:
+	if not is_instance_valid(node):return {"valid":false}
+	var script:=node.get_script() as Script
+	var result:={"id":node.get_instance_id(),"name":str(node.name),"class":node.get_class(),
+		"script":script.resource_path if script else ""}
+	if node is MeshInstance3D and node.mesh:
+		result.mesh_id=node.mesh.get_instance_id();result.mesh_path=node.mesh.resource_path
+	return result
 
 ## Retain only inexpensive source watches after a failed/empty gather. The
 ## controller can retry when real inputs change without keeping copied images
@@ -200,27 +265,65 @@ func discard_geometry() -> void:
 	_reset_topology_poll()
 	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
+	_gather_roots.clear();_gather_root_cursor=0;_gather_materials.clear()
 	_mesh_roots.clear();_groups.clear();_view_models.clear();_view_offsets.clear();_morph_geometries.clear()
 	_kernel=null;_watching=false;_cursor=0
 	_ground=Ground.new()
+
+func retire_step(budget_us := 1000) -> bool:
+	if _retirement==null:
+		_retirement=Retirement.new()
+		_retirement.parts=[vertices,_kernel,images,geometries,instances,pending,_textures,_opaque_textures,
+			_mesh_cache,_nodes,_mesh_roots,_unit_roots,_groups,_view_models,_view_offsets,_morph_geometries,
+			_gather_roots,_gather_materials,_topology_roots,_topology_seen,_topology_materials]
+		vertices=PackedFloat32Array();_kernel=null
+		# Ground/source caches are shared with the current generation.
+	return _retirement.step(budget_us)
 
 func _near(bounds: AABB, clip_plane := true) -> bool:
 	var p := center.clamp(bounds.position,bounds.end)
 	return p.distance_squared_to(center) <= RADIUS*RADIUS and (not clip_plane or bounds.end.y >= _plane-0.1)
 
 func step(budget_us := 6000) -> bool:
+	var profile_start:=Time.get_ticks_usec() if profile_cpu else 0
+	if profile_cpu:
+		_profile_gather_active=true
+		profile_gather={"budget_us":budget_us,"root_cursor_before":_gather_root_cursor,"roots":_gather_roots.size(),
+			"entry_cursor_before":_cursor,"entries_before":pending.size(),"triangles_before":triangles,
+			"cache_hits_before":_sources.hits,"cache_misses_before":_sources.misses,
+			"readbacks_before":_sources.surface_readbacks,"retained_before":_sources.retained_surfaces,
+			"image_readbacks_before":_sources.image_readbacks,"retained_images_before":_sources.retained_images,
+			"counts":{},"us":{},"parts_us":{},"slowest":{}}
 	var deadline := Time.get_ticks_usec()+budget_us
+	while _gather_root_cursor < _gather_roots.size():
+		var root: Node3D = _gather_roots[_gather_root_cursor].get_ref()
+		_gather_root_cursor += 1
+		var profile_root:=Time.get_ticks_usec() if profile_cpu else 0
+		for mesh: MeshInstance3D in _root_meshes(root,true):
+			pending.append({"node":weakref(mesh),"land":false})
+			_nodes[mesh.get_instance_id()] = _mesh_version(mesh,_gather_materials)
+		if profile_cpu:_profile_gather_entry("root",root,_gather_root_cursor-1,profile_root)
+		if Time.get_ticks_usec() >= deadline:
+			if profile_cpu:_profile_gather_end(profile_start,false)
+			return false
+	_gather_roots.clear();_gather_root_cursor=0;_gather_materials.clear()
 	while _cursor < pending.size() and not failed:
 		var entry: Dictionary = pending[_cursor]; _cursor += 1
 		var node: Node3D = entry.node.get_ref()
+		var profile_entry:=Time.get_ticks_usec() if profile_cpu else 0
 		# Gathering spans frames. Equipment/body parts can leave the tree or
 		# lose their mesh before this queued entry reaches the packing budget.
 		if is_instance_valid(node) and node.is_inside_tree() and (entry.land or (node as MeshInstance3D).mesh != null):
 			if entry.get("water",false):
 				_pack_water(node)
 			elif entry.land:
+				var profile_part:=Time.get_ticks_usec() if profile_cpu else 0
 				var arrays: Array = _ground.arrays(node.visual_arrays(),node.get_instance_id())
+				if profile_cpu:_profile_gather_part("ground_arrays",profile_part)
+				profile_part=Time.get_ticks_usec() if profile_cpu else 0
 				var geometry := _append(arrays,node.global_transform,null,true)
+				if profile_cpu:_profile_gather_part("ground_append",profile_part)
+				profile_part=Time.get_ticks_usec() if profile_cpu else 0
 				if path_materials and geometry>=0:
 					# Follow the actual retained triangles, including shifted MPR
 					# vertices. World XZ cannot identify their authored tile.
@@ -230,18 +333,49 @@ func step(budget_us := 6000) -> bool:
 					for i in ids.size(): ids[i]=roundi(uv2[used[i*3]].y)+1
 					geometries[geometry]["land_tiles"]=ids
 				_add_instance(node,geometry,Transform3D.IDENTITY)
+				if profile_cpu:_profile_gather_part("ground_tiles",profile_part)
 			else:
 				var mesh := node as MeshInstance3D
 				for source_mesh: Mesh in _mesh_variants(mesh):
 					_pack_mesh(mesh,source_mesh)
+		if profile_cpu:_profile_gather_entry("water" if entry.get("water",false) else "terrain" if entry.land else "mesh",node,_cursor-1,profile_entry)
 		if Time.get_ticks_usec() >= deadline: break
-	return failed or _cursor >= pending.size()
+	var complete:=failed or _cursor>=pending.size()
+	if profile_cpu:_profile_gather_end(profile_start,complete)
+	return complete
+
+func _profile_gather_part(label: String,started: int) -> void:
+	profile_gather.parts_us[label]=int(profile_gather.parts_us.get(label,0))+Time.get_ticks_usec()-started
+
+func _profile_gather_entry(kind: String,node: Node,index: int,started: int) -> void:
+	var elapsed:=Time.get_ticks_usec()-started
+	profile_gather.counts[kind]=int(profile_gather.counts.get(kind,0))+1
+	profile_gather.us[kind]=int(profile_gather.us.get(kind,0))+elapsed
+	var before: Dictionary=profile_gather.slowest.get(kind,{})
+	if elapsed>int(before.get("us",-1)):
+		profile_gather.slowest[kind]={"us":elapsed,"index":index,"owner":_profile_owner(node)}
+
+func _profile_gather_end(started: int,complete: bool) -> void:
+	_profile_gather_active=false
+	profile_gather.total_us=Time.get_ticks_usec()-started
+	profile_gather.complete=complete;profile_gather.root_cursor_after=_gather_root_cursor
+	profile_gather.entry_cursor_after=_cursor;profile_gather.entries_after=pending.size()
+	profile_gather.triangles_added=triangles-int(profile_gather.triangles_before)
+	profile_gather.cache_hits=_sources.hits-int(profile_gather.cache_hits_before)
+	profile_gather.cache_misses=_sources.misses-int(profile_gather.cache_misses_before)
+	profile_gather.surface_readbacks=_sources.surface_readbacks-int(profile_gather.readbacks_before)
+	profile_gather.retained_surfaces=_sources.retained_surfaces-int(profile_gather.retained_before)
+	profile_gather.image_readbacks=_sources.image_readbacks-int(profile_gather.image_readbacks_before)
+	profile_gather.retained_images=_sources.retained_images-int(profile_gather.retained_images_before)
 
 func _pack_water(mesh: MeshInstance3D) -> void:
 	# Surface waves remain a raster detail. Geometry follows authored tiles and
 	# SetWaterLevel; finite shore boundaries and stepped pools stay distinct.
 	for surface in mesh.mesh.get_surface_count():
+		var profile_part:=Time.get_ticks_usec() if _profile_gather_active else 0
 		var arrays := mesh.mesh.surface_get_arrays(surface)
+		if _profile_gather_active:_profile_gather_part("water_source",profile_part)
+		profile_part=Time.get_ticks_usec() if _profile_gather_active else 0
 		var positions: PackedVector3Array=arrays[Mesh.ARRAY_VERTEX].duplicate()
 		var uv2: PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV2]
 		var indices: PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
@@ -260,6 +394,8 @@ func _pack_water(mesh: MeshInstance3D) -> void:
 			for j in 3:groups[id].append(indices[at+j])
 		for i in positions.size():positions[i].y+=_terrain._level[int(uv2[i].y)&63]
 		arrays[Mesh.ARRAY_VERTEX]=positions
+		if _profile_gather_active:_profile_gather_part("water_groups",profile_part)
+		profile_part=Time.get_ticks_usec() if _profile_gather_active else 0
 		for id: int in groups:
 			arrays[Mesh.ARRAY_INDEX]=groups[id]
 			var mat:=StandardMaterial3D.new()
@@ -270,6 +406,7 @@ func _pack_water(mesh: MeshInstance3D) -> void:
 			var swamp: bool=id>=64
 			geometries[geometry]["dielectric"]=PackedFloat32Array([.48 if swamp else .12,.22 if swamp else .035,.6 if swamp else .018,1.333,1,0,0,0])
 			_add_instance(mesh,geometry,mesh.global_transform,surface,mesh.mesh)
+		if _profile_gather_active:_profile_gather_part("water_append",profile_part)
 
 func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
 	for surface in source_mesh.get_surface_count():
@@ -286,8 +423,12 @@ func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
 		if morph: key += ":"+str(mesh.get_instance_id())
 		var geometry: int = _mesh_cache.get(key,-1)
 		if geometry < 0:
+			var profile_part:=Time.get_ticks_usec() if _profile_gather_active else 0
 			var source: Dictionary=_sources.surface(source_mesh,surface)
+			if _profile_gather_active:_profile_gather_part("mesh_source",profile_part)
+			profile_part=Time.get_ticks_usec() if _profile_gather_active else 0
 			geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
+			if _profile_gather_active:_profile_gather_part("mesh_append",profile_part)
 			if geometry >= 0:
 				_mesh_cache[key] = geometry
 				if dielectric.size()==8:geometries[geometry]["dielectric"]=dielectric.duplicate()
@@ -338,6 +479,7 @@ func _layer(texture: Texture2D, atlas := -1) -> int:
 	if _textures.has(key): return _textures[key]
 	if images.size() >= MAX_TEXTURES: failed = true; return -1
 	var image: Image
+	var profile_part:=Time.get_ticks_usec() if _profile_gather_active else 0
 	if atlas >= 0:
 		if atlas >= _terrain._atlases.get_layers(): return -1
 		image = _sources.image(_terrain._atlases,atlas,TEXTURE_SIZE)
@@ -345,8 +487,11 @@ func _layer(texture: Texture2D, atlas := -1) -> int:
 	else:
 		image = Image.create(TEXTURE_SIZE,TEXTURE_SIZE,false,Image.FORMAT_RGBA8)
 		image.fill(Color.WHITE);image.generate_mipmaps()
+	if _profile_gather_active:_profile_gather_part("layer_source",profile_part)
 	if image == null or image.is_empty(): return -1
+	profile_part=Time.get_ticks_usec() if _profile_gather_active else 0
 	_opaque_textures.append(image.detect_alpha() == Image.ALPHA_NONE)
+	if _profile_gather_active:_profile_gather_part("layer_alpha",profile_part)
 	var layer := images.size(); images.append(image); _textures[key] = layer
 	return layer
 
@@ -403,16 +548,22 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 	var opaque := cutoff <= 0.0 or (base_layer >= 0 and _opaque_textures[base_layer] and diffuse.w >= cutoff)
 	if _kernel != null:
 		var atlas := {}
+		var profile_part:=Time.get_ticks_usec() if _profile_gather_active else 0
 		if land and uv2.size() == positions.size():
 			for layer: int in _kernel.atlas_layers(arrays,transform,center,RADIUS,_plane): atlas[layer] = _layer(null,layer)
+		if _profile_gather_active:_profile_gather_part("atlas_layers",profile_part)
+		profile_part=Time.get_ticks_usec() if _profile_gather_active else 0
 		var packed: Dictionary = _kernel.pack(arrays,transform,{"land":land,"center":center,"radius":RADIUS,
 			"plane":_plane,"limit":MAX_TRIANGLES-triangles,"layer":base_layer,"atlas":atlas,"diffuse":diffuse,"emission":emission})
+		if _profile_gather_active:_profile_gather_part("kernel_pack",profile_part)
 		if packed.failed: failed = true; return -1
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
 		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
 			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer,"detail_layer":detail_layer})
+		profile_part=Time.get_ticks_usec() if _profile_gather_active else 0
 		vertices.append_array(packed.vertices); triangles += count/3
+		if _profile_gather_active:_profile_gather_part("vertices_copy",profile_part)
 		return geometries.size()-1
 	var start := vertices.size()/16
 	var used := PackedInt32Array()

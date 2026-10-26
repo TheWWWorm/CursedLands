@@ -43,6 +43,15 @@ var _build_cursor := 0
 var _pending_images: Array[Image] = []
 var _texture_cursor := 0
 var build_timings := {}
+const RESOURCE_PHASES := ["program","vertices","materials","placements","textures","extra"]
+var _build_resource_stage := -1
+var _build_resource_cpu_us := 0
+var _build_started := 0
+var _build_data := PackedByteArray()
+var _build_placements: Array = []
+var _build_material_data := PackedByteArray()
+var _build_material_cursor := 0
+var _build_hit_range := 0
 var initial_poses: Array = []
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
@@ -143,38 +152,92 @@ func _create_pipeline(program: RDPipelineShader) -> RID:
 ## data contains a non-indexed triangle list, 64 bytes per vertex. Images are
 ## private CPU snapshots; the render thread never reads scene nodes.
 func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [], placements: Array = []) -> void:
-	if _closed: return
-	var started := Time.get_ticks_usec()
-	_rd = RenderingServer.get_rendering_device()
-	if _rd == null or not _rd.has_feature(RenderingDevice.SUPPORTS_RAYTRACING_PIPELINE) or data.is_empty() or images.is_empty():
-		_notify(&"prepared",[false])
-		return
+	if _closed:return
+	_build_started=Time.get_ticks_usec()
+	_rd=RenderingServer.get_rendering_device()
+	if _rd==null or not _rd.has_feature(RenderingDevice.SUPPORTS_RAYTRACING_PIPELINE) or data.is_empty() or images.is_empty():
+		_notify(&"prepared",[false]);return
+	# Capture the same private descriptors at enqueue time. A caller editing
+	# its arrays after build returns cannot alter this candidate's contents.
+	_build_data=data
+	_geometry=geometry_data.duplicate(true) if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
+	_build_placements=placements.duplicate(true) if not placements.is_empty() else [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
+	_pending_images.assign(images)
+	_build_resource_stage=0;_building=incremental_build;_ready=false
+	_build_resource_cpu_us=Time.get_ticks_usec()-_build_started
+	build_timings["input_copy_ms"]=_build_resource_cpu_us/1000.0
+	if incremental_build:return
+	# Initial/loading construction retains its synchronous completion contract.
+	while _build_resource_stage>=0:
+		if not _advance_resource_build():return
+	_ready=true;_notify(&"prepared",[true])
+
+func _clear_build_inputs() -> void:
+	_build_data=PackedByteArray();_build_placements=[];_build_material_data=PackedByteArray()
+	initial_poses.clear()
+
+func _advance_resource_build() -> bool:
+	var phase:=_build_resource_stage;var started:=Time.get_ticks_usec()
+	var result:=_build_resource_phase(phase)
+	var elapsed:=Time.get_ticks_usec()-started
+	_build_resource_cpu_us+=elapsed
+	var label: String=RESOURCE_PHASES[phase]+"_ms"
+	build_timings[label]=build_timings.get(label,0.0)+elapsed/1000.0
+	build_timings["resource_steps"]=int(build_timings.get("resource_steps",0))+1
+	build_timings["resource_stage"]=RESOURCE_PHASES[phase]
+	build_timings["resources_ms"]=_build_resource_cpu_us/1000.0
+	build_timings["largest_resource_step_ms"]=maxf(build_timings.get("largest_resource_step_ms",0.0),elapsed/1000.0)
+	build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),elapsed/1000.0)
+	if result!=OK and result!=ERR_BUSY:
+		_building=false;_ready=false;_build_resource_stage=-1
+		_clear_build_inputs();_pending_images.clear();_notify(&"prepared",[false]);return false
+	if result==OK:_build_resource_stage+=1
+	if _build_resource_stage==RESOURCE_PHASES.size():
+		_build_resource_stage=-1;_clear_build_inputs()
+		build_timings["resource_prepare_ms"]=(Time.get_ticks_usec()-_build_started)/1000.0
+		build_timings["resource_stage"]="complete"
+	return true
+
+func _build_resource_phase(phase: int) -> int:
+	match phase:
+		0:return _build_program()
+		1:return _build_vertices()
+		2:return _build_materials()
+		3:return _build_placement_batch()
+		4:return _build_textures()
+		5:return build_extra_step(_build_data,_build_placements)
+	return ERR_INVALID_PARAMETER
+
+func build_extra_step(data: PackedByteArray,placements: Array) -> int:
+	return OK if build_extra(data,placements) else ERR_CANT_CREATE
+
+func _build_program() -> int:
 	var program := _compile()
 	if program == null:
-		_notify(&"prepared",[false])
-		return
+		return ERR_CANT_CREATE
 	_pipeline = _create_pipeline(program)
-	build_timings["program_ms"]=(Time.get_ticks_usec()-started)/1000.0
 	if not _pipeline.is_valid():
-		_notify(&"prepared",[false])
-		return
-	var stage_started := Time.get_ticks_usec()
-	_vertices = _own(_rd.vertex_buffer_create(data.size(),data,
+		return ERR_CANT_CREATE
+	return OK
+
+func _build_vertices() -> int:
+	_vertices = _own(_rd.vertex_buffer_create(_build_data.size(),_build_data,
 		RenderingDevice.BUFFER_CREATION_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT |
 		RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT | RenderingDevice.BUFFER_CREATION_AS_STORAGE_BIT))
 	if not _vertices.is_valid():
-		_notify(&"prepared",[false])
-		return
-	# Own the descriptors: teardown must not clear the caller's scene array.
-	_geometry = geometry_data.duplicate(true) if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
+		return ERR_CANT_CREATE
 	for pose: Dictionary in initial_poses:
-		if not _upload_pose(pose):_notify(&"prepared",[false]);return
+		if not _upload_pose(pose):return ERR_CANT_CREATE
 	initial_poses.clear()
-	build_timings["vertices_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
-	var material_data := PackedByteArray(); material_data.resize(_geometry.size()*16)
-	for i in _geometry.size():
+	return OK
+
+func _build_materials() -> int:
+	if _build_material_data.is_empty():_build_material_data.resize(_geometry.size()*16)
+	var started:=Time.get_ticks_usec();var processed:=0
+	while _build_material_cursor<_geometry.size():
+		var i:=_build_material_cursor
 		var description: Dictionary = _geometry[i]
-		material_data.encode_u32(i*16,description.offset)
+		_build_material_data.encode_u32(i*16,description.offset)
 		# Independent flags preserve the legacy standard-emission bit. Mask
 		# layers are raw data in the existing array; zero means no plant mask.
 		var flags := int(description.get("standard",false)) | (int(description.get("terrain",false))<<1)
@@ -186,57 +249,65 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 			flags |= (description.surface_layer+1)<<16
 		if description.get("detail_layer",-1)>=0:
 			flags |= (description.detail_layer+1)<<24
-		material_data.encode_u32(i*16+4,flags)
-		material_data.encode_float(i*16+8,description.get("cutoff",0.5))
+		_build_material_data.encode_u32(i*16+4,flags)
+		_build_material_data.encode_float(i*16+8,description.get("cutoff",0.5))
 		# The final word was reserved. Water/one-bounce shaders ignore it;
 		# path tracing uses a compact roughness/metalness/specular profile.
 		var surface: Vector3 = description.get("surface",Vector3(1.0,0.0,0.5))
 		var relief := roundi(clampf(description.get("relief",0.0),0.0,1.0)*127.0)
-		material_data.encode_u32(i*16+12,0x80000000 | roundi(clampf(surface.x,0.0,1.0)*255.0) \
+		_build_material_data.encode_u32(i*16+12,0x80000000 | roundi(clampf(surface.x,0.0,1.0)*255.0) \
 			| (roundi(clampf(surface.y,0.0,1.0)*255.0)<<8) | (roundi(clampf(surface.z,0.0,1.0)*255.0)<<16) | (relief<<24))
-	_materials = _own(_rd.storage_buffer_create(material_data.size(),material_data))
-	if not _materials.is_valid(): _notify(&"prepared",[false]); return
-	build_timings["materials_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
-	_blases.resize(_geometry.size())
-	if placements.is_empty(): placements = [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
-	_tlas = _own(_rd.tlas_create(placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
-	_sbt = _own(_rd.hit_sbt_create(_pipeline,1))
-	if not _tlas.is_valid() or not _sbt.is_valid():
-		_notify(&"prepared",[false]); return
-	var hit_range := _rd.hit_sbt_range_alloc(_sbt,1)
-	_rd.hit_sbt_range_update(_sbt,hit_range,0,[0])
-	for placement: Dictionary in placements:
+		_build_material_cursor+=1;processed+=1
+		if incremental_build and _build_material_cursor<_geometry.size() and (processed>=1024 or Time.get_ticks_usec()-started>=1500):return ERR_BUSY
+	_materials = _own(_rd.storage_buffer_create(_build_material_data.size(),_build_material_data))
+	if not _materials.is_valid():return ERR_CANT_CREATE
+	_build_material_data=PackedByteArray()
+	return OK
+
+func _build_placement_batch() -> int:
+	if _instances.is_empty():
+		_blases.resize(_geometry.size())
+		_tlas = _own(_rd.tlas_create(_build_placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
+		_sbt = _own(_rd.hit_sbt_create(_pipeline,1))
+		if not _tlas.is_valid() or not _sbt.is_valid():
+			return ERR_CANT_CREATE
+		_build_hit_range = _rd.hit_sbt_range_alloc(_sbt,1)
+		_rd.hit_sbt_range_update(_sbt,_build_hit_range,0,[0])
+	var started:=Time.get_ticks_usec();var processed:=0
+	while _instances.size()<_build_placements.size():
+		var placement: Dictionary=_build_placements[_instances.size()]
 		var instance := RDAccelerationStructureInstance.new()
 		_placement_geometry.append(placement.geometry)
 		if placement.get("mask",255) != 0 and not incremental_build:
 			instance.blas = _geometry_blas(placement.geometry)
-			if not instance.blas.is_valid(): _notify(&"prepared",[false]); return
+			if not instance.blas.is_valid():return ERR_CANT_CREATE
 		instance.id = instance_id(placement.geometry,_instances.size())
 		instance.transform = placement.transform
 		instance.mask = instance_mask(placement.geometry,placement.get("mask",255))
 		instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
-		instance.hit_sbt_range = hit_range
+		instance.hit_sbt_range = _build_hit_range
 		if instance.mask != 0: _active_instances[_instances.size()] = instance
 		_instances.append(instance)
-	if not incremental_build and not _build_tlas():
-		_notify(&"prepared",[false]); return
-	build_timings["placements_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
+		processed+=1
+		if incremental_build and _instances.size()<_build_placements.size() and (processed>=1024 or Time.get_ticks_usec()-started>=1500):return ERR_BUSY
+	if not incremental_build and not _build_tlas():return ERR_CANT_CREATE
+	return OK
+
+func _build_textures() -> int:
 	var format := RDTextureFormat.new()
 	format.texture_type = RenderingDevice.TEXTURE_TYPE_2D_ARRAY
 	format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
-	format.width = images[0].get_width()
-	format.height = images[0].get_height()
-	format.array_layers = images.size()
-	format.mipmaps = images[0].get_mipmap_count()+1
+	format.width = _pending_images[0].get_width()
+	format.height = _pending_images[0].get_height()
+	format.array_layers = _pending_images.size()
+	format.mipmaps = _pending_images[0].get_mipmap_count()+1
 	format.usage_bits = RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
 	var layers: Array[PackedByteArray] = []
 	if incremental_build:
 		format.usage_bits |= RenderingDevice.TEXTURE_USAGE_CAN_UPDATE_BIT
-		_pending_images.assign(images)
 	else:
-		for im in images: layers.append(im.get_data())
+		for im in _pending_images: layers.append(im.get_data())
 	_colours = _own(_create_colour_array(format,layers))
-	build_timings["textures_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0;stage_started=Time.get_ticks_usec()
 	# Small immutable samplers let the existing Texture filtering option
 	# change live without rebuilding the RT scene or reallocating its image.
 	for quality in 5:
@@ -251,18 +322,15 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		sampler.repeat_v = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
 		_samplers.append(_own(_rd.sampler_create(sampler)))
 	_frame = _own(_rd.uniform_buffer_create(frame_bytes()))
-	_ready = _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid())
-	if _ready: _ready = build_extra(data,placements)
-	build_timings["extra_ms"]=(Time.get_ticks_usec()-stage_started)/1000.0
-	build_timings["resources_ms"]=(Time.get_ticks_usec()-started)/1000.0
-	_building=_ready and incremental_build
-	if _building:_ready=false
-	else:_notify(&"prepared",[_ready])
+	if not incremental_build:_pending_images.clear()
+	return OK if _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid()) else ERR_CANT_CREATE
 
 ## The controller queues at most one step per frame. A canceled owner cannot
 ## schedule more work, and its previous scene remains visible throughout.
 func build_step() -> void:
 	if _closed or not _building:return
+	if _build_resource_stage>=0:
+		_advance_resource_build();return
 	var started := Time.get_ticks_usec();var built := 0
 	# Retain the private CPU snapshots until each array layer and all its mips
 	# have been uploaded. The controller keeps displaying the old scene and
@@ -416,6 +484,7 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	completed_renders += 1
 
 func dispose() -> void:
+	_build_resource_stage=-1;_clear_build_inputs()
 	_closed = true
 	_building = false
 	_ready = false

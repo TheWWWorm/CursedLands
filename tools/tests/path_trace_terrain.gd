@@ -237,6 +237,10 @@ func run() -> void:
 	await comparison("cliff-relief-upward-normal-parity")
 	offset=Vector3(-17,5,0);camera.position=offset+Vector3(0,0,8)
 	await comparison("cliff-relief-world-normal-parity")
+	# The footprint follows the visible triangle even when the authored
+	# lighting normal is almost sideways. Do not turn it into a coarser mip.
+	authored_normal=Vector3(.95,0,.31225).normalized()
+	await comparison("cliff-relief-grazing-normal-footprint")
 	RenderingServer.call_on_render_thread(device.dispose);await frames(6)
 	check(device.terrain.atlas==null,"disposing PT releases its retained raster atlas")
 	camera.queue_free()

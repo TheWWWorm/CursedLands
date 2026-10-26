@@ -15,6 +15,9 @@ global uniform sampler2D ei_rt_guide : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow0 : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow1 : filter_nearest, repeat_disable;
 global uniform sampler2D ei_pt_direct_sun : filter_nearest, repeat_disable;
+global uniform sampler2D ei_pt_ground_indirect : filter_nearest, repeat_disable;
+global uniform sampler2D ei_pt_ground_sun : filter_nearest, repeat_disable;
+global uniform float ei_pt_ground_active;
 global uniform float ei_pt_grass_shadows;
 global uniform vec4 ei_rt_point0;
 global uniform vec4 ei_rt_point1;
@@ -52,9 +55,19 @@ vec3 ei_rt_position(ivec2 p,float depth,ivec2 size,mat4 trace_projection,mat4 tr
 }
 
 #ifdef EI_GRASS_LIGHT
-// Procedural blades are not in the RT scene. Sample their planted root once
-// per fragment, instead of searching 29 surface pixels that cannot match a
-// raised blade. Reject walls, foreground objects and unrelated ground planes.
+// Procedural blades and cover are not in the RT scene. Sample their planted
+// root instead of matching a raised blade/cap to the underlying terrain.
+// Reject walls, foreground objects and unrelated ground planes.
+vec3 ei_rt_ground_light(ivec2 p,out vec3 sun) {
+    vec3 raw=texelFetch(ei_rt_gi,p,0).rgb;
+    sun=ei_pt_active>.5?texelFetch(ei_pt_direct_sun,p,0).rgb:vec3(0.0);
+    if(ei_pt_active>.5&&ei_pt_rr_active>.5&&ei_pt_ground_active>.5) {
+        vec4 indirect=texelFetch(ei_pt_ground_indirect,p,0);
+        vec4 direct=texelFetch(ei_pt_ground_sun,p,0);
+        if(indirect.a>.5&&direct.a>.5) {sun=direct.rgb;return indirect.rgb+sun;}
+    }
+    return raw;
+}
 bool ei_rt_ground_sample(mat4 trace_projection,mat4 trace_inverse,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(0.0);visibility1=vec4(0.0);
     if(ei_rt_state.x<0.5||distance(ei_rt_ground,ei_rt_center.xyz)>=ei_rt_state.w)return false;
@@ -74,16 +87,39 @@ bool ei_rt_ground_sample(mat4 trace_projection,mat4 trace_inverse,out vec3 gi,ou
         vec3 delta=ei_rt_position(p,guide.w,size,trace_projection,trace_inverse)-ei_rt_ground;
         if(abs(dot(delta,guide.xyz))>0.12||length(delta)>max(0.5,depth*0.006))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
-        gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
+        vec3 sun;gi+=ei_rt_ground_light(p,sun)*w;
         if(ei_pt_active<=0.5) {
             visibility0+=texelFetch(ei_rt_shadow0,p,0)*w;
             visibility1+=texelFetch(ei_rt_shadow1,p,0)*w;
         } else if(nearby>0.0) {
-            visibility0.rgb+=texelFetch(ei_pt_direct_sun,p,0).rgb*w*nearby;
+            visibility0.rgb+=sun*w*nearby;
         }
         total+=w;
     }
-    if(total<0.01)return false;
+    if(total<0.01 && ei_pt_active>0.5) {
+        // A thin foreground edge can cover all four root taps while the
+        // raised plant remains visible. Recover compatible ground nearby,
+        // so a one-pixel edge motion cannot relight the entire plant with
+        // conventional lighting. Keep the same world-space rejection as
+        // the fast path: this must never borrow a wall or another floor.
+        ivec2 nearest=ivec2(floor(pixel+0.5));
+        for(int y=-2;y<=2;y++)for(int x=-2;x<=2;x++) {
+            ivec2 p=nearest+ivec2(x,y);
+            if(any(lessThan(p,ivec2(0)))||any(greaterThanEqual(p,size)))continue;
+            vec4 guide=texelFetch(ei_rt_guide,p,0);
+            if(guide.w<=0.0||guide.y<0.35)continue;
+            vec3 delta=ei_rt_position(p,guide.w,size,trace_projection,trace_inverse)-ei_rt_ground;
+            if(abs(dot(delta,guide.xyz))>0.12||length(delta)>max(0.5,depth*0.006))continue;
+            vec2 offset=vec2(p)-pixel;
+            float w=exp(-dot(offset,offset));
+            vec3 sun;gi+=ei_rt_ground_light(p,sun)*w;
+            if(nearby>0.0)visibility0.rgb+=sun*w*nearby;
+            total+=w;
+        }
+    }
+    // Diagonal recovery taps can have a small Gaussian weight even though
+    // their surface is valid. Normalize them before judging the lighting.
+    if(total<(ei_pt_active>0.5?0.000001:0.01))return false;
     gi/=total;visibility0/=total;visibility1/=total;
     if(ei_pt_active>0.5)visibility0.rgb=clamp(visibility0.rgb,vec3(0.0),gi);
     // Grass uses the ground's diffuse illumination, never its glossy lobe.
@@ -254,8 +290,8 @@ const CAPTURE := """
                 // combined PT signal has no individual light direction, so
                 // use the same diffuse-depth factor as the ambient path.
 #ifdef EI_GRASS_LIGHT
-                // Keep indirect light in PT. The native double-sided grass
-                // caster resolves detailed sunlight occlusion in light().
+                // Remove the same direct signal supplied by the root sampler.
+                // The native double-sided caster then attenuates it in light().
                 ei_rt_visibility0=a;
                 vec3 reflected=ALBEDO*ei_material_diffuse.rgb*(indirect-a.rgb)*max(1.0-ei_k,0.0);
 #else
@@ -354,7 +390,8 @@ static func globals() -> void:
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_rr_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
-	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
+	RenderingServer.global_shader_parameter_add(&"ei_pt_ground_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
+	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun",&"ei_pt_ground_indirect",&"ei_pt_ground_sun"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D,null)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_grass_shadows",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,
 		0.0 if OS.get_cmdline_user_args().has("--ei-pt-no-grass-shadows") else 1.0)

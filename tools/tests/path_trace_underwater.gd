@@ -11,8 +11,10 @@ func run() -> void:
 	var object:=MeshInstance3D.new();object.mesh=QuadMesh.new();object.mesh.size=Vector2(8,8);add_child(object)
 	var material:=ShaderMaterial.new();material.shader=Shader.new()
 	material.shader.code="""shader_type spatial;
+#define EI_TERRAIN_LIGHT
 render_mode ambient_light_disabled, cull_disabled;
 uniform float ei_k=0.0;
+const vec3 ei_surface=vec3(0.0,1.0,0.0);
 const vec3 ei_ambient=vec3(0.0),ei_e=vec3(0.1,0.0,0.0);
 const vec4 ei_material_diffuse=vec4(1.0);
 vec3 ei_lin(vec3 c){return c;}

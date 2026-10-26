@@ -1,11 +1,25 @@
 extends "res://tools/tests/water_raytrace_artifact.gd"
 const Dielectric=preload("res://src/game/fx/path_trace_dielectric.gd")
 var stages:=[]
-func ready_transport(rt: Node,enabled:=true) -> bool:
+func nrd_trace_size(extent: Vector2i) -> Vector2i:
+	# This fixture fixes q_rt_lighting=0: NRD traces at half the applied
+	# integer raster grid. DLSS/FSR may already have scaled that grid down.
+	var raster:=Vector2i(Vector2(extent)*camera.get_viewport().scaling_3d_scale).max(Vector2i.ONE)
+	return Vector2i(maxi(2,roundi(raster.x*.5)),maxi(2,roundi(raster.y*.5)))
+func ready_transport(rt: Node,enabled:=true,after_generation: int=-1,water_version:=PackedFloat32Array(),extent:=Vector2i.ZERO) -> bool:
 	for i in 1800:
 		await frames(1)
 		if rt._failed:return false
-		if rt.device!=null and rt.device.output_ready() and not rt.stats.get("rebuilding",true) and not ShaderCompilationScreen.active() and rt.device.transmission.active==enabled:return true
+		if rt.device==null or not rt.device.output_ready() or rt.stats.get("rebuilding",true) or ShaderCompilationScreen.active() or rt.device.transmission.active!=enabled:continue
+		# A working old scene is intentionally still active before the topology
+		# poll and while retirement drains. Await the requested publication.
+		if int(rt.stats.get("snapshot_generation",0))<=after_generation:continue
+		if not water_version.is_empty() and (rt._scene==null or rt._scene._water_version!=water_version):continue
+		if extent!=Vector2i.ZERO:
+			if get_window().size!=extent or Vector2i(camera.get_viewport().get_visible_rect().size)!=extent:continue
+			if rt.device.output.get_size()!=Vector2(nrd_trace_size(extent)):continue
+		return true
+	print("TRANSMISSION_WAIT_TIMEOUT ",{"enabled":enabled,"after_generation":after_generation,"generation":rt.stats.get("snapshot_generation",0),"extent":extent,"stats":rt.stats})
 	return false
 func record(rt: Node,label: String) -> void:
 	await frames(12);await RenderingServer.frame_post_draw
@@ -22,7 +36,7 @@ func record(rt: Node,label: String) -> void:
 	await shot(label)
 	image.save_png(out.path_join(label+"-transport.png"))
 func run() -> void:
-	GameData.options.merge({"pt_mode":1,"pt_refraction":0,"pt_accumulation":0,"q_rt_lighting":0,"pt_denoiser":1,"pt_restir":1,"pt_target_fps":0},true)
+	GameData.options.merge({"pt_mode":1,"pt_refraction":0,"pt_accumulation":0,"q_rt_lighting":0,"pt_denoiser":1,"pt_ray_reconstruction":0,"pt_restir":1,"pt_target_fps":0},true)
 	var context:=await setup();Engine.max_fps=30;GameData.options.fps_limit=1
 	var game: Game=context[1];game._update_daylight(false)
 	var rt: Node=game.get_node("SceneRaytrace")
@@ -56,10 +70,7 @@ func run() -> void:
 	var mesh:=MeshInstance3D.new();root.add_child(mesh)
 	var box:=BoxMesh.new();box.size=Vector3(.8,1.2,.6);mesh.mesh=box
 	mesh.material_override=Dielectric.material(1.5,Color(.25,.8,.95),1)
-	for i in 600:
-		await frames(1)
-		if rt.stats.get("snapshot_generation",0)>before_glass:break
-	check(await ready_transport(rt),"authored glass enters the streamed PT scene")
+	check(await ready_transport(rt,true,before_glass),"authored glass enters the streamed PT scene")
 	await record(rt,"refraction-glass")
 	check(stages.back().glass_pixels>10,"actual glass geometry receives refracted radiance")
 	var displayed:=await capture("glass-visible")
@@ -67,19 +78,21 @@ func run() -> void:
 	var glass_colour:=displayed.get_pixelv(glass_pixel)
 	check(glass_colour.r+glass_colour.g+glass_colour.b>.15,"unshaded glass displays the traced colour instead of a black silhouette")
 	var old_level: PackedFloat32Array=t._level.duplicate()
+	var before_level: int=rt.stats.snapshot_generation
 	for i in t._level.size():t._level[i]+=.15
 	t._water_mat.set_shader_parameter("level",t._level)
-	await frames(30)
-	check(await ready_transport(rt),"water level changes rebuild optical geometry")
+	check(await ready_transport(rt,true,before_level,t._level.duplicate()),"water level changes rebuild optical geometry")
 	check(rt._scene._water_version==t._level,"published water geometry follows SetWaterLevel")
+	print("TRANSMISSION_WATER_PUBLICATION ",before_level," -> ",rt.stats.snapshot_generation)
+	before_level=rt.stats.snapshot_generation
 	t._level=old_level;t._water_mat.set_shader_parameter("level",t._level)
-	await frames(30)
-	check(await ready_transport(rt),"original water level restores")
+	check(await ready_transport(rt,true,before_level,old_level),"original water level restores")
+	print("TRANSMISSION_WATER_RESTORED ",before_level," -> ",rt.stats.snapshot_generation)
 	for extent: Vector2i in [Vector2i(2560,1440),Vector2i(3840,2160)]:
 		get_window().size=extent;await frames(12)
-		check(await ready_transport(rt),"refraction survives viewport resize "+str(extent))
+		check(await ready_transport(rt,true,-1,PackedFloat32Array(),extent),"refraction survives viewport resize "+str(extent))
 		await record(rt,"refraction-%dx%d"%[extent.x,extent.y])
-		check(rt.device.transmission._size==Vector2i(extent/2),"transparent images match the current trace grid "+str(extent))
+		check(rt.device.transmission._size==nrd_trace_size(extent),"transparent images match the current trace grid "+str(extent))
 	get_window().size=Vector2i(1280,720);await frames(12)
 	# Windows additionally evaluates the real RR callback with transparency.
 	if RtxGraphics.facts().get("rr",false):

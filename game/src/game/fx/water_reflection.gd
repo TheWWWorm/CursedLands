@@ -677,7 +677,10 @@ func _select_plane(source: Camera3D, indexed := false) -> float:
 			if water_height >= position.y - 0.15: continue
 			var point := Vector3(x + 0.5, water_height, -y - 0.5)
 			var distance := point.distance_squared_to(position)
-			if distance > REACH * REACH: continue
+			# REACH bounds the map cells searched, not the camera's altitude.
+			# A tactical eye above 64 m can still look straight into this lake.
+			# Keep actual 3D distance for level ranking and the frustum for range.
+			if Vector2(point.x-position.x,point.z-position.z).length_squared() > REACH * REACH: continue
 			var visible := true
 			var cell := Vector3(x + 1.0, water_height, -y - 1.0)
 			for boundary: Plane in frustum:

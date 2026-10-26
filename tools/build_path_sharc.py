@@ -96,11 +96,11 @@ def main():
     NOTICE.write_text('This software contains source code provided by NVIDIA Corporation.\n'
                      'SHaRC 1.8.3 is used under the NVIDIA RTX SDKs license below.\n'
                      'The SHaRC component is separate from the application source license.\n\n' +
-                     (args.sdk / 'License.md').read_text())
+                     (args.sdk / 'License.md').read_text(), newline='\n')
     MANIFEST.write_text(json.dumps({'sdk_revision': REVISION, 'sdk_files': sdk_hashes,
         'sources': inputs(), 'files': outputs, 'notice_sha256': sha(NOTICE),
         'compiler_sha256': sha(args.dxc),
-        'compiler': subprocess.check_output([args.dxc, '--version'], text=True).strip()}, indent=2) + '\n')
+        'compiler': subprocess.check_output([args.dxc, '--version'], text=True).strip()}, indent=2) + '\n', newline='\n')
     print('Built', len(outputs), 'SHaRC shader binaries')
 
 

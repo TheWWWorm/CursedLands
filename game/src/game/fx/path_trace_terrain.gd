@@ -43,12 +43,22 @@ func collect(scene: RefCounted, terrain: EITerrain) -> void:
 	data.encode_u32(0,size.x);data.encode_u32(4,size.y);data.encode_u32(8,data.size())
 	data.append_array(tiles.to_byte_array())
 	data.encode_u32(12,data.size())
-	var primitives := PackedInt32Array();primitives.resize(scene.vertices.size()/48)
+	var primitives := PackedInt32Array()
 	for geometry: Dictionary in scene.geometries:
 		if not geometry.has("land_tiles"): continue
 		var ids: PackedInt32Array = geometry.land_tiles
-		for i in ids.size(): primitives[geometry.offset/3+i]=ids[i]
+		var offset: int = geometry.offset/3
+		# Scene geometry is appended in vertex order. Copy whole refined
+		# terrain spans in native code and zero only the nonterrain gaps;
+		# a script assignment for every triangle stalls live recentering.
+		if offset>=primitives.size():
+			primitives.resize(offset);primitives.append_array(ids)
+		else:
+			# Preserve the table contract for reordered geometry descriptors.
+			primitives.resize(maxi(primitives.size(),offset+ids.size()))
+			for i in ids.size(): primitives[offset+i]=ids[i]
 		terrain_triangles+=ids.size()
+	primitives.resize(scene.vertices.size()/48)
 	data.append_array(primitives.to_byte_array())
 	data.encode_float(16,float(terrain.texture_size)/terrain.tile_size)
 	data.encode_float(20,float(EITerrain.TERRAIN_GUTTER)/terrain.tile_size)

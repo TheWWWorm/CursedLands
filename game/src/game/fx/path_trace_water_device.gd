@@ -23,9 +23,9 @@ func raw_formats() -> Array[int]:
 	for i in 2:formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT)
 	return formats
 
-func build_extra(data: PackedByteArray,placements: Array) -> bool:
+func _build_environment() -> bool:
 	_water_frame=_own(_rd.uniform_buffer_create(32))
-	return _water_frame.is_valid() and super.build_extra(data,placements)
+	return _water_frame.is_valid() and super._build_environment()
 
 func extra_ray_uniforms() -> Array[RDUniform]:
 	var bindings:=super.extra_ray_uniforms()

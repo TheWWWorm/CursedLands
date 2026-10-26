@@ -247,20 +247,26 @@ func render(frame: PackedByteArray) -> bool:
 func reset() -> void:
 	_restart=true
 
-func release_targets() -> void:
+func release_targets(release: Callable=Callable()) -> void:
 	if _rd==null:return
 	for rid: RID in _sets.values():
-		if _rd.uniform_set_is_valid(rid):_rd.free_rid(rid)
+		if _rd.uniform_set_is_valid(rid):
+			if release.is_valid():release.call(rid)
+			else:_rd.free_rid(rid)
 	_sets.clear()
 	for rid in _textures+_buffers:
-		if rid.is_valid():_rd.free_rid(rid)
+		if rid.is_valid():
+			if release.is_valid():release.call(rid)
+			else:_rd.free_rid(rid)
 	_textures.clear();_buffers.clear();_external.clear();_permanent.clear();_transient.clear()
 	_native=null;_size=Vector2i.ZERO;_pack=RID();_resolve=RID();_input_frame=RID();_restart=true;_last_time=0
 
-func dispose() -> void:
-	release_targets()
+func dispose(release: Callable=Callable()) -> void:
+	release_targets(release)
 	if _rd!=null:
 		for i in range(_owned.size()-1,-1,-1):
 			var rid := _owned[i]
-			if rid.is_valid():_rd.free_rid(rid)
+			if rid.is_valid():
+				if release.is_valid():release.call(rid)
+				else:_rd.free_rid(rid)
 	_owned.clear();_programs.clear();_samplers.clear();_rd=null

@@ -2,12 +2,15 @@ extends CompositorEffect
 ## Main-view RR input transaction. Geometry packets arrive on the render thread;
 ## tracing happens at PRE_OPAQUE with this view's actual jittered camera.
 const GUIDES = preload("res://src/game/fx/shaders/path_trace_rr_guides.glsl")
+const GroundIrradiance=preload("res://src/game/fx/path_trace_ground_irradiance.gd")
+var ground_indirect:=GroundIrradiance.new()
 var _rd: RenderingDevice
 var _target: RefCounted
 var _frame := PackedByteArray()
 var _changes := {}
 var _filter := 4
 var _token := -1
+var _reset := true
 var _shader := RID()
 var _pipeline := RID()
 var _set := RID()
@@ -17,6 +20,7 @@ var _size := Vector2i.ZERO
 var _source := []
 var _last_target := 0
 var _samples := 0
+var _profile_stages:=OS.get_cmdline_user_args().has("--ei-profile-rt")
 var submitted_frames := 0
 var failed := false
 var last_projection := Projection()
@@ -28,7 +32,7 @@ func _init() -> void:
 	needs_normal_roughness=true
 	needs_motion_vectors=true
 
-func queue_frame(target: RefCounted,size: Vector2i,frame: PackedByteArray,changes: Dictionary,filter: int,token: int) -> void:
+func queue_frame(target: RefCounted,size: Vector2i,frame: PackedByteArray,changes: Dictionary,filter: int,token: int,reset: bool) -> void:
 	# Material descriptor sets are prepared before PRE_OPAQUE. Replace public
 	# textures here, before that preparation, never inside the active view.
 	if not target.ray_reconstruction or target._size!=size:
@@ -36,7 +40,20 @@ func queue_frame(target: RefCounted,size: Vector2i,frame: PackedByteArray,change
 		target.render(size,frame.duplicate(),changes,filter)
 		changes={"ray_reconstruction":true}
 	_target=target;_frame=frame;_changes=changes;_filter=filter
+	if _rd==null:_rd=RenderingServer.get_rendering_device()
+	ground_indirect.prepare(_rd,size)
+	_reset=reset
 	if token>=0:_token=token
+
+func adopt_target(previous: RefCounted,replacement: RefCounted) -> void:
+	# The controller promotes only a fully rendered replacement. Its raw
+	# textures can change without invalidating the native camera's history.
+	# New views/failed or resized candidates still take the ordinary reset.
+	if previous==null or replacement==null or previous._closed or replacement._closed:return
+	if _last_target!=previous.get_instance_id() or not previous.ray_reconstruction \
+		or not replacement.ray_reconstruction or not replacement.output_ready() \
+		or replacement._size!=_size:return
+	_last_target=replacement.get_instance_id()
 
 func _render_callback(kind: int,data: RenderData) -> void:
 	if kind!=EFFECT_CALLBACK_TYPE_PRE_OPAQUE or failed or _target==null or _target._closed or _frame.is_empty():return
@@ -55,7 +72,7 @@ func _render_callback(kind: int,data: RenderData) -> void:
 			for r in 4:frame.encode_float((m*16+c*4+r)*4,matrices[m][c][r])
 	frame.encode_float(76*4,_samples);_samples=(_samples+1)%1000000
 	frame.encode_float(77*4,1.0) # RR receives one unfiltered path sample per input pixel.
-	var reset:=_last_target!=_target.get_instance_id() or size!=_size or frame.decode_float(82*4)<0.5
+	var reset:=_last_target!=_target.get_instance_id() or size!=_size or _reset
 	_changes["ray_reconstruction"]=true
 	var before: int=_target.completed_renders
 	_target.render(size,frame,_changes,_filter)
@@ -63,6 +80,13 @@ func _render_callback(kind: int,data: RenderData) -> void:
 	if _token>=0:
 		_target._notify(&"rendered",[_token,_target.completed_renders>before and _target.output_ready()]);_token=-1
 	if not _target.output_ready():return
+	# Added ground geometry consumes its own reconstructed indirect signal.
+	# Neither raw PT AOVs nor the native RR radiance/guide transaction is changed.
+	# render() can clear its private cache-history flag in the mutable packet;
+	# the compositor owns a separate history and uses the controller's policy.
+	if _profile_stages:_rd.capture_timestamp("PT ground indirect begin")
+	ground_indirect.render(_target._raw,_frame,projection,transform,reset)
+	if _profile_stages:_rd.capture_timestamp("PT ground indirect end")
 	if _rd==null:_rd=RenderingServer.get_rendering_device()
 	if not _prepare(size,buffers):failed=true;return
 	var list:=_rd.compute_list_begin()
@@ -116,6 +140,7 @@ func _release_images() -> void:
 
 func dispose() -> void:
 	enabled=false;_target=null;_frame.clear();_changes.clear();_token=-1
+	ground_indirect.dispose()
 	_release_images()
 	if _rd!=null:
 		for rid in [_pipeline,_shader,_sampler]:

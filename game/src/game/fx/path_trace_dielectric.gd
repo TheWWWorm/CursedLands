@@ -9,6 +9,21 @@ global uniform sampler2D ei_pt_trans_colour : filter_nearest, repeat_disable;
 global uniform sampler2D ei_pt_trans_guide : filter_nearest, repeat_disable;
 global uniform mat4 ei_rt_view_projection;
 global uniform mat4 ei_rt_view;
+#ifdef EI_WATER_FX
+global uniform vec4 ei_rt_center;
+global uniform vec4 ei_rt_state;
+global uniform vec3 ei_rt_eye;
+float ei_water_transmission_weight(vec3 world) {
+    // Follow the eye continuously, not the snapshot centre which advances
+    // in 16 m steps. Reserve 32 m for travel during scene preparation and
+    // retain the opaque bound as a fallback if a rebuild is unusually late.
+    // This also leaves 24 m inside the collected geometry for the water bed.
+    float reach=max(ei_rt_state.w-32.0,12.0);
+    float eye=1.0-smoothstep(reach-12.0,reach,length(world-ei_rt_eye));
+    float scene=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_center.xyz));
+    return min(eye,scene);
+}
+#endif
 bool ei_transmission(vec3 world, vec3 normal, float kind, mat4 current_projection, out vec3 colour) {
     colour=vec3(0.0);
     if(ei_pt_trans_active<0.5)return false;

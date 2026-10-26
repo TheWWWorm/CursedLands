@@ -84,10 +84,10 @@ def main():
         for name in outputs: (SHADERS / name).write_bytes((Path(work) / name).read_bytes())
     NOTICE.write_text('This software contains source code provided by NVIDIA Corporation.\n'
                       'RTXDI 3.1.0 is used under the NVIDIA RTX SDKs license below.\n'
-                      'The RTXDI component is separate from the application source license.\n\n' + (args.sdk / 'LICENSE.txt').read_text())
+                      'The RTXDI component is separate from the application source license.\n\n' + (args.sdk / 'LICENSE.txt').read_text(), newline='\n')
     MANIFEST.write_text(json.dumps({'sdk_revision': pin['library_commit'], 'sources': inputs(), 'files': outputs,
         'notice_sha256': sha(NOTICE), 'compiler_sha256': sha(args.dxc),
-        'compiler': subprocess.check_output([args.dxc, '--version'], text=True).strip()}, indent=2) + '\n')
+        'compiler': subprocess.check_output([args.dxc, '--version'], text=True).strip()}, indent=2) + '\n', newline='\n')
     print('Built', len(outputs), 'RTXDI shader binaries')
 
 

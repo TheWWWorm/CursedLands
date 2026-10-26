@@ -90,7 +90,7 @@ def main():
             (SHADERS / name).write_bytes((Path(work) / name).read_bytes())
     manifest = {'compiler': version, 'compiler_sha256': sha(compiler), 'builder_sha256': sha(Path(__file__)),
                 'source_sha256': sha(source), 'includes': includes, 'files': outputs}
-    manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
+    manifest_path.write_text(json.dumps(manifest, indent=2) + '\n', newline='\n')
     print('Built', len(outputs), 'matching ray-tracing shader binaries')
 
 if __name__ == '__main__':

@@ -138,7 +138,7 @@ void fragment(){ALBEDO=vec3(1.0);}
 	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",null)
 	canopy.queue_free();sun.queue_free();await frames(4)
 	# Production lookup must reject a vertical foreground face at the root.
-	var debug:=Shader.new();debug.code=Gfx._function_tail(shader.code.replace("render_mode ","render_mode unshaded, fog_disabled, "),"fragment","\n vec3 audit_light;vec4 audit_a,audit_b;bool valid=ei_rt_ground_sample(audit_light,audit_a,audit_b);ALBEDO=valid?vec3(0,1,0):vec3(1,0,0);EMISSION=vec3(0);\n")
+	var debug:=Shader.new();debug.code=Gfx._function_tail(shader.code.replace("render_mode ","render_mode unshaded, fog_disabled, "),"fragment","\n vec3 audit_light;vec4 audit_a,audit_b;bool valid=ei_rt_ground_sample(ei_rt_view_projection,ei_rt_inverse_view_projection,audit_light,audit_a,audit_b);ALBEDO=valid?vec3(0,1,0):vec3(1,0,0);EMISSION=vec3(0);\n")
 	for node: MeshInstance3D in objects:node.material_override.shader=debug
 	await frames(12);await RenderingServer.frame_post_draw
 	capture=get_viewport().get_texture().get_image()

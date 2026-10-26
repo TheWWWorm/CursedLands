@@ -30,6 +30,29 @@ vec3 env_brdf(vec3 f0,float alpha,float nv) {
     bias*=clamp(f0.g*50.0,0.0,1.0);
     return clamp(f0*max(scale,0.0)+max(bias,0.0),0.0,1.0);
 }
+bool same_surface(vec4 guide,vec3 view,vec3 raster_normal,bool ortho) {
+    float depth=-view.z;
+    if(guide.w<=0.0 || abs(guide.w-depth)>=max(.04,depth*.004))return false;
+    vec3 normal=normalize(guide.xyz);
+    // A blade or cap can be close to its planted terrain without sharing its
+    // material. Retain the ordinary receiver's normal agreement requirement.
+    if(dot(normal,raster_normal)<.45)return false;
+    vec3 per_depth=ortho?vec3(0.0,0.0,-1.0):view/max(depth,1e-6);
+    vec3 world_step=mat3(frame.camera_world)*per_depth;
+    float incidence=abs(dot(world_step,normal));
+    float plane_error=abs(dot(world_step*(depth-guide.w),normal));
+    // The guide stores binary16 view depth. Allow one representable spacing:
+    // native D3D12 readbacks reach that full interval, rather than half an ULP.
+    // Project this uncertainty onto the traced tangent plane instead of using
+    // a fixed centimetre band that admits low raster-only ground details.
+    float spacing=exp2(floor(log2(max(guide.w,6.103515625e-5)))-10.0);
+    const float epsilon=1.1920928955078125e-7;
+    // Reversed depth passes through clip Z and homogeneous division. Account
+    // for their float32 roundoff, especially at long perspective distances.
+    float reconstruction=4.0*epsilon*max(ortho?depth:depth*depth*abs(frame.inv_projection[2][3]),1.0);
+    float tolerance=incidence*(spacing+reconstruction)+8.0*epsilon*max(length(view),1.0);
+    return plane_error<=tolerance;
+}
 void main() {
     ivec2 p=ivec2(gl_GlobalInvocationID.xy),size=imageSize(diffuse_albedo);
     if(any(greaterThanEqual(p,size)))return;
@@ -39,8 +62,11 @@ void main() {
     vec4 view=frame.inv_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,1.0-2.0*z,1.0);view/=view.w;
     vec3 diffuse=vec3(0.0),specular=vec3(0.0),normal=vec3(0.0);float roughness=1.0,hit=0.0;
     if(z>0.0) {
+        vec4 raster=texelFetch(raster_normal,p,0);
+        vec3 raster_world_normal=normalize(mat3(frame.camera_world)*(raster.xyz*2.0-1.0));
+        bool ortho=abs(frame.inv_projection[3][3]-1.0)<1e-5;
         uint surface=uint(round(material.a));
-        bool matched=guide.w>0.0 && abs(guide.w+view.z)<max(.04,-view.z*.004);
+        bool matched=same_surface(guide,view.xyz,raster_world_normal,ortho);
         vec3 albedo;float metal,dielectric;
         if(matched) {
             normal=normalize(guide.xyz);roughness=float(surface&63u)/63.0;
@@ -51,14 +77,12 @@ void main() {
             // Procedural grass, wind-deformed leaves and distant raster-only
             // surfaces have no matching PT material. Use their actual raster
             // normal/roughness and a neutral diffuse guide, never foreground PT.
-            vec4 raster=texelFetch(raster_normal,p,0);
-            normal=normalize(mat3(frame.camera_world)*(raster.xyz*2.0-1.0));
+            normal=raster_world_normal;
             roughness=clamp(min(raster.a,1.0-raster.a)*(255.0/127.0),0.0,1.0);
             albedo=vec3(1.0);metal=0.0;dielectric=.04;
         }
         vec3 f0=mix(vec3(dielectric),albedo,metal);
         // Orthographic view directions are parallel; perspective uses the ray.
-        bool ortho=abs(frame.inv_projection[3][3]-1.0)<1e-5;
         vec3 v=normalize(mat3(frame.camera_world)*(ortho?vec3(0.0,0.0,1.0):-view.xyz));
         specular=env_brdf(f0,roughness*roughness,dot(normal,v));
         diffuse=albedo*(1.0-metal);

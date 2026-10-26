@@ -266,6 +266,7 @@ static func build_morph_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [target])
 	mesh.set_meta(GEOMETRY_META, [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]])
 	mesh.set_meta(SHAPES_META, [target[Mesh.ARRAY_VERTEX]])
+	_remember_raytrace_source(mesh,arrays,[target])
 	return mesh
 
 
@@ -379,6 +380,62 @@ const SHAPES_META := &"ei_cpu_shapes"
 ## Skinned multi-surface meshes: [positions, indices, bones, weights] per
 ## surface, weights as given (the upload stores them as unorm16).
 const SURFACES_META := &"ei_cpu_surfaces"
+## PT also needs normals/UVs and complete morph channels. Keeping these beside
+## immutable authored meshes avoids a blocking GPU readback on first admission
+## to a neighboring lighting region. Only the PT-consumed channels are stored.
+const RAYTRACE_META := &"ei_cpu_raytrace_source"
+
+static func raytrace_source(mesh: Mesh,surface: int) -> Dictionary:
+	if surface!=0 or mesh.get_surface_count()!=1:return {}
+	var source: Dictionary=mesh.get_meta(RAYTRACE_META,{})
+	# Resource duplication copies metadata, but does not copy the change watch.
+	# A clone therefore takes the ordinary current-buffer readback path.
+	return source if source.get("owner",0)==mesh.get_instance_id() else {}
+
+static func _stored_raytrace_arrays(arrays: Array,normal_override:=PackedVector3Array()) -> Array:
+	var result:=[];result.resize(Mesh.ARRAY_MAX)
+	for channel in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_TEX_UV,Mesh.ARRAY_TEX_UV2,Mesh.ARRAY_INDEX]:
+		result[channel]=arrays[channel]
+	if not normal_override.is_empty():result[Mesh.ARRAY_NORMAL]=normal_override
+	elif arrays[Mesh.ARRAY_NORMAL] is PackedVector3Array:
+		var normals: PackedVector3Array=arrays[Mesh.ARRAY_NORMAL].duplicate()
+		for i in normals.size():
+			# RenderingServer::_surface_set_data stores uncompressed normals as
+			# two truncated UNORM16 octahedral coordinates. Vector2 arithmetic
+			# preserves its binary32 multiply/divide before the native decode.
+			var encoded:=normals[i].octahedron_encode()*65535.0
+			normals[i]=Vector3.octahedron_decode(Vector2(clampi(int(encoded.x),0,65535),clampi(int(encoded.y),0,65535))/65535.0)
+		result[Mesh.ARRAY_NORMAL]=normals
+	return result
+
+static func _raytrace_array_bytes(arrays: Array) -> int:
+	var bytes:=0
+	for channel in [Mesh.ARRAY_VERTEX,Mesh.ARRAY_NORMAL]:
+		if arrays[channel] is PackedVector3Array:bytes+=arrays[channel].size()*12
+	for channel in [Mesh.ARRAY_TEX_UV,Mesh.ARRAY_TEX_UV2]:
+		if arrays[channel] is PackedVector2Array:bytes+=arrays[channel].size()*8
+	if arrays[Mesh.ARRAY_INDEX] is PackedInt32Array:bytes+=arrays[Mesh.ARRAY_INDEX].size()*4
+	return bytes
+
+static func _remember_raytrace_source(mesh: ArrayMesh,arrays: Array,shapes: Array = []) -> void:
+	var stored:=_stored_raytrace_arrays(arrays)
+	var channels:=[];var bytes:=_raytrace_array_bytes(stored)
+	# Positions and indices already belong to the picking/rain metadata above.
+	# Count newly retained normals/UVs separately from the complete source size.
+	var added:=0
+	for channel in [Mesh.ARRAY_NORMAL,Mesh.ARRAY_TEX_UV,Mesh.ARRAY_TEX_UV2]:
+		if stored[channel]!=null:added+=stored[channel].size()*(12 if channel==Mesh.ARRAY_NORMAL else 8)
+	for shape: Array in shapes:
+		var shared_normals: bool=shape[Mesh.ARRAY_NORMAL]==arrays[Mesh.ARRAY_NORMAL]
+		var retained:=_stored_raytrace_arrays(shape,stored[Mesh.ARRAY_NORMAL] if shared_normals and stored[Mesh.ARRAY_NORMAL]!=null else PackedVector3Array())
+		if not shared_normals and retained[Mesh.ARRAY_NORMAL]!=null:added+=retained[Mesh.ARRAY_NORMAL].size()*12
+		channels.append(retained);bytes+=_raytrace_array_bytes(retained)
+	mesh.set_meta(RAYTRACE_META,{"owner":mesh.get_instance_id(),"arrays":stored,"shapes":channels,"bytes":bytes,"added_bytes":added})
+	mesh.changed.connect(_forget_raytrace_source.bind(weakref(mesh)),CONNECT_ONE_SHOT)
+
+static func _forget_raytrace_source(reference: WeakRef) -> void:
+	var mesh: Mesh=reference.get_ref()
+	if mesh!=null:mesh.remove_meta(RAYTRACE_META)
 
 
 static func surface_geometry(mesh: Mesh, surface: int) -> Array:
@@ -468,6 +525,7 @@ static func build_anim_morph_mesh(f: Dictionary, c: Vector3, names: PackedString
 	mesh.set_meta("ei_morph_rest_bounds", base.get_aabb())
 	mesh.set_meta(GEOMETRY_META, [pos, arrays[Mesh.ARRAY_INDEX]])
 	mesh.set_meta(SHAPES_META, shapes.map(func(shape: Array): return shape[Mesh.ARRAY_VERTEX]))
+	_remember_raytrace_source(mesh,arrays,shapes)
 	_meshes[key] = mesh
 	return mesh
 
@@ -511,6 +569,7 @@ static func _build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	if not pos.is_empty() and not idx.is_empty():
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 		mesh.set_meta(GEOMETRY_META, [pos, idx])
+		_remember_raytrace_source(mesh,arrays)
 	return mesh
 
 

@@ -3,6 +3,32 @@
   "scope": "Focused recent campaign/UI regressions; not a certification of all historical issues or platforms.",
   "cases": [
     {
+      "id": "path_trace_water_bounds",
+      "script": "tools/tests/path_trace_water_bounds.gd",
+      "summary": "PT_WATER_BOUNDS",
+      "contract": "Real water refraction fades continuously with the eye, stays stable through16m snapshot promotions, falls back outside retained geometry, and restores nearby traced colour.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 12,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "water_reflection_levels",
+      "script": "tools/tests/water_reflection_levels.gd",
+      "summary": "WATER_REFLECTION_LEVELS",
+      "contract": "Mirror level selection through tactical heights across 64 m, tilted views, indexed/full scans, foreground streams and occluded upstream pools on authored terrain.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 49,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "attack_path_current_target",
       "script": "tools/tests/attack_path_current_target.gd",
       "summary": "ATTACK_PATH_CURRENT_TARGET",
@@ -368,7 +394,9 @@
       "issues": [],
       "data": "base",
       "mode": "headless",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 42
     },
     {
@@ -940,7 +968,9 @@
       "data": "astral",
       "mode": "rendered",
       "rendering_method": "forward_plus",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 13,
       "timeout": 360
     },
@@ -954,7 +984,8 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [
-        "--lia-pt"
+        "--lia-pt",
+        "--ei-pt-tuning"
       ],
       "min_checks": 17,
       "timeout": 360
@@ -1025,7 +1056,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 12,
       "rendering_method": "forward_plus"
     },
@@ -1186,7 +1219,8 @@
       "min_checks": 50,
       "timeout": 420,
       "args": [
-        "--zone-route-zone=gz7g"
+        "--zone-route-zone=gz7g",
+        "--ei-pt-tuning"
       ]
     },
     {
@@ -1200,7 +1234,8 @@
       "min_checks": 50,
       "timeout": 420,
       "args": [
-        "--zone-route-zone=gz25k"
+        "--zone-route-zone=gz25k",
+        "--ei-pt-tuning"
       ]
     },
     {
@@ -1393,7 +1428,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 11,
       "rendering_method": "forward_plus"
     },
@@ -1532,7 +1569,9 @@
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 18
     },
     {
@@ -1549,11 +1588,11 @@
       "id": "path_trace_terrain",
       "script": "tools/tests/path_trace_terrain.gd",
       "summary": "SCENE_RT_DEVICE",
-      "contract": "Native traced terrain colours and wall relief agree with raster sampling across atlas layouts, mips, material corners, world positions and upward lighting normals.",
+      "contract": "Native traced terrain colours and wall relief agree with raster sampling across atlas layouts, mips, material corners, world positions and upward/grazing lighting normals; geometric footprint stays independent of those normals.",
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 117,
+      "min_checks": 120,
       "rendering_method": "forward_plus"
     },
     {
@@ -1563,7 +1602,9 @@
       "contract": "The zone5_1 cave wall has world-projected rock and broad shading relief in raster, PT and cached PT while preserving original terrain records.",
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 16,
       "rendering_method": "forward_plus"
     },
@@ -1594,7 +1635,9 @@
       "contract": "The photographed cave loses broad vertical bands in lit raster, PT and SHaRC output; a straight-face control reproduces them and the walkable floor stays unchanged.",
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 14,
       "rendering_method": "forward_plus"
     },
@@ -1675,7 +1718,9 @@
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 16
     },
     {
@@ -1686,7 +1731,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 28
     },
     {
@@ -1705,12 +1752,14 @@
       "id": "path_trace_rr_live",
       "script": "tools/tests/path_trace_rr_live.gd",
       "summary": "PT_RR_LIVE",
-      "contract": "Actual preset-F SDK evaluations on campaign noisy PT, material guides, full DLSS input size, jitter, camera cut and return to NRD/SR. Requires a standard RR-capable Windows D3D12 runtime and DLSS launch profile.",
+      "contract": "Actual preset-F SDK evaluations on campaign noisy PT, raw private replacements, continuous history through streaming and moving local lights, global lighting/camera resets, material guides, full DLSS input size, jitter and return to NRD/SR. Requires a standard RR-capable Windows D3D12 runtime and DLSS launch profile.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
-      "min_checks": 32,
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 38,
       "rendering_method": "forward_plus"
     },
     {
@@ -1721,7 +1770,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 50,
       "rendering_method": "forward_plus"
     },
@@ -1733,7 +1784,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 7,
       "rendering_method": "forward_plus"
     },
@@ -1745,7 +1798,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 27,
       "rendering_method": "forward_plus"
     },
@@ -1757,7 +1812,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 59,
       "rendering_method": "forward_plus"
     },
@@ -1769,8 +1826,10 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
-      "min_checks": 38,
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 44,
       "rendering_method": "forward_plus"
     },
     {
@@ -1793,7 +1852,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 56,
       "rendering_method": "forward_plus"
     },
@@ -1805,8 +1866,10 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
-      "min_checks": 21,
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 25,
       "rendering_method": "forward_plus"
     },
     {
@@ -1817,7 +1880,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 9,
       "rendering_method": "mobile"
     },
@@ -1829,7 +1894,9 @@
       "issues": [],
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "min_checks": 9,
       "rendering_method": "gl_compatibility"
     },
@@ -1887,7 +1954,8 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [
-        "--audit-out=user://load-recenter"
+        "--audit-out=user://load-recenter",
+        "--ei-pt-tuning"
       ],
       "min_checks": 11,
       "timeout": 300
@@ -1939,7 +2007,9 @@
       "min_checks": 62,
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "contract": "Preserve existing shader compilation scene regression.",
       "rendering_method": "forward_plus"
     },
@@ -1951,7 +2021,9 @@
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "contract": "Actual healing sparks illuminate nearby original cave surfaces on their first PT frame and extinguish with their particles."
     },
     {
@@ -1962,7 +2034,9 @@
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "contract": "Recentered PT scenes reuse immutable reconstruction and SHaRC shaders and pipelines while retaining private mutable scene resources."
     },
     {
@@ -1973,7 +2047,9 @@
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "contract": "Render every installed spell casting and impact/status effect on real actors for visual review."
     },
     {
@@ -1985,7 +2061,8 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [
-        "--spell-pt"
+        "--spell-pt",
+        "--ei-pt-tuning"
       ],
       "contract": "Render every installed spell cast and impact/status effect in actual PT; verify each casting light reaches the shared PT light list."
     },
@@ -1996,7 +2073,9 @@
       "min_checks": 26,
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "contract": "Campaign loading prepares the real lightning vertex layout before weather and spell bolts first draw; native and script builders visibly render without new draw pipelines.",
       "rendering_method": "forward_plus"
     },
@@ -2007,7 +2086,9 @@
       "min_checks": 14,
       "data": "base",
       "mode": "rendered",
-      "args": [],
+      "args": [
+        "--ei-pt-tuning"
+      ],
       "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
       "rendering_method": "forward_plus",
       "timeout": 420
@@ -2020,7 +2101,8 @@
       "data": "base",
       "mode": "rendered",
       "args": [
-        "--pt-sharc"
+        "--pt-sharc",
+        "--ei-pt-tuning"
       ],
       "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
       "rendering_method": "forward_plus",
@@ -2035,7 +2117,8 @@
       "mode": "rendered",
       "args": [
         "--pt-deep",
-        "--pt-sharc"
+        "--pt-sharc",
+        "--ei-pt-tuning"
       ],
       "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
       "rendering_method": "forward_plus",
@@ -2051,11 +2134,375 @@
       "args": [
         "--pt-deep",
         "--pt-sharc",
-        "--pt-rtxdi"
+        "--pt-rtxdi",
+        "--ei-pt-tuning"
       ],
       "contract": "Deep PT with SHaRC and actual RTXDI prepares both emitter states before gameplay; appearing, moving and expiring emission compiles no new programs.",
       "rendering_method": "forward_plus",
       "timeout": 420
+    },
+    {
+      "id": "terrain_snow_contours",
+      "script": "tools/tests/terrain_snow_contours.gd",
+      "summary": "SNOW_CONTOURS",
+      "contract": "Verified snowy hills share bounded continuous contours between raster and PT, retain material identity and collision heights, and avoid allocations on flat snow.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 18
+    },
+    {
+      "id": "raytrace_gather_budget",
+      "script": "tools/tests/raytrace_gather_budget.gd",
+      "summary": "RT_GATHER_BUDGET",
+      "contract": "Live scene discovery obeys the gather budget, matches eager geometry, safely skips removed roots, and exposes opt-in cursor, packing and validation diagnostics without changing output.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 15
+    },
+    {
+      "id": "path_trace_rr_resources",
+      "script": "tools/tests/path_trace_rr_resources.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Raw RR allocates only live integrator and public outputs; repeated NRD transitions, partial failures, resize and teardown preserve complete output without leaked textures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 19,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_presets",
+      "script": "tools/tests/path_trace_presets.gd",
+      "summary": "PT_PRESETS",
+      "contract": "Managed PT presets preserve stored tuning preferences and standalone RT settings, retain diagnostic overrides, and cover English, Russian and German.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 106
+    },
+    {
+      "id": "path_trace_preset_options",
+      "script": "tools/tests/path_trace_preset_options.gd",
+      "summary": "PT_PRESET_OPTIONS",
+      "contract": "The player PT menu offers coherent presets and a Screen settings link, preserves Apply/Cancel and legacy preferences, and fits EN/RU/DE at720p,1440p and4K.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 108,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_terrain_collect",
+      "script": "tools/tests/path_trace_terrain_collect.gd",
+      "summary": "PT_TERRAIN_COLLECT",
+      "contract": "Terrain material collection preserves exact ordered and reordered primitive IDs, fills nonterrain gaps, and avoids per-primitive script copying.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 11
+    },
+    {
+      "id": "terrain_snow_rounding",
+      "script": "tools/tests/terrain_snow_rounding.gd",
+      "summary": "SNOW_ROUNDING",
+      "contract": "Snowy crest patches have bounded curvature, shared positions and normals, exact dense footprint shadow geometry, preserved heights, unchanged rock seams and no folded triangles under signed offsets.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 68
+    },
+    {
+      "id": "path_trace_rr_staging",
+      "script": "tools/tests/path_trace_rr_staging.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Private raw RR outputs prepare incrementally before tracing, preserve public output until complete, and clean up partial allocation on failure, resize, mode changes and disposal.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 20,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_traversal_river",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "summary": "PT_ZONE_TRAVERSAL",
+      "contract": "Managed PT keeps native RR, full 4K/1080p dimensions, actual first-person movement and frame generation coherent across river terrain.",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "data": "base",
+      "min_checks": 49,
+      "timeout": 600,
+      "args": [
+        "--zone-route-zone=gz7g",
+        "--zone-route-rr",
+        "--zone-route-fg",
+        "--zone-route-4k",
+        "--zone-route-uncapped",
+        "--zone-route-peaceful",
+        "--zone-route-legs=2"
+      ]
+    },
+    {
+      "id": "path_trace_rr_traversal_snow",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "summary": "PT_ZONE_TRAVERSAL",
+      "contract": "Managed PT keeps native RR, full 4K/1080p dimensions, actual first-person movement and frame generation coherent across snow terrain.",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "data": "base",
+      "min_checks": 49,
+      "timeout": 600,
+      "args": [
+        "--zone-route-zone=gz12k",
+        "--zone-route-rr",
+        "--zone-route-fg",
+        "--zone-route-4k",
+        "--zone-route-uncapped",
+        "--zone-route-peaceful",
+        "--zone-route-legs=2"
+      ]
+    },
+    {
+      "id": "path_trace_rr_traversal_desert",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "summary": "PT_ZONE_TRAVERSAL",
+      "contract": "Managed PT keeps native RR, full 4K/1080p dimensions, actual first-person movement and frame generation coherent across desert terrain.",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "data": "base",
+      "min_checks": 49,
+      "timeout": 600,
+      "args": [
+        "--zone-route-zone=gz18h",
+        "--zone-route-rr",
+        "--zone-route-fg",
+        "--zone-route-4k",
+        "--zone-route-uncapped",
+        "--zone-route-peaceful",
+        "--zone-route-legs=2"
+      ]
+    },
+    {
+      "id": "path_trace_rr_traversal_cave",
+      "script": "tools/tests/path_trace_zone_traversal.gd",
+      "summary": "PT_ZONE_TRAVERSAL",
+      "contract": "Managed PT keeps native RR, full 4K/1080p dimensions, actual first-person movement and frame generation coherent across cave terrain.",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "data": "base",
+      "min_checks": 49,
+      "timeout": 600,
+      "args": [
+        "--zone-route-zone=gz5g",
+        "--zone-route-rr",
+        "--zone-route-fg",
+        "--zone-route-4k",
+        "--zone-route-uncapped",
+        "--zone-route-peaceful",
+        "--zone-route-legs=2"
+      ]
+    },
+    {
+      "id": "raytrace_retirement_budget",
+      "script": "tools/tests/raytrace_retirement_budget.gd",
+      "summary": "RT_RETIREMENT_BUDGET",
+      "contract": "Promotion retains the previous CPU snapshot until bounded retirement, preserves the replacement and shared caches, handles delayed begin callbacks, and drains fully during shutdown.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 9
+    },
+    {
+      "id": "path_trace_retirement",
+      "script": "tools/tests/path_trace_retirement.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Retired RR, NRD, transmission, SHARC and RTXDI devices release private resources once in bounded dependency-ordered batches while replacement output and shared programs remain valid; delayed callbacks, cancellation and repeated disposal are covered.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 29,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "terrain_snow_bevel",
+      "script": "tools/tests/terrain_snow_bevel.gd",
+      "summary": "SNOW_BEVEL",
+      "contract": "The actual snowy ridge has bounded shared geometry rounding, reduced adjacent face angles, unchanged authoritative heights and collision, and no folded faces or material boundary gaps.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 12
+    },
+    {
+      "id": "path_trace_controller",
+      "script": "tools/tests/path_trace_controller.gd",
+      "summary": "PATH_TRACE_CONTROLLER",
+      "contract": "Real campaign PT keeps valid output through recenter, source changes and cancelled builds, recovers from budget and pipeline failures, and preserves bounded retry backoff.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 49,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_cover_receivers",
+      "script": "tools/tests/path_trace_cover_receivers.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Production grass, textured stone, mushroom and fern meshes retain bright and dark planted-root PT lighting across wall-edge motion and reject incompatible wall, height and distance guides.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 65,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_guides",
+      "script": "tools/tests/path_trace_rr_guides.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "The real RR guide compute pass preserves quantized flat, tilted, curved and relief receivers while rejecting raised, opposed, missing and foreground surfaces on perspective and orthographic cameras.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 95,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_details",
+      "script": "tools/tests/path_trace_rr_details.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Native RR and NRD render identical grass, stone and mushroom meshes; real tilted-floor controls preserve valid guides and unambiguous raised details never inherit the floor material.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 67,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_presentation",
+      "script": "tools/tests/path_trace_rr_presentation.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Compatible RR handoffs retain physical public textures, trace fresh output without extra image allocations, roll back descriptor failures, preserve optional passes, and retire each resource exactly once.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 40,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_handoff_deltas",
+      "script": "tools/tests/path_trace_handoff_deltas.gd",
+      "summary": "PT_HANDOFF_DELTAS",
+      "contract": "RR promotion retains real moving, stopped, hidden and revealed instance deltas without replaying static placements; NRD preserves its required transform restoration.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 50
+    },
+    {
+      "id": "path_trace_lifecycle",
+      "script": "tools/tests/path_trace_lifecycle.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Native path-tracing reconstruction retains valid resources and ownership through repeated mode, size, feature and scene changes, cancellation, failures and disposal.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 168,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "direct_attack_walk",
+      "script": "tools/tests/direct_attack_walk.gd",
+      "summary": "DIRECT_ATTACK_WALK",
+      "contract": "Attack/cast recovery shares one authored stride between source and actual unit-panel transforms, preserving action poses, injury, exhaustion, ready stance and reverse/sideways leg continuity.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 132
+    },
+    {
+      "id": "raytrace_retained_sources",
+      "script": "tools/tests/raytrace_retained_sources.gd",
+      "summary": "RT_RETAINED_SOURCES",
+      "contract": "Authored figure geometry avoids cold GPU readbacks with exact retained PT channels and morph data, while resource edits, clones, fallback and lifetime remain correct.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 19,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_ground_irradiance",
+      "script": "tools/tests/path_trace_ground_irradiance.gd",
+      "summary": "PATH_TRACE_GROUND_IRRADIANCE",
+      "contract": "Production grass, stones and mushrooms reconstruct independent planted-root indirect and direct light while preserving raw RR inputs, native shadow attenuation, reprojection, compatible handoffs, moving caster and lighting response, invalidation and resource lifetime.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 97,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "raytrace_retained_textures",
+      "script": "tools/tests/raytrace_retained_textures.gd",
+      "summary": "RT_RETAINED_TEXTURES",
+      "contract": "CPU-authored unit albedo and surface images avoid first-admission GPU readbacks with exact pixels and mips, bounded weak retention, mutation and clone invalidation, current generic/HD fallback and resource lifetime.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 41,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_resource_staging",
+      "script": "tools/tests/path_trace_resource_staging.gd",
+      "summary": "PT_RESOURCE_STAGING",
+      "contract": "Incremental PT, ray-traced water and path-traced water construction defers native allocations until bounded private phases, matches synchronous buffer and pixel output, retains the active scene, and cleans up every canceled or failed partial phase including large material and placement batches.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 50,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_upload_staging",
+      "script": "tools/tests/path_trace_upload_staging.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Private scene uploads advance in bounded batches after resource preparation, preserve authored mip bytes and the active denoised output, and cleanly release canceled or failed partial uploads.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 14,
+      "rendering_method": "forward_plus"
     }
   ]
 }

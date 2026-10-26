@@ -13,15 +13,40 @@ builds they qualify.
 
 ## Controls
 
-Open **Options → Graphics → Lighting and shadows → Ray-traced lighting**.
+Open **Options → Remake → Ray tracing / Path tracing**.
 
-- **Path tracing (test):** Off, 2 bounces or 4 bounces. Off is the default.
+The player control is **Path tracing: Off / Balanced / Quality**. Off remains
+the default. Balanced traces two surface bounces. Quality traces four and
+enables water/glass refraction. Both use Responsive accumulation, a fixed PT
+resolution, and automatic DLSS Ray Reconstruction when the selected DLSS/DLAA
+renderer supports it. Otherwise they use radiance NRD, with the built-in filter
+as its fallback. The Screen link opens the existing upscaling-quality and frame
+generation controls; neither is silently changed by a PT preset.
+
+Balanced uses the direct-light sampler without RTXDI reservoir reuse. Quality
+enables RTXDI. SHaRC remains disabled in both player presets: the moving-scene
+qualification resets its cache frequently, with an added cost on this workload.
+The underlying implementations remain available through the diagnostic flag.
+
+Preset IDs reuse the saved `pt_mode` values 0/1/2. Hidden tuning values and
+standalone RT quality remain stored unchanged; the preset resolves effective
+values at runtime. Switching PT off restores the standalone RT controls and
+their saved quality. Apply/Cancel retain their normal behavior.
+
+For renderer qualification, launch with **`--ei-pt-tuning`** after `--` to
+restore the detailed controls and use the stored tuning values directly.
+Existing diagnostic fixtures that set individual PT fields must include this
+flag. The player-preset tests deliberately omit it. Diagnostic controls include:
+
+- **Path tracing (test):** Off, 2 bounces or 4 bounces.
 - **RT lighting quality:** Low traces at 50% of the 3D render width and height
   with one path sample per pixel; Medium uses 75% and two samples; High uses
   100% and four samples. Medium is the default. Path tracing follows the
   viewport's applied Render scale or FSR resolution, so upscaling reduces
   tracing and reconstruction work too. The separate scene RT mode retains
-  window-relative quality. Water reflection quality remains independent.
+  window-relative quality. Player presets use the one-sample fallback budget;
+  RR instead traces at the DLSS input resolution. Water reflection quality
+  remains independent.
 - **Path accumulation:** Responsive uses a short filtered history for play.
   Still scene averages up to 256 frames for static comparisons. Moving the
   camera, changing projection/lighting or updating geometry restarts the
@@ -71,6 +96,15 @@ alive until then. Frame/morph uploads and history copies are checked, failed
 frames invalidate history, and failures notify the controller to restore
 conventional lighting. This does not establish recovery from a lost physical
 GPU or an operating-system driver reset.
+
+Private RR replacements prepare their lighting targets in bounded steps before
+the first trace. RR retains nine integrator images and four public images,
+omitting the custom filter's extra history and auxiliary textures. At 1920×1080
+this saves 87 MiB per scene generation. Live source discovery shares the gather
+budget, and ordered terrain material tables are copied in bulk. These reduce
+CPU preparation spikes; the handoff still briefly traces both scene generations.
+See the [Windows stability validation](../validation/pt-stability-2026-10-26/README.md)
+for measured traversal costs and their limits.
 
 Published-output readiness is separate from temporal-history confidence.
 Sampler, pipeline, resize and emitter changes can reset history while the last

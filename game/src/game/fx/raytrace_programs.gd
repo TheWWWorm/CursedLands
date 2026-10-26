@@ -53,7 +53,9 @@ func compute(rd: RenderingDevice,spirv: RDShaderSPIRV,label: String) -> Array[RI
 	_compute[key]=pair;compute_compilations+=1
 	return pair
 
-func dispose() -> void:
+func dispose(release: Callable=Callable()) -> void:
 	if _rd!=null:
-		for i in range(_owned.size()-1,-1,-1):_rd.free_rid(_owned[i])
+		for i in range(_owned.size()-1,-1,-1):
+			if release.is_valid():release.call(_owned[i])
+			else:_rd.free_rid(_owned[i])
 	_owned.clear();_programs.clear();_pipelines.clear();_compute.clear();_rd=null

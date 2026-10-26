@@ -7,6 +7,9 @@ var out := ""
 var zone := "gz4g"
 var fixture := ""
 var use_fg := false
+var use_rr := false
+var uncapped := false
+var quality_preset := false
 var standard_rendering := false
 var peaceful := false
 var leg_count := 4
@@ -48,6 +51,10 @@ func inspect_device(device: RefCounted) -> void:
 
 func rendering_ready() -> bool:
 	if standard_rendering:return not rt.stats.get("active",false)
+	if use_rr:
+		return rt.stats.get("active",false) and status().get("rr_active",false) \
+			and rt.stats.get("display_size",[])==[route_resolution.x,route_resolution.y] \
+			and rt.stats.get("size",[])==[route_resolution.x/2,route_resolution.y/2]
 	return rt.stats.get("active",false) and rt.device!=null and rt.device.nrd_active
 
 func reaches_exit(target: Vector2) -> bool:
@@ -89,8 +96,10 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 	var before := hero.pos
 	var first_heading := heading
 	var sdk_before := status()
-	var frames := 0; var active := 0; var nrd := 0; var body := 0; var fg := 0;var usable:=0
-	var times := []; var observations := [];var blocked:=[]
+	var frames := 0; var active := 0; var nrd := 0; var rr := 0; var body := 0; var fg := 0;var usable:=0
+	var times := []; var observations := [];var blocked:=[];var slow:=[];var movement:=[]
+	var retirement:={"queued_frames":0,"max_device_queue":0,"max_scene_queue":0,"max_age_frames":0,"max_pending_resources":0,"max_native_step_ms":0.0,"max_region_distance_m":0.0}
+	var retirement_fields:=[["max_device_queue","retirement_device_queue"],["max_scene_queue","retirement_scene_queue"],["max_age_frames","retirement_age_frames"],["max_pending_resources","retirement_resources_pending"],["max_native_step_ms","retirement_native_step_ms"]]
 	var previous := start
 	var checkpoint:=hero.pos;var checkpoint_time:=0.0;var reroutes:=[];var avoid:=[]
 	if goal.is_finite(): key(KEY_W,true)
@@ -114,10 +123,22 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 		Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 		frames+=1
 		var now := Time.get_ticks_usec();times.append((now-previous)/1000.0);previous=now
+		var eye:=g.rig.camera.global_position
+		movement.append([times.back(),s.world.time,hero.pos.x,hero.pos.y,eye.x,eye.y,eye.z])
+		retirement.queued_frames+=int(rt.stats.get("retirement_device_queue",0)>0 or rt.stats.get("retirement_scene_queue",0)>0)
+		for pair in retirement_fields:
+			retirement[pair[0]]=maxf(retirement[pair[0]],rt.stats.get(pair[1],0))
+		retirement.max_region_distance_m=maxf(retirement.max_region_distance_m,rt._center.distance_to(eye))
+		if times.back()>40.0 and slow.size()<256:
+			var sample:={"at":elapsed,"ms":times.back(),"eye":str(g.rig.camera.global_position),"generation":rt.stats.get("snapshot_generation",0),"rebuilding":rt.stats.get("rebuilding",false)}
+			for field in ["cpu_total_ms","cpu_gather_ms","cpu_publish_validation_ms","cpu_publish_activate_ms","cpu_active_render_ms","cpu_pending_render_ms","cpu_retirement_ms","retirement_device_queue","retirement_scene_queue","retirement_age_frames","retirement_resources_pending","retirement_native_step_ms"]:sample[field]=rt.stats.get(field,null)
+			slow.append(sample)
 		distance+=hero.pos.distance_to(previous_position);previous_position=hero.pos
 		if rt.stats.get("active",false) and rt.device!=null:
 			active+=1
-			if rt.device.nrd_active: nrd+=1
+			if use_rr:
+				if status().get("rr_active",false):rr+=1
+			elif rt.device.nrd_active: nrd+=1
 			else:
 				var observed: RefCounted=rt.device
 				RenderingServer.call_on_render_thread(inspect_device.bind(observed))
@@ -139,7 +160,7 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 	if standard_rendering:
 		check(active==0 and nrd==0,label+" stays in standard rendering")
 	else:
-		check(active==frames and nrd==frames,label+" keeps PT/native NRD active")
+		check(active==frames and (rr==frames if use_rr else nrd==frames),label+" keeps PT/native "+("RR" if use_rr else "NRD")+" active")
 	check(body==frames,label+" uses the production first-person body")
 	check(usable==frames,label+" stays in controllable gameplay")
 	if goal.is_finite():check(hero.pos.distance_to(before)>1.0,label+" keyboard input moves the authority-controlled hero")
@@ -148,9 +169,10 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 		check(presents>=game_presents*1.8 if enabled else presents==0,label+" SDK presentation confirms FG")
 	times.sort()
 	rows.append({"phase":label,"start_s":(start-recording_start)/1000000.0,"seconds":(Time.get_ticks_usec()-start)/1000000.0,
-		"frames":frames,"pt_frames":active,"nrd_frames":nrd,"first_person_frames":body,"controllable_frames":usable,"fg_frames":fg,"sdk_presents":presents,"game_presents":game_presents,"reroutes":reroutes,
+		"frames":frames,"pt_frames":active,"nrd_frames":nrd,"rr_frames":rr,"first_person_frames":body,"controllable_frames":usable,"fg_frames":fg,"sdk_presents":presents,"game_presents":game_presents,"reroutes":reroutes,
 		"from":[before.x,before.y],"to":[hero.pos.x,hero.pos.y],"travelled":hero.pos.distance_to(before),"goal":str(goal),
-		"frame_ms":{"median":times[times.size()/2],"p95":times[int(times.size()*0.95)],"max":times.back()},"observations":observations,"blocked":blocked})
+		"frame_ms":{"median":times[times.size()/2],"p95":times[int(times.size()*0.95)],"max":times.back()},"observations":observations,"blocked":blocked,"over_40ms":slow,"retirement":retirement,
+		"movement_columns":["frame_ms","world_time","hero_x","hero_y","eye_x","eye_y","eye_z"],"movement":movement})
 	# Full-frame readback and PNG encoding create artificial pauses in a live
 	# video. Ordinary diagnostic/benchmark runs retain the still captures.
 	if not OS.get_cmdline_user_args().has("--zone-route-recording"):
@@ -160,10 +182,14 @@ func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> 
 	print("ZONE_PHASE ",label," distance=",rows.back().travelled," PT=",active,"/",frames," NRD=",nrd," FG=",fg)
 
 func persist() -> void:
+	var effective:={}
+	for name in ["pt_mode","pt_accumulation","pt_target_fps","pt_sharc","pt_denoiser","pt_ray_reconstruction","pt_restir","pt_refraction","q_rt_lighting","gfx_water_reflections","rtx_upscaling","rtx_frame_generation"]:
+		effective[name]=GameData.option(name)
 	write_file("zone-traversal.json",JSON.stringify({
 		"checks":checks,"failures":failures,"campaign":GameData.campaign_id,"zone":s.zone_id,"title":s.zone_title(s.zone_id),
 		"rows":rows,"distance":distance,"window":str(DisplayServer.window_get_size()),"status":status(),"neutral_exploration":peaceful,
 		"frame_limit":Engine.max_fps,"actor_count":s.world.units.size(),"options":GameData.options.duplicate(),
+		"effective_options":effective,"tuning_enabled":OS.get_cmdline_user_args().has("--ei-pt-tuning"),"rt_stats":rt.stats.duplicate(true),
 		"adapter":RenderingServer.get_video_adapter_name(),"renderer":RenderingServer.get_current_rendering_method(),
 		"note":"Real solo worker, normal keyboard steering, live AI and authored geometry; camera turns are scripted. God mode prevents death. Neutral exploration, when flagged, changes the fixture's initial diplomacy. Initial save may be supplied; no route teleportation. frame_limit=0 identifies an uncapped benchmark."},"\t"))
 
@@ -174,6 +200,9 @@ func _ready() -> void:
 		if arg.begins_with("--zone-route-zone="):zone=arg.trim_prefix("--zone-route-zone=")
 		if arg.begins_with("--zone-route-save="):fixture=arg.trim_prefix("--zone-route-save=")
 		if arg=="--zone-route-fg":use_fg=true
+		if arg=="--zone-route-rr":use_rr=true
+		if arg=="--zone-route-uncapped":uncapped=true
+		if arg=="--zone-route-quality":quality_preset=true
 		if arg=="--zone-route-standard":standard_rendering=true
 		if arg=="--zone-route-4k":route_resolution=Vector2i(3840,2160)
 		if arg=="--zone-route-peaceful":peaceful=true
@@ -187,6 +216,8 @@ func _ready() -> void:
 		"pt_mode":1,"q_rt_lighting":0,"pt_accumulation":0,"rtx_upscaling":1 if use_fg else 0,"rtx_frame_generation":0,
 		"fsr_upscaling":0,"fsr_frame_generation":0,"autosave":0,"show_tutorial":0,"control_mode":3,
 		"pad_enabled":0,"scroll_border":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
+	if use_rr:
+		GameData.options.merge({"pt_mode":2 if quality_preset else 1,"pt_ray_reconstruction":1,"rtx_upscaling":4,"gfx_water_reflections":2},true)
 	if standard_rendering:
 		GameData.options.merge({"gfx_soft_ground":1,"gfx_water_reflections":2,"pt_mode":0,"rt_shadows":0,"rt_gi":0},true)
 	GameData.resolution_size="%dx%d"%[route_resolution.x,route_resolution.y]
@@ -196,6 +227,9 @@ func _ready() -> void:
 	g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
 	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
 	if fixture.is_empty():
+		# A fresh fixture belongs to the active content profile, including HD
+		# Lands. An empty legacy stamp is intentionally rejected in mod profiles.
+		s.state.mod_config=ModStore.snapshot()
 		s.state.ensure_hero(0,s._hero_proto(0));s.state.current_zone=zone;s.state.god_modes[0]=1;s.state.world_time=12
 		if peaceful:
 			# Supplemental visual coverage when live enemies surround the novice
@@ -204,7 +238,9 @@ func _ready() -> void:
 			s.state.zones[zone]={"dead":[],"units":{},"levers":{},"diplomacy":neutral}
 		check(s.state.save(SaveInfo.path("zone-route"))==OK,"create isolated authored-zone save")
 	else:check(DirAccess.copy_absolute(fixture,SaveInfo.path("zone-route"))==OK,"copy supplied save without changing it")
-	check(await s.load_game_shown("zone-route"),"worker loads the authored zone")
+	var loaded:=await s.load_game_shown("zone-route")
+	check(loaded,"worker loads the authored zone")
+	if not loaded:await s.local_host.stop();get_tree().quit(1);return
 	check(await until(func():return s.world!=null and not s._remote_loading and LoadingScreen._current==null and ShaderCompilationScreen._current==null,120),"world and preparation barriers complete")
 	if s.world==null or s.party_heroes().is_empty():get_tree().quit(1);return
 	hero=s.party_heroes()[0];g.selected.assign([hero]);g.rig.release();g.rig._window_focused=true
@@ -224,13 +260,16 @@ func _ready() -> void:
 	get_window().borderless=true
 	get_window().position=Vector2i(32,32) if oversized else Vector2i.ZERO
 	get_window().size=route_resolution
-	Engine.max_fps=30
+	Engine.max_fps=0 if uncapped else 30
 	rt=g.get_node("SceneRaytrace")
 	check(await until(func():return rendering_ready() and g.direct.usable(),120),"renderer and first-person controls are ready")
 	check(s.local_host.frontend and s.local_host._process_alive(),"real separate-process solo authority")
 	# Wine/X11 acknowledges an oversized borderless capture window on the
 	# following frames; PT can already be ready before that resize lands.
 	check(await until(func():return DisplayServer.window_get_size()==route_resolution,3),"full-size capture window")
+	if use_rr:
+		check(rt.stats.get("display_size",[])==[route_resolution.x,route_resolution.y]
+			and rt.stats.get("size",[])==[route_resolution.x/2,route_resolution.y/2],"RR traces the full DLSS Performance input")
 	print("ZONE_WINDOW ",{"requested":str(route_resolution),"actual":str(DisplayServer.window_get_size()),"mode":get_window().mode,"position":str(get_window().position)})
 	if use_fg:check(RtxGraphics.facts().fg,"qualified NVIDIA FG runtime")
 	if failures>0:await s.local_host.stop();get_tree().quit(1);return

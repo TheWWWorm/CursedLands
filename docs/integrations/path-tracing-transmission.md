@@ -1,5 +1,9 @@
 # Water and glass refraction
 
+The current player Quality preset enables refraction; Balanced leaves it off.
+The individual control below is available for renderer diagnostics with
+`-- --ei-pt-tuning`; see the [player preset contract](path-tracing-experiment.md#controls).
+
 `Remake > Ray tracing / Path tracing > PT refraction` is optional and defaults
 to Off. It follows both Responsive and Still path tracing. The option and help
 are translated into English, Russian and German.

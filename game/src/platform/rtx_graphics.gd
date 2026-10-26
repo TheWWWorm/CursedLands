@@ -83,7 +83,11 @@ static func sr_active() -> bool:
 
 static func rr_active(values: Dictionary = {}) -> bool:
 	var options: Dictionary=GameData.options if values.is_empty() else values
-	return int(options.get(RAY_RECONSTRUCTION,0))>0 and int(options.get("pt_mode",0))>0 and int(options.get("pt_accumulation",0))==0 and reason(RAY_RECONSTRUCTION,options).is_empty()
+	var tuning := GameData.PathTraceSettings.tuning_enabled()
+	return GameData.PathTraceSettings.value(RAY_RECONSTRUCTION,options,tuning)>0 \
+		and int(options.get("pt_mode",0))>0 \
+		and GameData.PathTraceSettings.value("pt_accumulation",options,tuning)==0 \
+		and reason(RAY_RECONSTRUCTION,options).is_empty()
 
 static func apply_upscaling(vp: Viewport) -> void:
 	# Campaign cameras render to the root. Portraits, reflections and Trials

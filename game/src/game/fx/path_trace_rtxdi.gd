@@ -74,16 +74,20 @@ func finish(frame: PackedByteArray) -> void:
 func invalidate() -> void:
 	_valid=false
 
-func release_targets() -> void:
+func release_targets(release: Callable=Callable()) -> void:
 	if _rd!=null:
 		for rid in [_reservoirs,_surfaces]:
-			if rid.is_valid():_rd.free_rid(rid)
+			if rid.is_valid():
+				if release.is_valid():release.call(rid)
+				else:_rd.free_rid(rid)
 	_reservoirs=RID();_surfaces=RID();_size=Vector2i.ZERO
 	_valid=false;_last_frame.clear();_index=0;active=false;bytes=0
 
-func dispose() -> void:
-	release_targets()
+func dispose(release: Callable=Callable()) -> void:
+	release_targets(release)
 	if _rd!=null:
 		for rid in [_control,_neighbors,_previous_frame]:
-			if rid.is_valid():_rd.free_rid(rid)
+			if rid.is_valid():
+				if release.is_valid():release.call(rid)
+				else:_rd.free_rid(rid)
 	_control=RID();_neighbors=RID();_previous_frame=RID()

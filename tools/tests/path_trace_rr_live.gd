@@ -105,6 +105,44 @@ func run() -> void:
 	check(int(after.rr_evaluations)-int(before.rr_evaluations)>=30 and int(after.dlss_evaluations)==int(before.dlss_evaluations),"moving camera evaluates RR instead of stacking SR")
 	check(rt._rr_effect.last_projection!=camera.get_camera_projection(),"PT rays use the renderer's current subpixel jitter")
 	await record_rr(rt,"rr-moving")
+	# A continuous streamed replacement is still the same visible camera.
+	# Observe preparation without readback stalls: a private full-resolution
+	# NRD/direct-light pool wastes memory, then RR discards it on promotion.
+	var stream_before:=native_status()
+	var stream_generation: int=rt.stats.snapshot_generation
+	var private_frames:=0;var private_filtered:=0
+	rt._topology_pending=true
+	for i in 1200:
+		await frames(1)
+		if rt._pending_device!=null and rt._pending_device.output_ready():
+			private_frames+=1
+			if not rt._pending_device.ray_reconstruction or rt._pending_device.nrd_active \
+				or not rt._pending_device._direct_images.is_empty():private_filtered+=1
+		if rt.stats.snapshot_generation>stream_generation:break
+	check(rt.stats.snapshot_generation>stream_generation and private_frames>0,"RR observes a complete private replacement before promotion")
+	check(private_filtered==0,"RR replacements use raw lighting without allocating discarded NRD/direct history")
+	await frames(8)
+	check(int(native_status().rr_resets)==int(stream_before.rr_resets),"continuous scene replacement preserves the native RR history")
+	rr_stages.append({"label":"rr-continuous-replacement","private_frames":private_frames,
+		"private_filtered_frames":private_filtered,"before":stream_before,"after":native_status()})
+	# A moving spell/torch changes local radiance every frame. Rebuilding the
+	# entire RR history for it makes all distant scenery reconverge as well.
+	var moving_light:=OmniLight3D.new();context[1].add_child(moving_light)
+	moving_light.add_to_group(Gfx.POINT_LIGHT_GROUP)
+	moving_light.global_position=camera.global_position-camera.global_basis.z*8.0
+	moving_light.omni_range=20.0;moving_light.light_energy=3.0
+	await frames(16);before=native_status()
+	for i in 30:
+		moving_light.position.x+=0.04
+		await frames(1)
+	check(rt._lights.any(func(light: WeakRef):return light.get_ref()==moving_light),"moving local light reaches the real PT light list")
+	check(int(native_status().rr_resets)==int(before.rr_resets),"moving local illumination does not reset the whole RR image")
+	rr_stages.append({"label":"rr-moving-local-light","before":before,"after":native_status()})
+	moving_light.queue_free();await frames(12)
+	var saved_sun:=Gfx.sun;before=native_status();Gfx.sun=saved_sun*0.25
+	await frames(3)
+	check(int(native_status().rr_resets)>int(before.rr_resets),"abrupt global lighting changes still reset RR history")
+	Gfx.sun=saved_sun;await frames(8)
 	camera.global_transform=original;camera.global_position+=Vector3(7,0,0)
 	before=native_status();await frames(12)
 	check(int(native_status().rr_resets)>int(before.rr_resets),"camera cut resets RR history")

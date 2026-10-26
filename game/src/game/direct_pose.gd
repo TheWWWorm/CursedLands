@@ -12,6 +12,8 @@ var _base_keys := {}
 var _base_positions := {}
 var lower_clip := ""
 var _lower_code := -1
+var _stride_upper := ""
+var _stride_weight := 0.0
 var parts: Array[EIAnimPart] = []
 var model: EIUnitModel
 var applied_frames := 0
@@ -105,17 +107,21 @@ func _compose_pose(dt: float) -> void:
 		for n in model._animation_roots: collect(n)
 		phase = 0.0; weight = 0.0; leg_yaw = 0.0
 		reverse = false; playback_direction = 1.0; _lower_code = -1; lower_clip = ""
+		_stride_upper = ""; _stride_weight = 0.0
 		_base_keys.clear(); _base_positions.clear()
 	var eligible := model.has_node("hp/bd") and unit.direct_controlled and not unit.dead and unit.stance == GameUnit.STANCE_NONE and (unit.action in ["idle","walk","run","attack"] or unit.action.begins_with("cast"))
 	if not eligible:
 		weight = 0.0
+		_stride_upper = ""; _stride_weight = 0.0
 		return
 	var moving := eligible and unit._move_speed > 0.001 and unit.direct_motion != Vector2.ZERO
 	weight = move_toward(weight,1.0 if moving else 0.0,dt*6.0)
 	# A one-shot clears current_animation when its last frame is reached,
 	# before the authority's recovery tick selects the next action. Keep
 	# composing that final pose or the body briefly snaps to planted feet.
-	if weight <= 0.0 or model._current.is_empty(): return
+	if weight <= 0.0 or model._current.is_empty():
+		_stride_upper = ""; _stride_weight = 0.0
+		return
 	# Keep one gait across swings. Re-picking a weighted animation every
 	# frame or toggling combat readiness changes stride beneath planted feet.
 	var gait := "run" if unit.running and not unit.cannot_run() else "walk"
@@ -151,6 +157,25 @@ func _compose_pose(dt: float) -> void:
 	phase = fposmod(phase+dt*rate*playback_direction,maxf(walk.length,0.01))
 	var lower := sample(lower_clip,phase)
 	if base.is_empty() or lower.is_empty(): return
+	# The legs keep their clock through attacks. The model's resumed walk
+	# starts a new clock, so keeping that upper pose indefinitely makes the
+	# chest oppose the wrong foot (also visible in the unit-panel preview).
+	# Rejoin one stride after the authored start/cross clip, retaining the
+	# current weapon/ready upper clip. Swings and spells remain independent.
+	var upper_code := int(model._clip_records().get(model._current,{}).get("code",0))
+	var stride := moving and unit.action in ["walk","run"] and upper_code & EIUnitModel.STAGE_CYCLE != 0 \
+		and upper_code & 0x3c0000 == (EIUnitModel.AC_RUN if gait == "run" else EIUnitModel.AC_WALK)
+	var upper_clip := model._current if stride else ""
+	if upper_clip != _stride_upper:
+		_stride_upper = upper_clip; _stride_weight = 0.0
+	_stride_weight = move_toward(_stride_weight,1.0 if stride else 0.0,dt*6.0)
+	var upper_pose := {}
+	if _stride_weight > 0.0:
+		var upper_time := phase/walk.length*model.player.get_animation("ei/"+upper_clip).length
+		upper_pose = lower if upper_clip == lower_clip else sample(upper_clip,upper_time)
+		# Once recovered, let the next swing blend from the visible stride.
+		# Updating only the clock preserves the pose already sampled below.
+		if _stride_weight >= 1.0: model.player.seek(upper_time,false)
 	var desired := {}
 	var twist := Quaternion(Vector3.UP,leg_yaw)
 	var hip_twist := Quaternion(Vector3.UP,leg_yaw*0.5)
@@ -159,6 +184,8 @@ func _compose_pose(dt: float) -> void:
 	for n in parts:
 		var original: Quaternion = (base.rot.get(n,Quaternion.IDENTITY) as Quaternion).normalized()
 		var upper := n.name == "bd" or String(model.get_path_to(n)).contains("/bd/")
+		if upper and not upper_pose.is_empty():
+			original = original.slerp((upper_pose.rot.get(n,original) as Quaternion).normalized(),weight*_stride_weight)
 		var target: Quaternion = original if upper else original.slerp((hip_twist if n.animation_parent == null else twist)*(lower.rot.get(n,Quaternion.IDENTITY) as Quaternion),weight)
 		desired[n] = target
 		var parent: Quaternion = desired.get(n.animation_parent,Quaternion.IDENTITY)
@@ -167,5 +194,7 @@ func _compose_pose(dt: float) -> void:
 	EIAnimPart.batch = batch_was
 	for root in model._animation_roots: root._apply_key()
 	var chest := model.get_node_or_null("hp/bd") as EIAnimPart
-	if chest and base.rot.has(chest): torso_error = (base.rot[chest] as Quaternion).normalized().angle_to(chest._world_key.normalized())
+	# Measure composition error against the chosen authored upper pose,
+	# which is still the unmodified mixer pose during attacks and casts.
+	if chest and desired.has(chest): torso_error = (desired[chest] as Quaternion).normalized().angle_to(chest._world_key.normalized())
 	applied_frames += 1

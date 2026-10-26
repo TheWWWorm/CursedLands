@@ -6,7 +6,13 @@
 
 # Keep the offline RT shader manifest reproducible on Windows checkouts too.
 *.hlsl text eol=lf
+*.hlsli text eol=lf
+game/src/game/fx/shaders/*_NOTICES.txt text eol=lf
+game/src/game/fx/shaders/*_build.json text eol=lf
 tools/build_water_rt_shaders.py text eol=lf
+tools/build_path_sharc.py text eol=lf
+tools/build_path_rtxdi.py text eol=lf
+engine_patches/rtxdi-sdk.json text eol=lf
 
 # Unified patch context deliberately prefixes tab-indented code with a space.
 engine_patches/**/*.patch -whitespace

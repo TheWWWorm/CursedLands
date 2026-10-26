@@ -113,14 +113,18 @@ func resolve() -> void:
 func counters() -> PackedInt32Array:
 	return _rd.buffer_get_data(_stats).to_int32_array() if active else PackedInt32Array()
 
-func release_update_set() -> void:
-	if _rd!=null and _update_set.is_valid() and _rd.uniform_set_is_valid(_update_set):_rd.free_rid(_update_set)
+func release_update_set(release: Callable=Callable()) -> void:
+	if _rd!=null and _update_set.is_valid() and _rd.uniform_set_is_valid(_update_set):
+		if release.is_valid():release.call(_update_set)
+		else:_rd.free_rid(_update_set)
 	_update_set=RID();_source_set=RID();_update_shader=RID()
 
-func dispose() -> void:
-	release_update_set()
+func dispose(release: Callable=Callable()) -> void:
+	release_update_set(release)
 	if _rd!=null:
-		for i in range(_owned.size()-1,-1,-1):_rd.free_rid(_owned[i])
+		for i in range(_owned.size()-1,-1,-1):
+			if release.is_valid():release.call(_owned[i])
+			else:_rd.free_rid(_owned[i])
 	_owned.clear();_buffers.clear();_constants=RID();_stats=RID()
 	_resolve_set=RID();_resolve_pipeline=RID();_resolve_shader=RID()
 	active=false;_reset=true

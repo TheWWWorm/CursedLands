@@ -33,6 +33,7 @@ var animation_rng: RandomNumberGenerator
 const AnimatedPart = preload("res://src/ei/anim_part.gd")
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
+const RaytraceTextureSource = preload("res://src/game/fx/raytrace_texture_source.gd")
 const WispGlow = preload("res://src/ei/wisp_glow.gd")
 const Mouth = preload("res://src/ei/dialogue_mouth.gd")
 const VIEW_MESH_VARIANTS_META := &"first_person_mesh_variants"
@@ -1836,6 +1837,7 @@ static func _compose(mask: String, layers: Array[String]) -> Texture2D:
 	if base:
 		base.generate_mipmaps()
 		tex = ImageTexture.create_from_image(base)
+		RaytraceTextureSource.remember(tex as ImageTexture,base)
 		# Shipped wound shaders preserve this texture and never need its CPU
 		# pixels. Custom materials use UnitWounds' lazy, cached readback path.
 	_textures[key] = tex
@@ -1875,5 +1877,6 @@ static func _compose_surface(mask: String, layers: Array[String], profiles: Arra
 	if base:
 		base.generate_mipmaps()
 		texture = ImageTexture.create_from_image(base)
+		RaytraceTextureSource.remember(texture as ImageTexture,base)
 	_surface_textures[key] = texture
 	return texture
