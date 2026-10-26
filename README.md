@@ -57,6 +57,12 @@ Needs WebGL 2 and a desktop-class browser or a recent phone. Browsers can clear 
 
 Download the package for your system from the [Releases](https://github.com/TheWWWorm/CursedLands/releases) page.
 
+The main-menu footer checks for a newer stable GitHub release once a day and
+offers a link to its download page. You can also choose **Check for updates**.
+Checks run in the background; offline play stays available. Download and install
+the package for your platform from the release page. The game does not replace
+its own installation or restart automatically.
+
 - **Windows (x86-64):** extract the ZIP and run `CursedLands.exe`. The EXE and native DLL are unsigned. SmartScreen may offer **More info → Run anyway**. Smart App Control is a separate policy: if it blocks the native DLL with `0xC0E90002`, the game shows a notice with an **Open Windows Security** button. You can manually turn Smart App Control Off under **App & browser control → Smart App Control**, then restart the game. This changes protection for all apps; older Windows versions may require a Windows reset to re-enable it. Native acceleration remains required on Windows.
   **Automatic** under **Options → Screen → Renderer** tests Direct3D 12, then Vulkan, then OpenGL in separate processes before loading the 3D menu. A successful API is remembered; a failed or timed-out probe advances automatically. Windows uses Safe rendering. If changing API is needed, the game relaunches itself. The menu has a second recovery guard: after a failed presentation, the next launch tries another API. Manual Direct3D 12, Vulkan and Compatibility choices remain available. `Play-Vulkan.cmd` and `Play-Compatibility.cmd` can select a driver before game scripts start; Compatibility also selects basic graphics. No in-game detector can recover an operating-system-wide GPU hang without a system restart.
 - **Linux (x86-64):** extract the archive and run `CursedLands.x86_64`. If your file manager dropped the executable permission, run `chmod +x CursedLands.x86_64` first.

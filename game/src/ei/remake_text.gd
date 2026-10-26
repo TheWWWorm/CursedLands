@@ -51,6 +51,16 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Check for updates": ["Проверить обновления", "Nach Updates suchen"],
+	"Checking for updates…": ["Проверка обновлений…", "Suche nach Updates…"],
+	"Up to date": ["Установлена последняя версия", "Auf dem neuesten Stand"],
+	"Check failed. Try again": ["Не удалось проверить. Повторить", "Prüfung fehlgeschlagen. Erneut versuchen"],
+	"Try again in %d s": ["Повторить через %d с", "In %d s erneut versuchen"],
+	"Download update %s": ["Скачать обновление %s", "Update %s herunterladen"],
+	"Go to downloads": ["Перейти к загрузке", "Zu den Downloads"],
+	"Could not open browser. Try again": ["Не удалось открыть браузер. Повторить", "Browser konnte nicht geöffnet werden. Erneut versuchen"],
+	"Checks GitHub for a newer stable release. You can keep playing while it checks.": ["Проверяет наличие новой стабильной версии на GitHub. Во время проверки можно продолжать играть.", "Sucht auf GitHub nach einer neueren stabilen Version. Du kannst während der Prüfung weiterspielen."],
+	"Opens GitHub in your browser. Download the package for your platform and follow its installation instructions.": ["Открывает GitHub в браузере. Скачайте пакет для вашей платформы и следуйте инструкциям по установке.", "Öffnet GitHub im Browser. Lade das Paket für deine Plattform herunter und folge der Installationsanleitung."],
 	"PT refraction": ["Преломление PT", "PT-Lichtbrechung"],
 	"Traces bent rays through water and explicitly authored glass, with colour absorption over distance. Uses extra GPU time and memory. Water follows its base surface; small waves stay visual details. Moving views can be noisy. Ordinary transparency remains available outside the traced scene.": ["Трассирует преломлённые лучи через воду и явно заданное стекло с поглощением цвета по длине пути. Требует дополнительного времени GPU и видеопамяти. Вода использует базовую поверхность; мелкие волны остаются визуальной деталью. При движении возможен шум. За пределами трассируемой сцены сохраняется обычная прозрачность.", "Verfolgt gebrochene Strahlen durch Wasser und ausdrücklich definierte Glasmaterialien mit entfernungsabhängiger Farbabsorption. Benötigt zusätzliche GPU-Zeit und Grafikspeicher. Wasser folgt seiner Grundfläche; kleine Wellen bleiben visuelle Details. Bewegte Ansichten können rauschen. Außerhalb der erfassten Szene bleibt normale Transparenz verfügbar."],
 	"PT rendered frame target": ["Целевая частота кадров PT", "PT-Zielbildrate"],
