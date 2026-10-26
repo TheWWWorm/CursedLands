@@ -1,0 +1,219 @@
+{
+  "version": "1.32.0",
+  "release_type": "stable",
+  "date": "2026-10-26",
+  "source_commit": "2ca0fc545f3c481e2e3ff27995313ca5a4ec417c",
+  "game_tree": "d5d71c936e0717c8b580416b9095fe84c98688a0",
+  "acceptance_passed": true,
+  "candidate_package_hashes": {
+    "linux_executable": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "linux_pck": "309362b03274403040893b79cac9ae87e252134613e78d1c899d6d192d30f12d",
+    "windows_executable": "f87235ea991a73eff0a80f16560519bf489f33bb432d1cf603cb3c4aa67309a5",
+    "windows_pck": "8ea6880b0f6b8626b7b6b352481bb4ea7bcfbb52ffee5bbc4975a04984cad481",
+    "hosted_web_pck": "bba46f000a66b7e122bc2cda607a56802a1ccb8043b37401cc0b0a225004ffe7"
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "Packaged Linux executable/PCK; headless, OpenGL and Vulkan Forward+ focused regressions, including EN/RU/DE and 720p through 4K."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_fg_tested": false,
+      "scope": "Packaged EXE/PCK through GE-Proton 11-11 and D3D12/VKD3D on RTX 3090 Ti; real RR, ground reconstruction, guides, staging and retirement in tuning mode."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Unsigned universal export, version and embedded icon audited; no macOS runtime available."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 APK version code 67, production native libraries, non-debuggable manifest and existing signing certificate audited; no Android device runtime."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium startup and upgrade from the published 1.31.1 service-worker cache, preserving IndexedDB. Offline wiki included."
+    }
+  },
+  "linux_regressions": {
+    "headless": {
+      "cases": 15,
+      "assertions": 2074
+    },
+    "pt": {
+      "cases": 8,
+      "assertions": 451
+    },
+    "menu": {
+      "cases": 8,
+      "assertions": 2073
+    },
+    "arena_en": {
+      "cases": 4,
+      "assertions": 232
+    },
+    "arena_ru": {
+      "cases": 4,
+      "assertions": 232
+    },
+    "arena_de": {
+      "cases": 4,
+      "assertions": 232
+    }
+  },
+  "windows_proton_regressions": [
+    {
+      "case": "path_trace_rr_live",
+      "summary": "PT_RR_LIVE 38 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "case": "path_trace_ground_irradiance",
+      "summary": "PATH_TRACE_GROUND_IRRADIANCE 97 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "case": "path_trace_rr_guides",
+      "summary": "SCENE_RT_DEVICE 95 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "case": "path_trace_resource_staging",
+      "summary": "PT_RESOURCE_STAGING 50 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    },
+    {
+      "case": "path_trace_retirement",
+      "summary": "SCENE_RT_DEVICE 29 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      }
+    }
+  ],
+  "five_platform_script_parity": {
+    "version": "1.32.0",
+    "compiled_scripts": 453,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 67,
+    "debuggable": false,
+    "apk_sha256": "3af46bbf69b95e216c8a38156f9df483fdb02fde52a4d90390e9598bef35db50",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.32.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "fresh": {
+      "version": "1.32.0",
+      "passed": true,
+      "engine_start_resolved": true,
+      "canvas_visible": true,
+      "isolated": true,
+      "original_game_data_imported": false,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      }
+    },
+    "upgrade": {
+      "version": "1.32.0",
+      "previous_version": "1.31.1",
+      "cache_upgrade": {
+        "passed": true,
+        "old_cache": "cursed-engine-2-b42a28884fa516ad1205",
+        "new_cache": "cursed-engine-2-97f7c7132eae919795d5",
+        "indexeddb_preserved": true,
+        "database_names": [
+          "/userfs",
+          "cursed-lands-data-v1"
+        ],
+        "pck_sha256": "bba46f000a66b7e122bc2cda607a56802a1ccb8043b37401cc0b0a225004ffe7",
+        "old_tab_wait_verified": true
+      },
+      "cache": {
+        "keys": [
+          "cursed-engine-2-97f7c7132eae919795d5"
+        ],
+        "packs": {
+          "cursed-engine-2-97f7c7132eae919795d5": "bba46f000a66b7e122bc2cda607a56802a1ccb8043b37401cc0b0a225004ffe7"
+        },
+        "worker": "activated",
+        "waiting": null,
+        "isolated": true
+      }
+    }
+  },
+  "fixture_findings": {
+    "hover": "Original synthetic hover failed in three resolutions because the real virtual-display pointer remained away from the badge. A synchronized pointer plus an additional hovered-control assertion retains the original hover assertion; the unchanged-input negative control fails both checks.",
+    "menu_log": "The GPU Lab CLI returned only the tail of a verbose complete log. The original runner verdict applied to the full untruncated job output passes 303 assertions. The initial runner failure and full output are both retained.",
+    "windows_tuning": "The initial manual RR toggle test ran under the new managed preset and had six failures. Repeating the unchanged assertions with the documented --ei-pt-tuning switch passes, while separate player-preset tests cover the managed path."
+  },
+  "original_comparison": "New update service, Autochess equipment and path tracing have no original-game equivalent. Existing original-game and Wine comparison records for painted menu artwork and authored assets are linked in the integrated change validations.",
+  "known_open_reports": [
+    "LiA mountain flashes remain unresolved.",
+    "The exact resolution/FPS event and rock shimmer in the supplied recording remain unattributed; observed route results do not establish that all stutter or flicker is eliminated."
+  ],
+  "limits": [
+    "Native Windows OS, macOS runtime and Android device runtime were not exercised by this release suite.",
+    "Frame generation is unsupported on the tested RTX 30 GPUs; no FG performance or image-quality claim.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "evidence_directory": "release-1.32.0",
+  "local_visual_evidence": "/home/llm2x/Documents/EI/Evidence/releases/1.32.0",
+  "visual_manifest_sha256": "7323e6084c8ba4ce7d0c297bc7c05bbfe086aac5c28611968039a3d24babe6ff"
+}

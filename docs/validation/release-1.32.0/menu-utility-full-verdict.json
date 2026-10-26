@@ -1,0 +1,73 @@
+{
+  "original_verdict": {
+    "id": "menu_utility_glyphs",
+    "script": "tools/tests/menu_utility_glyphs.gd",
+    "script_sha256": "afd9cbab36da0104a177b01f3f05e2a46c674cb39ee878005d64e15fb1d7cd74",
+    "contract": "Actual EN/RU/DE utility labels retain native glyph density after live 720p to 1440p and 4K resizing, cold starts and Options returns; independent draw-time caches distinguish the direct F7 hint and preserve fonts, artwork and control geometry.",
+    "issues": [],
+    "mode": "rendered",
+    "seconds": 51.3,
+    "command": [
+      "/usr/local/bin/gpu-lab",
+      "run",
+      "--gpu",
+      "auto",
+      "--cwd",
+      "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+      "--timeout",
+      "420",
+      "--",
+      "env",
+      "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.32.0-20261026/release/preaccept-menu/menu_utility_glyphs/data",
+      "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.32.0-20261026/release/preaccept-menu/menu_utility_glyphs/config",
+      "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/release-1.32.0-20261026/release/preaccept-menu/menu_utility_glyphs/cache",
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.32.0-20261026/release/CursedLands-1.32.0-linux-x86_64/CursedLands.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "30",
+      "--display-driver",
+      "x11",
+      "--rendering-method",
+      "forward_plus",
+      "--windowed",
+      "--resolution",
+      "1280x720",
+      "--",
+      "--no-movies",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+      "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/release-1.32.0-20261026/release/preaccept-menu/menu_utility_glyphs/tools/tests/menu_utility_glyphs.gd",
+      "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/release-1.32.0-20261026/release/preaccept-menu/menu_utility_glyphs/tools/tests",
+      "--suite-campaign=cursed_lands",
+      "--suite-display=rendered"
+    ],
+    "log": "menu_utility_glyphs/run.log",
+    "passed": false,
+    "result": {
+      "checks": 303,
+      "failures": 0
+    },
+    "errors": [
+      "Missing or repeated profile/campaign confirmation"
+    ],
+    "infrastructure_diagnostics": [
+      "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+    ]
+  },
+  "job_id": "15f726192d7d4755",
+  "reason": "gpu-lab CLI returned a bounded tail of a verbose complete job log, excluding the startup line; no test assertions or verdict rules were modified.",
+  "full_log_sha256": "ad912a994983bb9b794762e895d8c44fa132a83566c3c66b58f097312a3d4565",
+  "full_log_bytes": 69313,
+  "recovered_verdict_using_original_runner": {
+    "passed": true,
+    "result": {
+      "checks": 303,
+      "failures": 0
+    },
+    "errors": [],
+    "infrastructure_diagnostics": [
+      "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+    ]
+  }
+}
