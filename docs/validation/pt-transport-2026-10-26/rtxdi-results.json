@@ -1,0 +1,929 @@
+{
+  "total_checks": 717,
+  "cases": [
+    {
+      "case": "rtxdi-radius8-path_trace_rtxdi",
+      "api": "vulkan",
+      "checks": 27,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 27 checks 0 failures"
+        ],
+        "seconds": 52.19,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-radius8-path_trace_rtxdi/fixtures/path_trace_rtxdi.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-radius8-path_trace_rtxdi"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "e91c05de7b881cd257a1d6eaddc53de4715bf7fbd5b807f19d7fc6279d9b1336",
+            "CursedLands.pck": "81b31690b97d4844168bd1460dfcd6d52b3da458b5c0e935c658f12462a69c95",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "9b9d61ec179b816694819bf663b0feb5a641eef3c74c3fe0ee08447b283e41cc"
+      }
+    },
+    {
+      "case": "rtxdi-final-vulkan-path_trace_rtxdi_options",
+      "api": "vulkan",
+      "checks": 59,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "PT_RTXDI_OPTIONS 59 checks 0 failures"
+        ],
+        "seconds": 14.49,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-vulkan-path_trace_rtxdi_options/fixtures/path_trace_rtxdi_options.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-vulkan-path_trace_rtxdi_options"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "e91c05de7b881cd257a1d6eaddc53de4715bf7fbd5b807f19d7fc6279d9b1336",
+            "CursedLands.pck": "81b31690b97d4844168bd1460dfcd6d52b3da458b5c0e935c658f12462a69c95",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "1b1e49f7bb364cca22203c14e9994d2196e7ec59e95abebdcd72a79c45f0d493"
+      }
+    },
+    {
+      "case": "rtxdi-related-path_trace_many_lights",
+      "api": "vulkan",
+      "checks": 20,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 20 checks 0 failures"
+        ],
+        "seconds": 36.27,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_many_lights/fixtures/path_trace_many_lights.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_many_lights"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "940a25c9d4b6eff3fa5ad78ed85a0118971f9adec2a85bc348ad10a383b7ec62",
+            "CursedLands.pck": "abf098ba24883c2da5f0857e7e42908f0a817221274837d1043813bfd80e2095",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "4526fae99e9a578c7b2488addc07bfc69c968cca705e7f8f01a8cbc37bec1777"
+      }
+    },
+    {
+      "case": "rtxdi-related-path_trace_device",
+      "api": "vulkan",
+      "checks": 17,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 17 checks 0 failures"
+        ],
+        "seconds": 33.52,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_device/fixtures/path_trace_device.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_device"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "940a25c9d4b6eff3fa5ad78ed85a0118971f9adec2a85bc348ad10a383b7ec62",
+            "CursedLands.pck": "abf098ba24883c2da5f0857e7e42908f0a817221274837d1043813bfd80e2095",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "3bfd0d192620bbb15b210d9d7b5d84a0c4b425df8231343921febaeb7dca19a4"
+      }
+    },
+    {
+      "case": "rtxdi-related-path_trace_nrd_directional",
+      "api": "vulkan",
+      "checks": 21,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 21 checks 0 failures"
+        ],
+        "seconds": 17.79,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_nrd_directional/fixtures/path_trace_nrd_directional.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_nrd_directional"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "940a25c9d4b6eff3fa5ad78ed85a0118971f9adec2a85bc348ad10a383b7ec62",
+            "CursedLands.pck": "abf098ba24883c2da5f0857e7e42908f0a817221274837d1043813bfd80e2095",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "ca04bfac69fb0a616ecaf5c774a432a3f0170b96ed6fd93695445e437e73d2e9"
+      }
+    },
+    {
+      "case": "rtxdi-related-path_trace_sharc",
+      "api": "vulkan",
+      "checks": 25,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 25 checks 0 failures"
+        ],
+        "seconds": 31.72,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_sharc/fixtures/path_trace_sharc.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_sharc"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "940a25c9d4b6eff3fa5ad78ed85a0118971f9adec2a85bc348ad10a383b7ec62",
+            "CursedLands.pck": "abf098ba24883c2da5f0857e7e42908f0a817221274837d1043813bfd80e2095",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "fb9291095a16e8e0337802bf343e3346b9c89e2ea1528075658f4184f3dee8cd"
+      }
+    },
+    {
+      "case": "rtxdi-related-path_trace_lifecycle",
+      "api": "vulkan",
+      "checks": 169,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 169 checks 0 failures"
+        ],
+        "seconds": 32.07,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_lifecycle/fixtures/path_trace_lifecycle.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-related-path_trace_lifecycle"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "940a25c9d4b6eff3fa5ad78ed85a0118971f9adec2a85bc348ad10a383b7ec62",
+            "CursedLands.pck": "abf098ba24883c2da5f0857e7e42908f0a817221274837d1043813bfd80e2095",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "120eed790c59d08249aaede28a6312ae519248dcac47b27d1f0f647579dedb3e"
+      }
+    },
+    {
+      "case": "rtxdi-radius8-fsr_attribution",
+      "api": "vulkan",
+      "checks": 113,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "ATTRIBUTION 113 checks 0 failures"
+        ],
+        "seconds": 15.39,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-linux/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--render-thread",
+          "separate",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "vulkan",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-radius8-fsr_attribution/fixtures/fsr_attribution.gd",
+          "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-radius8-fsr_attribution"
+        ],
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+            "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "runtime-provenance.json": "e91c05de7b881cd257a1d6eaddc53de4715bf7fbd5b807f19d7fc6279d9b1336",
+            "CursedLands.pck": "81b31690b97d4844168bd1460dfcd6d52b3da458b5c0e935c658f12462a69c95",
+            "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+            "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+            "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+            "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+            "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+            "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+            "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+            "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+            "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+          }
+        },
+        "fixture_sha256": "0c28855a7988fd0c52653151f64f0421d1913282d6fd21342962afc78a03e617"
+      }
+    },
+    {
+      "case": "rtxdi-final-dx12-path_trace_rtxdi",
+      "api": "dx12",
+      "checks": 27,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "SCENE_RT_DEVICE 27 checks 0 failures"
+        ],
+        "seconds": 47.64,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-windows/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-path_trace_rtxdi/fixtures/path_trace_rtxdi.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-path_trace_rtxdi"
+        ],
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090 Ti",
+          "vendor": "10de",
+          "device": "2203",
+          "uuid": "0eee028eb998532f095be936c7f6191d",
+          "capabilities_overridden": false
+        },
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+            "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+            "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "runtime-provenance.json": "62a46daf3413fdc8f8abae546e21d0f8beceb2a21e070f2245e34610ef739280",
+            "nvngx_dlssd.dll": "b49435ae346f227feafe7bbe937d88277ea0ee7323975ec06488f377fdb46cee",
+            "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+            "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+            "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+            "CursedLands.pck": "992910d5d6de538ced4d1021328dfd5f61a57b1bd1ec8546a089aaca24273f7a",
+            "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+            "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+            "CursedLands.exe": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+            "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+            "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+            "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+            "sl.dlss_d.dll": "8dff36fd063094eb1f659e8d4dcd52c7423859a9c4a3df3796084c48412d60ac",
+            "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+            "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+            "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+            "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+            "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        },
+        "fixture_sha256": "460312ffef2222f60717419e11bdfe60c07e152b85dcc90fb59c7f6ece7cbc1c"
+      }
+    },
+    {
+      "case": "rtxdi-final-dx12-path_trace_rtxdi_options",
+      "api": "dx12",
+      "checks": 59,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "PT_RTXDI_OPTIONS 59 checks 0 failures"
+        ],
+        "seconds": 16.24,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-windows/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-path_trace_rtxdi_options/fixtures/path_trace_rtxdi_options.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-path_trace_rtxdi_options"
+        ],
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090 Ti",
+          "vendor": "10de",
+          "device": "2203",
+          "uuid": "0eee028eb998532f095be936c7f6191d",
+          "capabilities_overridden": false
+        },
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+            "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+            "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "runtime-provenance.json": "62a46daf3413fdc8f8abae546e21d0f8beceb2a21e070f2245e34610ef739280",
+            "nvngx_dlssd.dll": "b49435ae346f227feafe7bbe937d88277ea0ee7323975ec06488f377fdb46cee",
+            "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+            "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+            "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+            "CursedLands.pck": "992910d5d6de538ced4d1021328dfd5f61a57b1bd1ec8546a089aaca24273f7a",
+            "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+            "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+            "CursedLands.exe": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+            "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+            "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+            "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+            "sl.dlss_d.dll": "8dff36fd063094eb1f659e8d4dcd52c7423859a9c4a3df3796084c48412d60ac",
+            "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+            "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+            "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+            "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+            "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        },
+        "fixture_sha256": "c8de9e50d414168ab87d8c3563d231cababd1638ca8cab94982caaa95e25537b"
+      }
+    },
+    {
+      "case": "rtxdi-final-dx12-path_trace_water",
+      "api": "dx12",
+      "checks": 22,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "PATH_TRACE_WATER 22 checks 0 failures"
+        ],
+        "seconds": 26.56,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-windows/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-path_trace_water/fixtures/path_trace_water.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-path_trace_water"
+        ],
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090 Ti",
+          "vendor": "10de",
+          "device": "2203",
+          "uuid": "0eee028eb998532f095be936c7f6191d",
+          "capabilities_overridden": false
+        },
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+            "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+            "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "runtime-provenance.json": "62a46daf3413fdc8f8abae546e21d0f8beceb2a21e070f2245e34610ef739280",
+            "nvngx_dlssd.dll": "b49435ae346f227feafe7bbe937d88277ea0ee7323975ec06488f377fdb46cee",
+            "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+            "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+            "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+            "CursedLands.pck": "992910d5d6de538ced4d1021328dfd5f61a57b1bd1ec8546a089aaca24273f7a",
+            "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+            "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+            "CursedLands.exe": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+            "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+            "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+            "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+            "sl.dlss_d.dll": "8dff36fd063094eb1f659e8d4dcd52c7423859a9c4a3df3796084c48412d60ac",
+            "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+            "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+            "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+            "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+            "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        },
+        "fixture_sha256": "d851fe29f6345fbd961116af20b972f70372379a8c81c57b9fe935d43336dc09"
+      }
+    },
+    {
+      "case": "rtxdi-final-dx12-fsr_attribution",
+      "api": "dx12",
+      "checks": 120,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "ATTRIBUTION 120 checks 0 failures"
+        ],
+        "seconds": 17.39,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-windows/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-fsr_attribution/fixtures/fsr_attribution.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-dx12-fsr_attribution"
+        ],
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090 Ti",
+          "vendor": "10de",
+          "device": "2203",
+          "uuid": "0eee028eb998532f095be936c7f6191d",
+          "capabilities_overridden": false
+        },
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+            "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+            "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "runtime-provenance.json": "62a46daf3413fdc8f8abae546e21d0f8beceb2a21e070f2245e34610ef739280",
+            "nvngx_dlssd.dll": "b49435ae346f227feafe7bbe937d88277ea0ee7323975ec06488f377fdb46cee",
+            "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+            "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+            "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+            "CursedLands.pck": "992910d5d6de538ced4d1021328dfd5f61a57b1bd1ec8546a089aaca24273f7a",
+            "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+            "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+            "CursedLands.exe": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+            "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+            "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+            "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+            "sl.dlss_d.dll": "8dff36fd063094eb1f659e8d4dcd52c7423859a9c4a3df3796084c48412d60ac",
+            "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+            "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+            "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+            "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+            "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        },
+        "fixture_sha256": "0c28855a7988fd0c52653151f64f0421d1913282d6fd21342962afc78a03e617"
+      }
+    },
+    {
+      "case": "rtxdi-final-live-path_trace_rtxdi_live",
+      "api": "dx12",
+      "checks": 38,
+      "execution": {
+        "exit": 0,
+        "errors": [],
+        "summary": [
+          "PT_RR_LIVE 38 checks 0 failures"
+        ],
+        "seconds": 49.3,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files/bin/wine",
+          "/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/candidate-windows/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "30",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--no-movies",
+          "--ei-path=Z:/home/llm2x/Documents/EI/local/runtime/reference/base",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-live-path_trace_rtxdi_live/fixtures/path_trace_rtxdi_live.gd",
+          "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-transport-20261026/evidence/rtxdi-final-live-path_trace_rtxdi_live"
+        ],
+        "adapter": {
+          "name": "NVIDIA GeForce RTX 3090 Ti",
+          "vendor": "10de",
+          "device": "2203",
+          "uuid": "0eee028eb998532f095be936c7f6191d",
+          "capabilities_overridden": false
+        },
+        "runtime": {
+          "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64",
+          "main": "b6d56ad6797b8ca80f11d7eccc1a9214464df5bd",
+          "sha256": {
+            "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+            "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+            "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "runtime-provenance.json": "62a46daf3413fdc8f8abae546e21d0f8beceb2a21e070f2245e34610ef739280",
+            "nvngx_dlssd.dll": "b49435ae346f227feafe7bbe937d88277ea0ee7323975ec06488f377fdb46cee",
+            "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+            "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+            "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+            "CursedLands.pck": "992910d5d6de538ced4d1021328dfd5f61a57b1bd1ec8546a089aaca24273f7a",
+            "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+            "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+            "CursedLands.exe": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+            "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+            "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+            "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+            "sl.dlss_d.dll": "8dff36fd063094eb1f659e8d4dcd52c7423859a9c4a3df3796084c48412d60ac",
+            "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+            "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+            "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+            "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+            "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+            "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+            "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+            "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+          }
+        },
+        "fixture_sha256": "1f65f3c157127f482e42a615d46abdd45830daf57ccb050144a5b737a3468202"
+      }
+    }
+  ],
+  "measurements": {
+    "vulkan": {
+      "checks": 27,
+      "failures": [],
+      "observations": [
+        {
+          "finite": true,
+          "maximum": 1040,
+          "reused": 14400,
+          "valid": 14400
+        },
+        {
+          "local_reference": "(2.0865, 2.9044, 3.3299, 10.0)",
+          "relative_error": 0.020165589503142,
+          "restir": "(2.0765, 2.9226, 3.2627, 1.0)"
+        },
+        {
+          "fresh_ris_luminance_mse": 0.0639191731010444,
+          "mse_ratio": 0.218371391012297,
+          "reused_luminance_mse": 0.0139581187424308
+        },
+        {
+          "emitter_reference": 1.76767544200023,
+          "emitter_rtxdi": 1.76839280625184,
+          "relative_error": 0.000405823509547588
+        }
+      ]
+    },
+    "dx12": {
+      "checks": 27,
+      "failures": [],
+      "observations": [
+        {
+          "finite": true,
+          "maximum": 1040,
+          "reused": 14400,
+          "valid": 14400
+        },
+        {
+          "local_reference": "(2.0862, 2.904, 3.3294, 10.0)",
+          "relative_error": 0.0149236042679094,
+          "restir": "(2.0736, 2.9235, 3.2797, 1.0)"
+        },
+        {
+          "fresh_ris_luminance_mse": 0.0638959389803156,
+          "mse_ratio": 0.225837829785096,
+          "reused_luminance_mse": 0.0144301201913954
+        },
+        {
+          "emitter_reference": 1.76766320566336,
+          "emitter_rtxdi": 1.76913558940093,
+          "relative_error": 0.000832954905010993
+        }
+      ]
+    }
+  },
+  "source_sha256": {
+    "game/src/game/fx/path_trace_device.gd": "667555c633065911f1fbfcaacd0efa339d33af8c88081930124c2c484d9fa3a8",
+    "game/src/game/fx/path_trace_rtxdi.gd": "4b1825f9d349fbae3d6ee7c17f16b75e9325087a16570add9da6801e86513f48",
+    "game/src/game/fx/shaders/path_trace.hlsl": "e16788657bf94882a4f534389616fa74881f165eaa81e99a20b355cb375188fd",
+    "game/src/game/fx/shaders/path_trace_rtxdi.hlsli": "64b59f254e5f9e481147c10e8e64f74da9db4d05037b12bc7481aa675a8f8f81",
+    "tools/tests/path_trace_rtxdi.gd": "563552c95f6127858a50b5260ab50ecdaf8e3ad8b0b17f21199a6648e8ee1ddb",
+    "tools/tests/path_trace_rtxdi_options.gd": "b81130ca4cc03aa08a1c55c1c70de899f0a0037b7d473826cb464f098e175276",
+    "tools/tests/path_trace_rtxdi_live.gd": "18f78ca1ef9be35cb62780251b93cd624fbee419666998cc256664fab9c34cce",
+    "tools/build_path_rtxdi.py": "21ef0f0ea674caf9e7c8d588df9558514e9876b3eb66384ab2ada2998d7d4f61",
+    "engine_patches/rtxdi-sdk.json": "090aaed093e6c719cf9d5baf6bf88692ef0a5afc9ce46cbb1cb32fe39064ee27"
+  },
+  "shader_manifest": {
+    "sdk_revision": "f12037fa8e97ebc08e9e3edfd2de528ed1772a4b",
+    "sources": {
+      "path_trace.hlsl": "e16788657bf94882a4f534389616fa74881f165eaa81e99a20b355cb375188fd",
+      "path_trace_rtxdi.hlsli": "64b59f254e5f9e481147c10e8e64f74da9db4d05037b12bc7481aa675a8f8f81",
+      "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
+      "builder": "21ef0f0ea674caf9e7c8d588df9558514e9876b3eb66384ab2ada2998d7d4f61",
+      "sdk_pin": "090aaed093e6c719cf9d5baf6bf88692ef0a5afc9ce46cbb1cb32fe39064ee27"
+    },
+    "files": {
+      "path_trace_raygen_rtxdi.dxil": "d367830f35a0db271d97924c4319ce326295df1e19e55873e06317a6a56a2f9e",
+      "path_trace_raygen_rtxdi.spv": "6fac81ca193d81a5980f699a584b4feb2fe43ea683b67c66a08f66e753856494",
+      "path_trace_raygen_rtxdi_no_emitters.dxil": "7ec2e3f3f20d798ebfc75446bb38252511c21a97ef93f066971e3dc90fbbe51e",
+      "path_trace_raygen_rtxdi_no_emitters.spv": "e5d8211825605829943d8edf5b48217a1ec22d71285ebf47ec4685acf6b8b5cd",
+      "path_trace_raygen_rtxdi_deep.dxil": "e59a2a869282394e766cba08a2315b4f14808c5cfc547a6320d3f6073bcdffd1",
+      "path_trace_raygen_rtxdi_deep.spv": "492bf267e2a2150007ed8e516c39bb4f98c6c3105a43d1cd755b8fd6676de376",
+      "path_trace_raygen_rtxdi_deep_no_emitters.dxil": "edcc14c3f55cd86c0ee687d6c92720eb157737b5b01aa53b3abfdf80f080527a",
+      "path_trace_raygen_rtxdi_deep_no_emitters.spv": "13c19a73ff5b1eff94e99700989207f35b5148454131ce0d415cdf1843295ed9",
+      "path_trace_raygen_rtxdi_sharc.dxil": "c4e90ba3c1aeba1f2a09974ca7f2aca13621e6acb4a2d896a96ebf8997eedfb3",
+      "path_trace_raygen_rtxdi_sharc.spv": "5681b140131bc88bb95c28e273ffd21fcc7f065acbad03cae5dd69de0d1add85",
+      "path_trace_raygen_rtxdi_sharc_no_emitters.dxil": "25f40461b373fbc2aac5977fc828250438b0fe6a369a4959ea4b4a31425877ce",
+      "path_trace_raygen_rtxdi_sharc_no_emitters.spv": "4d83a10661ff72252bcd3bf9b786c9fcab2467972619983d3dd5d8e96b4b8c15",
+      "path_trace_raygen_rtxdi_sharc_deep.dxil": "cd199d2230a2c1e485c307e16ed56b6d7744f0eb27366f924b0cca8b2900b329",
+      "path_trace_raygen_rtxdi_sharc_deep.spv": "c03ba3d1d65978fe82c5012925520ccd38a5cbcfed79563ad4d1a0afb9a6f5ff",
+      "path_trace_raygen_rtxdi_sharc_deep_no_emitters.dxil": "d7759a1d4460109e79c512d70c52d09a7f7a27df98c043e015cd6f6330327263",
+      "path_trace_raygen_rtxdi_sharc_deep_no_emitters.spv": "2896aeb9b72d38ffd54b022d5c8fe997ba0a373271ba4fa84b6d49e5058aec03"
+    },
+    "notice_sha256": "d0ac5786402aeaacd7dc28cd3efb9f3e7482ab80aa8678f099c12421d529b8f9",
+    "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+    "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)"
+  }
+}

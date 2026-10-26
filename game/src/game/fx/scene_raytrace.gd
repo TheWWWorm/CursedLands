@@ -105,7 +105,7 @@ func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
-	var mode := "%s:%s:%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc"),GameData.option("pt_denoiser"),GameData.option("pt_ray_reconstruction")]
+	var mode := "%s:%s:%s:%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc"),GameData.option("pt_denoiser"),GameData.option("pt_ray_reconstruction"),GameData.option("pt_restir")]
 	if mode != _mode or terrain != _terrain:
 		if terrain != _terrain or path_mode!=_path_mode: _release()
 		_path_mode=path_mode
@@ -248,6 +248,10 @@ func _process(dt: float) -> void:
 	if device is PathDevice:
 		stats["ray_reconstruction"]=device.ray_reconstruction
 		stats["rr_raw_frames"]=device.raw_reconstruction_frames
+		stats["restir_active"]=device._rtxdi_mode
+		stats["restir_frames"]=device.rtxdi.frames
+		stats["restir_resets"]=device.rtxdi.resets
+		stats["restir_bytes"]=device.rtxdi.bytes
 		stats["nrd_directional"]=device.nrd_active and device.nrd.directional
 		stats["sharc_active"]=device.sharc.active
 		stats["sharc_failed"]=device.sharc_failed
@@ -280,6 +284,7 @@ func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dicti
 	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
 	if target is PathDevice:
 		changes["ray_reconstruction"]=_rr_active and target==device
+		changes["rtxdi"]=GameData.option("pt_restir")>0
 		Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
 	# An active device is the visible target even while a recenter replacement
 	# builds. With no active scene, the candidate must finish privately first.

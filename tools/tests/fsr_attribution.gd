@@ -27,13 +27,15 @@ func run() -> void:
 	check(packaged_amd == (OS.get_name() == "Windows"), "AMD SDK attribution matches platform contents")
 	if packaged_dlss:
 		check(ProjectSettings.get_setting("application/boot_splash/image") == "res://assets/branding/splash-graphics.png", "native boot uses combined attribution splash")
-	for flag in [GraphicsAttribution.NVIDIA_FLAG,GraphicsAttribution.NRD_FLAG,GraphicsAttribution.SHARC_FLAG,GraphicsAttribution.AMD_FLAG]: ProjectSettings.set_setting(flag,false)
+	for flag in [GraphicsAttribution.NVIDIA_FLAG,GraphicsAttribution.NRD_FLAG,GraphicsAttribution.SHARC_FLAG,GraphicsAttribution.RTXDI_FLAG,GraphicsAttribution.AMD_FLAG]: ProjectSettings.set_setting(flag,false)
 	check(GraphicsAttribution.credits_bbcode().is_empty(), "unbundled SDKs have no credits claim")
 	ProjectSettings.set_setting(GraphicsAttribution.NRD_FLAG,true)
 	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NRD_CREDIT)), "NRD-only package has credits")
 	check(not GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.NVIDIA_CREDIT)), "NRD-only package does not claim DLSS")
 	ProjectSettings.set_setting(GraphicsAttribution.SHARC_FLAG,true)
 	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.SHARC_CREDIT)), "SHaRC package has explicit attribution")
+	ProjectSettings.set_setting(GraphicsAttribution.RTXDI_FLAG,true)
+	check(GraphicsAttribution.credits_bbcode().contains(RemakeText.t(GraphicsAttribution.RTXDI_CREDIT)), "RTXDI package has explicit attribution")
 	ProjectSettings.set_setting(GraphicsAttribution.NVIDIA_FLAG,packaged_dlss)
 	ProjectSettings.set_setting(GraphicsAttribution.AMD_FLAG,packaged_amd)
 	GameData.options.rtx_upscaling=0;GameData.options.pt_mode=0
@@ -78,14 +80,14 @@ func run() -> void:
 			check(panel._text.size.x <= panel._clip.size.x, language + " credits wrap in clip width")
 			panel._text.position.y = 0
 			await settle()
-			for credit: String in [GraphicsAttribution.NRD_CREDIT,GraphicsAttribution.AMD_CREDIT] if packaged_amd else [GraphicsAttribution.NRD_CREDIT]:
+			for credit: String in [GraphicsAttribution.NRD_CREDIT,GraphicsAttribution.RTXDI_CREDIT,GraphicsAttribution.AMD_CREDIT] if packaged_amd else [GraphicsAttribution.NRD_CREDIT,GraphicsAttribution.RTXDI_CREDIT]:
 				var parsed := panel._text.get_parsed_text()
 				var char_at := parsed.find(RemakeText.t(credit))
 				check(char_at >= 0, language + " technology attribution is present")
 				var line := panel._text.get_character_line(char_at)
 				panel._text.position.y = -panel._text.get_line_offset(maxi(0, line - 4))
 				await settle()
-				get_viewport().get_texture().get_image().save_png("user://attribution-%s-%s-%d.png" % ["nvidia" if credit==GraphicsAttribution.NRD_CREDIT else "amd",language,resolution.x])
+				get_viewport().get_texture().get_image().save_png("user://attribution-%s-%s-%d.png" % ["nvidia" if credit==GraphicsAttribution.NRD_CREDIT else ("rtxdi" if credit==GraphicsAttribution.RTXDI_CREDIT else "amd"),language,resolution.x])
 			panel.set_process(true)
 			var escape := InputEventKey.new()
 			escape.keycode = KEY_ESCAPE

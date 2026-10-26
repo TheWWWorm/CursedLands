@@ -288,7 +288,7 @@ void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float wei
     diffuse+=d*incoming;specular+=sp*incoming;
     add_direction(d*incoming,direction,diffuse_moment);
 }
-void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight,out float4 diffuse_moment) {
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight,out float4 diffuse_moment,bool sample_local) {
     diffuse=0.0;specular=0.0;sunlight=0.0;
     diffuse_moment=0.0;
     if(any(frame.sun.rgb>0.0)) {
@@ -299,6 +299,7 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
             diffuse=d*incoming;specular=sp*incoming;sunlight=diffuse;
         }
     }
+    if(!sample_local)return;
     if(frame.local_state.w<0.5) {
         for(uint i=0;i<7;i++)point_light(s,v,frame.point_position[i],frame.point_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular,diffuse_moment);
         return;
@@ -325,6 +326,9 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
             draw++;
         }
     }
+}
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight,out float4 diffuse_moment) {
+    direct_light(s,v,sampler,diffuse,specular,sunlight,diffuse_moment,true);
 }
 void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight) {
     float4 unused;direct_light(s,v,sampler,diffuse,specular,sunlight,unused);
@@ -406,8 +410,15 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     float3 unused;emissive_light(s,v,sampler,diffuse,specular,unused);
 }
 #endif
+#ifdef PATH_RTXDI
+#include "path_trace_rtxdi.hlsli"
+#endif
 void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular,out float3 sunlight,out float4 diffuse_moment,out float4 specular_moment) {
+#ifdef PATH_RTXDI
+    direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment,false);
+#else
     direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment);
+#endif
     specular_moment=0.0;
     direct_specular=specular;
     hit_distance=0.0;
@@ -422,7 +433,11 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
     for(uint depth=0;depth<bounces;depth++) {
         sampler.vertex=depth;
 #ifndef PATH_NO_EMITTERS
-        float3 emitter_d,emitter_s,emitter_direction;emissive_light(current,v,sampler,emitter_d,emitter_s,emitter_direction);
+        float3 emitter_d=0.0,emitter_s=0.0,emitter_direction=0.0;
+#ifdef PATH_RTXDI
+        if(depth>0u)
+#endif
+            emissive_light(current,v,sampler,emitter_d,emitter_s,emitter_direction);
         if(depth==0) {
             diffuse+=emitter_d;specular+=emitter_s;
             add_direction(emitter_d,emitter_direction,diffuse_moment);add_direction(emitter_s,emitter_direction,specular_moment);
@@ -471,7 +486,14 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         }
         float emission_weight=1.0;
 #ifndef PATH_NO_EMITTERS
-        emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
+        float emitter_pdf=emitter_hit_pdf(hit,ray.Origin);
+#ifdef PATH_RTXDI
+        // Partition first-bounce registered-emitter paths into ReSTIR NEE.
+        // Omitted emitters retain BSDF support; later bounces keep original MIS.
+        emission_weight=depth==0u?(emitter_pdf>0.0?0.0:1.0):mis_weight(pdf,emitter_pdf);
+#else
+        emission_weight=mis_weight(pdf,emitter_pdf);
+#endif
 #endif
 #if defined(PATH_SHARC) && !defined(PATH_SHARC_UPDATE)
         // Keep the primary direct signal and sharp/leaf transport exact. A
@@ -641,6 +663,9 @@ void main() {
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
     indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;path_direct_sun[pixel]=0.0;
     path_diffuse_direction[pixel]=0.0;path_specular_direction[pixel]=0.0;
+#ifdef PATH_RTXDI
+    di_clear(pixel);
+#endif
     if(primary.hit<0.5)return;
     // Camera clearance moves only the first-person presentation mesh. Trace
     // its illumination at the matching authored surface, where the complete
@@ -662,6 +687,12 @@ void main() {
         // across samples. The primary camera hit must never enter this value.
         if(distance.y>0.0)specular_distance=min(specular_distance,distance.y);
     }
+#ifdef PATH_RTXDI
+    float3 di_d,di_s,di_direct;float4 di_dm,di_sm;
+    di_lighting(primary,-direction,pixel,guide_image[pixel].w,di_d,di_s,di_direct,di_dm,di_sm);
+    diffuse+=di_d*float(samples);specular+=di_s*float(samples);direct_specular+=di_direct*float(samples);
+    diffuse_moment+=di_dm*float(samples);specular_moment+=di_sm*float(samples);
+#endif
     // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
     // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
     // storing integers above 2048 directly. The filter carries identity onward.

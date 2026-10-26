@@ -1734,6 +1734,42 @@
       "args": [],
       "min_checks": 7,
       "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rtxdi",
+      "script": "tools/tests/path_trace_rtxdi.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Actual RTXDI 3.1.0 reservoirs: summed local/emissive energy, temporal/spatial reuse, fresh blocker visibility, changed light membership, resize, resource retirement and NRD/RR/SHaRC/Still transitions",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 27,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rtxdi_options",
+      "script": "tools/tests/path_trace_rtxdi_options.gd",
+      "summary": "PT_RTXDI_OPTIONS",
+      "contract": "RTXDI EN/RU/DE choices, requirements, attribution and tooltip bounds at 720p, 1440p and 4K",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 59,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rtxdi_live",
+      "script": "tools/tests/path_trace_rtxdi_live.gd",
+      "summary": "PT_RR_LIVE",
+      "contract": "Actual RTXDI plus DLSS RR through native campaign motion, cuts, streaming, DLAA, 4K, mode switches and resource retirement",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 38,
+      "rendering_method": "forward_plus"
     }
   ]
 }

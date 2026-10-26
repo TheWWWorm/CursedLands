@@ -4,6 +4,8 @@ extends RefCounted
 ## current settings. build_rtx_preview.py sets these flags in its export copy.
 ## NVIDIA artwork is a local review layout until written placement approval.
 
+const RTXDI_FLAG := "application/graphics_sdk/rtxdi"
+const RTXDI_CREDIT := "NVIDIA RTXDI: ReSTIR direct-light sampling for path tracing."
 const SHARC_FLAG := "application/graphics_sdk/sharc"
 const SHARC_CREDIT := "NVIDIA SHaRC: cached indirect lighting for path tracing."
 const NRD_FLAG := "application/graphics_sdk/nrd"
@@ -16,22 +18,24 @@ const NVIDIA_MARKS := "NVIDIA, the NVIDIA logo, GeForce RTX and DLSS are tradema
 const AMD_CREDIT := "AMD FSR Upscaling and AMD FSR Frame Generation via AMD FidelityFX SDK."
 const AMD_MARKS := "AMD, the AMD Arrow logo, AMD FSR and combinations thereof are trademarks of Advanced Micro Devices, Inc."
 const LICENSES := "Full license and copyright notices are included in the licenses folder."
-const TEXTS := ["Graphics technologies", NVIDIA_CREDIT, NRD_CREDIT, SHARC_CREDIT, NVIDIA_SOURCE, NVIDIA_MARKS, AMD_CREDIT, AMD_MARKS, LICENSES]
+const TEXTS := ["Graphics technologies", NVIDIA_CREDIT, NRD_CREDIT, SHARC_CREDIT, RTXDI_CREDIT, NVIDIA_SOURCE, NVIDIA_MARKS, AMD_CREDIT, AMD_MARKS, LICENSES]
 
 
 static func credits_bbcode() -> String:
 	var nvidia := bool(ProjectSettings.get_setting(NVIDIA_FLAG, false))
 	var nrd := bool(ProjectSettings.get_setting(NRD_FLAG, false))
 	var sharc := bool(ProjectSettings.get_setting(SHARC_FLAG, FileAccess.file_exists("res://src/game/fx/shaders/path_trace_sharc_resolve.spv")))
+	var rtxdi := bool(ProjectSettings.get_setting(RTXDI_FLAG, FileAccess.file_exists("res://src/game/fx/shaders/path_trace_raygen_rtxdi.spv")))
 	var amd := bool(ProjectSettings.get_setting(AMD_FLAG, false))
-	if not nvidia and not nrd and not sharc and not amd:
+	if not nvidia and not nrd and not sharc and not rtxdi and not amd:
 		return ""
 	var text := "[center][font_size=26]" + RemakeText.t("Graphics technologies") + "[/font_size]\n\n"
-	if nvidia or nrd or sharc:
+	if nvidia or nrd or sharc or rtxdi:
 		text += "[img width=280 height=85]res://assets/branding/vendors/nvidia-geforce-rtx.tres[/img]\n\n"
 		if nvidia: text += "[font_size=20]" + RemakeText.t(NVIDIA_CREDIT) + "\n[/font_size]"
 		if nrd: text += "[font_size=20]" + RemakeText.t(NRD_CREDIT) + "\n[/font_size]"
 		if sharc: text += "[font_size=20]" + RemakeText.t(SHARC_CREDIT) + "\n[/font_size]"
+		if rtxdi: text += "[font_size=20]" + RemakeText.t(RTXDI_CREDIT) + "\n[/font_size]"
 		text += "[font_size=16]" + RemakeText.t(NVIDIA_SOURCE) + "\n\n" + RemakeText.t(NVIDIA_MARKS) + "[/font_size]\n\n\n"
 	if amd:
 		text += "[img width=175 height=110]res://assets/branding/vendors/amd-fsr-upscaling-white.png[/img]      "

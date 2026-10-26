@@ -1,0 +1,31 @@
+{
+  "sdk_revision": "f12037fa8e97ebc08e9e3edfd2de528ed1772a4b",
+  "sources": {
+    "path_trace.hlsl": "e16788657bf94882a4f534389616fa74881f165eaa81e99a20b355cb375188fd",
+    "path_trace_rtxdi.hlsli": "64b59f254e5f9e481147c10e8e64f74da9db4d05037b12bc7481aa675a8f8f81",
+    "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
+    "builder": "21ef0f0ea674caf9e7c8d588df9558514e9876b3eb66384ab2ada2998d7d4f61",
+    "sdk_pin": "090aaed093e6c719cf9d5baf6bf88692ef0a5afc9ce46cbb1cb32fe39064ee27"
+  },
+  "files": {
+    "path_trace_raygen_rtxdi.dxil": "d367830f35a0db271d97924c4319ce326295df1e19e55873e06317a6a56a2f9e",
+    "path_trace_raygen_rtxdi.spv": "6fac81ca193d81a5980f699a584b4feb2fe43ea683b67c66a08f66e753856494",
+    "path_trace_raygen_rtxdi_no_emitters.dxil": "7ec2e3f3f20d798ebfc75446bb38252511c21a97ef93f066971e3dc90fbbe51e",
+    "path_trace_raygen_rtxdi_no_emitters.spv": "e5d8211825605829943d8edf5b48217a1ec22d71285ebf47ec4685acf6b8b5cd",
+    "path_trace_raygen_rtxdi_deep.dxil": "e59a2a869282394e766cba08a2315b4f14808c5cfc547a6320d3f6073bcdffd1",
+    "path_trace_raygen_rtxdi_deep.spv": "492bf267e2a2150007ed8e516c39bb4f98c6c3105a43d1cd755b8fd6676de376",
+    "path_trace_raygen_rtxdi_deep_no_emitters.dxil": "edcc14c3f55cd86c0ee687d6c92720eb157737b5b01aa53b3abfdf80f080527a",
+    "path_trace_raygen_rtxdi_deep_no_emitters.spv": "13c19a73ff5b1eff94e99700989207f35b5148454131ce0d415cdf1843295ed9",
+    "path_trace_raygen_rtxdi_sharc.dxil": "c4e90ba3c1aeba1f2a09974ca7f2aca13621e6acb4a2d896a96ebf8997eedfb3",
+    "path_trace_raygen_rtxdi_sharc.spv": "5681b140131bc88bb95c28e273ffd21fcc7f065acbad03cae5dd69de0d1add85",
+    "path_trace_raygen_rtxdi_sharc_no_emitters.dxil": "25f40461b373fbc2aac5977fc828250438b0fe6a369a4959ea4b4a31425877ce",
+    "path_trace_raygen_rtxdi_sharc_no_emitters.spv": "4d83a10661ff72252bcd3bf9b786c9fcab2467972619983d3dd5d8e96b4b8c15",
+    "path_trace_raygen_rtxdi_sharc_deep.dxil": "cd199d2230a2c1e485c307e16ed56b6d7744f0eb27366f924b0cca8b2900b329",
+    "path_trace_raygen_rtxdi_sharc_deep.spv": "c03ba3d1d65978fe82c5012925520ccd38a5cbcfed79563ad4d1a0afb9a6f5ff",
+    "path_trace_raygen_rtxdi_sharc_deep_no_emitters.dxil": "d7759a1d4460109e79c512d70c52d09a7f7a27df98c043e015cd6f6330327263",
+    "path_trace_raygen_rtxdi_sharc_deep_no_emitters.spv": "2896aeb9b72d38ffd54b022d5c8fe997ba0a373271ba4fa84b6d49e5058aec03"
+  },
+  "notice_sha256": "d0ac5786402aeaacd7dc28cd3efb9f3e7482ab80aa8678f099c12421d529b8f9",
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)"
+}

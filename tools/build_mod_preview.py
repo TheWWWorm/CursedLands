@@ -93,6 +93,11 @@ def build(args):
             sharc_notices = out / "licenses/NVIDIA/SHARC"
             sharc_notices.mkdir(parents=True, exist_ok=True)
             shutil.copy2(sharc_notice, sharc_notices)
+        rtxdi_notice = game / "src/game/fx/shaders/RTXDI_NOTICES.txt"
+        if rtxdi_notice.exists():
+            rtxdi_notices = out / "licenses/NVIDIA/RTXDI"
+            rtxdi_notices.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(rtxdi_notice, rtxdi_notices)
         for name in ["LICENSE.md", "THIRD_PARTY_NOTICES.md", "README.md", "CHANGELOG.md"]:
             shutil.copy2(source / name, out)
         shutil.copytree(source / "licenses", out / "licenses", dirs_exist_ok=True)

@@ -94,7 +94,7 @@ def build(args):
     for launcher in (source / "tools/windows").glob("Play-*.cmd"):
         shutil.copy2(launcher, out)
     for relative in ("docs/integrations/fsr-experiment.md", "docs/integrations/nvidia-dlss.md",
-                     "docs/integrations/path-tracing-nrd.md", "docs/branding/graphics-sdk-attribution.md",
+                     "docs/integrations/path-tracing-nrd.md", "docs/integrations/path-tracing-rtxdi.md", "docs/branding/graphics-sdk-attribution.md",
                      "docs/branding/graphics-sdk-assets.json", f"docs/releases/{version}.md",
                      "docs/validation/fsr-only.md", "docs/validation/fsr-only.json"):
         if (source / relative).exists():
@@ -119,6 +119,11 @@ def build(args):
         sharc_notices = out / "licenses/NVIDIA/SHARC"
         sharc_notices.mkdir(parents=True, exist_ok=True)
         shutil.copy2(sharc_notice, sharc_notices)
+    rtxdi_notice = game / "src/game/fx/shaders/RTXDI_NOTICES.txt"
+    if rtxdi_notice.exists():
+        rtxdi_notices = out / "licenses/NVIDIA/RTXDI"
+        rtxdi_notices.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(rtxdi_notice, rtxdi_notices)
     if (game / "src/native/bin/libmod_lua.dll").exists():
         from package_mod import package
         native = out / "src/native/bin"

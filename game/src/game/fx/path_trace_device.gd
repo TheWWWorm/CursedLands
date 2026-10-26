@@ -7,6 +7,11 @@ const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
 const DIRECT_COMPOSITE = preload("res://src/game/fx/shaders/path_trace_direct_composite.glsl")
 const Sharc = preload("res://src/game/fx/path_trace_sharc.gd")
+const Rtxdi = preload("res://src/game/fx/path_trace_rtxdi.gd")
+var rtxdi := Rtxdi.new()
+var rtxdi_enabled := false
+var rtxdi_failed := false
+var _rtxdi_mode := false
 var sharc := Sharc.new()
 var sharc_enabled := false
 var sharc_failed := false
@@ -78,7 +83,7 @@ func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_CLOSEST_HIT and terrain.data.size()>=Terrain.HEADER and terrain.data.decode_u32(0)>0:
 		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain")
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
-		return shader_prefix()+"raygen"+("_sharc" if _sharc_mode>0 else "")+("_update" if _sharc_mode==2 else "")+("_deep" if _deep_paths and _sharc_mode!=2 else "")+("_no_emitters" if not _uses_emitters else "")
+		return shader_prefix()+"raygen"+("_rtxdi" if _rtxdi_mode else "")+("_sharc" if _sharc_mode>0 else "")+("_update" if _sharc_mode==2 else "")+("_deep" if _deep_paths and _sharc_mode!=2 else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 2816
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
@@ -156,25 +161,26 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 
 ## Compile only the needed emitter/deep-path combinations. Every variant
 ## shares hit stages, TLAS, SBT ranges and stable output images.
-func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int) -> Dictionary:
-	var key := int(enabled)|(int(deep)<<1)|(sharc_mode<<2)
+func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int,di := false) -> Dictionary:
+	var key := int(enabled)|(int(deep)<<1)|(sharc_mode<<2)|(int(di)<<4)
 	if not _variants.has(key):
 		var old_enabled := _uses_emitters;var old_deep := _deep_paths;var old_shader := _shader;var old_sharc := _sharc_mode
-		_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode
+		var old_di:=_rtxdi_mode
+		_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode;_rtxdi_mode=di
 		var program := _compile();var shader := _shader
-		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader;_sharc_mode=old_sharc
+		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader;_sharc_mode=old_sharc;_rtxdi_mode=old_di
 		if program==null:return {}
 		var pipeline := _create_pipeline(program)
 		if not pipeline.is_valid():return {}
 		_variants[key]={"shader":shader,"pipeline":pipeline}
 	return _variants[key]
 
-func _select_pipeline(enabled: bool,deep: bool,sharc_mode := 0) -> bool:
-	if enabled==_uses_emitters and deep==_deep_paths and sharc_mode==_sharc_mode:return true
-	var variant := _pipeline_variant(enabled,deep,sharc_mode)
+func _select_pipeline(enabled: bool,deep: bool,sharc_mode := 0,di := false) -> bool:
+	if enabled==_uses_emitters and deep==_deep_paths and sharc_mode==_sharc_mode and di==_rtxdi_mode:return true
+	var variant := _pipeline_variant(enabled,deep,sharc_mode,di)
 	if variant.is_empty() or _rd.hit_sbt_set_pipeline(_sbt,variant.pipeline)!=OK:return false
 	_shader=variant.shader;_pipeline=variant.pipeline
-	_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode
+	_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode;_rtxdi_mode=di
 	_release_ray_set();_history_valid=false
 	return true
 
@@ -214,6 +220,7 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
 	if _sharc_mode>0:uniforms.append_array(sharc.uniforms())
+	if _rtxdi_mode:uniforms.append_array(rtxdi.uniforms(_motion))
 	return uniforms
 
 func update_scene(changes: Dictionary) -> bool:
@@ -235,7 +242,8 @@ func update_scene(changes: Dictionary) -> bool:
 	if not super.update_scene(changes): return false
 	if emitters.update(changes):
 		_history_valid = false
-		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode):
+		rtxdi.invalidate()
+		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode,_rtxdi_mode):
 			_render_failed();return false
 	return true
 
@@ -371,14 +379,22 @@ func _update_motion(changes: Dictionary) -> bool:
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	if changes.has("rtxdi") and rtxdi_enabled!=bool(changes.rtxdi):
+		rtxdi_enabled=changes.rtxdi;rtxdi_failed=false;rtxdi.invalidate()
+	var di:=rtxdi_enabled and frame.decode_float(145*4)<=8.0 and not rtxdi_failed
 	var enabled := frame.decode_float(190*4)>0.5 if frame.decode_float(191*4)>0.5 else sharc_enabled
 	if enabled!=_sharc_requested:sharc_failed=false;_sharc_requested=enabled
 	var requested := enabled and frame.decode_float(145*4)<=8.0 and not sharc_failed
 	if requested and not sharc.setup(_rd):sharc_failed=true;requested=false
 	var deep := frame.decode_float(144*4)>2.0 and not _full_paths_reference
-	if not _select_pipeline(_uses_emitters,deep,1 if requested else 0):
+	if di and rtxdi._size!=size:_release_ray_set()
+	if di and not rtxdi.prepare_targets(_rd,size):rtxdi_failed=true;di=false
+	if di and not _select_pipeline(_uses_emitters,deep,1 if requested else 0,true):
+		rtxdi_failed=true;di=false
+	if not _select_pipeline(_uses_emitters,deep,1 if requested else 0,di):
 		if not requested or not _select_pipeline(_uses_emitters,deep,0):_render_failed();return
 		sharc_failed=true;requested=false
+	if not di and rtxdi.active:_release_ray_set();rtxdi.dispose()
 	if not requested and sharc.active:sharc.dispose()
 	super.render(size,frame,changes,texture_filter)
 
@@ -387,12 +403,21 @@ func trace_frame(frame: PackedByteArray) -> bool:
 		if not _trace_sharc(frame):
 			# A failed optional pass must leave a usable ordinary PT frame.
 			sharc_failed=true
-			if not _select_pipeline(_uses_emitters,_deep_paths,0):return false
+			if not _select_pipeline(_uses_emitters,_deep_paths,0,_rtxdi_mode):return false
 			sharc.dispose()
 			if not _targets(_size,_sampler):return false
 			frame.encode_float(82*4,0)
 			if not _upload_frame(frame):return false
-	return super.trace_frame(frame)
+	if _rtxdi_mode and not rtxdi.prepare(frame,ray_reconstruction):
+		rtxdi_failed=true
+		if not _select_pipeline(_uses_emitters,_deep_paths,_sharc_mode,false):return false
+		rtxdi.dispose()
+		if not _targets(_size,_sampler):return false
+		frame.encode_float(82*4,0)
+		if not _upload_frame(frame):return false
+	var ok:=super.trace_frame(frame)
+	if ok and _rtxdi_mode:rtxdi.finish(frame)
+	return ok
 
 func _trace_sharc(frame: PackedByteArray) -> bool:
 	if not sharc.prepare(frame,_size):return false
@@ -404,7 +429,9 @@ func _trace_sharc(frame: PackedByteArray) -> bool:
 		if not sbt.is_valid():return false
 		var hit_range := _rd.hit_sbt_range_alloc(sbt,1)
 		_rd.hit_sbt_range_update(sbt,hit_range,0,[0]);_sharc_sbts[key]=sbt
+	var di:=_rtxdi_mode;_rtxdi_mode=false
 	var descriptor := sharc.update_set(self,variant.shader)
+	_rtxdi_mode=di
 	if not descriptor.is_valid():return false
 	var rays := _rd.raytracing_list_begin()
 	_rd.raytracing_list_bind_raytracing_pipeline(rays,variant.pipeline)
@@ -561,7 +588,7 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 
 func dispose() -> void:
 	direct_sun.texture_rd_rid=RID()
-	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose();sharc.dispose()
+	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose();sharc.dispose();rtxdi.dispose()
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
 	_direct_composite_shader=RID();_direct_composite_pipeline=RID()
