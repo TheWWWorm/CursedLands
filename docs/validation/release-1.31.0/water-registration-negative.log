@@ -1,0 +1,27 @@
+FF
+======================================================================
+FAIL: test_registered_pt_water_executes_with_hardware_ray_tracing (tools.tests.test_regression_runner.VerdictTests.test_registered_pt_water_executes_with_hardware_ray_tracing) (case='path_trace_water')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/test_regression_runner.py", line 40, in test_registered_pt_water_executes_with_hardware_ray_tracing
+    self.assertEqual(command[command.index("--rendering-method") + 1], "forward_plus",
+AssertionError: 'gl_compatibility' != 'forward_plus'
+- gl_compatibility
++ forward_plus
+ : PT water transport requires the hardware ray-tracing renderer
+
+======================================================================
+FAIL: test_registered_pt_water_executes_with_hardware_ray_tracing (tools.tests.test_regression_runner.VerdictTests.test_registered_pt_water_executes_with_hardware_ray_tracing) (case='path_trace_water_live')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/test_regression_runner.py", line 40, in test_registered_pt_water_executes_with_hardware_ray_tracing
+    self.assertEqual(command[command.index("--rendering-method") + 1], "forward_plus",
+AssertionError: 'gl_compatibility' != 'forward_plus'
+- gl_compatibility
++ forward_plus
+ : PT water transport requires the hardware ray-tracing renderer
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=2)
