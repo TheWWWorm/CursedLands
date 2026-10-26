@@ -1,10 +1,10 @@
 {
   "schema": 1,
   "created_utc": "2026-10-26T13:21:10.397500+00:00",
-  "status": "Final local 7d97 candidate: 555/555 D3D12 and 102/102 Vulkan staging/adjacent checks; exact PathWater 50/2 negative then 50/0, actual shadow 49/49, clean 1024-query profile 86/86, five ordinary 4K routes 245/245 with 8,604 measured frames below 50 ms and actual approximately 2x FG. Qualification is bounded to these routes/hardware; original recording timestamp attribution and universal guarantees remain excluded.",
+  "status": "Integrated source38afac27/PCK4f65b396 passes native menu/adjacent checks and49-check foreground4K river route. Menu glyph negative303/12 becomes303/0 in native and DLSSPerformance. Earlier PT qualification and limitations remain tied to7d97.",
   "evidence_root": "C:\\projects\\local\\evidence\\pt-stability-20261026",
-  "copied_files": 1046,
-  "copied_bytes": 203147979,
+  "copied_files": 1205,
+  "copied_bytes": 220735924,
   "groups": {
     "performance-earlier-2x": {
       "files": 16,
@@ -145,9 +145,13 @@
     "cleanup-support": {
       "files": 17,
       "bytes": 10223022
+    },
+    "origin-integration": {
+      "files": 159,
+      "bytes": 17587945
     }
   },
-  "manifest_sha256": "7e95b0379f959fb6cb836b49acf7db82592843c549005fd4a00431c8d413ad1f",
+  "manifest_sha256": "06ae7e4e2bad5f270ff7cd3084e0b848b96ff9ae14be81409f334fed4e7028da",
   "source_state_sha256": "fb56cb983fecca54c1c5c4ac59fd3a68320d5973732ad7285928110e23e3deef",
   "performance_summary_sha256": "178c9b7b22c87113b327a52332694127ad0d62a4c5dfab13c68cf3cb8fd2bb97",
   "session_state_sha256": "55721398441b7458a46dd521e657a8464ebe5ddcdd3bc0cad1463ca306c3133c",
@@ -162,7 +166,7 @@
   "transmission_current_checks": 25,
   "transmission_current_failures": 0,
   "no_files_deleted": true,
-  "updated_utc": "2026-10-26T19:16:49.795937+00:00",
+  "updated_utc": "2026-10-26T20:26:22.336182+00:00",
   "qualified_camera_comparison": true,
   "qualified_focused_sr_fg": true,
   "overall_task_complete": false,
@@ -383,9 +387,94 @@
   "physical_bytes_at_final_curation": 196250874,
   "local_launcher": "C:\\projects\\local\\artifacts\\pt-stability-20261026\\Play-test.cmd",
   "local_launcher_verified": true,
-  "local_handoff_summary_sha256": "de4645f15004698ec019c15708714c9a8f2d85a95598c95fe7bb4a2f2bc0a3c4",
-  "cleanup_summary_sha256": "27dac0cc9dcf80faa4f26d4c8d957561f368720c30c967a20b4d9e4a471127a6",
-  "origin_integration_pending": true,
-  "origin_integration_blocker": "Stale empty .git/index.lock; automatic review rejected deletion, user action pending.",
-  "fetched_origin_main": "8475ed9b"
+  "local_handoff_summary_sha256": "3248114a5dc760390b72c6321cd7def88dcf6f7704a72c43a50b5a80745b3a20",
+  "cleanup_summary_sha256": "a724238bd639ebd491e91716f664f2da8de589224795bb9dce29434470226857",
+  "origin_integration_pending": false,
+  "origin_integration_blocker": null,
+  "fetched_origin_main": "8475ed9b",
+  "integration_summary": "C:\\projects\\local\\evidence\\pt-stability-20261026\\origin-integration\\summary.json",
+  "integration_summary_sha256": "2e28da4c15c545ee7bb5adce922c237afc29f5193421f17ef3fd9ecac5246cef",
+  "integrated_source_commit": "38afac272893166082448ce504368e139c4f0033",
+  "integrated_pck_sha256": "4f65b3968ae66869d29d880de6e6687744ba611a3ad3c144936aa2c4f0c8e8ce",
+  "integrated_river": {
+    "checks": 49,
+    "failures": 0,
+    "frames": 1816,
+    "maximum_ms": 41.87,
+    "travel_m": 35.0316060315818,
+    "window": "(3840, 2160)",
+    "actors": 239,
+    "rows": [
+      {
+        "phase": "held-fg-off",
+        "frames": 244,
+        "frame_ms": {
+          "max": 26.03,
+          "median": 24.71,
+          "p95": 25.197
+        },
+        "sdk_presents": 0,
+        "game_presents": 244
+      },
+      {
+        "phase": "walk-0",
+        "frames": 558,
+        "frame_ms": {
+          "max": 28.442,
+          "median": 20.98,
+          "p95": 23.581
+        },
+        "sdk_presents": 0,
+        "game_presents": 558
+      },
+      {
+        "phase": "pan-0",
+        "frames": 194,
+        "frame_ms": {
+          "max": 30.96,
+          "median": 20.324,
+          "p95": 22.677
+        },
+        "sdk_presents": 0,
+        "game_presents": 194
+      },
+      {
+        "phase": "walk-1",
+        "frames": 437,
+        "frame_ms": {
+          "max": 41.87,
+          "median": 27.204,
+          "p95": 33.839
+        },
+        "sdk_presents": 871,
+        "game_presents": 437
+      },
+      {
+        "phase": "pan-1",
+        "frames": 151,
+        "frame_ms": {
+          "max": 36.831,
+          "median": 26.354,
+          "p95": 32.941
+        },
+        "sdk_presents": 302,
+        "game_presents": 151
+      },
+      {
+        "phase": "final-held",
+        "frames": 232,
+        "frame_ms": {
+          "max": 33.598,
+          "median": 25.988,
+          "p95": 28.974
+        },
+        "sdk_presents": 464,
+        "game_presents": 232
+      }
+    ],
+    "inherited_fixture_sha256": "1f557ec586790f2b08d0c8b47a0d5a3a0ac78fd833043aafbef41ab4cc44fee7",
+    "setup_wrapper": "provenance/integration_river_fullscreen.gd",
+    "setup_scope": "Settles framed small-window mode before native borderless extent; original renderer, resolution and all movement assertions remain unchanged. Mode4 can be an automatic native-borderless classification.",
+    "measurement_scope": "Six ordinary gameplay phases; loading, settling and FG activation excluded. No profiler or phase PNG readback."
+  }
 }
