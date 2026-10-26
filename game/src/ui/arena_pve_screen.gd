@@ -71,7 +71,7 @@ var _last_level := 0
 var _level_sound: AudioStreamPlayer
 var _result_remaining := 4.0
 var _result_key := -1
-var _live_health: Label
+var _live_health: RichTextLabel
 var _inspected_unit: GameUnit
 var _outcome_shade: ColorRect
 var _inspect_actions: VBoxContainer
@@ -80,6 +80,7 @@ var _clock: Label
 var _army_row: HBoxContainer
 var _army_title: Label
 var _showing_company := false
+var _pinned_alliance := ""
 var _company_details := false
 var _shop: HBoxContainer
 var _shop_section: VBoxContainer
@@ -171,6 +172,10 @@ func _ready() -> void:
 	# canvas has a fractional scale and new modal text populates the cache.
 	# Private resources leave the original pixel-sized interface unchanged.
 	theme.default_font.multichannel_signed_distance_field = true
+	var bold := preload("res://fonts/LiberationSans-Bold.ttf").duplicate()
+	bold.multichannel_signed_distance_field = true
+	theme.set_font("bold_font", "RichTextLabel", bold)
+	theme.set_font("normal_font", "RichTextLabel", theme.default_font)
 	_heading_font.multichannel_signed_distance_field = true
 	theme.set_color("font_color", "Label", PAPER)
 	for kind in ["Button", "OptionButton", "LineEdit"]:
@@ -334,8 +339,11 @@ func _ready() -> void:
 	_bench_panel.offset_top = -218; _bench_panel.offset_bottom = -44
 	_bench_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_bench_bar = HBoxContainer.new()
+	_bench_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_bench_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_bench_bar.add_theme_constant_override("separation", 20)
 	var bench_column := VBoxContainer.new()
+	bench_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	bench_column.add_theme_constant_override("separation", 4)
 	_bench_panel.add_child(bench_column)
 	bench_column.add_child(_bench_bar)
@@ -393,6 +401,8 @@ func _ready() -> void:
 	for key: String in ArenaAlliances.RULES:
 		var badge := ArenaAllianceBadge.new(); badge.key=key; badge.name=key
 		_alliance_list.add_child(badge)
+		badge.pressed.connect(_pin_alliance.bind(key))
+		badge.scrolled.connect(_scroll_alliance.bind(key))
 	_item_tray = ArenaItemTray.new()
 	_item_tray.run = run
 	_sidebar_content.add_child(_item_tray)
@@ -1184,7 +1194,7 @@ func _field_army() -> Array[Dictionary]:
 
 
 func _show_alliance(key: String) -> void:
-	_company_details = false
+	_company_details = true
 	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
 	_rail.show(); _inspector.show()
@@ -1216,6 +1226,18 @@ func _show_alliance(key: String) -> void:
 		var title := _wrap(grid, RemakeText.t(ArenaRules.FAMILIES[family].name), 13, GOLD if deployed else MUTED)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_label(grid, RemakeText.t(status), 12, GOLD if deployed else MUTED)
+
+
+func _pin_alliance(key: String) -> void:
+	_pinned_alliance = key
+	_hover_key = "alliance:" + key
+	_show_alliance(key)
+
+
+func _scroll_alliance(direction: int, key: String) -> void:
+	if not _rail.visible or _hover_key != "alliance:" + key:
+		_pin_alliance(key)
+	_inspect_scroll.scroll_vertical += direction * 48
 
 
 func _show_company() -> void:
@@ -1340,7 +1362,7 @@ func _select_world(unit: GameUnit) -> void:
 
 func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if id.is_empty(): return
-	_company_details = false
+	_company_details = true
 	_standings.hide()
 	_showing_company = false
 	_inspected = id
@@ -1377,8 +1399,10 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	details.add_child(stars)
 	ArenaStars.add_to(stars, rank + 1, Vector2.ZERO, accent)
 	_rule(_inspect_box)
-	if family >= 0: _wrap(_inspect_box, RemakeText.t(ArenaRules.FAMILIES[family].hook), 13, accent)
-	_live_health = _wrap(_inspect_box, ArenaUnitInfo.summary(id, _inspected_unit, family, rank), 13)
+	if family >= 0:
+		_rich(_inspect_box, ArenaUnitInfo.hook(family, rank), 13, accent)
+		_wrap(_inspect_box, RemakeText.t("★ / ★★ / ★★★ · Current rank in bold"), 12, MUTED)
+	_live_health = _rich(_inspect_box, ArenaUnitInfo.summary(id, _inspected_unit, family, rank, _field_army(), run.item_for(int(entry.get("uid", 0)))), 13)
 	if is_instance_valid(_inspected_unit) and family >= 0 and (not String(_inspected_unit.get_meta("arena_placement", {}).get("item", "")).is_empty() or ArenaAlliances.counts(_field_army()).values().any(func(n): return int(n) >= 2)):
 		_wrap(_inspect_box, RemakeText.t("Stats include equipment and alliances. Triggered effects activate in battle."), 12, MUTED)
 
@@ -1417,6 +1441,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 
 
 func _hide_inspector() -> void:
+	_pinned_alliance = ""
 	_company_details = false
 	_hover_key = ""
 	_hover_wait = 0.0
@@ -1437,6 +1462,7 @@ func _hover_inspector(dt: float) -> void:
 	if _rail.visible and control and (control == _rail or _rail.is_ancestor_of(control)):
 		_hover_missing = 0
 		return
+	if not _pinned_alliance.is_empty(): return
 	var entry := {}
 	var id := ""
 	var key := ""
@@ -1471,7 +1497,7 @@ func _hover_inspector(dt: float) -> void:
 	if not key.is_empty() and key == _dismissed_hover: return
 	if key.is_empty():
 		_hover_missing += dt
-		if _hover_missing > 0.22: _hide_inspector()
+		if _hover_missing > (0.8 if _hover_key.begins_with("alliance:") else 0.22): _hide_inspector()
 		return
 	_hover_missing = 0
 	if key != _hover_key:
@@ -1615,7 +1641,8 @@ func _process(dt: float) -> void:
 		_evolution_notice.covered = _modal_layer.visible or field.showing_boards()
 	if is_instance_valid(_live_health) and is_instance_valid(_inspected_unit) and _rail.visible:
 		var unit := _inspected_unit
-		_live_health.text = ArenaUnitInfo.summary(_inspected, unit)
+		var text := ArenaUnitInfo.summary(_inspected, unit, -1, 0, _field_army())
+		if _live_health.text != text: _live_health.text = text
 	var watched := _viewed_battle()
 	if _clock and watched and is_instance_valid(watched.world):
 		if run.stage == "prepare": _clock.text = RemakeText.t("Battle in %ds") % ceili(run.preparation_left)
@@ -1811,6 +1838,21 @@ func _label(parent: Node, value: String, pixels := 15, color := PAPER) -> Label:
 func _wrap(parent: Node, value: String, pixels := 15, color := PAPER) -> Label:
 	var label := _label(parent, value, pixels, color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	return label
+
+
+func _rich(parent: Node, value: String, pixels := 13, color := PAPER) -> RichTextLabel:
+	var label := RichTextLabel.new()
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_font_size_override("normal_font_size", pixels)
+	label.add_theme_font_size_override("bold_font_size", pixels)
+	label.add_theme_color_override("default_color", color)
+	label.text = value
+	parent.add_child(label)
 	return label
 
 
@@ -2322,10 +2364,21 @@ func _update_item_targets() -> void:
 	var own_board := not landing and run.stage != "fight" and field.match_state == battle and not field.showing_boards() and not _modal_layer.visible
 	var hovered_uid := _item_target_uid(field._pick(field.pointer_position())) if _item_uid > 0 else 0
 	var occupied: Array[Rect2] = []
+	# Idle head motion must not move a target away between press and release.
+	# A camera, viewport, HUD or formation change still lays out every target.
+	var layout_key := [_item_generation, field.camera.global_transform, field.camera.size, field.size, _ui_scale]
+	# Draw targets only where the HUD will let the pointer reach them.
+	for control in [_bench_scroll, _battle_sidebar, _actions_panel, _shop_panel, _round_panel]:
+		if control.is_visible_in_tree():
+			var rect: Rect2 = control.get_global_rect()
+			rect.position -= field.global_position
+			occupied.append(rect)
+			layout_key.append(rect)
 	if own_board:
 		for unit: GameUnit in battle.world.unit_rows():
 			if unit.dead or not unit.visible or unit.hidden or field.camera.is_position_behind(unit.global_position): continue
 			occupied.append(field.health_marker_rect(unit))
+			layout_key.append([unit.get_instance_id(), unit.global_position])
 	for unit: GameUnit in battle.world.unit_rows() if own_board else []:
 		var placement: Dictionary = unit.get_meta("arena_placement", {})
 		var uid := int(placement.get("run_uid", 0))
@@ -2354,11 +2407,14 @@ func _update_item_targets() -> void:
 		slot.custom_minimum_size = Vector2.ONE * (ArenaItemSlot.TARGET_SIZE if _item_uid > 0 else ArenaItemSlot.BADGE_SIZE)
 		slot.size = slot.custom_minimum_size
 		slot.scale = Vector2.ONE * _ui_scale
-		var at := _item_badge_position(field.health_anchor(unit), slot.size * _ui_scale, occupied)
+		var stable: bool = _item_uid > 0 and slot.visible and slot.get_meta("item_layout", []) == layout_key
+		var at := slot.position if stable else _item_badge_position(field.health_anchor(unit), slot.size * _ui_scale, occupied)
 		if at == Vector2.INF:
 			slot.hide()
 			continue
 		slot.position = at
+		slot.set_meta("item_layout", layout_key)
+		slot.tether = (field.health_anchor(unit) + Vector2(0, 8) * _ui_scale - at) / _ui_scale if _item_uid > 0 and at.distance_to(field.health_anchor(unit)) > 65 * _ui_scale else Vector2.ZERO
 		occupied.append(Rect2(at, slot.size * _ui_scale))
 		slot.target_hover = hovered_uid == uid
 		slot.accessibility_name = RemakeText.t("Equip %s on %s") % [ArenaItems.title(_item_kind), unit.display_name] if _item_uid > 0 else ArenaItems.title(slot.kind)
@@ -2381,10 +2437,14 @@ func _item_badge_position(anchor: Vector2, extent: Vector2, occupied: Array[Rect
 	var origin := anchor
 	var offsets := [Vector2(52, 8), Vector2(-84, 8), Vector2(8, 12), Vector2(-40, 12), Vector2(52, 44), Vector2(-84, 44), Vector2(-16, 50), Vector2(52, -38), Vector2(-84, -38)]
 	if _item_uid > 0:
-		# Center the target under its creature's marker. Crowding may move it
-		# slightly down or sideways, but never to a distant unrelated position.
+		# Prefer the area immediately beneath this creature's health marker.
 		origin -= Vector2(extent.x * 0.5, 0)
 		offsets = [Vector2(0, 10), Vector2(0, 26), Vector2(-20, 10), Vector2(20, 10), Vector2(-20, 26), Vector2(20, 26)]
+		# Dense formations still need one reachable target for every ally.
+		# Expand around the marker and draw a tether for displaced targets.
+		for radius in range(48, 241, 24):
+			for direction in [Vector2(0, 1), Vector2(-1, 1), Vector2(1, 1), Vector2(-1, 0), Vector2(1, 0), Vector2(-1, -1), Vector2(1, -1), Vector2(0, -1)]:
+				offsets.append(direction * radius)
 	for offset: Vector2 in offsets:
 		var rectangle := Rect2(origin + offset * _ui_scale, extent)
 		if not Rect2(Vector2.ZERO, field.size).encloses(rectangle): continue
@@ -2461,9 +2521,10 @@ func _spell_titles(row: Dictionary) -> String:
 	var names: Array[String] = []
 	for spell: String in row.get("spells", []):
 		var parsed := Spells.parse(spell)
+		if Spells.DAMAGE_SCHOOLS.has(parsed.code): continue
 		var value := RemakeText.t(WikiCatalog.spell_title(parsed.code)) if parsed.has("code") else ""
 		if not value.is_empty() and value not in names: names.append(value)
-	return ", ".join(names)
+	return RemakeText.t("Spells: ") + ", ".join(names) if not names.is_empty() else ""
 
 
 func _update_sell_target() -> void:

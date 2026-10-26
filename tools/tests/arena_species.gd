@@ -19,10 +19,11 @@ func _ready() -> void:
 		check(not String(rule.forms[0]).begins_with("human"), "no same-face human recruits %d" % family)
 		var first := GameData.db.find("monster_prototypes", rule.forms[0])
 		var silhouette: String = first.get("base_race", "")
-		# The seer deliberately shares the woodsfolk rig, with a different kit,
-		# price and authored leader palettes. No other duplicate role is allowed.
+		# Only the authored seer/woodsfolk and archer/shaman kits may share a rig.
 		if bodies.has(silhouette):
-			check(bodies[silhouette] == 11 and family == 29 and rule.role == "Magic" and ArenaRules.FAMILIES[11].role == "Ranged", "approved woodsfolk caster role " + silhouette)
+			var seer: bool = bodies[silhouette] == 11 and family == 29 and rule.role == "Magic" and ArenaRules.FAMILIES[11].role == "Ranged"
+			var archer: bool = bodies[silhouette] == 13 and family == 38 and rule.role == "Ranged" and ArenaRules.FAMILIES[13].role == "Magic" and ArenaRules.bow_user(first) and first.spells.is_empty()
+			check(seer or archer, "explicit native role distinction " + silhouette)
 		else:
 			bodies[silhouette] = family
 		var before := {}

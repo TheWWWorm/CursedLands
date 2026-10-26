@@ -38,10 +38,15 @@ func _ready()->void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--games="):count=int(arg.get_slice("=",1))
 		elif arg.begins_with("--first-game="):first_game=int(arg.get_slice("=",1))
+		elif arg.begins_with("--astral-path="):GameData.campaign_roots[CampaignProfile.ASTRAL]=arg.trim_prefix("--astral-path=")
+	var expanded := GameData.campaign_roots.has(CampaignProfile.ASTRAL)
+	if expanded and not ArenaExpansion.mount():
+		printerr("FAIL Astral roster unavailable");get_tree().quit(1);return
 	for index in range(first_game,first_game+count):
 		var game:=ArenaOnlineGame.new();var league:=League.new()
 		var encounters:=[]
 		league.auto_save=false;league.flip=index%2;league.all_new=self_play;league.strategy_offset=index%4 if self_play else 0;game.run=league
+		league.expansion=expanded
 		add_child(game);game.begin(7319+index/2*997,{});game.set_process(false)
 		for wave in 60:
 			if league.stage=="won":break
@@ -60,6 +65,7 @@ func _ready()->void:
 		var winner:=league.placements.find(1)
 		var result:={"seed":7319+index/2*997,"flip":index%2,"all_new":self_play,"strategy_offset":league.strategy_offset,"winner":winner,"new_winner":league.is_new(winner),"placements":league.placements,"rounds":league.wave,"samples":league.samples}
 		result["encounters"]=encounters
+		result["expansion"]=expanded
 		results.append(result)
 		FileAccess.open("user://arena-bot-tournaments.json",FileAccess.WRITE).store_string(JSON.stringify(results,"\t"))
 		print("BOT_TOURNAMENT ",index," winner=",winner," new=",result.new_winner," rounds=",league.wave," placements=",league.placements)

@@ -5,10 +5,10 @@ func check(ok:bool,message:String)->void:
 	checks+=1
 	if not ok:failures.append(message);printerr("FAIL ",message)
 func _ready()->void:
-	check(ArenaRules.ACTIVE_FAMILIES.size()==29 and ArenaRules.recruit_pool(3).size()==14,"expanded roster and opening pool")
+	check(ArenaRules.ACTIVE_FAMILIES.size()==30 and ArenaRules.recruit_pool(3).size()==14,"expanded roster and opening pool")
 	var tiers := [0,0,0,0,0]
 	for family in ArenaRules.ACTIVE_FAMILIES: tiers[int(ArenaRules.FAMILIES[family].tier)-1]+=1
-	check(tiers==[7,7,5,5,5],"every shop tier has multiple role and tribe choices")
+	check(tiers==[7,7,6,5,5],"every shop tier has multiple role and tribe choices")
 	check(ArenaRules.available(),"every recruited form exists in the loaded localized game")
 	var species := {}
 	for family_id: int in ArenaRules.ACTIVE_FAMILIES:
@@ -16,7 +16,11 @@ func _ready()->void:
 		check(family.cost==family.tier and family.cost in range(1,6),"price equals its 1–5 shop tier")
 		check(family.copies==[3,3],"nine base copies earn a final form")
 		var native_race: String=GameData.db.find("monster_prototypes",family.forms[0]).base_race
-		check(not species.has(native_race), "recruitment has one visually identifiable family per native species")
+		check(not species.has(native_race) or (family_id == 38 and species[native_race].role == "Magic" and family.role == "Ranged"), "shared species requires the explicit archer/shaman role distinction")
+		if family_id == 38:
+			for form in family.forms:
+				var archer := GameData.db.find("monster_prototypes", form)
+				check(ArenaRules.bow_user(archer) and archer.spells.is_empty(), "orc archer retains a visible native bow and distinct non-caster kit")
 		species[native_race]=family
 		for index in 3:
 			check(GameData.db.find("monster_prototypes",family.forms[index]).base_race==native_race,"all ranks retain the recruit's species")

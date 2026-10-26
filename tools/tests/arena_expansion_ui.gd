@@ -95,7 +95,7 @@ func _ready() -> void:
 	var bat := body(uid)
 	await move(point(bat));await get_tree().create_timer(0.45).timeout
 	check(screen._rail.visible and screen._inspected_unit==bat,"hover body opens side details")
-	check(screen._live_health.text == ArenaUnitInfo.summary(String(bat.info.prototype), bat),"hover includes attack rating")
+	check(screen._live_health.text == ArenaUnitInfo.summary(String(bat.info.prototype), bat, -1, 0, screen._field_army()),"hover includes attack rating")
 	check(screen._live_health.text.contains(RemakeText.t("Weaknesses: none")) or screen._live_health.text.contains(RemakeText.t("Weaknesses: %s").get_slice("%",0)),"hover includes native weaknesses")
 	bounded(screen._rail,"hover rail")
 	await shot(tag+"-hover")
@@ -164,7 +164,10 @@ func _ready() -> void:
 			if child is WikiPreview: preview_fits(child,"reserve orc")
 	for box in screen._shop.get_children(): preview_fits(box.get_child(0).preview,"expanded shop")
 	bounded(screen._bench_panel,"expanded reserves")
-	check(screen._army_row.size.x > screen._bench_scroll.size.x,"full-size reserves scroll when they exceed the shelf")
+	# Reserve slots now fit the shelf; all eleven destinations stay reachable.
+	check(screen._army_row.size.x <= screen._bench_scroll.size.x + 1,"expanded reserves fit the responsive shelf")
+	for slot: Control in screen._army_row.get_children():
+		check(screen._bench_scroll.get_global_rect().grow(1).encloses(slot.get_global_rect()), "every reserve destination is visible")
 	bounded(screen._shop_panel,"expanded shop")
 	await move((screen._shop.get_child(1).get_child(0) as Control).get_global_rect().get_center())
 	await get_tree().create_timer(0.4).timeout
@@ -173,6 +176,11 @@ func _ready() -> void:
 	# Final native hit resolves the encounter, then the battlefield gets a beat.
 	Fixture.begin(screen.run, 6519,1);await frames()
 	screen._fight();screen.battle.set_process(false)
+	# The real start waits for formation arrivals before combat begins.
+	for frame in 120:
+		if screen.battle.phase == ArenaMatch.Phase.FIGHT: break
+		await frames(1)
+	check(screen.battle.phase == ArenaMatch.Phase.FIGHT, "formation arrival reaches real combat")
 	for tick in 1800:
 		if screen.battle.phase != ArenaMatch.Phase.FIGHT:break
 		screen.battle.simulate_tick()
@@ -184,9 +192,9 @@ func _ready() -> void:
 	await get_tree().create_timer(0.65).timeout
 	check(not screen._outcome.visible,"result remains hidden during finishing animation")
 	await get_tree().create_timer(1.1).timeout
-	check(screen._outcome.visible,"result appears after finishing animation")
+	check(screen._round_banner.visible and screen._round_banner.heading.text == RemakeText.t("Victory") and not screen._outcome.visible,"victory notice remains readable without covering the board")
 	check(screen.battle.world.time==duration and screen.run.last_result==result,"settling cannot alter combat or pay income again")
-	bounded(screen._outcome,"victory dialog")
+	bounded(screen._round_banner,"victory notice")
 	await shot(tag+"-victory")
 	screen.queue_free();await frames()
 	OS.remove_logger(errors)

@@ -2503,6 +2503,346 @@
       "args": [],
       "min_checks": 14,
       "rendering_method": "forward_plus"
+    },
+    {
+      "id": "menu_caption_4k_base_en",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=en"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_astral_en",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=en"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_base_ru",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_astral_ru",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=ru"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_base_de",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=de"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "menu_caption_4k_astral_de",
+      "script": "tools/tests/menu_caption_4k.gd",
+      "summary": "MENU_CAPTION_4K",
+      "contract": "Original painted lettering gains displayed edge contrast over Lanczos-only at native 1080p, 1440p and 4K; typography fidelity, hover, picking, paused Escape, reopening, Options and localized layout remain intact.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--menu-locale=de"
+      ],
+      "min_checks": 160,
+      "timeout": 420
+    },
+    {
+      "id": "release_check",
+      "script": "tools/tests/release_check.gd",
+      "summary": "RELEASE_CHECK",
+      "contract": "Stable release discovery, SemVer ordering, cache/backoff and non-blocking HTTP transport.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 50,
+      "timeout": 240
+    },
+    {
+      "id": "release_check_ui",
+      "script": "tools/tests/release_check_ui.gd",
+      "summary": "RELEASE_CHECK_UI",
+      "contract": "EN/RU/DE main-menu update states fit normal, portrait, 1440p and 4K windows and retain controller actions.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 650,
+      "timeout": 240
+    },
+    {
+      "id": "arena_rank_stats",
+      "script": "tools/tests/arena_rank_stats.gd",
+      "summary": "ARENA_RANK_STATS",
+      "contract": "All-star live statistics, highlighted rank, spell damage and original-record immutability.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 1060,
+      "timeout": 600
+    },
+    {
+      "id": "arena_horde_roster",
+      "script": "tools/tests/arena_horde_roster.gd",
+      "summary": "ARENA_HORDE_ROSTER",
+      "contract": "Original Orc archer roles, promotions, equipment, schema-16 compatibility and matching network rules.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 31,
+      "timeout": 600
+    },
+    {
+      "id": "arena_horde_balance",
+      "script": "tools/tests/arena_horde_balance.gd",
+      "summary": "ARENA_HORDE_BALANCE",
+      "contract": "Mirrored same-cost team guardrails for Horde archers and Banshee counters at all stars.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 395,
+      "timeout": 600
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_720",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=en,1280,720",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_1080",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=en,1920,1080",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_1440",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=en,2560,1440",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_en_2160",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=en,3840,2160",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_720",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=ru,1280,720",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_1080",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=ru,1920,1080",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_1440",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=ru,2560,1440",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_ru_2160",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=ru,3840,2160",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_720",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=de,1280,720",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_1080",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=de,1920,1080",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_1440",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=de,2560,1440",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
+    },
+    {
+      "id": "arena_equipment_roster_ui_de_2160",
+      "script": "tools/tests/arena_equipment_roster_ui.gd",
+      "summary": "ARENA_EQUIPMENT_ROSTER_UI",
+      "contract": "Reachable crowded equipment click/drag targets, scrollable expanded alliance roster and readable rank/spell stats.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--arena-resolution=de,3840,2160",
+        "--astral-path={astral_data}",
+        "--ei-inline-host"
+      ],
+      "min_checks": 57,
+      "timeout": 420
     }
   ]
 }

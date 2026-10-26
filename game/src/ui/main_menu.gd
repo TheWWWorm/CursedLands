@@ -73,7 +73,9 @@ func _ready() -> void:
 	if music.stream:
 		music.play()
 	_version = BuildVersion.new()
+	_version.show_updates = true
 	add_child(_version)
+	_version.footer_changed.connect(_layout_campaign_bar.call_deferred)
 	_mods = ModPanel.new()
 	add_child(_mods)
 	_wiki = WikiPanel.new()
@@ -314,6 +316,7 @@ func campaign_pad_targets() -> Array:
 		if _arena_pve_button.visible: targets.append({"rect": _arena_pve_button.get_global_rect(), "id": "campaign_arena_pve"})
 		if _coop_button:
 			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
+		if _version._updates: targets.append_array(_version._updates.pad_targets())
 	return targets
 
 
@@ -354,6 +357,7 @@ func _on_board(action: String) -> void:
 		if DisplayServer.get_name() != "headless":
 			await RenderingServer.frame_post_draw
 	match action:
+		"check_updates", "open_release": _version._updates.activate(action)
 		"new": _difficulty.open()
 		"load": _load.open()        # case 1: the Load screen (no slide-in)
 		"multiplayer": _net.open()

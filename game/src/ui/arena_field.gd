@@ -344,7 +344,7 @@ func health_anchor(unit: GameUnit) -> Vector2:
 
 
 func health_marker_rect(unit: GameUnit) -> Rect2:
-	var text := "%d/%d" % [maxi(0, ceili(unit.hp)), ceili(unit.max_hp)] if numeric_health else unit.display_name if unit == hovered else ""
+	var text := str(maxi(0, ceili(unit.hp))) if numeric_health else unit.display_name if unit == hovered else ""
 	var pixels := roundi(14 * ui_scale)
 	var width := maxf(54 * ui_scale, ThemeDB.fallback_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels).x)
 	var outline := maxi(3, roundi(3 * ui_scale))
@@ -382,7 +382,7 @@ func _sync_unit_markers() -> void:
 		if numeric_health:
 			var placement: Dictionary = u.get_meta("arena_placement", {})
 			rank = int(placement.rank) if placement.has("rank") else ArenaUnitInfo.rank_of(String(u.info.get("prototype", "")))
-		var text := "%d/%d" % [maxi(0, ceili(u.hp)), ceili(u.max_hp)] if numeric_health else u.display_name if u == hovered else ""
+		var text := str(maxi(0, ceili(u.hp))) if numeric_health else u.display_name if u == hovered else ""
 		# Move retained commands each frame; re-shape text and tessellate the
 		# health frame only when its contents change, not as the unit walks.
 		marker.update_marker(health_anchor(u), [ui_scale, BLUE if u.faction == 1 else RED,

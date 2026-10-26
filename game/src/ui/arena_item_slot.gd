@@ -30,6 +30,10 @@ var target_hover := false:
 	set(value):
 		target_hover = value
 		queue_redraw()
+var tether := Vector2.ZERO:
+	set(value):
+		tether = value
+		queue_redraw()
 var make_drag: Callable
 var accept_drop: Callable
 var receive_drop: Callable
@@ -65,6 +69,9 @@ func _process(dt: float) -> void:
 
 func _draw() -> void:
 	var radius := minf(size.x, size.y) * 0.5 - 2
+	if tether != Vector2.ZERO:
+		var center := size * 0.5
+		draw_line(tether, center + center.direction_to(tether) * radius, Color("a0b5b7"), 1.0, true)
 	var active := selected or target_hover or has_focus() or is_hovered()
 	draw_circle(size * 0.5, radius, Color("111b20"), true, -1, true)
 	if attention and not equipped:

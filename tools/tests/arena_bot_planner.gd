@@ -25,11 +25,15 @@ func fixture(family: int, filler: int, high_copies: int, low_copies: int) -> Are
 	return bot
 
 func _ready() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--astral-path="):
+			GameData.campaign_roots[CampaignProfile.ASTRAL] = arg.trim_prefix("--astral-path=")
+			check(ArenaExpansion.mount(), "installed expansion opponents are available to the planner")
 	var native := hash(GameData.db.tables)
 	var pair := Vector2i(-1, -1)
-	for family in ArenaRules.FAMILIES.size():
+	for family in ArenaRules.active_families(ArenaExpansion.mounted()):
 		if ArenaRules.evolution_copies(family, 0) < 2: continue
-		for filler in ArenaRules.FAMILIES.size():
+		for filler in ArenaRules.active_families(ArenaExpansion.mounted()):
 			var strength := ArenaBotPlanner.power(filler, 2)
 			if strength > ArenaBotPlanner.power(family, 1) * 1.2 and strength < ArenaBotPlanner.power(family, 2) * 0.7:
 				pair = Vector2i(family, filler)
