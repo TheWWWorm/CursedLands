@@ -34,6 +34,9 @@ var _kernel: Object
 var _watching := false
 var _detail_options := Vector4i.ZERO
 var path_materials := false
+var path_transmission := false
+var _water_version := PackedFloat32Array()
+var _water_enabled := false
 var _terrain_version := []
 # Live polling shares a small frame budget between roots. Atomic candidate
 # validation still uses a fresh synchronous check before publishing output.
@@ -63,9 +66,12 @@ func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_cliffs=terrain._cliffs
 	_detail_options = Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))
 	if path_materials: _terrain_version=PathTerrain.version(terrain)
+	if path_transmission: _water_version=terrain._level.duplicate();_water_enabled=Gfx.on("gfx_water")
 	for child in terrain.get_children():
 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
 			pending.append({"node":weakref(child),"land":true})
+		elif path_transmission and Gfx.on("gfx_water") and child is MeshInstance3D and child.mesh!=null and child.get_active_material(0)==terrain._water_mat and _near(child.global_transform*child.get_aabb(),false):
+			pending.append({"node":weakref(child),"land":false,"water":true})
 	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes(true):
 		pending.append({"node":weakref(mesh),"land":false})
@@ -118,7 +124,7 @@ func _material_version(material: Material) -> Array:
 			material.get_shader_parameter("surface_profile"),material.get_shader_parameter("foliage_mask"),
 			material.get_shader_parameter("surface_tex") if path_materials else null,
 			material.get_shader_parameter("surface_detail_tex") if path_materials else null,
-			material.get_shader_parameter("surface_detail_enabled") if path_materials else null]
+			material.get_shader_parameter("surface_detail_enabled") if path_materials else null,material.get_meta("pt_dielectric",PackedFloat32Array())]
 	if material is BaseMaterial3D:
 		return [material.albedo_texture.get_instance_id() if material.albedo_texture else 0,material.albedo_color,
 			material.transparency,material.alpha_scissor_threshold,material.emission_enabled,material.emission,
@@ -154,6 +160,8 @@ func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	var version := [_mesh_variants(mesh).map(func(source: Mesh):return source.get_instance_id())]
 	for surface in mesh.mesh.get_surface_count():
 		var material := mesh.get_active_material(surface)
+		var dielectric: PackedFloat32Array=material.get_meta("pt_dielectric",PackedFloat32Array()) if material else PackedFloat32Array()
+		if not dielectric.is_empty() and not path_transmission:continue
 		var key := material.get_instance_id() if material else 0
 		if not materials.has(key): materials[key] = _material_version(material)
 		version.append([key,materials[key]])
@@ -164,7 +172,7 @@ func _reset_topology_poll() -> void:
 	_topology_seen.clear();_topology_materials.clear()
 
 func topology_changed(budget_us := 0) -> bool:
-	if _soft_ground!=Gfx.on("gfx_soft_ground") or _cliffs!=_terrain._cliffs \
+	if (path_transmission and (_water_version!=_terrain._level or _water_enabled!=Gfx.on("gfx_water"))) or _soft_ground!=Gfx.on("gfx_soft_ground") or _cliffs!=_terrain._cliffs \
 		or (lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))) \
 		or (path_materials and _terrain_version!=PathTerrain.version(_terrain)):
 		_reset_topology_poll();return true
@@ -208,7 +216,9 @@ func step(budget_us := 6000) -> bool:
 		# Gathering spans frames. Equipment/body parts can leave the tree or
 		# lose their mesh before this queued entry reaches the packing budget.
 		if is_instance_valid(node) and node.is_inside_tree() and (entry.land or (node as MeshInstance3D).mesh != null):
-			if entry.land:
+			if entry.get("water",false):
+				_pack_water(node)
+			elif entry.land:
 				var arrays: Array = _ground.arrays(node.visual_arrays(),node.get_instance_id())
 				var geometry := _append(arrays,node.global_transform,null,true)
 				if path_materials and geometry>=0:
@@ -227,6 +237,40 @@ func step(budget_us := 6000) -> bool:
 		if Time.get_ticks_usec() >= deadline: break
 	return failed or _cursor >= pending.size()
 
+func _pack_water(mesh: MeshInstance3D) -> void:
+	# Surface waves remain a raster detail. Geometry follows authored tiles and
+	# SetWaterLevel; finite shore boundaries and stepped pools stay distinct.
+	for surface in mesh.mesh.get_surface_count():
+		var arrays := mesh.mesh.surface_get_arrays(surface)
+		var positions: PackedVector3Array=arrays[Mesh.ARRAY_VERTEX].duplicate()
+		var uv2: PackedVector2Array=arrays[Mesh.ARRAY_TEX_UV2]
+		var indices: PackedInt32Array=arrays[Mesh.ARRAY_INDEX]
+		if indices.is_empty():
+			indices.resize(positions.size())
+			for i in indices.size():indices[i]=i
+		var groups: Dictionary={}
+		for at in range(0,indices.size()-2,3):
+			var id:=int(uv2[indices[at]].y)&63
+			if id>=_terrain.materials.size() or _terrain._lava[id]>.5:continue
+			var point: Vector3=mesh.global_transform*((positions[indices[at]]+positions[indices[at+1]]+positions[indices[at+2]])/3.0)
+			var width:=_terrain.sectors_x*EITerrain.SECTOR
+			var cell:=int(-point.z)*width+int(point.x)
+			if cell>=0 and cell<_terrain.liquid_ground.size() and _terrain.liquid_ground[cell]==14:id+=64
+			if not groups.has(id):groups[id]=PackedInt32Array()
+			for j in 3:groups[id].append(indices[at+j])
+		for i in positions.size():positions[i].y+=_terrain._level[int(uv2[i].y)&63]
+		arrays[Mesh.ARRAY_VERTEX]=positions
+		for id: int in groups:
+			arrays[Mesh.ARRAY_INDEX]=groups[id]
+			var mat:=StandardMaterial3D.new()
+			var geometry:=_append(arrays,Transform3D.IDENTITY,mat,false)
+			if geometry<0:continue
+			# Clear water absorbs red first. Swamp liquid extinguishes the bed
+			# quickly; existing sediment surface colour still overlays it.
+			var swamp: bool=id>=64
+			geometries[geometry]["dielectric"]=PackedFloat32Array([.48 if swamp else .12,.22 if swamp else .035,.6 if swamp else .018,1.333,1,0,0,0])
+			_add_instance(mesh,geometry,mesh.global_transform,surface,mesh.mesh)
+
 func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
 	for surface in source_mesh.get_surface_count():
 		# Only ArrayMesh exposes this query to scripts. PrimitiveMesh
@@ -235,6 +279,8 @@ func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
 			if source_mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
 		elif not source_mesh is PrimitiveMesh or source_mesh is PointMesh: continue
 		var material := mesh.get_active_material(surface)
+		var dielectric: PackedFloat32Array=material.get_meta("pt_dielectric",PackedFloat32Array()) if material else PackedFloat32Array()
+		if not dielectric.is_empty() and not path_transmission:continue
 		var key := "%s:%s:%s"%[source_mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
 		var morph: bool = source_mesh is ArrayMesh and source_mesh.get_blend_shape_count() > 0
 		if morph: key += ":"+str(mesh.get_instance_id())
@@ -244,6 +290,7 @@ func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
 			geometry = _append(source.arrays,Transform3D.IDENTITY,material,false)
 			if geometry >= 0:
 				_mesh_cache[key] = geometry
+				if dielectric.size()==8:geometries[geometry]["dielectric"]=dielectric.duplicate()
 				if morph:
 					_morph_geometries.append(geometry)
 					geometries[geometry].morph = {"node":weakref(mesh),"mesh":source_mesh,"surface":surface,

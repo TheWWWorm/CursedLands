@@ -382,6 +382,8 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 				code = code.replace("uniform bool soft_tracks = false;", "const bool soft_tracks = false;")
 			if not on("gfx_weather_surfaces"):
 				code = code.replace("ei_surface_fx.z", "0.0")
+	if code.contains("#define EI_WATER_FX"):
+		code=code.replace("void fragment()",preload("res://src/game/fx/path_trace_dielectric.gd").COMMON+"\nvoid fragment()")
 	if SceneRaytraceShader.applicable(code,lit):
 		code = SceneRaytraceShader.inject(code,cloud_shadows)
 	if _vol_fog:
@@ -917,6 +919,9 @@ static func ensure_globals() -> void:
 		return
 	_globals = true
 	SceneRaytraceShader.globals()
+	RenderingServer.global_shader_parameter_add(&"ei_pt_trans_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
+	for key in [&"ei_pt_trans_colour",&"ei_pt_trans_guide"]:
+		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D,null)
 	for k: StringName in GLOBALS:
 		var c: Color = GLOBALS[k]
 		RenderingServer.global_shader_parameter_add(k, RenderingServer.GLOBAL_VAR_TYPE_VEC3, Vector3(c.r, c.g, c.b))

@@ -1770,6 +1770,66 @@
       "args": [],
       "min_checks": 38,
       "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_transmission",
+      "script": "tools/tests/path_trace_transmission.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Actual dielectric Snell rays, Beer optical path length, two-interface glass, resource lifetime and opaque NRD/RR isolation",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 33,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_transmission_options",
+      "script": "tools/tests/path_trace_transmission_options.gd",
+      "summary": "PT_TRANSMISSION_OPTIONS",
+      "contract": "Refraction EN/RU/DE choices, help, fallback and actual window layout at 720p, 1440p and 4K",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 56,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_transmission_live",
+      "script": "tools/tests/path_trace_transmission_live.gd",
+      "summary": "PT_TRANSMISSION_LIVE",
+      "contract": "Campaign water and explicit glass, raster receiver coverage, changing levels, 1440p/4K and native RR when available",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 21,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_transmission_mobile_fallback",
+      "script": "tools/tests/path_trace_transmission_fallback.gd",
+      "summary": "PT_TRANSMISSION_FALLBACK",
+      "contract": "Water shader composition and visible unshaded glass fallback when PT is unavailable",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9,
+      "rendering_method": "mobile"
+    },
+    {
+      "id": "path_trace_transmission_gl_fallback",
+      "script": "tools/tests/path_trace_transmission_fallback.gd",
+      "summary": "PT_TRANSMISSION_FALLBACK",
+      "contract": "Water shader composition and visible unshaded glass fallback when PT is unavailable",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9,
+      "rendering_method": "gl_compatibility"
     }
   ]
 }

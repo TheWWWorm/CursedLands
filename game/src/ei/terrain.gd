@@ -790,6 +790,17 @@ void fragment() {
 		ei_wave_scale = swamp ? 0.0 : k;
 		EMISSION = (w * R + G) / max(A, 1e-3);
 		ALPHA = A;
+#if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
+		vec3 transmitted;
+		if (ei_transmission(wpos, gn, 1.0, PROJECTION_MATRIX * VIEW_MATRIX, transmitted)) {
+			// Replace only the transmitted background. Preserve the original
+			// surface pigment, sediment, foam, glints and chosen reflection.
+			ALBEDO *= A;
+			ei_wave_scale *= A;
+			EMISSION = w * R + G + (1.0 - A) * transmitted;
+			ALPHA = 1.0;
+		}
+#endif
 	}
 }
 """

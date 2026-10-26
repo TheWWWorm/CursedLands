@@ -80,6 +80,7 @@ var _rr_original: Compositor
 var _rr_compositor: Compositor
 var _rr_active := false
 var _rr_failed := false
+var _transmission_mode := false
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -106,6 +107,9 @@ func _process(dt: float) -> void:
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
 	var mode := "%s:%s:%s:%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc"),GameData.option("pt_denoiser"),GameData.option("pt_ray_reconstruction"),GameData.option("pt_restir")]
+	var transmission_mode:=path_mode and GameData.option("pt_refraction")>0
+	if transmission_mode!=_transmission_mode:
+		_release();_transmission_mode=transmission_mode;_mode=""
 	if mode != _mode or terrain != _terrain:
 		if terrain != _terrain or path_mode!=_path_mode: _release()
 		_path_mode=path_mode
@@ -215,6 +219,7 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,0))
 			RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
 			RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
+			RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
 			stats["active"]=true
 		stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
 	if _pending_ready:
@@ -248,6 +253,10 @@ func _process(dt: float) -> void:
 	if device is PathDevice:
 		stats["ray_reconstruction"]=device.ray_reconstruction
 		stats["rr_raw_frames"]=device.raw_reconstruction_frames
+		stats["transmission_active"]=device.transmission.active
+		stats["transmission_frames"]=device.transmission.frames
+		stats["transmission_resets"]=device.transmission.resets
+		stats["transmission_bytes"]=device.transmission.bytes
 		stats["restir_active"]=device._rtxdi_mode
 		stats["restir_frames"]=device.rtxdi.frames
 		stats["restir_resets"]=device.rtxdi.resets
@@ -285,6 +294,7 @@ func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dicti
 	if target is PathDevice:
 		changes["ray_reconstruction"]=_rr_active and target==device
 		changes["rtxdi"]=GameData.option("pt_restir")>0
+		changes["transmission"]=_transmission_mode
 		Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
 	# An active device is the visible target even while a recenter replacement
 	# builds. With no active scene, the candidate must finish privately first.
@@ -347,6 +357,7 @@ func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_gather._ground=_ground_cache
 	_gather._sources=_source_cache
 	_gather.path_materials=_path_mode
+	_gather.path_transmission=_transmission_mode
 	# No water-plane clipping: ceilings and underground rooms participate.
 	_gather.begin(terrain,camera.global_position,-1.0e20)
 	if device==null: _center=camera.global_position
@@ -382,7 +393,7 @@ func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
 			_pending_device.initial_poses=initial.poses
 			for geometry: Dictionary in _pending_scene.geometries:
 				_pending_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
-					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
+					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer,"dielectric":geometry.get("dielectric",PackedFloat32Array())})
 			for entry: Dictionary in _pending_scene.instances:
 				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask,
 					"lighting_offset":entry.get("lighting_offset",Vector3.ZERO)})
@@ -407,6 +418,9 @@ func _bind_outputs() -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",device.direct_sun if device is PathDevice else null)
+	if device is PathDevice:
+		RenderingServer.global_shader_parameter_set(&"ei_pt_trans_colour",device.transmission.colour)
+		RenderingServer.global_shader_parameter_set(&"ei_pt_trans_guide",device.transmission.guide)
 	_bound=true
 
 func _activate_candidate() -> void:
@@ -703,6 +717,9 @@ func _release() -> void:
 	_set_gi_active(false)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",0.0)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_colour",null)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_guide",null)
 	stats["active"]=false;stats["rebuilding"]=false
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
 	_cancel_candidate();_clear_failure()

@@ -8,7 +8,7 @@
     "License.md": "5575ad921bfe6027dc830887ff51ceb4097e31c2d538b6932cd4bbdf5c1899a9"
   },
   "sources": {
-    "path_trace.hlsl": "e16788657bf94882a4f534389616fa74881f165eaa81e99a20b355cb375188fd",
+    "path_trace.hlsl": "bec36b36f06375d26925341a69527ee988c175215f172d011e2e158176d76c48",
     "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
     "path_trace_sharc_resolve.hlsl": "a022bedb389a4bce8c4d53b77ffa88ca82ea50445ead8dc3f15b06a8173f533d",
     "builder": "f7d23ae8e397038aace9e043d2b2592032ba62b5d2b2a16d7f4b93db4b9a585d"

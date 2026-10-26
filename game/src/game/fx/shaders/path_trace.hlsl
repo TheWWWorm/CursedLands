@@ -569,6 +569,8 @@ void main() {
         current=hit;view=-direction;
     }
 }
+#elif defined(PATH_TRANSMISSION)
+#include "path_trace_transmission.hlsli"
 #elif defined(PATH_WATER_REFLECTION)
 [shader("raygeneration")]
 void main() {
@@ -1295,6 +1297,9 @@ void main(inout Surface result,Attributes attributes) {
     position.y=to_world._m13+mad(to_world._m10,object_position.x,mad(to_world._m11,object_position.y,to_world._m12*object_position.z));
     position.z=to_world._m23+mad(to_world._m20,object_position.x,mad(to_world._m21,object_position.y,to_world._m22*object_position.z));
     result.position=position;result.hit=1.0;
+#ifdef PATH_TRANSMISSION_HIT
+    result.hit=dot(result.normal,WorldRayDirection())<0.0?1.0:2.0;
+#endif
     result.instance_id=InstanceID();result.primitive_id=PrimitiveIndex();
     // Transform the object-space triangle normal with the inverse transpose.
     // Subtracting translated world vertices loses small facets far from zero.

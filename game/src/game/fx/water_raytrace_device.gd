@@ -128,6 +128,8 @@ func _compile() -> RDPipelineShader:
 	wrapped.shader = shader
 	return wrapped
 
+func instance_mask(_geometry_index: int, mask: int) -> int: return mask
+
 func _create_pipeline(program: RDPipelineShader) -> RID:
 	if programs!=null:return programs.pipeline(program)
 	var group := RDHitGroup.new();group.closest_hit_shader=program;group.any_hit_shader=program
@@ -206,7 +208,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 			if not instance.blas.is_valid(): _notify(&"prepared",[false]); return
 		instance.id = instance_id(placement.geometry,_instances.size())
 		instance.transform = placement.transform
-		instance.mask = placement.get("mask",255)
+		instance.mask = instance_mask(placement.geometry,placement.get("mask",255))
 		instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
 		instance.hit_sbt_range = hit_range
 		if instance.mask != 0: _active_instances[_instances.size()] = instance
@@ -338,18 +340,19 @@ func update_scene(changes: Dictionary) -> bool:
 		var instance := _instances[placement.index]
 		# PT may update only a lighting-origin offset. It does not move the
 		# traced geometry, so neither it nor a duplicate needs another TLAS.
-		if instance.transform==placement.transform and instance.mask==placement.mask:continue
+		var mask := instance_mask(_placement_geometry[placement.index],placement.mask)
+		if instance.transform==placement.transform and instance.mask==mask:continue
 		var was_visible := instance.mask!=0
 		instance.transform = placement.transform
-		instance.mask = placement.mask
-		if placement.mask != 0:
+		instance.mask = mask
+		if mask != 0:
 			instance.blas = _geometry_blas(_placement_geometry[placement.index])
 			if not instance.blas.is_valid(): _ready = false; _notify(&"prepared",[false]); return false
 			_active_instances[placement.index] = instance
 		else: _active_instances.erase(placement.index)
 		# Hidden transforms are retained for their next reveal, but there is
 		# no active descriptor to update until visibility changes.
-		changed = changed or was_visible or placement.mask!=0
+		changed = changed or was_visible or mask!=0
 	if changed and not _build_tlas():
 		_ready = false; _notify(&"prepared",[false]); return false
 	return true

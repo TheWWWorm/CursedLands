@@ -1,8 +1,11 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "f5a77c75ec0d90461f6681460fd744dfa8bba563fbf622a0e497aa1a99923172",
-  "source_sha256": "e16788657bf94882a4f534389616fa74881f165eaa81e99a20b355cb375188fd",
+  "builder_sha256": "5d7457df494e5b228828ef441e0bd9d14e5d707ba1324647f142e49011278576",
+  "source_sha256": "bec36b36f06375d26925341a69527ee988c175215f172d011e2e158176d76c48",
+  "includes": {
+    "path_trace_transmission.hlsli": "2411f711a10f6de90d93e037b26579d2b047c92bfe51b46a0c42b80a7eb9902f"
+  },
   "files": {
     "path_trace_raygen.dxil": "ec93b896e89ce9e69ab4a5e9418c1df6c0bef3d9e066481bd08a28707e1dc922",
     "path_trace_raygen.spv": "f41033ab296157168491b3ed8efab2ac00bfe85c750c85494867ba3f8b35ef8f",
@@ -29,6 +32,16 @@
     "path_trace_raygen_water_deep.dxil": "7d6db43229091c588a8dc2b1974a91aaf20eccc4fe082efeb0296bb551ae9ebd",
     "path_trace_raygen_water_deep.spv": "2980c571afd64d5986f1fc4de0ebd7e0b8a38f1327e4ca1a3068f4989a25c2dd",
     "path_trace_raygen_water_deep_no_emitters.dxil": "6cff92efd9e9fac6b5d7a6e329b4fef603e87c91d1706841d70ea80ed8daeee2",
-    "path_trace_raygen_water_deep_no_emitters.spv": "11220f233a06f46dbdf3a7ce90b5c57fbd96ef25f645886e8cd7d80f2c59fd60"
+    "path_trace_raygen_water_deep_no_emitters.spv": "11220f233a06f46dbdf3a7ce90b5c57fbd96ef25f645886e8cd7d80f2c59fd60",
+    "path_trace_raygen_transmission.dxil": "c5b4df547eb36626d0131bcf0330621ced63271d67dbf992fcb67d00f58c6213",
+    "path_trace_raygen_transmission.spv": "a96ba1ccc2e39e081fd9c1346c83020c2b7e8da360acbe8b7b85891e4959c7c4",
+    "path_trace_raygen_transmission_no_emitters.dxil": "06819c649b275950ce97eb1bb31430befce1b5b30d9a935d676e4bec7c1832fd",
+    "path_trace_raygen_transmission_no_emitters.spv": "320b7807806572633003e8e4ea82dcd01606c019a119ae8e5eb3311b45e9fa10",
+    "path_trace_closest_hit_transmission.dxil": "17e55370808fbbbec0158be4a63b973199fa5f721df70e856b3d2323e13c0796",
+    "path_trace_closest_hit_transmission.spv": "87da70a61556367c76b356d6690e9d3e5a42af8cd746a38d737a9e7bfb7e9403",
+    "path_trace_closest_hit_terrain_transmission.dxil": "16d9548d33362b0a1bb44217255de61a63bbf51f36130415010e1c5010a0c57e",
+    "path_trace_closest_hit_terrain_transmission.spv": "9380fd8e245c8dfee7ac10eb2eb1e5a52bb9372600b1d8fe483068742d69265b",
+    "path_trace_closest_hit_transitions_transmission.dxil": "2311a718a2dd81e7c5b7fc6a1274717c3dd5942282481dfba4638019946efaf8",
+    "path_trace_closest_hit_transitions_transmission.spv": "58f56ce85f43ddabae74849a324471bfc1d42a5fc99ff8a3ee3b8ac4982cf1d3"
   }
 }

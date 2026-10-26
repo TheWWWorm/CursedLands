@@ -8,6 +8,11 @@ const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
 const DIRECT_COMPOSITE = preload("res://src/game/fx/shaders/path_trace_direct_composite.glsl")
 const Sharc = preload("res://src/game/fx/path_trace_sharc.gd")
 const Rtxdi = preload("res://src/game/fx/path_trace_rtxdi.gd")
+const Transmission = preload("res://src/game/fx/path_trace_transmission.gd")
+var transmission := Transmission.new()
+var transmission_enabled := false
+var transmission_failed := false
+var _transmission_dirty := true
 var rtxdi := Rtxdi.new()
 var rtxdi_enabled := false
 var rtxdi_failed := false
@@ -120,6 +125,9 @@ func extra_filter_uniforms(raw_targets: Array[RID]) -> Array[RDUniform]:
 # placement ID, including when hidden instances are removed from the TLAS.
 func instance_id(_geometry_index: int, placement_index: int) -> int: return placement_index
 
+func instance_mask(geometry_index: int, mask: int) -> int:
+	return (8 if (mask&1)!=0 else 0) if not _geometry[geometry_index].get("dielectric",PackedFloat32Array()).is_empty() else mask
+
 func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	if terrain.data.is_empty(): terrain.data.resize(Terrain.HEADER)
 	_terrain_data = _own(_rd.storage_buffer_create(terrain.data.size(),terrain.data))
@@ -224,6 +232,7 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 	return uniforms
 
 func update_scene(changes: Dictionary) -> bool:
+	if not changes.get("instances",[]).is_empty() or not changes.get("poses",[]).is_empty():_transmission_dirty=true
 	if changes.has("ray_reconstruction") and ray_reconstruction!=bool(changes.ray_reconstruction):
 		ray_reconstruction=changes.ray_reconstruction
 		_history_valid=false;_direct_valid=false;nrd.reset()
@@ -379,6 +388,9 @@ func _update_motion(changes: Dictionary) -> bool:
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	if changes.has("transmission") and transmission_enabled!=bool(changes.transmission):
+		transmission_enabled=changes.transmission;transmission_failed=false;_transmission_dirty=true
+	if not transmission_enabled and transmission.active:transmission.dispose()
 	if changes.has("rtxdi") and rtxdi_enabled!=bool(changes.rtxdi):
 		rtxdi_enabled=changes.rtxdi;rtxdi_failed=false;rtxdi.invalidate()
 	var di:=rtxdi_enabled and frame.decode_float(145*4)<=8.0 and not rtxdi_failed
@@ -417,6 +429,10 @@ func trace_frame(frame: PackedByteArray) -> bool:
 		if not _upload_frame(frame):return false
 	var ok:=super.trace_frame(frame)
 	if ok and _rtxdi_mode:rtxdi.finish(frame)
+	if ok and transmission_enabled and not transmission_failed:
+		if not transmission.render(self,frame,_transmission_dirty):
+			transmission_failed=true;transmission.dispose()
+		_transmission_dirty=false
 	return ok
 
 func _trace_sharc(frame: PackedByteArray) -> bool:
@@ -587,6 +603,7 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 	return true
 
 func dispose() -> void:
+	transmission.dispose()
 	direct_sun.texture_rd_rid=RID()
 	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose();sharc.dispose();rtxdi.dispose()
 	super.dispose()

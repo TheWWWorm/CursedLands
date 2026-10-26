@@ -37,14 +37,20 @@ def main():
                 name = 'raygen_water' + ('_deep' if deep else '') + ('_no_emitters' if no_emitters else '')
                 definitions = ['PATH_WATER_REFLECTION'] + (['PATH_ROULETTE'] if deep else []) + (['PATH_NO_EMITTERS'] if no_emitters else [])
                 stages.append((name, 'raygen', definitions))
+    if args.shader == 'path_trace':
+        for no_emitters in (False, True):
+            stages.append(('raygen_transmission'+('_no_emitters' if no_emitters else ''), 'raygen', ['PATH_TRANSMISSION']+(['PATH_NO_EMITTERS'] if no_emitters else [])))
+        for name, definitions in [('closest_hit', []), ('closest_hit_terrain', ['PATH_TERRAIN_MATERIALS']), ('closest_hit_transitions', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS'])]:
+            stages.append((name+'_transmission', 'closest_hit', definitions+['PATH_TRANSMISSION_HIT']))
     prefix = args.shader + '_'
     source = SHADERS / (args.shader + '.hlsl')
     manifest_path = SHADERS / (args.shader + '_build.json')
+    includes = {p.name: sha(p) for p in SHADERS.glob('path_trace_transmission.hlsli')} if args.shader == 'path_trace' else {}
     if args.check:
         manifest = json.loads(manifest_path.read_text())
         expected = {prefix + name + '.' + backend for name, _, _ in stages for backend in ['dxil', 'spv']}
         if (set(manifest['files']) != expected or manifest['source_sha256'] != sha(source)
-                or manifest.get('builder_sha256') != sha(Path(__file__))):
+                or manifest.get('builder_sha256') != sha(Path(__file__)) or manifest.get('includes', {}) != includes):
             parser.error('Shader source, builder or stage list differs from the build manifest. Rebuild both backends.')
         for name, digest in manifest['files'].items():
             if not (SHADERS / name).is_file() or sha(SHADERS / name) != digest:
@@ -83,7 +89,7 @@ def main():
         for name in outputs:
             (SHADERS / name).write_bytes((Path(work) / name).read_bytes())
     manifest = {'compiler': version, 'compiler_sha256': sha(compiler), 'builder_sha256': sha(Path(__file__)),
-                'source_sha256': sha(source), 'files': outputs}
+                'source_sha256': sha(source), 'includes': includes, 'files': outputs}
     manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
     print('Built', len(outputs), 'matching ray-tracing shader binaries')
 

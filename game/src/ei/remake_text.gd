@@ -51,6 +51,8 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"PT refraction": ["Преломление PT", "PT-Lichtbrechung"],
+	"Traces bent rays through water and explicitly authored glass, with colour absorption over distance. Uses extra GPU time and memory. Water follows its base surface; small waves stay visual details. Moving views can be noisy. Ordinary transparency remains available outside the traced scene.": ["Трассирует преломлённые лучи через воду и явно заданное стекло с поглощением цвета по длине пути. Требует дополнительного времени GPU и видеопамяти. Вода использует базовую поверхность; мелкие волны остаются визуальной деталью. При движении возможен шум. За пределами трассируемой сцены сохраняется обычная прозрачность.", "Verfolgt gebrochene Strahlen durch Wasser und ausdrücklich definierte Glasmaterialien mit entfernungsabhängiger Farbabsorption. Benötigt zusätzliche GPU-Zeit und Grafikspeicher. Wasser folgt seiner Grundfläche; kleine Wellen bleiben visuelle Details. Bewegte Ansichten können rauschen. Außerhalb der erfassten Szene bleibt normale Transparenz verfügbar."],
 	"PT rendered frame target": ["Целевая частота кадров PT", "PT-Zielbildrate"],
 	"30 FPS": ["30 кадр/с", "30 FPS"],
 	"45 FPS": ["45 кадр/с", "45 FPS"],
