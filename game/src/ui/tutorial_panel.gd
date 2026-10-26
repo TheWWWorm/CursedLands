@@ -36,8 +36,12 @@ var _guide: Button
 var _book: Button
 var _standalone_wiki: WikiPanel
 var _signature := ""
+var _sampled_scale := -1.0
 
 func _ready() -> void:
+	# The card uses archive HUD units, then scales to the display. Rasterize
+	# glyphs and vector icons at that final scale, including Cyrillic text.
+	oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -98,8 +102,9 @@ func _ready() -> void:
 	hide()
 	if hud:
 		_book = _button("", open_guide)
-		_book.icon = load("res://icons/wiki/book.svg")
+		_book.icon = load("res://icons/wiki/book.svg").duplicate()
 		_book.expand_icon = true
+		_book.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		_book.tooltip_text = RemakeText.t("Getting started")
 		get_parent().add_child.call_deferred(_book)
 
@@ -196,6 +201,7 @@ func _present(id: String, manual := false) -> void:
 	if manual: TutorialProgress.record(id, "read")
 	_refresh()
 	show()
+	_sampled_scale = -1.0
 	modulate.a = 1.0
 	if not manual and GameSound.instance: GameSound.instance.ui(CUE_SOUND)
 
@@ -258,7 +264,15 @@ func _process(dt: float) -> void:
 		# Match that HUD explicitly so its book stays readable at high DPI.
 		var side := maxf(44.0 if TouchInput.enabled else 28.0, 28.0 * hud.top_scale())
 		_book.size = Vector2.ONE * side
-		_book.add_theme_constant_override("icon_max_width", roundi(side * 20.0 / 28.0))
+		var icon_width := roundi(side * 20.0 / 28.0)
+		_book.add_theme_constant_override("icon_max_width", icon_width)
+		# This sibling is laid out in physical pixels, unlike the scaled card.
+		# Its private vector resource follows the requested physical icon size.
+		(_book.icon as DPITexture).base_scale = maxf(1.0, ceilf(float(icon_width) / 60.0 * 4.0) / 4.0)
+		for state in ["normal", "hover", "pressed", "focus"]:
+			var box := _book.get_theme_stylebox(state)
+			for edge in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
+				box.set_content_margin(edge, (side - icon_width) * 0.5)
 		_book.tooltip_text = RemakeText.t("Getting started")
 		var gap := maxf(8.0, 6.0 * hud.top_scale())
 		_book.position = Vector2(size.x - side - gap, hud.top_bottom() + gap) if hud.portrait() else Vector2(hud._actions.offset_right + gap, hud.top_bottom() + gap)
@@ -369,6 +383,13 @@ func _layout() -> void:
 	_card.size.x = width
 	_card.size.y = _card.get_combined_minimum_size().y
 	_card.scale = Vector2.ONE * scale_factor
+	if not is_equal_approx(_sampled_scale,scale_factor):
+		# Godot 4.7 does not refresh descendants' inherited sampling when
+		# only an ancestor transform changes (or changes while hidden).
+		# Re-propagate it after the new scale is visible, including reopening.
+		_card.oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_DISABLED
+		_card.oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
+		_sampled_scale=scale_factor
 	_card.position = Vector2(clampf(x, 8, size.x - width * scale_factor - 8), maxf(8, bottom - _card.size.y * scale_factor))
 
 ## Resolve the teaching cue from the live control, never archive coordinates.

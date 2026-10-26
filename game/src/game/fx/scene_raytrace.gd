@@ -151,7 +151,12 @@ func _process(dt: float) -> void:
 		stats["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var building := _gather if _gather!=null else _pending_scene
 	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
+		# A saved/first-person camera may settle after loading has started a
+		# snapshot. Retiring that snapshot must not retire the explicit loading
+		# request too: its replacement still owes the player a lit first frame.
+		var keep_cover := not _preparation_owner.is_empty()
 		_cancel_candidate()
+		if keep_cover: _begin_preparation()
 	# Only explicit settings requests own a preparation cover. Live geometry
 	# replacement continues rendering through the same atomic handoff as travel.
 	if prepare:
@@ -249,6 +254,8 @@ func _process(dt: float) -> void:
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 	stats["program_compilations"]=_programs.compilations
 	stats["program_cache_hits"]=_programs.hits
+	stats["compute_program_compilations"]=_programs.compute_compilations
+	stats["compute_program_cache_hits"]=_programs.compute_hits
 	if device!=null:stats["build_timings"]=device.build_timings.duplicate()
 	if device is PathDevice:
 		stats["ray_reconstruction"]=device.ray_reconstruction

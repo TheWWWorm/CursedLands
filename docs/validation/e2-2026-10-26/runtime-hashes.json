@@ -1,0 +1,32 @@
+[
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.pck",
+    "bytes": 24502864,
+    "sha256": "fc0ecbe5bb77d66171053fd7c700b9fdf718715ed578b7096735aa2cbff64005"
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.pck",
+    "bytes": 24508884,
+    "sha256": "972b7abbf6c40ff3075a787108cc3ac83169ca8eeb24b86f61c1c283c6dac1f8"
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/final.pck",
+    "bytes": 24509396,
+    "sha256": "78c5bc3c87812e48e8995712b9e7dd38bc729aba3dae5502b12df78899c1345a"
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/final.x86_64",
+    "bytes": 82141352,
+    "sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa"
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/windows-candidate/CursedLands.pck",
+    "bytes": 24508820,
+    "sha256": "20815c106005d3972a727f9aa4755a567a67e1b08fefd7d9cf5b898dbe71fe3f"
+  },
+  {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/windows-candidate/CursedLands.exe",
+    "bytes": 94215680,
+    "sha256": "1785a5d53373c17afe85ace7daae6bf85470bee83c762031c5156622ce2baf70"
+  }
+]

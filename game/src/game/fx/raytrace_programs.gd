@@ -4,6 +4,9 @@ extends RefCounted
 var _rd: RenderingDevice
 var _programs := {}
 var _pipelines := {}
+var _compute := {}
+var compute_compilations := 0
+var compute_hits := 0
 var _owned: Array[RID] = []
 var compilations := 0
 var hits := 0
@@ -32,7 +35,25 @@ func pipeline(program: RDPipelineShader) -> RID:
 	if result.is_valid():_owned.append(result);_pipelines[key]=result
 	return result
 
+## Reconstruction and cache resolve programs are immutable too. DX12 may
+## translate SPIR-V and compile a PSO here; repeat scene buffers must not
+## repeat that work while the player is moving. Descriptor sets stay private.
+func compute(rd: RenderingDevice,spirv: RDShaderSPIRV,label: String) -> Array[RID]:
+	_rd=rd
+	var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256)
+	digest.update(spirv.bytecode_compute)
+	var key:=digest.finish().hex_encode()
+	if _compute.has(key):compute_hits+=1;return _compute[key]
+	var shader:=rd.shader_create_from_spirv(spirv,label)
+	if not shader.is_valid():return [RID(),RID()]
+	var pipeline:=rd.compute_pipeline_create(shader)
+	if not pipeline.is_valid():rd.free_rid(shader);return [RID(),RID()]
+	_owned.append(shader);_owned.append(pipeline)
+	var pair:Array[RID]=[shader,pipeline]
+	_compute[key]=pair;compute_compilations+=1
+	return pair
+
 func dispose() -> void:
 	if _rd!=null:
 		for i in range(_owned.size()-1,-1,-1):_rd.free_rid(_owned[i])
-	_owned.clear();_programs.clear();_pipelines.clear();_rd=null
+	_owned.clear();_programs.clear();_pipelines.clear();_compute.clear();_rd=null

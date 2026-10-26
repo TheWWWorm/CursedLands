@@ -1,0 +1,83 @@
+{
+	"checks": 14,
+	"failures": [],
+	"observations": [
+		{
+			"final_programs": 6,
+			"lit_red": 0.706070634509173,
+			"original_red": 0.691946653042256,
+			"prepared_programs": 6,
+			"restored_red": 0.694539217785511,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"adaptive_changes": 0,
+				"adaptive_gpu_ms": 0.0,
+				"adaptive_scale": 1.0,
+				"adaptive_target_fps": 0,
+				"build_timings": {
+					"extra_ms": 13.793,
+					"largest_step_ms": 0.761,
+					"materials_ms": 2.245,
+					"placements_ms": 3.227,
+					"program_ms": 0.051,
+					"resources_ms": 29.165,
+					"texture_upload_ms": 6.582,
+					"texture_upload_step_ms": 0.622,
+					"textures_ms": 3.223,
+					"vertices_ms": 6.62
+				},
+				"compute_program_cache_hits": 3,
+				"compute_program_compilations": 4,
+				"cpu_update_ms": 0.3,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2411,
+				"gi_samples": 0,
+				"history_handoffs": 0,
+				"history_limit": 8.0,
+				"history_matched_surfaces": 0,
+				"history_reused": true,
+				"instances": 2591,
+				"light_history_limited": false,
+				"lights": 2,
+				"local_light_shadow_samples": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"program_cache_hits": 6,
+				"program_compilations": 6,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"sharc_active": true,
+				"sharc_failed": false,
+				"sharc_frames": 20,
+				"sharc_resets": 1,
+				"size": [
+					640,
+					360
+				],
+				"snapshot_generation": 2,
+				"supported": true,
+				"terrain_material_build_us": 0,
+				"terrain_material_bytes": 64,
+				"terrain_material_triangles": 0,
+				"trace_render_scale": 1.0,
+				"triangles": 174257,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			}
+		}
+	]
+}

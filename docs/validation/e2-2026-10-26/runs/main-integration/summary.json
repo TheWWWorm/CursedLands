@@ -1,0 +1,115 @@
+{
+  "integration_base": "cf214d3005437ddef459afdc4afa8bbcf61247cd",
+  "source_manifest": "integrated-source.json.gz",
+  "source_files_matched_before_commit": 2648,
+  "working_patch_sha256": "ddaf96f4bfe488d1b11ec7470762c31a63bea5f9481bd9704b9f0fe5d4b4d7dd",
+  "source_match": "All recorded game/test/tool file hashes and the complete tracked working patch match the previously executed integration run. No game code changed during this commit step.",
+  "gpu_assertions": 369,
+  "gpu_runs": 11,
+  "cases": [
+    {
+      "case": "integrated-di-path_trace_emitter_live",
+      "checks": 15,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-di-path_trace_emitter_live.json",
+      "log": "integrated-di-path_trace_emitter_live.log.gz"
+    },
+    {
+      "case": "integrated-dx12-path_trace_recenter_programs",
+      "checks": 12,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-dx12-path_trace_recenter_programs.json",
+      "log": "integrated-dx12-path_trace_recenter_programs.log.gz"
+    },
+    {
+      "case": "integrated-dx12-path_trace_rtxdi_live",
+      "checks": 38,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-dx12-path_trace_rtxdi_live.json",
+      "log": "integrated-dx12-path_trace_rtxdi_live.log.gz"
+    },
+    {
+      "case": "integrated-dx12-path_trace_transmission_live",
+      "checks": 25,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-dx12-path_trace_transmission_live.json",
+      "log": "integrated-dx12-path_trace_transmission_live.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_healing_glow",
+      "checks": 8,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_healing_glow.json",
+      "log": "integrated-linux-path_trace_healing_glow.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_lifecycle",
+      "checks": 169,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_lifecycle.json",
+      "log": "integrated-linux-path_trace_lifecycle.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_loading_recenter",
+      "checks": 14,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_loading_recenter.json",
+      "log": "integrated-linux-path_trace_loading_recenter.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_nrd_directional",
+      "checks": 21,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_nrd_directional.json",
+      "log": "integrated-linux-path_trace_nrd_directional.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_recenter_programs",
+      "checks": 12,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_recenter_programs.json",
+      "log": "integrated-linux-path_trace_recenter_programs.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_transmission",
+      "checks": 33,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_transmission.json",
+      "log": "integrated-linux-path_trace_transmission.log.gz"
+    },
+    {
+      "case": "integrated-linux-path_trace_water",
+      "checks": 22,
+      "failures": 0,
+      "negative_control": false,
+      "result": "integrated-linux-path_trace_water.json",
+      "log": "integrated-linux-path_trace_water.log.gz"
+    },
+    {
+      "case": "negative-di-path_trace_emitter_live",
+      "checks": 15,
+      "failures": 3,
+      "negative_control": true,
+      "result": "negative-di-path_trace_emitter_live.json",
+      "log": "negative-di-path_trace_emitter_live.log.gz"
+    }
+  ],
+  "fresh_checks": [
+    "13 Python unit tests: DLSS camera contract and regression runner, all passed",
+    "EN/RU/DE translation coverage: 0 errors",
+    "git diff --check passed"
+  ],
+  "prior_e2_coverage": "accepted-checks.json remains the 2390-assertion E2 aggregate; it overlaps this integration evidence and is not summed with it.",
+  "known_open_issues": "Mountain flashes remain unresolved; the exact recorded PT delay and stutters are not fully attributed.",
+  "scope": "Local main commit only; no push or release."
+}

@@ -1,0 +1,62 @@
+{
+  "exit": 1,
+  "errors": [
+    "FAIL first visible emitter compiles no PT or SHaRC programs during play",
+    "FAIL moving emission reuses prepared programs",
+    "FAIL last emitter expiry reuses the prepared lean programs",
+    "No passing summary: ['PATH_EMITTER_LIVE 15 checks 3 failures']"
+  ],
+  "summary": [
+    "PATH_EMITTER_LIVE 15 checks 3 failures"
+  ],
+  "seconds": 67.81,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-merge-main-20261026/candidate-negative/CursedLands.x86_64",
+    "--display-driver",
+    "x11",
+    "--render-thread",
+    "separate",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=/home/llm2x/Documents/EI/local/runtime/reference/base",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/pt-merge-main-20261026/evidence/negative-di-path_trace_emitter_live/fixtures/path_trace_emitter_live.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/pt-merge-main-20261026/evidence/negative-di-path_trace_emitter_live",
+    "--pt-deep",
+    "--pt-sharc",
+    "--pt-rtxdi"
+  ],
+  "runtime": {
+    "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-linux-x86_64",
+    "main": "cf214d3005437ddef459afdc4afa8bbcf61247cd",
+    "sha256": {
+      "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "CursedLands.pck": "31036342619befc2648ddcf7792f96f42cbb29863b3848168d4958c1b236fab9",
+      "libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9",
+      "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+      "src/native/bin/libinstaller_lzma.so": "cab9e1b05c7c41d7b54bc49fe069b79fe41f55448bbc572bea5b545fff5e349f",
+      "src/native/bin/libterrain_search_android.so": "b056999aac385898541d1861442c9291b606f6ec241d942a5f1f99c50a56d9c7",
+      "src/native/bin/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "src/native/bin/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "src/native/bin/libpath_nrd.so": "08e4b7471e5c0eb8fc1be3431e6df9737f9799b690f466e1968b4bdef7c7f194",
+      "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+      "src/native/bin/libterrain_search.so": "4119d111f6770ed2f39e0f8d5ac27a4e2aaa32987be31d9e1e3e6bdd899ba8d9"
+    },
+    "integrated_source_sha256": "145910767a9c43114486e1d94afeff7147aca18485222d72c2b5a754b35cd0a3",
+    "uncommitted_main_work_included": true,
+    "negative_control": "Only RTXDI emitter prewarm omitted"
+  },
+  "fixture_sha256": "7de690b131e5bbe1a5bf98d509c1bd3ac0f645faf23442d6d329f92543d21681"
+}

@@ -1,0 +1,146 @@
+{
+  "note": "Latest accepted result for each distinct case. Related unchanged UI/animation/spell cases retain earlier validated packs; follow-up PT cases use the prepared pack. Failed attempts and baselines remain separate. This is not one monolithic final-pack run.",
+  "cases": {
+    "attack_path_current_target": {
+      "checks": 41,
+      "failures": 0,
+      "evidence": "runs/attack-after/results.json",
+      "game_source_sha256": "113775c5a10ea4733073b97793739896c8b496f3a1e9ebe40d6a138d8d0fc848"
+    },
+    "cast_posture_queue": {
+      "checks": 12,
+      "failures": 0,
+      "evidence": "runs/attack-after/results.json",
+      "game_source_sha256": "113775c5a10ea4733073b97793739896c8b496f3a1e9ebe40d6a138d8d0fc848"
+    },
+    "attack_after_action": {
+      "checks": 25,
+      "failures": 0,
+      "evidence": "runs/attack-after/results.json",
+      "game_source_sha256": "113775c5a10ea4733073b97793739896c8b496f3a1e9ebe40d6a138d8d0fc848"
+    },
+    "contextual_tutorials": {
+      "checks": 496,
+      "failures": 0,
+      "evidence": "runs/ui-resize-fixed/results.json",
+      "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c"
+    },
+    "high_resolution_ui": {
+      "checks": 108,
+      "failures": 0,
+      "evidence": "runs/ui-resize-fixed/results.json",
+      "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c"
+    },
+    "spell_lighting_gallery_pt": {
+      "checks": 85,
+      "failures": 0,
+      "evidence": "runs/spells-pt-final/results.json",
+      "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c"
+    },
+    "spell_effect_lighting": {
+      "checks": 134,
+      "failures": 0,
+      "evidence": "runs/spell-outcomes-2/results.json",
+      "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9"
+    },
+    "healing_presentation": {
+      "checks": 22,
+      "failures": 0,
+      "evidence": "runs/spell-outcomes-2/results.json",
+      "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9"
+    },
+    "path_trace_loading_recenter": {
+      "checks": 14,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "shader_compilation_scene": {
+      "checks": 62,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "path_trace_healing_glow": {
+      "checks": 8,
+      "failures": 0,
+      "evidence": "runs/production-thread-final/results.json",
+      "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c"
+    },
+    "path_trace_recenter_programs": {
+      "checks": 12,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "equipment_animation_continuity": {
+      "checks": 56,
+      "failures": 0,
+      "evidence": "runs/related-headless/results.json",
+      "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9"
+    },
+    "creature_weapon_animations": {
+      "checks": 196,
+      "failures": 0,
+      "evidence": "runs/related-headless/results.json",
+      "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9"
+    },
+    "local_shadow_fades": {
+      "checks": 726,
+      "failures": 0,
+      "evidence": "runs/related-headless/results.json",
+      "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9"
+    },
+    "spell_lighting_gallery": {
+      "checks": 42,
+      "failures": 0,
+      "evidence": "runs/related-final/results.json",
+      "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c"
+    },
+    "vegetation_warmup": {
+      "checks": 124,
+      "failures": 0,
+      "evidence": "runs/followup/registered-final/results.json",
+      "game_source_sha256": "a9e040140a636d9730d79ef383cecdd4af3ca16981e3b8a053f7366caa1875db"
+    },
+    "lightning_pipeline_warmup": {
+      "checks": 26,
+      "failures": 0,
+      "evidence": "runs/followup/registered-final/results.json",
+      "game_source_sha256": "a9e040140a636d9730d79ef383cecdd4af3ca16981e3b8a053f7366caa1875db"
+    },
+    "path_trace_sharc": {
+      "checks": 25,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "path_trace_emitter_live": {
+      "checks": 14,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "path_trace_emitter_sharc": {
+      "checks": 14,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "path_trace_emitter_deep_sharc": {
+      "checks": 14,
+      "failures": 0,
+      "evidence": "runs/followup/prepared-final/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    },
+    "spell_effect_lighting_lia": {
+      "checks": 134,
+      "failures": 0,
+      "evidence": "runs/followup/lia-spells/results.json",
+      "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b"
+    }
+  },
+  "case_count": 23,
+  "checks": 2390,
+  "failures": 0
+}

@@ -1,0 +1,380 @@
+[
+  {
+    "run": "attack-after",
+    "case": "attack_path_current_target",
+    "result": {
+      "checks": 41,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "attack-after",
+    "case": "cast_posture_queue",
+    "result": {
+      "checks": 12,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "attack-after",
+    "case": "attack_after_action",
+    "result": {
+      "checks": 25,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "attack-before",
+    "case": "attack_after_action",
+    "result": null,
+    "passed": false
+  },
+  {
+    "run": "attack-before-2",
+    "case": "attack_after_action",
+    "result": {
+      "checks": 25,
+      "failures": 6
+    },
+    "passed": false
+  },
+  {
+    "run": "baseline-final",
+    "case": "high_resolution_ui",
+    "result": {
+      "checks": 108,
+      "failures": 48
+    },
+    "passed": false
+  },
+  {
+    "run": "baseline-final",
+    "case": "spell_effect_lighting",
+    "result": {
+      "checks": 130,
+      "failures": 57
+    },
+    "passed": false
+  },
+  {
+    "run": "gallery",
+    "case": "shader_compilation_scene",
+    "result": {
+      "checks": 62,
+      "failures": 3
+    },
+    "passed": false
+  },
+  {
+    "run": "gallery",
+    "case": "spell_lighting_gallery",
+    "result": {
+      "checks": 42,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "preparation-final",
+    "case": "shader_compilation_scene",
+    "result": {
+      "checks": 65,
+      "failures": 1
+    },
+    "passed": false
+  },
+  {
+    "run": "production-thread-final",
+    "case": "path_trace_loading_recenter",
+    "result": {
+      "checks": 14,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "production-thread-final",
+    "case": "shader_compilation_scene",
+    "result": {
+      "checks": 62,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "production-thread-final",
+    "case": "path_trace_healing_glow",
+    "result": {
+      "checks": 8,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "production-thread-final",
+    "case": "path_trace_recenter_programs",
+    "result": {
+      "checks": 12,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "pt-cache-after",
+    "case": "path_trace_loading_recenter",
+    "result": {
+      "checks": 14,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "pt-cache-after",
+    "case": "shader_compilation_scene",
+    "result": {
+      "checks": 62,
+      "failures": 3
+    },
+    "passed": false
+  },
+  {
+    "run": "pt-cache-after",
+    "case": "path_trace_healing_glow",
+    "result": {
+      "checks": 8,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "pt-cache-after",
+    "case": "path_trace_recenter_programs",
+    "result": {
+      "checks": 12,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "pt-healing-before",
+    "case": "path_trace_healing_glow",
+    "result": {
+      "checks": 8,
+      "failures": 3
+    },
+    "passed": false
+  },
+  {
+    "run": "pt-related",
+    "case": "shader_compilation_scene",
+    "result": {
+      "checks": 62,
+      "failures": 5
+    },
+    "passed": false
+  },
+  {
+    "run": "pt-related",
+    "case": "path_trace_healing_glow",
+    "result": {
+      "checks": 8,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "recenter-after",
+    "case": "path_trace_loading_recenter",
+    "result": {
+      "checks": 14,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "recenter-before",
+    "case": "path_trace_loading_recenter",
+    "result": null,
+    "passed": false
+  },
+  {
+    "run": "related-final",
+    "case": "shader_compilation_scene",
+    "result": {
+      "checks": 62,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "related-final",
+    "case": "spell_lighting_gallery",
+    "result": {
+      "checks": 42,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "related-headless",
+    "case": "equipment_animation_continuity",
+    "result": {
+      "checks": 56,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "related-headless",
+    "case": "creature_weapon_animations",
+    "result": {
+      "checks": 196,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "related-headless",
+    "case": "healing_presentation",
+    "result": null,
+    "passed": false
+  },
+  {
+    "run": "related-headless",
+    "case": "local_shadow_fades",
+    "result": {
+      "checks": 726,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "spell-outcomes",
+    "case": "spell_effect_lighting",
+    "result": {
+      "checks": 134,
+      "failures": 2
+    },
+    "passed": false
+  },
+  {
+    "run": "spell-outcomes-2",
+    "case": "spell_effect_lighting",
+    "result": {
+      "checks": 134,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "spell-outcomes-2",
+    "case": "healing_presentation",
+    "result": {
+      "checks": 22,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "spells-after",
+    "case": "spell_effect_lighting",
+    "result": {
+      "checks": 92,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "spells-before",
+    "case": "spell_effect_lighting",
+    "result": null,
+    "passed": false
+  },
+  {
+    "run": "spells-pt-final",
+    "case": "spell_lighting_gallery_pt",
+    "result": {
+      "checks": 85,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "ui-after",
+    "case": "contextual_tutorials",
+    "result": {
+      "checks": 496,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "ui-after",
+    "case": "high_resolution_ui",
+    "result": {
+      "checks": 108,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "ui-before",
+    "case": "high_resolution_ui",
+    "result": null,
+    "passed": false
+  },
+  {
+    "run": "ui-before-2",
+    "case": "high_resolution_ui",
+    "result": null,
+    "passed": false
+  },
+  {
+    "run": "ui-before-3",
+    "case": "high_resolution_ui",
+    "result": {
+      "checks": 99,
+      "failures": 39
+    },
+    "passed": false
+  },
+  {
+    "run": "ui-final",
+    "case": "high_resolution_ui",
+    "result": {
+      "checks": 108,
+      "failures": 6
+    },
+    "passed": false
+  },
+  {
+    "run": "ui-resize-fixed",
+    "case": "contextual_tutorials",
+    "result": {
+      "checks": 496,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "ui-resize-fixed",
+    "case": "high_resolution_ui",
+    "result": {
+      "checks": 108,
+      "failures": 0
+    },
+    "passed": true
+  },
+  {
+    "run": "ui-safe",
+    "case": "high_resolution_ui",
+    "result": {
+      "checks": 108,
+      "failures": 6
+    },
+    "passed": false
+  }
+]

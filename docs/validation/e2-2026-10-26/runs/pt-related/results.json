@@ -1,0 +1,133 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9",
+  "manifest_sha256": "3777be76894b0f6106bf9373d41025e028dc883f6adb241a2df58dbc6d0e9986",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "shader_compilation_scene",
+      "script": "tools/tests/shader_compilation_scene.gd",
+      "script_sha256": "d190e87ed3ec8ec49b73dd5cce9e17d024e9144cfeb9533eb76a3b5fc985c7ea",
+      "contract": "Preserve existing shader compilation scene regression.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 68.78,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/shader_compilation_scene/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/shader_compilation_scene/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/shader_compilation_scene/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/shader_compilation_scene/tools/tests/shader_compilation_scene.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/shader_compilation_scene/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "shader_compilation_scene/run.log",
+      "passed": false,
+      "result": {
+        "checks": 62,
+        "failures": 5
+      },
+      "errors": [
+        "FAIL initial-path: preparation covers the campaign view",
+        "FAIL initial-path: actual presented cover was captured before removal",
+        "FAIL quality-resize: explicit requests alone create a scene preparation owner",
+        "FAIL quality-resize: controller progresses while its visible single-player cover owns the pause",
+        "FAIL quality-resize: actual presented cover was captured before removal",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "path_trace_healing_glow",
+      "script": "tools/tests/path_trace_healing_glow.gd",
+      "script_sha256": "0f034bf84d979504fa7b1e0dfb8af4e335eabdd7e9541cf1261ee8ae67595052",
+      "contract": "Actual healing sparks illuminate nearby original cave surfaces on their first PT frame and extinguish with their particles.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 44.69,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/path_trace_healing_glow/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/path_trace_healing_glow/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/path_trace_healing_glow/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/path_trace_healing_glow/tools/tests/path_trace_healing_glow.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-related/path_trace_healing_glow/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "path_trace_healing_glow/run.log",
+      "passed": true,
+      "result": {
+        "checks": 8,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.pck",
+    "sha256": "0a469e725fef5e284a84977d0f206a03f79b21a0d5aca1762af9d04b40084dfb"
+  },
+  "passed": false
+}

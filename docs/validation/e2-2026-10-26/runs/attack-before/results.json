@@ -1,0 +1,53 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "87fa158baf75aa8d6ce4c6ec1618f0b8f876ca7481c743ea8ba4820eaedc4991",
+  "manifest_sha256": "f558c56484508b2942680040b519cc9a0137caca0096b06a9ee91001896a4c8d",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "attack_after_action",
+      "script": "tools/tests/attack_after_action.gd",
+      "script_sha256": "30e67ff7a20f066b68f7997df8eda5f336cf9d79c7a191b78d0cbd1828e28c2d",
+      "contract": "Queued direct and targeted dagger attacks select combat clips after completed casts/hits; snapshots retain the same posture.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 5.57,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/attack_after_action.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "attack_after_action/run.log",
+      "passed": false,
+      "result": null,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"tag\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/attack_after_action.gd\" with error \"Parse error\".",
+        "ERROR: Gameplay test could not be instantiated",
+        "Expected exactly one ATTACK_AFTER_ACTION summary, found 0",
+        "Process exit: 2"
+      ],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": false
+}

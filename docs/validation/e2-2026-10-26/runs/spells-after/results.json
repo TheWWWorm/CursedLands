@@ -1,0 +1,50 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "295cf204dd03598a828949aef7c7ef183a9ee143c4dfe748a1726f3df18d621e",
+  "manifest_sha256": "db6fe09225085b9aa9550b9132e07084abe9aa993eda2902da7ffa490c9182c6",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "spell_effect_lighting",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "script_sha256": "a64d987759b5337a2988818242a17da1ca44a7c69ae82cbceb913b79819c34a8",
+      "contract": "Every installed spell has a bounded casting light; healing tracks visible body sparks without stacking or stale illumination, using shared PT/raster sources.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 7.28,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/spell_effect_lighting.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "spell_effect_lighting/run.log",
+      "passed": true,
+      "result": {
+        "checks": 92,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,77 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "295cf204dd03598a828949aef7c7ef183a9ee143c4dfe748a1726f3df18d621e",
+  "manifest_sha256": "1a690e3b8f6a8a380ffe4e5149b3eeecdc29f06153f260b928cbeb4ffea472d8",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "path_trace_loading_recenter",
+      "script": "tools/tests/path_trace_loading_recenter.gd",
+      "script_sha256": "ca336d4338f0cbbcfbc8a639741ad9e63b81cb6b294f93c3bc679956ad5d1df2",
+      "contract": "Initial PT camera relocation keeps preparation covered until the replacement scene has rendered; stale acknowledgments cannot release it.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 33.67,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "300",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/recenter-before/path_trace_loading_recenter/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/recenter-before/path_trace_loading_recenter/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/recenter-before/path_trace_loading_recenter/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/recenter-before/path_trace_loading_recenter/tools/tests/path_trace_loading_recenter.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/recenter-before/path_trace_loading_recenter/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered",
+        "--audit-out=user://load-recenter"
+      ],
+      "log": "path_trace_loading_recenter/run.log",
+      "passed": false,
+      "result": null,
+      "errors": [
+        "FAIL restored camera retains its preparation cover",
+        "FAIL replacement rejects the previous camera's render acknowledgment",
+        "FAIL saved-camera-settles: explicit requests alone create a scene preparation owner",
+        "FAIL saved-camera-settles: controller progresses while its visible single-player cover owns the pause",
+        "FAIL saved-camera-settles: actual presented cover was captured before removal",
+        "Invalid/incomplete counts: checks=11, failures=5, minimum=15",
+        "Process exit: 1"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.pck",
+    "sha256": "fc0ecbe5bb77d66171053fd7c700b9fdf718715ed578b7096735aa2cbff64005"
+  },
+  "passed": false
+}

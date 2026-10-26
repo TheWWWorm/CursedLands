@@ -99,11 +99,9 @@ func _free_targets(resources: Array[RID]) -> void:
 func _targets(size: Vector2i, sampler: RID) -> bool:
 	if _closed or not _ready or size.x<2 or size.y<2: return false
 	if not _filter_shader.is_valid():
-		_filter_shader = _own(_rd.shader_create_from_spirv(filter_spirv(),"Scene RT reconstruction"))
-		if not _filter_shader.is_valid(): return false
-	if not _filter_pipeline.is_valid():
-		_filter_pipeline = _own(_rd.compute_pipeline_create(_filter_shader))
-		if not _filter_pipeline.is_valid(): return false
+		var pair:=_compute_program(filter_spirv(),"Scene RT reconstruction")
+		_filter_shader=pair[0];_filter_pipeline=pair[1]
+		if not _filter_shader.is_valid() or not _filter_pipeline.is_valid():return false
 	if size != _size:
 		# Stage the entire replacement. A failed image or descriptor allocation
 		# must leave the previous complete output and its resource indices intact.

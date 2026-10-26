@@ -1,0 +1,79 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c",
+  "manifest_sha256": "0af6212965768819ceb6f7f5507e017b95b002d59ca9a0f0eed959b19070e76b",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "path_trace_healing_glow",
+      "script": "tools/tests/path_trace_healing_glow.gd",
+      "script_sha256": "0f034bf84d979504fa7b1e0dfb8af4e335eabdd7e9541cf1261ee8ae67595052",
+      "contract": "Actual healing sparks illuminate nearby original cave surfaces on their first PT frame and extinguish with their particles.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 49.2,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-healing-before/path_trace_healing_glow/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-healing-before/path_trace_healing_glow/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-healing-before/path_trace_healing_glow/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-healing-before/path_trace_healing_glow/tools/tests/path_trace_healing_glow.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/pt-healing-before/path_trace_healing_glow/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "path_trace_healing_glow/run.log",
+      "passed": false,
+      "result": {
+        "checks": 8,
+        "failures": 3
+      },
+      "errors": [
+        "FAIL a short spell enters PT on the first frame before the geometry poll",
+        "FAIL the first healing particle frame adds traced blue illumination to the original scene",
+        "FAIL spell expiry removes the light and its old history immediately",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/runtime.pck",
+    "sha256": "fc0ecbe5bb77d66171053fd7c700b9fdf718715ed578b7096735aa2cbff64005"
+  },
+  "passed": false
+}

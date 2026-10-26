@@ -1,0 +1,8 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "branch": "main",
+  "worktree": "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+  "game_src_and_project_sha256": "6d95070e5ef7fc0bd1642187dfbbb7361d30204c957d14c9cc458f272c70dce4",
+  "note": "Historical pre-integration E2 snapshot after PT live-variant and lightning preparation. Current main integration is recorded in runs/main-integration/summary.json and its source manifest. Earlier validation artifacts retain their individual tested pack/script hashes.",
+  "initial_stage_game_src_and_project_sha256": "8dcdb0c136193e20802af7778e84d0a3359b79c4bda71d42a5ea2c8e94bce06f"
+}

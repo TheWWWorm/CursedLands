@@ -1,0 +1,74 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c",
+  "manifest_sha256": "32ff27beb7a1948f3658b9b02ffbef348310997276fe3c3c266fc7c193b380db",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/final.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "spell_lighting_gallery_pt",
+      "script": "tools/tests/spell_lighting_gallery.gd",
+      "script_sha256": "2a79a76670b96d32d3f4b7f59ba6a5e2cf2282b2db9da38f1ac6daa2eceb4bd3",
+      "contract": "Render every installed spell cast and impact/status effect in actual PT; verify each casting light reaches the shared PT light list.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 76.26,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/spells-pt-final/spell_lighting_gallery_pt/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/spells-pt-final/spell_lighting_gallery_pt/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/spells-pt-final/spell_lighting_gallery_pt/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/final.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/spells-pt-final/spell_lighting_gallery_pt/tools/tests/spell_lighting_gallery.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/spells-pt-final/spell_lighting_gallery_pt/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered",
+        "--spell-pt"
+      ],
+      "log": "spell_lighting_gallery_pt/run.log",
+      "passed": true,
+      "result": {
+        "checks": 85,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/final.pck",
+    "sha256": "78c5bc3c87812e48e8995712b9e7dd38bc729aba3dae5502b12df78899c1345a"
+  },
+  "passed": true
+}

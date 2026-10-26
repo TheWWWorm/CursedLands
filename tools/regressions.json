@@ -1830,6 +1830,230 @@
       "args": [],
       "min_checks": 9,
       "rendering_method": "gl_compatibility"
+    },
+    {
+      "id": "attack_after_action",
+      "script": "tools/tests/attack_after_action.gd",
+      "summary": "ATTACK_AFTER_ACTION",
+      "contract": "Queued direct and targeted dagger attacks select combat clips after completed casts/hits; snapshots retain the same posture.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 25
+    },
+    {
+      "id": "high_resolution_ui",
+      "script": "tools/tests/high_resolution_ui.gd",
+      "summary": "HIGH_RESOLUTION_UI",
+      "contract": "Native 1080p/1440p/4K tutorial text rasterization, centered guide icon, readable EN/RU/DE layout and guide interaction.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 108
+    },
+    {
+      "id": "spell_effect_lighting",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "summary": "SPELL_EFFECT_LIGHTING",
+      "contract": "Every installed spell has a bounded casting light; healing tracks visible body sparks without stacking or stale illumination, using shared PT/raster sources.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 134
+    },
+    {
+      "id": "spell_effect_lighting_lia",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "summary": "SPELL_EFFECT_LIGHTING",
+      "contract": "Audit every installed LiA spell through casting and impact/status dispatchers; shared bounded lights, hidden actors and expiry remain correct.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 134
+    },
+    {
+      "id": "path_trace_loading_recenter",
+      "script": "tools/tests/path_trace_loading_recenter.gd",
+      "summary": "SHADER_COMPILATION_SCENE",
+      "contract": "Initial PT camera relocation keeps preparation covered until the replacement scene has rendered; stale acknowledgments cannot release it.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--audit-out=user://load-recenter"
+      ],
+      "min_checks": 11,
+      "timeout": 300
+    },
+    {
+      "id": "equipment_animation_continuity",
+      "script": "tools/tests/equipment_animation_continuity.gd",
+      "summary": "EQUIPMENT_ANIMATION_CONTINUITY",
+      "min_checks": 56,
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "contract": "Preserve existing equipment animation continuity regression."
+    },
+    {
+      "id": "creature_weapon_animations",
+      "script": "tools/tests/creature_weapon_animations.gd",
+      "summary": "CREATURE_WEAPON_ANIMATIONS",
+      "min_checks": 196,
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "contract": "Preserve existing creature weapon animations regression."
+    },
+    {
+      "id": "healing_presentation",
+      "script": "tools/tests/healing_presentation.gd",
+      "summary": "HEALING_PRESENTATION",
+      "min_checks": 22,
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "contract": "Preserve existing healing presentation regression."
+    },
+    {
+      "id": "local_shadow_fades",
+      "script": "tools/tests/local_shadow_fades.gd",
+      "summary": "LOCAL_SHADOW_FADES",
+      "min_checks": 726,
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "contract": "Preserve existing local shadow fades regression."
+    },
+    {
+      "id": "shader_compilation_scene",
+      "script": "tools/tests/shader_compilation_scene.gd",
+      "summary": "SHADER_COMPILATION_SCENE",
+      "min_checks": 62,
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "contract": "Preserve existing shader compilation scene regression.",
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_healing_glow",
+      "script": "tools/tests/path_trace_healing_glow.gd",
+      "summary": "PATH_HEALING_GLOW",
+      "min_checks": 8,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Actual healing sparks illuminate nearby original cave surfaces on their first PT frame and extinguish with their particles."
+    },
+    {
+      "id": "path_trace_recenter_programs",
+      "script": "tools/tests/path_trace_recenter_programs.gd",
+      "summary": "PATH_RECENTER_PROGRAMS",
+      "min_checks": 12,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Recentered PT scenes reuse immutable reconstruction and SHaRC shaders and pipelines while retaining private mutable scene resources."
+    },
+    {
+      "id": "spell_lighting_gallery",
+      "script": "tools/tests/spell_lighting_gallery.gd",
+      "summary": "SPELL_LIGHT_GALLERY",
+      "min_checks": 42,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Render every installed spell casting and impact/status effect on real actors for visual review."
+    },
+    {
+      "id": "spell_lighting_gallery_pt",
+      "script": "tools/tests/spell_lighting_gallery.gd",
+      "summary": "SPELL_LIGHT_GALLERY",
+      "min_checks": 85,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--spell-pt"
+      ],
+      "contract": "Render every installed spell cast and impact/status effect in actual PT; verify each casting light reaches the shared PT light list."
+    },
+    {
+      "id": "lightning_pipeline_warmup",
+      "script": "tools/tests/lightning_pipeline_warmup.gd",
+      "summary": "LIGHTNING_PIPELINE_WARMUP",
+      "min_checks": 26,
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "contract": "Campaign loading prepares the real lightning vertex layout before weather and spell bolts first draw; native and script builders visibly render without new draw pipelines.",
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_emitter_live",
+      "script": "tools/tests/path_trace_emitter_live.gd",
+      "summary": "PATH_EMITTER_LIVE",
+      "min_checks": 14,
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
+      "rendering_method": "forward_plus",
+      "timeout": 420
+    },
+    {
+      "id": "path_trace_emitter_sharc",
+      "script": "tools/tests/path_trace_emitter_live.gd",
+      "summary": "PATH_EMITTER_LIVE",
+      "min_checks": 14,
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--pt-sharc"
+      ],
+      "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
+      "rendering_method": "forward_plus",
+      "timeout": 420
+    },
+    {
+      "id": "path_trace_emitter_deep_sharc",
+      "script": "tools/tests/path_trace_emitter_live.gd",
+      "summary": "PATH_EMITTER_LIVE",
+      "min_checks": 14,
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--pt-deep",
+        "--pt-sharc"
+      ],
+      "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
+      "rendering_method": "forward_plus",
+      "timeout": 420
+    },
+    {
+      "id": "path_trace_emitter_deep_sharc_rtxdi",
+      "script": "tools/tests/path_trace_emitter_live.gd",
+      "summary": "PATH_EMITTER_LIVE",
+      "min_checks": 15,
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--pt-deep",
+        "--pt-sharc",
+        "--pt-rtxdi"
+      ],
+      "contract": "Deep PT with SHaRC and actual RTXDI prepares both emitter states before gameplay; appearing, moving and expiring emission compiles no new programs.",
+      "rendering_method": "forward_plus",
+      "timeout": 420
     }
   ]
 }

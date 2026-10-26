@@ -179,6 +179,15 @@ in the same change. Verify dynamically selected option strings as well.
 
 # Development and test sessions
 
+## High-resolution UI
+
+Keep all player-visible text crisp and readable on high-resolution displays,
+including 2560×1440 and 3840×2160. Rasterize fonts and vector icons at their
+displayed scale; do not enlarge low-resolution text or icon bitmaps. Check
+padding, alignment, wrapping, clipping, hit targets, and safe-area placement
+at normal and high resolutions in English, Russian and German. Include
+high-resolution regression coverage and retained visual evidence for UI changes.
+
 For development and test runs, keep the cursor free, show FPS, and mute all
 game audio. Set these values in the development/test profile before launching:
 

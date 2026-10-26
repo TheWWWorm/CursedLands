@@ -1,0 +1,22 @@
+{
+  "route": {
+    "frames": 600,
+    "median_ms": 33.244,
+    "max_ms": 65.067,
+    "snapshot_generations": [
+      1,
+      2,
+      3
+    ],
+    "dlss_evaluations": 815,
+    "fg_supported": false,
+    "note": "600 presented frames, original 1.30.0 Windows build, DX12/DLSS Performance/PT+SHaRC, report camera corridor; simulation frozen and native FG unavailable."
+  },
+  "lia": {
+    "frames": 240,
+    "dlss_evaluations_first": 176,
+    "dlss_evaluations_last": 415,
+    "dlss_last_error": 0,
+    "note": "240 native viewport readbacks along moving LiA camera, 1920x1080, internal raster960x540, PT480x270. Readbacks make this visual evidence, not a frame-time benchmark."
+  }
+}

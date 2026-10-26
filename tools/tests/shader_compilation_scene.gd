@@ -36,15 +36,20 @@ func case_screen_active(label: String) -> bool:
 	return Screen.active() and preparation_screens.get(label,{}).has(Screen._current.get_instance_id())
 
 func capture_cover(label: String,source: String) -> void:
-	if cover_captures.has(label) or not case_screen_active(label): return
+	if cover_captures.has(label) or not case_screen_active(label) or not Screen.displayed(): return
 	var image := get_viewport().get_texture().get_image()
 	var valid: bool=image!=null and not image.is_empty()
-	check(valid,label+": preparation cover has actual rendered pixels")
+	if not valid:return
 	var covered := false;var saved := false
 	if valid:
 		var pixel := image.get_pixel(8,8)
 		covered=absf(pixel.r-Screen.BACKGROUND.r)<0.08 and absf(pixel.g-Screen.BACKGROUND.g)<0.08 \
 			and absf(pixel.b-Screen.BACKGROUND.b)<0.08
+		# In the separate render-thread model, the post-draw notification can
+		# still expose the preceding swapchain image. Capture the first actual
+		# covered image; the case must have one before the screen is removed.
+		if not covered:return
+		check(valid,label+": preparation cover has actual rendered pixels")
 		check(covered,label+": preparation covers the campaign view")
 		saved=image.save_png(out.path_join(label+".png"))==OK
 		check(saved,label+": preparation capture saved")
@@ -52,7 +57,13 @@ func capture_cover(label: String,source: String) -> void:
 		"drawn_frames":Engine.get_frames_drawn(),"pixels_valid":valid,"covered":covered,"saved":saved}
 
 func observe_post_draw() -> void:
-	if not is_instance_valid(controller) or not case_screen_active(case_name): return
+	if not is_instance_valid(controller): return
+	# Observe ownership independently of raw-canvas progress: the accepted
+	# 500 ms delay intentionally never draws fast cached requests.
+	if Screen.active() and Screen._current._owners.has(controller._preparation_owner):
+		if not preparation_screens.has(case_name): preparation_screens[case_name]={}
+		preparation_screens[case_name][Screen._current.get_instance_id()]=true
+	if not case_screen_active(case_name): return
 	# The controller may release its owner before this coroutine's next poll.
 	# Observe the same actual screen through finishing, not just owner lifetime.
 	var screen_id: int=Screen._current.get_instance_id()
@@ -63,7 +74,8 @@ func observe_post_draw() -> void:
 	if presented_rows.size()<8000:
 		presented_rows.append({"case":case_name,"screen_id":screen_id,"drawn_frames":drawn_frames,
 			"new_frame":new_frame,"phase":Screen._current._phase,"owner":String(controller._preparation_owner),
-			"screen_pause":Screen.owns_pause(get_tree()),"paused":get_tree().paused})
+			"screen_pause":Screen.owns_pause(get_tree()),"paused":get_tree().paused,
+			"shown":Screen.displayed(),"owner_age_ms":Time.get_ticks_msec()-Screen._current._started_ms})
 	capture_cover(case_name,"frame_post_draw")
 
 func save_preparation_report() -> void:
@@ -93,18 +105,26 @@ func wait_preparation(label: String,previous_id := 0,expect_cover := true,allow_
 		if controller._failed and not allow_retry: break
 		success=controller.device!=null and controller.device.get_instance_id()!=previous_id and controller.device.output_ready() \
 			and controller.stats.get("active",false) and not controller.stats.get("rebuilding",false) \
+			and controller.stats.get("quality",-1)==GameData.option("q_rt_lighting") \
+			and controller.stats.get("path_bounces",-1)==GameData.option("pt_mode")*2 \
 			and not held and not Screen.active()
 		if success: break
 	var events := progress_rows.filter(func(row: Dictionary): return row.case==label and not String(row.owner).is_empty())
 	var presentations := presented_rows.filter(func(row: Dictionary): return row.case==label and row.new_frame)
 	var paused_presentations := presentations.filter(func(row: Dictionary): return row.screen_pause and row.paused)
 	check(success,label+": real output is bound and the compilation cover settles within its deadline")
-	check(not events.is_empty() if expect_cover else events.is_empty(),label+": explicit requests alone create a scene preparation owner")
+	check((not events.is_empty() or cover_frames>0) if expect_cover else events.is_empty() and cover_frames==0,label+": explicit requests alone create a scene preparation owner")
 	if expect_cover:
 		check(not presentations.is_empty() and not paused_presentations.is_empty(),
 			label+": controller progresses while its visible single-player cover owns the pause")
-		check(cover_captures.has(label) and cover_captures[label].covered and cover_captures[label].saved,
-			label+": actual presented cover was captured before removal")
+		var shown := presentations.any(func(row: Dictionary):return row.shown)
+		var hidden_owners := presentations.filter(func(row: Dictionary):return not row.shown and not String(row.owner).is_empty())
+		if shown:
+			check(cover_captures.has(label) and cover_captures[label].covered and cover_captures[label].saved,
+				label+": actual presented cover was captured before removal")
+		else:
+			check(not hidden_owners.is_empty() and hidden_owners.all(func(row: Dictionary):return row.owner_age_ms<Screen.SHOW_DELAY_MS),
+				label+": cached request finishes below the existing visible-cover threshold")
 	preparation_cases.append({"case":label,"success":success,"elapsed_ms":Time.get_ticks_msec()-started,
 		"cover_frames":cover_frames,"owned_pause_frames":pause_frames,"waiting_with_old_output_frames":waiting_with_old_output,
 		"presented_cover_frames":presentations.size(),"presented_pause_frames":paused_presentations.size(),
@@ -117,9 +137,13 @@ func wait_preparation(label: String,previous_id := 0,expect_cover := true,allow_
 
 func wait_cover_removed(label: String) -> void:
 	var started := Time.get_ticks_msec()
-	while Screen.active() and Time.get_ticks_msec()-started<5000:
-		await frames(1);await RenderingServer.frame_post_draw
-	check(not Screen.active(),label+": canceled scene preparation releases the shared cover")
+	var presented:=0
+	# Returning to raster can compile its first pipeline in one long draw.
+	# Bound completed frames (the screen's actual settling contract), while
+	# retaining the same overall native-pipeline deadline as preparation.
+	while Screen.active() and Time.get_ticks_msec()-started<90_000 and presented<16:
+		await frames(1);await RenderingServer.frame_post_draw;presented+=1
+	check(not Screen.active(),label+": canceled scene preparation releases the shared cover within 16 presented frames")
 
 func change_mode(path: int,quality: int,scene := 0) -> void:
 	GameData.options.merge({"pt_mode":path,"q_rt_lighting":quality,"rt_shadows":scene,"rt_gi":scene},true)

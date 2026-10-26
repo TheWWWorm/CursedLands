@@ -1,0 +1,70 @@
+{
+  "exit": 0,
+  "errors": [],
+  "summary": [
+    "PATH_RECENTER_PROGRAMS 12 checks 0 failures"
+  ],
+  "seconds": 41.73,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files/bin/wine",
+    "/home/llm2x/Documents/EI/local/scratchpad/pt-merge-main-20261026/candidate-windows/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--no-movies",
+    "--ei-path=Z:/home/llm2x/Documents/EI/local/runtime/reference/base",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-merge-main-20261026/evidence/integrated-dx12-path_trace_recenter_programs/fixtures/path_trace_recenter_programs.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/pt-merge-main-20261026/evidence/integrated-dx12-path_trace_recenter_programs"
+  ],
+  "adapter": {
+    "name": "NVIDIA GeForce RTX 3090 Ti",
+    "vendor": "10de",
+    "device": "2203",
+    "uuid": "0eee028eb998532f095be936c7f6191d",
+    "capabilities_overridden": false
+  },
+  "runtime": {
+    "base": "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64",
+    "main": "cf214d3005437ddef459afdc4afa8bbcf61247cd",
+    "sha256": {
+      "sl.interposer.dll": "b1d7395aebd7b9722841d64dcf7433680020b6a8e421f851c16d5ba0c2182edf",
+      "sl.reflex.dll": "443577e869352436ff7ec8f4d9c90418d3e95368436ce219261e0f4f07a38122",
+      "libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "nvngx_dlssd.dll": "b49435ae346f227feafe7bbe937d88277ea0ee7323975ec06488f377fdb46cee",
+      "amd_fidelityfx_upscaler_dx12.dll": "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46",
+      "sl.pcl.dll": "5698c38e722318681f215c9fe68e45b9bedd51378acc699d8eee26e961e57770",
+      "nvngx_dlssg.dll": "8d59d49b36410dd6b62fef2503a5871d347415bd85d943fa0848563a95dd50c7",
+      "CursedLands.pck": "4b03370528a0ff61cf037e8f7499cf2e344391440690b1d1820d7f0d1cbc6c1c",
+      "sl.dlss_g.dll": "3ed9538df724993bea8a050195a6a78b9c8c8a566d5b05ade477aab3c390e90f",
+      "amd_fidelityfx_loader_dx12.dll": "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa",
+      "CursedLands.exe": "9ddd49a39e801f30dbea00e49ce335e79bd743953665af4c2349056bc279b500",
+      "sl.common.dll": "38eea3b4209afc455636ea372b5933d65fcc13becec6c84d101dcfc4d8648f75",
+      "nvngx_dlss.dll": "d00b5b0ab29c3ca101b70c3a5ecb3a01b7ef33766a3383a28a18623083e6123e",
+      "sl.dlss.dll": "18871eea87c90345da97d8109faa81ea7d5840e8d99b51b55b0e46cfa177f84e",
+      "sl.dlss_d.dll": "8dff36fd063094eb1f659e8d4dcd52c7423859a9c4a3df3796084c48412d60ac",
+      "amd_fidelityfx_framegeneration_dx12.dll": "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18",
+      "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+      "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c",
+      "src/native/bin/libpath_nrd.dll": "559aad48669edc83dd6532ad681d100bbdb975a7847888d68847baddb98caba7",
+      "src/native/bin/libinstaller_lzma.dll": "5ac4863dd897cd5bd792690cfc2739294bf17c689ce17ca46a7744cf990d52f3",
+      "src/native/bin/libterrain_search.dll": "3b4da19882a90fc01787b4214b1e332750445f9a2475b24b5913525128cc83bf",
+      "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+      "src/native/bin/libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    },
+    "integrated_source_sha256": "145910767a9c43114486e1d94afeff7147aca18485222d72c2b5a754b35cd0a3",
+    "uncommitted_main_work_included": true
+  },
+  "fixture_sha256": "ca1ce7ae4e2ac353e2df331316255b2b319fa3ae992625fc6c2af085acfff057"
+}

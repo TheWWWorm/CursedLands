@@ -36,7 +36,7 @@ func _own(rid: RID) -> RID:
 func allocate(bytes: int) -> RID:
 	return _own(_rd.storage_buffer_create(bytes))
 
-func setup(rd: RenderingDevice) -> bool:
+func setup(rd: RenderingDevice,programs: RefCounted=null) -> bool:
 	if active:return true
 	_rd=rd
 	if not supported():return false
@@ -51,9 +51,13 @@ func setup(rd: RenderingDevice) -> bool:
 	if spirv.bytecode_compute.is_empty():dispose();return false
 	# Compute follows the existing NRD path on both drivers. The engine's
 	# direct DXIL entry point only accepts ray-tracing library stages.
-	_resolve_shader=_own(_rd.shader_create_from_spirv(spirv,"SHaRC resolve"))
+	if programs!=null:
+		var pair:Array[RID]=programs.compute(_rd,spirv,"SHaRC resolve")
+		_resolve_shader=pair[0];_resolve_pipeline=pair[1]
+	else:
+		_resolve_shader=_own(_rd.shader_create_from_spirv(spirv,"SHaRC resolve"))
+		if _resolve_shader.is_valid():_resolve_pipeline=_own(_rd.compute_pipeline_create(_resolve_shader))
 	if not _resolve_shader.is_valid() or not _constants.is_valid() or not _stats.is_valid():dispose();return false
-	_resolve_pipeline=_own(_rd.compute_pipeline_create(_resolve_shader))
 	_resolve_set=_own(_rd.uniform_set_create(uniforms(),_resolve_shader,0))
 	if not _resolve_pipeline.is_valid() or not _resolve_set.is_valid():dispose();return false
 	if _rd.buffer_clear(_stats,0,16)!=OK:dispose();return false

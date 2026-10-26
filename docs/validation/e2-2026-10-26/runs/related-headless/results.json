@@ -1,0 +1,160 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9",
+  "manifest_sha256": "48b712e9cbc7e8afd02517837a5d2fd855cddc8bd14cd884c6c0def728463e06",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "equipment_animation_continuity",
+      "script": "tools/tests/equipment_animation_continuity.gd",
+      "script_sha256": "97fb7e686bcb97b0a3f615939c887aa2823d4907cc22675655747e9711732f21",
+      "contract": "Preserve existing equipment animation continuity regression.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 7.08,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/equipment_animation_continuity.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "equipment_animation_continuity/run.log",
+      "passed": true,
+      "result": {
+        "checks": 56,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "creature_weapon_animations",
+      "script": "tools/tests/creature_weapon_animations.gd",
+      "script_sha256": "6bebeb782bbe853bb73ce3a56230392f99dac67d605cd0b57d301b66a46dff65",
+      "contract": "Preserve existing creature weapon animations regression.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 6.98,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/creature_weapon_animations.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "creature_weapon_animations/run.log",
+      "passed": true,
+      "result": {
+        "checks": 196,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "healing_presentation",
+      "script": "tools/tests/healing_presentation.gd",
+      "script_sha256": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+      "contract": "Preserve existing healing presentation regression.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 12.89,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/healing_presentation.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "healing_presentation/run.log",
+      "passed": false,
+      "result": null,
+      "errors": [
+        "Invalid/incomplete counts: checks=22, failures=0, minimum=25"
+      ],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "local_shadow_fades",
+      "script": "tools/tests/local_shadow_fades.gd",
+      "script_sha256": "0e0b60a702206dd73ca092872895e884c445af85926fe2bfe16de999d7c1ae5d",
+      "contract": "Preserve existing local shadow fades regression.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 6.22,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/local_shadow_fades.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "local_shadow_fades/run.log",
+      "passed": true,
+      "result": {
+        "checks": 726,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": false
+}

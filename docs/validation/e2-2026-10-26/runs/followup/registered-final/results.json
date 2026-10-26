@@ -1,0 +1,160 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "a9e040140a636d9730d79ef383cecdd4af3ca16981e3b8a053f7366caa1875db",
+  "manifest_sha256": "9b5d478616795b6a5631f1daefe257a2c1bd2e1ce2b3c7795117df235302c63f",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "vegetation_warmup",
+      "script": "tools/tests/vegetation_warmup.gd",
+      "script_sha256": "ceaad6a7209b21fdeafa0269de056d806a0e2a00b169aa1a35d6e9648a154f11",
+      "contract": "Loading-time vegetation representatives match streamed cover, contact and mound materials, vertex layouts and shadow states without starting streaming work.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 3.02,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/vegetation_warmup/tools/tests/vegetation_warmup.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/vegetation_warmup/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "vegetation_warmup/run.log",
+      "passed": true,
+      "result": {
+        "checks": 124,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "shader_compilation_scene",
+      "script": "tools/tests/shader_compilation_scene.gd",
+      "script_sha256": "b5e218ff4638c737ad96ad78fa8b1d4566304b22012ccd6cedf69be90a69abd5",
+      "contract": "Preserve existing shader compilation scene regression.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 69.74,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/shader_compilation_scene/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/shader_compilation_scene/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/shader_compilation_scene/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/shader_compilation_scene/tools/tests/shader_compilation_scene.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/shader_compilation_scene/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "shader_compilation_scene/run.log",
+      "passed": true,
+      "result": {
+        "checks": 62,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "id": "lightning_pipeline_warmup",
+      "script": "tools/tests/lightning_pipeline_warmup.gd",
+      "script_sha256": "ca3ad8c986412394dd10829b2cfe634b6bfd6dec7fbaa49f553296f329201f92",
+      "contract": "Campaign loading prepares the real lightning vertex layout before weather and spell bolts first draw; native and script builders visibly render without new draw pipelines.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 20.14,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/lightning_pipeline_warmup/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/lightning_pipeline_warmup/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/lightning_pipeline_warmup/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/lightning_pipeline_warmup/tools/tests/lightning_pipeline_warmup.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/registered-final/lightning_pipeline_warmup/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "lightning_pipeline_warmup/run.log",
+      "passed": true,
+      "result": {
+        "checks": 26,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.pck",
+    "sha256": "e44981f66f6eab80d1356601f1dee2cb0bca3b29df796dab32ba83f22147f49f"
+  },
+  "passed": true
+}

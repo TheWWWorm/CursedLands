@@ -128,6 +128,11 @@ func _compile() -> RDPipelineShader:
 	wrapped.shader = shader
 	return wrapped
 
+func _compute_program(spirv: RDShaderSPIRV,label: String) -> Array[RID]:
+	if programs!=null:return programs.compute(_rd,spirv,label)
+	var shader:=_own(_rd.shader_create_from_spirv(spirv,label))
+	return [shader,_own(_rd.compute_pipeline_create(shader)) if shader.is_valid() else RID()]
+
 func instance_mask(_geometry_index: int, mask: int) -> int: return mask
 
 func _create_pipeline(program: RDPipelineShader) -> RID:

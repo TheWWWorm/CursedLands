@@ -1,0 +1,55 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "595604e1f76ed5ef5f4075ddc83c36fc2936106bfa14982849566604bf3a2fe9",
+  "manifest_sha256": "48b712e9cbc7e8afd02517837a5d2fd855cddc8bd14cd884c6c0def728463e06",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "spell_effect_lighting",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "script_sha256": "e494b20b8e3440fa41eda770d3888eafba08b892b907d52135398659983cc7c3",
+      "contract": "Every installed spell has a bounded casting light; healing tracks visible body sparks without stacking or stale illumination, using shared PT/raster sources.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 7.18,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/spell_effect_lighting.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "spell_effect_lighting/run.log",
+      "passed": false,
+      "result": {
+        "checks": 134,
+        "failures": 2
+      },
+      "errors": [
+        "FAIL intentional impact/status illumination link",
+        "FAIL intentional impact/status illumination rick_magic",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": false
+}

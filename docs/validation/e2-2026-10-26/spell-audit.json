@@ -1,0 +1,338 @@
+[
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Fire Arrow",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "arrow"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Lightning Arc",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "lightning"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Acid Ray",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "acid_ray"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Fireball",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "fireball"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Invoke Lightning",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "inv_lit"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Column of Acid",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "acid_column"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Wall of Fire",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "firewall"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Smtg Lightning",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "litnwall"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Acid Fog",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "acid_fog"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Protection from Fire",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "prot_fire"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Protection from Lightning",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "prot_electro"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Protection from Acid",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "prot_acid"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Eagle Sight",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "eagle_sight"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Infravision",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "infravision"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Detect Life",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "detect_life"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Invisibility",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "invisibility"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Silence",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "silence"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Lichdom",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "lichdom"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Fireworks",
+		"nonemissive_outcome": false,
+		"outcome_peak": 2,
+		"spell": "fireworks"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Stench",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "stench"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Clairvoyence",
+		"nonemissive_outcome": false,
+		"outcome_peak": 2,
+		"spell": "clairvoyence"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Possession",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "possession"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Shapechange",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "shapechange"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "VisionFog",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "vision_fog"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Healing",
+		"nonemissive_outcome": false,
+		"outcome_peak": 2,
+		"spell": "healing"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Stun",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "stun"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Antimagic",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "antimagic"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Link",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "link"
+	},
+	{
+		"added_outcome_peak": 2,
+		"casting_lights": 1,
+		"name": "Teleport",
+		"nonemissive_outcome": false,
+		"outcome_peak": 3,
+		"spell": "teleport"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Strengthen",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "strength"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Weaken",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "weak"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Regeneration",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "regeneration"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Feeblemind",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "feeblemind"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Speed",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "speed"
+	},
+	{
+		"added_outcome_peak": 1,
+		"casting_lights": 1,
+		"name": "Slow",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "slow"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Comprehend",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "comprehend"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Charm",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "charm"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Enlarge",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "enlarge"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Shrink",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "shrink"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Campfire",
+		"nonemissive_outcome": true,
+		"outcome_peak": 0,
+		"spell": "campfire"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Rick Magic",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "rick_magic"
+	},
+	{
+		"added_outcome_peak": 0,
+		"casting_lights": 1,
+		"name": "Curse Magic",
+		"nonemissive_outcome": false,
+		"outcome_peak": 1,
+		"spell": "curse_magic"
+	}
+]

@@ -95,6 +95,7 @@ var missiles: Array = []     # CEffectArrow
 var script_fx := {}          # script id -> Effect
 var script_bolts := {}       # script id -> FxLightning
 var script_lights := {}      # script id -> light dict
+var spell_lighting := SpellLighting.new()
 var _rng := RandomNumberGenerator.new()
 var _mats := {}
 var _material_options_dirty := true
@@ -1171,6 +1172,7 @@ static func _draw_order(e: FxEmitter, has_cam: bool, eye: Vector3, fwd: Vector3)
 ## previous -> current lerp; the UV rect is the previous frame's.
 func _draw(t: float) -> void:
 	drawn = 0
+	spell_lighting.update(self,t)
 	var shown := is_visible_in_tree()
 	if not shown:
 		# Hidden autochess boards still age their effects, but need no draw

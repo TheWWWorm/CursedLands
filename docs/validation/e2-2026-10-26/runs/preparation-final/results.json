@@ -1,0 +1,77 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "99d3dc2906b473e841cb5308acc9ac2eb110436cabc35911aa4517a701628b9c",
+  "manifest_sha256": "0af6212965768819ceb6f7f5507e017b95b002d59ca9a0f0eed959b19070e76b",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "shader_compilation_scene",
+      "script": "tools/tests/shader_compilation_scene.gd",
+      "script_sha256": "14044ed90c9c4be43596df26132ca113a9114c8d2d2c98b0004394427174398d",
+      "contract": "Preserve existing shader compilation scene regression.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 82.77,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/preparation-final/shader_compilation_scene/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/preparation-final/shader_compilation_scene/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/preparation-final/shader_compilation_scene/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/preparation-final/shader_compilation_scene/tools/tests/shader_compilation_scene.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/preparation-final/shader_compilation_scene/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "shader_compilation_scene/run.log",
+      "passed": false,
+      "result": {
+        "checks": 65,
+        "failures": 1
+      },
+      "errors": [
+        "FAIL disable-cancels: canceled scene preparation releases the shared cover",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/candidate.pck",
+    "sha256": "972b7abbf6c40ff3075a787108cc3ac83169ca8eeb24b86f61c1c283c6dac1f8"
+  },
+  "passed": false
+}

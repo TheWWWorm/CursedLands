@@ -69,6 +69,7 @@ var _deep_paths := false
 # Diagnostic full-path reference; normal play uses the compensated deep tail.
 var _full_paths_reference := OS.get_cmdline_user_args().has("--ei-full-paths")
 var _variants := {}
+var _prepared_path_modes := {}
 # Each record maps the current rigid surface and shading normal to their
 # previous rendered positions. Unchanged placements take the identity fast path.
 const MOTION_STRIDE := 96
@@ -167,8 +168,7 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	return _instance_geometry.is_valid() and _lighting_offsets.is_valid() and _motion.is_valid() and _emitters.is_valid() and _emitter_lookup.is_valid() \
 		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode)
 
-## Compile only the needed emitter/deep-path combinations. Every variant
-## shares hit stages, TLAS, SBT ranges and stable output images.
+## Every variant shares hit stages, TLAS, SBT ranges and stable output images.
 func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int,di := false) -> Dictionary:
 	var key := int(enabled)|(int(deep)<<1)|(sharc_mode<<2)|(int(di)<<4)
 	if not _variants.has(key):
@@ -182,6 +182,22 @@ func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int,di := false) -> 
 		if not pipeline.is_valid():return {}
 		_variants[key]={"shader":shader,"pipeline":pipeline}
 	return _variants[key]
+
+## A spell or changing figure can introduce the first emissive triangles
+## long after loading. Preparing both emission states before the first
+## displayed frame avoids a synchronous ray-pipeline build in combat.
+## Only the selected path depth/cache mode is prepared; settings changes
+## already own a preparation cover. Replacement scenes share these programs.
+func _prepare_live_variants(deep: bool,cached: bool,di := false) -> bool:
+	var key := int(deep)|(int(cached)<<1)|(int(di)<<2)
+	if _prepared_path_modes.has(key):return true
+	for emission in [false,true]:
+		# SHaRC can fall back to ordinary PT without opening another cover.
+		if _pipeline_variant(emission,deep,0,di).is_empty():return false
+		if cached and (_pipeline_variant(emission,deep,1,di).is_empty() \
+			or _pipeline_variant(emission,false,2).is_empty()):return false
+	_prepared_path_modes[key]=true
+	return true
 
 func _select_pipeline(enabled: bool,deep: bool,sharc_mode := 0,di := false) -> bool:
 	if enabled==_uses_emitters and deep==_deep_paths and sharc_mode==_sharc_mode and di==_rtxdi_mode:return true
@@ -397,14 +413,18 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	var enabled := frame.decode_float(190*4)>0.5 if frame.decode_float(191*4)>0.5 else sharc_enabled
 	if enabled!=_sharc_requested:sharc_failed=false;_sharc_requested=enabled
 	var requested := enabled and frame.decode_float(145*4)<=8.0 and not sharc_failed
-	if requested and not sharc.setup(_rd):sharc_failed=true;requested=false
+	if requested and not sharc.setup(_rd,programs):sharc_failed=true;requested=false
 	var deep := frame.decode_float(144*4)>2.0 and not _full_paths_reference
+	if not _prepare_live_variants(deep,requested):
+		if not requested or not _prepare_live_variants(deep,false):_render_failed();return
+		sharc_failed=true;requested=false
 	if di and rtxdi._size!=size:_release_ray_set()
 	if di and not rtxdi.prepare_targets(_rd,size):rtxdi_failed=true;di=false
+	if di and not _prepare_live_variants(deep,requested,true):rtxdi_failed=true;di=false
 	if di and not _select_pipeline(_uses_emitters,deep,1 if requested else 0,true):
 		rtxdi_failed=true;di=false
 	if not _select_pipeline(_uses_emitters,deep,1 if requested else 0,di):
-		if not requested or not _select_pipeline(_uses_emitters,deep,0):_render_failed();return
+		if not requested or not _select_pipeline(_uses_emitters,deep,0,di):_render_failed();return
 		sharc_failed=true;requested=false
 	if not di and rtxdi.active:_release_ray_set();rtxdi.dispose()
 	if not requested and sharc.active:sharc.dispose()
@@ -520,9 +540,9 @@ func _reconstruct_direct(frame: PackedByteArray) -> bool:
 
 func _composite_direct() -> bool:
 	if not _direct_composite_shader.is_valid():
-		_direct_composite_shader=_own(_rd.shader_create_from_spirv(DIRECT_COMPOSITE.get_spirv(),"PT direct light composite"))
+		var pair:=_compute_program(DIRECT_COMPOSITE.get_spirv(),"PT direct light composite")
+		_direct_composite_shader=pair[0];_direct_composite_pipeline=pair[1]
 		if not _direct_composite_shader.is_valid():return false
-		_direct_composite_pipeline=_own(_rd.compute_pipeline_create(_direct_composite_shader))
 	if not _direct_composite_pipeline.is_valid():return false
 	if not _direct_composite_set.is_valid():
 		var bindings: Array[RDUniform]=[]
@@ -569,9 +589,9 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 	# play filters diffuse and glossy separately, after saving temporal history.
 	if not _spatial_enabled or frame_data.decode_float(145*4)>8.0:return true
 	if not _spatial_shader.is_valid():
-		_spatial_shader=_own(_rd.shader_create_from_spirv(SPATIAL.get_spirv(),"PT spatial reconstruction"))
+		var pair:=_compute_program(SPATIAL.get_spirv(),"PT spatial reconstruction")
+		_spatial_shader=pair[0];_spatial_pipeline=pair[1]
 		if not _spatial_shader.is_valid():return false
-		_spatial_pipeline=_own(_rd.compute_pipeline_create(_spatial_shader))
 		if not _spatial_pipeline.is_valid():return false
 	if _spatial_source!=_history[0]:
 		_release_spatial()
@@ -613,6 +633,6 @@ func dispose() -> void:
 	emitters = Emitters.new()
 	terrain = Terrain.new();_terrain_atlas=RID()
 	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()
-	_variants.clear();_sharc_sbts.clear()
+	_variants.clear();_prepared_path_modes.clear();_sharc_sbts.clear()
 	_motion=RID();_motion_data.clear();_motion_pending.clear();_geometry_placements.clear()
 	_lighting_offsets=RID();_lighting_offset_data.clear();_lighting_offset_values.clear()

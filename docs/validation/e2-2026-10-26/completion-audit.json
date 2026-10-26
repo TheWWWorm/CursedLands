@@ -1,0 +1,70 @@
+{
+  "source_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "goal_complete": false,
+  "previous_goal_turn": "progress: implemented and verified PT live-variant/lightning preparation and LiA spell audit; retained evidence and cleaned staging",
+  "this_turn": "progress: found a source-frame omission in the former video sampling and replaced it with a native-frame audit; no new game behavior change",
+  "requirements": [
+    {
+      "requirement": "LiA mountains intermittently black around 3:25",
+      "status": "incomplete",
+      "evidence": "README.md#mountain-flashes; runs/frame-cadence/summary.json",
+      "gap": "No conclusively isolated failing frame or reproduced scene on available GPUs. Native NVIDIA FG from the reported RTX 4090 Laptop is unsupported on the workstation. Exact cliff/frame and FG-off behavior are pending."
+    },
+    {
+      "requirement": "PT active immediately when LiA gameplay is revealed",
+      "status": "partial",
+      "evidence": "runs/production-thread-final/results.json: path_trace_loading_recenter; README.md PT loading camera race",
+      "gap": "The camera-cancellation race is fixed and its first lit frame is gated, but the recording\u2019s exact 18-second transition is not conclusively attributed."
+    },
+    {
+      "requirement": "Zak must use knife animation rather than bow",
+      "status": "verified fix",
+      "evidence": "runs/attack-after/results.json: attack_after_action and adjacent cases; original Wine/REA comparison in README.md"
+    },
+    {
+      "requirement": "Very large stutters around 2:10 and 2:20",
+      "status": "partial",
+      "evidence": "runs/followup/live-summary.json; runs/followup/emitter-before-scan/results.json; runs/followup/prepared-final/results.json",
+      "gap": "5.05 s and 3.24 s PT compilation stalls reproduced and their cause fixed; exact two Windows/FG recording events have no per-frame attribution. No claim of perfect frame pacing."
+    },
+    {
+      "requirement": "Readable high-resolution text and functional UI, padded icon, record it",
+      "status": "verified fix",
+      "evidence": "runs/ui-resize-fixed/results.json; 3840x2160 ui/ui-4k-recording.mp4; workspace and repository AGENTS.md requirement recorded"
+    },
+    {
+      "requirement": "Tasteful spell lights, including PT, check every spell",
+      "status": "verified implementation",
+      "evidence": "spell-audit.json; runs/spells-pt-final/results.json; runs/followup/lia-spells/results.json; all 42 spells in conventional/PT galleries"
+    },
+    {
+      "requirement": "Regressions, original comparison, localization, preserved prior work",
+      "status": "verified for implemented changes",
+      "evidence": "accepted-checks.json; original comparison and inapplicability notes in README.md; follow-up runner/translation logs"
+    },
+    {
+      "requirement": "Clean disposable staging and record workspace map",
+      "status": "verified",
+      "evidence": "local/maintenance/e2-2026-10-26.md and all three cleanup manifests"
+    }
+  ],
+  "blocked_condition": "Remaining reproduction/attribution cannot be confirmed from the available recordings and supported rendering paths; user clarification or a failing capture/runtime trace is needed. No speculative terrain change is justified.",
+  "blocking_condition_turns": [
+    {
+      "turn_id": "01a1758c-9729-7be0-8f8e-6f5690b42e3f",
+      "work": "initial fixes and original comparison",
+      "remaining_blocker": "Mountain flash not reproduced; native NVIDIA FG unsupported; FG-off behavior requested."
+    },
+    {
+      "turn_id": "01a175d7-79d0-79d0-a94c-96ffdcd09419",
+      "work": "PT/lightning preparation fixes and further live/video checks",
+      "remaining_blocker": "Mountain flash still not isolated; affected cliff clarification requested."
+    },
+    {
+      "turn_id": "01a17618-cc88-7e10-b7d2-b66154f69f8b",
+      "work": "native-frame correction and final evidence audit",
+      "remaining_blocker": "Same mountain reproduction gap after native-frame review; both clarifications unanswered."
+    }
+  ],
+  "current_impasse": "Independent authorized fixes, tests, evidence and cleanup are complete. Further targeted correction of the remaining report needs a clearly identified failing frame/sequence or access to a runtime trace reproducing it. Repeating the completed probes does not resolve that missing evidence."
+}

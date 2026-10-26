@@ -1,0 +1,554 @@
+{
+  "lia-live": {
+    "frames": 360,
+    "visual_readbacks": true,
+    "max_ms": 61.368,
+    "programs": [
+      3,
+      3
+    ],
+    "emissive_frames": 0,
+    "max_emissive_triangles": 0,
+    "slow_frames": [
+      {
+        "i": 238,
+        "ms": 61.368,
+        "pipelines": 136.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 318,
+        "ms": 51.416,
+        "pipelines": 138.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 322,
+        "ms": 51.042,
+        "pipelines": 138.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 272,
+        "ms": 50.498,
+        "pipelines": 138.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 80,
+        "ms": 50.045,
+        "pipelines": 132.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 74,
+        "ms": 50.0,
+        "pipelines": 132.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 342,
+        "ms": 49.726,
+        "pipelines": 138.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 92,
+        "ms": 49.652,
+        "pipelines": 132.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      }
+    ]
+  },
+  "base-live": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 1137.134,
+    "programs": [
+      3,
+      3
+    ],
+    "emissive_frames": 0,
+    "max_emissive_triangles": 0,
+    "slow_frames": [
+      {
+        "i": 1374,
+        "ms": 1137.134,
+        "pipelines": 144.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1653,
+        "ms": 88.078,
+        "pipelines": 145.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 450,
+        "ms": 84.806,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1330,
+        "ms": 81.786,
+        "pipelines": 143.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 437,
+        "ms": 77.018,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 428,
+        "ms": 76.5,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 403,
+        "ms": 74.036,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1735,
+        "ms": 69.52,
+        "pipelines": 145.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      }
+    ]
+  },
+  "base-layer": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 1309.708,
+    "programs": [
+      3,
+      3
+    ],
+    "emissive_frames": 0,
+    "max_emissive_triangles": 0,
+    "slow_frames": [
+      {
+        "i": 1167,
+        "ms": 1309.708,
+        "pipelines": 143.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 988,
+        "ms": 82.852,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1634,
+        "ms": 81.031,
+        "pipelines": 145.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1731,
+        "ms": 73.271,
+        "pipelines": 145.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 929,
+        "ms": 72.739,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1546,
+        "ms": 70.501,
+        "pipelines": 144.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1178,
+        "ms": 69.134,
+        "pipelines": 144.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 405,
+        "ms": 68.18,
+        "pipelines": 141.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      }
+    ]
+  },
+  "base-no-glow": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 5051.912,
+    "programs": [
+      3,
+      6
+    ],
+    "emissive_frames": 89,
+    "max_emissive_triangles": 2,
+    "slow_frames": [
+      {
+        "i": 1306,
+        "ms": 5051.912,
+        "pipelines": 144.0,
+        "programs": 5,
+        "emissive_triangles": 2
+      },
+      {
+        "i": 1392,
+        "ms": 3241.986,
+        "pipelines": 145.0,
+        "programs": 6,
+        "emissive_triangles": 2
+      },
+      {
+        "i": 1192,
+        "ms": 1357.499,
+        "pipelines": 144.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1388,
+        "ms": 1127.893,
+        "pipelines": 145.0,
+        "programs": 5,
+        "emissive_triangles": 2
+      },
+      {
+        "i": 1307,
+        "ms": 95.564,
+        "pipelines": 144.0,
+        "programs": 5,
+        "emissive_triangles": 2
+      },
+      {
+        "i": 1290,
+        "ms": 84.572,
+        "pipelines": 144.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1308,
+        "ms": 80.627,
+        "pipelines": 144.0,
+        "programs": 5,
+        "emissive_triangles": 2
+      },
+      {
+        "i": 1394,
+        "ms": 74.102,
+        "pipelines": 145.0,
+        "programs": 6,
+        "emissive_triangles": 2
+      }
+    ]
+  },
+  "base-prepared": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 1725.525,
+    "programs": [
+      6,
+      6
+    ],
+    "emissive_frames": 64,
+    "max_emissive_triangles": 2,
+    "slow_frames": [
+      {
+        "i": 1170,
+        "ms": 1725.525,
+        "pipelines": 144.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1450,
+        "ms": 1225.44,
+        "pipelines": 145.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 122,
+        "ms": 105.284,
+        "pipelines": 142.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1650,
+        "ms": 92.817,
+        "pipelines": 146.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1239,
+        "ms": 80.01,
+        "pipelines": 144.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1592,
+        "ms": 79.745,
+        "pipelines": 145.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 399,
+        "ms": 74.18,
+        "pipelines": 142.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1724,
+        "ms": 71.936,
+        "pipelines": 146.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      }
+    ]
+  },
+  "base-ready": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 89.495,
+    "programs": [
+      6,
+      6
+    ],
+    "emissive_frames": 0,
+    "max_emissive_triangles": 0,
+    "slow_frames": [
+      {
+        "i": 63,
+        "ms": 89.495,
+        "pipelines": 197.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1547,
+        "ms": 83.143,
+        "pipelines": 197.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1566,
+        "ms": 82.334,
+        "pipelines": 198.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 361,
+        "ms": 80.177,
+        "pipelines": 197.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1583,
+        "ms": 73.005,
+        "pipelines": 198.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 401,
+        "ms": 71.626,
+        "pipelines": 197.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1448,
+        "ms": 66.995,
+        "pipelines": 197.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 93,
+        "ms": 66.674,
+        "pipelines": 197.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      }
+    ]
+  },
+  "base-ready2": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 127.177,
+    "programs": [
+      6,
+      6
+    ],
+    "emissive_frames": 0,
+    "max_emissive_triangles": 0,
+    "slow_frames": [
+      {
+        "i": 667,
+        "ms": 127.177,
+        "pipelines": 124.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1260,
+        "ms": 86.472,
+        "pipelines": 124.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 674,
+        "ms": 84.486,
+        "pipelines": 124.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 953,
+        "ms": 82.242,
+        "pipelines": 124.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 592,
+        "ms": 81.855,
+        "pipelines": 123.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 31,
+        "ms": 73.785,
+        "pipelines": 115.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1201,
+        "ms": 72.929,
+        "pipelines": 124.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1219,
+        "ms": 69.977,
+        "pipelines": 124.0,
+        "programs": 6,
+        "emissive_triangles": 0
+      }
+    ]
+  },
+  "base-ready-before": {
+    "frames": 1800,
+    "visual_readbacks": false,
+    "max_ms": 1136.113,
+    "programs": [
+      3,
+      3
+    ],
+    "emissive_frames": 0,
+    "max_emissive_triangles": 0,
+    "slow_frames": [
+      {
+        "i": 1429,
+        "ms": 1136.113,
+        "pipelines": 121.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 594,
+        "ms": 904.856,
+        "pipelines": 120.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1696,
+        "ms": 85.366,
+        "pipelines": 123.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1239,
+        "ms": 82.702,
+        "pipelines": 120.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 986,
+        "ms": 73.294,
+        "pipelines": 120.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 621,
+        "ms": 70.124,
+        "pipelines": 120.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 25,
+        "ms": 69.664,
+        "pipelines": 115.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      },
+      {
+        "i": 1445,
+        "ms": 67.86,
+        "pipelines": 122.0,
+        "programs": 3,
+        "emissive_triangles": 0
+      }
+    ]
+  }
+}

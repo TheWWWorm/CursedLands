@@ -1,0 +1,197 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "attack_after_action",
+      "run": "attack-after",
+      "passed": true,
+      "result": {
+        "checks": 25,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "attack_path_current_target",
+      "run": "attack-after",
+      "passed": true,
+      "result": {
+        "checks": 41,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "cast_posture_queue",
+      "run": "attack-after",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "spell_effect_lighting",
+      "run": "spell-outcomes-2",
+      "passed": true,
+      "result": {
+        "checks": 134,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "healing_presentation",
+      "run": "spell-outcomes-2",
+      "passed": true,
+      "result": {
+        "checks": 22,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "equipment_animation_continuity",
+      "run": "related-headless",
+      "passed": true,
+      "result": {
+        "checks": 56,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "creature_weapon_animations",
+      "run": "related-headless",
+      "passed": true,
+      "result": {
+        "checks": 196,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "local_shadow_fades",
+      "run": "related-headless",
+      "passed": true,
+      "result": {
+        "checks": 726,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "case": "contextual_tutorials",
+      "run": "ui-resize-fixed",
+      "passed": true,
+      "result": {
+        "checks": 496,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "path_trace_loading_recenter",
+      "run": "production-thread-final",
+      "passed": true,
+      "result": {
+        "checks": 14,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "shader_compilation_scene",
+      "run": "production-thread-final",
+      "passed": true,
+      "result": {
+        "checks": 62,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "path_trace_healing_glow",
+      "run": "production-thread-final",
+      "passed": true,
+      "result": {
+        "checks": 8,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "path_trace_recenter_programs",
+      "run": "production-thread-final",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "spell_lighting_gallery",
+      "run": "related-final",
+      "passed": true,
+      "result": {
+        "checks": 42,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "spell_lighting_gallery_pt",
+      "run": "spells-pt-final",
+      "passed": true,
+      "result": {
+        "checks": 85,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    },
+    {
+      "case": "high_resolution_ui",
+      "run": "ui-record-final",
+      "passed": true,
+      "result": {
+        "checks": 108,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ]
+}

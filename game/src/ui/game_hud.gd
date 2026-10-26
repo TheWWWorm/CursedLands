@@ -69,6 +69,7 @@ func _ready() -> void:
 	visible = false
 	_safe_root = Control.new()
 	_safe_root.name = "SafeArea"
+	_safe_root.oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
 	_safe_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_safe_root)
 	_layout_safe_area()
@@ -1311,6 +1312,8 @@ func log_top() -> float:
 func top_bottom() -> float:
 	return log_top() + 100.0 * log_scale() if portrait() else 225.0 * top_scale()
 
+var _font_layout_size := Vector2.ZERO
+
 func _layout_safe_area() -> void:
 	var screen := get_viewport().get_visible_rect().size
 	var safe := Portability.safe_rect(screen) if TouchInput.enabled else Rect2(Vector2.ZERO, screen)
@@ -1318,6 +1321,16 @@ func _layout_safe_area() -> void:
 	# its artwork or its 3D previews in either direction.
 	_safe_root.position = safe.position
 	_safe_root.size = safe.size
+	if _font_layout_size!=safe.size:
+		_font_layout_size=safe.size
+		_refresh_font_sampling.call_deferred()
+
+func _refresh_font_sampling() -> void:
+	if not is_instance_valid(_safe_root):return
+	# The child HUD controls finish their transforms during this frame.
+	# Refresh inherited glyph scaling after them, including hidden panels.
+	_safe_root.oversampling_with_scale=CanvasItem.OVERSAMPLING_WITH_SCALE_DISABLED
+	_safe_root.oversampling_with_scale=CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
 
 
 ## Context links retain the same pause/input ownership as the menu wiki.

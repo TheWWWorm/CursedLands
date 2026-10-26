@@ -1,0 +1,29 @@
+{
+  "id": "8144aae3eaae4705",
+  "status": "completed",
+  "argv": [
+    "python3",
+    "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/wine_suite.py",
+    "windows",
+    "windows-emitter-retry"
+  ],
+  "cwd": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup",
+  "env": {
+    "E2_WINDOWS_GAME": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/windows",
+    "E2_SUITE": "path_trace_emitter_live.gd"
+  },
+  "timeout_seconds": 480,
+  "created_at": 1792981499.6342144,
+  "label": "E2 DX12 device initialization retry",
+  "directory": "/var/lib/gpu-lab-gpu0/jobs/8144aae3eaae4705",
+  "gpu_uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+  "display": ":99",
+  "workload": "auto",
+  "vram_mb": 4096,
+  "started_at": 1792981499.6345057,
+  "pid": 2930803,
+  "stderr_truncated": false,
+  "stdout_truncated": false,
+  "exit_code": 0,
+  "finished_at": 1792981533.5775664
+}

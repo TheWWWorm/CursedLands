@@ -1,0 +1,52 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "12c5502a1a51612f7431f09dbe8aadcb8a05787cd292eeaad5c1f9f3413b160b",
+  "manifest_sha256": "0bffd472170dd4415299018c6543dc904292f70828964b813bc8cf4cbfc18178",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/prepared.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "astral_data": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  },
+  "cases": [
+    {
+      "id": "spell_effect_lighting_lia",
+      "script": "tools/tests/spell_effect_lighting.gd",
+      "script_sha256": "235cebdc6138f057bcfd97ef9de6674493a9dd47778fc5b82b76063d33e0ce7f",
+      "contract": "Audit every installed LiA spell through casting and impact/status dispatchers; shared bounded lights, hidden actors and expiry remain correct.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 4.72,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/prepared.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/lia-spells/spell_effect_lighting_lia/tools/tests/spell_effect_lighting.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/lia-spells/spell_effect_lighting_lia/tools/tests",
+        "--suite-campaign=lost_in_astral",
+        "--suite-display=headless"
+      ],
+      "log": "spell_effect_lighting_lia/run.log",
+      "passed": true,
+      "result": {
+        "checks": 134,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/prepared.pck",
+    "sha256": "e6b86e777d41cc7b6224b74f03b087226ab722551e6ff5a4919eb43d49b8225f"
+  },
+  "passed": true
+}

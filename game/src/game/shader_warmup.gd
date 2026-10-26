@@ -123,6 +123,10 @@ static func run(game: Game) -> void:
 		for variant: Array in ambient.warmup_variants():
 			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]))
 	_add(items, seen, Projectile.material(), env, MESH, _zero_format(Projectile.shaft_mesh()))
+	# Campaign weather/spells use the same position/colour/UV bolt layout
+	# already prepared by arenas. A generic quad leaves that first draw cold.
+	for m: Material in [FxLightning._strip_mat(false), FxLightning._glow_mat()]:
+		_add(items, seen, m, env, MESH, _zero_lightning(), GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
 	for m: Material in _effect_materials(game):
 		_add(items, seen, m, env, MESH)
 	if game.world.ground_marks:
@@ -459,8 +463,7 @@ static func _object_of(n: Node, objects: Dictionary) -> bool:
 ## Effect materials that are not in a freshly loaded zone, as their owners
 ## make them.
 static func _effect_materials(game: Game) -> Array[Material]:
-	var out: Array[Material] = [FxLightning._strip_mat(false), FxLightning._glow_mat(),
-		VisionFog.material()]
+	var out: Array[Material] = [VisionFog.material()]
 	if Gfx.on("gfx_torch_glow"):
 		out.append(Gfx.torch_halo_material(Color.WHITE))
 	var rain := game.get_node_or_null("RainSnow") as FxRainSnow

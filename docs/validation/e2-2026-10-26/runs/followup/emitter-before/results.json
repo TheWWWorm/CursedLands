@@ -1,0 +1,80 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "a9e040140a636d9730d79ef383cecdd4af3ca16981e3b8a053f7366caa1875db",
+  "manifest_sha256": "ea3e5aeb0e3a81151c2d03512386fa16d526eb42ab864d2952d430ca0fcbf23b",
+  "engine": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.x86_64",
+  "engine_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "path_trace_emitter_sharc",
+      "script": "tools/tests/path_trace_emitter_live.gd",
+      "script_sha256": "f0d7f78095abd1cb826921e916379f7d1759163385c1bb5135e0cd486a36c1dd",
+      "contract": "First appearing, moving and expiring emissive geometry lights real campaign receivers without runtime PT/SHaRC program compilation.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 47.23,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/emitter-before/path_trace_emitter_sharc/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/emitter-before/path_trace_emitter_sharc/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/emitter-before/path_trace_emitter_sharc/cache",
+        "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/emitter-before/path_trace_emitter_sharc/tools/tests/path_trace_emitter_live.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/emitter-before/path_trace_emitter_sharc/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered",
+        "--pt-sharc"
+      ],
+      "log": "path_trace_emitter_sharc/run.log",
+      "passed": false,
+      "result": {
+        "checks": 14,
+        "failures": 5
+      },
+      "errors": [
+        "FAIL first visible emitter compiles no PT or SHaRC programs during play",
+        "FAIL moving emission reuses prepared programs",
+        "FAIL last emitter expiry reuses the prepared lean programs",
+        "FAIL material emission changes rebuild the supported snapshot",
+        "FAIL extinguished material is excluded by the gatherer's emission metadata",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/candidate.pck",
+    "sha256": "e44981f66f6eab80d1356601f1dee2cb0bca3b29df796dab32ba83f22147f49f"
+  },
+  "passed": false
+}

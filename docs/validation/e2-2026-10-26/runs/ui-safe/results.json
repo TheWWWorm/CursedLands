@@ -1,0 +1,80 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "b265aa023e1f78a7c20f0812a9d2f4229e08adfc9fa5066ca00bb23fd7ce2ab8",
+  "manifest_sha256": "9b3a9ff2f885bede4f187d8e055322a7a67b529f9559dcef79326e4f33b2b75d",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "high_resolution_ui",
+      "script": "tools/tests/high_resolution_ui.gd",
+      "script_sha256": "7805eda97fa14c55e247dd72bbe4c3683f98f81a31bdfc966fe1d37b55d52f12",
+      "contract": "Native 1080p/1440p/4K tutorial text rasterization, centered guide icon, readable EN/RU/DE layout and guide interaction.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 110.8,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/ui-safe/high_resolution_ui/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/ui-safe/high_resolution_ui/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/ui-safe/high_resolution_ui/cache",
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--render-thread",
+        "safe",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/high_resolution_ui.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "high_resolution_ui/run.log",
+      "passed": false,
+      "result": {
+        "checks": 108,
+        "failures": 6
+      },
+      "errors": [
+        "FAIL drawn glyph cache resolves display scale en-2560x1440",
+        "FAIL drawn glyph cache resolves display scale ru-2560x1440",
+        "FAIL drawn glyph cache resolves display scale de-2560x1440",
+        "FAIL drawn glyph cache resolves display scale en-3840x2160",
+        "FAIL drawn glyph cache resolves display scale ru-3840x2160",
+        "FAIL drawn glyph cache resolves display scale de-3840x2160",
+        "Process exit: 1",
+        "Assertion result does not satisfy the manifest"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "passed": false
+}

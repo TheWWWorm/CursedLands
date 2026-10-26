@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "/home/llm2x/Documents/EI/local/runtime/toolchains/proton-ge-11-11/files/bin/wine",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.30.0-20261025/release/CursedLands-1.30.0-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1920x1080",
+    "--",
+    "--no-movies",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=Z:/home/llm2x/Documents/EI/source/tools/parity/gameplay_bootstrap.gd",
+    "--suite-script=Z:/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/windows-fixtures/e2_base_route.gd",
+    "--suite-script-root=Z:/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/windows-fixtures",
+    "--suite-campaign=cursed_lands",
+    "--suite-display=rendered",
+    "--lia-pt"
+  ],
+  "runtime": "/home/llm2x/Documents/EI/local/scratchpad/framegen-rtx30-20261024/proton/GE-Proton11-11-x86_64/files",
+  "prefix": "/home/llm2x/Documents/EI/local/runtime/sessions/e2-windows",
+  "elapsed": 140.54711858101655
+}

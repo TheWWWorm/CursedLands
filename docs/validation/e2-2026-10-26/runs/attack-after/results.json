@@ -1,0 +1,128 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "113775c5a10ea4733073b97793739896c8b496f3a1e9ebe40d6a138d8d0fc848",
+  "manifest_sha256": "f558c56484508b2942680040b519cc9a0137caca0096b06a9ee91001896a4c8d",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "attack_path_current_target",
+      "script": "tools/tests/attack_path_current_target.gd",
+      "script_sha256": "fb60a08f1ed0d353896cf46a7d6ac292f9b66d5f2853553e2b08042644f4abe8",
+      "contract": "Live, paused, queued and revealed moving targets use current-position previews; pursuit remains predictive.",
+      "issues": [
+        85
+      ],
+      "mode": "headless",
+      "seconds": 9.78,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/attack_path_current_target.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "attack_path_current_target/run.log",
+      "passed": true,
+      "result": {
+        "checks": 41,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "cast_posture_queue",
+      "script": "tools/tests/cast_posture_queue.gd",
+      "script_sha256": "60da326114ad24d2ea93c08791c6615a09b8a948293201805177453527d00092",
+      "contract": "Requested posture follows a locked cast on authority and replica.",
+      "issues": [
+        109
+      ],
+      "mode": "headless",
+      "seconds": 6.63,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/cast_posture_queue.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "cast_posture_queue/run.log",
+      "passed": true,
+      "result": {
+        "checks": 12,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    },
+    {
+      "id": "attack_after_action",
+      "script": "tools/tests/attack_after_action.gd",
+      "script_sha256": "53b2927371025045a01de94f7c6362f4f15e564b4b423d4dab6d21295629bbaf",
+      "contract": "Queued direct and targeted dagger attacks select combat clips after completed casts/hits; snapshots retain the same posture.",
+      "issues": [],
+      "mode": "headless",
+      "seconds": 6.53,
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--headless",
+        "--render-thread",
+        "safe",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/attack_after_action.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=headless"
+      ],
+      "log": "attack_after_action/run.log",
+      "passed": true,
+      "result": {
+        "checks": 25,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": []
+    }
+  ],
+  "passed": true
+}

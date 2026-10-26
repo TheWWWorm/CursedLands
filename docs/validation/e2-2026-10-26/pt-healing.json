@@ -1,0 +1,264 @@
+{
+	"blue_after": 0.0263447489051355,
+	"blue_before": 0.0260638528027468,
+	"blue_first_frame": 0.0518813020570411,
+	"checks": 8,
+	"failures": [],
+	"inspections": [
+		{
+			"filtered_blue": 0.0260638528027468,
+			"history": 1.0,
+			"label": "before",
+			"packed_colours": [
+				[
+					1.61539220809937,
+					0.723676860332489,
+					0.237977921962738
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				]
+			],
+			"raw_blue": 0.0267348213535216,
+			"renders": 61
+		},
+		{
+			"filtered_blue": 0.0518813020570411,
+			"history": 0.0,
+			"label": "first",
+			"packed_colours": [
+				[
+					1.61539220809937,
+					0.723676860332489,
+					0.237977921962738
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.150262176990509,
+					0.101865708827972,
+					0.766666650772095
+				]
+			],
+			"raw_blue": 0.0532384953689244,
+			"renders": 62
+		},
+		{
+			"filtered_blue": 0.0518731879898243,
+			"history": 1.0,
+			"label": "settled",
+			"packed_colours": [
+				[
+					1.61539220809937,
+					0.723676860332489,
+					0.237977921962738
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.150262176990509,
+					0.101865708827972,
+					0.766666650772095
+				]
+			],
+			"raw_blue": 0.0532693321961496,
+			"renders": 74
+		},
+		{
+			"filtered_blue": 0.0263447489051355,
+			"history": 0.0,
+			"label": "expired",
+			"packed_colours": [
+				[
+					1.61539220809937,
+					0.723676860332489,
+					0.237977921962738
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				],
+				[
+					0.00999999977648258,
+					0.000100228236988187,
+					0.0
+				]
+			],
+			"raw_blue": 0.0267405600473285,
+			"renders": 75
+		}
+	],
+	"note": "Original cave and flame with six dim probe lights and the production healing particle emitter. Geometry poll does not expire during the first spell frame.",
+	"stats": {
+		"accumulation_frames": 1.0,
+		"active": true,
+		"adaptive_changes": 0,
+		"adaptive_gpu_ms": 0.0,
+		"adaptive_scale": 1.0,
+		"adaptive_target_fps": 0,
+		"build_timings": {
+			"extra_ms": 3.733,
+			"materials_ms": 1.054,
+			"placements_ms": 3.019,
+			"program_ms": 2447.364,
+			"resources_ms": 2524.368,
+			"textures_ms": 42.402,
+			"vertices_ms": 26.787
+		},
+		"compute_program_cache_hits": 0,
+		"compute_program_compilations": 2,
+		"cpu_update_ms": 0.377,
+		"display_size": [
+			1280,
+			720
+		],
+		"emissive_candidates": 0,
+		"emissive_triangles": 0,
+		"geometries": 926,
+		"gi_samples": 0,
+		"history_handoffs": 0,
+		"history_limit": 8.0,
+		"history_matched_surfaces": 0,
+		"history_reused": false,
+		"instances": 962,
+		"light_history_limited": false,
+		"lights": 7,
+		"local_light_shadow_samples": 7,
+		"path_bounces": 2,
+		"path_samples": 1,
+		"path_tracing": true,
+		"program_cache_hits": 0,
+		"program_compilations": 1,
+		"quality": 0,
+		"rebuilding": true,
+		"render_scale": 1.0,
+		"render_size": [
+			1280,
+			720
+		],
+		"shadow_samples": 0,
+		"sharc_active": false,
+		"sharc_failed": false,
+		"sharc_frames": 0,
+		"sharc_resets": 0,
+		"size": [
+			640,
+			360
+		],
+		"snapshot_generation": 1,
+		"supported": true,
+		"terrain_material_build_us": 17506,
+		"terrain_material_bytes": 970680,
+		"terrain_material_triangles": 131141,
+		"trace_render_scale": 1.0,
+		"triangles": 168813,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	},
+	"torch": "(179.9853, 8.631007, -43.2999)"
+}

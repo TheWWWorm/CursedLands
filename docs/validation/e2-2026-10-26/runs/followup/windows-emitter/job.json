@@ -1,0 +1,29 @@
+{
+  "id": "fa24d3be490e4b75",
+  "status": "completed",
+  "argv": [
+    "python3",
+    "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/wine_suite.py",
+    "windows",
+    "windows-emitter"
+  ],
+  "cwd": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup",
+  "env": {
+    "E2_WINDOWS_GAME": "/home/llm2x/Documents/EI/local/scratchpad/e2-20261026-followup/windows",
+    "E2_SUITE": "path_trace_emitter_live.gd"
+  },
+  "timeout_seconds": 480,
+  "created_at": 1792981229.5830495,
+  "label": "E2 DX12 emitter first-use regression",
+  "directory": "/var/lib/gpu-lab/jobs/fa24d3be490e4b75",
+  "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+  "display": ":108",
+  "workload": "auto",
+  "vram_mb": 4096,
+  "started_at": 1792981229.583319,
+  "pid": 2922660,
+  "stderr_truncated": false,
+  "stdout_truncated": false,
+  "exit_code": 0,
+  "finished_at": 1792981287.3398683
+}

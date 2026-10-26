@@ -1,0 +1,15 @@
+{
+  "source": "/home/llm2x/Documents/EI/Evidence/e2/Downloads 2026.10.26 - 00.53.34.04.DVR.mp4",
+  "encoding": "H.264 High, 3840x2160, yuv420p limited-range BT.709 progressive; nominal 60 fps, reported average 59.97",
+  "interval_seconds": [
+    195,
+    231.93
+  ],
+  "native_frames": 2214,
+  "constant_60fps_frames": 2215,
+  "native_frame_occurrences_omitted_by_fps_filter": 389,
+  "additional_frame_occurrences_in_constant_fps_output": 390,
+  "method": "Two decodes at 640x360, native passthrough versus fps=60, compared by frame hash multiset. Native-only scan uses three-frame luminance drop with spatial patch scoring. No fps filter in the native scan. PTS in the contact labels is rounded to the framemd5 stream 1/60 time base; frame index preserves native order.",
+  "visual_review": "All 30 strongest spatial darkening candidates reviewed as before/current/after triplets. Largest candidates are foreground weapon/foliage/camera motion. No conclusively identified mountain-blackening frame. This is a negative observation, not proof of absence.",
+  "remaining": "Exact affected mountain/frame or another reproducible sequence; whether the effect persists with native NVIDIA FG disabled. Current test GPUs do not support the recording\u2019s native NVIDIA FG path."
+}

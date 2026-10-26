@@ -2965,7 +2965,7 @@ func _do_direct_attack(dt: float) -> void:
 	if _attack_cd > 0.0:
 		if _moving: _walk_action()
 		return
-	if _update_pose(): return
+	if _update_pose(true, true): return
 	var len := maxf(model.act("attack",world.random_int_range(1,3),0.05),0.6)
 	action = "attack"
 	_anim_lock = len
@@ -3067,7 +3067,7 @@ func _do_attack(dt: float) -> void:
 		return
 	# The strike is queried in the combat state (alert)
 	# a unit that was idle in the relaxed state first plays its cross clip.
-	if _update_pose():
+	if _update_pose(true, true):
 		return
 	var variant := world.random_int_range(1, 3)
 	var clip := ""
@@ -4346,7 +4346,7 @@ var _pose_snap := true
 ## (: leg level DamageLevel2Value -> modifier 2, DamageLevel1Value -> 1).
 ## Returns true while a stance change clip plays (: standing
 ## still, the unit first plays the "cross" clip between the two stances).
-func _update_pose(movement_start := true) -> bool:
+func _update_pose(movement_start := true, committing_action := false) -> bool:
 	if model == null or model.adb.is_empty():
 		return false
 	var st := EIUnitModel.ST_ATTACK
@@ -4383,7 +4383,11 @@ func _update_pose(movement_start := true) -> bool:
 	# describes the posture actually displayed. Consume the change only when
 	# that one-shot releases the figure, so its following idle can cross from
 	# the casting posture instead of snapping straight to the requested one.
-	if dead or not action in ["idle", "walk", "run", "crawl"]:
+	# A new strike can commit directly after a finished cast/hit without an
+	# intervening idle tick. Query it in its new combat posture; replaying the
+	# old one-shot or retaining its neutral mask selects the bow fallback.
+	# Ordinary draw updates still preserve the locked action's queued stance.
+	if dead or (not action in _STEADY and not committing_action):
 		return false
 	var old := model.pose_state
 	model.pose_state = st
@@ -4412,8 +4416,9 @@ func _update_pose(movement_start := true) -> bool:
 				if world and world.authority:
 					_anim_lock = maxf(_anim_lock, l)
 				return true
-	if movement_start: model.act_with_start(action)
-	else: model.act(action)
+	if action in _STEADY:
+		if movement_start: model.act_with_start(action)
+		else: model.act(action)
 	return false
 
 
@@ -4888,7 +4893,7 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 			_update_pose()   # the snapshot's combat flag / posture first
 			_cast_anim(String(visual[0]) if not visual.is_empty() else _cast_clip(), int(a.get_slice(":", 1)) if a.contains(":") else 0)
 		elif a == "attack":
-			_update_pose()   # the snapshot's combat flag / posture first
+			_update_pose(false, true)   # this snapshot commits a new strike
 			if visual.is_empty(): model.act("attack", world.random_int_range(1, 3), 0.05)
 			else: model.play(visual[0], 0.05, true)
 			GameSound.unit(self, "attack")

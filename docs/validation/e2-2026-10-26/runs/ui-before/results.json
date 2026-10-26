@@ -1,0 +1,72 @@
+{
+  "git_head": "d4765c56dd7739cda80ee9b01dfc9b2341a372e1",
+  "game_source_sha256": "113775c5a10ea4733073b97793739896c8b496f3a1e9ebe40d6a138d8d0fc848",
+  "manifest_sha256": "04620c801c28bb866556c1db3466406dfb0e09fa15c9e5ec78109379f7579100",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "high_resolution_ui",
+      "script": "tools/tests/high_resolution_ui.gd",
+      "script_sha256": "e1d65c42e9d10dcea120476945d1e49536614118237756ef71da48c1b3d1b0f9",
+      "contract": "Native 1080p/1440p/4K tutorial text rasterization, centered guide icon, readable EN/RU/DE layout and guide interaction.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 7.63,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/ui-before/high_resolution_ui/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/ui-before/high_resolution_ui/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/e2-20261026/ui-before/high_resolution_ui/cache",
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/high_resolution_ui.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "high_resolution_ui/run.log",
+      "passed": false,
+      "result": null,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot find member \"OVERSAMPLING_WITH_SCALE_INHERIT\" in base \"CanvasItem\".",
+        "ERROR: Failed to load script \"/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/high_resolution_ui.gd\" with error \"Parse error\".",
+        "ERROR: Gameplay test could not be instantiated",
+        "Expected exactly one HIGH_RESOLUTION_UI summary, found 0",
+        "Process exit: 2"
+      ],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "passed": false
+}
