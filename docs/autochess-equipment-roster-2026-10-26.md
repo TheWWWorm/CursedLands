@@ -79,6 +79,12 @@ and ordinary victories used a banner instead of a blocking dialog. The fixtures
 now assert those accepted behaviors, retaining native combat, migration,
 visibility and immutability checks. Balance thresholds were not weakened.
 
+The complete focused suite passed 14,409 assertions across 44 cases, including
+EN/RU/DE checks from 720p to 4K, plus 33 runner unit tests. After merging the
+concurrent main-menu update, six targeted cases passed another 1,792 assertions,
+including the Russian 4K interaction check and the release-check service. All
+3,560 translation entries pass coverage checks.
+
 See [machine-readable validation](validation/autochess-equipment-roster-2026-10-26.json).
 Rendered checks use GPU Lab auto allocation with isolated muted profiles and
 free cursors. The exact stock-engine virtual-monitor refresh diagnostic is

@@ -598,7 +598,7 @@
   "checks": 14409,
   "python_runner_checks": 33,
   "translations": {
-    "entries": 3550,
+    "entries": 3560,
     "dynamic_arena": 201,
     "errors": 0
   },
@@ -808,5 +808,91 @@
     "volume_stream": 0,
     "volume_voice": 0
   },
-  "rendered_runner": "GPU Lab automatic GPU allocation; x11, Dummy audio, 30 FPS cap; no physical desktop changes."
+  "rendered_runner": "GPU Lab automatic GPU allocation; x11, Dummy audio, 30 FPS cap; no physical desktop changes.",
+  "integrated_verification": {
+    "git_head": "74804abcc4999479e6e973b730984bd0ee7c1ef0",
+    "game_source_sha256": "a24e36fbcc2af46e8d5eb92bf478bcb5d1588bb26e2a94caf4c29ca83668a68d",
+    "manifest_sha256": "ad6db91b0a9e0354aedaeafcbc1ade46de7c7a1b0ac002451c90c83612212bfe",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "passed": true,
+    "cases": [
+      {
+        "id": "arena_opening_viability",
+        "mode": "headless",
+        "result": {
+          "checks": 194,
+          "failures": 0
+        },
+        "passed": true,
+        "seconds": 59.21,
+        "errors": [],
+        "infrastructure_diagnostics": []
+      },
+      {
+        "id": "arena_rank_stats",
+        "mode": "headless",
+        "result": {
+          "checks": 1060,
+          "failures": 0
+        },
+        "passed": true,
+        "seconds": 7.08,
+        "errors": [],
+        "infrastructure_diagnostics": []
+      },
+      {
+        "id": "arena_horde_roster",
+        "mode": "headless",
+        "result": {
+          "checks": 31,
+          "failures": 0
+        },
+        "passed": true,
+        "seconds": 5.82,
+        "errors": [],
+        "infrastructure_diagnostics": []
+      },
+      {
+        "id": "arena_horde_balance",
+        "mode": "headless",
+        "result": {
+          "checks": 395,
+          "failures": 0
+        },
+        "passed": true,
+        "seconds": 113.8,
+        "errors": [],
+        "infrastructure_diagnostics": []
+      },
+      {
+        "id": "arena_equipment_roster_ui_ru_2160",
+        "mode": "rendered",
+        "result": {
+          "checks": 57,
+          "failures": 0
+        },
+        "passed": true,
+        "seconds": 78.79,
+        "errors": [],
+        "infrastructure_diagnostics": [
+          "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+        ]
+      },
+      {
+        "id": "release_check",
+        "mode": "headless",
+        "result": {
+          "checks": 55,
+          "failures": 0
+        },
+        "passed": true,
+        "seconds": 14.14,
+        "errors": [],
+        "infrastructure_diagnostics": []
+      }
+    ],
+    "checks": 1792,
+    "translation_errors": 0,
+    "registered_cases": 451
+  }
 }
