@@ -3,6 +3,49 @@
 Do not use subagents or delegate to other agents unless the user explicitly asks.
 This preference also applies when a skill recommends parallel agent work.
 
+# Cleanup after work
+
+Finish each task by removing the temporary files it created that are no longer
+needed: disposable build/export staging, reproducible caches, duplicate downloads,
+and superseded test outputs. Inspect existing leftovers too, and remove only
+items whose purpose and disposability have been verified. Do not leave large
+scratchpad trees behind by default. Record meaningful results and the minimum
+useful evidence before removing bulky intermediates; report what was removed
+and any large items deliberately retained.
+
+Never treat a name such as `scratchpad`, `tmp`, `build`, or `old`, an ignored Git
+status, or age alone as proof that something is junk. Preserve canonical source,
+Git common directories and history, uncommitted/untracked work, unmerged branches,
+original game assets/installers, saves, credentials, required toolchains, and
+unique regression/reference evidence. Check running processes and references
+before deleting their inputs or outputs. Inspect worktree status, ignored files,
+and branch ancestry before retiring a checkout; use Git worktree commands, or the
+Codex archive tool for app-managed worktrees, instead of deleting them blindly.
+Do not use blanket `git clean -fdx`, recursive scratchpad deletion, or silent stashes.
+
+Keep a compact workspace map and cleanup records in the workspace's
+`local/maintenance/`, outside this Git checkout. Use the workspace's
+`local/scratchpad/<task>/` for disposable experiments with an explicit purpose;
+keep reusable assets, toolchains, and durable evidence in documented locations.
+When something is uncertain, retain it and record why rather than guessing.
+
+# Wine and Proton reuse
+
+Before original base-game, LiA, or Windows remake testing, read
+[`docs/wine-proton-workflow.md`](docs/wine-proton-workflow.md).
+Reuse the verified toolchains and reference assets registered under the workspace's
+`local/runtime/`; do not download or copy an entire Wine/Proton installation
+per task or test. Keep base-game, patched LiA, and remake seed prefixes separate
+and unchanged. Use one exclusively locked writable prefix per concurrent suite,
+reuse it for serial cases, and remove disposable prefixes/caches after preserving
+results and unique saves. Never retain a full prefix per screenshot or test case.
+Fresh-prefix tests must document why they need isolation and clean up afterwards.
+Do not hardlink mutable prefixes or share them between concurrent jobs or runtimes.
+Use GPU Lab with `gpu=auto`; historical display numbers and per-case prefix-copy
+recipes are not the current workflow. Prefixes marked `RETIRED-BY-CLEANUP.md`
+are retained evidence, not runnable templates. Follow the guide's restoration
+instructions if an old prefix is deliberately needed again.
+
 # Local main and remote updates
 
 On this workstation, the canonical Cursed Lands integration checkout is
