@@ -1,0 +1,399 @@
+--- a/drivers/streamline/streamline_context.h
++++ b/drivers/streamline/streamline_context.h
+@@ -40,6 +40,9 @@
+ 	bool initialized = false;
+ 	bool enhanced_barriers = false;
+ 	SafeNumeric<uint64_t> dlss_evaluations{ 0 };
++	SafeNumeric<uint64_t> rr_evaluations{ 0 }, rr_resets{ 0 };
++	SafeNumeric<uint32_t> rr_failed{ 0 }, rr_active{ 0 }, rr_last_error{ 0 };
++	SafeNumeric<uint32_t> rr_input_width{ 0 }, rr_input_height{ 0 };
+ 	SafeNumeric<uint64_t> ui_alpha_frames{ 0 };
+ 	SafeNumeric<uint64_t> ui_alpha_texture{ 0 };
+ 	SafeNumeric<uint32_t> fg_input_width{ 0 }, fg_input_height{ 0 }, fg_output_width{ 0 }, fg_output_height{ 0 }, fg_size_supported{ 0 };
+@@ -47,6 +50,7 @@
+ 	SafeNumeric<uint64_t> presented_frames{ 0 };
+ 	SafeNumeric<uint32_t> last_error{ 0 };
+ 	sl::Result sr_support_result = sl::Result::eErrorNotInitialized;
++	sl::Result rr_support_result = sl::Result::eErrorNotInitialized;
+ 	sl::Result fg_support_result = sl::Result::eErrorNotInitialized;
+ 	SafeNumeric<uint32_t> fg_status{ 0 };
+ 	SafeNumeric<uint32_t> fg_active{ 0 };
+@@ -55,6 +59,7 @@
+ 	bool frame_token_rendered = false;
+ 	bool fg_tagged_this_frame = false; // Render/present thread only.
+ 	bool check(sl::Result result, bool frame_generation = false);
++	bool check_rr(sl::Result result);
+ 	void poll_presented_frames();
+ 	// Interposer
+ 	PFun_slUpgradeInterface *slUpgradeInterface = nullptr;
+--- a/drivers/streamline/streamline_context.cpp
++++ b/drivers/streamline/streamline_context.cpp
+@@ -134,6 +134,7 @@
+ 		slGetFeatureFunction(sl::kFeatureNIS, "slNISSetOptions", (void *&)this->slNISSetOptions);
+ 	}
+ 	streamline_capabilities.dlss_available &= slDLSSSetOptions && slDLSSGetOptimalSettings;
++	streamline_capabilities.dlss_rr_available &= slDLSSDSetOptions && slDLSSDGetOptimalSettings && slDLSSDGetState;
+ 	streamline_capabilities.dlss_g_available &= slDLSSGSetOptions && slDLSSGGetState;
+ 	streamline_capabilities.reflex_available &= slReflexSetOptions && slReflexSleep;
+ 
+@@ -145,7 +146,8 @@
+ 		self->fg_support_result = self->slIsFeatureSupported(sl::kFeatureDLSS_G, adapterInfo);
+ 		outSupport.dlss_available = self->sr_support_result == sl::Result::eOk;
+ 		outSupport.dlss_g_available = self->fg_support_result == sl::Result::eOk;
+-		outSupport.dlss_rr_available = self->slIsFeatureSupported(sl::kFeatureDLSS_RR, adapterInfo) == sl::Result::eOk;
++		self->rr_support_result = self->slIsFeatureSupported(sl::kFeatureDLSS_RR, adapterInfo);
++		outSupport.dlss_rr_available = self->rr_support_result == sl::Result::eOk;
+ 		outSupport.reflex_available = self->slIsFeatureSupported(sl::kFeatureReflex, adapterInfo) == sl::Result::eOk;
+ 		outSupport.pcl_available = self->slIsFeatureSupported(sl::kFeaturePCL, adapterInfo) == sl::Result::eOk;
+ 		outSupport.nis_available = self->slIsFeatureSupported(sl::kFeatureNIS, adapterInfo) == sl::Result::eOk;
+@@ -355,9 +357,9 @@
+ 
+ 	sl::Preferences pref;
+ 
+-	sl::Feature features[] = { sl::kFeatureDLSS, sl::kFeatureDLSS_G, sl::kFeatureReflex, sl::kFeaturePCL };
++	sl::Feature features[] = { sl::kFeatureDLSS, sl::kFeatureDLSS_RR, sl::kFeatureDLSS_G, sl::kFeatureReflex, sl::kFeaturePCL };
+ 	pref.featuresToLoad = features;
+-	pref.numFeaturesToLoad = 4;
++	pref.numFeaturesToLoad = sizeof(features) / sizeof(features[0]);
+ 	pref.renderAPI = sl::RenderAPI::eD3D12;
+ 	pref.applicationId = 0;
+ 	pref.engine = sl::EngineType::eCustom;
+@@ -395,6 +397,16 @@
+ 	return false;
+ }
+ 
++bool StreamlineContext::check_rr(sl::Result result) {
++	if (result == sl::Result::eOk) { return true; }
++	rr_last_error.set((uint32_t)result);
++	rr_failed.set(1);
++	rr_active.set(0);
++	// An optional RR failure must not disable ordinary SR/DLAA.
++	WARN_PRINT("DLSS Ray Reconstruction unavailable after SDK error: " + String(result_to_string(result)));
++	return false;
++}
++
+ void StreamlineContext::poll_presented_frames() {
+ 	if (!initialized || !slDLSSGGetState || (uint32_t)dlssg_viewport == UINT_MAX) { return; }
+ 	sl::DLSSGState state;
+--- a/drivers/streamline/streamline.cpp
++++ b/drivers/streamline/streamline.cpp
+@@ -148,6 +148,7 @@
+ 		}
+ 		sl_context.frame_token_rendered = true;
+ 		sl_context.fg_tagged_this_frame = false;
++		sl_context.rr_active.set(0);
+ 	}
+ 	if (marker == STREAMLINE_MARKER_BEGIN_SIMULATION && !sl_context.last_token) { sl_context.get_new_frame_token(); }
+ 	if (marker == STREAMLINE_MARKER_BEGIN_PRESENT && !sl_context.fg_tagged_this_frame) { sl_context.dlssg_disable(); }
+@@ -350,6 +351,15 @@
+ 	out["sr_support_reason"] = StreamlineContext::result_to_string(ctx.sr_support_result);
+ 	out["fg_support_reason"] = StreamlineContext::result_to_string(ctx.fg_support_result);
+ 	out["dlss_evaluations"] = ctx.dlss_evaluations.get();
++	out["rr_supported"] = ctx.initialized && ctx.streamline_capabilities.dlss_rr_available && !ctx.rr_failed.get();
++	out["rr_support_result"] = (uint32_t)ctx.rr_support_result;
++	out["rr_support_reason"] = StreamlineContext::result_to_string(ctx.rr_support_result);
++	out["rr_evaluations"] = ctx.rr_evaluations.get();
++	out["rr_resets"] = ctx.rr_resets.get();
++	out["rr_active"] = ctx.rr_active.get() != 0;
++	out["rr_last_error"] = ctx.rr_last_error.get();
++	out["rr_input_size"] = Vector2i(ctx.rr_input_width.get(), ctx.rr_input_height.get());
++	out["rr_preset"] = "F";
+ 	out["presented_frames"] = ctx.presented_frames.get();
+ 	out["game_presents"] = ctx.game_presents.get();
+ 	out["present_count_available"] = ctx.initialized && ctx.streamline_capabilities.dlss_g_available;
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h
+@@ -183,6 +183,15 @@
+ 	static void _bind_methods();
+ 
+ public:
++	// Borrowed, current-frame guides supplied by a pre-opaque compositor.
++	// The owner retains them through rendering. Clear every frame and resize.
++	struct RayReconstructionInputs {
++		RID diffuse_albedo, specular_albedo, normal_roughness, specular_hit_distance;
++		bool valid = false;
++		bool reset = false;
++	} ray_reconstruction_inputs;
++	bool set_dlss_ray_reconstruction(RID p_diffuse, RID p_specular, RID p_normal_roughness, RID p_hit_distance, bool p_reset);
++	void clear_dlss_ray_reconstruction() { ray_reconstruction_inputs = RayReconstructionInputs(); }
+ 	RenderSceneBuffersRD();
+ 	virtual ~RenderSceneBuffersRD();
+ 
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
+@@ -49,6 +49,7 @@
+ }
+ 
+ void RenderSceneBuffersRD::_bind_methods() {
++	ClassDB::bind_method(D_METHOD("set_dlss_ray_reconstruction", "diffuse_albedo", "specular_albedo", "normal_roughness", "specular_hit_distance", "reset"), &RenderSceneBuffersRD::set_dlss_ray_reconstruction);
+ 	ClassDB::bind_method(D_METHOD("has_texture", "context", "name"), &RenderSceneBuffersRD::has_texture);
+ 	ClassDB::bind_method(D_METHOD("create_texture", "context", "name", "data_format", "usage_bits", "texture_samples", "size", "layers", "mipmaps", "unique", "discardable"), &RenderSceneBuffersRD::create_texture);
+ 	ClassDB::bind_method(D_METHOD("create_texture_from_format", "context", "name", "format", "view", "unique"), &RenderSceneBuffersRD::_create_texture_from_format);
+@@ -125,6 +126,7 @@
+ }
+ 
+ void RenderSceneBuffersRD::cleanup() {
++	clear_dlss_ray_reconstruction();
+ 	// Free our data buffers (but don't destroy them)
+ 	for (KeyValue<StringName, Ref<RenderBufferCustomDataRD>> &E : data_buffers) {
+ 		E.value->free_data();
+@@ -865,3 +867,19 @@
+ 	// to fit 0-2 range color values into a UNORM buffer.
+ 	return (force_hdr || can_be_storage) ? 1.0 : 2.0;
+ }
++
++// Reject stale/wrong-sized or incompatible guides instead of passing invalid
++// resources into a native SDK. No allocation or ownership transfer occurs here.
++bool RenderSceneBuffersRD::set_dlss_ray_reconstruction(RID p_diffuse, RID p_specular, RID p_normal_roughness, RID p_hit_distance, bool p_reset) {
++	clear_dlss_ray_reconstruction();
++	if (view_count != 1 || scaling_3d_mode != RSE::VIEWPORT_SCALING_3D_MODE_DLSS || msaa_3d != RSE::VIEWPORT_MSAA_DISABLED) { return false; }
++	RD *rd = RD::get_singleton();
++	for (RID texture : { p_diffuse, p_specular, p_normal_roughness, p_hit_distance }) {
++		if (!texture.is_valid() || !rd->texture_is_valid(texture)) { return false; }
++		RD::TextureFormat format = rd->texture_get_format(texture);
++		RD::DataFormat expected = texture == p_hit_distance ? RD::DATA_FORMAT_R16_SFLOAT : RD::DATA_FORMAT_R16G16B16A16_SFLOAT;
++		if (format.format != expected || format.width != (uint32_t)internal_size.x || format.height != (uint32_t)internal_size.y || format.array_layers != 1 || format.samples != RD::TEXTURE_SAMPLES_1) { return false; }
++	}
++	ray_reconstruction_inputs = { p_diffuse, p_specular, p_normal_roughness, p_hit_distance, true, p_reset };
++	return true;
++}
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_data_rd.h
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_data_rd.h
+@@ -39,7 +39,11 @@
+ class RenderSceneDataRD : public RenderSceneData {
+ 	GDCLASS(RenderSceneDataRD, RenderSceneData);
+ 
++protected:
++	static void _bind_methods();
++
+ public:
++	Projection get_ray_projection() const;
+ 	bool calculate_motion_vectors = false;
+ 
+ 	Transform3D cam_transform;
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_data_rd.cpp
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_data_rd.cpp
+@@ -29,6 +29,7 @@
+ /**************************************************************************/
+ 
+ #include "render_scene_data_rd.h"
++#include "core/object/class_db.h"
+ 
+ #include "servers/rendering/renderer_rd/renderer_scene_render_rd.h"
+ #include "servers/rendering/renderer_rd/storage_rd/light_storage.h"
+@@ -300,3 +301,13 @@
+ RID RenderSceneDataRD::get_uniform_buffer() const {
+ 	return uniform_buffer;
+ }
++
++void RenderSceneDataRD::_bind_methods() {
++	ClassDB::bind_method(D_METHOD("get_ray_projection"), &RenderSceneDataRD::get_ray_projection);
++}
++
++Projection RenderSceneDataRD::get_ray_projection() const {
++	Projection jitter;
++	jitter.add_jitter_offset(Vector2(taa_jitter.x, flip_y ? -taa_jitter.y : taa_jitter.y));
++	return jitter * cam_projection;
++}
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
+@@ -1731,6 +1731,7 @@
+ 
+ 	Ref<RenderSceneBuffersRD> rb = p_render_data->render_buffers;
+ 	ERR_FAIL_COND(rb.is_null());
++	rb->clear_dlss_ray_reconstruction();
+ 	Ref<RenderBufferDataForwardClustered> rb_data;
+ 	if (rb->has_custom_data(RB_SCOPE_FORWARD_CLUSTERED)) {
+ 		// Our forward clustered custom data buffer will only be available when we're rendering our normal view.
+@@ -2650,13 +2651,20 @@
+ 				params.exposure = exposure;
+ 				params.output = rb->get_upscaled_texture(v);
+ 				params.dlss_g = rb->get_frame_generation();
++				const auto &rr = rb->ray_reconstruction_inputs;
++				params.dlss_rr = rr.valid && rb->get_view_count() == 1;
++				params.dlss_rr_diffuse_albedo = rr.diffuse_albedo;
++				params.dlss_rr_specular_albedo = rr.specular_albedo;
++				params.dlss_rr_normal_roughness = rr.normal_roughness;
++				params.dlss_rr_specular_hit_dist = rr.specular_hit_distance;
++				params.orthographic = p_render_data->scene_data->cam_orthogonal;
+ 				params.preset = '?'; // FIXME: Unique preset per viewport? Does anyone need this?
+ 				params.z_near = p_render_data->scene_data->z_near;
+ 				params.z_far = p_render_data->scene_data->z_far;
+ 				params.fovy = fovy;
+ 				params.jitter = jitter;
+ 				params.delta_time = float(time_step);
+-				params.reset_accumulation = cur_camera_reset;
++				params.reset_accumulation = cur_camera_reset || rr.reset;
+ 
+ 				Projection correction;
+ 				correction.set_depth_correction(true, true, false);
+--- a/servers/rendering/renderer_rd/effects/dlss.h
++++ b/servers/rendering/renderer_rd/effects/dlss.h
+@@ -53,6 +53,7 @@
+ 		float z_far = 0.0f;
+ 		float fovy = 0.0f;
+ 		bool reverse_depth = true;
++		bool orthographic = false;
+ 		Vector2 jitter;
+ 		float delta_time = 0.0f;
+ 		float sharpness = 0.0f;
+--- a/servers/rendering/renderer_rd/effects/dlss.cpp
++++ b/servers/rendering/renderer_rd/effects/dlss.cpp
+@@ -56,6 +56,8 @@
+ 	sl::DLSSOptimalSettings currentOptimalSettings;
+ 	bool evaluated = false;
+ 	bool first_frame = true;
++	bool previous_rr = false;
++	bool rr_settings_checked = false;
+ 	RID hudless;
+ 	RID ui_alpha;
+ 	RID presented_hudless;
+@@ -136,6 +138,7 @@
+ 		}
+ 		ctx.slFreeResources(sl::kFeatureDLSS_G, viewport);
+ 		ctx.slFreeResources(sl::kFeatureDLSS, viewport);
++		if (ctx.streamline_capabilities.dlss_rr_available) { ctx.slFreeResources(sl::kFeatureDLSS_RR, viewport); }
+ 	}
+ 	if (prepared_color.is_valid()) {
+ 		g_dlss_prepared.erase(prepared_color);
+@@ -253,6 +256,7 @@
+ 	if (!StreamlineContext::get().last_token) { return; }
+ 	context->evaluated = false;
+ 	context->last_parameters = p_params;
++	context->last_parameters.dlss_rr = p_params.dlss_rr && StreamlineContext::get().streamline_capabilities.dlss_rr_available && !StreamlineContext::get().rr_failed.get();
+ 	context->last_effect = this;
+ 
+ 	// Decode mvecs
+@@ -294,12 +298,18 @@
+ 	}
+ 
+ 	// Inject DLSS into the render graph
+-	RD::CallbackResource res[4];
++	RD::CallbackResource res[8];
+ 	int num_resources = 0;
+ 	res[num_resources++].rid = p_params.color;
+ 	res[num_resources++].rid = p_params.output;
+ 	res[num_resources++].rid = p_params.depth;
+ 	res[num_resources++].rid = p_params.velocity;
++	if (context->last_parameters.dlss_rr) {
++		res[num_resources++].rid = p_params.dlss_rr_diffuse_albedo;
++		res[num_resources++].rid = p_params.dlss_rr_specular_albedo;
++		res[num_resources++].rid = p_params.dlss_rr_normal_roughness;
++		res[num_resources++].rid = p_params.dlss_rr_specular_hit_dist;
++	}
+ 
+ 
+ 	for (int i = 0; i < num_resources; i++) {
+@@ -313,8 +323,15 @@
+ 
+ 	void *nativeCmdlist = RD::get_singleton()->get_device_driver()->command_buffer_get_native_handle(cmdid);
+ 
+-	// Helper function for tagging resources.
+-	auto assignResource = [context](sl::Resource *resources, sl::ResourceTag *resourceTags, int &numResources, RID textureRID, sl::BufferType bufferType, sl::ResourceLifecycle lifecycle) {
++	auto &ctx = StreamlineContext::get();
++	const bool rr = p_params.dlss_rr && !ctx.rr_failed.get();
++	const bool mode_changed = rr != context->previous_rr;
++	auto check = [&ctx, rr](sl::Result result) { return rr ? ctx.check_rr(result) : ctx.check(result); };
++
++	// Helper function for tagging resources. Explicit full-texture extents also
++	// describe fixed RR input/output sizes independently of resource allocation.
++	sl::Extent extents[10];
++	auto assignResource = [context, &extents](sl::Resource *resources, sl::ResourceTag *resourceTags, int &numResources, RID textureRID, sl::BufferType bufferType, sl::ResourceLifecycle lifecycle) {
+ 		if (!textureRID.is_valid() || textureRID.is_null()) {
+ 			return;
+ 		}
+@@ -327,18 +344,40 @@
+ 		resources[numResources].height = texture_format.height;
+ 		resources[numResources].nativeFormat = RD::get_singleton()->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE_DATA_FORMAT, textureRID);
+ 
+-		resourceTags[numResources] = sl::ResourceTag(resources + numResources, bufferType, lifecycle, nullptr);
++		extents[numResources] = { 0, 0, texture_format.width, texture_format.height };
++		resourceTags[numResources] = sl::ResourceTag(resources + numResources, bufferType, lifecycle, &extents[numResources]);
+ 		++numResources;
+ 	};
+ 
+-	if (StreamlineContext::get().slDLSSSetOptions && !StreamlineContext::get().sr_failed.get()) {
++	if (rr) {
++		sl::DLSSDOptions options;
++		options.mode = context->currentDlssOptions.mode;
++		options.outputWidth = context->currentDlssOptions.outputWidth;
++		options.outputHeight = context->currentDlssOptions.outputHeight;
++		options.normalRoughnessMode = sl::DLSSDNormalRoughnessMode::ePacked;
++		options.colorBuffersHDR = sl::Boolean::eTrue;
++		options.worldToCameraView = sl_convert_matrix(Projection(p_params.cam_transform.affine_inverse()));
++		options.cameraViewToWorld = sl_convert_matrix(Projection(p_params.cam_transform));
++		options.dlaaPreset = options.qualityPreset = options.balancedPreset = options.performancePreset = options.ultraPerformancePreset = options.ultraQualityPreset = sl::DLSSDPreset::ePresetF;
++		if (!context->rr_settings_checked) {
++			sl::DLSSDOptimalSettings optimal;
++			if (!check(ctx.slDLSSDGetOptimalSettings(options, optimal))) { return; }
++			if ((uint32_t)p_params.internal_size.x < optimal.renderWidthMin || (uint32_t)p_params.internal_size.x > optimal.renderWidthMax ||
++					(uint32_t)p_params.internal_size.y < optimal.renderHeightMin || (uint32_t)p_params.internal_size.y > optimal.renderHeightMax) {
++				ctx.check_rr(sl::Result::eErrorInvalidParameter);
++				return;
++			}
++			context->rr_settings_checked = true;
++		}
++		if (!check(ctx.slDLSSDSetOptions(context->viewport, options))) { return; }
++	} else if (ctx.slDLSSSetOptions && !ctx.sr_failed.get()) {
+ 		// Set regular DLSS options
+ 		context->currentDlssOptions.useAutoExposure = sl::Boolean::eTrue;
+ 
+ 		context->currentDlssOptions.colorBuffersHDR = sl::Boolean::eTrue;
+ 
+ 		sl::Result result = StreamlineContext::get().slDLSSSetOptions(context->viewport, context->currentDlssOptions);
+-		if (!StreamlineContext::get().check(result)) { return; }
++		if (!check(result)) { return; }
+ 	}
+ 
+ 	// Set SL Options
+@@ -374,10 +413,10 @@
+ 		context->constants.motionVectorsJittered = sl::Boolean::eFalse;
+ 		context->constants.jitterOffset = sl::float2(p_params.jitter.x, p_params.jitter.y);
+ 		context->constants.mvecScale = sl::float2(1.0f, 1.0f);
+-		context->constants.orthographicProjection = sl::Boolean::eFalse;
+-		context->constants.reset = (p_params.reset_accumulation || context->first_frame) ? sl::Boolean::eTrue : sl::Boolean::eFalse;
++		context->constants.orthographicProjection = p_params.orthographic ? sl::Boolean::eTrue : sl::Boolean::eFalse;
++		context->constants.reset = (p_params.reset_accumulation || context->first_frame || mode_changed) ? sl::Boolean::eTrue : sl::Boolean::eFalse;
+ 		sl::Result result = StreamlineContext::get().slSetConstants(context->constants, *StreamlineContext::get().last_token, context->viewport);
+-		if (!StreamlineContext::get().check(result)) { return; }
++		if (!check(result)) { return; }
+ 	}
+ 
+ 	// Tag resources
+@@ -390,18 +429,32 @@
+ 		assignResource(resources, resourceTags, numResources, p_params.output, sl::kBufferTypeScalingOutputColor, sl::ResourceLifecycle::eOnlyValidNow);
+ 		assignResource(resources, resourceTags, numResources, p_params.depth, sl::kBufferTypeDepth, sl::ResourceLifecycle::eOnlyValidNow);
+ 		assignResource(resources, resourceTags, numResources, p_params.velocity, sl::kBufferTypeMotionVectors, sl::ResourceLifecycle::eOnlyValidNow);
++		if (rr) {
++			assignResource(resources, resourceTags, numResources, p_params.dlss_rr_diffuse_albedo, sl::kBufferTypeAlbedo, sl::ResourceLifecycle::eOnlyValidNow);
++			assignResource(resources, resourceTags, numResources, p_params.dlss_rr_specular_albedo, sl::kBufferTypeSpecularAlbedo, sl::ResourceLifecycle::eOnlyValidNow);
++			assignResource(resources, resourceTags, numResources, p_params.dlss_rr_normal_roughness, sl::kBufferTypeNormalRoughness, sl::ResourceLifecycle::eOnlyValidNow);
++			assignResource(resources, resourceTags, numResources, p_params.dlss_rr_specular_hit_dist, sl::kBufferTypeSpecularHitDistance, sl::ResourceLifecycle::eOnlyValidNow);
++		}
+ 
+ 
+ 		sl::Result result = StreamlineContext::get().slSetTagForFrame(*StreamlineContext::get().last_token, context->viewport, resourceTags, numResources, nativeCmdlist);
+-		if (!StreamlineContext::get().check(result)) { return; }
++		if (!check(result)) { return; }
+ 	}
+ 
+ 	const sl::BaseStructure *inputs[] = { &context->viewport };
+-	auto &ctx = StreamlineContext::get();
+-	if (!ctx.check(ctx.slEvaluateFeature(sl::kFeatureDLSS, *ctx.last_token, inputs, 1, nativeCmdlist))) { return; }
++	if (!check(ctx.slEvaluateFeature(rr ? sl::kFeatureDLSS_RR : sl::kFeatureDLSS, *ctx.last_token, inputs, 1, nativeCmdlist))) { return; }
+ 	context->evaluated = true;
+ 	context->first_frame = false;
+-	ctx.dlss_evaluations.increment();
++	context->previous_rr = rr;
++	if (rr) {
++		ctx.rr_evaluations.increment();
++		ctx.rr_active.set(1);
++		ctx.rr_input_width.set(p_params.internal_size.x);
++		ctx.rr_input_height.set(p_params.internal_size.y);
++		if (context->constants.reset == sl::Boolean::eTrue) { ctx.rr_resets.increment(); }
++	} else {
++		ctx.dlss_evaluations.increment();
++	}
+ }
+ 
+ // Called after tonemapping, before the canvas/HUD compositor.

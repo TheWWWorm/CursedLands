@@ -34,7 +34,7 @@ func setup_route() -> Array:
 	DirAccess.make_dir_recursive_absolute(out)
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"):GameData.options[option[0]]=0
-	GameData.options.merge({"display_mode":0,"auto_graphics":0,"vsync":0,"fps_limit":0,"q_aa":0,
+	GameData.options.merge({"display_mode":0,"auto_graphics":0,"vsync":0,"fps_limit":1,"q_aa":0,
 		"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0,
 		"gfx_terrain":1,"gfx_terrain_cliffs":1,"gfx_materials":1,"gfx_foliage_light":1,
 		"gfx_soft_ground":int(soft),"gfx_sky":1,"autosave":0,"show_tutorial":0,"unit_fog":0,

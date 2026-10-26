@@ -11,7 +11,8 @@ VERSION = "2.14.16"
 SHA256 = "32041e51db0cab709a271b72a352281b690c2abbd669a827809401a5dd23956b"
 URL = f"https://github.com/NVIDIA-RTX/Streamline/releases/download/v{VERSION}/streamline-sdk-v{VERSION}.zip"
 DLLS = ("sl.interposer.dll", "sl.common.dll", "sl.dlss.dll", "sl.dlss_g.dll",
-        "sl.reflex.dll", "sl.pcl.dll", "nvngx_dlss.dll", "nvngx_dlssg.dll")
+        "sl.reflex.dll", "sl.pcl.dll", "nvngx_dlss.dll", "nvngx_dlssg.dll",
+        "sl.dlss_d.dll", "nvngx_dlssd.dll")
 NOTICES = ("license.txt", "3rd-party-licenses.md", "external/ngx-sdk/license.txt",
            "bin/x64/nvngx_dlss.license.txt", "bin/x64/reflex.license.txt")
 

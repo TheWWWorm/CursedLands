@@ -24,6 +24,17 @@ to valid views. Rebuild the Windows template and executable for this native fix.
 See the
 [restored integration](../../docs/integrations/nvidia-dlss.md).
 
+`dlss-ray-reconstruction.patch` adds optional main-view DLSS Ray Reconstruction
+after `dlss-camera-contract.patch` (the twenty-third Windows patch, after the
+twenty-two-patch FSR/DXR/DLSS stack). It retains the corrected camera convention,
+R16 HUD masks and DXR barriers. Rebuild with `use_streamline=yes` and the pinned
+2.14.16 headers, and include the signed production `sl.dlss_d.dll` and
+`nvngx_dlssd.dll` from `streamline-sdk.json`. The game must supply fresh,
+full-input-resolution material guides during each viewport render; absent
+guides keep ordinary SR active. The native bridge does not own these textures.
+See [Ray Reconstruction setup and limits](../../docs/integrations/dlss-ray-reconstruction.md)
+and [the validation report](../../docs/validation/pt-transport-2026-10-26/rr-validation.md).
+
 `water-raytracing-uniform-stages.patch` is an optional Vulkan experiment applied
 after the common patches. It fixes RT uniform stage masks and adds a capability
 guard. See [the water experiment](../../docs/integrations/water-raytracing-experiment.md).

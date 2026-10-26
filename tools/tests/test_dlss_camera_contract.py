@@ -84,6 +84,9 @@ def sources(directory):
     file.write_text(baseline)
     subprocess.run(["git", "apply", str(REPO / "engine_patches/godot-4.7/dlss-camera-contract.patch")],
                    cwd=directory, check=True, capture_output=True)
+    subprocess.run(["git", "apply", "--include=" + str(RELATIVE),
+                    str(REPO / "engine_patches/godot-4.7/dlss-ray-reconstruction.patch")],
+                   cwd=directory, check=True, capture_output=True)
     return baseline, file.read_text()
 
 

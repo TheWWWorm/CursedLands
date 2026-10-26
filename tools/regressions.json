@@ -1686,6 +1686,54 @@
       "mode": "rendered",
       "args": [],
       "min_checks": 28
+    },
+    {
+      "id": "path_trace_rr_raw",
+      "script": "tools/tests/path_trace_rr_raw.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "RR raw-light bypass: byte-exact current samples, sun, moving/missing surfaces, resize, NRD restoration and teardown.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 14,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_live",
+      "script": "tools/tests/path_trace_rr_live.gd",
+      "summary": "PT_RR_LIVE",
+      "contract": "Actual preset-F SDK evaluations on campaign noisy PT, material guides, full DLSS input size, jitter, camera cut and return to NRD/SR. Requires a standard RR-capable Windows D3D12 runtime and DLSS launch profile.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 32,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_options",
+      "script": "tools/tests/path_trace_rr_options.gd",
+      "summary": "PT_RR_OPTIONS",
+      "contract": "Native capability gating, off by default, complete EN/RU/DE RR label/choices/help and 720p/1440p/4K readable layout.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 50,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_rr_unavailable",
+      "script": "tools/tests/path_trace_rr_unavailable.gd",
+      "summary": "PT_RR_UNAVAILABLE",
+      "contract": "Actual missing-RR-plugin fallback retains supported DLSS SR and selected NRD without false RR evaluations. Requires a DLSS launch profile and the standard SR runtime, with both RR DLLs omitted.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 7,
+      "rendering_method": "forward_plus"
     }
   ]
 }

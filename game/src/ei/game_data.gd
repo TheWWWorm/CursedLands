@@ -115,7 +115,7 @@ const OPTIONS := [
 	["q_rt_lighting", 1, 3, 28, 2, 1],
 	["pt_mode", 1, 3, 28, 3, 0], ["pt_accumulation", 1, 2, 28, 4, 0],
 	["pt_target_fps", 1, 4, 28, 5, 0], ["pt_sharc", 1, 2, 28, 6, 0],
-	["pt_denoiser", 1, 2, 28, 7, 0],
+	["pt_denoiser", 1, 2, 28, 7, 0], ["pt_ray_reconstruction", 1, 2, 28, 8, 0],
 	# Water (group 23): surface appearance and optional creature interaction.
 	["gfx_water", 1, 2, 23, 0, 1], ["gfx_water_reflections", 1, 4, 23, 1, 2],
 	# Independent RT budget: presets/detection select the reflection mode but
@@ -292,6 +292,7 @@ const DISPLAY_CHOICES := {
 	"pt_target_fps": ["Off", "30 FPS", "45 FPS", "60 FPS"],
 	"pt_sharc": ["Off", "On"],
 	"pt_denoiser": ["Radiance", "Directional"],
+	"pt_ray_reconstruction": ["Off", "On"],
 	"gfx_terrain": ["Original", "Detailed", "Natural transitions"],
 	"coop_scale": ["Off", "Light", "Normal", "Strong"],
 	"enemy_hp_bars": ["Off", "Auto", "Always"],
@@ -329,6 +330,7 @@ const REMAKE_OPTIONS := {
 	"q_rt_lighting": ["RT lighting quality", "Low uses 50 % width and height with one sample, Medium 75 % with two, High 100 % with four. Path tracing follows the 3D render resolution, including Render scale and FSR; RT lighting follows the window. Depth-aware reconstruction smooths the result. Higher quality costs more GPU time. Independent of water reflection quality."],
 	"pt_mode": ["Path tracing (test)", "Trace direct light and up to two or four surface bounces, including glossy reflections. Replaces RT shadows and indirect light on supported nearby surfaces; their saved choices are preserved. Uses RT lighting quality. Water and particles keep their own rendering. Experimental and GPU intensive."],
 	"pt_sharc": ["SHaRC indirect lighting", "Reuses indirect lighting between nearby surfaces to reduce noise and extend light bounces. Uses about 44 MiB of additional video memory per active scene. Moving geometry and abrupt lighting changes clear the cache. Only available with Responsive path accumulation. Performance depends on the scene."],
+	"pt_ray_reconstruction": ["DLSS Ray Reconstruction", RtxGraphics.RR_HELP],
 	"pt_denoiser": ["PT denoising", "Radiance uses the existing NRD filter. Directional uses NRD SH/SG to retain the direction of incoming light and recover shading detail. It uses more video memory and can change the brightness of highlights. Only affects Responsive path accumulation. If NRD cannot run, the built-in filter remains available."],
 	"pt_accumulation": ["Path accumulation", "Responsive uses a short filtered history during play. Still scene averages up to 256 frames for cleaner stationary views; camera, geometry or lighting changes restart accumulation. Moving scenes can remain noisy. Only affects path tracing."],
 	"pt_target_fps": ["PT rendered frame target", "Gradually adjusts path-tracing resolution between 65 % and 100 % of the selected RT lighting quality to approach this frame rate. Counts rendered frames before frame generation. Responds to sustained GPU load and ignores loading stalls. Quality returns slowly when there is room. Only available with Responsive accumulation; cannot guarantee the target."],
@@ -521,7 +523,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"gfx_ssao", "gfx_bloom", "gfx_depth_of_field", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_rain_puddles", "gfx_lava_light", "gfx_detailed_heads",
-	"gfx_sharp_units", "q_aa", "rtx_upscaling", "rtx_frame_generation", "fsr_upscaling", "fsr_quality", "fsr_frame_generation", "q_shadows", "q_shadow_fit", "q_aniso", "q_water_rt_quality", "rt_shadows", "rt_gi", "q_rt_lighting", "pt_mode", "pt_accumulation", "pt_target_fps", "pt_sharc", "pt_denoiser", "confine_mouse",
+	"gfx_sharp_units", "q_aa", "rtx_upscaling", "rtx_frame_generation", "fsr_upscaling", "fsr_quality", "fsr_frame_generation", "q_shadows", "q_shadow_fit", "q_aniso", "q_water_rt_quality", "rt_shadows", "rt_gi", "q_rt_lighting", "pt_mode", "pt_accumulation", "pt_target_fps", "pt_sharc", "pt_denoiser", "pt_ray_reconstruction", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"control_mode", "character_light", "selection_glow", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
 	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "stamina_regen", "armor_formula", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",

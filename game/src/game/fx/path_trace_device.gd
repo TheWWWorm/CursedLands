@@ -15,6 +15,8 @@ var _sharc_mode := 0 # 0 reference, 1 query, 2 update
 var _sharc_sbts := {}
 var nrd := Nrd.new()
 var nrd_active := false
+var ray_reconstruction := false
+var raw_reconstruction_frames := 0
 var direct_sun := Texture2DRD.new()
 var _direct_images: Array[RID] = []
 var _direct_auxiliary: Array[RID] = []
@@ -215,6 +217,9 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 	return uniforms
 
 func update_scene(changes: Dictionary) -> bool:
+	if changes.has("ray_reconstruction") and ray_reconstruction!=bool(changes.ray_reconstruction):
+		ray_reconstruction=changes.ray_reconstruction
+		_history_valid=false;_direct_valid=false;nrd.reset()
 	if changes.has("nrd_directional"):nrd.directional=changes.nrd_directional
 	if _closed or not _ready: return false
 	if sharc.active:
@@ -490,6 +495,13 @@ func _composite_direct() -> bool:
 	return true
 
 func reconstruct(frame: PackedByteArray) -> bool:
+	if ray_reconstruction:
+		nrd_active=false;_direct_valid=false
+		var extent:=Vector3(_size.x,_size.y,1)
+		for i in 4:
+			if _rd.texture_copy(_raw[i],_history[i],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK:return false
+		raw_reconstruction_frames+=1
+		return true
 	if not _reconstruct_direct(frame):return false
 	var previous := nrd_active
 	var failed_now := false

@@ -673,7 +673,7 @@ void main() {
     diffuse=max(diffuse/float(samples),ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
     indirect_image[pixel]=float4(diffuse,f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
-    path_direct_specular[pixel]=float4(direct_specular/float(samples),0.0);
+    path_direct_specular[pixel]=float4(direct_specular/float(samples),primary.specular);
     path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
     path_diffuse_direction[pixel]=mean_direction(diffuse_moment/float(samples),max(diffuse-sunlight/float(samples),0.0));
     path_specular_direction[pixel]=mean_direction(specular_moment/float(samples),max((specular-direct_specular)/float(samples),0.0));

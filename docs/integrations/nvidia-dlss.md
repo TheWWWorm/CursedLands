@@ -5,7 +5,10 @@ integration on the current patched Godot 4.7 renderer. It retains NRD 4.18
 REBLUR, the DXR barrier fixes, scene caching, terrain-sector tracing, grass
 lighting and the animated blood-mark performance fix. DLSS Super Resolution
 and DLAA reconstruct the final campaign image; NRD separately denoises traced
-lighting. This is not DLSS Ray Reconstruction or Multi Frame Generation.
+lighting. The later optional [Ray Reconstruction integration](dlss-ray-reconstruction.md)
+replaces main-view NRD and SR when enabled with path tracing. It requires the
+additional engine patch and runtime DLLs described in that guide. Multi Frame
+Generation is not implemented.
 
 ## Settings
 
@@ -52,7 +55,8 @@ The restoration selectively merges the previously qualified NVIDIA engine
 code with the current twenty-patch engine. It preserves async FSR preparation,
 independent FSR frame generation, diagnostic hooks and DXR enhanced barriers.
 The patched engine is pinned to Godot
-`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`. Apply `restore-dlss.patch` last.
+`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`. Apply `restore-dlss.patch`, then
+`dlss-camera-contract.patch`, then optional `dlss-ray-reconstruction.patch`.
 Streamline's `slUpgradeInterface` registers devices created by the Agility
 factory; the old system-runtime bypass is removed. SDK functions remain
 behind native capability checks. Only the signed production DLLs beside the

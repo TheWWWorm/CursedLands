@@ -3,6 +3,7 @@ extends Node
 ## snapshots build, outside the bounded RT region, or on unsupported devices.
 const Device = preload("res://src/game/fx/scene_raytrace_device.gd")
 const PathDevice = preload("res://src/game/fx/path_trace_device.gd")
+const RayReconstruction = preload("res://src/game/fx/path_trace_rr.gd")
 const PathSky = preload("res://src/game/fx/path_trace_sky.gd")
 const Budget = preload("res://src/game/fx/path_trace_budget.gd")
 const Scene = preload("res://src/game/fx/water_raytrace_scene.gd")
@@ -73,6 +74,12 @@ var _programs := Device.Programs.new()
 var _handoff_updates := false
 var _budget := Budget.new()
 var _budget_clock := 0
+var _rr_effect: CompositorEffect
+var _rr_camera: Camera3D
+var _rr_original: Compositor
+var _rr_compositor: Compositor
+var _rr_active := false
+var _rr_failed := false
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -98,7 +105,7 @@ func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
-	var mode := "%s:%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc"),GameData.option("pt_denoiser")]
+	var mode := "%s:%s:%s:%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation"),GameData.option("pt_sharc"),GameData.option("pt_denoiser"),GameData.option("pt_ray_reconstruction")]
 	if mode != _mode or terrain != _terrain:
 		if terrain != _terrain or path_mode!=_path_mode: _release()
 		_path_mode=path_mode
@@ -113,6 +120,8 @@ func _process(dt: float) -> void:
 	var camera := terrain.get_viewport().get_camera_3d()
 	if camera == null:
 		_preparation_seen="";_release();return
+	if _rr_effect!=null and _rr_effect.failed:_rr_failed=true
+	_set_ray_reconstruction(camera,RtxGraphics.rr_active() and not _rr_failed and camera.get_viewport()==get_tree().root)
 	var visible_request := game.is_visible_in_tree() and game.is_ancestor_of(camera)
 	var request := "%s:%s:%s"%[terrain.get_instance_id(),_mode,GameData.graphics_revision]
 	var prepare := visible_request and request!=_preparation_seen
@@ -166,8 +175,8 @@ func _process(dt: float) -> void:
 	var trace_scale := render_scale if _path_mode and not _window_resolution_reference else 1.0
 	# Rays and receiver lookup share the unjittered camera projection. Raster
 	# receivers project world positions into this lattice beside FSR jitter.
-	var size := target_size(display_size,quality,trace_scale)
-	_budget.configure(GameData.option("pt_target_fps") if _path_mode and GameData.option("pt_accumulation")==0 else 0)
+	var size := internal_render_size(display_size,render_scale) if _rr_active else target_size(display_size,quality,trace_scale)
+	_budget.configure(GameData.option("pt_target_fps") if _path_mode and GameData.option("pt_accumulation")==0 and not _rr_active else 0)
 	var now := Time.get_ticks_usec()
 	var seconds := (now-_budget_clock)/1000000.0 if _budget_clock>0 else 0.0
 	_budget_clock=now
@@ -231,12 +240,14 @@ func _process(dt: float) -> void:
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size()
 	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
-	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
+	stats["path_samples"]=1 if _rr_active else (GI_SAMPLES[quality] if _path_mode else 0)
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 	stats["program_compilations"]=_programs.compilations
 	stats["program_cache_hits"]=_programs.hits
 	if device!=null:stats["build_timings"]=device.build_timings.duplicate()
 	if device is PathDevice:
+		stats["ray_reconstruction"]=device.ray_reconstruction
+		stats["rr_raw_frames"]=device.raw_reconstruction_frames
 		stats["nrd_directional"]=device.nrd_active and device.nrd.directional
 		stats["sharc_active"]=device.sharc.active
 		stats["sharc_failed"]=device.sharc_failed
@@ -267,20 +278,43 @@ func _end_preparation() -> void:
 
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
 	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
-	if target is PathDevice:Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
+	if target is PathDevice:
+		changes["ray_reconstruction"]=_rr_active and target==device
+		Device.dispatch(target,&"set_cloud_texture",[_path_cloud_texture()])
 	# An active device is the visible target even while a recenter replacement
 	# builds. With no active scene, the candidate must finish privately first.
 	if _preparation_owner.is_empty() or (target!=device and device!=null):
-		Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")]);return
+		_dispatch_render(target,size,frame,changes);return
 	var id := target.get_instance_id()
 	if id!=_preparation_waiting_id or size!=_preparation_size:
 		_preparation_token+=1
 		_preparation_waiting_id=id;_preparation_completed_id=0
 		_preparation_size=size;_preparation_visible_frame=-1
 		ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
-		Device.dispatch(target,&"render_preparation",[_preparation_token,size,frame,changes,GameData.option("q_aniso")])
+		_dispatch_render(target,size,frame,changes,_preparation_token)
 	else:
-		Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")])
+		_dispatch_render(target,size,frame,changes)
+
+func _dispatch_render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary,token := -1) -> void:
+	if _rr_active and target==device and _rr_effect!=null:
+		Device.dispatch(_rr_effect,&"queue_frame",[target,size,frame,changes,GameData.option("q_aniso"),token])
+	elif token>=0:Device.dispatch(target,&"render_preparation",[token,size,frame,changes,GameData.option("q_aniso")])
+	else:Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")])
+
+func _set_ray_reconstruction(camera: Camera3D,active: bool) -> void:
+	if _rr_active==active and (not active or camera==_rr_camera):return
+	if is_instance_valid(_rr_camera) and _rr_camera.compositor==_rr_compositor:_rr_camera.compositor=_rr_original
+	if _rr_effect!=null:Device.dispatch(_rr_effect,&"dispose")
+	_rr_effect=null;_rr_camera=null;_rr_original=null;_rr_compositor=null
+	_rr_active=active;_history_key=""
+	RenderingServer.global_shader_parameter_set(&"ei_pt_rr_active",float(active))
+	if not active:return
+	_rr_camera=camera;_rr_original=camera.compositor
+	_rr_compositor=Compositor.new()
+	var effects: Array[CompositorEffect]=[]
+	if _rr_original!=null:effects.assign(_rr_original.compositor_effects)
+	_rr_effect=RayReconstruction.new();effects.push_front(_rr_effect)
+	_rr_compositor.compositor_effects=effects;camera.compositor=_rr_compositor
 
 func _rendered(token: int,ok: bool,id: int) -> void:
 	# A prior settings request, resize or canceled device cannot complete the
@@ -660,6 +694,7 @@ func _emitter_stats(count: int,candidates: int,id: int) -> void:
 	target["emissive_triangles"]=count;target["emissive_candidates"]=candidates
 
 func _release() -> void:
+	_set_ray_reconstruction(null,false)
 	_set_gi_active(false)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)

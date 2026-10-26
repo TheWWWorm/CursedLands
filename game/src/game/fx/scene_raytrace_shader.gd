@@ -9,6 +9,7 @@ global uniform mat4 ei_rt_inverse_view_projection;
 global uniform mat4 ei_rt_view;
 global uniform vec3 ei_rt_eye;
 global uniform float ei_pt_active;
+global uniform float ei_pt_rr_active;
 global uniform sampler2D ei_rt_gi : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_guide : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow0 : filter_nearest, repeat_disable;
@@ -40,13 +41,13 @@ varying vec3 ei_rt_rest;
 #endif
 #endif
 
-vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
+vec3 ei_rt_position(ivec2 p,float depth,ivec2 size,mat4 trace_projection,mat4 trace_inverse) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
-    vec4 near=ei_rt_inverse_view_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);near/=near.w;
+    vec4 near=trace_inverse*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);near/=near.w;
     vec3 forward=-vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]);
     float near_depth=dot(near.xyz-ei_rt_eye,forward);
     // Perspective clip.w changes with world position; orthographic does not.
-    bool orthographic=abs(ei_rt_view_projection[0][3])+abs(ei_rt_view_projection[1][3])+abs(ei_rt_view_projection[2][3])<0.001;
+    bool orthographic=abs(trace_projection[0][3])+abs(trace_projection[1][3])+abs(trace_projection[2][3])<0.001;
     return orthographic?near.xyz+forward*(depth-near_depth):ei_rt_eye+(near.xyz-ei_rt_eye)*(depth/near_depth);
 }
 
@@ -54,10 +55,10 @@ vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
 // Procedural blades are not in the RT scene. Sample their planted root once
 // per fragment, instead of searching 29 surface pixels that cannot match a
 // raised blade. Reject walls, foreground objects and unrelated ground planes.
-bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
+bool ei_rt_ground_sample(mat4 trace_projection,mat4 trace_inverse,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(0.0);visibility1=vec4(0.0);
     if(ei_rt_state.x<0.5||distance(ei_rt_ground,ei_rt_center.xyz)>=ei_rt_state.w)return false;
-    vec4 clip=ei_rt_view_projection*vec4(ei_rt_ground,1.0);
+    vec4 clip=trace_projection*vec4(ei_rt_ground,1.0);
     vec2 uv=vec2(clip.x,-clip.y)/clip.w*0.5+0.5;
     if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;
     ivec2 size=textureSize(ei_rt_guide,0);
@@ -70,7 +71,7 @@ bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) 
         ivec2 p=clamp(base+ivec2(x,y),ivec2(0),size-1);
         vec4 guide=texelFetch(ei_rt_guide,p,0);
         if(guide.w<=0.0||guide.y<0.35)continue;
-        vec3 delta=ei_rt_position(p,guide.w,size)-ei_rt_ground;
+        vec3 delta=ei_rt_position(p,guide.w,size,trace_projection,trace_inverse)-ei_rt_ground;
         if(abs(dot(delta,guide.xyz))>0.12||length(delta)>max(0.5,depth*0.006))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
@@ -106,10 +107,10 @@ float ei_pt_material_weight(ivec2 p,vec2 surface) {
     return (1.0-smoothstep(0.15,0.35,difference.x))*(1.0-smoothstep(0.10,0.25,difference.y));
 }
 
-bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
+bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,mat4 trace_projection,mat4 trace_inverse,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(1.0);visibility1=vec4(1.0);
     if(ei_rt_state.x<0.5)return false;
-    vec4 clip=ei_rt_view_projection*vec4(world,1.0);
+    vec4 clip=trace_projection*vec4(world,1.0);
     vec2 uv=vec2(clip.x,-clip.y)/clip.w*0.5+0.5;
     ivec2 size=textureSize(ei_rt_guide,0);
     // Evaluate derivatives before receiver-dependent branches so each quad
@@ -120,7 +121,7 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
         // The tracer faces both sides of cutout leaves toward the camera.
         // The raster material retains authored normals on its back faces;
         // align the same way before rejecting an otherwise matching hit.
-        bool parallel=abs(ei_rt_view_projection[0][3])+abs(ei_rt_view_projection[1][3])+abs(ei_rt_view_projection[2][3])<0.001;
+        bool parallel=abs(trace_projection[0][3])+abs(trace_projection[1][3])+abs(trace_projection[2][3])<0.001;
         vec3 view=parallel?vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]):normalize(ei_rt_eye-world);
         if(dot(plane,view)<0.0)plane=-plane;
         if(dot(normal,plane)<0.0)normal=-normal;
@@ -141,7 +142,7 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
         ivec2 p=clamp(base+ivec2(x,y),ivec2(0),size-1);
         vec4 guide=texelFetch(ei_rt_guide,p,0);
         if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
-        vec3 delta=ei_rt_position(p,guide.w,size)-world;
+        vec3 delta=ei_rt_position(p,guide.w,size,trace_projection,trace_inverse)-world;
         if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*2.5))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y)*ei_pt_material_weight(p,surface);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
@@ -162,7 +163,7 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
             if(any(lessThan(p,ivec2(0)))||any(greaterThanEqual(p,size)))continue;
             vec4 guide=texelFetch(ei_rt_guide,p,0);
             if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
-            vec3 delta=ei_rt_position(p,guide.w,size)-world;
+            vec3 delta=ei_rt_position(p,guide.w,size,trace_projection,trace_inverse)-world;
             if(abs(dot(delta,plane))>max(0.025,depth*0.00075)||length(delta)>max(0.1,footprint*3.5))continue;
             vec2 offset=vec2(p)-pixel;
             float w=exp(-dot(offset,offset))*ei_pt_material_weight(p,surface);
@@ -194,7 +195,7 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,out vec3 gi,out ve
 }
 
 bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
-    return ei_rt_sample_surface(world,normal,vec2(-1.0),gi,visibility0,visibility1);
+    return ei_rt_sample_surface(world,normal,vec2(-1.0),ei_rt_view_projection,ei_rt_inverse_view_projection,gi,visibility0,visibility1);
 }
 
 float ei_rt_point_visibility(vec3 world,vec3 direction,mat4 view,out float range_falloff) {
@@ -221,21 +222,29 @@ const CAPTURE := """
         vec3 world=(INV_VIEW_MATRIX*vec4(VERTEX,1.0)).xyz;
         vec3 normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
         vec2 surface=ei_surface.yz;
+        mat4 trace_projection=ei_rt_view_projection,trace_inverse=ei_rt_inverse_view_projection;
+        if(ei_pt_rr_active>0.5) {
+            // API reverse depth/Y-down -> the tracer's OpenGL clip convention.
+            mat4 correction=mat4(vec4(1.0,0.0,0.0,0.0),vec4(0.0,-1.0,0.0,0.0),vec4(0.0,0.0,-0.5,0.0),vec4(0.0,0.0,0.5,1.0));
+            mat4 undo=mat4(vec4(1.0,0.0,0.0,0.0),vec4(0.0,-1.0,0.0,0.0),vec4(0.0,0.0,-2.0,0.0),vec4(0.0,0.0,1.0,1.0));
+            trace_projection=undo*PROJECTION_MATRIX*VIEW_MATRIX;
+            trace_inverse=INV_VIEW_MATRIX*INV_PROJECTION_MATRIX*correction;
+        }
 #ifdef EI_TERRAIN_LIGHT
         // Terrain's traced material includes biome/wetness layers that are
         // richer than the conventional shader's highlight-only profile.
         surface=vec2(-1.0);
 #endif
 #ifdef EI_GRASS_LIGHT
-        bool matched=ei_rt_ground_sample(indirect,a,b);
+        bool matched=ei_rt_ground_sample(trace_projection,trace_inverse,indirect,a,b);
 #else
 #ifdef EI_FOLIAGE_WIND
         // The acceleration structure contains the undeformed tree. Follow
         // that same surface as its visible vertices sway, instead of switching
         // between unrelated background light and conventional shading.
-        bool matched=ei_rt_sample_surface(ei_rt_rest,normal,surface,indirect,a,b);
+        bool matched=ei_rt_sample_surface(ei_rt_rest,normal,surface,trace_projection,trace_inverse,indirect,a,b);
 #else
-        bool matched=ei_rt_sample_surface(world,normal,surface,indirect,a,b);
+        bool matched=ei_rt_sample_surface(world,normal,surface,trace_projection,trace_inverse,indirect,a,b);
 #endif
 #endif
         if(matched) {
@@ -344,6 +353,7 @@ static func globals() -> void:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_MAT4,Projection())
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
+	RenderingServer.global_shader_parameter_add(&"ei_pt_rr_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
 	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D,null)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_grass_shadows",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,

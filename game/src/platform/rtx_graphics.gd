@@ -5,6 +5,10 @@ extends Node
 
 const UPSCALING := "rtx_upscaling"
 const FRAME_GENERATION := "rtx_frame_generation"
+const RAY_RECONSTRUCTION := "pt_ray_reconstruction"
+const RR_HELP := "Reconstructs noisy path-traced lighting with DLSS Ray Reconstruction instead of the main-view NRD filter. Requires DLSS or DLAA, Responsive path accumulation and a supported NVIDIA GPU on Direct3D 12. Traces at the full DLSS input resolution and pauses the adaptive PT frame target. Uses the latest transformer model. If unavailable, the selected NRD mode remains active."
+const NEED_RR := "DLSS Ray Reconstruction is unavailable on this GPU or driver, or its runtime could not be loaded."
+const ENABLE_PT := "Select path tracing and Responsive accumulation first."
 const GROUP := -1
 const SECTION := ["NVIDIA DLSS", "DLSS and DLAA for Windows with Direct3D 12. Switching between AMD and NVIDIA requires a restart. Both features start off."]
 const SR_HELP := "Reconstruct the campaign view with NVIDIA DLSS. Native AA uses DLAA; Quality, Balanced and Performance render fewer pixels. Overrides anti-aliasing and Render scale. Requires an RTX GPU and Forward+ (Direct3D 12). Switching between AMD and NVIDIA requires a restart."
@@ -31,13 +35,14 @@ static func facts() -> Dictionary:
 		"engine": native != null and native.has_method("get_status") and ClassDB.class_has_integer_constant("Viewport", "SCALING_3D_MODE_DLSS"),
 		"launch": false,
 		"api": DisplayServer.get_name() != "headless" and OS.get_name() == "Windows" and RenderingServer.get_current_rendering_method() == "forward_plus" and RenderingServer.get_current_rendering_driver_name() == "d3d12",
-		"sr": false, "fg": false, "reflex": false,
+		"sr": false, "fg": false, "reflex": false, "rr": false,
 	}
 	if result.engine:
 		var status: Dictionary = native.call("get_status")
 		result.engine = status.get("compiled", false)
 		result.launch = status.get("requested", false)
 		result.sr = status.get("sr_supported", false)
+		result.rr = status.get("rr_supported", false) and ClassDB.class_has_method("RenderSceneBuffersRD", "set_dlss_ray_reconstruction") and ClassDB.class_has_method("RenderSceneDataRD", "get_ray_projection")
 		result.fg = status.get("fg_supported", false)
 		result.reflex = status.get("reflex_supported", false)
 	return result
@@ -47,6 +52,9 @@ static func reason_for(name: String, info: Dictionary, sr: int) -> String:
 	if not info.get("api", false): return NEED_API
 	if not info.get("launch", false): return NEED_RESTART
 	if not info.get("sr", false): return NEED_SR
+	if name == RAY_RECONSTRUCTION:
+		if not info.get("rr",false):return NEED_RR
+		if sr<=0:return ENABLE_SR
 	if name == FRAME_GENERATION:
 		if not info.get("fg", false) or not info.get("reflex", false): return NEED_FG
 		if sr <= 0: return ENABLE_SR
@@ -72,6 +80,10 @@ static func needs_restart(values: Dictionary) -> bool:
 
 static func sr_active() -> bool:
 	return GameData.option(UPSCALING) > 0 and reason(UPSCALING).is_empty()
+
+static func rr_active(values: Dictionary = {}) -> bool:
+	var options: Dictionary=GameData.options if values.is_empty() else values
+	return int(options.get(RAY_RECONSTRUCTION,0))>0 and int(options.get("pt_mode",0))>0 and int(options.get("pt_accumulation",0))==0 and reason(RAY_RECONSTRUCTION,options).is_empty()
 
 static func apply_upscaling(vp: Viewport) -> void:
 	# Campaign cameras render to the root. Portraits, reflections and Trials
@@ -114,6 +126,7 @@ func _process(dt: float) -> void:
 		var status: Dictionary = bridge().call("get_status")
 		status["requested_upscaling"] = GameData.option(UPSCALING)
 		status["requested_frame_generation"] = GameData.option(FRAME_GENERATION)
+		status["requested_ray_reconstruction"] = GameData.option(RAY_RECONSTRUCTION)
 		status["gameplay_allows_frame_generation"] = enable
 		status["rendered_fps"] = Engine.get_frames_per_second()
 		var out := FileAccess.open("user://rtx-status.json", FileAccess.WRITE)
