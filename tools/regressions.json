@@ -3736,6 +3736,17 @@
         "--mod-tests"
       ],
       "min_checks": 24
+    },
+    {
+      "id": "legacy_figure",
+      "script": "tools/tests/legacy_figure.gd",
+      "summary": "LEGACY_FIGURE",
+      "contract": "Pre-FIG figure parts (original 4f87d0) convert to FIG8 exactly; the Gipath ogre uses the early skull-belt hips only where its skins paint the skull, keeps every other part, and the early ogre loads for its cut-content preview with expanded bones and a Gipath skin.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 85
     }
   ]
 }

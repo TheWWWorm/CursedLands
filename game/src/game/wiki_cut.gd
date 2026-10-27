@@ -9,9 +9,10 @@ extends RefCounted
 const ENGINE_FIGURES := {"unmobi": {"texture": "bird00", "title": "Messenger bird",
 	"text": "The bird that flies to your hero when a whole quest is completed. It is scenery: it has no statistics and cannot be attacked."}}
 ## Authored descriptions of known unused figures. Others use generic text.
+## "texture" names an original skin made for the same UV layout.
 const FIGURES := {
-	"unmoog": {"title": "Early ogre model",
-		"text": "An earlier, more detailed ogre figure. It is stored in an obsolete model format that the released game cannot read, so it cannot be shown. The ogres in the game use a different model."},
+	"unmoog": {"title": "Early ogre model", "texture": "ogre00",
+		"text": "An earlier ogre figure in an older model format, which the released game can still read. It matches the Gipath ogre except for its hips, which carry a skull on the belt. The remake gives this belt to the Gipath ogres."},
 	"unmoel1": {"title": "Lava elemental model",
 		"text": "The lava elemental figure. No creature of this campaign uses it."},
 	"unanwigi": {"title": "Unfinished beast model",
@@ -274,7 +275,9 @@ func page(entry: Dictionary) -> Dictionary:
 				else RemakeText.t("No creature record or map uses this model."))
 			var preview := {}
 			if not (EIFigure.get_model(template).get("parts", {}) as Dictionary).is_empty():
-				preview = {"kind": "creature", "value": "", "identity": template, "appearance": {"template": template}}
+				var appearance := {"template": template}
+				if FIGURES.get(template, {}).has("texture"): appearance.texture = FIGURES[template].texture
+				preview = {"kind": "creature", "value": "", "identity": template, "appearance": appearance}
 			body += WikiCatalog.paragraph(WikiCatalog.link("cut/overview", RemakeText.t("Cut content")), true)
 			return {"body": body, "preview": preview}
 		"cut_palette":

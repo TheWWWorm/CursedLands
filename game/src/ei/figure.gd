@@ -291,6 +291,7 @@ static func get_model(template: String) -> Dictionary:
 					var f := _parse_fig(pkg.read(entry))
 					if not f.is_empty():
 						parts[entry] = f
+			_detailed_parts(template, parts)
 			var links := _parse_lnk(pkg.read(template.get_file()))
 			if links.is_empty():
 				for p: String in parts:
@@ -302,6 +303,28 @@ static func get_model(template: String) -> Dictionary:
 			model = {"parts": {template: f}, "links": [[template, ""]], "bones": _parse_bones(template, [template])}
 	_models[template] = model
 	return model
+
+
+## Remake: the Gipat ogre uses the early ogre's hips (unmoog.mod, legacy
+## format), which carry a skull on the belt. Every other part and bone of the
+## shipped model is identical to it; only "hp" differs. Its skins (Ogre00/01)
+## have the skull painted; the Hadagan ogre's (unmoog2, Ogre02) does not, so
+## that model keeps its own hips.
+const DETAILED_PARTS := {"unmoog1": {"hp": ["unmoog", "hp"]}}
+
+
+static func _detailed_parts(template: String, parts: Dictionary) -> void:
+	var swaps: Dictionary = DETAILED_PARTS.get(template.get_file(), {})
+	for part: String in swaps:
+		var source: Array = swaps[part]
+		if not parts.has(part) or not GameData.has_figure(source[0] + ".mod"):
+			continue
+		var pkg := EIResArchive.from_bytes(GameData.read_figure(source[0] + ".mod"))
+		if pkg == null or not pkg.has(source[1]):
+			continue
+		var f := _parse_fig(pkg.read(source[1]))
+		if not f.is_empty() and f.material == parts[part].material and f.texture_group == parts[part].texture_group:
+			parts[part] = f
 
 
 static func _parse_lnk(d: PackedByteArray) -> Array:
@@ -328,13 +351,73 @@ static func _parse_bones(template: String, part_names: Array) -> Dictionary:
 		if arc == null:
 			return out   # malformed optional offsets use the existing zero-offset fallback
 		for part: String in arc.entries:
-			out[part] = arc.read(part).to_float32_array()
+			var b := arc.read(part).to_float32_array()
+			if b.size() == LEGACY_VARIANTS * 3:   # legacy model: six variant offsets
+				var full := PackedFloat32Array()
+				for k: int in LEGACY_CORNERS:
+					full.append_array(b.slice(k * 3, k * 3 + 3))
+				b = full
+			out[part] = b
 	elif d.size() >= 96 and part_names.size() == 1:
 		out[part_names[0]] = d.to_float32_array()
 	return out
 
 
+## Parts without a "FIG" signature use the original's older layout, which it
+## still reads (4f7480 -> 4f87d0): material and texture group, six morph
+## variants of centre/min/max/radius, then counted sections of vertex blocks,
+## normals, UVs, 52-byte records (unused), components, 4-byte records and
+## indices. Its blend is lerp(lerp(lerp(V0, V1, a), V2, b), lerp(lerp(V3, V4,
+## a), V5, b), c), which the eight FIG8 corners reproduce exactly.
+const LEGACY_VARIANTS := 6
+const LEGACY_CORNERS := [0, 1, 2, 2, 3, 4, 5, 5]
+
+
+static func legacy_fig(d: PackedByteArray) -> PackedByteArray:
+	var head := 8 + LEGACY_VARIANTS * 40
+	if d.size() < head + 4:
+		return PackedByteArray()
+	var counts := []
+	var offsets := []
+	var p := head
+	for stride in [3 * LEGACY_VARIANTS * 16, 64, 8, 52, 6, 4, 2]:
+		if p + 4 > d.size():
+			return PackedByteArray()
+		var n := d.decode_u32(p)
+		p += 4
+		if n > 65535 or p + n * stride > d.size():
+			return PackedByteArray()
+		counts.append(n)
+		offsets.append(p)
+		p += n * stride
+	if p != d.size():
+		return PackedByteArray()
+	var out := PackedByteArray()
+	out.resize(40)
+	out.fill(0)
+	out.encode_u32(0, 0x38474946)   # "FIG8"
+	for i in 6:   # vertex blocks, normals, UVs, indices, components, 4-byte records
+		out.encode_u32(4 + i * 4, counts[[0, 1, 2, 6, 4, 5][i]])
+	out.encode_u32(32, d.decode_u32(0))
+	out.encode_u32(36, d.decode_u32(4))
+	# Bounds: centre, min, max (vec3) and radius per variant.
+	for group in [[8, 12], [8 + 72, 12], [8 + 144, 12], [8 + 216, 4]]:
+		for k: int in LEGACY_CORNERS:
+			out.append_array(d.slice(group[0] + k * group[1], group[0] + (k + 1) * group[1]))
+	# Vertex blocks: per coordinate, each variant's four lanes.
+	for block in counts[0]:
+		for c in 3:
+			var chunk: int = offsets[0] + (block * 3 + c) * LEGACY_VARIANTS * 16
+			for k: int in LEGACY_CORNERS:
+				out.append_array(d.slice(chunk + k * 16, chunk + k * 16 + 16))
+	for section in [[1, 64], [2, 8], [6, 2], [4, 6], [5, 4]]:
+		out.append_array(d.slice(offsets[section[0]], offsets[section[0]] + counts[section[0]] * section[1]))
+	return out
+
+
 static func _parse_fig(d: PackedByteArray) -> Dictionary:
+	if d.size() >= 4 and d.slice(0, 3).get_string_from_ascii() != FIG_MAGIC:
+		d = legacy_fig(d)
 	if d.size() < 40 or d.slice(0, 3).get_string_from_ascii() != FIG_MAGIC:
 		return {}
 	var n := d[3] - 48  # morph variant count, '8' in practice
