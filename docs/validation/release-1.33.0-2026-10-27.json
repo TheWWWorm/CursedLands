@@ -1,0 +1,207 @@
+{
+  "version": "1.33.0",
+  "release_type": "stable",
+  "date": "2026-10-27",
+  "source_commit": "f21250532f5d11267a140bbc2a0ed960b9a73383",
+  "game_tree": "c8034262e65c7fcd6eeafe869b7d3348551d46a8",
+  "acceptance_passed": true,
+  "semver": "MINOR: Odalisque is a new selectable Autochess commander; the remaining changes are backward-compatible fixes and performance work. Saves, settings, co-op protocol 23 and Autochess protocol 5 are unchanged.",
+  "candidate_package_hashes": {
+    "linux_executable": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "linux_pck": "3fabb41a6f643c35c4630a992efffd7550e3ca02fc4feb573668c54738c99e75",
+    "linux_terrain_search": "2bc54494301df606e2b012387e83bc296c07394a86ffec2bd721fd0beaad0f5d",
+    "windows_executable": "e36b5a9f85e23c13f4071b9527f203de8c6534cba48986fa7318443a7151bd54",
+    "windows_pck": "7962a3df76bafbeed32bd8fec4a80fdd5bddd38b154289dba4350bb3b6d10576",
+    "windows_terrain_search": "86872a0e85cdf47515a1c485fa8b4db83a401dc2ca92193293a80607e6d58175",
+    "android_apk": "46cd1fff56b07f68d123b32dbd2bc66143fb2b68a73c8de659ae99ee8e861c92",
+    "hosted_web_pck": "2db57d073d32c3aad767ec635709b64616cc282398177e12e425559041186207"
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "Packaged Linux executable/PCK/native libraries; 44 headless and GPU Lab rendered regressions (30411 assertions), including the #118/#119 fixes, native script expressions, Odalisque UI in EN/RU/DE at 720p, 1440p and 4K, loading and path-tracing changes."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_fg_tested": false,
+      "scope": "Packaged EXE/PCK/DLLs through GE-Proton 11-11 and D3D12/VKD3D: native script expressions, Odalisque, round damage, prone recovery and live path-traced figures."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Unsigned universal export, version, compiled scripts and embedded icon audited; no macOS runtime available."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 APK version code 68, rebuilt native library, non-debuggable manifest and existing signing certificate audited; no Android device runtime."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium startup and upgrade from the published 1.32.0 service-worker cache, preserving IndexedDB. Offline wiki included."
+    }
+  },
+  "linux_regressions": {
+    "cases": 44,
+    "assertions": 30411
+  },
+  "windows_proton_regressions": [
+    {
+      "case": "script_expression_native",
+      "summary": "SCRIPT_EXPRESSION_NATIVE 22731 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "71f5877ad1bb20147abced563c63eb0ea026c994a5ec1fb5c4d19c013313bf46"
+    },
+    {
+      "case": "arena_odalisque",
+      "summary": "ARENA_ODALISQUE 13 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "57d2ce3ec65162ca26a3bdd94c97081cc4c7e2207ff57173cf223d3abc9f8ee9"
+    },
+    {
+      "case": "arena_round_damage",
+      "summary": "ARENA_ROUND_DAMAGE 40 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "f8fe6c7ef2928d918346c061145de03da089b17aeae2b01792bf5ec9ef47446c"
+    },
+    {
+      "case": "prone_attack_recovery",
+      "summary": "PRONE_ATTACK_RECOVERY 148 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "84b4b4edf9d6bfa8d194b7645b469c67e9d21178091fd725c530e11d1cd62546"
+    },
+    {
+      "case": "path_trace_figure_live",
+      "summary": "PT_FIGURE_LIVE 8 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "e1a2690e365671fd86436bd40e89fe139559ffda531a0f078964f059fc6748a6"
+    }
+  ],
+  "five_platform_script_parity": {
+    "version": "1.33.0",
+    "compiled_scripts": 455,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 68,
+    "debuggable": false,
+    "apk_sha256": "46cd1fff56b07f68d123b32dbd2bc66143fb2b68a73c8de659ae99ee8e861c92",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "fd995a02c0fdb84f77316252af72390c43839132ac284362f9a1010da9b8d0c4"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.33.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "fresh": {
+      "version": "1.33.0",
+      "passed": true,
+      "engine_start_resolved": true,
+      "canvas_visible": true,
+      "isolated": true,
+      "original_game_data_imported": false,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      }
+    },
+    "upgrade": {
+      "version": "1.33.0",
+      "previous_version": "1.32.0",
+      "cache_upgrade": {
+        "passed": true,
+        "old_cache": "cursed-engine-2-7eebbbf9f61f60396333",
+        "new_cache": "cursed-engine-2-d25e14b22a818a93459d",
+        "indexeddb_preserved": true,
+        "database_names": [
+          "/userfs",
+          "cursed-lands-data-v1"
+        ],
+        "pck_sha256": "2db57d073d32c3aad767ec635709b64616cc282398177e12e425559041186207",
+        "old_tab_wait_verified": true
+      },
+      "cache": {
+        "keys": [
+          "cursed-engine-2-d25e14b22a818a93459d"
+        ],
+        "packs": {
+          "cursed-engine-2-d25e14b22a818a93459d": "2db57d073d32c3aad767ec635709b64616cc282398177e12e425559041186207"
+        },
+        "worker": "activated",
+        "waiting": null,
+        "isolated": true
+      }
+    }
+  },
+  "integrated_change_validations": [
+    "docs/validation/issue-119-worker-rate-2026-10-27.md",
+    "docs/validation/foothills-worker-cpu-2026-10-27.md",
+    "docs/validation/fresh-loading-hitch-2026-10-27/README.md",
+    "docs/validation/wisp-loading-2026-10-27/README.md"
+  ],
+  "original_comparison": "Odalisque, Autochess round damage, the speed presentation and native expression evaluation have no direct original-game counterpart; script results are checked against the interpreter that models the original builtins. Original comparisons for the campaign fixes are recorded in the integrated change validations.",
+  "known_open_reports": [
+    "The Foothills speed reduction was measured on one desktop processor; slower processors may still run below the selected fast speed, which is now presented as the achieved rate.",
+    "The production Foothills flow cannot start its separate authority process under headless Wine; the Windows campaign flow is covered by Linux runs."
+  ],
+  "limits": [
+    "Native Windows OS, macOS runtime and Android device runtime were not exercised by this release suite.",
+    "Frame generation is unsupported on the tested RTX 30 GPUs; no FG performance or image-quality claim.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "evidence_directory": "release-1.33.0",
+  "local_visual_evidence": "/home/llm2x/Documents/EI/Evidence/releases/1.33.0",
+  "visual_manifest_sha256": "b821728572b9da935ef285292db4f5ea18818abdeeaf7fdaf93ac57d4d593655"
+}
