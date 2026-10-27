@@ -3034,6 +3034,48 @@
       "timeout": 300
     },
     {
+      "id": "arena_inspector_side_ui_en",
+      "script": "tools/tests/arena_inspector_side_ui.gd",
+      "summary": "ARENA_INSPECTOR_SIDE_UI",
+      "contract": "Hovering a board creature opens its details at the right edge, 16 logical pixels from the border, over the hidden player list, clear of the board centre, the hovered creature, the shop and the commander bust, readable (scrolling when short) and closing on leave, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=en"
+      ],
+      "min_checks": 47,
+      "timeout": 300
+    },
+    {
+      "id": "arena_inspector_side_ui_ru",
+      "script": "tools/tests/arena_inspector_side_ui.gd",
+      "summary": "ARENA_INSPECTOR_SIDE_UI",
+      "contract": "Hovering a board creature opens its details at the right edge, 16 logical pixels from the border, over the hidden player list, clear of the board centre, the hovered creature, the shop and the commander bust, readable (scrolling when short) and closing on leave, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=ru"
+      ],
+      "min_checks": 47,
+      "timeout": 300
+    },
+    {
+      "id": "arena_inspector_side_ui_de",
+      "script": "tools/tests/arena_inspector_side_ui.gd",
+      "summary": "ARENA_INSPECTOR_SIDE_UI",
+      "contract": "Hovering a board creature opens its details at the right edge, 16 logical pixels from the border, over the hidden player list, clear of the board centre, the hovered creature, the shop and the commander bust, readable (scrolling when short) and closing on leave, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=de"
+      ],
+      "min_checks": 47,
+      "timeout": 300
+    },
+    {
       "id": "safe_zone_appearance",
       "script": "tools/tests/safe_zone_appearance.gd",
       "summary": "SAFE_ZONE_APPEARANCE",
