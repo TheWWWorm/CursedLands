@@ -1775,6 +1775,7 @@ func setup_zone() -> void:
 		if ef:
 			_exit_fx.append([ef, LmpMode.exit_var(String(ex.to).to_lower()), n])
 	exit_colours()   #  ends, after the prewarm
+	add_map_lights(world.mob)
 	for node in world.objects.values():
 		if not is_instance_valid(node) or not node.has_meta("ei"):
 			continue
@@ -1792,6 +1793,24 @@ func setup_zone() -> void:
 		var haze := Gfx.heat_haze(0.6 + s * 0.8)   # remake-only, option gfx_heat_haze
 		haze.position = godot(at) + Vector3(0.0, 0.3, 0.0)
 		add_child(haze)
+
+
+## The map's placed LIGHT records (the original loads each as a world light,
+## 481f00 -> 46d960 / 46dd70): fixed colour, radius and absolute position.
+## Like script point lights they keep the original max() response, with no
+## halo or mist; the main menu's signpost is lit this way at night.
+var map_lights: Array[Dictionary] = []
+
+
+func add_map_lights(mob: EIMob) -> void:
+	for d in map_lights:
+		remove_light(d)
+	map_lights.clear()
+	if mob == null:
+		return
+	for rec: Dictionary in mob.lights:
+		if float(rec.radius) > 0.0:
+			map_lights.append(add_light(rec.position, rec.color, float(rec.radius)))
 
 
 ##  (and every drawn frame through

@@ -3689,6 +3689,40 @@
       "rendering_method": "forward_plus",
       "args": [],
       "contract": "A render-worker cooperative wait cannot steal expensive terrain bakes; bounded runtime work and exact results survive teardown."
+    },
+    {
+      "id": "map_lights",
+      "script": "tools/tests/map_lights.gd",
+      "summary": "MAP_LIGHTS",
+      "contract": "Placed .mob LIGHT records are read with the original defaults and become permanent absolute-position point lights in campaign zones and the main menu, without duplicates on repeated setup.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 48
+    },
+    {
+      "id": "menu_signpost_lights",
+      "script": "tools/tests/menu_signpost_lights.gd",
+      "summary": "MENU_SIGNPOST_LIGHTS",
+      "contract": "The main menu's two placed white lights visibly brighten the displayed signpost at night and never darken it by day.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9
+    },
+    {
+      "id": "menu_signpost_lights_forward_plus",
+      "script": "tools/tests/menu_signpost_lights.gd",
+      "summary": "MENU_SIGNPOST_LIGHTS",
+      "contract": "The main menu's placed signpost lights also brighten it at night on Forward+.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9,
+      "rendering_method": "forward_plus"
     }
   ]
 }

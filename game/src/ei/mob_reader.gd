@@ -82,6 +82,10 @@ var player_names := PackedStringArray()
 ## waves (PackedStringArray), min_ms, max_ms (default 1500 / 3000),
 ## random (byte), flag (byte)}.
 var sounds: Array[Dictionary] = []
+## LIGHT records (0xAA01; the original reader 46dbf0, writer 46db20):
+## {id, flag (byte), position (EI, absolute: the original copies it
+## unchanged into the world light, 46dd70), color (0..1), radius (m), name, extra}.
+var lights: Array[Dictionary] = []
 
 
 static func load_bytes(d: PackedByteArray) -> EIMob:
@@ -127,6 +131,12 @@ func _walk(d: PackedByteArray, start: int, end: int, parent_kind: String, into: 
 					"waves": PackedStringArray(), "position": Vector3.ZERO, "name": ""}
 				_walk(d, body, body + blen, kind, snd)
 				sounds.append(snd)
+			elif kind == "LIGHT":
+				# 46d960: radius 10 and white unless the record supplies them.
+				var light := {"id": -1, "flag": 1, "position": Vector3.ZERO, "color": Color.WHITE,
+					"radius": 10.0, "name": "", "extra": ""}
+				_walk(d, body, body + blen, kind, light)
+				lights.append(light)
 			elif kind in OBJECT_KINDS:
 				var obj := {"kind": kind, "parts": PackedStringArray(), "complexion": Vector3.ZERO,
 					"rotation": Quaternion.IDENTITY, "position": Vector3.ZERO, "texture": "", "template": ""}
@@ -210,6 +220,13 @@ func _field(d: PackedByteArray, id: int, p: int, n: int, o: Dictionary) -> void:
 		MT_CAST_INTERVAL: o.trap_interval = d.decode_s32(p)
 		LEVER_CAST_ONCE: o.cast_once = d[p]
 		LEVER_SCIENCE_STATS: o.lever_science = d.slice(p, p + 12).to_int32_array() if n >= 12 else PackedInt32Array()
+		0xAA02: o.radius = d.decode_float(p)
+		0xAA03: o.name = _str(d, p, n)
+		0xAA04: o.position = _vec3(d, p)
+		0xAA05: o.id = d.decode_u32(p)
+		0xAA06: o.flag = d[p]
+		0xAA07: o.color = Color(d.decode_float(p), d.decode_float(p + 4), d.decode_float(p + 8))
+		0xAA08: o.extra = _str(d, p, n)
 		0xCC02: o.id = d.decode_u32(p)
 		0xCC03: o.position = _vec3(d, p)
 		0xCC04: o.inner = d.decode_s32(p)
