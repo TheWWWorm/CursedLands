@@ -3,6 +3,30 @@
   "scope": "Focused recent campaign/UI regressions; not a certification of all historical issues or platforms.",
   "cases": [
     {
+      "id": "path_trace_receivers",
+      "script": "tools/tests/path_trace_receivers.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Orthographic steep receiver lookup preserves both normal orientations and sparse valid taps while rejecting a nearer incompatible plane.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 19,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_perspective_receivers",
+      "script": "tools/tests/path_trace_perspective_receivers.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "A moving perspective camera keeps translated wall planes matched to half-float trace guides without intermittent conventional-lighting fallback; origin controls and two tracing resolutions.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 97,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "menu_utility_glyphs",
       "script": "tools/tests/menu_utility_glyphs.gd",
       "summary": "MENU_UTILITY_GLYPHS",
