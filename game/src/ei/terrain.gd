@@ -1142,18 +1142,13 @@ func _tile_uv(f: int, dx: int, dy: int) -> Array:
 
 func _build(arc: EIResArchive) -> void:
 	if presentation:
-		if _land_shader == null:
-			Gfx.ensure_globals()
-			_land_shader = Gfx.make_shader(TERRAIN_SHADER, true, true)
-			_water_shader = Gfx.make_shader(WATER_SHADER, true, true)
-			_water_fx_shader = Gfx.make_shader(WATER_FX_SHADER, true, true)
+		Gfx.ensure_globals()
 		Gfx.set_border(size_ei())
-		var land_mat := ShaderMaterial.new()
-		land_mat.shader = _land_shader
-		land_mat.set_shader_parameter("atlases", _atlases)
-		_land_mat = land_mat
+		# apply_gfx selects the complete surface shaders after the map fields
+		# are built. Assigning provisional variants here starts compilation
+		# even though no frame ever uses them.
+		_land_mat = ShaderMaterial.new()
 		var wmat := ShaderMaterial.new()
-		wmat.shader = _water_shader
 		#  draws the liquids after the figures and
 		# before the effects, with z writes on: particles under the surface stay
 		# hidden. Godot draws units (alpha-to-coverage) in its transparent pass,
@@ -1321,71 +1316,52 @@ func apply_gfx() -> void:
 		if _caustics == null: _caustics = WaterCaustics.new(self)
 	else:
 		_caustics = null
-	if _caustics != null and _caustics.admitted > 0:
-		if _land_caustics_shader == null:
-			_land_caustics_shader = Gfx.make_shader(WaterCaustics.source(TERRAIN_SHADER),true,true)
-		_land_mat.shader = _land_caustics_shader
-		_land_mat.set_shader_parameter("caustic_bed",_caustics.texture)
-		_land_mat.set_shader_parameter("caustic_pattern",WaterCaustics.pattern())
-	else:
-		_land_mat.set_shader_parameter("caustic_bed",null)
-		_land_mat.set_shader_parameter("caustic_pattern",null)
-		_land_mat.shader = _land_shader
 	if TerrainCliff.requested():
 		if _cliffs == null: _cliffs = TerrainCliff.create(self)
 	else:
 		_cliffs = null
+	if Transitions.requested():
+		if _transitions == null: _transitions = Transitions.new(self)
+	else:
+		_transitions = null
+	var caustics: bool = _caustics != null and _caustics.admitted > 0
+	var transition_base := WaterCaustics.source(TERRAIN_SHADER) if caustics else TERRAIN_SHADER
+	if _cliffs != null: transition_base = _cliffs.source(transition_base)
+	# Creating a Shader starts RD compilation before its first visible draw.
+	# Compose the selected combination once, including its live samplers.
+	if _transitions != null and _transitions.admitted > 0:
+		_land_mat.shader = _transitions.shader(transition_base)
+	elif _cliffs != null and _cliffs.admitted > 0:
+		_land_mat.shader = _cliffs.shader(WaterCaustics.source(TERRAIN_SHADER) if caustics else TERRAIN_SHADER)
+	elif caustics:
+		if _land_caustics_shader == null:
+			_land_caustics_shader = Gfx.make_shader(WaterCaustics.source(TERRAIN_SHADER),true,true)
+		_land_mat.shader = _land_caustics_shader
+	else:
+		if _land_shader == null: _land_shader = Gfx.make_shader(TERRAIN_SHADER,true,true)
+		_land_mat.shader = _land_shader
+	_land_mat.set_shader_parameter("caustic_bed",_caustics.texture if caustics else null)
+	_land_mat.set_shader_parameter("caustic_pattern",WaterCaustics.pattern() if caustics else null)
 	if _cliffs != null and _cliffs.admitted > 0:
-		_land_mat.shader = _cliffs.shader(WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER)
 		_cliffs.bind(_land_mat)
 	else:
 		_land_mat.set_shader_parameter("cliff_tiles",null)
 		_land_mat.set_shader_parameter("cliff_blends",null)
 		_land_mat.set_shader_parameter("cliff_flatness",null)
-	var transition_base := ""
-	if Transitions.requested():
-		if _transitions == null: _transitions = Transitions.new(self)
-	else:
-		_transitions = null
 	if _transitions != null and _transitions.admitted > 0:
-		# Mode 1 and 2 share Gfx's terrain-detail define, but have different
-		# live samplers. An explicit source swap also works while paused.
-		transition_base = WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
-		if _cliffs != null: transition_base = _cliffs.source(transition_base)
-		_land_mat.shader = _transitions.shader(transition_base)
 		_transitions.bind(_land_mat)
 	else:
-		_land_mat.set_shader_parameter("transition_tiles", null)
-	_water_mat.shader = _water_fx_shader if fx else _water_shader
-	if fx and Gfx.on("gfx_water_interaction"):
-		if _water_interaction_shader == null:
-			_water_interaction_shader = Gfx.make_shader(WaterInteractionShader.source(WATER_FX_SHADER),true,true)
-		_water_mat.shader = _water_interaction_shader
+		_land_mat.set_shader_parameter("transition_tiles",null)
+	_water_mat.shader = _selected_water_shader()
 	if fx and Gfx.on("gfx_water_current"):
 		if _current == null: _current = WaterCurrent.new(self)
 		else: _current.refresh(_level)
-		if _water_current_shader == null:
-			_water_current_shader = Gfx.make_shader(WaterCurrentShader.source(WATER_FX_SHADER),true,true)
-		_water_mat.shader = _water_current_shader
-		if Gfx.on("gfx_water_interaction"):
-			if _water_current_contact_shader == null:
-				_water_current_contact_shader = Gfx.make_shader(WaterInteractionShader.source(WaterCurrentShader.source(WATER_FX_SHADER),true),true,true)
-			_water_mat.shader = _water_current_contact_shader
 		_water_mat.set_shader_parameter("water_current",_current.texture)
 	else:
 		_water_mat.set_shader_parameter("water_current",null)
 		if _current != null: _current.clear()
 		_current = null
-	if fx and Gfx.on("gfx_water_interaction") and Gfx.on("gfx_water_waves"):
-		if Gfx.on("gfx_water_current"):
-			if _water_current_wave_shader == null:
-				_water_current_wave_shader = Gfx.make_shader(WaterWaveShader.source(WaterInteractionShader.source(WaterCurrentShader.source(WATER_FX_SHADER),true)),true,true)
-			_water_mat.shader = _water_current_wave_shader
-		else:
-			if _water_wave_shader == null:
-				_water_wave_shader = Gfx.make_shader(WaterWaveShader.source(WaterInteractionShader.source(WATER_FX_SHADER)),true,true)
-			_water_mat.shader = _water_wave_shader
-	else:
+	if not (fx and Gfx.on("gfx_water_interaction") and Gfx.on("gfx_water_waves")):
 		_water_mat.set_shader_parameter("water_wave_field",null)
 		_water_mat.set_shader_parameter("water_wave_window",Vector4.ZERO)
 	_current_dirty = false
@@ -1499,6 +1475,37 @@ func apply_gfx() -> void:
 	elif is_instance_valid(_waterfalls):
 		_waterfalls.free()
 		_waterfalls = null
+
+
+## Lazily create only the selected water program. All option combinations
+## remain available; changing settings prepares the newly selected variant.
+static func _selected_water_shader() -> Shader:
+	if not Gfx.on("gfx_water"):
+		if _water_shader == null: _water_shader = Gfx.make_shader(WATER_SHADER,true,true)
+		return _water_shader
+	var current := Gfx.on("gfx_water_current")
+	if Gfx.on("gfx_water_interaction"):
+		if Gfx.on("gfx_water_waves"):
+			if current:
+				if _water_current_wave_shader == null:
+					_water_current_wave_shader = Gfx.make_shader(WaterWaveShader.source(WaterInteractionShader.source(WaterCurrentShader.source(WATER_FX_SHADER),true)),true,true)
+				return _water_current_wave_shader
+			if _water_wave_shader == null:
+				_water_wave_shader = Gfx.make_shader(WaterWaveShader.source(WaterInteractionShader.source(WATER_FX_SHADER)),true,true)
+			return _water_wave_shader
+		if current:
+			if _water_current_contact_shader == null:
+				_water_current_contact_shader = Gfx.make_shader(WaterInteractionShader.source(WaterCurrentShader.source(WATER_FX_SHADER),true),true,true)
+			return _water_current_contact_shader
+		if _water_interaction_shader == null:
+			_water_interaction_shader = Gfx.make_shader(WaterInteractionShader.source(WATER_FX_SHADER),true,true)
+		return _water_interaction_shader
+	if current:
+		if _water_current_shader == null:
+			_water_current_shader = Gfx.make_shader(WaterCurrentShader.source(WATER_FX_SHADER),true,true)
+		return _water_current_shader
+	if _water_fx_shader == null: _water_fx_shader = Gfx.make_shader(WATER_FX_SHADER,true,true)
+	return _water_fx_shader
 
 
 ## The colour cache substitutes only immutable tile colour. Its live material

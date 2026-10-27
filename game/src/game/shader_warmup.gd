@@ -57,6 +57,8 @@ static var _progress_serial := 0
 var _progress_owner: StringName
 var _reflection_view: SubViewport
 var _reflection_camera: Camera3D
+var _depth_environment: Environment
+var _depth_override := false
 
 
 static func active() -> bool:
@@ -161,6 +163,7 @@ static func run(game: Game) -> void:
 	ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.SCENE, 0, items.size())
 	var w := ShaderWarmup.new()
 	w._progress_owner = progress_owner
+	if _prepare_depth_pair(game): w._depth_environment = game._env
 	w.name = "ShaderWarmup"
 	cam.add_child(w)
 	w.position = Vector3(0, 0, -maxf(DIST, cam.near * 4.0))
@@ -197,6 +200,17 @@ static func run(game: Game) -> void:
 				# Queue submission alone is not compilation completion with a
 				# rendering worker. Wait only under the loading screen.
 				RenderingServer.force_sync()
+			# RT/PT GI replaces SSAO after its first output is ready. That
+			# changes the main depth framebuffer even though the material is
+			# unchanged. Prepare it now for off-camera/streamed ground too;
+			# reflection and shadow depth passes use different framebuffer formats.
+			if _prepare_depth_pair(game):
+				var original_ssao := game._env.ssao_enabled
+				game._env.ssao_enabled = not original_ssao
+				for settle in 4:
+					RenderingServer.force_draw(true, 0.0)
+					RenderingServer.force_sync()
+				game._env.ssao_enabled = original_ssao
 			# Count only batches whose draw has completed. A submitted shader
 			# or a pipeline-counter increment is not compilation completion.
 			for j in range(start, n): _warmed[items[j][0]] = true
@@ -229,9 +243,19 @@ static func _prepare_mirror(game: Game, source: Camera3D, forced: bool) -> void:
 
 
 func _finish_deferred(items: Array) -> void:
+	if _depth_environment != null:
+		_depth_override = true
+		_depth_environment.ssao_enabled = true
 	for i in (4 if RenderingServer.get_current_rendering_method()=="forward_plus" else 2):
 		await get_tree().process_frame
 		await RenderingServer.frame_post_draw
+	if _depth_environment != null:
+		_depth_override = true
+		_depth_environment.ssao_enabled = false
+		for i in 4:
+			await get_tree().process_frame
+			await RenderingServer.frame_post_draw
+		_restore_depth_environment()
 	for item: Array in items: _warmed[item[0]] = true
 	last_count = items.size()
 	ShaderCompilationScreen.update(_progress_owner, ShaderCompilationScreen.MATERIALS, last_count, items.size())
@@ -239,7 +263,16 @@ func _finish_deferred(items: Array) -> void:
 	queue_free()
 
 
+func _restore_depth_environment() -> void:
+	if _depth_override and _depth_environment != null:
+		# RT can become active during deferred preparation. Restore the live
+		# setting, including that handoff, rather than the obsolete SSAO state.
+		_depth_environment.ssao_enabled = Gfx.on("gfx_ssao") and not Gfx.scene_rt_gi_active
+	_depth_override = false
+
+
 func _exit_tree() -> void:
+	_restore_depth_environment()
 	if not _progress_owner.is_empty(): ShaderCompilationScreen.end(_progress_owner)
 	if is_instance_valid(_reflection_view): _reflection_view.queue_free()
 
@@ -355,7 +388,18 @@ static func _env_key(game: Game) -> String:
 		k += "%d%d" % [int(sun.shadow_enabled and sun.visible), sun.directional_shadow_mode]
 	k += "%d" % int(_shadowed_points())
 	k += ":mirror%d" % int(_warm_reflections())
+	# A paired preparation covers both states. Reloading while the previous
+	# PT output is still active must reuse that same completed preparation.
+	var pair := _prepare_depth_pair(game)
+	k += ":depth%d:ssao%d:msaa%d" % [int(pair),
+		2 if pair else int(e.ssao_enabled) if e else 0, game.get_viewport().msaa_3d]
 	return k
+
+
+static func _prepare_depth_pair(game: Game) -> bool:
+	return RenderingServer.get_current_rendering_method() == "forward_plus" \
+		and game._env != null and Gfx.on("gfx_ssao") \
+		and (GameData.option("pt_mode") > 0 or GameData.option("rt_gi") > 0)
 
 
 static func _warm_reflections() -> bool:
@@ -452,6 +496,23 @@ static func _zero_format(source: Mesh) -> Mesh:
 	if _formats.has(key): return _formats[key]
 	var arrays := source.surface_get_arrays(0)
 	if arrays.is_empty() or not arrays[Mesh.ARRAY_VERTEX] is PackedVector3Array: return null
+	var source_count: int = arrays[Mesh.ARRAY_VERTEX].size()
+	if source_count == 0: return null
+	# Only the layout participates in pipeline selection. Retaining every
+	# vertex of a terrain patch needlessly uploads and draws it in each
+	# warmup group. One degenerate primitive covers the same render states.
+	var count := mini(source_count, 1 if primitive == Mesh.PRIMITIVE_POINTS else \
+		2 if primitive in [Mesh.PRIMITIVE_LINES, Mesh.PRIMITIVE_LINE_STRIP] else 3)
+	for channel in Mesh.ARRAY_MAX:
+		if arrays[channel] == null: continue
+		if channel == Mesh.ARRAY_INDEX:
+			var indices := PackedInt32Array()
+			for i in count: indices.append(i)
+			arrays[channel] = indices
+		else:
+			# Tangents, bone weights and custom channels have multiple lanes.
+			var lanes: int = arrays[channel].size() / source_count
+			arrays[channel] = arrays[channel].slice(0, count * lanes)
 	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	vertices.fill(Vector3.ZERO); arrays[Mesh.ARRAY_VERTEX] = vertices
 	var mesh := ArrayMesh.new()
