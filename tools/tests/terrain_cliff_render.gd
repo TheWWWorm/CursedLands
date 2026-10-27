@@ -124,9 +124,15 @@ func case(map: String, positive := true) -> void:
 		# Rebuild the CPU side from the same empty classification; clearing
 		# only the GPU texture would leave eligible curved walls in this control.
 		var eligible := terrain._cliffs.eligible
+		var geometry_eligible := terrain._cliffs.geometry_eligible
 		terrain._cliffs.eligible = empty.get_data()
+		# Snow admission is independent of the side-projection mask. Leaving
+		# geometry eligible while clearing that mask reclassifies rock as snow;
+		# it is not the unclassified control this exact-pixel check requires.
+		terrain._cliffs.geometry_eligible = empty.get_data()
 		var unclassified := Field.WallMesh.new(terrain,terrain._cliffs)
 		terrain._cliffs.eligible = eligible
+		terrain._cliffs.geometry_eligible = geometry_eligible
 		for sector in terrain.get_children():
 			if sector is EITerrainSector: sector.set_cliff_geometry(unclassified)
 		check(difference(off,await snap(view,map+"-unclassified")).changed_pixels==0,"unsupported tiles preserve exact pixels in enabled source "+map)

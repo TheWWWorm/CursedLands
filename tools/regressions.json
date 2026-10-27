@@ -3231,6 +3231,239 @@
       ],
       "min_checks": 10,
       "timeout": 360
+    },
+    {
+      "id": "save_load_render_cache",
+      "script": "tools/tests/save_load_render_cache.gd",
+      "summary": "SAVE_LOAD_RENDER_CACHE",
+      "contract": "Production save and authority-worker reloads reuse immutable terrain, PT and NRD programs while replacing world materials, geometry and temporal history; disabling PT releases shared programs.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 27,
+      "timeout": 420,
+      "issues": []
+    },
+    {
+      "id": "save_load_render_cache_raster",
+      "script": "tools/tests/save_load_render_cache.gd",
+      "summary": "SAVE_LOAD_RENDER_CACHE",
+      "contract": "Raster save/worker reloads reuse immutable terrain textures without retaining the previous world or its materials.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--cache-raster"
+      ],
+      "min_checks": 18,
+      "timeout": 420,
+      "issues": []
+    },
+    {
+      "id": "terrain_color_reuse",
+      "script": "tools/tests/terrain_color_reuse.gd",
+      "summary": "TERRAIN_COLOR_REUSE",
+      "contract": "Actual native terrain baking and upload are reused only for identical pixels, tile codes, layout, sampling space and density; LRU limits and private live material uniforms are preserved.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 20,
+      "issues": []
+    },
+    {
+      "id": "terrain_color_native",
+      "script": "tools/tests/terrain_color.gd",
+      "summary": "TERRAIN_COLOR",
+      "contract": "Native terrain colour matches original tile sampling, rotations, gutters and linear blending; concurrent bakes and invalid inputs are checked.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 3300,
+      "issues": []
+    },
+    {
+      "id": "terrain_color_reuse_compatibility",
+      "script": "tools/tests/terrain_color_reuse.gd",
+      "summary": "TERRAIN_COLOR_REUSE",
+      "contract": "Actual native terrain baking and upload are reused only for identical pixels, tile codes, layout, sampling space and density; LRU limits and private live material uniforms are preserved. Compatibility sampling is checked separately.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "gl_compatibility",
+      "args": [],
+      "min_checks": 20,
+      "issues": []
+    },
+    {
+      "id": "terrain_color_lifecycle",
+      "script": "tools/tests/terrain_color_lifecycle.gd",
+      "summary": "TERRAIN_COLOR_LIFECYCLE",
+      "contract": "Mobile native terrain cache preserves snow tracks, expiry, detail changes and worker cleanup.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "mobile",
+      "args": [
+        "--ei-inline-host",
+        "--ei-baked-terrain"
+      ],
+      "issues": [],
+      "min_checks": 14,
+      "timeout": 300
+    },
+    {
+      "id": "authority_terrain_loading",
+      "script": "tools/tests/authority_terrain_loading.gd",
+      "summary": "AUTHORITY_TERRAIN_LOADING",
+      "contract": "Simulation worlds build no terrain graphics while original heights, water, object floors and all eight navigation classes match presentation worlds across four original maps, including the river traversal fixture.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 152
+    },
+    {
+      "id": "terrain_cliff_reuse",
+      "script": "tools/tests/terrain_cliff_reuse.gd",
+      "summary": "TERRAIN_CLIFF_REUSE",
+      "contract": "Reloaded cliff geometry is byte-identical and bounded; changed source geometry, underwater colour, ground types and artwork invalidate it; world state and owner lifetimes stay independent.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 26
+    },
+    {
+      "id": "terrain_color_loading",
+      "script": "tools/tests/terrain_color_loading.gd",
+      "summary": "TERRAIN_COLOR_LOADING",
+      "contract": "Loading uses available CPU cores within a 64 MiB temporary image bound, every concurrent native bake matches serial pixels, and live streaming keeps its two-job limit.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 6
+    },
+    {
+      "id": "terrain_cliff_disk",
+      "script": "tools/tests/terrain_cliff_disk.gd",
+      "summary": "TERRAIN_CLIFF_DISK",
+      "min_checks": 39,
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "contract": "Fresh-process cliff/snow cache preserves exact geometry and pixels, invalidates changed maps, recovers from corrupt or oversized records and bounds disk retention."
+    },
+    {
+      "id": "terrain_cliff_disk_rendered",
+      "script": "tools/tests/terrain_cliff_disk.gd",
+      "summary": "TERRAIN_CLIFF_DISK",
+      "min_checks": 39,
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "contract": "Persisted cliff textures are reconstructed exactly on the actual renderer; geometry, corruption recovery and disk limits retain the headless contract.",
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "shader_warmup_loading",
+      "script": "tools/tests/shader_warmup_loading.gd",
+      "summary": "SHADER_WARMUP_LOADING",
+      "min_checks": 7,
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "contract": "Prepare a real material set with bounded whole-world draws, retain four completed settle draws per progress advance, and reveal stationary/moving source meshes without new pipelines.",
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "wisp_loading",
+      "script": "tools/tests/wisp_loading.gd",
+      "summary": "WISP_LOADING",
+      "contract": "First Autochess wisp offers and combat figures reuse prepared translucent pipelines, retain five animated crystals and independent phases, and handle shader refresh, cancellation, re-entry and synchronous preparation beneath a hidden campaign HUD.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 36,
+      "rendering_method": "forward_plus",
+      "timeout": 420
+    },
+    {
+      "id": "wisp_loading_lia",
+      "script": "tools/tests/wisp_loading.gd",
+      "summary": "WISP_LOADING",
+      "contract": "Lost in Astral's distinct catalog skips absent base-game wisp preparation in forced and deferred campaign loads, without allocating a preview or retaining a compilation cover.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "args": [
+        "--wisp-no-roster"
+      ],
+      "min_checks": 10,
+      "rendering_method": "forward_plus",
+      "timeout": 420
+    },
+    {
+      "id": "wisp_native_callbacks",
+      "script": "tools/tests/wisp_native_callbacks.gd",
+      "summary": "WISP_NATIVE_CALLBACKS",
+      "contract": "Original x86 wisp spawn/update fixture preserves lifetime, attachment, random consumption and native numeric results.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 4428
+    },
+    {
+      "id": "wisp_combat",
+      "script": "tools/tests/wisp_combat.gd",
+      "summary": "WISP_COMBAT",
+      "contract": "All native wisp forms retain ambient particle distribution, lifetime, visibility, combat and death/revival ownership.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 438,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "wisp_visibility",
+      "script": "tools/tests/wisp_visibility.gd",
+      "summary": "WISP_VISIBILITY",
+      "contract": "All wisp forms retain their authored five-crystal silhouette, independent pulse, visibility, death and preview refresh.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 49,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "wisp_visibility_gl",
+      "script": "tools/tests/wisp_visibility.gd",
+      "summary": "WISP_VISIBILITY",
+      "contract": "Compatibility retains the same authored crystal silhouette, pulse, visibility and preview-refresh contract.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 49,
+      "rendering_method": "gl_compatibility"
+    },
+    {
+      "id": "shader_compilation_arena",
+      "script": "tools/tests/shader_compilation_arena.gd",
+      "summary": "SHADER_COMPILATION_ARENA",
+      "contract": "Real Autochess preparation presents completed progress, keeps picking and the battle bell gated, and releases render state and cover on cancellation.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 27,
+      "rendering_method": "forward_plus",
+      "timeout": 360
     }
   ]
 }

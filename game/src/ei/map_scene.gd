@@ -20,14 +20,14 @@ func _ready() -> void:
 		scenery_batches = SceneryBatches.create(self, object_nodes)
 
 
-static func load_map(map_name: String, mob_name := "", spawn_units := true) -> EIMapScene:
+static func load_map(map_name: String, mob_name := "", spawn_units := true, presentation := true) -> EIMapScene:
 	var t0 := Time.get_ticks_msec()
 	var s := EIMapScene.new()
 	s.name = map_name
 	s._spawn_units = spawn_units
 	if mob_name.is_empty():
 		mob_name = map_name
-	s.terrain = EITerrain.load_map(map_name)
+	s.terrain = EITerrain.load_map(map_name, presentation)
 	if s.terrain == null:
 		return null
 	s.add_child(s.terrain)

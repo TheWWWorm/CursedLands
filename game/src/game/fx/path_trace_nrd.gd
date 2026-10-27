@@ -18,6 +18,8 @@ var _description := {}
 var _layouts := {}
 var _size := Vector2i.ZERO
 var _programs := {}
+# Borrow immutable programs only; temporal pools and descriptors stay private.
+var program_cache: RefCounted
 var _sets := {}
 var _owned: Array[RID] = []
 var _textures: Array[RID] = []
@@ -58,12 +60,17 @@ func _program(name: String) -> Dictionary:
 	var bytes := FileAccess.get_file_as_bytes(SHADERS+name+".spv")
 	if bytes.is_empty():return {}
 	var spirv := RDShaderSPIRV.new();spirv.bytecode_compute=bytes
-	var shader := _rd.shader_create_from_spirv(spirv,"NRD "+name)
-	if not shader.is_valid():return {}
-	_owned.append(shader)
-	var pipeline := _rd.compute_pipeline_create(shader)
-	if not pipeline.is_valid():return {}
-	_owned.append(pipeline)
+	var shader := RID();var pipeline := RID()
+	if program_cache!=null:
+		var pair: Array=program_cache.compute(_rd,spirv,"NRD "+name)
+		shader=pair[0];pipeline=pair[1]
+	else:
+		shader=_rd.shader_create_from_spirv(spirv,"NRD "+name)
+		if not shader.is_valid():return {}
+		_owned.append(shader)
+		pipeline=_rd.compute_pipeline_create(shader)
+		if pipeline.is_valid():_owned.append(pipeline)
+	if not shader.is_valid() or not pipeline.is_valid():return {}
 	var result := {"shader":shader,"pipeline":pipeline,"layout":_layouts[name]}
 	_programs[name]=result;return result
 

@@ -183,6 +183,7 @@ func build_extra_step(data: PackedByteArray,placements: Array) -> int:
 	return OK if _build_extra_phase==3 else ERR_BUSY
 
 func _build_environment() -> bool:
+	nrd.program_cache=programs
 	if terrain.data.is_empty(): terrain.data.resize(Terrain.HEADER)
 	_terrain_data = _own(_rd.storage_buffer_create(terrain.data.size(),terrain.data))
 	# Borrow the immutable raster atlas, with a retained TextureLayered owner.

@@ -83,9 +83,13 @@ func _ready() -> void:
 
 static func ready_for(prototype: String) -> bool:
 	var warmer: ArenaAnimationWarmup = _current.get_ref() if _current else null
-	if warmer == null or warmer.task < 0 or warmer.source != GameData.figures: return true
+	if warmer == null: return true
 	var proto := GameData.db.find("monster_prototypes", prototype)
 	var race := GameData.db.find("race_models", proto.get("base_race", ""))
+	# A restored shop can offer a wisp before the opening material pass has
+	# finished. Keep its placeholder until the actual preview has drawn.
+	if String(race.get("mask", "")).to_lower() == "unmowi" and ShaderWarmup.active() and not ShaderWarmup.wisp_preview_ready(): return false
+	if warmer.task < 0 or warmer.source != GameData.figures: return true
 	var job: LibraryJob = warmer.pending.get(String(proto.get("_arena_assets", "")) + String(race.get("mask", "")).to_lower())
 	# Staged models wait without blocking the main thread. Otherwise the
 	# first click can synchronously decode the very library being prefetched.

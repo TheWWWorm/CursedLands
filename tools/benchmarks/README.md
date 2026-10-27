@@ -434,3 +434,30 @@ equivalence. Simulation time is not rendered frame time or an FPS prediction.
 
 The five-area results and original-code comparison are retained in
 `docs/validation/cpu-traversal-2026-10-25/`.
+
+## Gameplay immediately after loading
+
+`post_load_traversal.gd` measures the interval between delivered frames from the
+first frame after the ordinary loading and shader covers close. Launch through
+GPU Lab with `workload=heavy`, a qualified packaged runtime, isolated muted
+profiles and `--tool=/absolute/tools/benchmarks/post_load_traversal.gd`.
+Pass `--traversal-config=/absolute/config.json` and `--audit-out=/absolute/output`:
+
+```json
+{"save":"/absolute/reference.sav","pt":1,"width":1920,"height":1080,"leg_seconds":12,"pan_seconds":20}
+```
+
+It performs two ordinary solo-worker loads of the same save, immediately sends
+real move orders outward and back, then injects bound camera-pan keys. The first
+load also repeats the pan. There is no post-load settling interval, screenshot
+readback or synchronous GPU timing query inside those measured phases. The
+report retains every frame interval, phase distributions, stalls over 50/100 ms,
+pipeline counters, terrain page work, PT state, camera extent, displacement,
+health and advancing simulation. A dead hero, stalled simulation or stationary
+pan invalidates the run. Use a reference party that can survive the route;
+retain/hash the same save for both builds and leave enemies and damage active.
+
+Compare the unchanged local-main pack against the complete candidate pack on
+the same GPU/settings and reverse order between cases. Include raster and PT,
+first and repeated loads, and multiple terrain types. Report remaining spikes
+as well as percentiles; reduced loading time alone does not qualify this check.

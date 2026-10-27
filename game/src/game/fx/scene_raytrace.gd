@@ -123,7 +123,10 @@ func _process(dt: float) -> void:
 	if transmission_mode!=_transmission_mode:
 		_release();_transmission_mode=transmission_mode;_mode=""
 	if mode != _mode or terrain != _terrain:
-		if terrain != _terrain or path_mode!=_path_mode: _release()
+		if terrain != _terrain or path_mode!=_path_mode:
+			# A save load replaces geometry and history, not immutable programs.
+			# Keep this controller's cache until RT is disabled or it exits.
+			_release(path_mode!=_path_mode or not wanted)
 		_path_mode=path_mode
 		_mode = mode; _terrain = terrain; _clear_failure(); _history_key=""
 	if not wanted or not is_instance_valid(terrain) or not terrain.is_visible_in_tree() or game.simulation_only:
@@ -853,7 +856,7 @@ func _emitter_stats(count: int,candidates: int,id: int) -> void:
 	else: return
 	target["emissive_triangles"]=count;target["emissive_candidates"]=candidates
 
-func _release() -> void:
+func _release(release_programs := true) -> void:
 	_flush_retirement()
 	_set_ray_reconstruction(null,false)
 	_set_gi_active(false)
@@ -873,7 +876,8 @@ func _release() -> void:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
 			RenderingServer.global_shader_parameter_set(key,null)
 		_retire_device(device);device=null
-	Device.dispatch(_programs,&"dispose");_programs=Device.Programs.new()
+	if release_programs:
+		Device.dispatch(_programs,&"dispose");_programs=Device.Programs.new()
 	_handoff_updates=false
 	_budget=Budget.new();_budget_clock=0
 	stats.erase("emissive_triangles");stats.erase("emissive_candidates")

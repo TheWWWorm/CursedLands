@@ -25,6 +25,7 @@ var visited: Array[Vector2] = []
 var distance := 0.0
 var previous_position := Vector2.ZERO
 var recording_start := 0
+var route_diagnostics := []
 
 func _process(_dt: float) -> void:
 	if g and g.rig:
@@ -71,6 +72,7 @@ func reaches_exit(target: Vector2) -> bool:
 func choose_goal(leg: int, avoid: Array = []) -> Vector2:
 	var best := Vector2.INF
 	var score := -INF
+	var rejected := {"terrain":0,"exit":0,"actor":0}
 	var preferred := (s.world.terrain.size_ei()*0.5-hero.pos).angle() if leg==0 else heading+0.8
 	for length: float in [18.0,12.0,8.0,5.0,3.0]:
 		for angle in 32:
@@ -83,12 +85,19 @@ func choose_goal(leg: int, avoid: Array = []) -> Vector2:
 			# Match continuous keyboard steering: terrain and body sweeps are
 			# separate. A coarse actor stamp can cover our start while a real
 			# escape remains open, and moving bodies may have no standing stamp.
-			if not s.world.nav.direct_line(hero,target,false) or reaches_exit(target): continue
-			if s.world.nav.steering_blocker(hero,target)!=null: continue
+			if not s.world.nav.direct_line(hero,target,false): rejected.terrain+=1; continue
+			if reaches_exit(target): rejected.exit+=1; continue
+			if s.world.nav.steering_blocker(hero,target)!=null: rejected.actor+=1; continue
 			var nearest := 20.0
 			for earlier: Vector2 in visited: nearest=minf(nearest,target.distance_to(earlier))
 			var value := length+minf(nearest,8.0)+cos(direction-preferred)*3.0
 			if value>score: score=value;best=target
+	var nav := s.world.nav
+	var cell := nav.cell(hero.pos)
+	var land := nav.layer(hero.move_class()).land
+	route_diagnostics.append({"leg":leg,"position":str(hero.pos),"cell":str(cell),"move_class":hero.move_class(),
+		"map":s.world.terrain.map_name,"start_land":land[cell.y*nav.size.x+cell.x],
+		"rejected":rejected,"goal":str(best),"terrain_digest":var_to_bytes(land).hex_encode().sha256_text()})
 	return best
 
 func phase(label: String, seconds: float, goal := Vector2.INF, pan := false) -> void:
@@ -187,7 +196,7 @@ func persist() -> void:
 		effective[name]=GameData.option(name)
 	write_file("zone-traversal.json",JSON.stringify({
 		"checks":checks,"failures":failures,"campaign":GameData.campaign_id,"zone":s.zone_id,"title":s.zone_title(s.zone_id),
-		"rows":rows,"distance":distance,"window":str(DisplayServer.window_get_size()),"status":status(),"neutral_exploration":peaceful,
+		"rows":rows,"route_diagnostics":route_diagnostics,"distance":distance,"window":str(DisplayServer.window_get_size()),"status":status(),"neutral_exploration":peaceful,
 		"frame_limit":Engine.max_fps,"actor_count":s.world.units.size(),"options":GameData.options.duplicate(),
 		"effective_options":effective,"tuning_enabled":OS.get_cmdline_user_args().has("--ei-pt-tuning"),"rt_stats":rt.stats.duplicate(true),
 		"adapter":RenderingServer.get_video_adapter_name(),"renderer":RenderingServer.get_current_rendering_method(),

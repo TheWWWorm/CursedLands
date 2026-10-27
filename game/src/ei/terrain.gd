@@ -811,6 +811,9 @@ void fragment() {
 
 
 var map_name := ""
+## The separate authority needs the original terrain data, but no GPU assets
+## or optional surface effects. Ordinary tools retain the presentation path.
+var presentation := true
 ## Internal .mp/.sec and atlas basename; renamed .mpr files can differ.
 var resource_prefix := ""
 var max_altitude := 0.0
@@ -932,7 +935,7 @@ func ground_surface_data(triangle_only := false) -> GroundSurfaceData:
 	return data
 
 
-static func load_map(name: String) -> EITerrain:
+static func load_map(name: String, with_presentation := true) -> EITerrain:
 	var arc := EIResArchive.open_path(GameData.root.path_join("maps/%s.mpr" % name))
 	if arc == null:
 		return null
@@ -941,6 +944,7 @@ static func load_map(name: String) -> EITerrain:
 		push_error("No unambiguous .mp header in %s.mpr" % name)
 		return null
 	var t := EITerrain.new()
+	t.presentation = with_presentation
 	t.name = "Terrain"
 	t.map_name = name
 	t.resource_prefix = prefix
@@ -948,7 +952,7 @@ static func load_map(name: String) -> EITerrain:
 		push_error("Bad .mp header in %s" % name)
 		t.free()
 		return null
-	t._load_atlases()
+	if t.presentation: t._load_atlases()
 	t._build(arc)
 	return t
 
@@ -1137,25 +1141,26 @@ func _tile_uv(f: int, dx: int, dy: int) -> Array:
 
 
 func _build(arc: EIResArchive) -> void:
-	if _land_shader == null:
-		Gfx.ensure_globals()
-		_land_shader = Gfx.make_shader(TERRAIN_SHADER, true, true)
-		_water_shader = Gfx.make_shader(WATER_SHADER, true, true)
-		_water_fx_shader = Gfx.make_shader(WATER_FX_SHADER, true, true)
-	Gfx.set_border(size_ei())
-	var land_mat := ShaderMaterial.new()
-	land_mat.shader = _land_shader
-	land_mat.set_shader_parameter("atlases", _atlases)
-	_land_mat = land_mat
-	var wmat := ShaderMaterial.new()
-	wmat.shader = _water_shader
-	#  draws the liquids after the figures and
-	# before the effects, with z writes on: particles under the surface stay
-	# hidden. Godot draws units (alpha-to-coverage) in its transparent pass,
-	# so the water goes after them and before ParticleFx.RENDER_PRIORITY,
-	# and writes depth for the particles' depth test.
-	wmat.render_priority = ParticleFx.RENDER_PRIORITY - 1
-	_water_mat = wmat
+	if presentation:
+		if _land_shader == null:
+			Gfx.ensure_globals()
+			_land_shader = Gfx.make_shader(TERRAIN_SHADER, true, true)
+			_water_shader = Gfx.make_shader(WATER_SHADER, true, true)
+			_water_fx_shader = Gfx.make_shader(WATER_FX_SHADER, true, true)
+		Gfx.set_border(size_ei())
+		var land_mat := ShaderMaterial.new()
+		land_mat.shader = _land_shader
+		land_mat.set_shader_parameter("atlases", _atlases)
+		_land_mat = land_mat
+		var wmat := ShaderMaterial.new()
+		wmat.shader = _water_shader
+		#  draws the liquids after the figures and
+		# before the effects, with z writes on: particles under the surface stay
+		# hidden. Godot draws units (alpha-to-coverage) in its transparent pass,
+		# so the water goes after them and before ParticleFx.RENDER_PRIORITY,
+		# and writes depth for the particles' depth test.
+		wmat.render_priority = ParticleFx.RENDER_PRIORITY - 1
+		_water_mat = wmat
 	_level.resize(64)
 	_lava.resize(64)
 
@@ -1178,29 +1183,34 @@ func _build(arc: EIResArchive) -> void:
 			var vert_mats := PackedInt32Array()
 			if liquids:
 				water_mats = _read_u16s(d, tex_off + 1024)
-				vert_mats = _vertex_materials(water_mats)
+				if presentation: vert_mats = _vertex_materials(water_mats)
 				wverts = _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)
 				_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
-				land.append(_underwater(land[0], wverts[0], vert_mats))
-			var mi := EITerrainSector.new()
-			mi.tile_origin = Vector2i(sx * TILES, sy * TILES)
-			mi.configure(_mesh_arrays(land, land_tex, PackedInt32Array(), Vector2i(sx * TILES, sy * TILES)),
-				land_mat, SHADOW_RECEIVER_LAYER | DECAL_LAYER, EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
-			mi.name = "Sector_%d_%d" % [sx, sy]
-			add_child(mi)
+				if presentation: land.append(_underwater(land[0], wverts[0], vert_mats))
+			if presentation:
+				var mi := EITerrainSector.new()
+				mi.tile_origin = Vector2i(sx * TILES, sy * TILES)
+				mi.configure(_mesh_arrays(land, land_tex, PackedInt32Array(), Vector2i(sx * TILES, sy * TILES)),
+					_land_mat, SHADOW_RECEIVER_LAYER | DECAL_LAYER, EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
+				mi.name = "Sector_%d_%d" % [sx, sy]
+				add_child(mi)
 			if liquids:
 				var water_tex := _read_u16s(d, tex_off + 512)
 				_record_water(wverts[0], water_mats, sx, sy)
 				_record_liquid_ground(water_tex, water_mats, sx, sy)
-				var wm := _make_mesh(wverts, water_tex, water_mats, wmat, Vector2i.ZERO, vert_mats)
-				if wm:
-					wm.name = "Water_%d_%d" % [sx, sy]
-					wm.layers = WaterReflection.WATER_LAYER
-					wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-					wm.extra_cull_margin = 8.0   # SetWaterLevel moves it in the shader
-					add_child(wm)
+				if presentation:
+					var wm := _make_mesh(wverts, water_tex, water_mats, _water_mat, Vector2i.ZERO, vert_mats)
+					if wm:
+						wm.name = "Water_%d_%d" % [sx, sy]
+						wm.layers = WaterReflection.WATER_LAYER
+						wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+						wm.extra_cull_margin = 8.0   # SetWaterLevel moves it in the shader
+						add_child(wm)
 	_height_range_size = heights.size() if complete else -1
 	water_base = water.duplicate()
+	if not presentation:
+		set_process(false)
+		return
 	# Lava: map materials whose liquid tiles are of ground type 13.
 	for i in water_mat.size():
 		if water_mat[i] < 64 and liquid_ground[i] == LAVA:
@@ -1284,6 +1294,7 @@ func _surface_cell_image() -> Image:
 ## Remake rendering options (gfx_water, gfx_terrain) on the terrain and water
 ## materials; parameters are set again after a shader swap.
 func apply_gfx() -> void:
+	if not presentation: return
 	# Options can be changed while the scene tree is paused.
 	_update_wind_parameters()
 	_update_cloud_parameters()
@@ -1321,7 +1332,7 @@ func apply_gfx() -> void:
 		_land_mat.set_shader_parameter("caustic_pattern",null)
 		_land_mat.shader = _land_shader
 	if TerrainCliff.requested():
-		if _cliffs == null: _cliffs = TerrainCliff.new(self)
+		if _cliffs == null: _cliffs = TerrainCliff.create(self)
 	else:
 		_cliffs = null
 	if _cliffs != null and _cliffs.admitted > 0:
@@ -1468,6 +1479,7 @@ func apply_gfx() -> void:
 					_pair_land_mat.shader = _transitions.shader(transition_base, true)
 				material = _pair_land_mat
 			sector.set_base_material(material)
+	if _cliffs != null: _cliffs.retain()
 	if cliff_geometry_changed and is_instance_valid(details) and is_instance_valid(details.soft_ground):
 		details.soft_ground.refresh_geometry()
 
