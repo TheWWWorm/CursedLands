@@ -128,6 +128,28 @@ offsets and passes 12/0 after the fixture update. 6,406 checks, 0 failures
 
 Retained captures and run summaries: `local/validation/terrain-surface-20261027/`.
 
+## Performance
+
+Packaged candidate, RTX 3090, GPU Lab `workload=heavy`, uncapped, vsync off,
+zone 19 open loose sand filling the screen (a terrain-only worst case: sand
+also runs the ripple path). Maps off/on alternated over four rounds in one
+process per resolution; medians of 300 frames per round, then of the rounds.
+"Gameplay" is a high view (18 m up), "close" the live-test view. In PT mode the
+viewport GPU time covers the raster pass only; wall time is the full frame.
+
+| Mode / view | 3840×2160 off → on | 2560×1440 off → on |
+| --- | --- | --- |
+| Raster gameplay, GPU | 5.97 → 6.46 ms (+0.49) | 3.14 → 3.41 ms (+0.27) |
+| Raster close, GPU | 5.16 → 5.55 ms (+0.39) | 2.70 → 2.88 ms (+0.17) |
+| PT gameplay, frame | 27.86 → 29.61 ms (+1.75) | 13.43 → 14.26 ms (+0.82) |
+| PT close, frame | 24.51 → 26.29 ms (+1.77) | 11.26 → 12.33 ms (+1.06) |
+
+About 6–10 % of a terrain-filled frame in either renderer; every 4K round
+moved the same way. Deriving the maps on load: about 1 ms for this region's
+8-layer 640×640 atlas (0.7 ms when repeated). Script, launcher and raw rows:
+`local/validation/terrain-surface-20261027/perf/` (a first 4K run whose PT
+state switch was not yet confirmed before measuring is kept for reference).
+
 ## Original-game comparison
 
 Not applicable: the original renderer has no normal or roughness maps and no
