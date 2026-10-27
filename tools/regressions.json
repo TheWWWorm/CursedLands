@@ -444,7 +444,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 3618
+      "min_checks": 3718
     },
     {
       "id": "nav_local_invalidation",
@@ -1207,7 +1207,7 @@
       "args": [
         "--windows-renderer-option"
       ],
-      "min_checks": 36,
+      "min_checks": 37,
       "timeout": 180
     },
     {
@@ -3428,7 +3428,7 @@
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 36,
+      "min_checks": 37,
       "rendering_method": "forward_plus",
       "timeout": 420
     },
@@ -3825,6 +3825,17 @@
       "min_checks": 72
     },
     {
+      "id": "network_name_persists",
+      "script": "tools/tests/network_name_persists.gd",
+      "summary": "NETWORK_NAME_PERSISTS",
+      "contract": "The name typed on the co-op and autochess multiplayer screens is saved to settings.cfg when the field is left, on Back, when the screen hides or the window closes, cleaned as hosting does; untouched or emptied fields keep the saved name, so the next start shows it.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 37
+    },
+    {
       "id": "options_rows_reachable",
       "script": "tools/tests/options_rows_reachable.gd",
       "summary": "OPTIONS_ROWS_REACHABLE",
@@ -3855,7 +3866,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 36
+      "min_checks": 37
     },
     {
       "id": "wiki_cut_faces_items",
