@@ -233,7 +233,7 @@ func rollback_round_health() -> void:
 
 
 func draw_damage() -> int:
-	return 10
+	return 0 if is_creep_round() else 10
 
 
 func _choose_pairings() -> void:
@@ -282,8 +282,10 @@ func record_duel(index: int, winner: int, survivors: Array) -> void:
 	if results.size() == pairings.size() and not _human_result.is_empty(): _settle_round()
 	else: _touch()
 
-func defeat_damage(surviving_stars: int) -> int:
-	return 3 + wave / 5 + maxi(0, surviving_stars) + maxi(0, wave - 30) * 5
+func defeat_damage(surviving_damage: int) -> int:
+	# Neutral encounters do not deal player damage. Commanders are portraits,
+	# not combatants, so there is no separate surviving-Underlord contribution.
+	return 0 if is_creep_round() else wave / 10 + maxi(0, surviving_damage)
 
 func _settle_round() -> void:
 	_remember_round_health()

@@ -32,8 +32,11 @@ pose, including after combat and when a finished board is first scouted.
 Health is deducted when a board finishes, while the other boards keep fighting.
 The shared round settles income and places once every owner who entered the round
 reports a result, including owners eliminated by that result. Repeated results
-cannot charge health twice. Defeat costs `3 + floor(round / 5) + surviving enemy stars`
-health, plus `5 × (round − 30)` after round 30. A fight ends after ninety simulated
+cannot charge health twice. Player defeats use the [Underlords damage rules](https://dotaunderlords.fandom.com/wiki/Damage):
+`floor(round / 10) + sum(1 + floor((tier + 2 × (stars − 1)) / 3))` for surviving
+enemy recruits. Summons and neutral rounds cause no player damage. Commanders are
+portraits, so there is no surviving-Underlord contribution. There is no extra
+sudden-death multiplier after round 30. A fight ends after ninety simulated
 seconds, or ten seconds without positive damage. Draws cost both owners ten
 health and grant no victory bonus. A copied army never penalizes its donor.
 

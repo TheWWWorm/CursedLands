@@ -99,6 +99,9 @@ static func effective() -> Dictionary:
 static func option(key: String, fallback: int) -> int:
 	if not ModSchema.RULES.has(key) or not _loaded: return fallback
 	var s := session()
+	# Combat always uses the original Normal multipliers online. Display that
+	# effective rule too, without overwriting a saved solo Easy preference.
+	if key == "difficulty" and s != null and s.multiplayer_game: return 0
 	if s != null and not s.mod_config.is_empty(): return int(s.mod_config.rules.get(key, ModSchema.ADDED_DEFAULTS.get(key, fallback)))
 	return int(profile().rules.get(key, fallback))
 

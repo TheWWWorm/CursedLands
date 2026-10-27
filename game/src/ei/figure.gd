@@ -115,6 +115,10 @@ varying vec3 ei_e;
 varying float ei_k;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform vec4 surface_profile = vec4(0.0, 1.0, 0.0, 0.0);
+#ifndef EI_NO_MATERIALS
+uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform bool surface_enabled = false;
+#endif
 """ + SurfaceResponse.RELIEF_SHADER + SurfaceDetail.SHADER + """
 void vertex() {
 	ei_e = ei_material_emissive;
@@ -135,6 +139,7 @@ void fragment() {
 #ifndef EI_NO_MATERIALS
 	if (ei_surface_fx.x > 0.5) {
 		ei_surface = surface_profile.xyz;
+		if (surface_enabled) { ei_surface = texture(surface_tex, UV).rgb; }
 		if (surface_detail_enabled) {
 			vec4 data=texture(surface_detail_tex,UV);
 			vec2 size=vec2(textureSize(surface_detail_tex,0));
@@ -177,6 +182,9 @@ static func world_material_for(texture: String, material_id := 0) -> Material:
 	m.set_meta("ground_contact_source", OBJECT_A2C_SHADER if a2c else OBJECT_SHADER)
 	m.set_shader_parameter("albedo_tex", tex)
 	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture))
+	var surface := SurfaceResponse.object_surface(texture)
+	m.set_shader_parameter("surface_tex", surface)
+	m.set_shader_parameter("surface_enabled", surface != null)
 	var detail:=SurfaceDetail.texture_for(texture,tex)
 	m.set_shader_parameter("surface_detail_tex",detail)
 	m.set_shader_parameter("surface_detail_enabled",detail!=null)

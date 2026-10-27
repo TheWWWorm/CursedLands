@@ -1782,9 +1782,9 @@ func _guide() -> void:
 	if run is ArenaTournamentRun:
 		topics[0] = [RemakeText.t("Economy"), RemakeText.t("Every round pays 5 gold, plus interest. Wins add 1 gold and can earn a streak bonus. Every round also grants 1 XP.")]
 		topics[1] = [RemakeText.t("Preparation"), RemakeText.t("You have 60 seconds to recruit and arrange your army. Rivals prepare at the same time. Menus pause the countdown; watching another board does not.")]
-		topics[-1] = [RemakeText.t("Players"), RemakeText.t("Eight computer opponents build their own armies. Losing costs health based on the round and surviving enemy stars. At zero health you are eliminated. Click a player to inspect their army.")]
-		topics.append([RemakeText.t("Rounds"), RemakeText.t("Rounds 1–3 and every fifth round are against creeps. Other rounds pair surviving players. With an odd player count, one army fights a copy without damaging its owner. After round 30, defeat damage increases each round.")])
-	if run is ArenaTournamentRun: topics.append([RemakeText.t("Draw"), RemakeText.t("A draw costs both players 10 health.")])
+		topics[-1] = [RemakeText.t("Players"), RemakeText.t("Eight computer opponents build their own armies. Losing costs health based on the round and surviving enemies’ tier and stars. At zero health you are eliminated. Click a player to inspect their army.")]
+		topics.append([RemakeText.t("Rounds"), RemakeText.t("Rounds 1–3 and every fifth round are against creeps, which cannot damage player health. Other rounds pair surviving players. Defeat damage depends on surviving enemies’ tier and stars, plus 1 damage per 10 rounds. With an odd player count, one army fights a copy without damaging its owner.")])
+	if run is ArenaTournamentRun: topics.append([RemakeText.t("Draw"), RemakeText.t("A draw against another player costs both players 10 health.")])
 	if network_play:
 		topics[1] = ["Preparation", "Everyone has 60 seconds to recruit and arrange their army. The round starts early when all surviving human players are ready. Changing your army cancels ready. Menus and scouting do not pause the timer."]
 		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused."]
@@ -2022,10 +2022,12 @@ func _layout_hud() -> void:
 
 func _layout_inspector() -> void:
 	if not _inspect_box or not _hud: return
-	# Company help uses the full height beside the portrait. It contains the
-	# level, XP and shop table, so a short creature-detail slot would clip it.
+	# Expanded details use the full height beside the complete portrait area,
+	# including shoulders. Keep room for ranked stats and equipment controls.
 	var width := 400.0 if _company_details else 320.0
 	var right := 216.0 if _company_details else 16.0
+	if _company_details and is_instance_valid(_commander_portrait) and _commander_portrait.visible:
+		right = maxf(right, _commander_portrait.size.x + 8.0)
 	_rail.custom_minimum_size.x = width
 	_rail.offset_left = -right - width; _rail.offset_right = -right
 	var bottom := _hud.size.y - 24.0

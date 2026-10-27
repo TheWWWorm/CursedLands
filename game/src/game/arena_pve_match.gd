@@ -483,13 +483,18 @@ func _resolved(side: int) -> void:
 			if node is ParticleFx: node.finish_emitters()
 			elif node is Projectile: node.apply_hit = false
 			elif node is SpellFx: _light_finish_age[node] = node._age
+	if run and not external_combat: run.resolve(side, world.time, damage, survivor_damage())
+
+
+## Shared by local resolution and the separate solo/online authority worker.
+func survivor_damage() -> Array:
 	var survivors := [0, 0]
 	for unit: GameUnit in world.unit_rows():
 		if not unit.dead:
 			var placement: Dictionary = unit.get_meta("arena_placement", {})
-			if placement.get("echo", false): continue
-			survivors[int(placement.get("team", 0))] += int(placement.get("rank", 0)) + 1
-	if run and not external_combat: run.resolve(side, world.time, damage, survivors)
+			var team := int(placement.get("team", -1))
+			if team in [0,1]: survivors[team] += ArenaRules.player_damage(placement)
+	return survivors
 
 
 func _remember_damage() -> void:

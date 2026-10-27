@@ -150,9 +150,10 @@ uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, r
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 #endif
 uniform vec3 unit_emission = vec3(0.0);
+uniform float unit_highlight = 0.0;
 """ + SHARP_FETCH + WOUND_FETCH + Mouth.FETCH + """
 void vertex() {
-	ei_e = max(unit_emission, ei_material_emissive);
+	ei_e = max(vec3(unit_highlight), max(unit_emission, ei_material_emissive));
 	ei_k = 0.0;
 }
 void fragment() {
@@ -1159,6 +1160,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 				n.set_meta("weld_mesh", welded[p])   # SeveredLimb: the part's own mesh
 				continue
 			var mi := MeshInstance3D.new()
+			mi.name = "Mesh" # stable identity across stat-driven figure rebuilds
 			if not morph.is_empty():
 				mi.name = "morph"
 				_morph_parts.append([mi, _morph_ranges(morph.names), PackedInt32Array()])
@@ -1180,6 +1182,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		nodes["hd"].add_child(hn)
 		EIFigureGeometry.attach(hn, parts[hair_part], complexion, geometry_parts)
 		var hm := MeshInstance3D.new()
+		hm.name = "Mesh"
 		hm.mesh = EIFigure.build_mesh(parts[hair_part], complexion)
 		hm.material_override = hmat if helm_layer else mat
 		if not ui_preview:

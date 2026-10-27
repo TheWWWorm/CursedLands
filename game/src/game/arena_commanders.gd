@@ -1,7 +1,7 @@
 class_name ArenaCommanders
 extends RefCounted
-## Authored protagonists and companions with native expression paintings.
-const IDS := ["hero", "merc1", "merc2", "merc3", "merc4", "merc5", "merc6", "merc7", "merc8", "merc9"]
+## Authored characters with native expression paintings.
+const IDS := ["hero", "merc1", "merc2", "merc3", "merc4", "merc5", "merc6", "merc7", "merc8", "merc9", "nalo"]
 ## Character identity stays separate in the picker. The saved/network choice
 ## carries a validated optional suffix, preserving old unsuffixed selections.
 const SKINS := {

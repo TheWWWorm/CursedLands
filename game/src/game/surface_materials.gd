@@ -72,6 +72,34 @@ static func object_profile(texture: String) -> Vector4:
 	return Vector4(DULL.x, DULL.y, DULL.z, 0.0)
 
 
+static var _object_surfaces := {}
+## The Hadagan atlas is shared with a jug and an oven. These authored pixel
+## regions belong to the chest's metal lid and frame; its wood and the other
+## objects remain rough dielectrics. Coordinates refer to the original 256²
+## atlas, independently of optional albedo upscaling.
+static func object_surface(texture: String) -> Texture2D:
+	var name := texture.to_lower().trim_suffix(".mmp")
+	if name != "hadoganchest00": return null
+	if _object_surfaces.has(name): return _object_surfaces[name]
+	var image := Image.create(256,256,false,Image.FORMAT_RGB8)
+	image.fill(Color(DULL.x,DULL.y,DULL.z))
+	var regions := [
+		PackedVector2Array([Vector2(67,102),Vector2(77,86),Vector2(133,86),Vector2(144,99),Vector2(141,184),Vector2(67,184)]),
+		PackedVector2Array([Vector2(143,101),Vector2(163,101),Vector2(163,162),Vector2(151,180),Vector2(143,180)]),
+		PackedVector2Array([Vector2(235,83),Vector2(256,83),Vector2(256,181),Vector2(235,181)]),
+		PackedVector2Array([Vector2(162,164),Vector2(235,164),Vector2(235,183),Vector2(162,183)])]
+	var metal := equipment({"type":"metal"})
+	for y in 256:
+		for x in 256:
+			var p := Vector2(x+.5,y+.5)
+			if regions.any(func(polygon): return Geometry2D.is_point_in_polygon(p,polygon)):
+				image.set_pixel(x,y,Color(metal.x,metal.y,metal.z))
+	image.generate_mipmaps()
+	var result := ImageTexture.create_from_image(image)
+	_object_surfaces[name] = result
+	return result
+
+
 ## Blend a material value using the same alpha and layer order as redress.
 ## The result is RGB data (linear, not source_color); a fully transparent
 ## overlay cannot turn the exposed skin or another item into metal.

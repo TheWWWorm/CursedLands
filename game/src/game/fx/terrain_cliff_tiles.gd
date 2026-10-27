@@ -94,19 +94,26 @@ const IDENTITIES := {
 }
 
 const Natural = preload("res://src/game/fx/terrain_transition_tiles.gd")
+const Ground = preload("res://src/game/fx/terrain_cliff_ground_tiles.gd")
+
+
+static func supported(family: int) -> bool:
+	if family in [253,254] or (family >= Ground.FIRST_FAMILY and family < Ground.FIRST_FAMILY + Ground.FAMILIES.size()): return true
+	if family <= 0 or family >= Natural.FAMILIES.size(): return false
+	var name: String = Natural.FAMILIES[family]
+	return (name.begins_with("grass /") or name.begins_with("rock /") or name.begins_with("stone /") or name.begins_with("sand /")) and not name.contains("snow")
 
 
 static func masks(image: Image) -> PackedByteArray:
 	# Reuse the full, fingerprinted corner metadata for grassy/mossy slopes.
 	# Projecting an entire painted transition from the side would move its
 	# material boundary, so only uniform natural families enter this pass.
-	var corners := Natural.corners(image)
+	var corners := blend_corners(image)
 	if not corners.is_empty():
 		var result := PackedByteArray(); result.resize(64)
 		for slot in 64:
 			var family: int = corners[slot * 4]
-			var name: String = Natural.FAMILIES[family] if family < Natural.FAMILIES.size() else ""
-			if not (name.begins_with("grass /") or name.begins_with("rock /") or name.begins_with("stone /")) or name.contains("snow"): continue
+			if not supported(family): continue
 			if corners.slice(slot * 4, slot * 4 + 4).count(family) == 4: result[slot] = 1
 		return result
 	if image==null or image.get_size()!=Vector2i(512,512): return PackedByteArray()
@@ -136,4 +143,6 @@ static func blend_corners(image: Image) -> PackedByteArray:
 	pixels.clear_mipmaps(); pixels.convert(Image.FORMAT_RGBA8)
 	var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(pixels.get_data())
 	var key := digest.finish().hex_encode()
-	return String(CAVE_CORNERS[key]).hex_decode() if CAVE_CORNERS.has(key) else Natural.corners(image)
+	if CAVE_CORNERS.has(key): return String(CAVE_CORNERS[key]).hex_decode()
+	if Ground.IDENTITIES.has(key): return String(Ground.IDENTITIES[key]).hex_decode()
+	return Natural.corners(image)

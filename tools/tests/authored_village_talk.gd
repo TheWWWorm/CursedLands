@@ -15,8 +15,11 @@ var other: GameUnit
 
 class ProbeSession extends Session:
 	var events: Array[Dictionary] = []
+	var topic_fixtures := {}
 	func broadcast(event: Dictionary) -> void: events.append(event.duplicate(true))
 	func sync_state() -> void: pass
+	func quest_text(key: String) -> String:
+		return String(topic_fixtures[key]) if topic_fixtures.has(key) else super.quest_text(key)
 
 class ProbeNav extends NavGrid:
 	var route_open := false
@@ -170,12 +173,19 @@ func _ready() -> void:
 	# The completed base rescue has the same authored display constraint,
 	# but its own chapter and exact-topic admission requirements.
 	var haburu := npc
+	# This controlled dispatch test switches to the base campaign below, but
+	# runs with LiA archives. Supply those base topic titles at the same text
+	# boundary used by map-local briefings; play_named remains the probe above.
+	for key: String in [AuthoredTalk.NALO_TOPIC, AuthoredTalk.NALO_ENTRY_TOPIC,
+			AuthoredTalk.CAPTIVE_LEADER_TOPIC, AuthoredTalk.CAPTIVE_LIZARD_TOPIC, AuthoredTalk.CAPTIVE_ESCAPE_TOPIC]:
+		s.topic_fixtures["briefing " + key.get_slice(".",2)]="Controlled conversation\n"
 	s.state.campaign_id=CampaignProfile.ORIGINAL; s.zone_id="bz13h"
 	s.state.current_party="HeroAlone"; s.state.set_var(0,"q.gz15h.q61h",2)
 	w.zone={"id":"bz13h","type":"brief","cage":true}; w.levers={42999:{"state":1}}
 	heroes[0].pos=Vector2(61,59.95)
 	npc=add_actor(ScriptVM.name_id("Nalo"),-1,AuthoredTalk.NALO_DISPLAY_POSITION,"Nalo")
 	s.state.set_var(0,AuthoredTalk.NALO_TOPIC,1)
+	check(Briefings.visible_for(s,npc).size()==1,"base rescue fixture has a visible offered topic under LiA test data")
 	check(fallback(),"completed rescue admits original Nalo staging")
 	check(not AuthoredTalk.original_stage(s,heroes[0],npc,0,"b.Nalo.Kr60"),"another Nalo topic cannot use rescue staging")
 	s.state.current_party="Pretty"; check(not fallback(),"Nalo's active player party cannot use return staging"); s.state.current_party="HeroAlone"
@@ -221,6 +231,7 @@ func _ready() -> void:
 	heroes[0].pos=Vector2(74.75,86.25)
 	npc=add_actor(ScriptVM.name_id("HWLeader"),-1,AuthoredTalk.CAPTIVE_LEADER_POSITION,"HWLeader")
 	s.state.set_var(0,AuthoredTalk.CAPTIVE_LEADER_TOPIC,1)
+	check(Briefings.visible_for(s,npc).size()==1,"base captive fixture has a visible offered topic under LiA test data")
 	check(fallback(),"offered captive commander topic admits disconnected original staging")
 	nav.partial_route=true
 	check(fallback(),"partial route inside the pen cannot masquerade as a reachable conversation")

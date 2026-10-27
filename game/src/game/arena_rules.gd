@@ -139,6 +139,16 @@ static func prototype(family: int, rank: int) -> String:
 	return FAMILIES[family].forms[rank]
 
 
+## Underlords survivor damage: floor(1 + (tier + 2 * zero-based rank) / 3).
+## Summons and neutral creatures have no recruit family and contribute zero.
+static func player_damage(placement: Dictionary) -> int:
+	var family := int(placement.get("family", -1))
+	var rank := int(placement.get("rank", 0))
+	if placement.get("echo", false) or family < 0 or family >= FAMILIES.size() or rank < 0 or rank > 2:
+		return 0
+	return 1 + (int(FAMILIES[family].tier) + 2 * rank) / 3
+
+
 ## Shop copies a creature of this rank holds (3 per merge).
 static func rank_copies(family: int, rank: int) -> int:
 	var copies := 1

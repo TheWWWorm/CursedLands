@@ -1,7 +1,7 @@
 {
   "sdk_revision": "f12037fa8e97ebc08e9e3edfd2de528ed1772a4b",
   "sources": {
-    "path_trace.hlsl": "27a34793420c6910db3f27d1c7875881f4b02f1f4916724fd31d1beac5c2c070",
+    "path_trace.hlsl": "0a739b3f608b42a65ead4415064c72f5df862cce93f2a049b59a55742439bf2e",
     "path_trace_rtxdi.hlsli": "64b59f254e5f9e481147c10e8e64f74da9db4d05037b12bc7481aa675a8f8f81",
     "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
     "builder": "a2a6fc866f9ab9c968439e50819e718b051b3772472db4700c4b3df083ca7ab8",
@@ -26,6 +26,6 @@
     "path_trace_raygen_rtxdi_sharc_deep_no_emitters.spv": "2896aeb9b72d38ffd54b022d5c8fe997ba0a373271ba4fa84b6d49e5058aec03"
   },
   "notice_sha256": "d0ac5786402aeaacd7dc28cd3efb9f3e7482ab80aa8678f099c12421d529b8f9",
-  "compiler_sha256": "aa7965b3763d9c710baaa5a28cedcc633449962a75d1391d161a85304a41b3e2",
-  "compiler": "dxcompiler.dll: 1.9(5512-01b62ad4)(1.9.2609.5) - 1.9.2609.5 (01b62ad47)"
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)"
 }

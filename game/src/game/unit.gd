@@ -4392,9 +4392,14 @@ func _update_pose(movement_start := true, committing_action := false) -> bool:
 	var old := model.pose_state
 	model.pose_state = st
 	model.pose_mod = md
-	if st != old and action == "idle":
+	var recovering_action := committing_action and not action in _STEADY and world != null and world.authority
+	if st != old and (action == "idle" or recovering_action):
 		var l := model.cross(old, st, "idle")
 		if l > 0.0:
+			# A finished hit/cast need not have received an idle tick before
+			# the attack order resumes. Its standing transition still owns the
+			# figure; expose idle so replicas cross before the later strike.
+			action = "idle"
 			if world and world.authority:
 				_anim_lock = maxf(_anim_lock, l)
 			return true

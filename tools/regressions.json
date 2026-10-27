@@ -2855,6 +2855,382 @@
       ],
       "min_checks": 57,
       "timeout": 420
+    },
+    {
+      "id": "prone_attack_recovery",
+      "script": "tools/tests/prone_attack_recovery.gd",
+      "summary": "PRONE_ATTACK_RECOVERY",
+      "contract": "Prone/kneeling heroes play their standing transition after a completed hit or cast before targeted and direct attacks, on authority and replica.",
+      "issues": [
+        118
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 148,
+      "timeout": 120
+    },
+    {
+      "id": "foothills_actor_clock",
+      "script": "tools/tests/foothills_actor_clock.gd",
+      "summary": "FOOTHILLS_ACTOR_CLOCK",
+      "contract": "Actual Foothills mana recovery and Eagle Sight countdown follow normal/accelerated solo clock through repeated loads.",
+      "issues": [
+        119
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 24,
+      "timeout": 420
+    },
+    {
+      "id": "foothills_actor_clock_rendered",
+      "script": "tools/tests/foothills_actor_clock.gd",
+      "summary": "FOOTHILLS_ACTOR_CLOCK",
+      "contract": "Actual Foothills mana recovery and Eagle Sight countdown follow normal/accelerated solo clock through repeated loads.",
+      "issues": [
+        119
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 24,
+      "timeout": 420
+    },
+    {
+      "id": "prone_attack_recovery_rendered",
+      "script": "tools/tests/prone_attack_recovery.gd",
+      "summary": "PRONE_ATTACK_RECOVERY",
+      "contract": "Prone/kneeling heroes play their standing transition after a completed hit or cast before targeted and direct attacks, on authority and replica.",
+      "issues": [
+        118
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 148,
+      "timeout": 120
+    },
+    {
+      "id": "arena_round_damage",
+      "script": "tools/tests/arena_round_damage.gd",
+      "summary": "ARENA_ROUND_DAMAGE",
+      "contract": "Real survivor damage and round settlement follow the requested Underlords tier/star table.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 40,
+      "timeout": 120
+    },
+    {
+      "id": "arena_odalisque",
+      "script": "tools/tests/arena_odalisque.gd",
+      "summary": "ARENA_ODALISQUE",
+      "contract": "The original Odalisque is a localized selectable, saved commander with authored expression textures.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 13,
+      "timeout": 120
+    },
+    {
+      "id": "unavailable_graphics_ui",
+      "script": "tools/tests/unavailable_graphics_ui.gd",
+      "summary": "UNAVAILABLE_GRAPHICS_UI",
+      "contract": "Saved unsupported graphics requests display inactive fallback values with recovery and localized explanations at 720p, 1440p and 4K.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 73,
+      "timeout": 180
+    },
+    {
+      "id": "path_trace_figure_continuity",
+      "script": "tools/tests/path_trace_figure_continuity.gd",
+      "summary": "PT_FIGURE_CONTINUITY",
+      "contract": "Highlight keeps traced material response; strength, weakness and expiry rebind all live actor parts before the rebuilt snapshot arrives.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 42
+    },
+    {
+      "id": "fsr_screen",
+      "script": "tools/tests/fsr_screen.gd",
+      "summary": "FSR_SCREEN",
+      "contract": "Retained graphics state and recoverable truthful controls.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 300,
+      "rendering_method": "gl_compatibility"
+    },
+    {
+      "id": "arena_tournament",
+      "script": "tools/tests/arena_tournament.gd",
+      "summary": "ARENA_TOURNAMENT",
+      "contract": "Full native tournament, persistence, elimination, creep and player board resolution.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 90,
+      "timeout": 300
+    },
+    {
+      "id": "path_trace_figure_live",
+      "script": "tools/tests/path_trace_figure_live.gd",
+      "summary": "PT_FIGURE_LIVE",
+      "contract": "Native GPU PT retains shading under highlight and the first frame of body spells.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 8,
+      "timeout": 240
+    },
+    {
+      "id": "chest_surface_material",
+      "script": "tools/tests/chest_surface_material.gd",
+      "summary": "CHEST_SURFACE_MATERIAL",
+      "contract": "Original mixed chest atlas assigns metal only to identified lid/rivet/frame UVs and forwards the mask to open/closed PT geometry.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 15
+    },
+    {
+      "id": "arena_odalisque_ui",
+      "script": "tools/tests/arena_odalisque_ui.gd",
+      "summary": "ARENA_ODALISQUE_UI",
+      "contract": "Odalisque selection, native face reactions and crisp layout at 720p, 1440p and 4K in EN/RU/DE. Updated round damage guide wraps in every language and resolution.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 145,
+      "timeout": 480
+    },
+    {
+      "id": "arena_portrait_feedback_ui",
+      "script": "tools/tests/arena_portrait_feedback_ui.gd",
+      "summary": "ARENA_COMMANDER_UI",
+      "contract": "Existing commander gallery, selection, scouting, evolution, victory and loss portrait feedback.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 70,
+      "timeout": 300
+    },
+    {
+      "id": "safe_zone_appearance",
+      "script": "tools/tests/safe_zone_appearance.gd",
+      "summary": "SAFE_ZONE_APPEARANCE",
+      "contract": "Hub presentation retains actual equipment, armed guards, companions and inventory previews.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 11,
+      "timeout": 180
+    },
+    {
+      "id": "chest_surface_live",
+      "script": "tools/tests/chest_surface_live.gd",
+      "summary": "CHEST_SURFACE_LIVE",
+      "contract": "Native raster/PT visual evidence for the actual open and closed Hadagan chest with the shared material atlas.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 5,
+      "timeout": 240
+    },
+    {
+      "id": "first_person_models",
+      "script": "tools/tests/first_person_models.gd",
+      "summary": "FIRST_PERSON_MODELS",
+      "contract": "Existing PT topology, visibility and material regression coverage.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 10,
+      "timeout": 240
+    },
+    {
+      "id": "path_trace_surface_maps",
+      "script": "tools/tests/path_trace_surface_maps.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Existing PT topology, visibility and material regression coverage.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 16,
+      "timeout": 240
+    },
+    {
+      "id": "rtx_runtime_failure",
+      "script": "tools/tests/rtx_runtime_failure.gd",
+      "summary": "RTX_RUNTIME_FAILURE",
+      "contract": "Reported FG SDK failure is identified separately from unsupported hardware while working DLSS remains available.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 6
+    },
+    {
+      "id": "exhaustion_voice_queue",
+      "script": "tools/tests/exhaustion_voice_queue.gd",
+      "summary": "EXHAUSTION_VOICE_QUEUE",
+      "contract": "Repeated exhaustion events retain at most one active or waiting voice line per unit without dropping story or injury speech.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 11
+    },
+    {
+      "id": "coop_difficulty_display",
+      "script": "tools/tests/coop_difficulty_display.gd",
+      "summary": "COOP_DIFFICULTY_DISPLAY",
+      "contract": "Real ENet peers report the effective Normal network difficulty in EN/RU/DE while preserving solo preferences.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 21
+    },
+    {
+      "id": "path_trace_terrain_horizon",
+      "script": "tools/tests/path_trace_terrain_horizon.gd",
+      "summary": "TERRAIN_HORIZON",
+      "contract": "Native PT keeps upward authored terrain normals and sunlight continuous across the facet hemisphere, with and without cliff projection.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 25
+    },
+    {
+      "id": "empty_dialogue_topics_base",
+      "script": "tools/tests/empty_dialogue_topics.gd",
+      "summary": "EMPTY_DIALOGUE_TOPICS",
+      "contract": "Missing legacy briefing offers do not create blank topic menus or complete story variables; real authored topics remain accessible.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 9
+    },
+    {
+      "id": "empty_dialogue_topics_astral",
+      "script": "tools/tests/empty_dialogue_topics.gd",
+      "summary": "EMPTY_DIALOGUE_TOPICS",
+      "contract": "Missing legacy briefing offers do not create blank topic menus or complete story variables; real authored topics remain accessible.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 9
+    },
+    {
+      "id": "terrain_desert_cliffs",
+      "script": "tools/tests/terrain_desert_cliffs.gd",
+      "summary": "DESERT_CLIFFS",
+      "contract": "Authored Suslanger sand, soil and rubble cliffs receive side projection while forbidden ground and modified art remain neutral.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 14
+    },
+    {
+      "id": "authored_village_talk",
+      "script": "tools/tests/authored_village_talk.gd",
+      "summary": "LIA_HABURU_GUARDS",
+      "contract": "Host command/Briefings boundary checks with a controlled static route. Real bz23k geometry, original source and save/reload live in lia_haburu_audit.gd.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 90,
+      "timeout": 240
+    },
+    {
+      "id": "dialogue_highlights",
+      "script": "tools/tests/dialogue_highlights.gd",
+      "summary": "DIALOGUE_HIGHLIGHTS",
+      "contract": "Real authored village actors on ENet. Prepare topic availability without advancing unrelated quests, then exercise actual dialogue UI and completion.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 42,
+      "timeout": 360
+    },
+    {
+      "id": "mod_profiles",
+      "script": "tools/tests/mod_profiles.gd",
+      "summary": "MOD_PROFILES",
+      "contract": "Profile lifecycle, package conflicts, saves, numeric patches and local cosmetic signatures",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--mod-tests"
+      ],
+      "min_checks": 87,
+      "timeout": 180
+    },
+    {
+      "id": "stamina_ack",
+      "script": "tools/tests/stamina_ack.gd",
+      "summary": "RESULT",
+      "contract": "Original exhaustion acknowledgement fires once at zero stamina and remains available after recovery.",
+      "issues": [
+        104
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 5
+    },
+    {
+      "id": "terrain_desert_live",
+      "script": "tools/tests/terrain_desert_live.gd",
+      "summary": "DESERT_LIVE",
+      "contract": "Actual Suslanger dry-ground cliffs regain vertical texture detail in raster and retain native PT without changing original terrain records.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 10,
+      "timeout": 360
     }
   ]
 }

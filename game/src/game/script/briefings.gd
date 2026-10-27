@@ -56,10 +56,9 @@ func tick() -> void:
 ## Picking one: "goodbye" closes, "constr<N>" sets GS var
 ## constr.current = N and opens the camp screen with that trader, the
 ## variable staying 1; anything else plays the conversation.
-## A conversation without a "briefing <id>" text (bz8k / bz10k / bz11k
-## b.merc5.n5_2, n5_10, merc6 the same) is still listed: leaves
-## the title empty when finds no text, so the row is the topic
-## prefix alone (empty in the shipped texts), a blank row that can be picked.
+## Original archives also contain legacy offers without briefing text (e.g.
+## b.merc5.n5_2 and LiA's b.merc10.n11_10). Keep those script variables, but
+## omit their invisible rows rather than opening a menu containing only Goodbye.
 ## 607320 scans a temporary copy of the raw GS hash (460ee0), sorted only
 ## online by byte _stricmp. Old saves can only reconstruct their discarded
 ## spelling/insertion order from the dictionary they still contain.
@@ -195,7 +194,20 @@ func available(npc: String) -> Array:
 ## (ScriptVM.name_id) — usually the unit's own name, but e.g. "OrcC" is the
 ## unit named Shaivar.
 func available_for(u: GameUnit, player := 0) -> Array:
-	return preload("res://src/game/script/story_astral_fortunes.gd").paid_entries(vm, pending_for(vm.session.state, u, player), player)
+	return preload("res://src/game/script/story_astral_fortunes.gd").paid_entries(vm, visible_for(vm.session, u, player), player)
+
+
+## Presentation and input use the same text availability on host and guests.
+## Raw pending_for remains the script/save view: hiding a missing resource
+## must never grant its rewards or report a briefing completion.
+static func visible_for(session: Session, u: GameUnit, player := 0) -> Array:
+	var entries := pending_for(session.state, u, player)
+	return entries.filter(func(e):
+		var id := String(e[1])
+		var key := "briefing " + ("constr" if id.to_lower().begins_with("constr") else id)
+		var text := GameData.text(key)
+		if text.is_empty(): text = session.quest_text(key)
+		return not text.get_slice("\n", 0).strip_edges().is_empty())
 
 
 ## The same from the synced state (clients use it for the village click).

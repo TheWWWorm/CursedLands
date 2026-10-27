@@ -160,7 +160,12 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,mat4 trace_project
         bool parallel=abs(trace_projection[0][3])+abs(trace_projection[1][3])+abs(trace_projection[2][3])<0.001;
         vec3 view=parallel?vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]):normalize(ei_rt_eye-world);
         if(dot(plane,view)<0.0)plane=-plane;
+#ifdef EI_TERRAIN_LIGHT
+        // Match the tracer's continuous terrain hemisphere correction.
+        normal=normalize(normal+plane*max(0.05-dot(normal,plane),0.0));
+#else
         if(dot(normal,plane)<0.0)normal=-normal;
+#endif
         normal=normalize(normal+view*max(0.05-dot(normal,view),0.0));
     }
     float footprint=max(length(dx)/max(length(dFdx(uv)*vec2(size)),0.001),
@@ -302,7 +307,14 @@ const CAPTURE := """
                 vec3 reflected=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb)*max(1.0-ei_k,0.0);
 #endif
 #endif
-                EMISSION+=(reflected+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
+                vec3 authored_emission=ei_e;
+#ifdef EI_UNIT_CUTOUT
+                // Selection is a presentation cue, not a luminous body.
+                // Preserve traced shadows, metals and indirect light under it.
+                reflected*=1.0+0.35*unit_highlight;
+                authored_emission=max(unit_emission,ei_material_emissive);
+#endif
+                EMISSION+=(reflected+ei_lin(ei_srgb(ALBEDO)*authored_emission))*ei_pt_blend;
             } else {
                 ei_rt_valid=1.0;ei_rt_visibility0=a;ei_rt_visibility1=b;
                 vec3 ambient=mix(ei_lin(ei_ambient),indirect,ei_rt_state.z);

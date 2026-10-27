@@ -794,6 +794,12 @@ func _ack_queue(u: GameUnit, code: int, wav: String, order_code := -1) -> void:
 		if bool(e.block) and int(e.handle) >= 0 and not mixer.playing(int(e.handle)):
 			u.blocked = false
 	q = q.filter(func(e): return int(e.handle) < 0 or mixer.playing(int(e.handle)))
+	# Running can exhaust newly regenerated stamina again before the voice
+	# finishes. This is one status reminder, even if a different recording or
+	# a crouched refusal was chosen. Never accumulate it behind story speech.
+	if order_code == EIAcks.OUT_OF_STAMINA and q.any(func(e): return int(e.get("order_code", e.code)) == EIAcks.OUT_OF_STAMINA):
+		_ack_q[u.uid] = q
+		return
 	if not q.is_empty() and not (order_code in ACK_URGENT):
 		_ack_q[u.uid] = q
 		if SoundMixer.trace or trace_acks:

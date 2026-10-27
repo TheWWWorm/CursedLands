@@ -37,5 +37,7 @@ static func fg_reason(selection: int, values: Dictionary) -> String:
 
 static func hint(values: Dictionary) -> String:
 	if RtxGraphics.needs_restart(values): return RtxGraphics.NEED_RESTART
+	var fg := fg_reason(fg_selection(values), values)
+	if not fg.is_empty(): return fg
 	if RtxGraphics.selected(values): return RtxGraphics.reason(RtxGraphics.UPSCALING,values)
 	return FsrGraphics.screen_hint(FsrGraphics.facts())

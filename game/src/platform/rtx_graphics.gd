@@ -20,6 +20,8 @@ const NEED_RESTART := "Apply and restart to switch graphics technologies."
 const NEED_API := "Requires Windows and the Direct3D 12 Forward+ renderer."
 const NEED_SR := "DLSS is unavailable on this GPU or driver, or its runtime could not be loaded."
 const NEED_FG := "Frame generation is unavailable. Check GPU compatibility, the driver and Windows GPU scheduling."
+const FAILED_SR := "DLSS stopped after a runtime error. Restart the game to retry."
+const FAILED_FG := "Frame generation stopped after a runtime error. Restart the game to retry."
 const ENABLE_SR := "Select DLSS or DLAA first."
 
 var _previous_fg := false
@@ -35,7 +37,7 @@ static func facts() -> Dictionary:
 		"engine": native != null and native.has_method("get_status") and ClassDB.class_has_integer_constant("Viewport", "SCALING_3D_MODE_DLSS"),
 		"launch": false,
 		"api": DisplayServer.get_name() != "headless" and OS.get_name() == "Windows" and RenderingServer.get_current_rendering_method() == "forward_plus" and RenderingServer.get_current_rendering_driver_name() == "d3d12",
-		"sr": false, "fg": false, "reflex": false, "rr": false,
+		"sr": false, "fg": false, "reflex": false, "rr": false, "runtime_error": false,
 	}
 	if result.engine:
 		var status: Dictionary = native.call("get_status")
@@ -45,18 +47,20 @@ static func facts() -> Dictionary:
 		result.rr = status.get("rr_supported", false) and ClassDB.class_has_method("RenderSceneBuffersRD", "set_dlss_ray_reconstruction") and ClassDB.class_has_method("RenderSceneDataRD", "get_ray_projection")
 		result.fg = status.get("fg_supported", false)
 		result.reflex = status.get("reflex_supported", false)
+		result.runtime_error = status.get("initialized", false) and int(status.get("last_error", 0)) != 0
 	return result
 
 static func reason_for(name: String, info: Dictionary, sr: int) -> String:
 	if not info.get("engine", false): return UNAVAILABLE
 	if not info.get("api", false): return NEED_API
 	if not info.get("launch", false): return NEED_RESTART
-	if not info.get("sr", false): return NEED_SR
+	if not info.get("sr", false): return FAILED_SR if info.get("runtime_error", false) else NEED_SR
 	if name == RAY_RECONSTRUCTION:
 		if not info.get("rr",false):return NEED_RR
 		if sr<=0:return ENABLE_SR
 	if name == FRAME_GENERATION:
-		if not info.get("fg", false) or not info.get("reflex", false): return NEED_FG
+		if not info.get("fg", false) or not info.get("reflex", false):
+			return FAILED_FG if info.get("runtime_error", false) else NEED_FG
 		if sr <= 0: return ENABLE_SR
 	return ""
 

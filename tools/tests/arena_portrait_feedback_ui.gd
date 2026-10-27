@@ -19,7 +19,7 @@ func _ready() -> void:
 	screen = ReactionScreen.new();add_child(screen)
 	await frames(16)
 	while ShaderCompilationScreen.active(): await frames(2)
-	check(screen._character_picker.item_count==10,"ten native protagonist/companion choices")
+	check(screen._character_picker.item_count==11,"eleven native protagonist/companion choices including the Odalisque")
 	await shot("commander-"+RemakeText.lang+"-choose")
 	await gallery()
 	screen._character_picker.select(3);screen._character_picker.item_selected.emit(3)
@@ -76,7 +76,7 @@ func _ready() -> void:
 	await match_reactions()
 	screen.queue_free();screen=null;await frames(8)
 	check(errors.messages.is_empty(),"no runtime errors: "+JSON.stringify(errors.messages.slice(0,4)))
-	print("ARENA_COMMANDER_UI ",checks," failures=",failures)
+	print("ARENA_COMMANDER_UI ",checks," checks ",failures.size()," failures")
 	OS.remove_logger(errors);TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)
 
 func check_layout() -> void:

@@ -254,7 +254,7 @@ func _bright_of(base: Material) -> Material:
 	if base is EIUnitModel.LitMaterial:
 		if not _bright.has(base):
 			var lit := base.duplicate() as EIUnitModel.LitMaterial
-			lit.set_shader_parameter("unit_emission", Vector3.ONE * WHITE)
+			lit.set_shader_parameter("unit_highlight", WHITE)
 			_bright[base] = lit
 		var lit: EIUnitModel.LitMaterial = _bright[base]
 		if lit.albedo_texture != base.albedo_texture:
@@ -354,7 +354,7 @@ func _refresh_talk_units() -> void:
 		if not owners.has(String(u.info.get("name", "")).to_lower()) and not ids.has(u.uid): continue
 		if not _talk_carrier(u): continue
 		var pending: Array[String] = []
-		for entry: Array in Briefings.pending_for(game.session.state, u, game.session.my_index):
+		for entry: Array in Briefings.visible_for(game.session, u, game.session.my_index):
 			if not String(entry[1]).to_lower().begins_with("constr"):
 				pending.append("b.%s.%s" % entry)
 		_talk_keys[u] = pending

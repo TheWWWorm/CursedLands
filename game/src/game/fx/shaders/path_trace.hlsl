@@ -1327,7 +1327,14 @@ void main(inout Surface result,Attributes attributes) {
     // Interpolated normals can point through a steep terrain facet. Offset
     // rays along the actual triangle and keep the shading hemisphere outside
     // it, rather than flipping the smooth normal beneath the triangle.
-    if(dot(result.normal,result.geometric_normal)<0.0)result.normal=-result.normal;
+    if((material.y&2u)!=0u) {
+        // MPR lighting normals can straddle a steep facet's tangent plane.
+        // Negating one turns the entire upward lighting field downward and
+        // creates black triangular wedges. Project terrain continuously into
+        // the face hemisphere; two-sided objects retain their facing rule.
+        result.normal=normalize(result.normal+result.geometric_normal*
+            max(0.05-dot(result.normal,result.geometric_normal),0.0));
+    } else if(dot(result.normal,result.geometric_normal)<0.0)result.normal=-result.normal;
     // Smooth hill/branch normals can cross the view horizon while the actual
     // facet stays visible. Replacing them with the face normal at zero causes
     // a large lighting jump during a tiny camera turn. Project continuously

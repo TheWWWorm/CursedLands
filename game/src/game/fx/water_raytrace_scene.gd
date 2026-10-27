@@ -27,6 +27,7 @@ var _groups := {}
 var _view_models := {}
 var _view_offsets := {}
 var _morph_geometries: Array[int] = []
+var _replacement_poses := {}
 var _terrain: EITerrain
 var _plane := 0.0
 var _cursor := 0
@@ -419,6 +420,9 @@ func _pack_mesh(mesh: MeshInstance3D, source_mesh: Mesh) -> void:
 		var dielectric: PackedFloat32Array=material.get_meta("pt_dielectric",PackedFloat32Array()) if material else PackedFloat32Array()
 		if not dielectric.is_empty() and not path_transmission:continue
 		var key := "%s:%s:%s"%[source_mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
+		var owner: Node = _mesh_roots[mesh.get_instance_id()].get_ref() if _mesh_roots.has(mesh.get_instance_id()) else null
+		# A spell can reshape one actor independently of identical neighbours.
+		if owner is GameUnit: key += ":unit:" + str(owner.get_instance_id())
 		var morph: bool = source_mesh is ArrayMesh and source_mesh.get_blend_shape_count() > 0
 		if morph: key += ":"+str(mesh.get_instance_id())
 		var geometry: int = _mesh_cache.get(key,-1)
@@ -444,7 +448,8 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 	if instances.size() >= MAX_INSTANCES: failed = true; return
 	var root: Node3D = _mesh_roots[node.get_instance_id()].get_ref() if _mesh_roots.has(node.get_instance_id()) else node
 	var key := root.get_instance_id()
-	if not _groups.has(key): _groups[key] = {"node":weakref(root),"indices":[],"visible":-1}
+	if not _groups.has(key): _groups[key] = {"node":weakref(root),"indices":[],"visible":-1,
+		"model":weakref(root.model) if root is GameUnit and root.model else null}
 	_groups[key].indices.append(instances.size())
 	if root is GameUnit and is_instance_valid(root.model) and root.model.is_ancestor_of(node):
 		var model_key: int = root.model.get_instance_id()
@@ -452,6 +457,56 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 		_view_models[model_key].indices.append(instances.size())
 	instances.append({"geometry":geometry,"node":weakref(node),"mesh":source_mesh if source_mesh else node.mesh if node is MeshInstance3D else null,
 		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
+	if root is GameUnit and is_instance_valid(root.model) and root.model.is_ancestor_of(node):
+		var entry: Dictionary = instances.back()
+		entry.model_path = root.model.get_path_to(node)
+		entry.variant = _mesh_variants(node).find(entry.mesh)
+		entry.material = node.get_active_material(surface)
+
+
+## Body spells keep topology and UVs. Rebind those parts and submit their new
+## positions as pose updates immediately, while a complete snapshot is built.
+## Equipment/asset changes with a different topology still use normal rebuilds.
+func _replace_models() -> void:
+	for group: Dictionary in _groups.values():
+		var unit: Node = group.node.get_ref()
+		if not unit is GameUnit or not is_instance_valid(unit.model): continue
+		if group.model != null and group.model.get_ref() == unit.model: continue
+		group.model = weakref(unit.model)
+		for index: int in group.indices:
+			var entry: Dictionary = instances[index]
+			if not entry.has("model_path"): continue
+			var node := unit.model.get_node_or_null(entry.model_path) as MeshInstance3D
+			if node == null or node.mesh == null: continue
+			var variants := _mesh_variants(node)
+			if entry.variant < 0 or entry.variant >= variants.size(): continue
+			var mesh: Mesh = variants[entry.variant]
+			if entry.surface >= mesh.get_surface_count(): continue
+			if _material_version(entry.material) != _material_version(node.get_active_material(entry.surface)): continue
+			var old: Dictionary = _sources.surface(entry.mesh,entry.surface)
+			var next: Dictionary = _sources.surface(mesh,entry.surface)
+			var a: Array = old.arrays; var b: Array = next.arrays
+			if a[Mesh.ARRAY_INDEX] != b[Mesh.ARRAY_INDEX] or a[Mesh.ARRAY_TEX_UV] != b[Mesh.ARRAY_TEX_UV] \
+					or a[Mesh.ARRAY_VERTEX].size() != b[Mesh.ARRAY_VERTEX].size(): continue
+			entry.node = weakref(node); entry.mesh = mesh
+			_watching = false
+			var geo: Dictionary = geometries[entry.geometry]
+			if geo.has("morph"):
+				geo.morph = {"node":weakref(node),"mesh":mesh,"surface":entry.surface,
+					"arrays":b,"shapes":next.shapes,"weights":[]}
+			for v in geo.indices.size():
+				var source: int = geo.indices[v]
+				var p: Vector3 = b[Mesh.ARRAY_VERTEX][source]
+				var n: Vector3 = b[Mesh.ARRAY_NORMAL][source].normalized()
+				var at: int = (geo.offset+v)*16
+				vertices[at]=p.x; vertices[at+1]=p.y; vertices[at+2]=p.z
+				vertices[at+4]=n.x; vertices[at+5]=n.y; vertices[at+6]=n.z
+			_replacement_poses[entry.geometry] = {"geometry":entry.geometry,
+				"data":vertices.slice(geo.offset*16,(geo.offset+geo.count)*16).to_byte_array()}
+		# First-person offsets must follow the replacement's current rig too.
+		for key in _view_models.keys():
+			if _view_models[key].indices == group.indices: _view_models.erase(key)
+		_view_models[unit.model.get_instance_id()] = {"model":weakref(unit.model),"indices":group.indices.duplicate()}
 
 func history_matches(previous: RefCounted) -> PackedInt32Array:
 	var matches := PackedInt32Array();matches.resize(instances.size());matches.fill(-1)
@@ -681,7 +736,9 @@ func _tracked_instance_updates(force: bool) -> Array:
 	return transforms
 
 func updates(force := false) -> Dictionary:
-	var transforms := _instance_updates(force); var poses := []
+	_replace_models()
+	var transforms := _instance_updates(force); var poses := _replacement_poses
+	_replacement_poses = {}
 	for i in _morph_geometries:
 		var geo: Dictionary = geometries[i]
 		var morph: Dictionary = geo.morph; var node: MeshInstance3D = morph.node.get_ref()
@@ -707,5 +764,5 @@ func updates(force := false) -> Dictionary:
 			var at: int = geo.indices[v]; var nn := n[at].normalized()
 			data[v*16]=p[at].x; data[v*16+1]=p[at].y; data[v*16+2]=p[at].z
 			data[v*16+4]=nn.x; data[v*16+5]=nn.y; data[v*16+6]=nn.z
-		poses.append({"geometry":i,"data":data.to_byte_array()})
-	return {"instances":transforms,"poses":poses}
+		poses[i] = {"geometry":i,"data":data.to_byte_array()}
+	return {"instances":transforms,"poses":poses.values()}

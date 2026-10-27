@@ -1085,7 +1085,7 @@ func _click(p: Vector2, add: bool) -> void:
 
 func can_talk_to(u: GameUnit) -> bool:
 	return is_instance_valid(u) and not u.dead and session.shop_available() and u.village_talk_ready() \
-		and not Briefings.pending_for(session.state, u, session.my_index).is_empty()
+		and not Briefings.visible_for(session, u, session.my_index).is_empty()
 
 
 ## The click rules on a known target: the mouse passes the unit under the

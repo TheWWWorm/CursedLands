@@ -4,12 +4,10 @@ extends RefCounted
 ## Rows contain four donor codes + 1 (NW, NE, SW, SE); zero is unsupported.
 const Natural = preload("res://src/game/fx/terrain_transition_tiles.gd")
 const Transition = preload("res://src/game/fx/terrain_transition.gd")
+const Tiles = preload("res://src/game/fx/terrain_cliff_tiles.gd")
 
 static func supported(family: int) -> bool:
-	if family in [253,254]: return true
-	if family <= 0 or family >= Natural.FAMILIES.size(): return false
-	var name: String = Natural.FAMILIES[family]
-	return (name.begins_with("rock /") or name.begins_with("stone /") or name.begins_with("grass /")) and not name.contains("snow")
+	return Tiles.supported(family)
 
 static func ground_allowed(ground: int) -> bool:
 	return ground >= 0 and ground <= 15 and not ground in [9,10,12,13,14]

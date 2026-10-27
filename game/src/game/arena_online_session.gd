@@ -428,12 +428,7 @@ func solo_packet(id: int, data: Dictionary) -> bool:
 
 func _solo_finished(player: int, winner: int) -> void:
 	var battle := game.encounter(player)
-	var survivors := [0,0]
-	for unit: GameUnit in battle.world.unit_rows():
-		if not unit.dead:
-			var placement: Dictionary=unit.get_meta("arena_placement",{})
-			if placement.get("echo", false): continue
-			survivors[int(placement.get("team",0))]+=int(placement.get("rank",0))+1
+	var survivors := battle.survivor_damage()
 	# Full final state precedes settlement, including boards not being watched.
 	var result := {"t":"solo_result","round":game.run.wave,"seat":player,
 		"winner":winner,"survivors":survivors,"time":battle.world.time,"damage":battle.damage.duplicate()}

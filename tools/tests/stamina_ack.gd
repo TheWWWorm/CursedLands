@@ -44,5 +44,5 @@ func _ready() -> void:
 	check(session.acks.count(EIAcks.OUT_OF_STAMINA) == 1, "the line is not repeated while stamina stays at 0")
 	game.queue_free(); session.queue_free()
 	await get_tree().process_frame
-	print("RESULT failures=", failures, " checks=", checks)
+	print("RESULT checks=", checks, " failures=", failures)
 	get_tree().quit(1 if failures else 0)

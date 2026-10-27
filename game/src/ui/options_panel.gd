@@ -188,6 +188,8 @@ var _preset_scale := Vector2.ZERO
 var _screen_pickers: Dictionary = {}
 const SCREEN_PICKER_ROWS := {"resolution":1,"render_scale":2,"q_aa":3,FsrGraphics.QUALITY:4,FsrGraphics.FRAME_GENERATION:5}
 var _fsr_hint := ""
+var _screen_capabilities: Array = []
+var _capability_poll := 0.0
 
 
 func _ready() -> void:
@@ -407,6 +409,7 @@ func _show_group(g: int) -> void:
 			_rows[int(o[4])].disabled = int(_values.get("gfx_water", 0)) == 0 or int(_values.get("gfx_water_reflections", 0)) != 3
 		if name in ["rt_shadows","rt_gi","q_rt_lighting","pt_mode","pt_accumulation","pt_target_fps","pt_sharc","pt_denoiser","pt_ray_reconstruction","pt_restir","pt_refraction"]:
 			var available := preload("res://src/game/fx/scene_raytrace_device.gd").supported()
+			_rows[int(o[4])].unavailable = not available and name in ["rt_shadows", "rt_gi", "pt_mode"]
 			var path_mode := int(_values.get("pt_mode",0))>0
 			_rows[int(o[4])].disabled = (not available and (name in ["q_rt_lighting","pt_accumulation","pt_target_fps","pt_sharc","pt_denoiser","pt_ray_reconstruction","pt_restir","pt_refraction"] or int(_values.get(name,0))==0)) \
 				or (name=="q_rt_lighting" and not path_mode and int(_values.get("rt_shadows",0))==0 and int(_values.get("rt_gi",0))==0) \
@@ -415,6 +418,7 @@ func _show_group(g: int) -> void:
 			if name=="pt_ray_reconstruction":
 				var why:=RtxGraphics.reason(RtxGraphics.RAY_RECONSTRUCTION,_values)
 				if not why.is_empty():
+					_rows[int(o[4])].unavailable = true
 					_rows[int(o[4])].disabled=int(_values.get(name,0))==0
 					_rows[int(o[4])].tip+="\n\n"+RemakeText.t(why)
 			if name in ["pt_target_fps","q_rt_lighting"] and RtxGraphics.rr_active(_values):_rows[int(o[4])].disabled=true
@@ -509,6 +513,7 @@ func _show_group(g: int) -> void:
 
 
 func _refresh_screen_pickers() -> void:
+	_screen_capabilities = _screen_availability()
 	_fsr_hint = RemakeText.t(TemporalGraphics.hint(_values)) if _group == SCREEN_GROUP else ""
 	for name: String in _screen_pickers:
 		var picker: OptionButton = _screen_pickers[name]
@@ -516,6 +521,10 @@ func _refresh_screen_pickers() -> void:
 		picker.clear()
 		if _group != SCREEN_GROUP: continue
 		var row: Dictionary = _rows[SCREEN_PICKER_ROWS[name]]
+		if name == FsrGraphics.FRAME_GENERATION:
+			row.disabled = TemporalGraphics.fg_selection(_values) == 0 and [1,2,3].all(func(value): return not TemporalGraphics.fg_reason(value,_values).is_empty())
+		elif name == FsrGraphics.QUALITY:
+			row.disabled = not TemporalGraphics.quality_reason(_values).is_empty()
 		picker.disabled = row.get("disabled", false)
 		picker.tooltip_text = row.tip
 		for i in row.choices.size():
@@ -527,6 +536,12 @@ func _refresh_screen_pickers() -> void:
 			picker.set_item_disabled(i, not reason.is_empty())
 			picker.get_popup().set_item_tooltip(i, RemakeText.t(reason) if not reason.is_empty() else row.tip)
 	_sync_screen_pickers()
+
+
+func _screen_availability() -> Array:
+	return [TemporalGraphics.aa_reason(TemporalGraphics.aa_selection(_values), _values),
+		TemporalGraphics.fg_reason(TemporalGraphics.fg_selection(_values), _values),
+		RtxGraphics.facts(), FsrGraphics.facts()]
 
 
 func _set_aa_value(selection: int) -> void:
@@ -682,6 +697,8 @@ func _toggle_original_look() -> void:
 
 func _switch_text(row: Dictionary) -> String:
 	var v := int(_values.get(row.name, 0))
+	if v > 0 and row.get("unavailable", false):
+		return RemakeText.t("Off (unavailable)")
 	if row.name == "graphics_preset" and v == GfxPresets.DETECTED:
 		return RemakeText.t("Detected")
 	var choices: Array = row.get("choices", [])
@@ -949,6 +966,15 @@ func _sync_screen_pickers() -> void:
 			picker.get_popup().add_theme_constant_override("v_separation", maxi(8, roundi(8 * kv().y)))
 		picker.size = rect.size
 		picker.select(TemporalGraphics.aa_selection(_values) if name == "q_aa" else TemporalGraphics.fg_selection(_values) if name == FsrGraphics.FRAME_GENERATION else TemporalGraphics.quality_selection(_values) if name == FsrGraphics.QUALITY else int(_values.get(name, 0)))
+		var reason := ""
+		if name == "q_aa":
+			reason = TemporalGraphics.aa_reason(TemporalGraphics.aa_selection(_values), _values)
+			if not reason.is_empty():
+				picker.text = RemakeText.t("%s (fallback)") % picker.get_item_text(clampi(int(_values.get("q_aa", 0)), 0, 5))
+		elif name == FsrGraphics.FRAME_GENERATION:
+			reason = TemporalGraphics.fg_reason(TemporalGraphics.fg_selection(_values), _values)
+			if not reason.is_empty(): picker.text = RemakeText.t("Off (unavailable)")
+		picker.tooltip_text = _rows[row].tip + ("\n\n" + RemakeText.t(reason) if not reason.is_empty() else "")
 
 
 func group_font_px(g: int) -> int:
@@ -1128,6 +1154,14 @@ func _gui_input(e: InputEvent) -> void:
 ## a held arrow moves dt · speed (1) · 16 units per second.
 func _process(frame_dt: float) -> void:
 	var dt := UiTime.real(frame_dt)   # interface animations keep real time
+	if visible and _group == SCREEN_GROUP:
+		_capability_poll += dt
+		if _capability_poll >= 0.5:
+			_capability_poll = 0.0
+			# The SDK may reject a frame after this panel was opened.
+			if _screen_availability() != _screen_capabilities:
+				_refresh_screen_pickers()
+				queue_redraw()
 	if visible and _slide < 1.0:
 		_slide += dt / 0.5
 		_place_board()
