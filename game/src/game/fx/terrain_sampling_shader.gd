@@ -4,7 +4,7 @@ extends RefCounted
 ## the Adreno 650 program both expensive and visibly different from desktop.
 ## Coordinates, gradients, edge blending and the four relief taps stay intact.
 
-const CENTER := "c = ground_sample(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, traits);"
+const CENTER := "c = ground_sample_mapped(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, surface_maps && fade > 0.0, traits, surface);"
 const FADE := "float fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));"
 const RELIEF := """vec3 left = ground_sample(tile, local - step_uv, dx, dy, unused_traits);
 			vec3 right = ground_sample(tile, local + step_uv, dx, dy, unused_traits);

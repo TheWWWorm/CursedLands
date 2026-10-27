@@ -150,6 +150,70 @@ moved the same way. Deriving the maps on load: about 1 ms for this region's
 `local/validation/terrain-surface-20261027/perf/` (a first 4K run whose PT
 state switch was not yet confirmed before measuring is kept for reference).
 
+### Where the cost went, and the fused walk (28 October)
+
+A diagnostic profile (same site, 4K, RTX 3090 Ti, four alternating rounds)
+swapped one part of the raster shader at a time:
+
+| Variant | Raster GPU cost over maps off |
+| --- | --- |
+| Maps on (production) | +0.42 ms |
+| Ripples disabled | +0.39 ms |
+| Anisotropic map filtering disabled | +0.44 ms |
+| Map read from the centre tile only (no edge blend) | +0.10 ms |
+
+Ripples cost about 0.03 ms and anisotropic filtering nothing measurable.
+Most of the cost was a second walk over the neighbouring tiles near each
+tile edge: the colour and the map each resolved the same owners, rotations,
+weights and UVs separately. The path tracer did the same, and walked the
+original sample twice more inside junctions.
+
+The map texel is now read inside the colour walk from the same tile
+coordinates, with the same weights and mixes (`ground_sample_mapped` /
+`land_original_mapped` in GLSL; `original_walk` in `path_trace.hlsl`, whose
+junction path now reuses one original sample). Transition variants get the
+mapped walk by copying their `ground_sample` body with the original call
+replaced. Bodies that do not have exactly one call before the first return
+keep the previous separate read.
+
+Equivalence:
+- GPU compute (`terrain_surface_maps`): colour, traits and surface are
+  bit-identical to the separate calls over all rotations, tile interiors,
+  edges and two gradient scales, with maps on and off. A negative control
+  catches a one-weight change.
+- Rendered (`terrain_surface_live`): the sand site rendered with the old
+  separate walks and with the fused walk is byte-identical, outside the FPS
+  counter, at 1080p, 1440p and 2160p.
+- Packs before and after: raster captures identical. PT differs by at most
+  5–17/255 at a 1e-4 mean, within the old pack's own run-to-run noise (peak
+  8/255, mean 1.1e-4).
+
+A/B, packs built before and after, two alternating runs each, 4K, RTX 3090
+Ti, GPU Lab `workload=heavy`. Each value is the median of four rounds; the
+range covers the two runs:
+
+| Measure | Separate walks | Fused walk |
+| --- | --- | --- |
+| Raster, GPU cost of maps | +0.40 to 0.41 ms (8.8 to 9.1 %) | +0.09 to 0.12 ms (1.9 to 2.6 %) |
+| PT, frame cost of maps | +1.29 to 1.42 ms (6.1 to 6.8 %) | +0.55 to 0.56 ms (2.6 to 2.7 %) |
+| PT, raster pass GPU cost | +0.41 to 0.44 ms | +0.10 to 0.11 ms |
+
+Times with maps off are unchanged. Profile script and raw rows:
+`local/validation/terrain-surface-20261027/perf/fused/`.
+
+Related tests on the fused pack:
+- The 34-case suite plus `path_trace_cover_receivers` and
+  `terrain_color_reuse_compatibility`: 36/36 pass, 6,513 checks
+  (`runs/fused-suite.json`).
+- Unregistered GPU tests: `terrain_sampling`, Forward+ 96/0 and Mobile 96/0;
+  `terrain_transitions` 75/0; `terrain_junctions_shader` on Mobile 60/0,
+  covering the generic junction variant through the mapped walk.
+- The Forward+ `terrain_junctions_shader` (45 of 60 failing) and
+  `terrain_junctions` (1 of 7,515 failing) fail identically on the pack
+  before this change. Their harness still calls the pre-`3bc93406`
+  `transition_junction_sample` signature. Both tests are unregistered, and
+  the failures predate this work.
+
 ## Original-game comparison
 
 Not applicable: the original renderer has no normal or roughness maps and no

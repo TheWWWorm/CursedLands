@@ -108,6 +108,7 @@ func _ready()->void:
 			var c:=m.get_pixel(x,y);leak=maxf(leak,maxf(absf(c.r-0.5),absf(c.g-0.5)))
 	check(leak<0.01,"flat slot beside a white slot has no slope anywhere, gutter included: %.3f"%leak)
 	await rotation_reference(atlas,maps)
+	await fused_reference(atlas,maps)
 	variants()
 	GameData.options.gfx_materials=0
 	check(not TerrainSurfaceMaps.requested(),"Surface materials off keeps the established relief")
@@ -127,11 +128,22 @@ func variants()->void:
 	check(cliff.contains("painted_relief * fade * (1.0-cliff_planes.y)"),"projected cliff rock fades the derived relief")
 	var pair:=Transition.source(Cliff.source(EITerrain.WaterCaustics.source(base)))
 	var junction:=Transition.source(cliff,true)
-	for code: String in [pair,junction]:
+	var pair_only:=Transition.source(cliff,true,true)
+	for code: String in [pair,junction,pair_only]:
 		check(code.contains("#define EI_TERRAIN_TRANSITIONS") and code.contains("float surface_owned(") \
-			and code.contains("surface = ground_surface("),"transition land blends derived maps by tile ownership")
-	var shaders:={"land":base,"cliff land":cliff,"caustic cliff transitions":pair,"cliff junctions":junction,
-		"baked cliff land":cliff.replace("shader_type spatial;","shader_type spatial;\n#define EI_BAKED_TERRAIN")}
+			and code.contains("coverage = surface_coverage("),"transition land blends derived maps by tile ownership")
+		# The centre sample's single original walk also yields the map.
+		check(code.contains("vec3 ground_sample_mapped(ivec2 cell,vec2 p,vec2 dx,vec2 dy,bool mapped") \
+			and code.contains("land_original_mapped(cell,p,dx,dy,mapped,surface,") and not code.contains("// GROUND_SAMPLE_MAPPED"),
+			"transition land fuses the map into its centre owner walk")
+	check(base.contains("c = ground_sample_mapped(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, surface_maps && fade > 0.0, traits, surface);") \
+		and not base.contains("surface = ground_surface(tile"),"land samples colour and map in one walk within the relief range")
+	var early:="#define EI_TERRAIN_TRANSITIONS\n// GROUND_SAMPLE_MAPPED\nvec3 ground_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,out vec4 traits) {\n\tif (p.x<0.0) { return vec3(0.0); }\n\tvec3 original=transition_original_sample(cell,p,dx,dy,traits);\n\treturn original;\n}\n"
+	check(GroundSurfaceShader.mapped_sampler(early).contains("surface = ground_surface(cell, p, dx, dy, unused);"),
+		"a walk after an early return keeps the separate map walk")
+	var shaders:={"land":base,"cliff land":cliff,"caustic cliff transitions":pair,"cliff junctions":junction,"pair-only junctions":pair_only,
+		"baked cliff land":cliff.replace("shader_type spatial;","shader_type spatial;\n#define EI_BAKED_TERRAIN"),
+		"baked caustic cliff transitions":pair.replace("shader_type spatial;","shader_type spatial;\n#define EI_BAKED_TERRAIN")}
 	for label: String in shaders:
 		var shader:=Gfx.make_shader(shaders[label],true,true)
 		var names:=shader.get_shader_uniform_list().map(func(u:Dictionary)->String:return u.name)
@@ -196,6 +208,63 @@ void main() {
 		check(result[0]>0.7,"map slope follows painted relief at rotation %d: %.3f"%[rotation,result[0]])
 		check(absf(result[1])<0.5,"a quarter-turned map would not match at rotation %d: %.3f"%[rotation,result[1]])
 		check(result[2]>0.5 and result[2]<2.0,"map relief keeps the painted relief scale at rotation %d: %.3f"%[rotation,result[2]])
+
+## The fused centre walk (ground_sample_mapped) against the separate colour
+## (ground_sample) and map (ground_surface) walks, across tile edges where the
+## owners blend, in every quarter turn. Unmapped calls leave the map untouched.
+func fused_reference(atlas:Texture2DArray,maps:TextureLayered)->void:
+	var code:="""#version 450
+layout(local_size_x=8,local_size_y=8,local_size_z=1) in;
+layout(rgba32f,set=0,binding=0) uniform writeonly image2D result_image;
+layout(set=0,binding=1) uniform sampler2DArray atlases;
+layout(set=0,binding=2) uniform sampler2D terrain_tiles;
+layout(set=0,binding=3) uniform sampler2DArray surface_atlases;
+const float tiles_per_axis=2.0;
+const float atlas_padding=0.125;
+const float source_texel=1.0/128.0;
+const bool blend_edges=true;
+"""+GroundSurfaceShader.TILE_FUNCTIONS+GroundSurfaceShader.SURFACE_FUNCTIONS+"""
+float peak(vec4 v) { return max(max(v.x, v.y), max(v.z, v.w)); }
+void main() {
+	ivec2 at=ivec2(gl_GlobalInvocationID.xy);
+	if(any(greaterThanEqual(at,imageSize(result_image))))return;
+	ivec2 cell=ivec2(at.y/16,0);
+	vec2 p=vec2(at.x,at.y%16)/15.0*0.99999;
+	float scale=float(1+(at.x+at.y)%2*7);
+	vec2 dx=vec2(scale/1024.0,0.0),dy=vec2(0.0,scale/1024.0);
+	vec4 traits_a; vec3 colour_a=ground_sample(cell,p,dx,dy,traits_a);
+	float coverage; vec4 surface_a=ground_surface(cell,p,dx,dy,coverage);
+	vec4 traits_b; vec4 surface_b=vec4(0.0,0.0,1.0,0.0);
+	vec3 colour_b=ground_sample_mapped(cell,p,dx,dy,true,traits_b,surface_b);
+	vec4 traits_c; vec4 surface_c=vec4(0.0,0.0,1.0,0.0);
+	vec3 colour_c=ground_sample_mapped(cell,p,dx,dy,false,traits_c,surface_c);
+	imageStore(result_image,at,vec4(peak(vec4(abs(colour_a-colour_b),0.0)),peak(abs(surface_a-surface_b)),peak(abs(traits_a-traits_b)),
+		max(peak(vec4(abs(colour_a-colour_c),0.0)),max(peak(abs(surface_c-vec4(0.0,0.0,1.0,0.0))),peak(abs(traits_a-traits_c))))));
+}
+"""
+	var job:={"code":code,"atlas":atlas.get_rid(),"maps":maps.get_rid(),"image":null,"error":""}
+	RenderingServer.call_on_render_thread(_reference.bind(job));await read_done
+	check(job.error=="","fused and separate walks compile together: "+str(job.error))
+	if job.image==null:return
+	var peaks:=[0.0,0.0,0.0,0.0]
+	for y in 64:
+		for x in 16:
+			var c:Color=job.image.get_pixel(x,y)
+			for i in 4:peaks[i]=maxf(peaks[i],[c.r,c.g,c.b,c.a][i])
+	print("TERRAIN_SURFACE_FUSED ",peaks)
+	check(peaks[0]==0.0 and peaks[2]==0.0,"fused walk returns the exact colour and traits: %s"%str(peaks))
+	check(peaks[1]==0.0,"fused walk returns the exact derived map across blended tile edges: %.8f"%peaks[1])
+	check(peaks[3]==0.0,"unmapped fused walk equals ground_sample and leaves the map default: %.8f"%peaks[3])
+	# Negative control: dropping the map's edge blend must be detected.
+	var unblended:=code.replace("surface = mix(surface, side, weight.x);","surface = side;")
+	check(unblended!=code,"negative control removes the fused map's edge blend")
+	var control:={"code":unblended,"atlas":atlas.get_rid(),"maps":maps.get_rid(),"image":null,"error":""}
+	RenderingServer.call_on_render_thread(_reference.bind(control));await read_done
+	if control.image!=null:
+		var wrong:=0.0
+		for y in 64:
+			for x in 16:wrong=maxf(wrong,control.image.get_pixel(x,y).g)
+		check(wrong>0.001,"an unblended fused map is detected: %.5f"%wrong)
 
 ## [correlation, quarter-turn correlation, map/painted energy ratio]
 func correlation(image:Image,rotation:int)->Array[float]:

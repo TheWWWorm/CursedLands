@@ -101,16 +101,19 @@ void fragment() {
 		vec2 dx = dFdx(local);
 		vec2 dy = dFdy(local);
 		vec4 traits;
+		float fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));
+		// Derived surface maps (TerrainSurfaceMaps) come from the colour's own
+		// owner walk where relief is drawn.
+		vec4 surface = vec4(0.0, 0.0, 1.0, 0.0);
 		// The fragment's own sample stays in its own tile. GLES3 (web /
 		// Android) interpolates UV a hair past the tile edge on some edge
 		// pixels, and the shift to the neighbour then drew dotted lines along
 		// the triangle edges. Derivatives keep the unclamped value.
-		c = ground_sample(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, traits);
+		c = ground_sample_mapped(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, surface_maps && fade > 0.0, traits, surface);
 		float stone = traits.x;
 		float soft = traits.y;
 		grass = traits.z;
 		float relief = mix(mix(mix(0.13, 0.10, stone), 0.055, soft), 0.025, traits.w);
-		float fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));
 		// The cotangent frame follows the original rotated/mirrored tile UVs
 		// and sloping terrain, without changing mesh or navigation vertices.
 		vec3 p2 = cross(dFdy(VERTEX), NORMAL);
@@ -118,10 +121,8 @@ void fragment() {
 		vec3 tangent = p2 * dx.x + p1 * dy.x;
 		vec3 bitangent = p2 * dx.y + p1 * dy.y;
 		float frame_scale = inversesqrt(max(max(dot(tangent, tangent), dot(bitangent, bitangent)), 1e-12));
-		// Derived surface maps (TerrainSurfaceMaps): coverage 0 keeps the
-		// established brightness relief and per-type response.
+		// Coverage 0 keeps the established brightness relief and response.
 		float coverage = 0.0;
-		vec4 surface = vec4(0.0, 0.0, 1.0, 0.0);
 		float pixel_span = max(length(dFdx(wpos)), length(dFdy(wpos)));
 		if (fade > 0.0) {
 			vec2 step_uv = vec2(source_texel * tiles_per_axis * 1.5 / (1.0 - 2.0 * border), 0.0);
@@ -134,7 +135,7 @@ void fragment() {
 			// The map's painted detail lacks the broad painted shading, which
 			// otherwise becomes a second, embossed copy of the baked light.
 			if (surface_maps) {
-				surface = ground_surface(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, coverage);
+				coverage = surface_coverage(tile, clamp(local, vec2(0.0), vec2(0.99999)));
 				slope = mix(slope, surface.xy * surface_tuning.x, coverage);
 			}
 			// Loose sand has its own grain; snow keeps the soft response.

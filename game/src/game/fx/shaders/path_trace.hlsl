@@ -796,34 +796,41 @@ float3 tile_sample(float packed,float2 p,float atlas_lod) {
     return terrain_colours.SampleLevel(colour_sampler,at.xyz,at.w).rgb;
 }
 // GroundSurfaceShader.SURFACE_FUNCTIONS: slope from atlas pixel axes to the
-// tile's local p axes, then the same ownership and edge blending as colour.
-float4 tile_surface(float packed,float2 p,float atlas_lod) {
-    float4 at=tile_coord(packed,p,atlas_lod);
+// tile's local p axes, at the colour tap's coordinates and footprint.
+float4 surface_texel(float packed,float4 at) {
     float4 s=terrain_surface.SampleLevel(colour_sampler,at.xyz,at.w);
     float2 slope=(s.rg*2.0-1.0)*0.6; // TerrainSurfaceMaps.SLOPE_RANGE
     int rotation=(int(packed+0.5)>>14)&3;
     return float4(tile_turn(float2(slope.x,-slope.y),(4-rotation)%4),s.b,s.a);
 }
-float3 transition_original_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
+float3 tile_texels(float packed,float2 p,float atlas_lod,bool mapped,inout float4 surface) {
+    float4 at=tile_coord(packed,p,atlas_lod);
+    [branch] if(mapped)surface=surface_texel(packed,at);
+    return terrain_colours.SampleLevel(colour_sampler,at.xyz,at.w).rgb;
+}
+// The authored owner walk. With mapped, the derived map shares each owner's
+// coordinates, footprint and edge weight instead of walking them again.
+float3 original_walk(int2 cell,float2 p,float atlas_lod,bool mapped,out float4 traits,out float4 surface) {
     int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
-    float4 info=tile_info(cell);float3 colour=tile_sample(info.r,p,atlas_lod);traits=tile_traits(info.g);
+    surface=float4(0,0,1,0);
+    float4 info=tile_info(cell);float3 colour=tile_texels(info.r,p,atlas_lod,mapped,surface);traits=tile_traits(info.g);
     if(land_sampling().w<0.5)return colour;
     float2 weight=0.5*(1.0-smoothstep(0.0,0.12,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
     if(weight.x>0.0) {
-        info=tile_info(cell+int2(step_cell.x,0));
-        colour=lerp(colour,tile_sample(info.r,p-float2(step_cell.x,0),atlas_lod),weight.x);
-        traits=lerp(traits,tile_traits(info.g),weight.x);
+        info=tile_info(cell+int2(step_cell.x,0));float4 side=surface;
+        colour=lerp(colour,tile_texels(info.r,p-float2(step_cell.x,0),atlas_lod,mapped,side),weight.x);
+        surface=lerp(surface,side,weight.x);traits=lerp(traits,tile_traits(info.g),weight.x);
     }
     if(weight.y>0.0) {
-        info=tile_info(cell+int2(0,step_cell.y));
-        float3 other=tile_sample(info.r,p-float2(0,step_cell.y),atlas_lod);float4 other_traits=tile_traits(info.g);
+        info=tile_info(cell+int2(0,step_cell.y));float4 other_surface=surface;
+        float3 other=tile_texels(info.r,p-float2(0,step_cell.y),atlas_lod,mapped,other_surface);float4 other_traits=tile_traits(info.g);
         if(weight.x>0.0) {
-            info=tile_info(cell+step_cell);
-            other=lerp(other,tile_sample(info.r,p-float2(step_cell),atlas_lod),weight.x);
-            other_traits=lerp(other_traits,tile_traits(info.g),weight.x);
+            info=tile_info(cell+step_cell);float4 side=other_surface;
+            other=lerp(other,tile_texels(info.r,p-float2(step_cell),atlas_lod,mapped,side),weight.x);
+            other_surface=lerp(other_surface,side,weight.x);other_traits=lerp(other_traits,tile_traits(info.g),weight.x);
         }
-        colour=lerp(colour,other,weight.y);traits=lerp(traits,other_traits,weight.y);
+        colour=lerp(colour,other,weight.y);surface=lerp(surface,other_surface,weight.y);traits=lerp(traits,other_traits,weight.y);
     }
     return colour;
 }
@@ -847,21 +854,6 @@ float surface_coverage(int2 cell,float2 p) {
     float2 g=float2(cell)+p-0.5;int2 b=int2(floor(g));float2 f=g-float2(b);
     return lerp(lerp(surface_owned(b),surface_owned(b+int2(1,0)),f.x),
                 lerp(surface_owned(b+int2(0,1)),surface_owned(b+int2(1,1)),f.x),f.y);
-}
-float4 ground_surface(int2 cell,float2 p,float atlas_lod,out float coverage) {
-    int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
-    coverage=surface_coverage(cell,p);
-    float4 s=tile_surface(tile_info(cell).r,p,atlas_lod);
-    if(land_sampling().w<0.5)return s;
-    float2 weight=0.5*(1.0-smoothstep(0.0,0.12,min(p,1.0-p)));
-    int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
-    if(weight.x>0.0)s=lerp(s,tile_surface(tile_info(cell+int2(step_cell.x,0)).r,p-float2(step_cell.x,0),atlas_lod),weight.x);
-    if(weight.y>0.0) {
-        float4 other=tile_surface(tile_info(cell+int2(0,step_cell.y)).r,p-float2(0,step_cell.y),atlas_lod);
-        if(weight.x>0.0)other=lerp(other,tile_surface(tile_info(cell+step_cell).r,p-float2(step_cell),atlas_lod),weight.x);
-        s=lerp(s,other,weight.y);
-    }
-    return s;
 }
 float cliff_eligible(int2 cell) {
     uint4 layout=land_layout();
@@ -1027,8 +1019,8 @@ float3 transition_fill(float slot,float2 grid,float atlas_lod) {
 	float2 phase=frac(grid*0.5); float2 p=1.0-abs(phase*2.0-1.0);
 	return tile_sample(slot-1.0,p,atlas_lod);
 }
-float3 transition_pair_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
-	float3 original=transition_original_sample(cell,p,atlas_lod,traits);
+// traits enters as the original's traits.
+float3 transition_pair_from(int2 cell,float2 p,float atlas_lod,float3 original,inout float4 traits) {
 	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
 	float4 row=transition_row(cell);
 	if (row.a<0.5 || row.r==row.g) { return original; }
@@ -1168,7 +1160,7 @@ float3 transition_junction_sample(int2 cell,float2 p,float atlas_lod,float4 row,
 	traits=lerp(original_traits,surface,amount);
 	return lerp(original,color,amount);
 }
-float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
+float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,float4 original_traits,out float4 traits) {
 	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
 	float4 row=transition_row(cell);
 	// All pure tiles remain authored, even inside the junction halo.
@@ -1186,11 +1178,9 @@ float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
 	// mutually exclusive fallback. Zero influence returns it exactly.
 	float4 legacy_traits=(float4)0.0; float3 legacy=(float3)0.0;
 	if (blend<1.0) {
-		legacy=transition_pair_sample(cell,p,atlas_lod,legacy_traits);
+		legacy_traits=original_traits;legacy=transition_pair_from(cell,p,atlas_lod,original,legacy_traits);
 		if (blend<=0.0) { traits=legacy_traits; return legacy; }
 	}
-	float4 original_traits;
-	float3 original=transition_original_sample(cell,p,atlas_lod,original_traits);
 	float3 junction=transition_junction_sample(cell,p,atlas_lod,row,metadata,original,original_traits,traits);
 	if (blend>=1.0) { return junction; }
 	traits=lerp(legacy_traits,traits,blend);
@@ -1198,10 +1188,15 @@ float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
 }
 
 #else
-float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
-    return transition_original_sample(cell,p,atlas_lod,traits);
+float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,float4 original_traits,out float4 traits) {
+    traits=original_traits;return original;
 }
 #endif
+// Ground colour and, when mapped, the derived map from one owner walk.
+float3 ground_sample(int2 cell,float2 p,float atlas_lod,bool mapped,out float4 traits,out float4 surface) {
+    float4 original_traits;float3 original=original_walk(cell,p,atlas_lod,mapped,original_traits,surface);
+    return ground_sample_from(cell,p,atlas_lod,original,original_traits,traits);
+}
 // Returns linear albedo and evaluates the same detail normal/material fields
 // for primary and secondary rays. Vertex-to-tile identity survives XY jitter.
 // Sand wind ripples, as GroundSurfaceShader.SURFACE_FUNCTIONS sand_ripple.
@@ -1242,9 +1237,9 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     float grazing=max(abs(dot(s.geometric_normal,WorldRayDirection())),0.1);
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
-    float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
-    float coverage=0.0;float4 surface=float4(0,0,1,0);
-    [branch] if((land_detail().w&2u)!=0u)surface=ground_surface(cell,clamp(local,0.0,0.99999),ground_lod,coverage);
+    bool mapped=(land_detail().w&2u)!=0u;float coverage=0.0;float4 surface;
+    float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,mapped,traits,surface);
+    [branch] if(mapped)coverage=surface_coverage(cell,clamp(local,0.0,0.99999));
     float sand=surface.a*coverage;
     surface.xy*=land_tuning().x;
     // Back from local p to hit-UV axes: the tile's quarter turn, then V flip.

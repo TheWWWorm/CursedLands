@@ -118,6 +118,28 @@ func run() -> void:
 	check(after>before*1.3,"loose sand gains visible fine relief: %.5f -> %.5f"%[before,after])
 	check(difference(lit_on,lit_off,view)>0.004,"derived relief changes the lit sand: %.5f"%difference(lit_on,lit_off,view))
 	check(difference(lit_on,await capture("sand-raster-restored"),view)<0.002,"re-enabling maps restores the same image")
+	# The fused centre walk renders what separate colour and map walks drew.
+	var references:={};var restore:=[]
+	for material in land_materials():
+		var key:=material.shader.get_instance_id()
+		if not references.has(key):
+			var reference:=Shader.new()
+			reference.code=material.shader.code.replace(TerrainSamplingShader.CENTER,
+				"c = ground_sample(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, traits);").replace(
+				"coverage = surface_coverage(tile, clamp(local, vec2(0.0), vec2(0.99999)));",
+				"surface = ground_surface(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, coverage);")
+			references[key]=reference
+		restore.append([material,material.shader]);material.shader=references[key]
+	check(references.values().all(func(r:Shader)->bool:return not r.code.contains(TerrainSamplingShader.CENTER) \
+		and r.code.contains("surface = ground_surface(tile")),"separate-walk reference replaces the fused centre sample")
+	await frames(30);var separate:=await capture("sand-raster-separate-walks")
+	for row: Array in restore:row[0].shader=row[1]
+	await frames(30);var fused:=await capture("sand-raster-fused-walk")
+	# Every pixel except the live FPS counter's corner (test profile show_fps).
+	var counter:=Rect2i(Vector2i(resolution.x*8/10,0),Vector2i(resolution.x-resolution.x*8/10,resolution.y/20))
+	var fused_masked:=fused.duplicate() as Image;var separate_masked:=separate.duplicate() as Image
+	fused_masked.fill_rect(counter,Color.BLACK);separate_masked.fill_rect(counter,Color.BLACK)
+	check(fused_masked.get_data()==separate_masked.get_data(),"fused walk draws exactly the separate-walk image")
 	# The selected strength is visibly stronger than the first, unit-gain pass.
 	var selected:=TerrainSurfaceMaps.tuning
 	TerrainSurfaceMaps.tuning=Vector4(1.0,1.0,0.11,1.0);t.apply_gfx();await frames(12)

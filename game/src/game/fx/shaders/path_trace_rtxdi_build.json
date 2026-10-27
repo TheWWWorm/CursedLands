@@ -1,7 +1,7 @@
 {
   "sdk_revision": "f12037fa8e97ebc08e9e3edfd2de528ed1772a4b",
   "sources": {
-    "path_trace.hlsl": "41335fed44edb37c4adc94ba5fbe80ff34b3923347551abe528b3e81ca8ab244",
+    "path_trace.hlsl": "20434261bf71aee95baaeaf6c25c89d865ab9b61435d00849276fa5680631ef4",
     "path_trace_rtxdi.hlsli": "64b59f254e5f9e481147c10e8e64f74da9db4d05037b12bc7481aa675a8f8f81",
     "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
     "builder": "a2a6fc866f9ab9c968439e50819e718b051b3772472db4700c4b3df083ca7ab8",

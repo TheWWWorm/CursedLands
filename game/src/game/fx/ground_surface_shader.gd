@@ -258,13 +258,16 @@ uniform sampler2DArray surface_atlases : filter_linear_mipmap_anisotropic, repea
 
 const SURFACE_FUNCTIONS := """// The map stores slope in atlas pixel axes. Undo the V flip and the tile's
 // quarter turn so it matches finite differences in local p (ground_sample).
-vec4 tile_surface(float packed, vec2 p, vec2 dx, vec2 dy) {
-	vec3 uv; vec2 gx; vec2 gy;
-	tile_coord(packed, p, dx, dy, uv, gx, gy);
+vec4 surface_texel(float packed, vec3 uv, vec2 gx, vec2 gy) {
 	vec4 s = textureGrad(surface_atlases, uv, gx, gy);
 	vec2 slope = (s.rg * 2.0 - 1.0) * 0.6; // TerrainSurfaceMaps.SLOPE_RANGE
 	int rotation = (int(packed + 0.5) >> 14) & 3;
 	return vec4(tile_turn(vec2(slope.x, -slope.y), (4 - rotation) % 4), s.b, s.a);
+}
+vec4 tile_surface(float packed, vec2 p, vec2 dx, vec2 dy) {
+	vec3 uv; vec2 gx; vec2 gy;
+	tile_coord(packed, p, dx, dy, uv, gx, gy);
+	return surface_texel(packed, uv, gx, gy);
 }
 #ifdef EI_TERRAIN_TRANSITIONS
 float surface_owned(ivec2 cell) {
@@ -308,7 +311,101 @@ vec4 ground_surface(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out float coverage) {
 	}
 	return s;
 }
+#ifdef EI_TERRAIN_TRANSITIONS
+#define EI_ORIGINAL_SAMPLE transition_original_sample
+#else
+#define EI_ORIGINAL_SAMPLE ground_sample
+#endif
+vec3 tile_texels(float packed, vec2 p, vec2 dx, vec2 dy, bool mapped, inout vec4 surface) {
+	vec3 uv; vec2 gx; vec2 gy;
+	tile_coord(packed, p, dx, dy, uv, gx, gy);
+	if (mapped) { surface = surface_texel(packed, uv, gx, gy); }
+	return textureGrad(atlases, uv, gx, gy).rgb;
+}
+// The authored colour owner walk (EI_ORIGINAL_SAMPLE). When mapped, the
+// derived map shares each owner's coordinates, footprint and edge weight, so
+// it equals ground_surface without walking the owners a second time.
+vec3 land_original_mapped(ivec2 cell, vec2 p, vec2 dx, vec2 dy, bool mapped, inout vec4 surface, out vec4 traits) {
+#ifdef EI_BAKED_TERRAIN
+	vec3 baked = EI_ORIGINAL_SAMPLE(cell, p, dx, dy, traits);
+	if (mapped) { float unused; surface = ground_surface(cell, p, dx, dy, unused); }
+	return baked;
+#else
+	ivec2 shift = ivec2(floor(p));
+	cell += shift;
+	p -= vec2(shift);
+	vec4 info = tile_info(cell);
+	vec3 c = tile_texels(info.r, p, dx, dy, mapped, surface);
+	traits = tile_traits(info.g);
+	if (!blend_edges) { return c; }
+	vec2 edge = min(p, 1.0 - p);
+	vec2 weight = 0.5 * (1.0 - smoothstep(vec2(0.0), vec2(0.12), edge));
+	ivec2 step_cell = ivec2(p.x < 0.5 ? -1 : 1, p.y < 0.5 ? -1 : 1);
+	if (weight.x > 0.0) {
+		info = tile_info(cell + ivec2(step_cell.x, 0));
+		vec4 side = surface;
+		c = mix(c, tile_texels(info.r, p - vec2(float(step_cell.x), 0.0), dx, dy, mapped, side), weight.x);
+		surface = mix(surface, side, weight.x);
+		traits = mix(traits, tile_traits(info.g), weight.x);
+	}
+	if (weight.y > 0.0) {
+		info = tile_info(cell + ivec2(0, step_cell.y));
+		vec4 other_surface = surface;
+		vec3 other = tile_texels(info.r, p - vec2(0.0, float(step_cell.y)), dx, dy, mapped, other_surface);
+		vec4 other_traits = tile_traits(info.g);
+		if (weight.x > 0.0) {
+			info = tile_info(cell + step_cell);
+			vec4 side = other_surface;
+			other = mix(other, tile_texels(info.r, p - vec2(step_cell), dx, dy, mapped, side), weight.x);
+			other_surface = mix(other_surface, side, weight.x);
+			other_traits = mix(other_traits, tile_traits(info.g), weight.x);
+		}
+		c = mix(c, other, weight.y);
+		surface = mix(surface, other_surface, weight.y);
+		traits = mix(traits, other_traits, weight.y);
+	}
+	return c;
+#endif
+}
+#ifdef EI_TERRAIN_TRANSITIONS
+// GROUND_SAMPLE_MAPPED
+#else
+vec3 ground_sample_mapped(ivec2 cell, vec2 p, vec2 dx, vec2 dy, bool mapped, out vec4 traits, inout vec4 surface) {
+	return land_original_mapped(cell, p, dx, dy, mapped, surface, traits);
+}
+#endif
 """
+
+## The fragment's centre sample with the derived map. Transition programs get
+## a copy of their final ground_sample whose single original walk, taken
+## before any early return, is the fused land_original_mapped. Any other
+## structure keeps the separate ground_surface walk.
+static func mapped_sampler(code: String) -> String:
+	if not code.contains("// GROUND_SAMPLE_MAPPED"):
+		return code
+	const HEADER := "vec3 ground_sample(ivec2 cell,vec2 p,vec2 dx,vec2 dy,out vec4 traits) {"
+	const CALL := "transition_original_sample(cell,p,dx,dy,"
+	var mapped := """vec3 ground_sample_mapped(ivec2 cell, vec2 p, vec2 dx, vec2 dy, bool mapped, out vec4 traits, inout vec4 surface) {
+	vec3 c = ground_sample(cell, p, dx, dy, traits);
+	if (mapped) { float unused; surface = ground_surface(cell, p, dx, dy, unused); }
+	return c;
+}"""
+	var start := code.find(HEADER)
+	if start >= 0 and code.find(HEADER, start + 1) < 0:
+		var depth := 0
+		var end := -1
+		for i in range(start + HEADER.length() - 1, code.length()):
+			if code[i] == "{": depth += 1
+			elif code[i] == "}":
+				depth -= 1
+				if depth == 0: end = i + 1; break
+		var body := code.substr(start, end - start) if end > 0 else ""
+		var call := body.find(CALL)
+		var early := body.find("return")
+		if call >= 0 and body.find(CALL, call + 1) < 0 and call < early:
+			mapped = body.replace(HEADER, "vec3 ground_sample_mapped(ivec2 cell,vec2 p,vec2 dx,vec2 dy,bool mapped,out vec4 traits,inout vec4 surface) {") \
+				.replace(CALL, "land_original_mapped(cell,p,dx,dy,mapped,surface,")
+	return code.replace("// GROUND_SAMPLE_MAPPED", mapped)
 
 ## Fragment-only: implicit-derivative noise lookups (land shader).
 const SAND_FUNCTIONS := """// World-space wind ripples on loose sand, as a tilt in world XZ. The existing

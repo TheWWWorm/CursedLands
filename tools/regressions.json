@@ -3242,7 +3242,7 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 47,
+      "min_checks": 63,
       "timeout": 240
     },
     {
@@ -3255,7 +3255,7 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 29,
+      "min_checks": 31,
       "timeout": 480
     },
     {
@@ -3270,7 +3270,7 @@
       "args": [
         "--surface-res=2560x1440"
       ],
-      "min_checks": 29,
+      "min_checks": 31,
       "timeout": 600
     },
     {
@@ -3285,7 +3285,7 @@
       "args": [
         "--surface-res=3840x2160"
       ],
-      "min_checks": 29,
+      "min_checks": 31,
       "timeout": 600
     },
     {
