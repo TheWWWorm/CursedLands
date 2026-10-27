@@ -192,7 +192,7 @@ campaigns. It contains:
 These lists describe the authored data. A script could still create something
 in an unusual way, and the wiki does not speculate about what was planned. The
 names of unused figures, the two lizard colours and the recognisable item models
-(compass, scissors, arrow bundles, lockpicks, files and crowbars) were checked
+(drawing compass, scissors, arrow bundles, lockpicks, files and crowbars) were checked
 visually; other unused colours and models use generic names and a number.
 
 ## Build planning and sharing

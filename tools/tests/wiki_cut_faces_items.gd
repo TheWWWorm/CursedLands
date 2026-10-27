@@ -106,7 +106,7 @@ func _ready() -> void:
 	for lang: String in ["ru", "de"]:
 		RemakeText.lang = lang
 		check(cut.face_title("unhufe_01") != "Unused female face 1" and cut.face_title("unhufe_01").contains("1"), lang + " face title")
-		check(cut.item_model_title("initqu0item") == RemakeText.TEXTS["Compass"][0 if lang == "ru" else 1], lang + " item title")
+		check(cut.item_model_title("initqu0item") == RemakeText.TEXTS["Drawing compass"][0 if lang == "ru" else 1], lang + " item title")
 		check(not cut.item_model_title("initqi4item").begins_with("Unused"), lang + " generic item title")
 	RemakeText.lang = "en"
 	print("WIKI_CUT_FACES_ITEMS ", checks, " checks ", failures, " failures")

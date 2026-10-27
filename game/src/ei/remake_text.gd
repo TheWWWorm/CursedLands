@@ -1725,7 +1725,7 @@ const TEXTS := {
 	"Unused faces": ["Неиспользованные лица", "Ungenutzte Gesichter"],
 	"No character record selects these skins and portraits.": ["Ни одна запись персонажа не выбирает эти кожи и портреты.", "Kein Figureneintrag wählt diese Häute und Porträts."],
 	"Unused item model": ["Неиспользованная модель предмета", "Ungenutztes Gegenstandsmodell"],
-	"Compass": ["Компас", "Kompass"],
+	"Drawing compass": ["Циркуль", "Zirkel"],
 	"Scissors": ["Ножницы", "Schere"],
 	"Bundle of arrows": ["Связка стрел", "Pfeilbündel"],
 	"Lockpicks": ["Отмычки", "Dietriche"],

@@ -32,7 +32,7 @@ const FACE_MODELS := {"unhufe": "f", "unhuma": "m"}
 const ITEM_MODEL_TABLES := {"quest_items": ["initqu", "quitem"], "quick_items": ["initqi", "qitem"],
 	"loot_items": ["initlitr", "litem"]}
 ## Visually identified unused inventory figures; others use generic titles.
-const ITEM_MODELS := {"initqu0item": "Compass", "initqu1item": "Scissors",
+const ITEM_MODELS := {"initqu0item": "Drawing compass", "initqu1item": "Scissors",
 	"initqi22item": "Bundle of arrows", "initqi23item": "Bundle of arrows", "initqi24item": "Bundle of arrows",
 	"initqi25item": "Bundle of arrows", "initqi30item": "Lockpicks", "initqi31item": "Lockpicks",
 	"initqi32item": "Lockpicks", "initqi33item": "Lockpicks", "initqi34item": "File", "initqi35item": "File",
