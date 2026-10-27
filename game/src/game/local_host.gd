@@ -41,6 +41,18 @@ var _pending_shots := {}
 var _capture_requests := {}
 var _shot_generation := 0
 var _android_backend: Object
+## A solo authority that cannot sustain the dial's rate (a slower or busy CPU)
+## reports the fraction it achieves. The owner presents at that fraction, so
+## clips and effect counters are not predicted ahead and pulled back by every
+## snapshot. The dial and the requested rate stay unchanged.
+const RATE_WINDOW := 1.0     # requested wall seconds per measurement
+const RATE_KEEPING_UP := 0.95
+const RATE_STEP := 0.05
+var authority_rate := 1.0
+var _rate_sent := 1.0
+var _rate_world := 0
+var _rate_scale := 1.0
+var _presented_scale := 1.0
 
 
 static func available() -> bool:
@@ -83,9 +95,10 @@ func start(port: int, limit: int, solo := false) -> Error:
 	if OS.has_feature("editor"):
 		arguments.append_array(["--path", ProjectSettings.globalize_path("res://")])
 	arguments.append_array(["--", "--ei-path=" + GameData.root, "--local-host-config=" + _config])
-	# Network diagnostics must cover the actual authority's outbound traffic.
+	# Network diagnostics must cover the actual authority's outbound traffic;
+	# simulation load emulation applies to the authority's ticks.
 	for argument in OS.get_cmdline_user_args():
-		if argument == "--netstat" or argument.begins_with("--netsim="):
+		if argument == "--netstat" or argument.begins_with("--netsim=") or argument.begins_with("--ei-simulation-load-ms="):
 			arguments.append(argument)
 	frontend = true
 	session.upnp.remote = true
@@ -228,7 +241,7 @@ class SinglePauseObserver extends Node:
 func _sync_single_clock(force := false) -> void:
 	if not frontend or not single_player or not _ready_owner or not CoopProgress.peer_alive(multiplayer, 1):
 		return
-	var value := [get_tree().paused, Engine.time_scale, session.saved_play_clock().paused, session.field_speed]
+	var value := [get_tree().paused, selected_time_scale(), session.saved_play_clock().paused, session.field_speed]
 	if force or value != _single_clock:
 		_single_clock = value
 		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]), bool(value[2]), int(value[3]))
@@ -245,6 +258,61 @@ func _rpc_single_clock(paused: bool, rate: float, gameplay_paused := false, fiel
 	get_tree().paused = paused
 	if session.game:
 		session.game.speed = int(rate > 1.0)
+
+
+func _report_authority_rate() -> void:
+	var w := session.world
+	if not single_player or owner_peer <= 1 or w == null or not session.lmp.is_empty() \
+			or not CoopProgress.peer_alive(multiplayer, owner_peer):
+		return
+	# A new zone or dial rate starts a fresh measurement; the owner has
+	# already returned to the full rate for it.
+	if _rate_world != w.get_instance_id() or _rate_scale != Engine.time_scale:
+		_rate_world = w.get_instance_id()
+		_rate_scale = Engine.time_scale
+		_rate_sent = 1.0
+		w.rate_requested = 0.0
+		w.rate_admitted = 0.0
+		return
+	if w.rate_requested < RATE_WINDOW * Engine.time_scale:
+		return
+	var achieved := clampf(w.rate_admitted / w.rate_requested, 0.1, 1.0)
+	w.rate_requested = 0.0
+	w.rate_admitted = 0.0
+	if achieved >= RATE_KEEPING_UP:
+		achieved = 1.0
+	if absf(achieved - _rate_sent) < RATE_STEP:
+		return
+	_rate_sent = achieved
+	_rpc_authority_rate.rpc_id(owner_peer, achieved, Engine.time_scale)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_authority_rate(achieved: float, scale: float) -> void:
+	# A report measured before the latest dial change is stale.
+	if not frontend or not single_player or not is_finite(achieved) \
+			or not is_equal_approx(scale, selected_time_scale()):
+		return
+	authority_rate = clampf(achieved, 0.1, 1.0)
+	_present_authority_rate()
+
+
+func _present_authority_rate() -> void:
+	if not single_player or session.game == null:
+		return
+	var selected := selected_time_scale()
+	var world_id := session.world.get_instance_id() if session.world else 0
+	if selected != _rate_scale or world_id != _rate_world:
+		_rate_scale = selected
+		_rate_world = world_id
+		authority_rate = 1.0
+	var target := selected * authority_rate
+	# Leave any other writer's value alone; only the dial's rate or this
+	# presentation's last value is replaced.
+	if Engine.time_scale != target and (is_equal_approx(Engine.time_scale, selected) \
+			or is_equal_approx(Engine.time_scale, _presented_scale)):
+		Engine.time_scale = target
+	_presented_scale = target
 
 
 func authorized(pid: int) -> bool:
@@ -474,10 +542,20 @@ func _rpc_camera(pose: Dictionary) -> void:
 		camera = pose
 
 
+## The dial's rate. Engine.time_scale can present a lower achieved rate.
+func selected_time_scale() -> float:
+	if session.game == null:
+		return Engine.time_scale
+	return 55.0 / 27.0 if session.game.speed == 1 else 1.0
+
+
 func _process(dt: float) -> void:
 	_sync_single_clock()
 	if worker:
 		_send_owner_snapshots()
+		_report_authority_rate()
+	elif frontend:
+		_present_authority_rate()
 	_heartbeat += dt
 	if _heartbeat < 0.25:
 		return
@@ -613,6 +691,9 @@ func stop() -> void:
 	session.upnp.close()
 	session.upnp.remote = false
 	session.online = false
+	if authority_rate < 1.0 and is_equal_approx(Engine.time_scale, _presented_scale):
+		Engine.time_scale = selected_time_scale()
+	authority_rate = 1.0
 	single_player = false
 	_single_clock = []
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()

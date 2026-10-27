@@ -90,6 +90,15 @@ var _logic_step := 0
 ## seconds of accelerated NPC movement after the stall ends.
 var retain_logic_debt := false
 var _logic_debt := 0.0
+## Real-time frames that reached the simulation: the selected-rate time they
+## requested, and the part the five-interval cap admitted. A CPU-bound
+## authority's long frames lose the rest; LocalHost reports the ratio.
+var rate_requested := 0.0
+var rate_admitted := 0.0
+var _frame_requested := 0.0
+## Diagnostics emulate a slower authority CPU with a fixed delay per logic
+## tick (--ei-simulation-load-ms=N, forwarded by LocalHost to its worker).
+var _diagnostic_tick_usec := _diagnostic_load_usec()
 ## Godot4.7 discards time beyond max_physics_steps_per_frame from both its
 ## physics and frame deltas (Main::iteration). Native456440 instead reads
 ## timeGetTime once per rendered loop, capped at five55/27ms intervals.
@@ -811,7 +820,19 @@ func _sample_frame(now_ms: int, rate: float, active := true) -> void:
 	# Bound wall time before applying the selected speed. A fixed five-tick
 	# limit after scaling made fast and normal converge on slow frames.
 	var seconds := minf(float(elapsed) / 1000.0, TICK * 5.0)
+	# Only a frame that reaches _advance counts: pauses, movies and travel
+	# holds return before it. An isolated stall (a save, a cold build) is not
+	# sustained throughput and is left out.
+	_frame_requested = float(elapsed) / 1000.0 * rate if elapsed <= 1000 else 0.0
 	_deliver(seconds * rate, rate)
+	_frame_requested = 0.0
+
+
+static func _diagnostic_load_usec() -> int:
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--ei-simulation-load-ms="):
+			return clampi(int(float(argument.trim_prefix("--ei-simulation-load-ms=")) * 1000.0), 0, 1000000)
+	return 0
 
 
 func _physics_process(dt: float) -> void:
@@ -875,6 +896,8 @@ func _deliver(dt: float, rate := 1.0) -> void:
 ## the authoritative world consumes completed native logic intervals here.
 ## Direct _tick calls remain available to bounded simulation tools.
 func _advance(dt: float, rate := 1.0) -> void:
+	var requested := _frame_requested
+	_frame_requested = 0.0
 	if not is_finite(dt) or not is_finite(rate):
 		return
 	var budget := maxi(ceili(5.0 * clampf(rate, 0.0, 8.0)), 1)
@@ -889,11 +912,16 @@ func _advance(dt: float, rate := 1.0) -> void:
 	while _logic_accumulator + 0.000000001 >= TICK:
 		_logic_accumulator = maxf(_logic_accumulator - TICK, 0.0)
 		_tick(TICK)
+		if _diagnostic_tick_usec > 0 and retain_logic_debt:
+			OS.delay_usec(_diagnostic_tick_usec)
 		steps += 1
 		if is_queued_for_deletion() or (session and (session.movie_active() or session.ending_active)):
 			break
 		if retain_logic_debt and steps >= budget:
 			break
+	if requested > 0.0:
+		rate_requested += requested
+		rate_admitted += maxf(dt, 0.0)
 	if retain_logic_debt and _logic_accumulator + 0.000000001 >= TICK:
 		# A movie may interrupt a batch. Its undelivered whole ticks remain
 		# pending, while spline interpolation always sees a fraction below one.

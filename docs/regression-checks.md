@@ -166,6 +166,14 @@ save, a stale owner cache, Ruins/Foothills travel, village return and a 5 FPS
 owner. It asserts actual simulation seconds per wall second, not only the dial
 or `Engine.time_scale`.
 
+`worker_rate_presentation` and its rendered variant cover a solo authority that
+cannot sustain fast speed ([#119](validation/issue-119-worker-rate-2026-10-27.md)).
+The manifest passes `--ei-simulation-load-ms=30`; LocalHost forwards it to the
+worker, which waits that long after each logic tick to emulate a slower CPU.
+Normal speed must remain exact. At fast speed the dial, the requested rate and
+the saved speed stay fast, while the owner presents the achieved rate and the
+visible Eagle Sight counter is not pulled back by snapshots.
+
 The [menu checks](validation/menu-patrol-text-2026-10-25/README.md) register
 `menu_patrols_*`, `menu_alignment_*` and `menu_captions_*` for both campaigns,
 plus the existing weather fixture as `menu_wind_ready`.
