@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Present the rate the solo campaign's separate simulation process actually achieves when it cannot sustain the selected speed. Animations and effect timers no longer run ahead and jump back; the selected speed, the rate requested from the simulation and the saved speed are unchanged ([#119](https://github.com/TheWWWorm/CursedLands/issues/119)).
 - Reduce campaign simulation CPU time in busy areas such as the Foothills by evaluating quest group, death and sighting conditions in native code. Results, perception refreshes, random draws and quest timing are unchanged; on the test system a Foothills simulation tick takes about a fifth less time, leaving more headroom for fast speed on slower processors.
 
 ## 1.32.0 — 2026-10-26

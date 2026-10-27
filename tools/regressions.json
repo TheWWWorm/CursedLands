@@ -3557,6 +3557,38 @@
       "timeout": 240
     },
     {
+      "id": "worker_rate_presentation",
+      "script": "tools/tests/worker_rate_presentation.gd",
+      "summary": "WORKER_RATE_PRESENTATION",
+      "contract": "A solo authority that cannot sustain fast speed keeps the selected dial, request and save rate while its owner presents the achieved rate without snapshot pull-back of Eagle Sight.",
+      "issues": [
+        119
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--ei-simulation-load-ms=30"
+      ],
+      "min_checks": 21,
+      "timeout": 300
+    },
+    {
+      "id": "worker_rate_presentation_rendered",
+      "script": "tools/tests/worker_rate_presentation.gd",
+      "summary": "WORKER_RATE_PRESENTATION",
+      "contract": "A solo authority that cannot sustain fast speed keeps the selected dial, request and save rate while its owner presents the achieved rate without snapshot pull-back of Eagle Sight.",
+      "issues": [
+        119
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--ei-simulation-load-ms=30"
+      ],
+      "min_checks": 21,
+      "timeout": 300
+    },
+    {
       "id": "ground_cover_density_lia",
       "script": "tools/tests/ground_cover_density.gd",
       "summary": "GROUND_COVER_DENSITY",
