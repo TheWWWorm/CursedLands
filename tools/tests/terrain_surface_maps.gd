@@ -133,8 +133,16 @@ func variants()->void:
 	var shaders:={"land":base,"cliff land":cliff,"caustic cliff transitions":pair,"cliff junctions":junction,
 		"baked cliff land":cliff.replace("shader_type spatial;","shader_type spatial;\n#define EI_BAKED_TERRAIN")}
 	for label: String in shaders:
-		var names:=Gfx.make_shader(shaders[label],true,true).get_shader_uniform_list().map(func(u:Dictionary)->String:return u.name)
-		check(names.has("surface_atlases") and names.has("surface_maps"),label+" compiles with the derived-map uniforms")
+		var shader:=Gfx.make_shader(shaders[label],true,true)
+		var names:=shader.get_shader_uniform_list().map(func(u:Dictionary)->String:return u.name)
+		check(names.has("surface_atlases") and names.has("surface_maps") and names.has("surface_tuning"),label+" compiles with the derived-map uniforms")
+		check(RenderingServer.shader_get_parameter_default(shader.get_rid(),&"surface_tuning")==TerrainSurfaceMaps.tuning,
+			label+" defaults to the TerrainSurfaceMaps strength")
+	# The chosen strength: stronger relief, deeper/longer ripples, more
+	# roughness contrast than the first, barely visible pass.
+	check(TerrainSurfaceMaps.tuning==Vector4(1.6,2.5,0.25,2.0),"derived maps use the selected medium strength")
+	check(base.contains("surface.xy * surface_tuning.x") and base.contains("(surface.z - base_rough) * surface_tuning.w") \
+		and base.contains("surface_tuning.y * fade"),"raster relief, ripples and roughness follow the strength")
 
 ## The production TILE_FUNCTIONS and SURFACE_FUNCTIONS, compiled as compute:
 ## painted-brightness finite differences (ground_sample) and the derived map

@@ -135,7 +135,7 @@ void fragment() {
 			// otherwise becomes a second, embossed copy of the baked light.
 			if (surface_maps) {
 				surface = ground_surface(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, coverage);
-				slope = mix(slope, surface.xy, coverage);
+				slope = mix(slope, surface.xy * surface_tuning.x, coverage);
 			}
 			// Loose sand has its own grain; snow keeps the soft response.
 			float sand = surface.a * coverage;
@@ -169,7 +169,8 @@ void fragment() {
 		// soil stay matte; ice and smooth stone crests catch the light.
 		if (surface_maps && ei_surface_fx.x > 0.5 && fade > 0.0) {
 			float base_rough = mix(mix(mix(mix(0.94, 0.84, stone), 0.98, soft), 0.96, grass), 0.25, traits.w);
-			float rough = mix(base_rough, surface.z, coverage);
+			float map_rough = clamp(base_rough + (surface.z - base_rough) * surface_tuning.w, 0.05, 1.0);
+			float rough = mix(base_rough, map_rough, coverage);
 			ei_surface = vec3(0.6 * (1.0 - smoothstep(0.5, 0.85, rough)) * fade, rough, 0.0);
 		}
 		// large, soft brightness variation that breaks up the tile repeats
@@ -1464,6 +1465,8 @@ func apply_gfx() -> void:
 		_surface_maps = null
 	_land_mat.set_shader_parameter("surface_maps", _surface_maps != null)
 	_land_mat.set_shader_parameter("surface_atlases", _surface_maps)
+	_land_mat.set_shader_parameter("surface_tuning", TerrainSurfaceMaps.tuning)
+	if is_instance_valid(color_cache): color_cache.sync_parameter("surface_tuning", TerrainSurfaceMaps.tuning)
 	_land_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
 	_land_mat.set_shader_parameter("atlas_padding", float(TERRAIN_GUTTER) / tile_size if det else 0.0)
 	_land_mat.set_shader_parameter("source_texel", 1.0 / texture_size)

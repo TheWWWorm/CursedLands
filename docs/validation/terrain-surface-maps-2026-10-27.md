@@ -40,15 +40,40 @@ atlas, including mips):
   Compatibility keep the established path; the array is released.
 - The Surface materials help text mentions sand ripples in EN/RU/DE.
 
+## Strength (follow-up)
+
+The first pass was judged too subtle in side-by-side captures. One strength
+vector, `TerrainSurfaceMaps.tuning`, now drives raster (`surface_tuning`
+uniform, synced to colour-cache materials) and PT (terrain header float4 at
+offset 64; the header grew from 64 to 80 bytes and the snapshot version
+includes the vector). Components: relief gain, ripple gain, ripple reach
+(pixel footprint where ripples have faded), roughness contrast around each
+type's base roughness (clamped 0.05–1).
+
+Three levels were rendered under a 07:00 sun (about 41° elevation) on loose
+sand and stone (zone 19), dirt and grass (zone 1) and a snow cliff (zone 11),
+in raster and PT, against maps off:
+
+| Level | Relief | Ripples | Reach | Roughness contrast |
+| --- | --- | --- | --- | --- |
+| first pass | 1.0 | 1.0 | 0.11 | 1.0 |
+| **medium (selected)** | 1.6 | 2.5 | 0.25 | 2.0 |
+| strong | 2.2 | 4.0 | 0.40 | 3.0 |
+
+Medium was chosen by the owner. Strong left dark speckles on traced stone.
+Projected cliff faces are unchanged by design (the maps fade by wall weight).
+Sand normal detail at 1080p: maps off 0.0032, first pass 0.0172, medium 0.0408.
+Comparison sheets: `local/validation/terrain-surface-20261027/captures/strength/`.
+
 ## Evidence
 
 | Check | Result |
 | --- | --- |
-| `terrain_surface_maps` (40 checks) | Slope signs, delit ramp (0.502/0.498 against 0.532 brightness-only), per-type roughness, sand flag, padded-slot isolation (max leak 0.002), production GLSL rotation reference: correlation 0.944 at all four rotations, 0.005 for a quarter turn, negative control detects a wrong inverse rotation; cliff, transition, caustic and baked land variants compile with the maps. |
-| `terrain_surface_live` 1920×1080 (23 checks) | Zone 19 open sand clear of objects: normal detail 0.0032 → 0.0172; lit A/B differs; restoring is exact; PT binds the maps, header bit set, output finite; option off clears raster and PT; EN/RU/DE help. |
-| `terrain_surface_live_1440` / `_2160` (23 checks each) | Same contract at 2560×1440 (0.0023 → 0.0166) and 3840×2160 (0.0027 → 0.0169). |
+| `terrain_surface_maps` (47 checks) | Slope signs, delit ramp (0.502/0.498 against 0.532 brightness-only), per-type roughness, sand flag, padded-slot isolation (max leak 0.002), production GLSL rotation reference: correlation 0.944 at all four rotations, 0.005 for a quarter turn, negative control detects a wrong inverse rotation; cliff, transition, caustic and baked land variants compile with the maps and default to the selected strength; raster relief, ripples and roughness follow it. |
+| `terrain_surface_live` 1920×1080 (29 checks) | Zone 19 open sand clear of objects: normal detail 0.0032 → 0.0408 (unit strength 0.0172, must be exceeded by 15 %); strength reaches every land material and restores exactly; PT header carries the strength and rebuilds when it changes; lit A/B differs; restoring is exact; PT binds the maps, header bit set, output finite; option off clears raster and PT; EN/RU/DE help. |
+| `terrain_surface_live_1440` / `_2160` (29 checks each) | Same contract at 2560×1440 (0.0027 → 0.0405, unit strength 0.0169) and 3840×2160 (0.0023 → 0.0402, unit 0.0166). |
 | `terrain_surface_help` (37 checks) | Changed help translated, complete and inside the window in its actual row, EN/RU/DE at 720p, 1440p and 4K. |
-| Path-tracer binaries | `build_water_rt_shaders.py --check` reproduces all 36 binaries. |
+| Path-tracer binaries | `build_water_rt_shaders.py --check` reproduces all 36 binaries; `build_path_sharc.py` / `build_path_rtxdi.py --check` reproduce all 13 / 16 (byte-identical: those stages carry no terrain material code). Their manifests' `path_trace.hlsl` hash had been left at the pre-feature source by `cda6b0b6` and is now current; `test_path_trace_build_inputs` passes. |
 | `check_translations.py` | 0 errors. |
 
 Related existing regressions on the same candidate pack (first run): 23 of 25 pass —
@@ -90,6 +115,16 @@ the five new terrain surface cases, and `ground_contact_native`,
 `vegetation_interaction`, `foliage_feature_combinations`,
 `water_wave_render` for the contact-shader investigation), 6,380 checks,
 0 failures.
+
+After the strength change (80-byte PT header), `path_trace_terrain` and
+`path_trace_terrain_collect` fixtures follow the new layout: the hand-built
+buffer reserves the full header (its tile table previously began at 64, where
+the strength now lives), and the byte-layout assertions are expressed relative
+to the 80-byte header with the same exact values plus a check of the stored
+strength (12 checks). The same 34 cases rerun on the rebuilt pack: 33 pass in
+the suite run; `path_trace_terrain_collect` failed there on the old absolute
+offsets and passes 12/0 after the fixture update. 6,406 checks, 0 failures
+(`runs/strength-suite.json`, `runs/strength-collect-fix.json`).
 
 Retained captures and run summaries: `local/validation/terrain-surface-20261027/`.
 

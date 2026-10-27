@@ -88,6 +88,10 @@ void main() {
 }
 """
 
+## Shading strength of the derived maps (shader `surface_tuning`, PT header
+## offset 64): relief gain, ripple gain, ripple reach in metres per pixel,
+## roughness contrast around each ground type's base.
+static var tuning := Vector4(1.6, 2.5, 0.25, 2.0)
 static var _tried := false
 static var _shader := RID()
 static var _pipeline := RID()

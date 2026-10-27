@@ -2219,7 +2219,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 11
+      "min_checks": 12
     },
     {
       "id": "terrain_snow_rounding",
@@ -3242,27 +3242,27 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 36,
+      "min_checks": 47,
       "timeout": 240
     },
     {
       "id": "terrain_surface_live",
       "script": "tools/tests/terrain_surface_live.gd",
       "summary": "TERRAIN_SURFACE_LIVE",
-      "contract": "Actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps, Surface materials off restores the established relief, and its help is translated.",
+      "contract": "Actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, Surface materials off restores the established relief, and its help is translated.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 20,
+      "min_checks": 29,
       "timeout": 480
     },
     {
       "id": "terrain_surface_live_1440",
       "script": "tools/tests/terrain_surface_live.gd",
       "summary": "TERRAIN_SURFACE_LIVE",
-      "contract": "At 2560×1440, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps, Surface materials off restores the established relief, and its help is translated.",
+      "contract": "At 2560×1440, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, Surface materials off restores the established relief, and its help is translated.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
@@ -3270,14 +3270,14 @@
       "args": [
         "--surface-res=2560x1440"
       ],
-      "min_checks": 20,
+      "min_checks": 29,
       "timeout": 600
     },
     {
       "id": "terrain_surface_live_2160",
       "script": "tools/tests/terrain_surface_live.gd",
       "summary": "TERRAIN_SURFACE_LIVE",
-      "contract": "At 3840×2160, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps, Surface materials off restores the established relief, and its help is translated.",
+      "contract": "At 3840×2160, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, Surface materials off restores the established relief, and its help is translated.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
@@ -3285,7 +3285,7 @@
       "args": [
         "--surface-res=3840x2160"
       ],
-      "min_checks": 20,
+      "min_checks": 29,
       "timeout": 600
     },
     {

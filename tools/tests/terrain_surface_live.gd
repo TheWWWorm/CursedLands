@@ -103,6 +103,8 @@ func run() -> void:
 	var materials:=land_materials()
 	check(not materials.is_empty() and materials.all(func(m:ShaderMaterial)->bool:return m.get_shader_parameter("surface_maps")==true \
 		and m.get_shader_parameter("surface_atlases")==t._surface_maps),"every land material binds the derived maps")
+	check(materials.all(func(m:ShaderMaterial)->bool:return m.get_shader_parameter("surface_tuning")==TerrainSurfaceMaps.tuning),
+		"every land material uses the derived-map strength")
 	var view:=Rect2i(Vector2i(resolution.x*3/10,resolution.y*3/10),Vector2i(resolution.x*4/10,resolution.y*4/10))
 	await frames(30)
 	var lit_on:=await capture("sand-raster-maps")
@@ -116,6 +118,17 @@ func run() -> void:
 	check(after>before*1.3,"loose sand gains visible fine relief: %.5f -> %.5f"%[before,after])
 	check(difference(lit_on,lit_off,view)>0.004,"derived relief changes the lit sand: %.5f"%difference(lit_on,lit_off,view))
 	check(difference(lit_on,await capture("sand-raster-restored"),view)<0.002,"re-enabling maps restores the same image")
+	# The selected strength is visibly stronger than the first, unit-gain pass.
+	var selected:=TerrainSurfaceMaps.tuning
+	TerrainSurfaceMaps.tuning=Vector4(1.0,1.0,0.11,1.0);t.apply_gfx();await frames(12)
+	check(land_materials().all(func(m:ShaderMaterial)->bool:return m.get_shader_parameter("surface_tuning")==TerrainSurfaceMaps.tuning),
+		"a strength change reaches every land material")
+	var normals_unit:=await normal_capture("sand-normals-unit-strength")
+	var unit:=detail(normals_unit,view)
+	print("TERRAIN_SURFACE_STRENGTH ",unit," -> ",after)
+	check(after>unit*1.15,"selected strength adds relief over unit gain: %.5f -> %.5f"%[unit,after])
+	TerrainSurfaceMaps.tuning=selected;t.apply_gfx();await frames(12)
+	check(difference(lit_on,await capture("sand-raster-selected-again"),view)<0.002,"restoring the strength restores the same image")
 	# Path tracing: the same maps through the traced terrain header.
 	GameData.options.merge({"pt_mode":2,"pt_accumulation":1},true);Gfx.apply_env(game._env)
 	var rt: Node=game.get_node("SceneRaytrace")
@@ -123,6 +136,14 @@ func run() -> void:
 	if rt.device!=null:
 		check(rt.device.terrain.surface==t._surface_maps,"PT retains the derived surface maps")
 		check((rt.device.terrain.data.decode_u32(44)&2)!=0,"PT terrain header enables the derived maps")
+		var header:=func()->Vector4:
+			var d: PackedByteArray=rt.device.terrain.data
+			return Vector4(d.decode_float(64),d.decode_float(68),d.decode_float(72),d.decode_float(76))
+		check(header.call().is_equal_approx(TerrainSurfaceMaps.tuning),"PT terrain header carries the derived-map strength")
+		var selected_pt:=TerrainSurfaceMaps.tuning
+		TerrainSurfaceMaps.tuning=Vector4(1.0,1.0,0.11,1.0);await frames(4)
+		check(await ready_scene(rt) and header.call().is_equal_approx(TerrainSurfaceMaps.tuning),"a strength change rebuilds the traced terrain header")
+		TerrainSurfaceMaps.tuning=selected_pt;await frames(4);await ready_scene(rt)
 		await frames(120);var traced:=await capture("sand-pt-maps")
 		var output: Image=rt.device.output.get_image();var finite:=true
 		for y in range(0,output.get_height(),7):

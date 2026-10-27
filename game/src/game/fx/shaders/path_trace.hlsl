@@ -739,6 +739,8 @@ uint4 land_layout() { return terrain_data.Load4(0); }
 float4 land_sampling() { return asfloat(terrain_data.Load4(16)); }
 uint4 land_detail() { return terrain_data.Load4(32); }
 uint4 land_extra() { return terrain_data.Load4(48); }
+// Derived-map strength: relief gain, ripple gain, ripple reach, roughness contrast.
+float4 land_tuning() { return asfloat(terrain_data.Load4(64)); }
 uint land_tile(int2 cell) {
     uint4 layout=land_layout();
     cell=clamp(cell,int2(0,0),int2(layout.xy)-1);
@@ -1204,7 +1206,8 @@ float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
 // for primary and secondary rays. Vertex-to-tile identity survives XY jitter.
 // Sand wind ripples, as GroundSurfaceShader.SURFACE_FUNCTIONS sand_ripple.
 float2 sand_ripple(float2 xz,float span) {
-    float fade=1.0-smoothstep(0.05,0.11,span);
+    float4 tuning=land_tuning();
+    float fade=1.0-smoothstep(tuning.z*0.45,tuning.z,span);
     if(fade<=0.0)return 0.0;
     uint normal_layer=land_detail().x,macro_layer=land_detail().y;
     float2 warp=normal_layer>0u?colours.SampleLevel(colour_sampler,float3(xz*0.031,normal_layer-1u),0.0).rg*2.0-1.0:0.0;
@@ -1212,7 +1215,7 @@ float2 sand_ripple(float2 xz,float span) {
     float macro=macro_layer>0u?colours.SampleLevel(colour_sampler,float3(xz*0.09,macro_layer-1u),0.0).r:0.0;
     float phase=dot(xz,dir)*(6.2831853/0.42)+3.0*macro;
     float dh=cos(phase)+0.5*cos(2.0*phase);
-    return -dir*dh*0.9*fade;
+    return -dir*dh*0.9*tuning.y*fade;
 }
 // surface_relief: derived slope in hit-UV axes (XY), coverage (Z), sand (W).
 bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale,out float4 surface_relief) {
@@ -1243,6 +1246,7 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     float coverage=0.0;float4 surface=float4(0,0,1,0);
     [branch] if((land_detail().w&2u)!=0u)surface=ground_surface(cell,clamp(local,0.0,0.99999),ground_lod,coverage);
     float sand=surface.a*coverage;
+    surface.xy*=land_tuning().x;
     // Back from local p to hit-UV axes: the tile's quarter turn, then V flip.
     float2 turned=tile_turn(surface.xy,int(code>>14u)&3);
     surface_relief=float4(turned.x,-turned.y,coverage,sand);
@@ -1289,7 +1293,9 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Terrain types supply a restrained dielectric response. Colour brightness
     // never classifies a surface as metal, ice or polished stone.
     if((land_detail().w&1u)!=0u) {
-        s.roughness=lerp(lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w),surface.z,coverage*(1.0-planes.y));
+        float base_rough=lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w);
+        float map_rough=clamp(base_rough+(surface.z-base_rough)*land_tuning().w,0.05,1.0);
+        s.roughness=lerp(base_rough,map_rough,coverage*(1.0-planes.y));
         s.metalness=0.0;s.specular=0.5;
     }
     return true;

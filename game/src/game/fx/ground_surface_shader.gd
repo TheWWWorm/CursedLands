@@ -250,6 +250,9 @@ vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
 ## TILE_FUNCTIONS consumers keep their own uniform sets and need no map.
 const SURFACE_UNIFORMS := """// RG painted slope without broad painted shading, B roughness, A loose sand.
 uniform bool surface_maps = false;
+// TerrainSurfaceMaps.tuning: relief gain, ripple gain, ripple reach (metres
+// per pixel where ripples have faded), roughness contrast around the type.
+uniform vec4 surface_tuning = vec4(1.6, 2.5, 0.25, 2.0);
 uniform sampler2DArray surface_atlases : filter_linear_mipmap_anisotropic, repeat_disable;
 """
 
@@ -311,14 +314,14 @@ vec4 ground_surface(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out float coverage) {
 const SAND_FUNCTIONS := """// World-space wind ripples on loose sand, as a tilt in world XZ. The existing
 // ground noise bends them; they fade before the wavelength can alias.
 vec2 sand_ripple(vec2 xz, float pixel_span) {
-	float fade = 1.0 - smoothstep(0.05, 0.11, pixel_span);
+	float fade = 1.0 - smoothstep(surface_tuning.z * 0.45, surface_tuning.z, pixel_span);
 	if (fade <= 0.0) { return vec2(0.0); }
 	vec2 warp = texture(detail_nm, xz * 0.031).xy * 2.0 - 1.0;
 	vec2 dir = normalize(vec2(0.8, 0.6) + 0.45 * warp);
 	float phase = dot(xz, dir) * (6.2831853 / 0.42) + 3.0 * texture(macro_tex, xz * 0.09).r;
 	// A gentle windward face and a steeper lee.
 	float dh = cos(phase) + 0.5 * cos(2.0 * phase);
-	return -dir * dh * 0.9 * fade;
+	return -dir * dh * 0.9 * surface_tuning.y * fade;
 }
 """
 

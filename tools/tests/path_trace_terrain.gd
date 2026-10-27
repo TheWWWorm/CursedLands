@@ -108,8 +108,10 @@ func build_land() -> bool:
 	var white:=Image.create(64,64,true,Image.FORMAT_RGBA8);white.fill(Color.WHITE);white.generate_mipmaps()
 	normal_texture=white.duplicate();normal_texture.fill(Color(0.75,0.5,1));normal_texture.generate_mipmaps()
 	var images: Array[Image]=[white,normal_texture]
-	var data:=PackedByteArray();data.resize(64)
-	data.encode_u32(0,land_size.x);data.encode_u32(4,land_size.y);data.encode_u32(8,64)
+	var data:=PackedByteArray();data.resize(preload("res://src/game/fx/path_trace_terrain.gd").HEADER)
+	var tuning:=TerrainSurfaceMaps.tuning
+	data.encode_float(64,tuning.x);data.encode_float(68,tuning.y);data.encode_float(72,tuning.z);data.encode_float(76,tuning.w)
+	data.encode_u32(0,land_size.x);data.encode_u32(4,land_size.y);data.encode_u32(8,data.size())
 	var code:=tile_index|(rotation<<14)
 	var tiles_data:=PackedInt32Array();tiles_data.resize(land_size.x*land_size.y)
 	tiles_data.fill(((tile_index+1)%(atlas_axis*atlas_axis))|(ground_type<<16))
