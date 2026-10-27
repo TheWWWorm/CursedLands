@@ -181,8 +181,8 @@ const OPTIONS := [
 	# clears it on key-up). Default on (user request).
 	["aim_press_once", 1, 2, 17, 3, 1],
 	# Keep the pointer inside the game window (Input.MOUSE_MODE_CONFINED).
-	["confine_mouse", 1, 2, 17, 4, 1],
-	["item_icon_fit", 1, 2, 17, 5, 1], ["ui_active_buttons", 1, 2, 17, 6, 1],
+	["confine_mouse", 1, 2, 2, 8, 1],
+	["item_icon_fit", 1, 2, 17, 4, 1], ["ui_active_buttons", 1, 2, 17, 5, 1],
 	["original_rune_layout", 1, 2, 17, 7, 0],
 	["spell_double_tap_self", 1, 2, 17, 8, 1],
 	["hide_remake_hints", 1, 2, 17, 9, 0],
@@ -192,7 +192,7 @@ const OPTIONS := [
 	# The camp's Skills/Spells screen: "Reset skills…" in place of ✓ / ✗ and
 	# training that applies on each click (CampView._immediate_training); off
 	# = the original's pending training deal without resets. Default on.
-	["skill_reset_button", 1, 2, 17, 13, 1],
+	["skill_reset_button", 1, 2, 17, 6, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -407,7 +407,7 @@ const REMAKE_OPTIONS := {
 	"r_water": ["Water", "Water and lava, reflections, contact and wakes, underwater caustics, river currents, propagating waves, waterfalls."],
 	"r_effects": ["Weather and effects", "Rain on surfaces, moving clouds and shadows, heat haze, soft and lit particles, severed limbs."],
 	"r_camera": ["Camera", "The modern camera: follow, see-through objects, speeds, the WASD controls and the turn keys."],
-	"r_interface": ["Interface and controls", "Enemy health bars, smiling portraits, the move path through objects, aim keys, keeping the mouse in the window."],
+	"r_interface": ["Interface and controls", "Enemy health bars, smiling portraits, the move path through objects, aim keys, camp buttons and skill resets."],
 	"r_game": ["Gameplay", "Fog of war in single player, the starting area on the travel map, experience for companions, revival, the game-over notice."],
 	"r_coop": ["Network and co-op", "Co-op host rules (experience, monster scaling, shared loot, player names), opening the port on the router, the browser-compatible host."],
 	"gamepad": ["Gamepad", "Controller settings (vibration, stick dead zone, pointer speed, target range, button pictures) and the button layout."],

@@ -3759,6 +3759,28 @@
       "min_checks": 72
     },
     {
+      "id": "options_rows_reachable",
+      "script": "tools/tests/options_rows_reachable.gd",
+      "summary": "OPTIONS_ROWS_REACHABLE",
+      "contract": "Every option row is shown on its options page: no two options or key bindings share a row, every row is one of the drawn rows, and no page link covers it; the skill reset button (Remake › Interface) can be selected and switched.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 487
+    },
+    {
+      "id": "options_rows_reachable_ui",
+      "script": "tools/tests/options_rows_reachable_ui.gd",
+      "summary": "OPTIONS_ROWS_REACHABLE_UI",
+      "contract": "The moved skill reset button and Keep mouse in window rows show localized EN/RU/DE labels, help and choices that fit at 1280x720, 2560x1440 and 3840x2160, with native-resolution captures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 126
+    },
+    {
       "id": "interface_board_textures",
       "script": "tools/tests/interface_board_textures.gd",
       "summary": "INTERFACE_BOARD_TEXTURES",

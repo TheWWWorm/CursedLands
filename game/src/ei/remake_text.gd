@@ -2585,7 +2585,7 @@ const TEXTS := {
 	"Weather and effects": ["Погода и эффекты", "Wetter und Effekte"],
 	"The modern camera: follow, see-through objects, speeds, the WASD controls and the turn keys.": ["Современная камера: следование, прозрачные объекты, скорости, управление WASD и клавиши поворота.", "Die moderne Kamera: Folgen, durchsichtige Objekte, Geschwindigkeiten, die WASD-Steuerung und die Drehtasten."],
 	"Interface and controls": ["Интерфейс и управление", "Oberfläche und Steuerung"],
-	"Enemy health bars, smiling portraits, the move path through objects, aim keys, keeping the mouse in the window.": ["Полоски здоровья врагов, улыбки на портретах, путь сквозь объекты, клавиши прицеливания, мышь в пределах окна.", "Gesundheitsbalken der Gegner, lächelnde Porträts, der Laufweg durch Objekte, Zieltasten, die Maus im Fenster halten."],
+	"Enemy health bars, smiling portraits, the move path through objects, aim keys, camp buttons and skill resets.": ["Полоски здоровья врагов, улыбки на портретах, путь сквозь объекты, клавиши прицеливания, кнопки лагеря и сброс навыков.", "Gesundheitsbalken der Gegner, lächelnde Porträts, der Laufweg durch Objekte, Zieltasten, Lagerschaltflächen und das Zurücksetzen von Fertigkeiten."],
 	"Gameplay": ["Игровой процесс", "Spielablauf"],
 	"Fog of war in single player, the starting area on the travel map, experience for companions, revival, the game-over notice.": ["Туман войны в одиночной игре, начальная область на карте путешествий, опыт спутников, оживление, извещение о конце игры.", "Nebel des Krieges im Einzelspiel, das Startgebiet auf der Reisekarte, Erfahrung für Gefährten, Wiederbelebung, der Spielende-Hinweis."],
 	"Network and co-op": ["Сеть и совместная игра", "Netzwerk und Koop"],
