@@ -40,9 +40,25 @@ static func _be32(data: PackedByteArray, p: int) -> int:
 	return (data[p] << 24) | (data[p + 1] << 16) | (data[p + 2] << 8) | data[p + 3]
 
 
+## Every chunk fits the file and IEND is present. Truncated packs are
+## rejected here instead of producing engine decode errors.
+static func _png_complete(data: PackedByteArray) -> bool:
+	var p := PNG_SIGNATURE.size()
+	while p + 12 <= data.size():
+		var end := p + 12 + _be32(data, p)
+		if end > data.size():
+			return false
+		if data[p + 4] == 0x49 and data[p + 5] == 0x45 and data[p + 6] == 0x4E and data[p + 7] == 0x44:   # IEND
+			return true
+		p = end
+	return false
+
+
 static func _decode_png(data: PackedByteArray) -> Image:
 	var size := image_size(data)
 	if size.x <= 0 or size.y <= 0 or size.x > MAX_SIDE or size.y > MAX_SIDE or size.x * size.y > MAX_PIXELS:
+		return null
+	if not _png_complete(data):
 		return null
 	var img := Image.new()
 	if img.load_png_from_buffer(data) != OK or img.is_empty():

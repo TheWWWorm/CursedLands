@@ -60,7 +60,7 @@ func _ready() -> void:
 		for d: Dictionary in fx.map_lights: d.light.visible = true
 		var a := luminance(lit, rect)
 		var b := luminance(dark, rect)
-		print("MENU_SIGNPOST_LIGHTS hour=", hour, " lit=", a, " unlit=", b, " rect=", rect)
+		print("Signpost light sample hour=", hour, " lit=", a, " unlit=", b, " rect=", rect)
 		var label := "%02d" % int(hour)
 		check(lit.save_png("user://menu-%s-lit.png" % label) == OK and dark.save_png("user://menu-%s-unlit.png" % label) == OK, "captures at " + label)
 		if hour < 6.0 or hour > 21.0:

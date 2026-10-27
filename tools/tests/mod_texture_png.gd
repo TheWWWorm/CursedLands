@@ -27,7 +27,10 @@ func _ready() -> void:
 		and decoded.get_pixel(5, 5).is_equal_approx(green), "PNG bytes decode as an RGBA texture")
 	var mipped := EIMmp.decode_texture(sample, true)
 	check(mipped != null and mipped.has_mipmaps() and mipped.get_pixel(0, 0).is_equal_approx(green), "PNG texture path generates mipmaps")
+	# Rejected before the engine decoder, which would log errors (the runner fails on them).
+	check(EIMmp._png_complete(sample) and not EIMmp._png_complete(sample.slice(0, sample.size() - 4)), "PNG chunk layout is checked")
 	check(EIMmp.decode(sample.slice(0, 40)) == null, "truncated PNG is rejected without a texture")
+	check(EIMmp.decode(sample.slice(0, sample.size() - 4)) == null, "PNG cut inside its last chunk is rejected without a texture")
 	var huge := sample.duplicate()
 	huge.encode_u32(16, 0x00000140)   # IHDR width 0x40010000 (big-endian), beyond the MMP bound
 	check(EIMmp.decode(huge) == null, "oversized PNG header is rejected before decoding")

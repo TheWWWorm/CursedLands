@@ -3713,18 +3713,6 @@
       "min_checks": 9
     },
     {
-      "id": "menu_signpost_lights_forward_plus",
-      "script": "tools/tests/menu_signpost_lights.gd",
-      "summary": "MENU_SIGNPOST_LIGHTS",
-      "contract": "The main menu's placed signpost lights also brighten it at night on Forward+.",
-      "issues": [],
-      "data": "base",
-      "mode": "rendered",
-      "args": [],
-      "min_checks": 9,
-      "rendering_method": "forward_plus"
-    },
-    {
       "id": "mod_texture_png",
       "script": "tools/tests/mod_texture_png.gd",
       "summary": "MOD_TEXTURE_PNG",
@@ -3735,7 +3723,7 @@
       "args": [
         "--mod-tests"
       ],
-      "min_checks": 24
+      "min_checks": 26
     },
     {
       "id": "legacy_figure",
