@@ -107,7 +107,7 @@ For slow save loading, select `save_load_render_cache` and
 they check texture reuse and fresh world ownership, and the PT case also checks
 shared trace/NRD programs, private denoising history and final program disposal.
 `authority_terrain_loading` compares the actual simulation-only map with a
-presentation map across three original zones: terrain arrays, water changes,
+presentation map across four original zones: terrain arrays, water changes,
 object floors and all eight navigation classes must match, with no terrain
 meshes or textures allocated by the authority. `terrain_cliff_reuse` covers
 exact rock/snow geometry, input invalidation, isolated mutable state and cache
@@ -127,6 +127,27 @@ cases include `terrain_color_native`, `terrain_color_lifecycle`,
 records entry, first worker load and subsequent load times; use a GPU Lab heavy
 job and serialize comparisons on the same assigned GPU. See the
 [loading investigation](validation/loading-performance-2026-10-26/README.md).
+
+`shader_warmup_depth_pass` switches the real main-viewport SSAO/depth pass
+under forced and deferred loading, then reveals and moves hidden geometry.
+It requires no new draw pipeline and reuses the paired preparation after PT
+activation. `shader_warmup_formats` verifies small representatives retain the
+full vertex layout of large indexed/compressed/custom/bone meshes without
+changing their source. `terrain_shader_selection` checks one selected program
+on fresh terrain and all 16 live water-option combinations against the old
+final shader composition. `loading_worker_budget` holds real background jobs
+to verify the four-thread pool allows two while retaining urgent capacity.
+`terrain_color_render_thread` occupies the other workers and makes the render
+worker wait cooperatively: native terrain bakes must stay off that worker,
+produce exact pixels, keep the two-job bound and join during teardown.
+
+Related `water_current`, `water_caustics` and `water_wave_render` checks cover
+analytic current parity, live caustic receivers/clocks and rendered wakes.
+The soft-ground caustic fixture uses zone11's authored snow and adjacent water;
+zone15's tropical shore ceased to be eligible when deformation became snow-only.
+No ground types, effects or pixel assertions are substituted. The fresh-load
+and immediate-traversal comparison is documented in the
+[hitch investigation](validation/fresh-loading-hitch-2026-10-27/README.md).
 
 `wisp_loading` exercises the real Autochess recruitment card and combat meshes
 after opening preparation, including all three native wisp forms. It requires

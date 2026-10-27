@@ -119,3 +119,7 @@ at `local/validation/wisp-loading-20261027/`. The maintenance ledger records
 local-main integration and removal of task-owned export staging, profiles,
 reproducible caches and duplicated test libraries. Shared engines, original
 assets, unique saves and reference evidence are preserved.
+
+The [fresh-loading follow-up](../fresh-loading-hitch-2026-10-27/README.md)
+traces the remaining first-movement hitch to a missing main-depth pipeline and
+records the subsequent correction and empty-profile loading comparison.

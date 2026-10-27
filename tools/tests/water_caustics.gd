@@ -144,13 +144,17 @@ func fixture() -> void:
 	view.render_target_update_mode = SubViewport.UPDATE_ALWAYS; view.msaa_3d = Viewport.MSAA_DISABLED
 	add_child(view)
 	var world := GameWorld.new(); view.add_child(world); world.set_process(false); world.set_physics_process(false)
-	var map_name := "zone15" if OS.get_cmdline_user_args().has("--caustic-zone15") or OS.get_cmdline_user_args().has("--caustic-soft-ground") else "zone1"
+	# Deformation now applies to authored snow only. Zone15's tropical shore
+	# no longer supplies a valid footprint; zone11 has dry snow and a water
+	# receiver in the same native sector, without rewriting ground types.
+	var soft_ground := OS.get_cmdline_user_args().has("--caustic-soft-ground")
+	var map_name := "zone11" if soft_ground else "zone15" if OS.get_cmdline_user_args().has("--caustic-zone15") else "zone1"
 	# Mirror gameplay's World -> Map -> Terrain hierarchy. A direct child
 	# accidentally hides bugs in terrain's owning-world lookup.
 	var map := EIMapScene.new(); world.add_child(map); world.map = map
 	var t := EITerrain.load_map(map_name); world.terrain = t; map.terrain = t; map.add_child(t); t.set_process(false)
 	check(t._caustics == null and t._land_mat.shader == EITerrain._land_shader,"default-off terrain uses the original program")
-	var focus := Vector3(151.5,3.591615,-176.5) if map_name == "zone15" else Vector3(132.5,5.758586,-98.5)
+	var focus := Vector3(241,4.658753,-179) if soft_ground else Vector3(151.5,3.591615,-176.5) if map_name == "zone15" else Vector3(132.5,5.758586,-98.5)
 	var camera := Camera3D.new(); camera.far = 50.0; view.add_child(camera)
 	camera.position = focus+Vector3(4,6,6); camera.look_at(focus-Vector3.UP); camera.current = true
 	var env := WorldEnvironment.new(); env.environment = Environment.new(); Gfx.setup_original_env(env.environment)
@@ -245,4 +249,5 @@ func _ready() -> void:
 	await fixture()
 	TexUpscale.shutdown(); await frames(16)
 	FileAccess.open("user://water-caustics.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"rows":rows},"\t")+"\n")
+	print("WATER_CAUSTICS ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

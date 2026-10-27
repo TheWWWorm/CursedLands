@@ -3566,6 +3566,97 @@
       "args": [],
       "min_checks": 41,
       "timeout": 180
+    },
+    {
+      "id": "terrain_shader_selection",
+      "script": "tools/tests/terrain_shader_selection.gd",
+      "summary": "TERRAIN_SHADER_SELECTION",
+      "min_checks": 60,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Fresh real terrain creates only its selected water program; every live option combination retains its previous shader source, samplers and gameplay geometry."
+    },
+    {
+      "id": "shader_warmup_formats",
+      "script": "tools/tests/shader_warmup_formats.gd",
+      "summary": "SHADER_WARMUP_FORMATS",
+      "min_checks": 120,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Large source meshes warm one collapsed primitive while preserving indexed, compressed, custom, bone and primitive layouts and leaving source arrays untouched."
+    },
+    {
+      "id": "shader_warmup_depth_pass",
+      "script": "tools/tests/shader_warmup_depth_pass.gd",
+      "summary": "SHADER_WARMUP_DEPTH_PASS",
+      "min_checks": 10,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Forced and deferred preparation cover the depth-only main pass selected when RT/PT replaces SSAO, before hidden ground is revealed or moved."
+    },
+    {
+      "id": "loading_worker_budget",
+      "script": "tools/tests/loading_worker_budget.gd",
+      "summary": "LOADING_WORKER_BUDGET",
+      "min_checks": 4,
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "contract": "The four-worker desktop pool admits two independent background jobs while reserving capacity for urgent work and joining all tasks."
+    },
+    {
+      "id": "water_current",
+      "script": "tools/tests/water_current.gd",
+      "summary": "WATER_CURRENT",
+      "min_checks": 8600,
+      "data": "base",
+      "mode": "headless",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "Existing analytic and real-map current-field parity, level changes, coalescing and teardown survive lazy water shader selection."
+    },
+    {
+      "id": "water_caustics",
+      "script": "tools/tests/water_caustics.gd",
+      "summary": "WATER_CAUSTICS",
+      "min_checks": 33,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--caustic-soft-ground"
+      ],
+      "contract": "Existing water caustics preserve eligible terrain, exclusions, live clocks and authored snow receiver bindings through shader changes."
+    },
+    {
+      "id": "water_wave_render",
+      "script": "tools/tests/water_wave_render.gd",
+      "summary": "WATER_WAVE_RENDER",
+      "min_checks": 20,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--with-current"
+      ],
+      "contract": "Existing rendered wakes compose with river currents, preserve scheduling and clear their history when disabled."
+    },
+    {
+      "id": "terrain_color_render_thread",
+      "script": "tools/tests/terrain_color_render_thread.gd",
+      "summary": "TERRAIN_COLOR_RENDER_THREAD",
+      "min_checks": 7,
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "contract": "A render-worker cooperative wait cannot steal expensive terrain bakes; bounded runtime work and exact results survive teardown."
     }
   ]
 }

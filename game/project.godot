@@ -74,6 +74,11 @@ timers/tooltip_delay_sec=1000000.0
 ; pools make small per-frame jobs contend more than they compute.
 worker_pool/max_threads.linux=4
 worker_pool/max_threads.windows=4
+; The default 0.3 rounds down to one background worker in this bounded pool.
+; Two can compile independent pipelines during fresh loading while two remain
+; available to urgent work. Keep the existing total and streaming-job bounds.
+worker_pool/low_priority_thread_ratio.linux=0.5
+worker_pool/low_priority_thread_ratio.windows=0.5
 
 [rendering]
 

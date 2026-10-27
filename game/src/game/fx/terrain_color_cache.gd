@@ -39,7 +39,28 @@ class BakeJob extends RefCounted:
 	var sector:Vector2i
 	var density:int
 	var pixels:Image
+	var _thread:Thread
+	var _task: int = -1
 	func run()->void:pixels=field.bake(sector,density)
+	func start(preparing:bool)->bool:
+		if preparing or not Portability.threads():
+			_task=WorkerThreadPool.add_task(run,preparing,"terrain color")
+			return _task>=0
+		# The render worker cooperatively takes pool tasks while waiting.
+		# A native bake can take hundreds of milliseconds: keep runtime
+		# bakes off that queue, even when their priority would be low.
+		# MAX_JOBS still bounds both CPU work and temporary image memory.
+		_thread=Thread.new()
+		if _thread.start(run,Thread.PRIORITY_LOW)!=OK:
+			_thread=null;return false
+		return true
+	func completed()->bool:
+		return not _thread.is_alive() if _thread!=null else _task<0 or WorkerThreadPool.is_task_completed(_task)
+	func join()->void:
+		if _thread!=null:
+			_thread.wait_to_finish();_thread=null
+		elif _task>=0:
+			WorkerThreadPool.wait_for_task_completion(_task);_task=-1
 
 static func available(t:EITerrain=null)->bool:
 	var args:=OS.get_cmdline_user_args()
@@ -203,8 +224,8 @@ func _start_jobs(preparing:=false)->void:
 			if _install(key,record.node,page.texture,page.bytes):reused+=1
 			continue
 		var job:=BakeJob.new();job.field=_field;job.sector=key;job.density=_density()
-		var task:=WorkerThreadPool.add_task(job.run,preparing,"terrain color")
-		_jobs.append({"task":task,"job":job,"key":key,"node":record.node});_building[key]=true
+		if not job.start(preparing):_failed[key]=true;continue
+		_jobs.append({"job":job,"key":key,"node":record.node});_building[key]=true
 
 func _evict()->bool:
 	var victim:Variant=null;var oldest:=2147483647
@@ -222,8 +243,8 @@ func _finish(wait_all:=false)->void:
 	var uploaded:=false
 	for i in range(_jobs.size()-1,-1,-1):
 		var row:Dictionary=_jobs[i]
-		if not wait_all and (uploaded or not WorkerThreadPool.is_task_completed(row.task)):continue
-		WorkerThreadPool.wait_for_task_completion(row.task)
+		if not wait_all and (uploaded or not row.job.completed()):continue
+		row.job.join()
 		_jobs.remove_at(i);_building.erase(row.key)
 		var pixels:Image=row.job.pixels
 		if pixels==null:_failed[row.key]=true;discarded+=1;continue
@@ -249,7 +270,7 @@ func prepare(camera:Camera3D)->void:
 	if not _enabled:return
 	# Loading joins these independent native jobs before revealing the scene.
 	# Use idle CPU cores here, with a separate bound on temporary image memory;
-	# ordinary camera streaming keeps its small background-task allowance.
+	# ordinary camera streaming keeps its separate, small worker allowance.
 	_select(camera);_start_jobs(true)
 	while not _jobs.is_empty():
 		_finish(true);NetStatus.keep_alive();_start_jobs(true)
@@ -264,7 +285,7 @@ func _process(dt:float)->void:
 
 func clear()->void:
 	_enabled=false
-	for row in _jobs:WorkerThreadPool.wait_for_task_completion(row.task)
+	for row in _jobs:row.job.join()
 	_jobs.clear();_building.clear();_failed.clear();_wanted.clear();_wanted_keys.clear()
 	for key:Vector2i in _resident:
 		_refresh_soft(key,true)
