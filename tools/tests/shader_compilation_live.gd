@@ -48,6 +48,7 @@ var posted := 0
 var first_draws := {}
 var watch_first_draw := false
 var material_capture := false
+var material_previous_completed := 0
 var previous_observer := Callable()
 var original_warmup := true
 var original_deferred := false
@@ -134,12 +135,16 @@ func on_progress(value: Dictionary) -> void:
 	row["saved_pause"] = bool(session.saved_play_clock().paused)
 	progress_rows.append(row)
 	latest_phase = String(value.phase)
-	if case_name == "materials" and latest_phase == ShaderCompilationScreen.MATERIALS \
-			and int(value.completed) >= 4 and int(value.completed) < int(value.total) and not material_capture:
-		material_capture = true
-		# The preceding batch's progress was presented before this completed
-		# 3D draw. This callback precedes presentation of the new number.
-		capture("materials-in-progress", true)
+	if case_name == "materials" and latest_phase == ShaderCompilationScreen.MATERIALS:
+		var completed := int(value.completed)
+		if completed > material_previous_completed and material_previous_completed > 0 \
+				and material_previous_completed < int(value.total) and not material_capture:
+			material_capture = true
+			# Read the preceding batch's presented progress. The first advance
+			# has not presented its number yet, regardless of its batch size;
+			# a second advance may complete the list while the image is mid-way.
+			capture("materials-in-progress", true)
+		material_previous_completed = maxi(material_previous_completed, completed)
 
 
 func _posted() -> void:
@@ -299,6 +304,7 @@ func setup() -> void:
 
 func run_materials() -> void:
 	case_name = "materials"
+	material_previous_completed = 0
 	var before_draws := int(probe.snapshot().draws)
 	ShaderWarmup.enabled = true
 	ShaderWarmup._warmed.clear()
@@ -313,17 +319,18 @@ func run_materials() -> void:
 	var total := 0
 	var ordered := true
 	var covered := true
+	var batch := ShaderWarmup.FORWARD_BATCH if RenderingServer.get_current_rendering_method() == "forward_plus" else ShaderWarmup.BATCH
 	for row: Dictionary in progress_rows:
 		if row["case"] != case_name or row.phase != ShaderCompilationScreen.MATERIALS: continue
 		var completed := int(row.completed)
 		if completed <= previous_count: continue
 		advances += 1
-		ordered = ordered and int(row.scene_draws) > previous_draws and completed-previous_count <= ShaderWarmup.BATCH
+		ordered = ordered and int(row.scene_draws) > previous_draws and completed-previous_count <= batch
 		covered = covered and bool(row.screen_active)
 		previous_count = completed
 		previous_draws = int(row.scene_draws)
 		total = int(row.total)
-	check(advances > 1 and total > ShaderWarmup.BATCH and material_capture, "multiple real material batches produce intermediate progress")
+	check(advances > 1 and total > batch and material_capture, "multiple real material batches produce intermediate progress")
 	check(ordered and covered, "each completed-material advance follows a completed scene draw under the cover")
 	check(total > 0 and previous_count == total and ShaderWarmup.last_count == total, "material progress completes the actual warmup list")
 	LoadingScreen.end()

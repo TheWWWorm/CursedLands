@@ -34,7 +34,8 @@ const AUTHORED_SECTOR_VERTICES := 16 * 16 * 9
 const MAX_DENSE_SNOW := 128
 
 
-func _init(terrain: EITerrain, field: TerrainCliff) -> void:
+func _init(terrain: EITerrain = null, field: TerrainCliff = null) -> void:
+	if terrain == null or field == null: return
 	grid_size = field.grid_size
 	tile_size = field.tile_size
 	_allowed = field.geometry_eligible

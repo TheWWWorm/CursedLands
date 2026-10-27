@@ -81,11 +81,11 @@ func _progress(value: Dictionary) -> void:
 	rows.append(latest.duplicate(true))
 
 
-func capture(label: String) -> void:
+func capture(label: String, wait_for_cover := false) -> bool:
 	var image := get_viewport().get_texture().get_image()
-	check(image != null and not image.is_empty(), label+": rendered image is readable")
-	if image == null or image.is_empty(): return
-	check(image.save_png(out.path_join(label+".png")) == OK, label+": screenshot saved")
+	if image == null or image.is_empty():
+		if not wait_for_cover: check(false, label+": rendered image is readable")
+		return false
 	var error := 0.0
 	for point: Vector2 in [Vector2(0.03,0.03),Vector2(0.97,0.03),Vector2(0.03,0.97),Vector2(0.97,0.97)]:
 		var color := image.get_pixel(int(point.x*image.get_width()),int(point.y*image.get_height()))
@@ -96,9 +96,16 @@ func capture(label: String) -> void:
 		for x in range(image.get_width()/4,image.get_width()*3/4,4):
 			var color := image.get_pixel(x,y)
 			if maxf(color.r,maxf(color.g,color.b)) > 0.25: ink += 1
+	# displayed() changes on the main thread; the first queued post-draw
+	# signal can still contain the previous frame. Observe the actual cover
+	# before selecting the initial capture, as the campaign fixture does.
+	if wait_for_cover and (error >= 0.04 or ink <= 25): return false
+	check(true, label+": rendered image is readable")
+	check(image.save_png(out.path_join(label+".png")) == OK, label+": screenshot saved")
 	check(error < 0.04 and ink > 25, label+": actual preparation message is opaque and legible")
 	captures.append({"file":label+".png","background_max_error":error,"text_bar_samples":ink,
 		"scene_draws":probe.count(),"progress":latest.duplicate(true)})
+	return true
 
 
 func _posted() -> void:
@@ -106,10 +113,10 @@ func _posted() -> void:
 	if not screen.field._warming: ready_under_cover += 1
 	if case_name != "normal" or latest.is_empty(): return
 	if not first_capture:
-		first_capture = true
-		check(int(latest.get("elapsed_ms",0)) >= ShaderCompilationScreen.SHOW_DELAY_MS,
-			"long preparation shows progress only after the shared quiet window")
-		capture("arena-before-first-draw")
+		first_capture = capture("arena-before-first-draw", true)
+		if first_capture:
+			check(int(latest.get("elapsed_ms",0)) >= ShaderCompilationScreen.SHOW_DELAY_MS,
+				"long preparation shows progress only after the shared quiet window")
 	elif not middle_capture and int(latest.get("completed",0)) > 0 \
 			and int(latest.get("completed",0)) < int(latest.get("total",0)):
 		middle_capture = true

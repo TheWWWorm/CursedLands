@@ -5,8 +5,16 @@ extends Node
 ## Only immutable tile color blending moves out of the per-fragment hot path.
 const BUDGET_BYTES:=128*1024*1024
 const MAX_JOBS:=2
+const PREPARE_JOBS:=8
+const PREPARE_BYTES:=64*1024*1024
 const SECTOR_TILES:=16
 const GUTTER_TILES:=1
+# Content-addressed immutable textures survive a save/zone rebuild. They own
+# no terrain, materials or worker jobs; active worlds keep their own uniforms.
+# A single shared LRU has the same bound as one world's resident page set.
+static var _shared_pages := {}
+static var _shared_bytes := 0
+var _source_key := ""
 var terrain:EITerrain
 var _field:RefCounted
 var _shader:Shader
@@ -24,6 +32,7 @@ var _poll:=0.0
 var _enabled:=false
 var built:=0
 var discarded:=0
+var reused:=0
 
 class BakeJob extends RefCounted:
 	var field:RefCounted
@@ -68,6 +77,7 @@ func refresh()->void:
 		_field=ClassDB.instantiate("TerrainColorField")
 		if not _field.configure(images,terrain.land_tile,Vector2i(terrain.sectors_x*16,terrain.sectors_y*16),terrain.texture_size,terrain.tile_size,EITerrain.TERRAIN_GUTTER,not Portability.compatibility()):
 			_field=null;_enabled=false;return
+		_source_key=source_key(images,terrain.land_tile,Vector2i(terrain.sectors_x*16,terrain.sectors_y*16),terrain.texture_size,terrain.tile_size,EITerrain.TERRAIN_GUTTER,not Portability.compatibility())
 		_sectors.clear()
 		for node in terrain.get_children():
 			if not (node is EITerrainSector or node is MeshInstance3D) or not String(node.name).begins_with("Sector_"):continue
@@ -147,14 +157,53 @@ func _select(camera:Camera3D)->void:
 func _density()->int:
 	return clampi((terrain.tile_size-16)*(terrain._atlas_source_size/terrain.texture_size)*(2 if terrain._atlas_hd else 1),16,192)
 
-func _start_jobs()->void:
+## Hash exactly the native bake inputs, including authored/replacement pixels
+## and sampling space. Map names or graphics revisions alone are insufficient.
+static func source_key(images:Array[Image],tiles:PackedInt32Array,size:Vector2i,source_size:int,tile_size:int,gutter:int,linear:bool)->String:
+	var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256)
+	digest.update(var_to_bytes([size,source_size,tile_size,gutter,linear,images.size()]))
+	digest.update(tiles.to_byte_array())
+	for pixels:Image in images:
+		digest.update(var_to_bytes([pixels.get_size(),pixels.get_format(),pixels.has_mipmaps()]))
+		digest.update(pixels.get_data())
+	return digest.finish().hex_encode()
+
+func _page_key(key:Vector2i)->String:
+	return "%s:%d:%d:%d"%[_source_key,key.x,key.y,_density()]
+
+static func _remember(key:String,texture:Texture2D,bytes:int)->void:
+	if bytes<=0 or bytes>BUDGET_BYTES:return
+	if _shared_pages.has(key):
+		_shared_bytes-=int(_shared_pages[key].bytes);_shared_pages.erase(key)
+	while not _shared_pages.is_empty() and (_shared_bytes+bytes>BUDGET_BYTES or _shared_pages.size()>=64):
+		var oldest:String=_shared_pages.keys()[0]
+		_shared_bytes-=int(_shared_pages[oldest].bytes);_shared_pages.erase(oldest)
+	_shared_pages[key]={"texture":texture,"bytes":bytes};_shared_bytes+=bytes
+
+static func clear_shared()->void:
+	_shared_pages.clear();_shared_bytes=0
+
+func _job_limit(preparing:bool)->int:
+	if not preparing or Portability.handheld() or not Portability.threads():return MAX_JOBS
+	var side:=_density()*18
+	var page_bytes:=side*side*4*4/3+64
+	return clampi(mini(OS.get_processor_count(),PREPARE_BYTES/page_bytes),1,PREPARE_JOBS)
+
+func _start_jobs(preparing:=false)->void:
 	if not _enabled:return
+	var limit:=_job_limit(preparing)
 	for record:Dictionary in _wanted:
-		if _jobs.size()>=MAX_JOBS:return
+		if _jobs.size()>=limit:return
 		var key:Vector2i=record.key
 		if _resident.has(key) or _building.has(key) or _failed.has(key):continue
+		var page_key:=_page_key(key)
+		if _shared_pages.has(page_key):
+			var page:Dictionary=_shared_pages[page_key]
+			_shared_pages.erase(page_key);_shared_pages[page_key]=page
+			if _install(key,record.node,page.texture,page.bytes):reused+=1
+			continue
 		var job:=BakeJob.new();job.field=_field;job.sector=key;job.density=_density()
-		var task:=WorkerThreadPool.add_task(job.run,false,"terrain color")
+		var task:=WorkerThreadPool.add_task(job.run,preparing,"terrain color")
 		_jobs.append({"task":task,"job":job,"key":key,"node":record.node});_building[key]=true
 
 func _evict()->bool:
@@ -180,21 +229,30 @@ func _finish(wait_all:=false)->void:
 		if pixels==null:_failed[row.key]=true;discarded+=1;continue
 		if not _wanted_keys.has(row.key) or not is_instance_valid(row.node):discarded+=1;continue
 		var bytes:=pixels.get_data().size()
-		while _bytes+bytes>BUDGET_BYTES and _evict():pass
-		if _bytes+bytes>BUDGET_BYTES:_failed[row.key]=true;discarded+=1;continue
-		var material:=ShaderMaterial.new();material.shader=_shader;_copy_parameters(material)
-		material.set_shader_parameter("baked_ground",ImageTexture.create_from_image(pixels))
-		material.set_shader_parameter("bake_origin",Vector2(row.key*16-Vector2i.ONE))
-		material.set_shader_parameter("bake_span",Vector2(18,18))
-		row.node.set_surface_override_material(0,material)
-		_resident[row.key]={"node":row.node,"material":material,"bytes":bytes,"used":_serial};_bytes+=bytes;built+=1;uploaded=true
-		_refresh_soft(row.key)
+		var texture:=ImageTexture.create_from_image(pixels)
+		if _install(row.key,row.node,texture,bytes):
+			_remember(_page_key(row.key),texture,bytes);built+=1;uploaded=true
+
+func _install(key:Vector2i,node:Node3D,texture:Texture2D,bytes:int)->bool:
+	while _bytes+bytes>BUDGET_BYTES and _evict():pass
+	if _bytes+bytes>BUDGET_BYTES:_failed[key]=true;discarded+=1;return false
+	var material:=ShaderMaterial.new();material.shader=_shader;_copy_parameters(material)
+	material.set_shader_parameter("baked_ground",texture)
+	material.set_shader_parameter("bake_origin",Vector2(key*16-Vector2i.ONE))
+	material.set_shader_parameter("bake_span",Vector2(18,18))
+	node.set_surface_override_material(0,material)
+	_resident[key]={"node":node,"material":material,"bytes":bytes,"used":_serial};_bytes+=bytes
+	_refresh_soft(key)
+	return true
 
 func prepare(camera:Camera3D)->void:
 	if not _enabled:return
-	_select(camera);_start_jobs()
+	# Loading joins these independent native jobs before revealing the scene.
+	# Use idle CPU cores here, with a separate bound on temporary image memory;
+	# ordinary camera streaming keeps its small background-task allowance.
+	_select(camera);_start_jobs(true)
 	while not _jobs.is_empty():
-		_finish(true);NetStatus.keep_alive();_start_jobs()
+		_finish(true);NetStatus.keep_alive();_start_jobs(true)
 
 func _process(dt:float)->void:
 	if not _enabled:return
@@ -212,6 +270,6 @@ func clear()->void:
 		_refresh_soft(key,true)
 		var row:Dictionary=_resident[key]
 		if is_instance_valid(row.node) and row.node.get_surface_override_material(0)==row.material:row.node.set_surface_override_material(0,null)
-	_resident.clear();_bytes=0;_field=null;_shader=null;_shader_source="";_sectors.clear()
+	_resident.clear();_bytes=0;_field=null;_shader=null;_shader_source="";_source_key="";_sectors.clear()
 
 func _exit_tree()->void:clear()

@@ -98,6 +98,44 @@ a failure, run the new check against the failing production build before the fix
 when practical. Keep expected baseline failures separate from acceptance results.
 Register the check in a runnable selection and record required data and limits.
 
+For slow save loading, select `save_load_render_cache` and
+`save_load_render_cache_raster`. Both reload through the real authority worker;
+they check texture reuse and fresh world ownership, and the PT case also checks
+shared trace/NRD programs, private denoising history and final program disposal.
+`authority_terrain_loading` compares the actual simulation-only map with a
+presentation map across three original zones: terrain arrays, water changes,
+object floors and all eight navigation classes must match, with no terrain
+meshes or textures allocated by the authority. `terrain_cliff_reuse` covers
+exact rock/snow geometry, input invalidation, isolated mutable state and cache
+bounds. `terrain_color_loading` compares concurrent native bakes with serial
+pixels, checks temporary image memory and preserves the live-streaming limit.
+`terrain_cliff_disk` and `terrain_cliff_disk_rendered` drop process-local state
+and check persisted rock/snow geometry, exact uploaded pixels, content-key
+binding, corrupt-file recovery and disk limits. `shader_warmup_loading` counts
+real render-thread draws and checks that revealed source meshes require no new
+draw pipelines; every progress advance must still follow four completed draws.
+`terrain_color_reuse` and `terrain_color_reuse_compatibility` exercise native
+baking, changed inputs, current-world uniforms and bounded eviction. Related
+cases include `terrain_color_native`, `terrain_color_lifecycle`,
+`path_trace_nrd_device`, `path_trace_recenter_programs`,
+`path_trace_loading_recenter`, `path_trace_retirement` and
+`raytrace_retirement_budget`. The optional `tools/benchmarks/save_loading.gd`
+records entry, first worker load and subsequent load times; use a GPU Lab heavy
+job and serialize comparisons on the same assigned GPU. See the
+[loading investigation](validation/loading-performance-2026-10-26/README.md).
+
+`wisp_loading` exercises the real Autochess recruitment card and combat meshes
+after opening preparation, including all three native wisp forms. It requires
+completed preview draws, no first-use draw/surface/mesh compilation, independent
+crystal phases, shader invalidation, cancellation, re-entry and synchronous
+preparation beneath a hidden campaign HUD. Related registered checks are
+`wisp_native_callbacks`, `wisp_combat`, `wisp_visibility` and `wisp_visibility_gl`.
+`wisp_loading_lia` checks the distinct LiA catalog, where the base Autochess
+roster is unavailable: forced and deferred loading skip the absent wisp without
+creating a viewport, marking unrendered content ready or retaining a cover.
+The arena progress fixture waits for the actual first covered image before
+capturing it; its required captures and exact pixel thresholds are unchanged.
+
 The [October 25 audit](validation/regression-audit-2026-10-25/README.md) links the
 tested behaviors and remaining gaps. Native Windows driver/frame-generation,
 Android, internet co-op and full campaign playthroughs remain separate qualification

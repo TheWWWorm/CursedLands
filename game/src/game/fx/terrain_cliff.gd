@@ -6,6 +6,7 @@ const Tiles = preload("res://src/game/fx/terrain_cliff_tiles.gd")
 const CliffShader = preload("res://src/game/fx/terrain_cliff_shader.gd")
 const Blends = preload("res://src/game/fx/terrain_cliff_blends.gd")
 const WallMesh = preload("res://src/game/fx/terrain_cliff_mesh.gd")
+const Cache = preload("res://src/game/fx/terrain_cliff_cache.gd")
 const MAX_VERTICES := 1100000
 var tiles: ImageTexture
 var flatness: ImageTexture
@@ -25,6 +26,36 @@ var examples: Array[Dictionary] = []
 var _shaders := {}
 var geometry: RefCounted
 var _snow_tall := false
+var _cache_key := ""
+var reused := false
+
+
+static func create(terrain: EITerrain, verified: Dictionary = {}) -> TerrainCliff:
+	var identity := Cache.key(terrain, verified)
+	var cached := Cache.take(identity)
+	var field: TerrainCliff
+	if cached.is_empty():
+		field = TerrainCliff.new(terrain, verified)
+	else:
+		field = TerrainCliff.new()
+		for property: String in cached.state.field:
+			field.set(property, cached.state.field[property])
+		field.tiles = cached.textures[0]
+		field.flatness = cached.textures[1]
+		field.blends = cached.textures[2]
+		if not cached.state.geometry.is_empty():
+			field.geometry = WallMesh.new()
+			for property: String in cached.state.geometry:
+				field.geometry.set(property, cached.state.geometry[property])
+		field.reused = true
+	field._cache_key = identity
+	return field
+
+
+## Called after all authored sectors have prepared their patches. Later snow
+## deformation keeps its private bounded cache and cannot mutate this record.
+func retain() -> void:
+	Cache.remember(_cache_key, self)
 
 
 func _init(terrain: EITerrain = null, verified: Dictionary = {}) -> void:

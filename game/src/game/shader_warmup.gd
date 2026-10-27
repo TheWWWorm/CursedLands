@@ -36,6 +36,10 @@ static var budget_ms := 2000
 static var last_ms := 0
 static var last_count := 0
 const BATCH := 2
+## Forward+ settles each group for four whole-world draws. Preparing more
+## zero-area representatives together avoids repeating those expensive draws
+## for every pair, while still completing every variant before play starts.
+const FORWARD_BATCH := 16
 const DIST := 0.5         # metres in front of the camera (near plane 0.05..0.1)
 const LIGHT_RANGE := 0.03
 const GROUP_GAP := 0.08
@@ -90,6 +94,10 @@ static func run(game: Game) -> void:
 			_restore_previews(previews)
 		else:
 			_finish_previews(game.get_tree(), previews)
+	# Forced campaign loading is a synchronous contract: Session releases its
+	# loading cover when this returns. Deferred/web preparation owns a separate
+	# cover until its ordinary frames finish, like _finish_deferred below.
+	_prepare_wisp_preview(game.hud if game.hud else game, forced)
 	if game.world.terrain:
 		var terrain:=game.world.terrain
 		if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available(terrain):
@@ -119,6 +127,7 @@ static func run(game: Game) -> void:
 		_add(items, seen, regional, env, REGIONAL)
 	for variant: Array in _zone_materials(game.world):
 		_add(items, seen, variant[0], env, variant[1], variant[2])
+	_add_wisp(items, seen, env)
 	if ambient:
 		for variant: Array in ambient.warmup_variants():
 			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]))
@@ -168,7 +177,8 @@ static func run(game: Game) -> void:
 	t0 = Time.get_ticks_msec()
 	var i := 0
 	while i < items.size():
-		var n := items.size() if not forced else mini(i + BATCH, items.size())
+		var batch := FORWARD_BATCH if RenderingServer.get_current_rendering_method() == "forward_plus" else BATCH
+		var n := items.size() if not forced else mini(i + batch, items.size())
 		var shown: Array[Node] = []
 		for j in range(i, n):
 			shown.append_array(w._show(items[j][1], items[j][2], items[j][3], items[j][4]))
@@ -594,6 +604,103 @@ func _free_after(frames: int) -> void:
 	queue_free()
 
 
+## The wisp is the only soft-alpha native figure. Ordinary recruit shaders
+## do not prepare its crystal shader or the preview's transparent 4x-MSAA
+## render pass. Render a real Paperdoll outside the canvas during loading;
+## hiding it would disable its SubViewport and leave the first offer cold.
+static var _observed_wisp_preview: WeakRef
+static var _wisp_preview_revision := 0
+
+
+static func _wisp_preview_changed() -> void:
+	_wisp_preview_revision += 1
+	for key: String in _warmed.keys():
+		if key.begins_with("wisp-preview:"): _warmed.erase(key)
+
+
+static func _wisp_preview_key() -> String:
+	var shader := EIUnitModel._wisp_preview_shader
+	if shader == null: return ""
+	if _observed_wisp_preview == null or _observed_wisp_preview.get_ref() != shader:
+		_observed_wisp_preview = weakref(shader)
+		if not shader.changed.is_connected(_wisp_preview_changed): shader.changed.connect(_wisp_preview_changed)
+		_wisp_preview_changed()
+	return "wisp-preview:%d:%d:%s" % [shader.get_instance_id(), _wisp_preview_revision, GameData.root]
+
+
+static func wisp_preview_ready() -> bool:
+	var key := _wisp_preview_key()
+	return not key.is_empty() and _warmed.has(key)
+
+
+static func _prepare_wisp_preview(parent: Node, forced := false) -> void:
+	if wisp_preview_ready() or GameData.db.find("monster_prototypes", "WillowispM1").is_empty(): return
+	var tree := parent.get_tree()
+	_progress_serial += 1
+	var owner := StringName("materials:wisp:%d" % _progress_serial)
+	ShaderCompilationScreen.begin(tree, owner, ShaderCompilationScreen.SCENE)
+	# Campaign loading can hide the HUD. Give the off-screen preview its own
+	# canvas so Paperdoll still frames and renders beneath that hidden parent.
+	var layer := CanvasLayer.new()
+	layer.name = "WispPreparationLayer"
+	parent.add_child(layer)
+	var preview := Paperdoll.new()
+	preview.name = "WispPreparation"
+	preview.view_size = Vector2i(32, 32)
+	preview.position = Vector2(-10000, -10000)
+	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(preview)
+	layer.tree_exiting.connect(ShaderCompilationScreen.end.bind(owner), CONNECT_ONE_SHOT)
+	preview.show_info({"prototype":"WillowispM1"})
+	if preview._model == null:
+		ShaderCompilationScreen.end(owner)
+		layer.queue_free()
+		return
+	preview._preview_update = SubViewport.UPDATE_ALWAYS
+	preview._vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	if forced:
+		preview._model.player.advance(0.0)
+		preview._model.flush_pending_pose()
+		for i in 3: preview._process(0.0)
+		preview._cam.force_update_transform()
+		preview._model.force_update_transform()
+		for node: Node3D in preview._model.find_children("*", "Node3D", true, false): node.force_update_transform()
+	# Framing takes three process frames. Then retain four completed draws
+	# of the real animated blend-shape meshes, including a moving frame.
+	var settled := 0
+	var signature := _wisp_preview_key()
+	while settled < 4:
+		if forced:
+			RenderingServer.force_draw(true, 0.0)
+			RenderingServer.force_sync()
+		else:
+			await _arena_frame(tree, preview._vp)
+		if not is_instance_valid(parent) or parent.is_queued_for_deletion() or not parent.is_inside_tree(): return
+		if not is_instance_valid(preview) or not preview.is_inside_tree(): return
+		var current := _wisp_preview_key()
+		if current != signature:
+			signature = current; settled = 0
+			continue
+		if preview._framed >= 3: settled += 1
+	_warmed[signature] = true
+	ShaderCompilationScreen.end(owner)
+	layer.queue_free()
+
+
+static func _add_wisp(items: Array, seen: Dictionary, env: String) -> void:
+	# Use the authored position/normal/UV layout rather than a generic quad.
+	# The preview prepass has already built these shared immutable meshes.
+	if GameData.db.find("monster_prototypes", "WillowispM1").is_empty(): return
+	var model := EIFigure.get_model("unmowi")
+	var morphs := EIAnim.morphs("unmowi")
+	var complexion := GameUnit.proto_complexion(GameData.db.find("monster_prototypes", "WillowispM1"))
+	for part: String in morphs:
+		if not model.get("parts", {}).has(part): continue
+		var mesh := EIFigure.build_anim_morph_mesh(model.parts[part], complexion, morphs[part].names, morphs[part].frames)
+		_add(items, seen, EIUnitModel._material(false, true), env, MESH, _zero_format(mesh))
+		break
+
+
 ## Autochess has a SubViewport and no campaign loading path. Prepare the
 ## same effect/mesh pipelines in small batches before its shared battle bell.
 static func arena(field: ArenaPveField) -> void:
@@ -604,9 +711,16 @@ static func arena(field: ArenaPveField) -> void:
 	var previous_update := field.view.render_target_update_mode
 	var exited := _arena_end.bind(weakref(field.view), progress_owner, previous_update)
 	field.tree_exiting.connect(exited, CONNECT_ONE_SHOT)
+	if not wisp_preview_ready():
+		ShaderCompilationScreen.begin(tree, progress_owner, ShaderCompilationScreen.SCENE)
+		await _prepare_wisp_preview(field)
+		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+			exited.call()
+			return
 	var items := []; var seen := {}
 	var env := "arena:"+str([field._environment.fog_enabled,field._environment.volumetric_fog_enabled,
 		field._sun_light.shadow_enabled,Gfx.on("gfx_firelight"),GameData.option("q_msaa")])
+	_add_wisp(items, seen, env)
 	for additive in [false,true]:
 		var material:=ShaderMaterial.new();material.shader=ParticleFx._shader(additive,false,false)
 		var before := items.size()
