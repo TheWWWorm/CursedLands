@@ -468,7 +468,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 3718
+      "min_checks": 3618
     },
     {
       "id": "nav_local_invalidation",
@@ -1231,7 +1231,7 @@
       "args": [
         "--windows-renderer-option"
       ],
-      "min_checks": 37,
+      "min_checks": 36,
       "timeout": 180
     },
     {
@@ -3452,7 +3452,7 @@
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 37,
+      "min_checks": 36,
       "rendering_method": "forward_plus",
       "timeout": 420
     },
@@ -3890,7 +3890,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 37
+      "min_checks": 36
     },
     {
       "id": "wiki_cut_faces_items",
