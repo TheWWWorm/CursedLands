@@ -925,8 +925,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var surfaces: Array[Vector3] = []
 	#  formats the prototype's skin index directly. The race's
 	# texture list is incomplete (e.g. unhuma has 29 entries but skins 0..36).
-	# An absent prototype alone uses skin 00.
-	var skin_i: int = proto.get("skin", 0)
+	# An absent prototype alone uses skin 00. The wiki's cut-content pages
+	# pass "skin" to show an otherwise unused redress skin on a prototype.
+	var skin_i: int = int(unit.get("skin", proto.get("skin", 0)))
 	var skin := "skin_%02d" % skin_i
 	if not race.is_empty() and int(race.get("type_id", 0)) != 0x32:
 		# Creature figures use named textures (e.g. Wolf00), not redress skins.

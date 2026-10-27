@@ -117,6 +117,7 @@ func show_model(descriptor: Dictionary, reuse_creature_view := false) -> bool:
 	item.fit_slot = true
 	add_child(item)
 	item.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	item.look_override = descriptor.get("look", {})
 	item.show_item(descriptor.value)
 	if descriptor.has("layer") and item._model != null:
 		var texture := EIUnitModel._compose(descriptor.mask, [String(descriptor.layer)] as Array[String])

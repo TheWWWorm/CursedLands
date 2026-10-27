@@ -151,7 +151,7 @@ for filename in ['ui/wiki_planner.gd','ui/wiki_panel.gd','ui/wiki_camp_construct
     for match in re.finditer(r'for (?:field|pair|family): Array in (\[\[.*?\]\]):',source):
         wiki_keys.update(row[1] for row in json.loads(match[1]))
 cut_source=(ROOT / 'game/wiki_cut.gd').read_text()
-for table in ('ENGINE_FIGURES','FIGURES','PALETTES','SPECIES'):
+for table in ('ENGINE_FIGURES','FIGURES','PALETTES','SPECIES','ITEM_MODELS','ITEM_KINDS'):
     block=cut_source.split('const '+table+' := {',1)[1].split('\n}' if table=='FIGURES' else '}\n',1)[0]
     # "texture" values and figure names ("un…") are asset IDs, not labels.
     wiki_keys.update(json.loads(m[2]) for m in re.finditer(r'("(?:title|text)"|"[A-Za-z0-9]+")\s*:\s*('+STRING+r')',block)

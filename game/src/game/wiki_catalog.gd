@@ -540,7 +540,7 @@ func page(key: String, variant := "") -> Dictionary:
 		"mechanics": body = _mechanics(entry.value)
 		"guide": body = TutorialGuide.article(entry.value, public_export)
 		"guide_recent": body = _recent_hints()
-		"cut", "cut_figure", "cut_palette", "figure":
+		"cut", "cut_figure", "cut_palette", "cut_face", "cut_item_model", "figure":
 			var section := cut.page(entry)
 			body = section.body
 			preview = section.preview

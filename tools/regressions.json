@@ -3780,6 +3780,28 @@
       "mode": "headless",
       "args": [],
       "min_checks": 36
+    },
+    {
+      "id": "wiki_cut_faces_items",
+      "script": "tools/tests/wiki_cut_faces_items.gd",
+      "summary": "WIKI_CUT_FACES_ITEMS",
+      "contract": "Cut content lists human skins and portraits that no prototype selects (female faces 01, 04, 06, 13, 17, 18) and inventory figures no item record selects; their wiki pages preview the skin on a placed character and the textured model, with EN/RU/DE titles.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 127
+    },
+    {
+      "id": "wiki_cut_faces_items_ui",
+      "script": "tools/tests/wiki_cut_faces_items_ui.gd",
+      "summary": "WIKI_CUT_FACES_ITEMS_UI",
+      "contract": "The wiki pages of an unused face and an unused item model show localized EN/RU/DE titles and built 3D previews at 1280x720, 2560x1440 and 3840x2160 with native-resolution captures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 90
     }
   ]
 }
