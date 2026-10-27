@@ -1032,9 +1032,10 @@ func _load_atlases() -> void:
 	_atlas_source_size = texture_size
 	for i in int(get_meta("textures_count")):
 		var bytes := GameData.textures.read("%s%03d.mmp" % [resource_prefix, i])
-		if bytes.size() < EIMmp.DATA_OFFSET or bytes.decode_u32(0) != EIMmp.MAGIC: continue
-		var width := bytes.decode_u32(4)
-		if width >= texture_size and width <= 8192 and width == bytes.decode_u32(8) and width % texture_size == 0:
+		# MMP or a texture pack's PNG replacement.
+		var size := EIMmp.image_size(bytes)
+		var width := size.x
+		if width >= texture_size and width <= 8192 and width == size.y and width % texture_size == 0:
 			_atlas_source_size = maxi(_atlas_source_size, width)
 	# Authored high-resolution atlases already supply extra detail. Do not
 	# double them again; retain map UVs and normalized sampling borders.
