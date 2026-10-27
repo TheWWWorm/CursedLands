@@ -3747,6 +3747,39 @@
       "mode": "headless",
       "args": [],
       "min_checks": 85
+    },
+    {
+      "id": "esc_menu_rise",
+      "script": "tools/tests/esc_menu_rise.gd",
+      "summary": "ESC_MENU_RISE",
+      "contract": "The Esc signpost opens on the last frame of its rise clip, as the original shows it in place under Wine; the esc_menu_rise option (Gameplay, off by default, EN/RU/DE) plays the rise from below.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 14
+    },
+    {
+      "id": "esc_menu_rise_ui",
+      "script": "tools/tests/esc_menu_rise_ui.gd",
+      "summary": "ESC_MENU_RISE_UI",
+      "contract": "The Esc menu rise option row is localized in EN/RU/DE, above the page link, and its label and choices fit at 1280x720, 2560x1440 and 3840x2160 with native-resolution captures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 72
+    },
+    {
+      "id": "interface_board_textures",
+      "script": "tools/tests/interface_board_textures.gd",
+      "summary": "INTERFACE_BOARD_TEXTURES",
+      "contract": "Interface boards texture every part by its figure texture group (2 = labels sheet), so the Esc signpost's foot (coloumndetls) uses the labels sheet as in the original instead of smeared stone UVs.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 36
     }
   ]
 }

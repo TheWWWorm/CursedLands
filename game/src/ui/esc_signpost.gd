@@ -6,7 +6,9 @@ extends InterfaceBoard
 ##  plays buttons\menu\ok.wav for any board).
 ## Animations (unmoco1.anm; (k) plays uspecial k + 1 through
 ## ): opening uspecial02, the post
-## rising into place; hovering a board turns it: save
+## rising into place (shown only with the remake option esc_menu_rise: under
+## Wine the original's post is already in place on the first frame after Esc,
+## so by default the clip starts on its last frame); hovering a board turns it: save
 ## uspecial03, load 04, options 05, return2game 06, exit2mainmenu 07 (held on
 ## the last frame); off the boards goes back to cidle.
 
@@ -156,6 +158,8 @@ func _on_open() -> void:
 	# through this same clip. Every opening starts from its first frame.
 	if _player: _player.stop()
 	_play("uspecial02")
+	if _player and not GameData.option("esc_menu_rise"):
+		_player.seek(_player.current_animation_length, true)
 	if DisplayServer.get_name() == "headless":
 		texture = _vp.get_texture()
 		return

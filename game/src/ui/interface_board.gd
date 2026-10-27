@@ -59,11 +59,10 @@ func _build(model: String, skin: String, labels: String, parts: PackedStringArra
 		return
 	var tex_mat := _unshaded(EIFigure.material_for(texture_name(skin)))
 	var lab_mat := _unshaded(EIFigure.material_for(texture_name(labels)))
+	var figure_parts: Dictionary = EIFigure.get_model(model).get("parts", {})
 	for mi: MeshInstance3D in _fig.find_children("*", "MeshInstance3D", true, false):
 		var part := String(mi.get_parent().name)
-		# Label parts ("*label", "but03"...) carry the labels texture.
-		var is_label := part.ends_with("label") or (part.begins_with("but") and not part.begins_with("button"))
-		mi.material_override = lab_mat if is_label else tex_mat
+		mi.material_override = lab_mat if is_label_part(part, figure_parts.get(part, {})) else tex_mat
 	MenuCaptions.apply(_fig, model)
 	# EISpace.vec maps EI (x, y, z) to Godot (x, z, −y): exactly the original's π/2
 	# turn about the view x axis seen from a Godot camera (view y down / z
@@ -71,6 +70,16 @@ func _build(model: String, skin: String, labels: String, parts: PackedStringArra
 	_fig.basis = Basis(Vector3.RIGHT, -(angle - PI * 0.5))
 	place(at)
 	_vp.add_child(_fig)
+
+
+## Parts of texture group 2 carry the labels texture, as in the original:
+## the captions ("*label", "but03"...) and also the Esc signpost's foot
+## (unmoco1 "coloumndetls"), whose stone block is drawn on the labels sheet.
+## The name rule remains for parts without figure data.
+static func is_label_part(part: String, figure: Dictionary) -> bool:
+	if figure.has("texture_group"):
+		return int(figure.texture_group) == 2
+	return part.ends_with("label") or (part.begins_with("but") and not part.begins_with("button"))
 
 
 ## (x, y, depth): moves the board (the screens' slide-).
