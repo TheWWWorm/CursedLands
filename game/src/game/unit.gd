@@ -112,7 +112,13 @@ var facing := 0.0:
 		if facing != value:
 			facing = value
 			if _sim_state: _sim_state.update(&"facing", value)
-var model: EIUnitModel
+## Bumped on every figure replacement. Renderers that rebind replaced bodies
+## skip their per-unit scan while no figure has changed anywhere.
+static var model_revision := 0
+var model: EIUnitModel:
+	set(value):
+		model = value
+		model_revision += 1
 
 # --- stats
 ## Health is kept per body part as in the original (see _init_parts); `hp` is derived.

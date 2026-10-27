@@ -345,6 +345,9 @@ var _view_shift := Vector3.ZERO
 var _view_meshes: Array[MeshInstance3D] = []
 var _view_shadows: Array[Dictionary] = []
 var _view_active := false
+## Bumped whenever any figure enters or leaves first-person view, so per-frame
+## consumers can cache which figures are presented.
+static var view_revision := 0
 ## The local body is camera-adjusted. Mirrors draw the complete authored
 ## figure on a separate layer; the main camera excludes that layer.
 const CLOSE_VIEW_LAYER := 1 << 14
@@ -1563,6 +1566,7 @@ func set_invisible(on: bool) -> void:
 ## visible mesh and normal shadow casting on exit.
 func set_first_person_view(on: bool) -> void:
 	_view_active = on
+	view_revision += 1
 	if not on:
 		_view_right = Vector3.ZERO
 		_set_first_person_shift(Vector3.ZERO)

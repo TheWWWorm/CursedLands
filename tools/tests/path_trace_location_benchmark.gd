@@ -29,9 +29,10 @@ func measure(a: Node) -> void:
 			var row:={"view":view,"round":round_index,"frame_ms":summary(wall),"main_gpu_ms":summary(main_gpu),
 				"rt_gpu_ms":summary(gpu_samples.duplicate()),"gpu_stages_ms":stage_summary(),"controller_cpu_ms":summary(cpu_samples.duplicate()),"stats":a.rt.stats.duplicate()}
 			runs.append(row);print("LOCATION_BENCH ",JSON.stringify(row))
-			a.check(gpu_samples.size()>100 and a.rt.device.nrd_active,"benchmark samples active NRD: "+view+" "+str(round_index))
+			a.check(gpu_samples.size()>100 and (a.rt.device.nrd_active or a.rt.stats.get("ray_reconstruction",false)),"benchmark samples active NRD or RR: "+view+" "+str(round_index))
 	FileAccess.open(a.out.path_join("location-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"runs":runs,
 		"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),
-		"zone":a.zone,"dlss":a.dlss,"display":[3840,2160],"raster":[1920,1080],"trace":[960,540],
+		"zone":a.zone,"dlss":a.dlss,"frame_generation":a.frame_generation,"display":a.rt.stats.get("display_size"),"raster":a.rt.stats.get("render_size"),"trace":a.rt.stats.get("size"),
+		"streamline":RtxGraphics.bridge().call("get_status") if a.dlss else {},
 		"note":"Uncapped, vsync off; fixed scene with live flame-light intensity; 3 rounds per view, no image readbacks during timing. GPU Lab heavy job required. Main viewport GPU excludes RT dispatch; frame time includes both."},"\t"))
 	before.queue_free();set_process(false)

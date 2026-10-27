@@ -24,6 +24,22 @@ class VerdictTests(unittest.TestCase):
         self.assertEqual(command[command.index("--audio-driver") + 1], "Dummy")
         self.assertIn("--path", runner.engine_arguments("godot", self.case))
 
+    def test_profile_isolation_covers_windows_user_data(self):
+        # Windows Godot ignores XDG; without APPDATA a case used the player's profile.
+        profile = Path("/evidence/case")
+        env = runner.isolation_environment(profile)
+        for key in ("XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "APPDATA", "LOCALAPPDATA"):
+            self.assertTrue(Path(env[key]).is_relative_to(profile), key)
+        windows_settings = Path(env["APPDATA"]) / "Godot/app_userdata/Cursed Lands/settings.cfg"
+        self.assertEqual(str(windows_settings).lower(), str(runner.profile_settings(profile)).lower())
+
+    def test_packaged_staging_preserves_utf8_scripts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            staged = runner.stage_packaged_tests(Path(directory))
+            for script in staged.rglob("*.gd"):
+                text = script.read_text(encoding="utf-8")
+                self.assertNotIn("res://tools/", text, script.name)
+
     def test_headless_uses_production_worker_render_thread_mode(self):
         command = runner.engine_arguments("/qualified/game", self.case, packaged=True)
         self.assertIn("--headless", command)

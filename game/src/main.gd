@@ -88,6 +88,12 @@ func _start() -> void:
 		if a.begins_with("--local-host-config="):
 			MoviePlayer.enabled = false
 			TutorialPanel.auto_show = false
+			# A pre-started worker has compiled its scripts; it now waits for
+			# the owner's configuration (LocalHost.prepare_standby).
+			if args.has(LocalHost.STANDBY_ARG) \
+					and not await LocalHost.await_standby(get_tree(), a.trim_prefix("--local-host-config=")):
+				get_tree().quit()
+				return
 			var s := Session.new()
 			add_child(s)
 			var config := s.local_host.configure(a.trim_prefix("--local-host-config="))
@@ -154,6 +160,8 @@ func _start() -> void:
 	# Video upload/presentation also uses the graphics device. Arm recovery
 	# before movies so an intro device hang cannot retry the same API forever.
 	if not await WindowsRenderer.prepare(self): return
+	# The campaign's simulation worker compiles while movies and menus play.
+	LocalHost.prepare_standby(get_tree())
 	if not direct and not args.has("--no-movies"):
 		GameData.trace("startup: intro movies")
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Start")))
@@ -268,6 +276,7 @@ func back_to_menu() -> void:
 	var menu := preload("res://src/ui/main_menu.gd").new()
 	menu.start_game.connect(start_game)
 	add_child(menu)
+	LocalHost.prepare_standby(get_tree())
 	if cover:
 		await get_tree().process_frame
 		await RenderingServer.frame_post_draw

@@ -26,6 +26,13 @@ var _unit_roots := {}
 var _groups := {}
 var _view_models := {}
 var _view_offsets := {}
+## Per-frame scans read cached results until a figure is replaced or enters
+## or leaves first-person view (GameUnit/EIUnitModel revision counters).
+var _model_revision := -1
+## Full scans for replaced figures; diagnostics and regression evidence.
+var model_scans := 0
+var _presented_views: Array[Dictionary] = []
+var _presented_revision := -1
 var _morph_geometries: Array[int] = []
 var _replacement_poses := {}
 var _terrain: EITerrain
@@ -268,6 +275,7 @@ func discard_geometry() -> void:
 	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
 	_gather_roots.clear();_gather_root_cursor=0;_gather_materials.clear()
 	_mesh_roots.clear();_groups.clear();_view_models.clear();_view_offsets.clear();_morph_geometries.clear()
+	_model_revision=-1;_presented_views.clear();_presented_revision=-1
 	_kernel=null;_watching=false;_cursor=0
 	_ground=Ground.new()
 
@@ -454,6 +462,7 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 	if root is GameUnit and is_instance_valid(root.model) and root.model.is_ancestor_of(node):
 		var model_key: int = root.model.get_instance_id()
 		if not _view_models.has(model_key): _view_models[model_key] = {"model":weakref(root.model),"indices":[]}
+		_presented_revision = -1
 		_view_models[model_key].indices.append(instances.size())
 	instances.append({"geometry":geometry,"node":weakref(node),"mesh":source_mesh if source_mesh else node.mesh if node is MeshInstance3D else null,
 		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
@@ -468,6 +477,9 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface 
 ## positions as pose updates immediately, while a complete snapshot is built.
 ## Equipment/asset changes with a different topology still use normal rebuilds.
 func _replace_models() -> void:
+	if _model_revision == GameUnit.model_revision: return
+	_model_revision = GameUnit.model_revision
+	model_scans += 1
 	for group: Dictionary in _groups.values():
 		var unit: Node = group.node.get_ref()
 		if not unit is GameUnit or not is_instance_valid(unit.model): continue
@@ -507,6 +519,7 @@ func _replace_models() -> void:
 		for key in _view_models.keys():
 			if _view_models[key].indices == group.indices: _view_models.erase(key)
 		_view_models[unit.model.get_instance_id()] = {"model":weakref(unit.model),"indices":group.indices.duplicate()}
+		_presented_revision = -1
 
 func history_matches(previous: RefCounted) -> PackedInt32Array:
 	var matches := PackedInt32Array();matches.resize(instances.size());matches.fill(-1)
@@ -652,7 +665,12 @@ func _instance_updates(force: bool) -> Array:
 	# reflections and full-body shadow/GI copies retain their authored pose.
 	var presented := {}
 	if lighting_camera_mask >= 0:
-		for group: Dictionary in _view_models.values():
+		if _presented_revision != EIUnitModel.view_revision:
+			_presented_revision = EIUnitModel.view_revision; _presented_views.clear()
+			for group: Dictionary in _view_models.values():
+				var model: EIUnitModel = group.model.get_ref()
+				if is_instance_valid(model) and model._view_active: _presented_views.append(group)
+		for group: Dictionary in _presented_views:
 			var model: EIUnitModel = group.model.get_ref()
 			if not is_instance_valid(model) or not model.is_inside_tree() or not model._view_active: continue
 			model._align_first_person_body()

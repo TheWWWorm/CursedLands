@@ -54,6 +54,38 @@ var _rate_world := 0
 var _rate_scale := 1.0
 var _presented_scale := 1.0
 
+## Compiling the game's scripts dominates a worker's startup (seconds). The
+## menus boot one worker in advance; it waits for its configuration and exits
+## by itself when its owner stops refreshing the heartbeat file.
+const STANDBY_ARG := "--local-host-standby"
+const STANDBY_HEARTBEAT := ".alive"
+const STANDBY_BEAT_S := 2.0
+const STANDBY_STALE_S := 30
+static var _standby := {}
+
+
+class StandbyKeeper extends Node:
+	var _beat := 0.0
+
+	func _ready() -> void:
+		process_mode = Node.PROCESS_MODE_ALWAYS
+		name = "LocalHostStandby"
+
+	func _process(dt: float) -> void:
+		_beat += dt
+		if _beat < STANDBY_BEAT_S:
+			return
+		_beat = 0.0
+		var standby: Dictionary = LocalHost._standby
+		if standby.is_empty() or not OS.is_process_running(int(standby.pid)):
+			LocalHost.discard_standby()
+			return
+		LocalHost._touch(String(standby.config) + STANDBY_HEARTBEAT)
+
+	func _exit_tree() -> void:
+		# Any owner exit, including quit: the waiting standby stops cleanly.
+		LocalHost.discard_standby()
+
 
 static func available() -> bool:
 	return (OS.get_name() in ["Linux", "Windows", "macOS"] or (OS.get_name() == "Android" and Engine.has_singleton("EISimulation"))) \
@@ -66,6 +98,96 @@ func _ready() -> void:
 	GameData.options_changed.connect(_options_changed)
 
 
+## Desktop processes only: Android's service backend starts its own runtime.
+static func standby_supported() -> bool:
+	return available() and OS.get_name() in ["Linux", "Windows", "macOS"]
+
+
+static func _worker_arguments(config: String) -> PackedStringArray:
+	var arguments := PackedStringArray(["--headless", "--render-thread", "safe", "--audio-driver", "Dummy", "--max-fps", str(FRAME_RATE),
+		"--log-file", config + ".log"])
+	if OS.has_feature("editor"):
+		arguments.append_array(["--path", ProjectSettings.globalize_path("res://")])
+	arguments.append_array(["--", "--ei-path=" + GameData.root, "--local-host-config=" + config])
+	# Network diagnostics must cover the actual authority's outbound traffic;
+	# simulation load emulation applies to the authority's ticks.
+	for argument in OS.get_cmdline_user_args():
+		if argument == "--netstat" or argument.begins_with("--netsim=") or argument.begins_with("--ei-simulation-load-ms="):
+			arguments.append(argument)
+	return arguments
+
+
+static func _new_config_path() -> String:
+	var directory := ProjectSettings.globalize_path("user://local-host")
+	DirAccess.make_dir_recursive_absolute(directory)
+	return directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
+
+
+static func _touch(path: String) -> void:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		file.store_string(str(int(Time.get_unix_time_from_system())))
+
+
+## Boot a worker before a campaign needs it. Idempotent; the first start()
+## with the same game files takes it over, any other start spawns as before.
+static func prepare_standby(tree: SceneTree) -> void:
+	if not standby_supported() or GameData.root.is_empty():
+		return
+	if not _standby.is_empty():
+		if OS.is_process_running(int(_standby.pid)) and _standby.root == GameData.root:
+			return
+		discard_standby()
+	var config := _new_config_path()
+	_touch(config + STANDBY_HEARTBEAT)
+	var arguments := _worker_arguments(config)
+	arguments.append(STANDBY_ARG)
+	var pid := OS.create_process(OS.get_executable_path(), arguments)
+	if pid <= 0:
+		DirAccess.remove_absolute(config + STANDBY_HEARTBEAT)
+		return
+	_standby = {"pid": pid, "config": config, "root": GameData.root}
+	if tree.root.get_node_or_null("LocalHostStandby") == null:
+		tree.root.add_child.call_deferred(StandbyKeeper.new())
+
+
+## Without its heartbeat a waiting standby quits normally, leaving no crash
+## marker. A standby that already received its configuration is unaffected.
+static func discard_standby() -> void:
+	if _standby.is_empty():
+		return
+	var heartbeat := String(_standby.config) + STANDBY_HEARTBEAT
+	if FileAccess.file_exists(heartbeat):
+		DirAccess.remove_absolute(heartbeat)
+	_standby = {}
+
+
+static func _take_standby() -> Dictionary:
+	if _standby.is_empty():
+		return {}
+	var standby := _standby
+	if not OS.is_process_running(int(standby.pid)) or standby.root != GameData.root:
+		discard_standby()
+		return {}
+	_standby = {}
+	return standby
+
+
+## Worker side: wait for the owner's configuration while its heartbeat lasts.
+static func await_standby(tree: SceneTree, config: String) -> bool:
+	var heartbeat := config + STANDBY_HEARTBEAT
+	CrashReport.set_state("standby")
+	while not FileAccess.file_exists(config):
+		var age := INF
+		if FileAccess.file_exists(heartbeat):
+			age = Time.get_unix_time_from_system() - FileAccess.get_modified_time(heartbeat)
+		if age > STANDBY_STALE_S:
+			return false
+		await tree.create_timer(0.05, true, false, true).timeout
+	CrashReport.set_state("foreground")
+	return true
+
+
 func start(port: int, limit: int, solo := false) -> Error:
 	if frontend or worker or session.online:
 		return ERR_ALREADY_IN_USE
@@ -76,30 +198,27 @@ func start(port: int, limit: int, solo := false) -> Error:
 	_shot_generation += 1
 	_pending_shots.clear()
 	_token = Crypto.new().generate_random_bytes(32).hex_encode()
-	var directory := ProjectSettings.globalize_path("user://local-host")
-	DirAccess.make_dir_recursive_absolute(directory)
-	_config = directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
+	var standby := _take_standby() if OS.get_name() != "Android" else {}
+	_config = String(standby.config) if not standby.is_empty() else _new_config_path()
 	var config := {"token": _token, "parent": OS.get_process_id(), "port": port, "single_player": solo,
 		"limit": limit, "password": session.password, "name": GameData.player_name,
 		"hero": GameData.hero_class, "options": GameData.options.duplicate(true), "mods": session.mod_config.duplicate(true)}
-	var file := FileAccess.open(_config, FileAccess.WRITE)
+	# A waiting standby polls for this path: publish it complete, in one rename.
+	var pending := _config + ".tmp"
+	var file := FileAccess.open(pending, FileAccess.WRITE)
 	if file == null:
 		single_player = false
+		_cleanup_files()
 		return FileAccess.get_open_error()
 	if OS.get_name() != "Windows":
-		FileAccess.set_unix_permissions(_config, 0x180)   # owner read/write
+		FileAccess.set_unix_permissions(pending, 0x180)   # owner read/write
 	file.store_var(config)
 	file.close()
-	var arguments := PackedStringArray(["--headless", "--render-thread", "safe", "--audio-driver", "Dummy", "--max-fps", str(FRAME_RATE),
-		"--log-file", _config + ".log"])
-	if OS.has_feature("editor"):
-		arguments.append_array(["--path", ProjectSettings.globalize_path("res://")])
-	arguments.append_array(["--", "--ei-path=" + GameData.root, "--local-host-config=" + _config])
-	# Network diagnostics must cover the actual authority's outbound traffic;
-	# simulation load emulation applies to the authority's ticks.
-	for argument in OS.get_cmdline_user_args():
-		if argument == "--netstat" or argument.begins_with("--netsim=") or argument.begins_with("--ei-simulation-load-ms="):
-			arguments.append(argument)
+	if DirAccess.rename_absolute(pending, _config) != OK:
+		single_player = false
+		_cleanup_files()
+		return ERR_CANT_CREATE
+	var arguments := _worker_arguments(_config)
 	frontend = true
 	session.upnp.remote = true
 	session.host_port = port
@@ -107,6 +226,8 @@ func start(port: int, limit: int, solo := false) -> Error:
 	if OS.get_name() == "Android":
 		_android_backend = Engine.get_singleton("EISimulation")
 		process_id = _android_backend.start(arguments)
+	elif not standby.is_empty():
+		process_id = int(standby.pid)
 	else:
 		process_id = OS.create_process(OS.get_executable_path(), arguments)
 	if process_id <= 0:
@@ -119,6 +240,14 @@ func start(port: int, limit: int, solo := false) -> Error:
 	while frontend and not _stopping and process_id > 0 and not FileAccess.file_exists(_config + ".ready") and _process_alive() \
 			and Time.get_ticks_msec() < deadline:
 		await get_tree().process_frame
+	if not standby.is_empty() and frontend and not _stopping and not FileAccess.file_exists(_config + ".ready") and not _process_alive():
+		# The standby ended before it saw this configuration (an expired
+		# heartbeat). Start an ordinary worker on the same, complete file.
+		GameData.trace("standby simulation worker exited; starting a new one")
+		process_id = OS.create_process(OS.get_executable_path(), arguments)
+		while frontend and not _stopping and process_id > 0 and not FileAccess.file_exists(_config + ".ready") and _process_alive() \
+				and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
 	var result := ERR_CANT_CREATE
 	if frontend and not _stopping and FileAccess.file_exists(_config + ".ready"):
 		var ready = JSON.parse_string(FileAccess.get_file_as_string(_config + ".ready"))
@@ -712,7 +841,7 @@ func _rpc_shutdown() -> void:
 func _cleanup_files() -> void:
 	if _config.is_empty():
 		return
-	for path in [_config, _config + ".ready", _config + ".ready.tmp"]:
+	for path in [_config, _config + ".tmp", _config + ".ready", _config + ".ready.tmp", _config + STANDBY_HEARTBEAT]:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(path)
 

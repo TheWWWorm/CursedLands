@@ -40,6 +40,19 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def profile_settings(profile):
+    return profile / "data/godot/app_userdata/Cursed Lands/settings.cfg"
+
+
+def isolation_environment(profile):
+    """Linux reads XDG directories; Windows Godot resolves user:// from APPDATA."""
+    return {"XDG_DATA_HOME": str(profile / "data"),
+            "XDG_CONFIG_HOME": str(profile / "config"),
+            "XDG_CACHE_HOME": str(profile / "cache"),
+            "APPDATA": str(profile / "data"),
+            "LOCALAPPDATA": str(profile / "local")}
+
+
 def engine_arguments(engine, case, packaged=False):
     command = [engine]
     if not packaged:
@@ -60,7 +73,8 @@ def stage_packaged_tests(destination):
         shutil.copytree(REPO / "tools" / name, destination / name,
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     for script in destination.rglob("*.gd"):
-        script.write_text(script.read_text().replace("res://tools/", destination.as_posix() + "/"))
+        text = script.read_text(encoding="utf-8")
+        script.write_text(text.replace("res://tools/", destination.as_posix() + "/"), encoding="utf-8")
     return destination / "tests"
 
 
@@ -118,7 +132,7 @@ def main():
     parser.add_argument("--output", type=Path, help="new directory for profiles, logs and results.json")
     parser.add_argument("--list", action="store_true")
     args = parser.parse_args()
-    cases = json.loads(MANIFEST.read_text())["cases"]
+    cases = json.loads(MANIFEST.read_text(encoding="utf-8"))["cases"]
     unknown = set(args.only) - {case["id"] for case in cases}
     if unknown:
         parser.error("Unknown cases: " + ", ".join(sorted(unknown)))
@@ -168,12 +182,10 @@ def main():
         report["pack"] = {"path": str(pack), "sha256": digest(pack)}
     for case in selected:
         profile = output / case["id"]
-        settings = profile / "data/godot/app_userdata/Cursed Lands/settings.cfg"
+        settings = profile_settings(profile)
         settings.parent.mkdir(parents=True)
         settings.write_text(SETTINGS)
-        isolated = {"XDG_DATA_HOME": str(profile / "data"),
-                    "XDG_CONFIG_HOME": str(profile / "config"),
-                    "XDG_CACHE_HOME": str(profile / "cache")}
+        isolated = isolation_environment(profile)
         command = engine_arguments(engine, case, args.packaged)
         scripts = REPO / "tools/tests"
         script = REPO / case["script"]
@@ -208,7 +220,7 @@ def main():
                "contract": case["contract"], "issues": case.get("issues", []), "mode": case["mode"],
                "seconds": round(time.monotonic() - started, 2), "command": command,
                "log": str(profile.relative_to(output) / "run.log"),
-               **verdict((profile / "run.log").read_text(errors="replace"), case, code)}
+               **verdict((profile / "run.log").read_text(encoding="utf-8", errors="replace"), case, code)}
         report["cases"].append(row)
         report["passed"] = all(item["passed"] for item in report["cases"])
         (output / "results.json").write_text(json.dumps(report, indent=2) + "\n")

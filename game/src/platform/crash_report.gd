@@ -69,7 +69,10 @@ func _ready() -> void:
 		info.android_exit_registered = bool(early.get("android_exit_registered", false)) or bool(android.register_crash_session(sid))
 	_collect()
 	GameData.trace("session %s: %s, %s, %s, %s" % [sid, info.version, info.os, info.gpu, info.renderer])
-	previous = scan(OS.get_process_id())
+	# A simulation worker never offers a report. On Windows alive() cannot see
+	# its running owner, so scanning would delete that owner's live marker.
+	if not is_worker():
+		previous = scan(OS.get_process_id())
 	if previous.is_empty() and not startup_failures.is_empty():
 		previous = startup_failures[-1].duplicate(true)
 	if android and bool(previous.get("android_exit_registered", false)) and previous.get("android_exit", {}).get("native_trace_status", "") != "available":
@@ -166,6 +169,8 @@ static func scan(own_pid: int) -> Dictionary:
 		for k in cfg.get_section_keys("session"):
 			d[k] = cfg.get_value("session", k)
 		DirAccess.remove_absolute(path)
+		if String(d.get("state", "")) == "standby":
+			continue   # an unused, pre-started simulation worker
 		if String(d.get("state", "")) != "foreground":
 			GameData.trace("previous session %s was closed by the system in the background (not a crash)" % d.get("session", "?"))
 			continue
@@ -260,6 +265,19 @@ func _write() -> Error:
 	for k: String in info:
 		cfg.set_value("session", k, info[k])
 	return cfg.save(_marker)
+
+
+static func is_worker() -> bool:
+	return Array(OS.get_cmdline_user_args()).any(func(a): return String(a).begins_with("--local-host-config=") or String(a).begins_with("--autochess-host-config="))
+
+
+## A standby simulation worker (LocalHost) has no player session yet. Its
+## marker must not report a crash if it is ended while waiting.
+static func set_state(state: String) -> void:
+	if instance == null or instance._marker.is_empty() or instance._done:
+		return
+	instance.info.state = state
+	instance._write()
 
 
 func _notification(what: int) -> void:
