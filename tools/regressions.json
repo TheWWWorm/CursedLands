@@ -1696,7 +1696,7 @@
       "args": [
         "--cliff-composed"
       ],
-      "min_checks": 20
+      "min_checks": 21
     },
     {
       "id": "terrain_sun_shadows",
