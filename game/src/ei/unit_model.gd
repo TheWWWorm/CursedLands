@@ -291,6 +291,7 @@ static var smooth_joints := false
 var template := ""
 var player: AnimationPlayer
 var weapon_type := ""
+var _weapon_meshes: Array[MeshInstance3D] = []
 var _current := ""
 var _invisible := false
 var _animation_roots: Array[EIAnimPart] = []
@@ -404,6 +405,7 @@ func _play(anim: String, blend: float, restart := false) -> void:
 	if player.has_animation(key):
 		player.play(key, blend)
 		_current = anim
+		_update_weapon_visibility()
 		if restart:
 			# Store the exact native keys during seek, then compose each
 			# hierarchy once. Nested mixer callbacks retain an outer batch.
@@ -415,6 +417,18 @@ func _play(anim: String, blend: float, restart := false) -> void:
 				for root: EIAnimPart in _animation_roots:
 					root._apply_key()
 		clip_started.emit()
+
+
+## Native 5341a0 reads the playing ADB record, not the equipped weapon or
+## zone type. 537cb0 hides all of its weapon parts when the mask is zero.
+## Keep mount nodes animated; only the meshes disappear. Inventory figures
+## deliberately do not register here, so their equipment stays inspectable.
+func _update_weapon_visibility() -> void:
+	var record: Dictionary = _clip_records().get(_current, {})
+	if record.is_empty(): return
+	var armed := int(record.code) & 0x7fff != 0
+	for mesh: MeshInstance3D in _weapon_meshes:
+		mesh.visible = armed
 
 
 ## Plays a logical action: idle, walk, run, crawl, attack, hit, death, cast...
@@ -1167,6 +1181,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			mi.mesh = mesh
 			mi.material_override = part_mat
 			n.add_child(mi)
+			if not ui_preview and weapon_parts.has(p):
+				_weapon_meshes.append(mi)
 			if p == "bd" and not _view_neck.is_empty() and morph.is_empty():
 				_view_torso = mi
 				_view_neck.count = mesh.surface_get_array_len(0)

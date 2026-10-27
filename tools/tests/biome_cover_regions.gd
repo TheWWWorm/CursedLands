@@ -89,8 +89,11 @@ func regional_maps() -> void:
 			for key:Vector2i in field.regions.liquids:
 				if key.x>=0 and key.y>=0 and key.x<extent.x and key.y<extent.y and not key in keys: keys.append(key)
 		if id=="gz14k":
-			for i in field.mounds.materials.size():
-				if field.mounds.materials[i]!=1: continue
+			# Keep coverage of every authored snow pocket after removing the
+			# extra mound overlay; its material mask no longer exists at runtime.
+			for i in field.tiles.size():
+				var tile: int=field.tiles[i]&0x3fff
+				if tile>=map.terrain.tile_types.size() or map.terrain.tile_types[tile] not in [9,12]: continue
 				var key:=Vector2i((i%(field.size.x/2))/4,(i/(field.size.x/2))/4)
 				if not key in keys: keys.append(key)
 		for record:Dictionary in map.mob.objects:
@@ -120,7 +123,7 @@ func regional_maps() -> void:
 		if id=="bz7g": check(counts.has(14) and counts.has(17),"authored lava ash/crust")
 		if id in ["gz7d1","gz36j"] or id=="gz9g" and not astral: check(counts.has(26),"authored undead sites admit bones "+id)
 		if id=="gz9g" and astral: check(not counts.has(26) and not field.regions.dead_city,"LiA zone9 receives no Dead City rules")
-		if id=="gz14k": check(mounds>0,"actual authored cave snow admits dense mounds")
+		check(mounds==0,"regional cover preserves terrain without added piles "+id)
 		times.sort(); rows.append({"case":"regional-map","id":id,"biome":field.biome,"chunks":keys.size(),"counts":counts,"first":first,
 			"record_us_median":times[times.size()/2],"record_us_max":times[-1],"sampled_array_bytes":array_bytes,"sites_buckets":field.regions.sites.size(),"liquid_buckets":field.regions.liquids.size(),"mounds":mounds,"scenery_loaded":false})
 		print("REGIONAL_MAP ",JSON.stringify(rows[-1])); world.free()

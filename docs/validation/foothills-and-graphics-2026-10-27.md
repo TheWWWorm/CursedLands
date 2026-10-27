@@ -1,5 +1,10 @@
 # Foothills, co-op, rendering and autochess reports — 27 October 2026
 
+Later evidence and fixes for white foliage, village weapon poses and ground
+cover are recorded in [the follow-up](foliage-village-followup-2026-10-27.md).
+That follow-up also extends the #119 investigation and supersedes the village
+weapon limitation below.
+
 Local changes based on `9cacce1a83f176753447d4cf6b4a72bf13c060a9` (1.32.0),
 on `fix/foothills-118-119-20261026`. Nothing was published or pushed. The local
 integration checkout has separate, uncommitted loading work and was not modified.

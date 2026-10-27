@@ -383,7 +383,12 @@ static func inject(code: String,clouds: bool) -> String:
 		if code.contains("varying float contact_band;"):
 			# Both values travel vertex -> fragment. Share a location so wind,
 			# ground contact and volumetric fog fit the 32-varying RD limit.
-			code=code.replace("varying float contact_band;","#define EI_RT_REST_CONTACT\nvarying vec4 ei_rt_rest_contact;\n#define contact_band ei_rt_rest_contact.w")
+			# Terrain-transition helpers can precede the contact declarations.
+			# COMMON is inserted before the first helper function, so its
+			# conditional must see this flag at the shader header. A late flag
+			# declares a second rest-position varying and exceeds the RD limit.
+			code=code.replace("shader_type spatial;","shader_type spatial;\n#define EI_RT_REST_CONTACT\nvarying vec4 ei_rt_rest_contact;")
+			code=code.replace("varying float contact_band;","#define contact_band ei_rt_rest_contact.w")
 			capture="ei_rt_rest_contact=vec4((MODEL_MATRIX*vec4(VERTEX,1.0)).xyz,0.0);"
 		code = code.replace("void vertex() {", "void vertex() {\n    "+capture+"\n")
 	var at := code.find("\nvoid ")

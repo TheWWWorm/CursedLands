@@ -3464,6 +3464,108 @@
       "min_checks": 27,
       "rendering_method": "forward_plus",
       "timeout": 360
+    },
+    {
+      "id": "weapon_pose_visibility",
+      "script": "tools/tests/weapon_pose_visibility.gd",
+      "summary": "WEAPON_POSE_VISIBILITY",
+      "contract": "Original unarmed village/dialogue clips hide all equipped weapon parts and armed clips restore them; inventory previews retain equipment.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 121
+    },
+    {
+      "id": "weapon_pose_visibility_lia",
+      "script": "tools/tests/weapon_pose_visibility.gd",
+      "summary": "WEAPON_POSE_VISIBILITY",
+      "contract": "Original unarmed village/dialogue clips hide all equipped weapon parts and armed clips restore them; inventory previews retain equipment.",
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 121
+    },
+    {
+      "id": "foliage_feature_combinations",
+      "script": "tools/tests/foliage_feature_combinations.gd",
+      "summary": "FOLIAGE_FEATURE_COMBINATIONS",
+      "contract": "Cold compile and draw wind/still foliage with ground contact, cliffs, volumetric fog, clouds and PT together, including Windows line endings.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 67,
+      "timeout": 240
+    },
+    {
+      "id": "ground_cover_density",
+      "script": "tools/tests/ground_cover_density.gd",
+      "summary": "GROUND_COVER_DENSITY",
+      "contract": "Remove procedural sand/snow piles and halve common scattered stones while preserving authored terrain and objects.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 46,
+      "timeout": 180
+    },
+    {
+      "id": "foliage_all_effects_scene",
+      "script": "tools/tests/foliage_all_effects_scene.gd",
+      "summary": "FOLIAGE_ALL_EFFECTS_SCENE",
+      "contract": "Actual menu trees retain valid shaders with all graphics features and terrain transitions enabled after a cold start.",
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 10,
+      "timeout": 240
+    },
+    {
+      "id": "biome_cover",
+      "script": "tools/tests/biome_cover.gd",
+      "summary": "BIOME_COVER",
+      "contract": "Preserve authored habitats, plant placement and immutable ground-cover worker snapshots.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 100,
+      "timeout": 180
+    },
+    {
+      "id": "biome_cover_regions",
+      "script": "tools/tests/biome_cover_regions.gd",
+      "summary": "COVER_REGIONS",
+      "contract": "Preserve regional cave and dead-city ground-cover geometry and worker snapshots while omitting removed procedural piles.",
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 100,
+      "timeout": 180
+    },
+    {
+      "id": "foothills_campaign_flow",
+      "script": "tools/tests/foothills_campaign_flow.gd",
+      "summary": "FOOTHILLS_CAMPAIGN_FLOW",
+      "contract": "Production new campaign, Ruins-to-Foothills travel, save, menu return and a fresh worker load retain distinct normal/fast simulation rates.",
+      "issues": [
+        119
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 18,
+      "timeout": 240
+    },
+    {
+      "id": "ground_cover_density_lia",
+      "script": "tools/tests/ground_cover_density.gd",
+      "summary": "GROUND_COVER_DENSITY",
+      "contract": "Remove procedural sand/snow piles and halve common scattered stones while preserving authored terrain and objects.",
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 41,
+      "timeout": 180
     }
   ]
 }

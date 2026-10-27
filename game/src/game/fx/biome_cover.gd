@@ -98,7 +98,9 @@ func configure(terrain: EITerrain, field: RefCounted, atlases: Dictionary, conte
 			if not masks.is_empty(): families[key] = masks
 	_prepare_shores(terrain)
 	regions.configure(terrain,self,scenery)
-	mounds.configure(terrain,self)
+	# Keep authored terrain and footprints; the extra sand/snow pile overlay
+	# is no longer part of ground cover. Reset reused snapshots as well.
+	mounds = Mounds.new()
 
 
 func _prepare_shores(terrain: EITerrain) -> void:
@@ -275,7 +277,7 @@ func weights(hit: Dictionary, influence: Vector3, flowers: Vector3) -> PackedFlo
 	# Roads, liquid materials, ice and high rocks are never decorated here.
 	if not type in [0,1,2,3,4,5,9,11,12]: return out
 	var snow := type in [9,12]
-	out[Kind.STONE] = 0.025 if snow else (0.12 if type in [1,2,4,5,11] else 0.025)
+	out[Kind.STONE] = 0.0125 if snow else (0.06 if type in [1,2,4,5,11] else 0.0125)
 	if biome in ["cave","unknown"]: return out
 	var green := TerrainDetails.green_colour(c)
 	var woods := biome in ["gipat","ingos","dead_city"]
