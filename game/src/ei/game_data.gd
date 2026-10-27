@@ -408,7 +408,7 @@ const REMAKE_OPTIONS := {
 	"gamepad": ["Gamepad", "Controller settings (vibration, stick dead zone, pointer speed, target range, button pictures) and the button layout."],
 	"gamepad_buttons": ["Buttons", "Choose which controller button does what. The D-pad and the sticks keep their roles."],
 	"gfx_firelight": ["Dynamic firelight", "Warm, flickering torches and fire; spell lights brighten nearby surfaces and fade out softly. Nearby fire and lava lights share a limited number of shadows."],
-	"gfx_materials": ["Surface materials", "Metal equipment catches the light; wood and stone have subtle surface relief. Uses the original textures and equipment materials."],
+	"gfx_materials": ["Surface materials", "Metal equipment catches the light; wood, stone and ground have subtle surface relief, and loose sand shows wind ripples. Uses the original textures and equipment materials."],
 	"gfx_foliage_light": ["Leaf backlighting", "Sunlight shines softly through leaves while trunks remain solid."],
 	"gfx_weather_surfaces": ["Rain on surfaces", "Rain gradually darkens exposed ground and adds wet highlights and water ripples. Surfaces dry after the rain; caves, snow and lava stay unchanged."],
 	"gfx_detailed_heads": ["Portrait heads", "People with a face portrait (Zak, the mercenaries, most men and some women) wear the portrait's own head model and face painting instead of the figure's head. A worn helmet keeps the original head."],

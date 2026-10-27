@@ -53,6 +53,7 @@ var _spatial_enabled := not OS.get_cmdline_user_args().has("--ei-pt-no-spatial")
 var terrain := Terrain.new()
 var _terrain_data := RID()
 var _terrain_atlas := RID()
+var _terrain_surface := RID()
 var _cloud_texture: Texture2D
 var _cloud_image := RID()
 var _clear_cloud := RID()
@@ -189,7 +190,9 @@ func _build_environment() -> bool:
 	# Borrow the immutable raster atlas, with a retained TextureLayered owner.
 	# Synthetic/non-terrain scenes bind the existing array as an unused dummy.
 	_terrain_atlas = RenderingServer.texture_get_rd_texture(terrain.atlas.get_rid(),true) if terrain.atlas else _colours
-	if not _terrain_data.is_valid() or not _terrain_atlas.is_valid(): return false
+	# Derived surface data is linear. Without it the header leaves it unsampled.
+	_terrain_surface = RenderingServer.texture_get_rd_texture(terrain.surface.get_rid(),false) if terrain.surface else _terrain_atlas
+	if not _terrain_data.is_valid() or not _terrain_atlas.is_valid() or not _terrain_surface.is_valid(): return false
 	var cloud_format := RDTextureFormat.new()
 	cloud_format.width=1;cloud_format.height=1
 	cloud_format.format=RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
@@ -307,7 +310,8 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,[_terrain_atlas]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,15,[_cloud_image]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,16,[_cloud_sampler]),
-		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,21,[_lighting_offsets])]
+		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,21,[_lighting_offsets]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,41,[_terrain_surface])]
 	if _uses_emitters:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
@@ -716,7 +720,7 @@ func dispose() -> void:
 	_direct_composite_shader=RID();_direct_composite_pipeline=RID()
 	_direct_frame=RID()
 	emitters = Emitters.new()
-	terrain = Terrain.new();_terrain_atlas=RID()
+	terrain = Terrain.new();_terrain_atlas=RID();_terrain_surface=RID()
 	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()
 	_variants.clear();_prepared_path_modes.clear();_sharc_sbts.clear()
 	_motion=RID();_motion_data.clear();_motion_pending.clear();_geometry_placements.clear()

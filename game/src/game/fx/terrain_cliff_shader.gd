@@ -149,6 +149,8 @@ static func source(original: String) -> String:
 		vec3 cliff_planes=cliff_weights(tile,clamp(local,vec2(0.0),vec2(1.0)),cliff_normal,length(VERTEX))*detail;
 		float stone = traits.x;""")
 	code = code.replace("* frame_scale * painted_relief * fade", "* frame_scale * painted_relief * fade * (1.0-cliff_planes.y)")
+	# Projected wall rock replaces the ground tile, so its derived roughness fades.
+	code = code.replace("float rough = mix(base_rough, surface.z, coverage);", "float rough = mix(base_rough, surface.z, coverage * (1.0-cliff_planes.y));")
 	code = code.replace("// large, soft brightness variation", """c=cliff_albedo(c,tile,clamp(local,vec2(0.0),vec2(1.0)),wpos,cliff_planes);
 		vec3 cliff_shading=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
 		cliff_shading=cliff_relief_normal(wpos,cliff_shading,cliff_normal,normalize((INV_VIEW_MATRIX*vec4(VIEW,0.0)).xyz),cliff_planes,length(VERTEX),max(length(dFdx(wpos)),length(dFdy(wpos))));

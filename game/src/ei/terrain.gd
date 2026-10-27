@@ -41,7 +41,7 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
-""" + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + """varying vec3 wpos;
+""" + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SURFACE_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + """varying vec3 wpos;
 varying vec2 soft_profile;
 """ + GroundSurfaceShader.SOFT_FUNCTIONS + """void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -73,7 +73,7 @@ varying vec2 soft_profile;
 	ei_e = COLOR.rgb;
 	ei_k = COLOR.a * 4.0;
 }
-""" + GroundSurfaceShader.TILE_FUNCTIONS + """float ground_height(vec3 colour) {
+""" + GroundSurfaceShader.TILE_FUNCTIONS + GroundSurfaceShader.SURFACE_FUNCTIONS + GroundSurfaceShader.SAND_FUNCTIONS + """float ground_height(vec3 colour) {
 	// A shallow visual approximation, not geometry: painted bright ridges
 	// rise above dark cracks. Work in perceptual brightness, not linear RGB.
 	return sqrt(max(dot(colour, vec3(0.2126, 0.7152, 0.0722)), 0.0));
@@ -118,6 +118,11 @@ void fragment() {
 		vec3 tangent = p2 * dx.x + p1 * dy.x;
 		vec3 bitangent = p2 * dx.y + p1 * dy.y;
 		float frame_scale = inversesqrt(max(max(dot(tangent, tangent), dot(bitangent, bitangent)), 1e-12));
+		// Derived surface maps (TerrainSurfaceMaps): coverage 0 keeps the
+		// established brightness relief and per-type response.
+		float coverage = 0.0;
+		vec4 surface = vec4(0.0, 0.0, 1.0, 0.0);
+		float pixel_span = max(length(dFdx(wpos)), length(dFdy(wpos)));
 		if (fade > 0.0) {
 			vec2 step_uv = vec2(source_texel * tiles_per_axis * 1.5 / (1.0 - 2.0 * border), 0.0);
 			vec4 unused_traits;
@@ -126,7 +131,15 @@ void fragment() {
 			vec3 down = ground_sample(tile, local - step_uv.yx, dx, dy, unused_traits);
 			vec3 up = ground_sample(tile, local + step_uv.yx, dx, dy, unused_traits);
 			vec2 slope = vec2(ground_height(right) - ground_height(left), ground_height(up) - ground_height(down));
-			float painted_relief = mix(mix(mix(1.1, 2.4, stone), 0.35, soft), 0.15, traits.w);
+			// The map's painted detail lacks the broad painted shading, which
+			// otherwise becomes a second, embossed copy of the baked light.
+			if (surface_maps) {
+				surface = ground_surface(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, coverage);
+				slope = mix(slope, surface.xy, coverage);
+			}
+			// Loose sand has its own grain; snow keeps the soft response.
+			float sand = surface.a * coverage;
+			float painted_relief = mix(mix(mix(mix(1.1, 2.4, stone), 0.35, soft), 0.15, traits.w), 0.8, sand);
 			NORMAL = normalize(NORMAL - (tangent * slope.x + bitangent * slope.y) * frame_scale * painted_relief * fade);
 			// Local contrast, bounded by nearby colours to avoid bright halos.
 			vec3 average = (left + right + down + up) * 0.25;
@@ -141,12 +154,23 @@ void fragment() {
 			vec2 b = texture(detail_nm, wpos.xz * 0.45).xy * 2.0 - 1.0;
 			vec2 e = texture(detail_nm, wpos.xy * 0.45).xy * 2.0 - 1.0;
 			vec2 f = texture(detail_nm, wpos.xz * 1.7 + 0.37).xy * 2.0 - 1.0;
-			vec2 fine = f * mix(0.25, 0.85, grass);
+			vec2 fine = f * mix(mix(0.25, 0.85, grass), 0.6, sand);
 			vec3 pert = vec3(0.0, a.y, a.x) * bw.x + vec3(b.x + fine.x, 0.0, b.y + fine.y) * bw.y + vec3(e.x, e.y, 0.0) * bw.z;
+			if (sand > 0.0) {
+				vec2 ripple = sand_ripple(wpos.xz, pixel_span);
+				pert += vec3(ripple.x, 0.0, ripple.y) * sand * bw.y;
+			}
 			// Tangential perturbation keeps steep slopes' base normal intact.
 			pert -= wn * dot(wn, pert);
-			wn = normalize(wn + pert * relief * fade);
+			wn = normalize(wn + pert * mix(relief, 0.09, sand) * fade);
 			NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
+		}
+		// Derived roughness in the optional material response: dry sand and
+		// soil stay matte; ice and smooth stone crests catch the light.
+		if (surface_maps && ei_surface_fx.x > 0.5 && fade > 0.0) {
+			float base_rough = mix(mix(mix(mix(0.94, 0.84, stone), 0.98, soft), 0.96, grass), 0.25, traits.w);
+			float rough = mix(base_rough, surface.z, coverage);
+			ei_surface = vec3(0.6 * (1.0 - smoothstep(0.5, 0.85, rough)) * fade, rough, 0.0);
 		}
 		// large, soft brightness variation that breaks up the tile repeats
 		float mac = texture(macro_tex, wpos.xz * 0.012).r;
@@ -864,6 +888,8 @@ const DECAL_LAYER := 1 << 18
 var _atlases: TextureLayered
 var _soft_vertices: ImageTexture
 var _detail_atlases: TextureLayered
+## TerrainSurfaceMaps for _detail_atlases, or null (unsupported / disabled).
+var _surface_maps: TextureLayered
 var _atlas_hd := false
 ## Pixel resolution may exceed the map header's logical atlas/tile sizes.
 var _atlas_source_size := 512
@@ -1429,6 +1455,15 @@ func apply_gfx() -> void:
 	if det or (Gfx.on("gfx_weather_surfaces") and Gfx.on("gfx_rain_puddles")):
 		_land_mat.set_shader_parameter("macro_tex", Gfx.noise("macro", 256, 0.015, 3))
 	_land_mat.set_shader_parameter("atlases", _detail_atlases if det else _atlases)
+	# Derived on this GPU from the installed atlases; nothing is stored.
+	if det and TerrainSurfaceMaps.requested():
+		if _surface_maps == null:
+			_surface_maps = TerrainSurfaceMaps.create(_detail_atlases, tile_types, texture_size / tile_size,
+				tile_size + TERRAIN_GUTTER * 2)
+	else:
+		_surface_maps = null
+	_land_mat.set_shader_parameter("surface_maps", _surface_maps != null)
+	_land_mat.set_shader_parameter("surface_atlases", _surface_maps)
 	_land_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
 	_land_mat.set_shader_parameter("atlas_padding", float(TERRAIN_GUTTER) / tile_size if det else 0.0)
 	_land_mat.set_shader_parameter("source_texel", 1.0 / texture_size)

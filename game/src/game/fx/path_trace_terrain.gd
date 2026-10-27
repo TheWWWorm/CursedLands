@@ -5,6 +5,8 @@ extends RefCounted
 const HEADER := 64
 var data := PackedByteArray()
 var atlas: TextureLayered
+## TerrainSurfaceMaps in the atlas layout, or null. Retained like the atlas.
+var surface: TextureLayered
 var build_us := 0
 var terrain_triangles := 0
 
@@ -14,7 +16,7 @@ static func version(terrain: EITerrain) -> Array:
 	var macro: Texture2D = material.get_shader_parameter("macro_tex") if material else null
 	# Readiness alone cannot distinguish two already generated textures. Keep
 	# their identities and the sampled edge mode in the immutable snapshot.
-	return [terrain._detail_atlases,terrain._cliffs,terrain._transitions,
+	return [terrain._detail_atlases,terrain._surface_maps,terrain._cliffs,terrain._transitions,
 		normal,normal != null and normal.get_image() != null,
 		macro,macro != null and macro.get_image() != null,
 		material == null or material.get_shader_parameter("blend_edges") != false]
@@ -65,7 +67,9 @@ func collect(scene: RefCounted, terrain: EITerrain) -> void:
 	data.encode_float(24,1.0/terrain.texture_size)
 	data.encode_float(28,1.0 if terrain._land_mat.get_shader_parameter("blend_edges")!=false else 0.0)
 	data.encode_u32(32,normal_layer+1);data.encode_u32(36,macro_layer+1)
-	data.encode_u32(44,1 if Gfx.on("gfx_materials") else 0)
+	# Bit 0: per-type material response. Bit 1: derived surface maps bound.
+	var surface_maps: TextureLayered = terrain._surface_maps if Gfx.on("gfx_materials") else null
+	data.encode_u32(44,(1 if Gfx.on("gfx_materials") else 0)|(2 if surface_maps != null else 0))
 	if cliff != null and cliff.admitted>0:
 		data.encode_u32(40,data.size());data.encode_u32(48,cliff.grid_size.x);data.encode_u32(52,cliff.grid_size.y)
 		data.append_array(cliff.guards);data.resize((data.size()+3)&~3)
@@ -76,4 +80,5 @@ func collect(scene: RefCounted, terrain: EITerrain) -> void:
 		if transition.junctions>0:
 			data.encode_u32(60,data.size());data.append_array(transition.junction_rows.to_byte_array())
 	atlas=terrain._detail_atlases
+	surface=surface_maps
 	build_us=Time.get_ticks_usec()-start

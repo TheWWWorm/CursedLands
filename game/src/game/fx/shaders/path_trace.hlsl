@@ -15,6 +15,9 @@
 [[vk::binding(12,0)]] ByteAddressBuffer emitter_lookup : register(t1200000);
 [[vk::binding(13,0)]] ByteAddressBuffer terrain_data : register(t1300000);
 [[vk::binding(14,0)]] Texture2DArray<float4> terrain_colours : register(t1400000);
+// TerrainSurfaceMaps: the padded atlas layout; RG slope, B roughness, A sand.
+// Without derived maps this aliases terrain_colours and is never sampled.
+[[vk::binding(41,0)]] Texture2DArray<float4> terrain_surface : register(t4100000);
 [[vk::binding(15,0)]] Texture2D<float4> cloud_texture : register(t1500000);
 [[vk::binding(16,0)]] SamplerState cloud_sampler : register(s1600000);
 // Secondary path distances for NRD. Keep primary placement identity intact.
@@ -769,7 +772,8 @@ float tile_lod(float footprint) {
     float span=min(abs(footprint*(1.0-2.0*border)*scale),max(gutter,0.5/float(width)));
     return max(log2(max(span*float(width),1.0)),0.0);
 }
-float3 tile_sample(float packed,float2 p,float atlas_lod) {
+// Colour and derived surface lookups share these texels and mip choices.
+float4 tile_coord(float packed,float2 p,float atlas_lod) {
     int code=int(packed+0.5),tile=code&63,rotation=(code>>14)&3;
     float4 sampling=land_sampling();float per_row=sampling.x;
     float border=8.0*sampling.z*per_row,interior=1.0-2.0*border,padding=sampling.y,span=1.0+2.0*padding;
@@ -783,7 +787,20 @@ float3 tile_sample(float packed,float2 p,float atlas_lod) {
         float margin=min(min(local.x,1.0-local.x),min(local.y,1.0-local.y))/(per_row*span);
         atlas_lod=min(atlas_lod,max(log2(max(margin*float(width),1.0)),0.0));
     }
-    return terrain_colours.SampleLevel(colour_sampler,float3(uv,float((code>>6)&255)),atlas_lod).rgb;
+    return float4(uv,float((code>>6)&255),atlas_lod);
+}
+float3 tile_sample(float packed,float2 p,float atlas_lod) {
+    float4 at=tile_coord(packed,p,atlas_lod);
+    return terrain_colours.SampleLevel(colour_sampler,at.xyz,at.w).rgb;
+}
+// GroundSurfaceShader.SURFACE_FUNCTIONS: slope from atlas pixel axes to the
+// tile's local p axes, then the same ownership and edge blending as colour.
+float4 tile_surface(float packed,float2 p,float atlas_lod) {
+    float4 at=tile_coord(packed,p,atlas_lod);
+    float4 s=terrain_surface.SampleLevel(colour_sampler,at.xyz,at.w);
+    float2 slope=(s.rg*2.0-1.0)*0.6; // TerrainSurfaceMaps.SLOPE_RANGE
+    int rotation=(int(packed+0.5)>>14)&3;
+    return float4(tile_turn(float2(slope.x,-slope.y),(4-rotation)%4),s.b,s.a);
 }
 float3 transition_original_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
     int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
@@ -817,6 +834,32 @@ float4 transition_junction_row(int2 cell) {
     uint4 layout=land_layout();uint offset=land_extra().w;
     if(offset==0u||any(cell<0)||any(cell>=int2(layout.xy)))return 0.0;
     return asfloat(terrain_data.Load4(offset+16u*(uint(cell.y)*layout.x+uint(cell.x))));
+}
+float surface_owned(int2 cell) {
+    float4 row=transition_row(cell);
+    return (row.a<0.5||row.r==row.g)?1.0:0.0;
+}
+// Synthesized transition colour keeps its painted relief; fade over a tile.
+float surface_coverage(int2 cell,float2 p) {
+    if(land_extra().z==0u)return 1.0;
+    float2 g=float2(cell)+p-0.5;int2 b=int2(floor(g));float2 f=g-float2(b);
+    return lerp(lerp(surface_owned(b),surface_owned(b+int2(1,0)),f.x),
+                lerp(surface_owned(b+int2(0,1)),surface_owned(b+int2(1,1)),f.x),f.y);
+}
+float4 ground_surface(int2 cell,float2 p,float atlas_lod,out float coverage) {
+    int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
+    coverage=surface_coverage(cell,p);
+    float4 s=tile_surface(tile_info(cell).r,p,atlas_lod);
+    if(land_sampling().w<0.5)return s;
+    float2 weight=0.5*(1.0-smoothstep(0.0,0.12,min(p,1.0-p)));
+    int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
+    if(weight.x>0.0)s=lerp(s,tile_surface(tile_info(cell+int2(step_cell.x,0)).r,p-float2(step_cell.x,0),atlas_lod),weight.x);
+    if(weight.y>0.0) {
+        float4 other=tile_surface(tile_info(cell+int2(0,step_cell.y)).r,p-float2(0,step_cell.y),atlas_lod);
+        if(weight.x>0.0)other=lerp(other,tile_surface(tile_info(cell+step_cell).r,p-float2(step_cell),atlas_lod),weight.x);
+        s=lerp(s,other,weight.y);
+    }
+    return s;
 }
 float cliff_eligible(int2 cell) {
     uint4 layout=land_layout();
@@ -1159,8 +1202,21 @@ float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
 #endif
 // Returns linear albedo and evaluates the same detail normal/material fields
 // for primary and secondary rays. Vertex-to-tile identity survives XY jitter.
-bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale) {
-    albedo=0.0;painted_scale=1.0;uint4 layout=land_layout();
+// Sand wind ripples, as GroundSurfaceShader.SURFACE_FUNCTIONS sand_ripple.
+float2 sand_ripple(float2 xz,float span) {
+    float fade=1.0-smoothstep(0.05,0.11,span);
+    if(fade<=0.0)return 0.0;
+    uint normal_layer=land_detail().x,macro_layer=land_detail().y;
+    float2 warp=normal_layer>0u?colours.SampleLevel(colour_sampler,float3(xz*0.031,normal_layer-1u),0.0).rg*2.0-1.0:0.0;
+    float2 dir=normalize(float2(0.8,0.6)+0.45*warp);
+    float macro=macro_layer>0u?colours.SampleLevel(colour_sampler,float3(xz*0.09,macro_layer-1u),0.0).r:0.0;
+    float phase=dot(xz,dir)*(6.2831853/0.42)+3.0*macro;
+    float dh=cos(phase)+0.5*cos(2.0*phase);
+    return -dir*dh*0.9*fade;
+}
+// surface_relief: derived slope in hit-UV axes (XY), coverage (Z), sand (W).
+bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale,out float4 surface_relief) {
+    albedo=0.0;painted_scale=1.0;surface_relief=0.0;uint4 layout=land_layout();
     if(layout.x==0u)return false;
     uint id=terrain_data.Load(layout.w+(vertex/3u)*4u);
     if(id==0u||id>layout.x*layout.y)return false;
@@ -1184,6 +1240,12 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
+    float coverage=0.0;float4 surface=float4(0,0,1,0);
+    [branch] if((land_detail().w&2u)!=0u)surface=ground_surface(cell,clamp(local,0.0,0.99999),ground_lod,coverage);
+    float sand=surface.a*coverage;
+    // Back from local p to hit-UV axes: the tile's quarter turn, then V flip.
+    float2 turned=tile_turn(surface.xy,int(code>>14u)&3);
+    surface_relief=float4(turned.x,-turned.y,coverage,sand);
     float3 planes=cliff_weights(cell,saturate(local),s.geometric_normal,distance);
     float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
     float fade=1.0-smoothstep(25.0,70.0,distance);
@@ -1191,7 +1253,7 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Preserve the established bounded painted relief on ordinary terrain.
     // Its four compact atlas taps run below, once, instead of evaluating the
     // complete neighbouring transition field four additional times per hit.
-    painted_scale=(1.0-planes.y)*lerp(lerp(1.0,1.15,traits.x),0.45,traits.y)*(1.0-0.8*traits.w);
+    painted_scale=(1.0-planes.y)*lerp(lerp(lerp(1.0,1.15,traits.x),0.45,traits.y),1.0,sand)*(1.0-0.8*traits.w);
     [branch] if(fade>0.0) {
         uint normal_layer=land_detail().x;
         [branch] if(normal_layer>0u) {
@@ -1203,12 +1265,13 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
             [branch] if(weights.x>0.0)x=colours.SampleLevel(colour_sampler,float3(s.position.zy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
             [branch] if(weights.y>0.0) {
                 y=colours.SampleLevel(colour_sampler,float3(s.position.xz*0.45,normal_layer-1u),lod).rg*2.0-1.0;
-                fine=(colours.SampleLevel(colour_sampler,float3(s.position.xz*1.7+0.37,normal_layer-1u),fine_lod).rg*2.0-1.0)*lerp(0.25,0.85,traits.z);
+                fine=(colours.SampleLevel(colour_sampler,float3(s.position.xz*1.7+0.37,normal_layer-1u),fine_lod).rg*2.0-1.0)*lerp(lerp(0.25,0.85,traits.z),0.6,sand);
+                if(sand>0.0)fine+=sand_ripple(s.position.xz,footprint)*sand;
             }
             [branch] if(weights.z>0.0)z=colours.SampleLevel(colour_sampler,float3(s.position.xy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
             float3 perturbation=float3(0,x.y,x.x)*weights.x+float3(y.x+fine.x,0,y.y+fine.y)*weights.y+float3(z.x,z.y,0)*weights.z;
             perturbation-=n*dot(n,perturbation);
-            float relief=lerp(lerp(lerp(0.13,0.10,traits.x),0.055,traits.y),0.025,traits.w);
+            float relief=lerp(lerp(lerp(lerp(0.13,0.10,traits.x),0.055,traits.y),0.025,traits.w),0.09,sand);
             n=land_normal(n,perturbation*relief*fade,s.geometric_normal);
         }
     }
@@ -1226,14 +1289,16 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Terrain types supply a restrained dielectric response. Colour brightness
     // never classifies a surface as metal, ice or polished stone.
     if((land_detail().w&1u)!=0u) {
-        s.roughness=lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w);
+        s.roughness=lerp(lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w),surface.z,coverage*(1.0-planes.y));
         s.metalness=0.0;s.specular=0.5;
     }
     return true;
 }
 
+// surface: derived terrain slope in hit-UV axes and its coverage (XY, Z).
+// Full coverage needs no colour taps: the map already holds the relief.
 float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 uv1,float2 uv2,
-                     float3 texel,float2 step_uv,float lod,float strength,bool terrain) {
+                     float3 texel,float2 step_uv,float lod,float strength,bool terrain,float3 surface) {
     float3 r1=cross(edge2,n),r2=cross(n,edge1);
     float3 u=r1*uv1.x+r2*uv2.x,v=r1*uv1.y+r2*uv2.y;
     // The oriented triangle area can reverse under mirrored placement or
@@ -1241,13 +1306,18 @@ float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 
     float area=dot(cross(edge1,edge2),n);
     if(abs(area)<1e-10||abs(uv1.x*uv2.y-uv1.y*uv2.x)<1e-10)return n;
     float scale=sign(area)*rsqrt(max(max(dot(u,u),dot(v,v)),1e-12));
-    const float3 lum=float3(0.2126,0.7152,0.0722);
-    float left=dot(colours.SampleLevel(colour_sampler,texel-float3(step_uv.x,0,0),lod).rgb,lum);
-    float right=dot(colours.SampleLevel(colour_sampler,texel+float3(step_uv.x,0,0),lod).rgb,lum);
-    float above=dot(colours.SampleLevel(colour_sampler,texel-float3(0,step_uv.y,0),lod).rgb,lum);
-    float below=dot(colours.SampleLevel(colour_sampler,texel+float3(0,step_uv.y,0),lod).rgb,lum);
     float bound=terrain?0.30:0.12;
-    float2 slope=clamp(float2(right-left,below-above)*2.0,-bound,bound);
+    // The map holds perceptual-brightness differences; these taps use doubled
+    // linear luminance differences. 2.5 is their ratio for typical ground.
+    float2 slope=clamp(surface.xy*2.5,-bound,bound);
+    [branch] if(surface.z<0.999) {
+        const float3 lum=float3(0.2126,0.7152,0.0722);
+        float left=dot(colours.SampleLevel(colour_sampler,texel-float3(step_uv.x,0,0),lod).rgb,lum);
+        float right=dot(colours.SampleLevel(colour_sampler,texel+float3(step_uv.x,0,0),lod).rgb,lum);
+        float above=dot(colours.SampleLevel(colour_sampler,texel-float3(0,step_uv.y,0),lod).rgb,lum);
+        float below=dot(colours.SampleLevel(colour_sampler,texel+float3(0,step_uv.y,0),lod).rgb,lum);
+        slope=lerp(clamp(float2(right-left,below-above)*2.0,-bound,bound),slope,surface.z);
+    }
     float3 perturbation=(u*slope.x+v*slope.y)*scale*strength;
     // Limit the displacement continuously as either valid hemisphere is
     // approached. A hard return to n makes relief pop at grazing angles.
@@ -1404,7 +1474,7 @@ void main(inout Surface result,Attributes attributes) {
         // double normals and four extra colour fetches on mapped props.
         strength=0.0;
     }
-    float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;
+    float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;float4 surface_relief=0.0;
     #if defined(PATH_TERRAIN_MATERIALS)
     [branch] if(terrain&&land_layout().x>0u) {
         float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
@@ -1412,7 +1482,7 @@ void main(inout Surface result,Attributes attributes) {
         float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
         if(frame.camera.x<0.5)footprint*=distance;
         footprint=max(footprint,result.cone*RayTCurrent());
-        detailed_terrain=terrain_material(i,texel.xy,density,result,footprint,distance,terrain_albedo,painted_scale);
+        detailed_terrain=terrain_material(i,texel.xy,density,result,footprint,distance,terrain_albedo,painted_scale,surface_relief);
         strength*=painted_scale;
     }
     #endif
@@ -1435,7 +1505,7 @@ void main(inout Surface result,Attributes attributes) {
             mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
             float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
             float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),
-            texel,step_scale/float2(width,height),relief_lod,strength,terrain);
+            texel,step_scale/float2(width,height),relief_lod,strength,terrain,surface_relief.xyz);
     }
     // Detailed terrain already sampled its colour from the shared raster atlas.
     [branch] if(!detailed_terrain||any(a.emission_layer.rgb>0.0))colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;

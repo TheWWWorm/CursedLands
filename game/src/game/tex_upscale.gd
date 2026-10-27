@@ -116,6 +116,7 @@ static func _init_gpu() -> bool:
 ## while the RenderingServer still exists. Called when Main leaves the tree.
 static func shutdown() -> void:
 	TexUpscaleTexture.shutdown()
+	TerrainSurfaceMaps.shutdown()
 	_shutdown_local()
 
 

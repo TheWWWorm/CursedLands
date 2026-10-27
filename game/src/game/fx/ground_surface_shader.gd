@@ -156,7 +156,8 @@ vec4 tile_traits(float type) {
 }
 // p is in the unrotated, visible 48/64 tile interior. Samples from a
 // neighbour can extend into its authored border, never an unrelated tile.
-vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
+// Colour and derived surface lookups share these texels and footprints.
+void tile_coord(float packed, vec2 p, vec2 dx, vec2 dy, out vec3 uv_layer, out vec2 grad_x, out vec2 grad_y) {
 	int code = int(packed + 0.5);
 	int tile = code & 63;
 	int rotation = (code >> 14) & 3;
@@ -180,7 +181,14 @@ vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
 	float shrink = min(1.0, safe_span / max(max(length(gx), length(gy)), 1e-8));
 	gx *= shrink; gy *= shrink;
 	// END_ATLAS_FOOTPRINT
-	return textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;
+	uv_layer = vec3(uv, float((code >> 6) & 255));
+	grad_x = gx * vec2(1.0, -1.0);
+	grad_y = gy * vec2(1.0, -1.0);
+}
+vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
+	vec3 uv; vec2 gx; vec2 gy;
+	tile_coord(packed, p, dx, dy, uv, gx, gy);
+	return textureGrad(atlases, uv, gx, gy).rgb;
 }
 #ifdef EI_BAKED_TERRAIN
 uniform sampler2D baked_ground : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
@@ -236,6 +244,82 @@ vec3 ground_sample(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out vec4 traits) {
 #endif
 // END_GROUND_TILE_SAMPLER
 
+"""
+
+## Derived terrain surface data (TerrainSurfaceMaps), land shader only. Other
+## TILE_FUNCTIONS consumers keep their own uniform sets and need no map.
+const SURFACE_UNIFORMS := """// RG painted slope without broad painted shading, B roughness, A loose sand.
+uniform bool surface_maps = false;
+uniform sampler2DArray surface_atlases : filter_linear_mipmap_anisotropic, repeat_disable;
+"""
+
+const SURFACE_FUNCTIONS := """// The map stores slope in atlas pixel axes. Undo the V flip and the tile's
+// quarter turn so it matches finite differences in local p (ground_sample).
+vec4 tile_surface(float packed, vec2 p, vec2 dx, vec2 dy) {
+	vec3 uv; vec2 gx; vec2 gy;
+	tile_coord(packed, p, dx, dy, uv, gx, gy);
+	vec4 s = textureGrad(surface_atlases, uv, gx, gy);
+	vec2 slope = (s.rg * 2.0 - 1.0) * 0.6; // TerrainSurfaceMaps.SLOPE_RANGE
+	int rotation = (int(packed + 0.5) >> 14) & 3;
+	return vec4(tile_turn(vec2(slope.x, -slope.y), (4 - rotation) % 4), s.b, s.a);
+}
+#ifdef EI_TERRAIN_TRANSITIONS
+float surface_owned(ivec2 cell) {
+	vec4 row = transition_row(cell);
+	return (row.a < 0.5 || row.r == row.g) ? 1.0 : 0.0;
+}
+#endif
+float surface_coverage(ivec2 cell, vec2 p) {
+#ifdef EI_TERRAIN_TRANSITIONS
+	// Synthesized transition colour has no derived map; it keeps its painted
+	// relief. Fade between the two over one tile, never at a tile edge.
+	vec2 g = vec2(cell) + p - 0.5;
+	ivec2 b = ivec2(floor(g));
+	vec2 f = g - vec2(b);
+	return mix(mix(surface_owned(b), surface_owned(b + ivec2(1, 0)), f.x),
+		mix(surface_owned(b + ivec2(0, 1)), surface_owned(b + ivec2(1, 1)), f.x), f.y);
+#else
+	return 1.0;
+#endif
+}
+// The same tile ownership and edge blending as ground_sample's colour.
+vec4 ground_surface(ivec2 cell, vec2 p, vec2 dx, vec2 dy, out float coverage) {
+	ivec2 shift = ivec2(floor(p));
+	cell += shift;
+	p -= vec2(shift);
+	coverage = surface_coverage(cell, p);
+	vec4 s = tile_surface(tile_info(cell).r, p, dx, dy);
+	if (!blend_edges) { return s; }
+	vec2 edge = min(p, 1.0 - p);
+	vec2 weight = 0.5 * (1.0 - smoothstep(vec2(0.0), vec2(0.12), edge));
+	ivec2 step_cell = ivec2(p.x < 0.5 ? -1 : 1, p.y < 0.5 ? -1 : 1);
+	if (weight.x > 0.0) {
+		s = mix(s, tile_surface(tile_info(cell + ivec2(step_cell.x, 0)).r, p - vec2(float(step_cell.x), 0.0), dx, dy), weight.x);
+	}
+	if (weight.y > 0.0) {
+		vec4 other = tile_surface(tile_info(cell + ivec2(0, step_cell.y)).r, p - vec2(0.0, float(step_cell.y)), dx, dy);
+		if (weight.x > 0.0) {
+			other = mix(other, tile_surface(tile_info(cell + step_cell).r, p - vec2(step_cell), dx, dy), weight.x);
+		}
+		s = mix(s, other, weight.y);
+	}
+	return s;
+}
+"""
+
+## Fragment-only: implicit-derivative noise lookups (land shader).
+const SAND_FUNCTIONS := """// World-space wind ripples on loose sand, as a tilt in world XZ. The existing
+// ground noise bends them; they fade before the wavelength can alias.
+vec2 sand_ripple(vec2 xz, float pixel_span) {
+	float fade = 1.0 - smoothstep(0.05, 0.11, pixel_span);
+	if (fade <= 0.0) { return vec2(0.0); }
+	vec2 warp = texture(detail_nm, xz * 0.031).xy * 2.0 - 1.0;
+	vec2 dir = normalize(vec2(0.8, 0.6) + 0.45 * warp);
+	float phase = dot(xz, dir) * (6.2831853 / 0.42) + 3.0 * texture(macro_tex, xz * 0.09).r;
+	// A gentle windward face and a steeper lee.
+	float dh = cos(phase) + 0.5 * cos(2.0 * phase);
+	return -dir * dh * 0.9 * fade;
+}
 """
 
 ## Exact drawn-surface lookup, including authored xy offsets, folded cells
