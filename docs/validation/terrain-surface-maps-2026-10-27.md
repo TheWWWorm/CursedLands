@@ -68,9 +68,19 @@ results (as did the earlier recorded baseline `34a17e14`), so they are not
 caused by this change:
 
 - `terrain_cliff_composed`: 69 checks, 0 failures, below the manifest minimum
-  of 87; both runs had 16 resident colour-cache sectors instead of 22.
+  of 87. Cause: `310edbb2` admitted desert cliff families, moving the test's
+  zone11 site to a view with 16 resident colour-cache sectors instead of 22;
+  the test asserted per sector. Fixed in a separate commit on this branch: one
+  assertion per property over every resident sector (equally strict),
+  minimum 24. Now 24/0.
 - `terrain_cliff_composed_gl` (Compatibility, where derived maps are never
   created): "unsupported tiles preserve exact pixels in enabled source zone11".
+  Not fixed: 26 contact-band pixels on the test box differ by up to 10 because
+  the NVIDIA GL compiler generates different floating-point code for the cliff
+  contact program even when its projection body never executes (isolation
+  table in `local/validation/terrain-surface-20261027/gl-contact-diagnosis/`).
+  The check asserts bit-identical output from two distinct GL programs, which
+  the platform does not guarantee; changing that assertion needs a decision.
 
 Retained captures and run summaries: `local/validation/terrain-surface-20261027/`.
 

@@ -1683,7 +1683,7 @@
       "args": [
         "--cliff-composed"
       ],
-      "min_checks": 87,
+      "min_checks": 24,
       "rendering_method": "forward_plus"
     },
     {

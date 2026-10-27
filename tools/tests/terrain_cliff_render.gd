@@ -147,17 +147,23 @@ func case(map: String, positive := true) -> void:
 	if is_instance_valid(terrain.color_cache):
 		cache_count=terrain.color_cache._resident.size()
 		check(cache_count>0,"native colour cache active in this view "+map)
-		for entry: Dictionary in terrain.color_cache._resident.values():
-			check(entry.material.shader.code.contains("#define EI_TERRAIN_CLIFFS")==positive,"cached terrain uses matching optional source "+map)
-			if positive: check(entry.material.get_shader_parameter("cliff_tiles")==terrain._cliffs.tiles,"cached land shares live projection fields "+map)
+		# One assertion per property over every resident sector: the number in
+		# view depends on the selected site, not on the behavior under test.
+		var entries: Array=terrain.color_cache._resident.values()
+		check(entries.all(func(entry:Dictionary)->bool:return entry.material.shader.code.contains("#define EI_TERRAIN_CLIFFS")==positive),
+			"every cached sector uses matching optional source "+map)
+		if positive: check(entries.all(func(entry:Dictionary)->bool:return entry.material.get_shader_parameter("cliff_tiles")==terrain._cliffs.tiles),
+			"every cached sector shares live projection fields "+map)
 	var retired: WeakRef = weakref(terrain._cliffs)
 	GameData.options.gfx_terrain_cliffs=0; terrain.apply_gfx(); await frames()
 	check(terrain._cliffs==null and retired.get_ref()==null,"disable releases world projection helper "+map)
 	check(not figure.material_override.shader.code.contains("#define EI_TERRAIN_CLIFFS"),"disable retires contact shader variants "+map)
 	check(difference(off,await snap(view,map+"-disabled")).changed_pixels==0,"disable restores exact original terrain/contact pixels "+map)
 	if is_instance_valid(terrain.color_cache):
-		for entry: Dictionary in terrain.color_cache._resident.values():
-			check(entry.material.get_shader_parameter("cliff_tiles")==null and entry.material.get_shader_parameter("cliff_flatness")==null and entry.material.get_shader_parameter("cliff_blends")==null,"cached material releases old projection textures "+map)
+		var released:=func(entry:Dictionary)->bool:return entry.material.get_shader_parameter("cliff_tiles")==null \
+			and entry.material.get_shader_parameter("cliff_flatness")==null and entry.material.get_shader_parameter("cliff_blends")==null
+		check(not terrain.color_cache._resident.is_empty() and terrain.color_cache._resident.values().all(released),
+			"every cached material releases old projection textures "+map)
 	GameData.options.gfx_terrain=0; terrain.apply_gfx(); await frames()
 	var original := await snap(view,map+"-original")
 	GameData.options.gfx_terrain_cliffs=1; terrain.apply_gfx()
