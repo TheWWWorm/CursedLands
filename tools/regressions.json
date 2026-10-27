@@ -1370,12 +1370,12 @@
       "id": "script_expression_native",
       "script": "tools/tests/script_expression_native.gd",
       "summary": "SCRIPT_EXPRESSION_NATIVE",
-      "contract": "Native nested script expressions preserve float32 stores, live lever/object/variable reads, fallback side effects and RNG order.",
-      "issues": [],
+      "contract": "Native nested script expressions and group, death and sighting queries preserve float32 stores, live lever/object/variable/unit reads, lazy sighting forms, fallback side effects and RNG order.",
+      "issues": [119],
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 21000
+      "min_checks": 22700
     },
     {
       "id": "picking_retained",

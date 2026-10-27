@@ -8,6 +8,10 @@ campaign, renderer requirement and minimum assertion count. It supplements the
 `script_expression_native` requires the rebuilt terrain extension. It compares
 native and script evaluation, live variables/objects/levers, float32 boundaries,
 RNG, lazy forms and side effects, including an original-game Wine fixture.
+It also covers native `GroupSize`, `IsDead`, `UnitSee`, `GroupSee`, `GroupHas`
+and `GroupCross`: lazy sighting forms, watcher order, looted/freed/derived units,
+malformed shapes and kernels without the unit class. Their Foothills
+measurements are in [the worker CPU validation](validation/foothills-worker-cpu-2026-10-27.md).
 Related scheduler, clock, quest and lever checks and CPU measurements are in
 [the CPU traversal validation](validation/cpu-traversal-2026-10-25/README.md).
 `picking_retained` also requires the rebuilt extension and compares fused

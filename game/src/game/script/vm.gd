@@ -49,8 +49,18 @@ var world_bodies := {}
 var _world_done := {}
 ## Only the expression traversal is native. Older libraries and diagnostic
 ## controls retain the same interpreter; derived VMs keep their overrides.
-var _expression_kernel: RefCounted = ClassDB.instantiate("ScriptExpressionKernel") \
-	if ClassDB.class_exists("ScriptExpressionKernel") and not OS.get_cmdline_user_args().has("--ei-script-expressions") else null
+var _expression_kernel: RefCounted = _new_expression_kernel()
+
+
+static func _new_expression_kernel() -> RefCounted:
+	if not ClassDB.class_exists("ScriptExpressionKernel") or OS.get_cmdline_user_args().has("--ei-script-expressions"):
+		return null
+	var kernel: RefCounted = ClassDB.instantiate("ScriptExpressionKernel")
+	# Death, group and perception queries test the live unit class; libraries
+	# without it keep those calls in the interpreter.
+	if kernel.has_method("set_unit_script"):
+		kernel.set_unit_script(GameUnit)
+	return kernel
 
 
 class Instance:
@@ -261,9 +271,12 @@ func _poll(inst: Instance) -> void:
 	if inst.memo_key is String and _idle.has(inst.memo_key):
 		return
 	var fired := false
+	var pure := true   # every block's conditions (cached per definition)
 	for bi in inst.blocks.size():
 		var b: Dictionary = inst.blocks[bi]
-		if not _conditions(b, bi, inst):
+		var block_pure := _block_pure(inst, bi)
+		pure = pure and block_pure
+		if not _conditions(b, bi, inst, block_pure):
 			continue
 		fired = true
 		inst.block_index = bi
@@ -287,8 +300,7 @@ func _poll(inst: Instance) -> void:
 			instances.append(thread)
 		if inst.killed:
 			return
-	if not fired and inst.memo_key is String and not inst.memo_key.is_empty() \
-			and range(inst.blocks.size()).all(func(bi: int): return _block_pure(inst, bi)):
+	if not fired and pure and inst.memo_key is String and not inst.memo_key.is_empty():
 		_idle[inst.memo_key] = true
 
 
@@ -327,10 +339,8 @@ func _block_pure(inst: Instance, bi: int) -> bool:
 	return pure
 
 
-func _conditions(b: Dictionary, bi: int, inst: Instance) -> bool:
-	if not condition_memo:
-		return _party_conditions(b.conds, inst)
-	if not _block_pure(inst, bi):
+func _conditions(b: Dictionary, bi: int, inst: Instance, pure: bool) -> bool:
+	if not condition_memo or not pure:
 		return _party_conditions(b.conds, inst)
 	if inst.memo_key == null:
 		inst.memo_key = _memo_key(inst)
@@ -463,8 +473,8 @@ func _all(conds: Array, inst: Instance) -> bool:
 ## old saves, but can be satisfied by a newly arrived party member. Never
 ## generalize an individual trap, movement order or character-specific chain.
 func _party_conditions(conds: Array, inst: Instance) -> bool:
-	var def: Dictionary = ast.scripts.get(inst.sname,{})
-	if not def.get("party_check",false) or session == null or not session.multiplayer_game \
+	var def = ast.scripts.get(inst.sname)
+	if def == null or not def.get("party_check",false) or session == null or not session.multiplayer_game \
 			or not session.lmp.is_empty() or not _world_event(inst.sname): return _all(conds,inst)
 	var param: String = def.params[0]
 	var original = inst.locals.get(param)

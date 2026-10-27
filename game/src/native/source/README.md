@@ -19,6 +19,11 @@ lever state. Numeric nodes retain the interpreter's float32 storage boundary.
 No expression results or world references are cached. Unknown calls and lazy
 forms return to the interpreter before evaluating arguments, preserving writes,
 RNG consumption and argument order. The scheduler and statements stay in script.
+Group size/membership/intersection, death and `UnitSee`/`GroupSee` sighting
+queries are also native, including the lazy `GroupHas`/`GroupCross` sighting
+forms. Each watcher's noticed list still comes from `ScriptVM._noticed`, which
+owns the AI refresh and per-tick memo; the kernel only combines the lists and
+holds the unit class weakly. Kernels without it keep these calls in script.
 Derived VMs and older libraries retain the original evaluator. The per-process
 diagnostic `-- --ei-script-expressions` selects it explicitly; automatic solo
 worker children do not inherit that flag. `tools/tests/script_expression_native.gd`

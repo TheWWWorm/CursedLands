@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reduce campaign simulation CPU time in busy areas such as the Foothills by evaluating quest group, death and sighting conditions in native code. Results, perception refreshes, random draws and quest timing are unchanged; on the test system a Foothills simulation tick takes about a fifth less time, leaving more headroom for fast speed on slower processors.
+
 ## 1.32.0 — 2026-10-26
 
 - Add main-menu checks for stable Cursed Lands updates, with localized download and retry buttons.

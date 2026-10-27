@@ -12,6 +12,9 @@ class DerivedVM extends ScriptVM:
 	func _get_var(_name: String, _inst: Instance):
 		return 123.0
 
+class DerivedUnit extends GameUnit:
+	pass
+
 func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok:
@@ -28,11 +31,13 @@ func same(a, b) -> bool:
 	if a is float and b is float and is_nan(a) and is_nan(b): return true
 	return is_same(a,b) if a is Object or b is Object else var_to_bytes(a) == var_to_bytes(b)
 
-func compare(expression: Array, label: String) -> void:
+func compare(expression: Array, label: String, prepare := Callable()) -> void:
 	var before_locals := inst.locals.duplicate(true)
 	var before_globals := vm.globals.duplicate(true)
 	var before_vars := vm.session.state.vars.duplicate(true)
+	var native := kernel
 	vm._expression_kernel = null
+	if prepare.is_valid(): prepare.call()
 	seed(81479)
 	var expected = vm._eval(expression,inst)
 	var expected_rng := randi()
@@ -42,7 +47,8 @@ func compare(expression: Array, label: String) -> void:
 	inst.locals = before_locals
 	vm.globals = before_globals
 	vm.session.state.vars = before_vars
-	vm._expression_kernel = kernel
+	vm._expression_kernel = native
+	if prepare.is_valid(): prepare.call()
 	seed(81479)
 	var actual = vm._eval(expression,inst)
 	check(same(actual,expected),label+" value")
@@ -50,6 +56,95 @@ func compare(expression: Array, label: String) -> void:
 	check(var_to_bytes(inst.locals)==expected_locals,label+" local writes")
 	check(var_to_bytes(vm.globals)==expected_globals,label+" global writes")
 	check(var_to_bytes(vm.session.state.vars)==expected_vars,label+" campaign writes")
+
+## Watchers' noticed lists: living ones from the tick memo (ScriptVM._noticed),
+## so no AI refresh runs; a dead one from its retained "noticed" record.
+var seen := {}
+func seed_seen() -> void:
+	vm._in_tick = true
+	vm._seen_memo = seen.duplicate()
+
+func perception_cases(world: GameWorld, scenery: Node3D) -> void:
+	var names: PackedStringArray = kernel.native_calls() if kernel.has_method("native_calls") else PackedStringArray()
+	for name in ["GroupSize","IsDead","UnitSee","GroupSee","GroupHas","GroupCross"]:
+		check(names.has(name),"native "+name)
+	var units := {}
+	for row in [["alive",101,1,false],["dead",102,2,true],["unseen",103,0,false],["looted",104,4,false],
+			["w1",111,11,false],["w2",112,12,false],["w3",113,13,true],["derived",120,20,true],["gone",130,30,false]]:
+		var u: GameUnit = DerivedUnit.new() if row[0] == "derived" else GameUnit.new()
+		u.uid = row[1];u._seq = row[2];u.world = world;world.set_unit(row[1],u)
+		u.dead = row[3]
+		units[row[0]] = u
+	world.looted[104] = units.looted
+	var heroes := [units.alive,units.dead,units.unseen]
+	seen = {units.w1:[units.alive,units.dead,units.unseen,units.looted],units.w2:[units.dead,units.w1,units.derived],
+		units.looted:[units.alive],units.alive:[units.w1],units.unseen:[]}
+	units.w3.set_meta("noticed",{1:units.alive,2:units.w3,3:units.derived})
+	var group := [units.w1,units.w2,units.w3,units.alive,null,units.gone,4.0,scenery,units.looted]
+	units.gone.free()
+	inst.locals.heroes = heroes
+	inst.locals.g = group
+	inst.locals.watchers = [units.w1,units.w3,units.looted,units.w2]
+	var values := [units.alive,units.dead,units.unseen,units.looted,units.derived,units.w1,units.w3,scenery,
+		null,0.0,3.0,"unit",[],group,heroes,{},PackedInt32Array([1]),Vector2.ONE]
+	for i in values.size():
+		inst.locals.x = values[i]
+		var label := " value %d" % i
+		compare(c("GroupSize",[v("x")]),"group size"+label,seed_seen)
+		compare(c("IsDead",[v("x")]),"dead"+label,seed_seen)
+		compare(c("UnitSee",[v("x")]),"unit sees"+label,seed_seen)
+		compare(c("GroupSee",[v("x")]),"group sees"+label,seed_seen)
+		compare(c("GroupHas",[v("g"),v("x")]),"group has"+label,seed_seen)
+		compare(c("GroupHas",[c("UnitSee",[v("x")]),v("alive")]),"lazy unit sight has"+label,seed_seen)
+		compare(c("GroupHas",[c("GroupSee",[v("watchers")]),v("x")]),"lazy group sight has"+label,seed_seen)
+		compare(c("GroupCross",[v("x"),v("heroes")]),"cross"+label,seed_seen)
+		compare(c("GroupCross",[v("heroes"),c("UnitSee",[v("x")])]),"lazy unit sight cross"+label,seed_seen)
+		compare(c("GroupCross",[v("x"),c("GroupSee",[v("watchers")])]),"lazy group sight cross"+label,seed_seen)
+		compare(c("GroupSize",[c("GroupCross",[c("UnitSee",[v("x")]),v("heroes")])]),"Foothills watcher"+label,seed_seen)
+	inst.locals.alive = units.alive
+	for w in ["w1","w2","w3","looted","derived"]:
+		inst.locals.w = units[w]
+		compare(c("GroupSize",[c("GroupCross",[c("UnitSee",[v("w")]),v("heroes")])]),"watcher sees heroes "+w,seed_seen)
+		compare(c("GroupCross",[v("g"),c("UnitSee",[v("w")])]),"watcher among candidates "+w,seed_seen)
+		compare(c("GroupHas",[c("UnitSee",[v("w")]),v("w")]),"watcher sees itself "+w,seed_seen)
+	compare(c("GroupSize",[c("GroupCross",[c("GroupSee",[v("watchers")]),v("heroes")])]),"group watchers see heroes",seed_seen)
+	# Argument order, single evaluation and RNG of nested interpreter calls.
+	var write := c("GSSetVar",[n(0),[P.N_STR,"seen"],n(5)])
+	inst.locals.w = units.w3
+	compare(c("GroupCross",[write,c("UnitSee",[v("w")])]),"lazy cross evaluates the group first",seed_seen)
+	compare(c("GroupCross",[c("UnitSee",[v("w")]),write]),"cross evaluates left to right",seed_seen)
+	compare(c("GroupHas",[c("UnitSee",[v("w")]),write]),"lazy has evaluates the watcher first",seed_seen)
+	compare(c("GroupHas",[v("g"),c("Random",[n(3)])]),"group has random target",seed_seen)
+	compare(c("IsDead",[c("GetObject",[c("Add",[n(101),c("Random",[n(2)])])])]),"dead random object",seed_seen)
+	compare(c("GroupSize",[c("GSGetVar",[n(0),[P.N_STR,"seen"]])]),"group size of a variable",seed_seen)
+	# Shapes the interpreter judges: arity, two-argument sight, empty calls.
+	compare(c("GroupSize",[v("g"),v("heroes")]),"group size extra argument",seed_seen)
+	compare(c("GroupHas",[v("g"),v("x"),v("x")]),"group has extra argument",seed_seen)
+	compare(c("GroupCross",[v("heroes"),c("UnitSee",[v("w"),v("w")])]),"two-argument sight",seed_seen)
+	compare(c("GroupCross",[v("heroes"),[P.N_CALL,"GroupSee",[v("watchers")],0]]),"sight call with an extra field",seed_seen)
+	compare(c("GroupCross",[v("heroes"),[P.N_VAR,"UnitSee"]]),"variable named UnitSee",seed_seen)
+	# Libraries with the operations but no configured unit class.
+	var bare: RefCounted = ClassDB.instantiate("ScriptExpressionKernel")
+	var configured := kernel
+	kernel = bare
+	inst.locals.w = units.w1
+	compare(c("GroupSize",[c("GroupCross",[c("UnitSee",[v("w")]),v("heroes")])]),"unconfigured unit queries",seed_seen)
+	compare(c("IsDead",[v("alive")]),"unconfigured death query",seed_seen)
+	kernel = configured
+	# Live state: a later death and a removed watcher are seen at once.
+	compare(c("IsDead",[v("alive")]),"alive before death",seed_seen)
+	units.alive.dead = true
+	compare(c("IsDead",[v("alive")]),"death changed in place",seed_seen)
+	inst.locals.w = units.w2
+	seen.erase(units.w2)
+	units.w2.dead = true;units.w2.set_meta("noticed",{})
+	compare(c("GroupCross",[v("heroes"),c("UnitSee",[v("w")])]),"watcher died",seed_seen)
+	vm._in_tick = false;vm._seen_memo.clear()
+	for key in ["x","w","g","watchers","heroes","alive"]: inst.locals.erase(key)
+	world.looted.clear()
+	for name in units:
+		if is_instance_valid(units[name]):
+			world.erase_unit(units[name].uid);units[name].free()
 
 func _ready() -> void:
 	check(ClassDB.class_exists("ScriptExpressionKernel"),"native expression implementation is present")
@@ -101,6 +196,7 @@ func _ready() -> void:
 	world.levers={88:{"state":3}};compare(lever,"lever dictionary replaced")
 	inst.locals.x=unit;compare(c("IsEqual",[v("x"),c("GetObject",[n(77)])]),"same object")
 	compare(c("IsEqual",[v("x"),c("GetObject",[n(88)])]),"different objects")
+	perception_cases(world,obj)
 	world.erase_unit(77);unit.free()
 	compare(c("Not",[v("x")]),"freed local object")
 	obj.free();compare(lever,"freed scenery")
