@@ -6,9 +6,43 @@ from pathlib import Path, PurePosixPath
 import zipfile
 
 
+# Texture folders: <archive>/<entry path>.mmp or .png in the mod source become
+# overrides of <entry path>.mmp, so a texture pack needs no hand-written table.
+TEXTURE_FOLDERS = ("textures.res", "redress.res")
+TEXTURE_SUFFIXES = (".mmp", ".png")
+
+
+def folder_overrides(source: Path, manifest: dict) -> list:
+    declared = {(entry["archive"], entry["entry"].lower()) for entry in manifest.get("overrides", [])}
+    found = {}
+    for archive in TEXTURE_FOLDERS:
+        root = source / archive
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob("*")):
+            if path.is_symlink():
+                raise ValueError(f"Asset must be a regular file inside the mod: {path.relative_to(source)}")
+            if not path.is_file() or path.suffix.lower() not in TEXTURE_SUFFIXES:
+                continue
+            relative = path.relative_to(root).as_posix()
+            entry = relative[: -len(path.suffix)] + ".mmp"
+            key = (archive, entry.lower())
+            if key in found:
+                raise ValueError(f"Two files replace {archive}/{entry}: {found[key]['file']} and {archive}/{relative}")
+            if key in declared:
+                raise ValueError(f"{archive}/{relative} replaces an entry already listed in mod.json: {entry}")
+            found[key] = {"archive": archive, "entry": entry, "file": f"{archive}/{relative}"}
+    return list(found.values())
+
+
 def package(source: Path, output: Path) -> None:
     source = source.resolve()
-    manifest = json.loads((source / "mod.json").read_text(encoding="utf-8"))
+    manifest_bytes = (source / "mod.json").read_bytes()
+    manifest = json.loads(manifest_bytes.decode("utf-8"))
+    generated = folder_overrides(source, manifest)
+    if generated:
+        manifest["overrides"] = manifest.get("overrides", []) + generated
+        manifest_bytes = (json.dumps(manifest, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
     names = {"mod.json", *(entry["file"] for entry in manifest.get("overrides", []))}
     names.update(manifest.get("attachments", []))
     modules = manifest.get("script", {}).get("modules", {})
@@ -21,7 +55,7 @@ def package(source: Path, output: Path) -> None:
         path = source / name
         if not path.resolve().is_relative_to(source) or path.is_symlink():
             raise ValueError(f"Asset must be a regular file inside the mod: {name}")
-        payload[name] = path.read_bytes()
+        payload[name] = manifest_bytes if name == "mod.json" else path.read_bytes()
     if len(payload) > 4096 or sum(map(len, payload.values())) > 128 * 1024 * 1024:
         raise ValueError("Package exceeds the game's limits")
     if len(payload["mod.json"]) > 1024 * 1024:

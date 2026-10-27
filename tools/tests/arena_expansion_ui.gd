@@ -17,11 +17,6 @@ func _process(_dt: float) -> void:
 class Errors extends Logger:
 	var messages: Array[String] = []
 	func _log_error(fn: String, file: String, line: int, code: String, why: String, _notify: bool, kind: int, _trace: Array[ScriptBacktrace]) -> void:
-		# Stock Godot 4.7 reports TexUpscaleTexture's push constants as
-		# unexpected on the main device, although its output matches the
-		# local-device upscale exactly; the project's engine does not.
-		if fn == "compute_list_set_push_constant" and Engine.get_version_info().build == "official":
-			return
 		if kind != ERROR_TYPE_WARNING: messages.append("%s %s (%s:%d %s)" % [code, why, file, line, fn])
 var errors := Errors.new()
 

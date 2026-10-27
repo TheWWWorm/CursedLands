@@ -61,6 +61,10 @@ var _strike_ms := 0
 func _ready() -> void:
 	# create() lights its detached island before the caller adds it. Refresh
 	# view-owned point uniforms only after the camera has entered the tree.
+	# ZoneMainMenuNew.mob's six LIGHT records, two of them white lights on
+	# the signpost, keep it readable at night as in the original.
+	if _fx and world and _fx.map_lights.is_empty():
+		_fx.add_map_lights(world.mob)
 	set_hour(hour)
 	if world and world.terrain:
 		world.terrain._update_wind_parameters(true)

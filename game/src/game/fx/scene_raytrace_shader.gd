@@ -46,12 +46,21 @@ varying vec3 ei_rt_rest;
 
 vec3 ei_rt_position(ivec2 p,float depth,ivec2 size,mat4 trace_projection,mat4 trace_inverse) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
-    vec4 near=trace_inverse*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);near/=near.w;
     vec3 forward=-vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]);
-    float near_depth=dot(near.xyz-ei_rt_eye,forward);
     // Perspective clip.w changes with world position; orthographic does not.
     bool orthographic=abs(trace_projection[0][3])+abs(trace_projection[1][3])+abs(trace_projection[2][3])<0.001;
-    return orthographic?near.xyz+forward*(depth-near_depth):ei_rt_eye+(near.xyz-ei_rt_eye)*(depth/near_depth);
+    if(orthographic) {
+        vec4 near=trace_inverse*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);near/=near.w;
+        return near.xyz+forward*(depth-dot(near.xyz-ei_rt_eye,forward));
+    }
+    // A near-plane world point is only centimetres from the eye. Subtracting
+    // two large world coordinates loses ray precision, then scaling to wall
+    // depth amplifies that error into intermittent receiver rejection. Use
+    // the far endpoint in homogeneous space; no divide by its tiny (or zero
+    // for an infinite far plane) w is needed to recover the view-depth ray.
+    vec4 far=trace_inverse*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,1.0,1.0);
+    vec3 ray=far.xyz-ei_rt_eye*far.w;
+    return ei_rt_eye+ray*(depth/dot(ray,forward));
 }
 
 #ifdef EI_GRASS_LIGHT

@@ -3,6 +3,30 @@
   "scope": "Focused recent campaign/UI regressions; not a certification of all historical issues or platforms.",
   "cases": [
     {
+      "id": "path_trace_receivers",
+      "script": "tools/tests/path_trace_receivers.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Orthographic steep receiver lookup preserves both normal orientations and sparse valid taps while rejecting a nearer incompatible plane.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 19,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "path_trace_perspective_receivers",
+      "script": "tools/tests/path_trace_perspective_receivers.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "A moving perspective camera keeps translated wall planes matched to half-float trace guides without intermittent conventional-lighting fallback; origin controls and two tracing resolutions.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 97,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "menu_utility_glyphs",
       "script": "tools/tests/menu_utility_glyphs.gd",
       "summary": "MENU_UTILITY_GLYPHS",
@@ -3034,6 +3058,48 @@
       "timeout": 300
     },
     {
+      "id": "arena_inspector_side_ui_en",
+      "script": "tools/tests/arena_inspector_side_ui.gd",
+      "summary": "ARENA_INSPECTOR_SIDE_UI",
+      "contract": "Hovering a board creature opens its details at the right edge, 16 logical pixels from the border, over the hidden player list, clear of the board centre, the hovered creature, the shop and the commander bust, readable (scrolling when short) and closing on leave, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=en"
+      ],
+      "min_checks": 47,
+      "timeout": 300
+    },
+    {
+      "id": "arena_inspector_side_ui_ru",
+      "script": "tools/tests/arena_inspector_side_ui.gd",
+      "summary": "ARENA_INSPECTOR_SIDE_UI",
+      "contract": "Hovering a board creature opens its details at the right edge, 16 logical pixels from the border, over the hidden player list, clear of the board centre, the hovered creature, the shop and the commander bust, readable (scrolling when short) and closing on leave, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=ru"
+      ],
+      "min_checks": 47,
+      "timeout": 300
+    },
+    {
+      "id": "arena_inspector_side_ui_de",
+      "script": "tools/tests/arena_inspector_side_ui.gd",
+      "summary": "ARENA_INSPECTOR_SIDE_UI",
+      "contract": "Hovering a board creature opens its details at the right edge, 16 logical pixels from the border, over the hidden player list, clear of the board centre, the hovered creature, the shop and the commander bust, readable (scrolling when short) and closing on leave, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=de"
+      ],
+      "min_checks": 47,
+      "timeout": 300
+    },
+    {
       "id": "safe_zone_appearance",
       "script": "tools/tests/safe_zone_appearance.gd",
       "summary": "SAFE_ZONE_APPEARANCE",
@@ -3757,6 +3823,164 @@
       "rendering_method": "forward_plus",
       "args": [],
       "contract": "A render-worker cooperative wait cannot steal expensive terrain bakes; bounded runtime work and exact results survive teardown."
+    },
+    {
+      "id": "map_lights",
+      "script": "tools/tests/map_lights.gd",
+      "summary": "MAP_LIGHTS",
+      "contract": "Placed .mob LIGHT records are read with the original defaults and become permanent absolute-position point lights in campaign zones and the main menu, without duplicates on repeated setup.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 48
+    },
+    {
+      "id": "menu_signpost_lights",
+      "script": "tools/tests/menu_signpost_lights.gd",
+      "summary": "MENU_SIGNPOST_LIGHTS",
+      "contract": "The main menu's two placed white lights visibly brighten the displayed signpost at night and never darken it by day.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9
+    },
+    {
+      "id": "menu_signpost_lights_forward_plus",
+      "script": "tools/tests/menu_signpost_lights.gd",
+      "summary": "MENU_SIGNPOST_LIGHTS",
+      "contract": "The main menu's placed signpost lights also brighten it at night on Forward+.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "tex_upscale_push_constants",
+      "script": "tools/tests/tex_upscale_push_constants.gd",
+      "summary": "TEX_UPSCALE_PUSH_CONSTANTS",
+      "contract": "Renderer-device HD textures and arrays on Forward+ record no push constants for the constant-free mip pipeline (no compute_list_set_push_constant errors) and every byte and mip still equals the CPU upscale.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 179,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "mod_texture_png",
+      "script": "tools/tests/mod_texture_png.gd",
+      "summary": "MOD_TEXTURE_PNG",
+      "contract": "Texture packs replace MMP entries with PNG images through the real package reader; a high-resolution armour layer composes at its own size over an original-size skin, and disabling the package restores the originals.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--mod-tests"
+      ],
+      "min_checks": 26
+    },
+    {
+      "id": "legacy_figure",
+      "script": "tools/tests/legacy_figure.gd",
+      "summary": "LEGACY_FIGURE",
+      "contract": "Pre-FIG figure parts (original 4f87d0) convert to FIG8 exactly; the Gipath ogre uses the early skull-belt hips only where its skins paint the skull, keeps every other part, and the early ogre loads for its cut-content preview with expanded bones and a Gipath skin.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 85
+    },
+    {
+      "id": "esc_menu_rise",
+      "script": "tools/tests/esc_menu_rise.gd",
+      "summary": "ESC_MENU_RISE",
+      "contract": "The Esc signpost opens on the last frame of its rise clip, as the original shows it in place under Wine; the esc_menu_rise option (Gameplay, off by default, EN/RU/DE) plays the rise from below.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 14
+    },
+    {
+      "id": "esc_menu_rise_ui",
+      "script": "tools/tests/esc_menu_rise_ui.gd",
+      "summary": "ESC_MENU_RISE_UI",
+      "contract": "The Esc menu rise option row is localized in EN/RU/DE, above the page link, and its label and choices fit at 1280x720, 2560x1440 and 3840x2160 with native-resolution captures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 72
+    },
+    {
+      "id": "network_name_persists",
+      "script": "tools/tests/network_name_persists.gd",
+      "summary": "NETWORK_NAME_PERSISTS",
+      "contract": "The name typed on the co-op and autochess multiplayer screens is saved to settings.cfg when the field is left, on Back, when the screen hides or the window closes, cleaned as hosting does; untouched or emptied fields keep the saved name, so the next start shows it.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 37
+    },
+    {
+      "id": "options_rows_reachable",
+      "script": "tools/tests/options_rows_reachable.gd",
+      "summary": "OPTIONS_ROWS_REACHABLE",
+      "contract": "Every option row is shown on its options page: no two options or key bindings share a row, every row is one of the drawn rows, and no page link covers it; the skill reset button (Remake › Interface) can be selected and switched.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 487
+    },
+    {
+      "id": "options_rows_reachable_ui",
+      "script": "tools/tests/options_rows_reachable_ui.gd",
+      "summary": "OPTIONS_ROWS_REACHABLE_UI",
+      "contract": "The moved skill reset button and Keep mouse in window rows show localized EN/RU/DE labels, help and choices that fit at 1280x720, 2560x1440 and 3840x2160, with native-resolution captures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 126
+    },
+    {
+      "id": "interface_board_textures",
+      "script": "tools/tests/interface_board_textures.gd",
+      "summary": "INTERFACE_BOARD_TEXTURES",
+      "contract": "Interface boards texture every part by its figure texture group (2 = labels sheet), so the Esc signpost's foot (coloumndetls) uses the labels sheet as in the original instead of smeared stone UVs.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 36
+    },
+    {
+      "id": "wiki_cut_faces_items",
+      "script": "tools/tests/wiki_cut_faces_items.gd",
+      "summary": "WIKI_CUT_FACES_ITEMS",
+      "contract": "Cut content lists human skins and portraits that no prototype selects (female faces 01, 04, 06, 13, 17, 18) and inventory figures no item record selects; their wiki pages preview the skin on a placed character and the textured model, with EN/RU/DE titles.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 127
+    },
+    {
+      "id": "wiki_cut_faces_items_ui",
+      "script": "tools/tests/wiki_cut_faces_items_ui.gd",
+      "summary": "WIKI_CUT_FACES_ITEMS_UI",
+      "contract": "The wiki pages of an unused face and an unused item model show localized EN/RU/DE titles and built 3D previews at 1280x720, 2560x1440 and 3840x2160 with native-resolution captures.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 90
     }
   ]
 }

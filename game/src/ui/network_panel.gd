@@ -106,8 +106,12 @@ var _dim: Interface800.Backdrop
 var _board: InterfaceBoard
 var _sel := -1               # selected row (mode page: choice)
 var _hover := ""             # the target id under the pointer
-var _focus := ""             # "name" / "addr": the edit field with the caret
+var _focus := "":            # "name" / "addr": the edit field with the caret
+	set(value):
+		if _focus == "name" and value != "name": commit_name()
+		_focus = value
 var _caret_t := 0.0
+var _name_edited := false    # player_name typed since open(); commit_name saves it
 var _drag := false           # the players slider's thumb
 var _switched_from := -1     # joiner: the page picked before the host's mode moved it
 var _copied_t := 0.0
@@ -197,9 +201,29 @@ static func cli_port() -> int:
 	return Session.PORT
 
 
+## The typed name becomes the device's player name as soon as the field is
+## left (or the screen hidden, or the window closed), as Options › Player
+## name… saves it. It used to be saved only when a game was hosted or joined,
+## so a name typed before Back still showed for the session but was gone at
+## the next start.
+func commit_name() -> void:
+	if not _name_edited or player_name.strip_edges().is_empty(): return
+	_name_edited = false
+	var cleaned := ArenaOnlineSession.clean_name(player_name)
+	if cleaned == GameData.player_name: return
+	GameData.player_name = cleaned
+	GameData.save_settings()
+
+
+func _notification(what: int) -> void:
+	if (what == NOTIFICATION_VISIBILITY_CHANGED and not is_visible_in_tree()) or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		commit_name()
+
+
 ## Opens the screen on the choice of game.
 func open() -> void:
 	player_name = GameData.player_name
+	_name_edited = false
 	hero = maxi(0, Session.coop_classes().find(GameData.hero_class))
 	max_players = Session.MAX_PLAYERS
 	if address.is_empty():
@@ -1144,7 +1168,7 @@ func _activate(id: String, dir := 0) -> void:
 			_caret_t = 0.0
 			if TouchInput.enabled:
 				if id == "name":
-					TouchTextEdit.open(self, player_name, NAME_MAX, func(v): player_name = v; queue_redraw(), "Player name")
+					TouchTextEdit.open(self, player_name, NAME_MAX, func(v): player_name = v; _name_edited = true; commit_name(); queue_redraw(), "Player name")
 				elif id == "password":
 					if page in [HOST_COOP, HOST_LMP]:
 						TouchTextEdit.open(self, password, Session.PASSWORD_MAX, func(v): password = v; queue_redraw(), pw_label())
@@ -1478,6 +1502,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 func _type(c: String, back := false) -> void:
 	if _focus == "name" and _row_on("name"):
 		player_name = player_name.substr(0, player_name.length() - 1) if back else (player_name + c).substr(0, NAME_MAX)
+		_name_edited = true
 	elif _focus == "addr" and _row_on("addr"):
 		address = address.substr(0, address.length() - 1) if back else (address + c).substr(0, 256)
 		_lan_sel = -1

@@ -925,8 +925,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var surfaces: Array[Vector3] = []
 	#  formats the prototype's skin index directly. The race's
 	# texture list is incomplete (e.g. unhuma has 29 entries but skins 0..36).
-	# An absent prototype alone uses skin 00.
-	var skin_i: int = proto.get("skin", 0)
+	# An absent prototype alone uses skin 00. The wiki's cut-content pages
+	# pass "skin" to show an otherwise unused redress skin on a prototype.
+	var skin_i: int = int(unit.get("skin", proto.get("skin", 0)))
 	var skin := "skin_%02d" % skin_i
 	if not race.is_empty() and int(race.get("type_id", 0)) != 0x32:
 		# Creature figures use named textures (e.g. Wolf00), not redress skins.
@@ -1841,16 +1842,15 @@ static func _compose(mask: String, layers: Array[String]) -> Texture2D:
 	var key := mask + "|" + "|".join(layers)
 	if _textures.has(key):
 		return _textures[key]
+	var images := _load_layers(mask, layers)
+	var size := _layer_size(images)
 	var base: Image = null
-	for i in layers.size():
-		var img := _load_layer(mask, layers[i])
-		if img == null:
-			continue
+	for img: Image in images:
+		if img.get_size() != size:
+			img.resize(size.x, size.y, Image.INTERPOLATE_BILINEAR)
 		if base == null:
 			base = img
 			continue
-		if img.get_size() != base.get_size():
-			img.resize(base.get_width(), base.get_height(), Image.INTERPOLATE_BILINEAR)
 		base.blend_rect(img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i.ZERO)
 	var tex: Texture2D = null
 	if base:
@@ -1861,6 +1861,25 @@ static func _compose(mask: String, layers: Array[String]) -> Texture2D:
 		# pixels. Custom materials use UnitWounds' lazy, cached readback path.
 	_textures[key] = tex
 	return tex
+
+
+## Each present layer, in order. Missing entries are skipped as before.
+static func _load_layers(mask: String, layers: Array[String]) -> Array[Image]:
+	var out: Array[Image] = []
+	for layer in layers:
+		var img := _load_layer(mask, layer)
+		if img: out.append(img)
+	return out
+
+
+## All layers share one UV layout. Compose at the largest supplied size so a
+## texture pack's high-resolution clothing or armour is not reduced to the
+## skin's resolution; original layers all match and are left unchanged.
+static func _layer_size(images: Array[Image]) -> Vector2i:
+	var size := Vector2i.ZERO
+	for img in images:
+		size = size.max(img.get_size())
+	return size
 
 
 static func _load_layer(mask: String, layer: String) -> Image:
@@ -1883,15 +1902,19 @@ static func _compose_surface(mask: String, layers: Array[String], profiles: Arra
 	if _surface_textures.has(key):
 		return _surface_textures[key]
 	var base: Image = null
+	var size := Vector2i.ZERO
+	var loaded := []
 	for i in layers.size():
 		var layer := _load_layer(mask, layers[i])
 		if layer == null:
 			continue
+		loaded.append([layer, profiles[i] if i < profiles.size() else SurfaceResponse.DULL])
+		size = size.max(layer.get_size())
+	for pair: Array in loaded:
 		if base == null:
-			base = Image.create(layer.get_width(), layer.get_height(), false, Image.FORMAT_RGBA8)
+			base = Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
 			base.fill(Color(SurfaceResponse.SKIN.x, SurfaceResponse.SKIN.y, SurfaceResponse.SKIN.z))
-		var profile: Vector3 = profiles[i] if i < profiles.size() else SurfaceResponse.DULL
-		SurfaceResponse.blend_layer(base, layer, profile)
+		SurfaceResponse.blend_layer(base, pair[0], pair[1])
 	var texture: Texture2D = null
 	if base:
 		base.generate_mipmaps()

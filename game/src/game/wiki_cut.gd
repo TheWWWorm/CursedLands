@@ -9,9 +9,10 @@ extends RefCounted
 const ENGINE_FIGURES := {"unmobi": {"texture": "bird00", "title": "Messenger bird",
 	"text": "The bird that flies to your hero when a whole quest is completed. It is scenery: it has no statistics and cannot be attacked."}}
 ## Authored descriptions of known unused figures. Others use generic text.
+## "texture" names an original skin made for the same UV layout.
 const FIGURES := {
-	"unmoog": {"title": "Early ogre model",
-		"text": "An earlier, more detailed ogre figure. It is stored in an obsolete model format that the released game cannot read, so it cannot be shown. The ogres in the game use a different model."},
+	"unmoog": {"title": "Early ogre model", "texture": "ogre00",
+		"text": "An earlier ogre figure in an older model format, which the released game can still read. It matches the Gipath ogre except for its hips, which carry a skull on the belt. The remake gives this belt to the Gipath ogres."},
 	"unmoel1": {"title": "Lava elemental model",
 		"text": "The lava elemental figure. No creature of this campaign uses it."},
 	"unanwigi": {"title": "Unfinished beast model",
@@ -24,6 +25,20 @@ const SPECIES := {"Lizardman": "Lizard", "Bat": "Foxbat", "Boar": "Boar", "Horse
 const ENGINE_PROTOTYPES := ["mainmenu"]
 ## A new game creates the hero from this prototype, outside any map.
 const PLAYER_PROTOTYPES := ["human hero"]
+## Human figures whose redress skins and portraits (face<sex><skin>) are
+## selected by a prototype's "skin" index.
+const FACE_MODELS := {"unhufe": "f", "unhuma": "m"}
+## Inventory figures per item table: figure prefix, texture prefix (Items.look).
+const ITEM_MODEL_TABLES := {"quest_items": ["initqu", "quitem"], "quick_items": ["initqi", "qitem"],
+	"loot_items": ["initlitr", "litem"]}
+## Visually identified unused inventory figures; others use generic titles.
+const ITEM_MODELS := {"initqu0item": "Drawing compass", "initqu1item": "Scissors",
+	"initqi22item": "Bundle of arrows", "initqi23item": "Bundle of arrows", "initqi24item": "Bundle of arrows",
+	"initqi25item": "Bundle of arrows", "initqi30item": "Lockpicks", "initqi31item": "Lockpicks",
+	"initqi32item": "Lockpicks", "initqi33item": "Lockpicks", "initqi34item": "File", "initqi35item": "File",
+	"initqi36item": "Crowbar", "initqi37item": "Crowbar"}
+## Overview notes per item table.
+const ITEM_KINDS := {"quest_items": "Quest item", "quick_items": "Usable item", "loot_items": "Trophy"}
 
 var _catalog_ref: WeakRef
 var catalog: WikiCatalog:
@@ -37,6 +52,8 @@ var _scripts := ""
 var figures: Array[String] = []
 var palettes := {}         # texture -> {race, prototype}
 var modelless: Array[String] = []   # race names
+var faces := {}            # "<mask>_<skin>" -> {mask, skin, prototype, portrait}
+var item_models := {}      # figure -> {table, texture ("" without one)}
 
 
 func build(source: WikiCatalog) -> void:
@@ -82,11 +99,17 @@ func build(source: WikiCatalog) -> void:
 			for spec: String in row.get(field, []): _placed_items[_base(spec)] = true
 	_find_figures()
 	_find_palettes()
+	_find_faces()
+	_find_item_models()
 	catalog._add("cut/overview", RemakeText.t("Cut content"), "Cut content", "cut", "")
 	for template: String in figures:
 		catalog._add("cut/figure/" + template.uri_encode(), figure_title(template), "Cut content", "cut_figure", template)
 	for texture: String in palettes:
 		catalog._add("cut/palette/" + texture.uri_encode(), palette_title(texture), "Cut content", "cut_palette", texture)
+	for id: String in faces:
+		catalog._add("cut/face/" + id.uri_encode(), face_title(id), "Cut content", "cut_face", id)
+	for model: String in item_models:
+		catalog._add("cut/item/" + model.uri_encode(), item_model_title(model), "Cut content", "cut_item_model", model)
 	for template: String in ENGINE_FIGURES:
 		if GameData.has_figure(template + ".mod"):
 			catalog._add("figure/" + template.uri_encode(), RemakeText.t(ENGINE_FIGURES[template].title), "Creatures", "figure", template)
@@ -151,6 +174,65 @@ func _find_palettes() -> void:
 		for texture: String in candidates:
 			if used.has(texture) or palettes.has(texture) or not GameData.textures.has(texture + ".mmp"): continue
 			palettes[texture] = {"race": String(race.name), "prototype": _representative(protos)}
+
+
+## Human skins (and their portraits) that no prototype's "skin" index selects.
+## The preview dresses a placed prototype of the same figure in the skin.
+func _find_faces() -> void:
+	for mask: String in FACE_MODELS:
+		var used := {}
+		var shown := ""
+		for row: Dictionary in GameData.db.table("monster_prototypes"):
+			var race := GameData.db.find("race_models", String(row.get("base_race", "")))
+			if String(race.get("mask", "")).to_lower() != mask: continue
+			used[int(row.get("skin", 0))] = true
+			var proto := String(row.name).to_lower()
+			if shown.is_empty() or (placed(proto) and not placed(shown)): shown = proto
+		var skins := Array(GameData.redress.names_with_suffix(".mmp")).filter(
+			func(n: String) -> bool: return n.begins_with(mask + "skin_") and n.trim_prefix(mask + "skin_").get_basename().is_valid_int())
+		skins.sort()
+		for file: String in skins:
+			var skin := int(file.trim_prefix(mask + "skin_").get_basename())
+			if used.has(skin) or shown.is_empty(): continue
+			faces["%s_%02d" % [mask, skin]] = {"mask": mask, "skin": skin, "prototype": shown,
+				"portrait": GameData.textures.has("face%s%02d.mmp" % [FACE_MODELS[mask], skin])}
+
+
+## Inventory figures (Items.look's naming) that no item record's texture
+## index selects.
+func _find_item_models() -> void:
+	for table: String in ITEM_MODEL_TABLES:
+		var prefix: String = ITEM_MODEL_TABLES[table][0]
+		var used := {}
+		for row: Dictionary in GameData.db.table(table): used[int(row.get("texture1", 0))] = true
+		var found := []
+		for file: String in GameData.figures.names_with_suffix("item.fig"):
+			var number := file.trim_prefix(prefix).trim_suffix("item.fig")
+			if file.begins_with(prefix) and number.is_valid_int() and not used.has(int(number)): found.append(int(number))
+		found.sort()
+		for n: int in found:
+			var texture := "%s%04d" % [ITEM_MODEL_TABLES[table][1], n]
+			item_models["%s%ditem" % [prefix, n]] = {"table": table, "texture": texture if GameData.textures.has(texture + ".mmp") else ""}
+
+
+func face_title(id: String) -> String:
+	var info: Dictionary = faces[id]
+	var series := 0
+	for other: String in faces:
+		if faces[other].mask == info.mask: series += 1
+		if other == id: break
+	return RemakeText.t("Unused female face %d" if info.mask == "unhufe" else "Unused male face %d") % series
+
+
+func item_model_title(model: String) -> String:
+	var name := RemakeText.t(ITEM_MODELS[model]) if ITEM_MODELS.has(model) else RemakeText.t("Unused item model")
+	var same := 0
+	var index := 0
+	for other: String in item_models:
+		if ITEM_MODELS.get(other, "") == ITEM_MODELS.get(model, ""):
+			same += 1
+			if other == model: index = same
+	return RemakeText.t("%s (variant %d)") % [name, index] if same > 1 else name
 
 
 func _race_prototypes(race: String) -> Array[String]:
@@ -274,7 +356,9 @@ func page(entry: Dictionary) -> Dictionary:
 				else RemakeText.t("No creature record or map uses this model."))
 			var preview := {}
 			if not (EIFigure.get_model(template).get("parts", {}) as Dictionary).is_empty():
-				preview = {"kind": "creature", "value": "", "identity": template, "appearance": {"template": template}}
+				var appearance := {"template": template}
+				if FIGURES.get(template, {}).has("texture"): appearance.texture = FIGURES[template].texture
+				preview = {"kind": "creature", "value": "", "identity": template, "appearance": appearance}
 			body += WikiCatalog.paragraph(WikiCatalog.link("cut/overview", RemakeText.t("Cut content")), true)
 			return {"body": body, "preview": preview}
 		"cut_palette":
@@ -289,6 +373,27 @@ func page(entry: Dictionary) -> Dictionary:
 			body += WikiCatalog.paragraph(WikiCatalog.link("cut/overview", RemakeText.t("Cut content")), true)
 			return {"body": body, "preview": {"kind": "creature", "value": info.prototype, "identity": texture,
 				"appearance": {"texture": texture}}}
+		"cut_face":
+			var info: Dictionary = faces[String(entry.value)]
+			var body := WikiCatalog.paragraph(RemakeText.t("This skin is in the archives, but no character record of this campaign selects it. The preview shows it on a character of the same build."))
+			body += WikiCatalog.paragraph(RemakeText.t("A matching portrait is in the archives as well.") if info.portrait \
+				else RemakeText.t("There is no matching portrait."))
+			body += WikiCatalog.paragraph(WikiCatalog.link("cut/overview", RemakeText.t("Cut content")), true)
+			return {"body": body, "preview": {"kind": "creature", "value": info.prototype, "identity": String(entry.value),
+				"appearance": {"skin": info.skin}}}
+		"cut_item_model":
+			var model := String(entry.value)
+			var info: Dictionary = item_models[model]
+			var text := RemakeText.t("No item record uses this inventory model, so the game never shows it.")
+			if ITEM_MODELS.has(model):
+				text = (RemakeText.t("Apparent object: %s.") % RemakeText.t(ITEM_MODELS[model])) + " " + text
+			var body := WikiCatalog.paragraph(text)
+			if info.texture.is_empty():
+				body += WikiCatalog.paragraph(RemakeText.t("It has no texture, so it cannot be shown."))
+			body += WikiCatalog.paragraph(WikiCatalog.link("cut/overview", RemakeText.t("Cut content")), true)
+			var preview := {} if info.texture.is_empty() else {"kind": "item", "value": "", "identity": model,
+				"look": {"model": model, "texture": info.texture}}
+			return {"body": body, "preview": preview}
 		"figure":
 			var template := String(entry.value)
 			return {"body": WikiCatalog.paragraph(RemakeText.t(ENGINE_FIGURES[template].text)),
@@ -317,6 +422,17 @@ func _overview() -> String:
 		rows.append([WikiCatalog.link("cut/palette/" + texture.uri_encode(), palette_title(texture)),
 			esc(RemakeText.t("Used in Trials") if _trials_palette(texture) else "")])
 	sections.append(["Unused colours", "These creature textures have no map placement in this campaign.", rows])
+	rows = []
+	for id: String in faces:
+		rows.append([WikiCatalog.link("cut/face/" + id.uri_encode(), face_title(id)),
+			esc(RemakeText.t("Portrait present") if faces[id].portrait else RemakeText.t("No portrait"))])
+	sections.append(["Unused faces", "No character record selects these skins and portraits.", rows])
+	rows = []
+	for model: String in item_models:
+		var kind: String = ITEM_KINDS[item_models[model].table]
+		var note := RemakeText.t(kind) if item_models[model].texture else "%s; %s" % [RemakeText.t(kind), RemakeText.t("no texture")]
+		rows.append([WikiCatalog.link("cut/item/" + model.uri_encode(), item_model_title(model)), esc(note)])
+	sections.append(["Unused item models", "No item record uses these inventory models.", rows])
 	rows = []
 	for race: String in modelless:
 		var title := RemakeText.t("Mushroom creature") if race.begins_with("Fungus") else RemakeText.t("Creature")

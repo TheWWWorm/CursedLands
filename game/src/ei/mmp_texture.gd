@@ -10,7 +10,68 @@ static var _raw_kernel: RefCounted = ClassDB.instantiate("MmpTextureKernel") \
 	if ClassDB.class_exists("MmpTextureKernel") and not OS.get_cmdline_user_args().has("--ei-script-textures") else null
 
 
+## Texture packs may supply a PNG for an MMP entry (remake-only). Readers
+## receive the PNG bytes from the archive overlay and decode them here.
+const PNG_SIGNATURE := [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]
+const MAX_SIDE := 16384
+const MAX_PIXELS := 64 * 1024 * 1024
+
+
+static func is_png(data: PackedByteArray) -> bool:
+	if data.size() < 24:
+		return false
+	for i in PNG_SIGNATURE.size():
+		if data[i] != PNG_SIGNATURE[i]:
+			return false
+	return true
+
+
+## Pixel size from an MMP or PNG header without decoding; ZERO if neither.
+static func image_size(data: PackedByteArray) -> Vector2i:
+	if is_png(data):
+		# IHDR follows the signature: big-endian width and height.
+		return Vector2i(_be32(data, 16), _be32(data, 20))
+	if data.size() >= DATA_OFFSET and data.decode_u32(0) == MAGIC:
+		return Vector2i(data.decode_u32(4), data.decode_u32(8))
+	return Vector2i.ZERO
+
+
+static func _be32(data: PackedByteArray, p: int) -> int:
+	return (data[p] << 24) | (data[p + 1] << 16) | (data[p + 2] << 8) | data[p + 3]
+
+
+## Every chunk fits the file and IEND is present. Truncated packs are
+## rejected here instead of producing engine decode errors.
+static func _png_complete(data: PackedByteArray) -> bool:
+	var p := PNG_SIGNATURE.size()
+	while p + 12 <= data.size():
+		var end := p + 12 + _be32(data, p)
+		if end > data.size():
+			return false
+		if data[p + 4] == 0x49 and data[p + 5] == 0x45 and data[p + 6] == 0x4E and data[p + 7] == 0x44:   # IEND
+			return true
+		p = end
+	return false
+
+
+static func _decode_png(data: PackedByteArray) -> Image:
+	var size := image_size(data)
+	if size.x <= 0 or size.y <= 0 or size.x > MAX_SIDE or size.y > MAX_SIDE or size.x * size.y > MAX_PIXELS:
+		return null
+	if not _png_complete(data):
+		return null
+	var img := Image.new()
+	if img.load_png_from_buffer(data) != OK or img.is_empty():
+		return null
+	img.clear_mipmaps()
+	if img.get_format() != Image.FORMAT_RGBA8:
+		img.convert(Image.FORMAT_RGBA8)
+	return img
+
+
 static func decode(data: PackedByteArray) -> Image:
+	if is_png(data):
+		return _decode_png(data)
 	if data.size() < DATA_OFFSET or data.decode_u32(0) != MAGIC:
 		return null
 	var w := data.decode_u32(4)
@@ -43,6 +104,11 @@ static func decode(data: PackedByteArray) -> Image:
 ## CPU image callers continue to use decode(); HD/redress images need their
 ## own generated mipmaps after editing.
 static func decode_texture(data: PackedByteArray, allow_compressed: bool) -> Image:
+	if is_png(data):
+		var png := _decode_png(data)
+		if png:
+			png.generate_mipmaps()
+		return png
 	if data.size() < DATA_OFFSET or data.decode_u32(0) != MAGIC:
 		return null
 	var tag := data.slice(16, 20)

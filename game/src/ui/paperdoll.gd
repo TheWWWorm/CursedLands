@@ -140,9 +140,9 @@ func show_unit(u: GameUnit) -> void:
 
 ## Same for a bare unit spec (prototype, complexion, armors, weapons).
 func show_info(info: Dictionary) -> void:
-	var key := "%s|%s|%s|%s|%s|%s|%s" % [info.get("prototype", ""), info.get("texture", ""),
+	var key := "%s|%s|%s|%s|%s|%s|%s|%s" % [info.get("prototype", ""), info.get("texture", ""),
 		info.get("complexion", ""), info.get("armors", []), info.get("weapons", []), info.get("look_race", ""),
-		info.get("template", "")]
+		info.get("template", ""), info.get("skin", "")]
 	if key == _key:
 		return
 	_key = key

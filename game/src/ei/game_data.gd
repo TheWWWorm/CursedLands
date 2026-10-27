@@ -181,8 +181,8 @@ const OPTIONS := [
 	# clears it on key-up). Default on (user request).
 	["aim_press_once", 1, 2, 17, 3, 1],
 	# Keep the pointer inside the game window (Input.MOUSE_MODE_CONFINED).
-	["confine_mouse", 1, 2, 17, 4, 1],
-	["item_icon_fit", 1, 2, 17, 5, 1], ["ui_active_buttons", 1, 2, 17, 6, 1],
+	["confine_mouse", 1, 2, 2, 8, 1],
+	["item_icon_fit", 1, 2, 17, 4, 1], ["ui_active_buttons", 1, 2, 17, 5, 1],
 	["original_rune_layout", 1, 2, 17, 7, 0],
 	["spell_double_tap_self", 1, 2, 17, 8, 1],
 	["hide_remake_hints", 1, 2, 17, 9, 0],
@@ -192,7 +192,7 @@ const OPTIONS := [
 	# The camp's Skills/Spells screen: "Reset skills…" in place of ✓ / ✗ and
 	# training that applies on each click (CampView._immediate_training); off
 	# = the original's pending training deal without resets. Default on.
-	["skill_reset_button", 1, 2, 17, 13, 1],
+	["skill_reset_button", 1, 2, 17, 6, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -221,6 +221,10 @@ const OPTIONS := [
 	["free_run", 1, 2, 18, 9, 0],
 	["stamina_regen", 1, 2, 18, 10, 0],
 	["armor_formula", 1, 2, 18, 11, 0],
+	# The Esc signpost's opening rise (unmoco1 uspecial02). The original's
+	# code requests it, but under Wine the post is already in place on the
+	# first frame (EscSignpost._on_open). Default off = the original.
+	["esc_menu_rise", 1, 2, 18, 12, 0],
 	# Network and co-op (group 19): the co-op host's rules — full experience
 	# for every party member (XpRules), monster scaling to the player count
 	# (MobScaling: Off / Light / Normal / Strong), shared loot
@@ -382,6 +386,7 @@ const REMAKE_OPTIONS := {
 	"direct_quests": ["Quests", "Change this key for first and third person."],
 
 	"item_icon_fit": ["Fit items inside icons", "Shrinks oversized inventory and shop items to fit their cells while they turn, without enlarging small items. Also fits character creation portraits. Off keeps fixed item scale and allows models to extend beyond their cells."],
+	"esc_menu_rise": ["Esc menu rise", "The Esc menu's signpost rises into place when it opens. The motion is in the original files, but the original game shows the signpost already in place. Off: the original."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Deal controls show whether a transaction can be made or undone. Off: the original button tint."],
 	"skill_reset_button": ["Skill reset button", "The camp's Skills/Spells screen shows Reset skills… in place of Accept and Cancel, and each raised skill or learned ability applies immediately. Off: the original screen without resets; choices stay pending until Accept, and Cancel or leaving the screen discards them."],
 	"coop_clock": ["Shared pause and speed", "One pause and speed for the whole co-op game. The host can grant guests permission to control them. Off: co-op always runs at normal speed."],
@@ -402,7 +407,7 @@ const REMAKE_OPTIONS := {
 	"r_water": ["Water", "Water and lava, reflections, contact and wakes, underwater caustics, river currents, propagating waves, waterfalls."],
 	"r_effects": ["Weather and effects", "Rain on surfaces, moving clouds and shadows, heat haze, soft and lit particles, severed limbs."],
 	"r_camera": ["Camera", "The modern camera: follow, see-through objects, speeds, the WASD controls and the turn keys."],
-	"r_interface": ["Interface and controls", "Enemy health bars, smiling portraits, the move path through objects, aim keys, keeping the mouse in the window."],
+	"r_interface": ["Interface and controls", "Enemy health bars, smiling portraits, the move path through objects, aim keys, camp buttons and skill resets."],
 	"r_game": ["Gameplay", "Fog of war in single player, the starting area on the travel map, experience for companions, revival, the game-over notice."],
 	"r_coop": ["Network and co-op", "Co-op host rules (experience, monster scaling, shared loot, player names), opening the port on the router, the browser-compatible host."],
 	"gamepad": ["Gamepad", "Controller settings (vibration, stick dead zone, pointer speed, target range, button pictures) and the button layout."],
@@ -519,7 +524,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"spell_double_tap_self", "character_buff_icons",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
-	"item_icon_fit", "ui_active_buttons", "skill_reset_button", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion", "cursor_size", "show_player_status",
+	"item_icon_fit", "ui_active_buttons", "skill_reset_button", "esc_menu_rise", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion", "cursor_size", "show_player_status",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "cave_echo", "difficulty",

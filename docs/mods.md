@@ -183,7 +183,7 @@ An `overrides` entry maps an existing archive entry to a package-relative file:
 }
 ```
 
-Supported API 1 archives are `textures.res` and `redress.res` (MMP), `sfx.res` (game-supported WAV), and `speech.res` (MP3). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`. Supply files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name and are included in archive suffix listings. API 2 accepts only texture overrides and documentation, as described above. API 3 also accepts these archive overrides alongside its formula contract.
+Supported API 1 archives are `textures.res` and `redress.res` (MMP or PNG), `sfx.res` (game-supported WAV), and `speech.res` (MP3). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`; the replacement file can be an MMP or a PNG image (recognised by its contents, up to 16384 pixels per side). Supply other files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name and are included in archive suffix listings. API 2 accepts only texture overrides and documentation, as described above. API 3 also accepts these archive overrides alongside its formula contract.
 
 `redress.res` holds character skin, clothing and equipment layers. For example:
 
@@ -194,6 +194,27 @@ Supported API 1 archives are `textures.res` and `redress.res` (MMP), `sfx.res` (
   "file": "assets/redress.res/unhufeax_01.gr.0.mmp"
 }
 ```
+
+Replacement textures can be larger than the originals. Character skins,
+clothing and equipment layers share one layout, and the game composes a
+character at the size of its largest layer, so a high-resolution armour layer
+keeps its detail over an original-size skin.
+
+To avoid writing the `overrides` table by hand, place images in folders named
+after the archive and let the packaging tool generate it:
+
+```text
+my-texture-pack/
+  mod.json                          (no overrides needed)
+  redress.res/unhufeax_01.gr.0.png  -> replaces unhufeax_01.gr.0.mmp
+  textures.res/sub/grass00.png      -> replaces sub/grass00.mmp
+```
+
+`python3 tools/package_mod.py my-texture-pack my-texture-pack.eimod` adds an
+override for every `.png` or `.mmp` file in those folders to the packaged
+`mod.json`. Entries already listed in `mod.json` are kept; a file that
+replaces the same entry twice is an error. The tool's behaviour is covered by
+`python3 -m unittest discover -s tools/tests -p test_package_mod.py`.
 
 Enable the package in a named profile and use **Apply & restart**. Disabling it
 and restarting restores the original textures. Clothing and equipment textures

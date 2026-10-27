@@ -82,6 +82,7 @@ var _army_title: Label
 var _showing_company := false
 var _pinned_alliance := ""
 var _company_details := false
+var _creature_details := false
 var _shop: HBoxContainer
 var _shop_section: VBoxContainer
 var _dock: VBoxContainer
@@ -1195,9 +1196,10 @@ func _field_army() -> Array[Dictionary]:
 
 func _show_alliance(key: String) -> void:
 	_company_details = true
+	_creature_details = false
 	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
-	_rail.show(); _inspector.show()
+	_rail.show(); _inspector.show(); _layout_inspector.call_deferred()
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	var rule: Dictionary = ArenaAlliances.RULES[key]
@@ -1243,9 +1245,10 @@ func _scroll_alliance(direction: int, key: String) -> void:
 func _show_company() -> void:
 	if landing: return
 	_company_details = true
+	_creature_details = false
 	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
-	_rail.show(); _inspector.show()
+	_rail.show(); _inspector.show(); _layout_inspector.call_deferred()
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	_wrap(_inspect_box, RemakeText.t("Level %d") % run.capacity(), 22, GOLD)
@@ -1363,10 +1366,11 @@ func _select_world(unit: GameUnit) -> void:
 func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if id.is_empty(): return
 	_company_details = true
+	_creature_details = true
 	_standings.hide()
 	_showing_company = false
 	_inspected = id
-	_rail.show(); _inspector.show()
+	_rail.show(); _inspector.show(); _layout_inspector.call_deferred()
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	var family := int(entry.get("family", -1))
@@ -1443,6 +1447,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 func _hide_inspector() -> void:
 	_pinned_alliance = ""
 	_company_details = false
+	_creature_details = false
 	_hover_key = ""
 	_hover_wait = 0.0
 	_hover_missing = 0.0
@@ -2026,12 +2031,21 @@ func _layout_inspector() -> void:
 	# including shoulders. Keep room for ranked stats and equipment controls.
 	var width := 400.0 if _company_details else 320.0
 	var right := 216.0 if _company_details else 16.0
-	if _company_details and is_instance_valid(_commander_portrait) and _commander_portrait.visible:
+	# Creature details open at the right edge over the player list, which
+	# _inspect hides, so the board stays clear for placing and picking units.
+	# They stop above the bench and the bust and scroll when that is short.
+	if _creature_details: right = 16.0
+	elif _company_details and is_instance_valid(_commander_portrait) and _commander_portrait.visible:
 		right = maxf(right, _commander_portrait.size.x + 8.0)
 	_rail.custom_minimum_size.x = width
 	_rail.offset_left = -right - width; _rail.offset_right = -right
+	_rail.offset_top = _round_panel.offset_bottom + 12.0 if _creature_details else 174.0
 	var bottom := _hud.size.y - 24.0
-	if not _company_details:
+	if _creature_details:
+		bottom = minf(bottom, (_hud.get_global_transform().affine_inverse() * _bench_bar.global_position).y - 8)
+		if is_instance_valid(_commander_portrait) and _commander_portrait.visible:
+			bottom = minf(bottom, _commander_portrait.position.y - 8)
+	elif not _company_details:
 		bottom = minf(bottom, _bench_panel.position.y - 8)
 		if is_instance_valid(_commander_portrait) and _commander_portrait.visible:
 			bottom = minf(bottom, _commander_portrait.position.y - 8)

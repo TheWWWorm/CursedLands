@@ -187,21 +187,25 @@ static func _create(sources: Array[Image], wrap: bool, array: bool) -> Texture:
 	var constants := PackedByteArray(); constants.resize(16)
 	constants.encode_s32(0,src.get_width()); constants.encode_s32(4,src.get_height())
 	constants.encode_s32(8,int(wrap)); constants.encode_float(12,0.5)
-	var commands := rd.compute_list_begin()
+	# One compute list per dispatch; the render graph orders the slices between
+	# lists. compute_list_add_barrier (an end + begin) replays the last push
+	# constant after rebinding, which pushed the upscale's 16 bytes to the
+	# constant-free mip pipeline.
 	for layer in fmt.array_layers:
-		if layer > 0: rd.compute_list_add_barrier(commands)
+		var commands := rd.compute_list_begin()
 		rd.compute_list_bind_compute_pipeline(commands,_up_pipeline)
 		rd.compute_list_bind_uniform_set(commands,sets[layer*fmt.mipmaps],0)
 		rd.compute_list_set_push_constant(commands,constants,constants.size())
 		rd.compute_list_dispatch(commands,ceili(fmt.width/8.0),ceili(fmt.height/8.0),1)
+		rd.compute_list_end()
 		var w := fmt.width; var h := fmt.height
 		for level in range(1,fmt.mipmaps):
-			rd.compute_list_add_barrier(commands)
+			commands = rd.compute_list_begin()
 			rd.compute_list_bind_compute_pipeline(commands,_mip_pipeline)
 			rd.compute_list_bind_uniform_set(commands,sets[layer*fmt.mipmaps+level],0)
 			w = maxi(1,w>>1); h = maxi(1,h>>1)
 			rd.compute_list_dispatch(commands,ceili(w/8.0),ceili(h/8.0),1)
-	rd.compute_list_end()
+			rd.compute_list_end()
 	_free_inputs(rd,input,inputs,slices,sets)
 	var texture: Texture
 	if array:
