@@ -3755,6 +3755,30 @@
       "min_checks": 9
     },
     {
+      "id": "menu_signpost_lights_forward_plus",
+      "script": "tools/tests/menu_signpost_lights.gd",
+      "summary": "MENU_SIGNPOST_LIGHTS",
+      "contract": "The main menu's placed signpost lights also brighten it at night on Forward+.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 9,
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "tex_upscale_push_constants",
+      "script": "tools/tests/tex_upscale_push_constants.gd",
+      "summary": "TEX_UPSCALE_PUSH_CONSTANTS",
+      "contract": "Renderer-device HD textures and arrays on Forward+ record no push constants for the constant-free mip pipeline (no compute_list_set_push_constant errors) and every byte and mip still equals the CPU upscale.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 179,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "mod_texture_png",
       "script": "tools/tests/mod_texture_png.gd",
       "summary": "MOD_TEXTURE_PNG",
