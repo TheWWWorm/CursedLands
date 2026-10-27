@@ -2,8 +2,15 @@
 
 ## Unreleased
 
+## 1.33.0 — 2026-10-27
+
+- Add Odalisque as a selectable Autochess commander with original expression paintings, and charge players Underlords-style damage for surviving enemy recruits after a lost round.
 - Present the rate the solo campaign's separate simulation process actually achieves when it cannot sustain the selected speed. Animations and effect timers no longer run ahead and jump back; the selected speed, the rate requested from the simulation and the saved speed are unchanged ([#119](https://github.com/TheWWWorm/CursedLands/issues/119)).
 - Reduce campaign simulation CPU time in busy areas such as the Foothills by evaluating quest group, death and sighting conditions in native code. Results, perception refreshes, random draws and quest timing are unchanged; on the test system a Foothills simulation tick takes about a fifth less time, leaving more headroom for fast speed on slower processors.
+- Play the standing transition before prone or kneeling heroes attack or cast ([#118](https://github.com/TheWWWorm/CursedLands/issues/118)), keep at most one waiting exhaustion voice line per unit, and stop missing legacy briefings from opening blank dialogue topic menus.
+- Show the effective Normal difficulty in co-op and inactive fallback values for unsupported saved graphics settings, and report frame-generation SDK failures separately from unsupported hardware.
+- Reduce save-loading and first-movement hitches: reuse terrain, path-tracing and denoiser preparation across loads, skip graphics in the solo simulation process, prepare wisp and depth-pass pipelines before play, and keep terrain bakes off the render thread.
+- Fix combined foliage shader effects and weapon visibility in village poses, restore vertical detail on desert cliffs, keep path-traced actor lighting through highlights and body spells, and apply chest metal only to lids, rivets and frames. Remove procedural sand and snow piles and halve common scattered stones.
 
 ## 1.32.0 — 2026-10-26
 
