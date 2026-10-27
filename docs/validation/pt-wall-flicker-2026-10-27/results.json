@@ -1,0 +1,121 @@
+{
+  "base_commit": "9e6aa3a737f82bcdc372b9fd475a31bbf471d0c0",
+  "source_fix": "shared ei_rt_position perspective reconstruction",
+  "unfixed_control": {
+    "version": "1.33.0 Linux",
+    "perspective_checks": 97,
+    "failures": 3,
+    "worst_wall_fallback_fraction": 0.735
+  },
+  "fixed_cases": [
+    {
+      "id": "path_trace_perspective_receivers",
+      "checks": 97,
+      "failures": 0
+    },
+    {
+      "id": "path_trace_receivers",
+      "checks": 19,
+      "failures": 0
+    },
+    {
+      "id": "path_trace_material_receivers",
+      "checks": 7,
+      "failures": 0
+    },
+    {
+      "id": "path_trace_cover_receivers",
+      "checks": 65,
+      "failures": 0
+    }
+  ],
+  "wall_1080p": {
+    "baseline-moving": {
+      "roi_xywh": [
+        500,
+        80,
+        60,
+        200
+      ],
+      "frames": 180,
+      "max_one_frame_dip": 0.06198692810457515,
+      "worst_frame": 65,
+      "frame_65_dip": 0.06198692810457515
+    },
+    "candidate-moving": {
+      "roi_xywh": [
+        500,
+        80,
+        60,
+        200
+      ],
+      "frames": 180,
+      "max_one_frame_dip": 8.725490196079266e-05,
+      "worst_frame": 4,
+      "frame_65_dip": -0.0008526143790849594
+    }
+  },
+  "rain": {
+    "frames": 180,
+    "roi_xywh": [
+      870,
+      220,
+      200,
+      360
+    ],
+    "max_fallback_fraction": 0.0,
+    "mean_fallback_fraction": 0.0,
+    "diagnostic": "green=matched, magenta=fallback; rainfall remains visible"
+  },
+  "first_person": {
+    "frames": 180,
+    "screen_roi_at_960x540": [
+      680,
+      60,
+      240,
+      220
+    ],
+    "criterion": "greater than 20/255 darker than both adjacent frames, with +/-2-pixel neighbourhood for camera motion",
+    "region": "upper cliff; lower right includes the naturally moving first-person bow, which is not a wall-flicker measurement",
+    "worst_fraction": 0.0,
+    "worst_frame": 1,
+    "max_drop": 8
+  },
+  "wall_2160p": {
+    "released-trailer": {
+      "frames": 300,
+      "roi_xywh": [
+        1000,
+        160,
+        120,
+        400
+      ],
+      "max_one_frame_dip": 0.08359722222222224,
+      "worst_frame": 240
+    },
+    "candidate-4k": {
+      "frames": 300,
+      "roi_xywh": [
+        1000,
+        160,
+        120,
+        400
+      ],
+      "max_one_frame_dip": 2.5898692810388813e-05,
+      "worst_frame": 297
+    }
+  },
+  "night": {
+    "frames": 180,
+    "screen_roi_at_960x540": [
+      600,
+      100,
+      300,
+      100
+    ],
+    "criterion": "greater than 8/255 darker than both adjacent frames, +/-2 pixel neighbourhood for camera motion",
+    "worst_fraction": 0.0,
+    "worst_frame": 1,
+    "max_drop": 5
+  }
+}
