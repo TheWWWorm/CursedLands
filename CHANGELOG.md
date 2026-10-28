@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Let texture packs replace main-menu and Esc-menu signpost textures in `menus.res`, and add `tools/export_textures.py`, which exports the original MMP textures as lossless full-colour PNGs in the texture-pack folder layout so modders can edit and repackage them without MMP or DXT tools.
+- Keep the Windows Direct3D 12 main menu responsive when DLSS, TAA or FSR 2 needs new motion-vector shaders, for example after an update. The menu now draws while these shaders compile in the background, and the selected mode starts when they are ready; previously the first frame could stall for tens of seconds or never finish.
 
 ## 1.34.0 — 2026-10-28
 
