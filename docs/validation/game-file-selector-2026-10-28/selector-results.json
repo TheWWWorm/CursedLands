@@ -1,0 +1,69 @@
+{
+  "git_head": "f815205051eabdc65fb83bd9b620a658743c1fdc",
+  "game_source_sha256": "b1aac1b82395336bb3ac02145d93719661eb43d71db407c4f2a16cd370814b1f",
+  "manifest_sha256": "7ac057ba7987c34aa24d776ce597527eb3b38552a84e68015fae16f3867ed1a4",
+  "engine": "/home/llm2x/.local/bin/godot-4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "data": {
+    "base_data": "/home/llm2x/Documents/EI/inspection/extracted/app"
+  },
+  "cases": [
+    {
+      "id": "game_files_presentation",
+      "script": "tools/tests/game_files_presentation.gd",
+      "script_sha256": "43d5587d5d91c4e394631d8c1f5735eb0001ca60fd995b7b8915a2653d1900f2",
+      "contract": "Desktop and portable game-file selectors retain campaign, import and recovery states, translated controls, responsive widths, and native font rendering from narrow screens through 4K without original UI archives.",
+      "issues": [],
+      "mode": "rendered",
+      "seconds": 19.65,
+      "command": [
+        "/usr/local/bin/gpu-lab",
+        "run",
+        "--gpu",
+        "auto",
+        "--cwd",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo",
+        "--timeout",
+        "420",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/llm2x/Documents/EI/local/scratchpad/game-file-selector-20261028/check-final/game_files_presentation/data",
+        "XDG_CONFIG_HOME=/home/llm2x/Documents/EI/local/scratchpad/game-file-selector-20261028/check-final/game_files_presentation/config",
+        "XDG_CACHE_HOME=/home/llm2x/Documents/EI/local/scratchpad/game-file-selector-20261028/check-final/game_files_presentation/cache",
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "30",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/parity/gameplay_bootstrap.gd",
+        "--suite-script=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/game_files_presentation.gd",
+        "--suite-script-root=/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ],
+      "log": "game_files_presentation/run.log",
+      "passed": true,
+      "result": {
+        "checks": 849,
+        "failures": 0
+      },
+      "errors": [],
+      "infrastructure_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+      ]
+    }
+  ],
+  "passed": true
+}

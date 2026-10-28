@@ -1,0 +1,246 @@
+{
+	"checks": 849,
+	"failures": 0,
+	"samples": [
+		{
+			"content_width": 344.0,
+			"language": "en",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 358.0,
+			"size": "(390, 844)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "en",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 928.0,
+			"size": "(960, 540)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "en",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 1248.0,
+			"size": "(1280, 720)"
+		},
+		{
+			"content_width": 1400.0,
+			"language": "en",
+			"scale": 2.0,
+			"screen": "desktop",
+			"scroll_width": 2496.0,
+			"size": "(2560, 1440)"
+		},
+		{
+			"content_width": 2100.0,
+			"language": "en",
+			"scale": 3.0,
+			"screen": "desktop",
+			"scroll_width": 3744.0,
+			"size": "(3840, 2160)"
+		},
+		{
+			"content_width": 344.0,
+			"language": "ru",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 358.0,
+			"size": "(390, 844)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "ru",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 928.0,
+			"size": "(960, 540)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "ru",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 1248.0,
+			"size": "(1280, 720)"
+		},
+		{
+			"content_width": 1400.0,
+			"language": "ru",
+			"scale": 2.0,
+			"screen": "desktop",
+			"scroll_width": 2496.0,
+			"size": "(2560, 1440)"
+		},
+		{
+			"content_width": 2100.0,
+			"language": "ru",
+			"scale": 3.0,
+			"screen": "desktop",
+			"scroll_width": 3744.0,
+			"size": "(3840, 2160)"
+		},
+		{
+			"content_width": 344.0,
+			"language": "de",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 358.0,
+			"size": "(390, 844)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "de",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 928.0,
+			"size": "(960, 540)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "de",
+			"scale": 1.0,
+			"screen": "desktop",
+			"scroll_width": 1248.0,
+			"size": "(1280, 720)"
+		},
+		{
+			"content_width": 1400.0,
+			"language": "de",
+			"scale": 2.0,
+			"screen": "desktop",
+			"scroll_width": 2496.0,
+			"size": "(2560, 1440)"
+		},
+		{
+			"content_width": 2100.0,
+			"language": "de",
+			"scale": 3.0,
+			"screen": "desktop",
+			"scroll_width": 3744.0,
+			"size": "(3840, 2160)"
+		},
+		{
+			"content_width": 344.0,
+			"language": "en",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 358.0,
+			"size": "(390, 844)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "en",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 928.0,
+			"size": "(960, 540)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "en",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 1248.0,
+			"size": "(1280, 720)"
+		},
+		{
+			"content_width": 1400.0,
+			"language": "en",
+			"scale": 2.0,
+			"screen": "portable",
+			"scroll_width": 2496.0,
+			"size": "(2560, 1440)"
+		},
+		{
+			"content_width": 2100.0,
+			"language": "en",
+			"scale": 3.0,
+			"screen": "portable",
+			"scroll_width": 3744.0,
+			"size": "(3840, 2160)"
+		},
+		{
+			"content_width": 344.0,
+			"language": "ru",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 358.0,
+			"size": "(390, 844)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "ru",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 928.0,
+			"size": "(960, 540)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "ru",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 1248.0,
+			"size": "(1280, 720)"
+		},
+		{
+			"content_width": 1400.0,
+			"language": "ru",
+			"scale": 2.0,
+			"screen": "portable",
+			"scroll_width": 2496.0,
+			"size": "(2560, 1440)"
+		},
+		{
+			"content_width": 2100.0,
+			"language": "ru",
+			"scale": 3.0,
+			"screen": "portable",
+			"scroll_width": 3744.0,
+			"size": "(3840, 2160)"
+		},
+		{
+			"content_width": 344.0,
+			"language": "de",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 358.0,
+			"size": "(390, 844)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "de",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 928.0,
+			"size": "(960, 540)"
+		},
+		{
+			"content_width": 700.0,
+			"language": "de",
+			"scale": 1.0,
+			"screen": "portable",
+			"scroll_width": 1248.0,
+			"size": "(1280, 720)"
+		},
+		{
+			"content_width": 1400.0,
+			"language": "de",
+			"scale": 2.0,
+			"screen": "portable",
+			"scroll_width": 2496.0,
+			"size": "(2560, 1440)"
+		},
+		{
+			"content_width": 2100.0,
+			"language": "de",
+			"scale": 3.0,
+			"screen": "portable",
+			"scroll_width": 3744.0,
+			"size": "(3840, 2160)"
+		}
+	]
+}

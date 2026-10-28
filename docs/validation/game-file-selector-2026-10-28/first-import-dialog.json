@@ -1,0 +1,58 @@
+{
+	"android": false,
+	"checks": 47,
+	"device": "GenericDevice",
+	"failures": 0,
+	"renderer": "gl_compatibility",
+	"samples": [
+		{
+			"action": "ok",
+			"label": "no-archives",
+			"rect": "[P: (479.71, 430.86), S: (86.57999, 56.16)]",
+			"visible_pixels": 393
+		},
+		{
+			"action": "cancel",
+			"label": "no-archives",
+			"rect": "[P: (713.71, 430.86), S: (86.57999, 56.16)]",
+			"visible_pixels": 445
+		},
+		{
+			"action": "ok",
+			"label": "en-unsaved",
+			"rect": "[P: (479.71, 430.86), S: (86.57999, 56.16)]",
+			"visible_pixels": 851
+		},
+		{
+			"action": "cancel",
+			"label": "en-unsaved",
+			"rect": "[P: (713.71, 430.86), S: (86.57999, 56.16)]",
+			"visible_pixels": 904
+		},
+		{
+			"action": "ok",
+			"label": "ru-unsaved",
+			"rect": "[P: (479.71, 430.86), S: (86.57999, 56.16)]",
+			"visible_pixels": 851
+		},
+		{
+			"action": "cancel",
+			"label": "ru-unsaved",
+			"rect": "[P: (713.71, 430.86), S: (86.57999, 56.16)]",
+			"visible_pixels": 904
+		},
+		{
+			"action": "ok",
+			"label": "de-unsaved",
+			"rect": "[P: (479.71, 444.16), S: (86.57999, 56.16)]",
+			"visible_pixels": 892
+		},
+		{
+			"action": "cancel",
+			"label": "de-unsaved",
+			"rect": "[P: (713.71, 444.16), S: (86.57999, 56.16)]",
+			"visible_pixels": 960
+		}
+	],
+	"viewport": "(1280.0, 720.0)"
+}

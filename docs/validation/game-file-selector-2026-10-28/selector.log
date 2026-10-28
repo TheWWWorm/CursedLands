@@ -1,0 +1,61 @@
+GPU Lab job: ce05a2113f0746ab
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=2857541 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Successfully activated service 'org.a11y.Bus'
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:693)
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.3' (uid=1000 pid=2857541 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Activating service name='org.freedesktop.portal.Documents' requested by ':1.4' (uid=1000 pid=2857925 comm="/usr/libexec/xdg-desktop-portal" label="unconfined")
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.5' (uid=1000 pid=2857931 comm="/usr/libexec/xdg-document-portal" label="unconfined")
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Successfully activated service 'org.freedesktop.portal.Documents'
+fusermount3: failed to open /dev/fuse: Operation not permitted
+error: fuse init failed: Can't mount path /run/gpu-lab-gpu0/ce05a2113f0746ab/doc
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.848: Choosing gtk.portal for org.freedesktop.impl.portal.Lockdown as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.848: The preferred method to match portal implementations to desktop environments is to use the portals.conf(5) configuration file
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.4' (uid=1000 pid=2857925 comm="/usr/libexec/xdg-desktop-portal" label="unconfined")
+
+(xdg-desktop-portal-gtk:2857946): dbind-WARNING **: 02:24:46.861: Couldn't connect to accessibility bus: Failed to connect to socket /run/gpu-lab-gpu0/fbd8772dca494c7d/at-spi/bus_99: No such file or directory
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Activating service name='org.gtk.vfs.Daemon' requested by ':1.7' (uid=1000 pid=2857946 comm="/usr/libexec/xdg-desktop-portal-gtk" label="unconfined")
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Successfully activated service 'org.gtk.vfs.Daemon'
+fuse: failed to open /dev/fuse: Operation not permitted
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.894: No skeleton to export
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.894: Choosing gtk.portal for org.freedesktop.impl.portal.FileChooser as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.894: Choosing gtk.portal for org.freedesktop.impl.portal.AppChooser as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.895: Choosing gtk.portal for org.freedesktop.impl.portal.Print as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.895: Choosing gtk.portal for org.freedesktop.impl.portal.Notification as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.896: Choosing gtk.portal for org.freedesktop.impl.portal.Inhibit as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.896: Choosing gtk.portal for org.freedesktop.impl.portal.Access as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.899: Failed connect to PipeWire: Couldn't connect to PipeWire
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.899: Choosing gtk.portal for org.freedesktop.impl.portal.Account as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.900: Choosing gtk.portal for org.freedesktop.impl.portal.Email as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:2857925): xdg-desktop-portal-WARNING **: 02:24:46.900: Choosing gtk.portal for org.freedesktop.impl.portal.DynamicLauncher as a last-resort fallback
+dbus-daemon[2857540]: [session uid=1000 pid=2857540] Successfully activated service 'org.freedesktop.portal.Desktop'
+A connection to the bus can't be made
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 02:24:46 +7920ms] session 4d801db3d629: 1.33.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"rendered","display_driver":"X11","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"gl_compatibility","script":"/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/game_files_presentation.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/game-file-selector-20261028/check-final/game_files_presentation/data/godot/app_userdata/Cursed Lands"}
+[trace 02:24:57 +18593ms] game files: /home/llm2x/Documents/EI/inspection/extracted/app
+GAME_FILES_PRESENTATION {"checks":849,"failures":0,"samples":[{"content_width":344.0,"language":"en","scale":1.0,"screen":"desktop","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"desktop","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"desktop","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"en","scale":2.0,"screen":"desktop","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"en","scale":3.0,"screen":"desktop","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"ru","scale":1.0,"screen":"desktop","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"desktop","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"desktop","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"ru","scale":2.0,"screen":"desktop","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"ru","scale":3.0,"screen":"desktop","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"de","scale":1.0,"screen":"desktop","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"desktop","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"desktop","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"de","scale":2.0,"screen":"desktop","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"de","scale":3.0,"screen":"desktop","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"en","scale":1.0,"screen":"portable","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"portable","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"portable","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"en","scale":2.0,"screen":"portable","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"en","scale":3.0,"screen":"portable","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"ru","scale":1.0,"screen":"portable","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"portable","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"portable","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"ru","scale":2.0,"screen":"portable","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"ru","scale":3.0,"screen":"portable","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"de","scale":1.0,"screen":"portable","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"portable","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"portable","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"de","scale":2.0,"screen":"portable","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"de","scale":3.0,"screen":"portable","scroll_width":3744.0,"size":"(3840, 2160)"}]}
+[trace 02:24:57 +18637ms] clean exit

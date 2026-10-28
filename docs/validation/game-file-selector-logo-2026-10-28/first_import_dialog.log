@@ -1,0 +1,18 @@
+GPU Lab job: ffd3817af30c4c47
+dbus-daemon[3479399]: [session uid=1000 pid=3479399] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=3479400 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[3479399]: [session uid=1000 pid=3479399] Successfully activated service 'org.a11y.Bus'
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:693)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+
+[trace 09:03:44 +7030ms] session a10ff92b4072: 1.33.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, gl_compatibility / opengl3
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"rendered","display_driver":"X11","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"gl_compatibility","script":"/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/first_import_dialog.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/game-file-selector-logo-20261028/final/first_import_dialog/data/godot/app_userdata/Cursed Lands"}
+FIRST_IMPORT_DIALOG {"android":false,"checks":47,"device":"GenericDevice","failures":0,"renderer":"gl_compatibility","samples":[{"action":"ok","label":"no-archives","rect":"[P: (479.71, 430.86), S: (86.57999, 56.16)]","visible_pixels":393},{"action":"cancel","label":"no-archives","rect":"[P: (713.71, 430.86), S: (86.57999, 56.16)]","visible_pixels":445},{"action":"ok","label":"en-unsaved","rect":"[P: (479.71, 430.86), S: (86.57999, 56.16)]","visible_pixels":851},{"action":"cancel","label":"en-unsaved","rect":"[P: (713.71, 430.86), S: (86.57999, 56.16)]","visible_pixels":904},{"action":"ok","label":"ru-unsaved","rect":"[P: (479.71, 430.86), S: (86.57999, 56.16)]","visible_pixels":851},{"action":"cancel","label":"ru-unsaved","rect":"[P: (713.71, 430.86), S: (86.57999, 56.16)]","visible_pixels":904},{"action":"ok","label":"de-unsaved","rect":"[P: (479.71, 444.16), S: (86.57999, 56.16)]","visible_pixels":892},{"action":"cancel","label":"de-unsaved","rect":"[P: (713.71, 444.16), S: (86.57999, 56.16)]","visible_pixels":960}],"viewport":"(1280.0, 720.0)"}
+[trace 09:03:48 +11134ms] clean exit

@@ -1,0 +1,123 @@
+{
+  "de-cold-1280-natural.png": {
+    "sha256": "7fd347b577c24a24bf33103d49e2238e8414d06e0df99ccf290ce5273d8fce97",
+    "identical_captures": [
+      "de-cold-1280-natural.png",
+      "de-cold-1280-refreshed.png"
+    ]
+  },
+  "de-cold-3840-natural.png": {
+    "sha256": "73b294c216f7a0d95b22c825c0023686e1664dcfca49ddbba99509736742123a",
+    "identical_captures": [
+      "de-cold-3840-natural.png",
+      "de-cold-3840-refreshed.png"
+    ]
+  },
+  "de-options-return-3840-natural.png": {
+    "sha256": "729d4fa5d449e109f04673e41e6862692df40693a828b3a3268b04153b3c07bb",
+    "identical_captures": [
+      "de-options-return-3840-natural.png",
+      "de-options-return-3840-refreshed.png"
+    ]
+  },
+  "de-resized-2560-natural.png": {
+    "sha256": "beb8ab655bb6fdd3ad9eb80aebe2daf68c13df14cd83939f5851fa9c70caf4be",
+    "identical_captures": [
+      "de-resized-2560-natural.png"
+    ]
+  },
+  "de-resized-2560-refreshed.png": {
+    "sha256": "29a006e3f8b76d475a73245e280145df5f808d5e11ddf1eb101c02537c9bedee",
+    "identical_captures": [
+      "de-resized-2560-refreshed.png"
+    ]
+  },
+  "de-resized-3840-natural.png": {
+    "sha256": "da680262df21e202ba85d198b80e52b1196b2a5cb7a43321b22ca7d3bc90d5c9",
+    "identical_captures": [
+      "de-resized-3840-natural.png",
+      "de-resized-3840-refreshed.png"
+    ]
+  },
+  "en-cold-1280-natural.png": {
+    "sha256": "10bf30cb20a105a1a49375c05759051f6ce9d329fda655710779a5071ce0bd16",
+    "identical_captures": [
+      "en-cold-1280-natural.png",
+      "en-cold-1280-refreshed.png"
+    ]
+  },
+  "en-cold-3840-context.png": {
+    "sha256": "775f561e1a928381fd047252c70f8458f6bab622d03bbcf010ee902ca52888be",
+    "identical_captures": [
+      "en-cold-3840-context.png"
+    ]
+  },
+  "en-cold-3840-natural.png": {
+    "sha256": "fcf17a4d4f47928b597180b3d96feee3d0fd4bbe40525bc63eeea3a68f32e36c",
+    "identical_captures": [
+      "en-cold-3840-natural.png",
+      "en-cold-3840-refreshed.png"
+    ]
+  },
+  "en-options-return-3840-natural.png": {
+    "sha256": "13674a3c77c0de4aeaf4b117deeaeb07c74f5d22f05e616e4bae1a8e9c82e43d",
+    "identical_captures": [
+      "en-options-return-3840-natural.png",
+      "en-options-return-3840-refreshed.png"
+    ]
+  },
+  "en-resized-2560-natural.png": {
+    "sha256": "ab16be028e8b2c161eadc5fcdd1029b35488b04ddb033ff3ac164339ec35e41c",
+    "identical_captures": [
+      "en-resized-2560-natural.png",
+      "en-resized-2560-refreshed.png"
+    ]
+  },
+  "en-resized-3840-natural.png": {
+    "sha256": "9587bd7390c5abf6e0ed3c3bbaabeb1e56c33bbc0e439f7e634f1bac605a795d",
+    "identical_captures": [
+      "en-resized-3840-natural.png",
+      "en-resized-3840-refreshed.png"
+    ]
+  },
+  "ru-cold-1280-natural.png": {
+    "sha256": "d60deb912c328a9b7dfb0e7b4f1f15d7674374080e48fc4619f7a05288b15a01",
+    "identical_captures": [
+      "ru-cold-1280-natural.png",
+      "ru-cold-1280-refreshed.png"
+    ]
+  },
+  "ru-cold-3840-natural.png": {
+    "sha256": "b031ecea830fd6a3eac3d3232637661381121f53fe3f007935b990823b9016ee",
+    "identical_captures": [
+      "ru-cold-3840-natural.png",
+      "ru-cold-3840-refreshed.png"
+    ]
+  },
+  "ru-options-return-3840-natural.png": {
+    "sha256": "797b19fa984705179a07aa056c56892a69f93ad202f9207c4f027caf235e3bfe",
+    "identical_captures": [
+      "ru-options-return-3840-natural.png",
+      "ru-options-return-3840-refreshed.png"
+    ]
+  },
+  "ru-resized-2560-natural.png": {
+    "sha256": "521d39e204fcbce63cd9b936211141f682f161a0c3b9d242ed527eb29082df1a",
+    "identical_captures": [
+      "ru-resized-2560-natural.png"
+    ]
+  },
+  "ru-resized-2560-refreshed.png": {
+    "sha256": "da272d8a950535179a812e410bba2fc81892acbba39e3302d202baa3435f9f10",
+    "identical_captures": [
+      "ru-resized-2560-refreshed.png"
+    ]
+  },
+  "ru-resized-3840-natural.png": {
+    "sha256": "448c8c7a915511795a878cd5689fdcd7d8f38637790d14c856eea5524be819f3",
+    "identical_captures": [
+      "ru-resized-3840-natural.png",
+      "ru-resized-3840-refreshed.png"
+    ]
+  }
+}

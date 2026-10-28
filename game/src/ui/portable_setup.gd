@@ -21,31 +21,22 @@ var _cancel: Button
 var _import: PrivateDataImport
 var _callback: JavaScriptObject
 var _scroll: ScrollContainer
+var _presentation: GameFilesPresentation
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var background := ColorRect.new()
-	background.color = Color(0.08, 0.07, 0.05)
-	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(background)
-	var scroll := ScrollContainer.new()
-	_scroll = scroll
-	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(scroll)
-	var box := VBoxContainer.new()
-	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	box.add_theme_constant_override("separation", 12)
-	scroll.add_child(box)
-	var title := Label.new()
-	title.text = "Cursed Lands" # l10n: ignore (application name)
-	title.add_theme_font_size_override("font_size", 30)
-	box.add_child(title)
+	_presentation = GameFilesPresentation.new()
+	add_child(_presentation)
+	_scroll = _presentation.scroll
+	var box := _presentation.body
+	_presentation.add_title("Cursed Lands") # l10n: ignore (application name)
 	_choices = CampaignChoices.new()
 	if selected_campaign.is_empty():
 		selected_campaign = GameData.campaign_id
 	_choices.current = selected_campaign
 	_choices.selected.connect(_choose_campaign)
 	box.add_child(_choices)
+	_presentation.set_choices(_choices)
 	_play = Button.new()
 	_play.text = RemakeText.t("Play selected game")
 	_play.custom_minimum_size.y = 48
@@ -109,18 +100,7 @@ func _ready() -> void:
 	_choose_campaign(selected_campaign)
 	if OS.has_feature("web") and not OS.is_userfs_persistent():
 		_status.text = RemakeText.t("Save storage is unavailable. Allow browser storage before playing.")
-	_layout()
-	resized.connect(_layout)
-
-func _layout() -> void:
-	var safe := Portability.safe_rect(size)
-	_scroll.offset_left = 28 + safe.position.x
-	_scroll.offset_right = -28 - (size.x - safe.end.x)
-	_scroll.offset_top = 20 + safe.position.y
-	_scroll.offset_bottom = -20 - (size.y - safe.end.y)
-	var target := TouchInput.target_pixels()
-	for button in _buttons: button.custom_minimum_size.y = target
-	_cancel.custom_minimum_size.y = target
+	_presentation.refresh()
 
 func _add(box: VBoxContainer, title: String, action: Callable) -> void:
 	var button := Button.new()

@@ -1,0 +1,5 @@
+{
+  "source": "Generated with the built-in image_gen tool, 2026-10-28",
+  "purpose": "Transparent, nine-sliced button plate used by the game-file selector. All text and interactions are native UI controls.",
+  "prompt": "Use case: stylized-concept. Asset type: one transparent, scalable blank button plate texture for a fantasy game interface. Image 1 is a UI concept reference; isolate and reinterpret only its dark stone-and-bronze button material. Draw exactly one front-facing horizontal rectangular blank button face, centered on a genuinely transparent background. Antique dark weathered stone interior with a fine engraved bronze/olive rim and subtle bevel. Straight, level edges, symmetric corners, constant-thickness rims and a quiet, nearly uniform center suitable for nine-slice stretching. The entire single rectangle must fit inside the image. No text, no letters, no runes, no rivets, no symbols, no extra objects, no frame outside the button, no interface mockup, no background scenery, no drop shadow, no watermark."
+}

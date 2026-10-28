@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "result": {
+    "checks": 303,
+    "failures": 0
+  },
+  "errors": [],
+  "infrastructure_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null. at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+  ]
+}

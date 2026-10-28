@@ -3,6 +3,7 @@ extends BoxContainer
 ## The same two visible choices in the library/import screen and main menu.
 signal selected(id: String)
 var current := CampaignProfile.ORIGINAL
+var layout_unit_scale := 1.0
 var buttons: Dictionary = {}
 
 
@@ -136,7 +137,7 @@ static func style_button(button: Button) -> void:
 
 
 func _layout() -> void:
-	vertical = size.x < 500
+	vertical = size.x < 500 * layout_unit_scale
 
 
 func choose(id: String) -> void:

@@ -1,0 +1,322 @@
+GPU Lab job: 59c58f66e0d54be9
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=3431513 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Successfully activated service 'org.a11y.Bus'
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:693)
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.3' (uid=1000 pid=3431513 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Activating service name='org.freedesktop.portal.Documents' requested by ':1.4' (uid=1000 pid=3433933 comm="/usr/libexec/xdg-desktop-portal" label="unconfined")
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.5' (uid=1000 pid=3433939 comm="/usr/libexec/xdg-document-portal" label="unconfined")
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Successfully activated service 'org.freedesktop.portal.Documents'
+fusermount3: failed to open /dev/fuse: Operation not permitted
+error: fuse init failed: Can't mount path /run/gpu-lab/59c58f66e0d54be9/doc
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.507: Choosing gtk.portal for org.freedesktop.impl.portal.Lockdown as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.507: The preferred method to match portal implementations to desktop environments is to use the portals.conf(5) configuration file
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.4' (uid=1000 pid=3433933 comm="/usr/libexec/xdg-desktop-portal" label="unconfined")
+
+(xdg-desktop-portal-gtk:3433970): dbind-WARNING **: 09:00:42.527: Couldn't connect to accessibility bus: Failed to connect to socket /run/gpu-lab/5617d6bfe07e4132/at-spi/bus_98: No such file or directory
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Activating service name='org.gtk.vfs.Daemon' requested by ':1.7' (uid=1000 pid=3433970 comm="/usr/libexec/xdg-desktop-portal-gtk" label="unconfined")
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Successfully activated service 'org.gtk.vfs.Daemon'
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+fuse: failed to open /dev/fuse: Operation not permitted
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.572: No skeleton to export
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.572: Choosing gtk.portal for org.freedesktop.impl.portal.FileChooser as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.575: Choosing gtk.portal for org.freedesktop.impl.portal.AppChooser as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.575: Choosing gtk.portal for org.freedesktop.impl.portal.Print as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.576: Choosing gtk.portal for org.freedesktop.impl.portal.Notification as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.579: Choosing gtk.portal for org.freedesktop.impl.portal.Inhibit as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.580: Choosing gtk.portal for org.freedesktop.impl.portal.Access as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.584: Failed connect to PipeWire: Couldn't connect to PipeWire
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.584: Choosing gtk.portal for org.freedesktop.impl.portal.Account as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.585: Choosing gtk.portal for org.freedesktop.impl.portal.Email as a last-resort fallback
+
+(/usr/libexec/xdg-desktop-portal:3433933): xdg-desktop-portal-WARNING **: 09:00:42.586: Choosing gtk.portal for org.freedesktop.impl.portal.DynamicLauncher as a last-resort fallback
+dbus-daemon[3431503]: [session uid=1000 pid=3431503] Successfully activated service 'org.freedesktop.portal.Desktop'
+FAIL desktop en (390, 844) approved logo is present
+FAIL desktop en (960, 540) approved logo is present
+FAIL desktop en (1280, 720) approved logo is present
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) untextured normal button
+FAIL desktop en (1280, 720) untextured hover button
+FAIL desktop en (1280, 720) untextured pressed button
+FAIL desktop en (1280, 720) untextured hover_pressed button
+FAIL desktop en (1280, 720) untextured disabled button
+FAIL desktop en (1280, 720) selected campaign uses a flat style
+FAIL desktop en (2560, 1440) approved logo is present
+FAIL desktop en (3840, 2160) approved logo is present
+FAIL desktop ru (390, 844) approved logo is present
+FAIL desktop ru (960, 540) approved logo is present
+FAIL desktop ru (1280, 720) approved logo is present
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) untextured normal button
+FAIL desktop ru (1280, 720) untextured hover button
+FAIL desktop ru (1280, 720) untextured pressed button
+FAIL desktop ru (1280, 720) untextured hover_pressed button
+FAIL desktop ru (1280, 720) untextured disabled button
+FAIL desktop ru (1280, 720) selected campaign uses a flat style
+FAIL desktop ru (2560, 1440) approved logo is present
+FAIL desktop ru (3840, 2160) approved logo is present
+FAIL desktop de (390, 844) approved logo is present
+FAIL desktop de (960, 540) approved logo is present
+FAIL desktop de (1280, 720) approved logo is present
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) untextured normal button
+FAIL desktop de (1280, 720) untextured hover button
+FAIL desktop de (1280, 720) untextured pressed button
+FAIL desktop de (1280, 720) untextured hover_pressed button
+FAIL desktop de (1280, 720) untextured disabled button
+FAIL desktop de (1280, 720) selected campaign uses a flat style
+FAIL desktop de (2560, 1440) approved logo is present
+FAIL desktop de (3840, 2160) approved logo is present
+FAIL portable en (390, 844) approved logo is present
+FAIL portable en (960, 540) approved logo is present
+FAIL portable en (1280, 720) approved logo is present
+FAIL portable en (1280, 720) untextured normal button
+FAIL portable en (1280, 720) untextured hover button
+FAIL portable en (1280, 720) untextured pressed button
+FAIL portable en (1280, 720) untextured hover_pressed button
+FAIL portable en (1280, 720) untextured disabled button
+FAIL portable en (1280, 720) untextured normal button
+FAIL portable en (1280, 720) untextured hover button
+FAIL portable en (1280, 720) untextured pressed button
+FAIL portable en (1280, 720) untextured hover_pressed button
+FAIL portable en (1280, 720) untextured disabled button
+FAIL portable en (1280, 720) untextured normal button
+FAIL portable en (1280, 720) untextured hover button
+FAIL portable en (1280, 720) untextured pressed button
+FAIL portable en (1280, 720) untextured hover_pressed button
+FAIL portable en (1280, 720) untextured disabled button
+FAIL portable en (1280, 720) untextured normal button
+FAIL portable en (1280, 720) untextured hover button
+FAIL portable en (1280, 720) untextured pressed button
+FAIL portable en (1280, 720) untextured hover_pressed button
+FAIL portable en (1280, 720) untextured disabled button
+FAIL portable en (1280, 720) untextured normal button
+FAIL portable en (1280, 720) untextured hover button
+FAIL portable en (1280, 720) untextured pressed button
+FAIL portable en (1280, 720) untextured hover_pressed button
+FAIL portable en (1280, 720) untextured disabled button
+FAIL portable en (1280, 720) untextured normal button
+FAIL portable en (1280, 720) untextured hover button
+FAIL portable en (1280, 720) untextured pressed button
+FAIL portable en (1280, 720) untextured hover_pressed button
+FAIL portable en (1280, 720) untextured disabled button
+FAIL portable en (1280, 720) selected campaign uses a flat style
+FAIL portable en (2560, 1440) approved logo is present
+FAIL portable en (3840, 2160) approved logo is present
+FAIL portable ru (390, 844) approved logo is present
+FAIL portable ru (960, 540) approved logo is present
+FAIL portable ru (1280, 720) approved logo is present
+FAIL portable ru (1280, 720) untextured normal button
+FAIL portable ru (1280, 720) untextured hover button
+FAIL portable ru (1280, 720) untextured pressed button
+FAIL portable ru (1280, 720) untextured hover_pressed button
+FAIL portable ru (1280, 720) untextured disabled button
+FAIL portable ru (1280, 720) untextured normal button
+FAIL portable ru (1280, 720) untextured hover button
+FAIL portable ru (1280, 720) untextured pressed button
+FAIL portable ru (1280, 720) untextured hover_pressed button
+FAIL portable ru (1280, 720) untextured disabled button
+FAIL portable ru (1280, 720) untextured normal button
+FAIL portable ru (1280, 720) untextured hover button
+FAIL portable ru (1280, 720) untextured pressed button
+FAIL portable ru (1280, 720) untextured hover_pressed button
+FAIL portable ru (1280, 720) untextured disabled button
+FAIL portable ru (1280, 720) untextured normal button
+FAIL portable ru (1280, 720) untextured hover button
+FAIL portable ru (1280, 720) untextured pressed button
+FAIL portable ru (1280, 720) untextured hover_pressed button
+FAIL portable ru (1280, 720) untextured disabled button
+FAIL portable ru (1280, 720) untextured normal button
+FAIL portable ru (1280, 720) untextured hover button
+FAIL portable ru (1280, 720) untextured pressed button
+FAIL portable ru (1280, 720) untextured hover_pressed button
+FAIL portable ru (1280, 720) untextured disabled button
+FAIL portable ru (1280, 720) untextured normal button
+FAIL portable ru (1280, 720) untextured hover button
+FAIL portable ru (1280, 720) untextured pressed button
+FAIL portable ru (1280, 720) untextured hover_pressed button
+FAIL portable ru (1280, 720) untextured disabled button
+FAIL portable ru (1280, 720) selected campaign uses a flat style
+FAIL portable ru (2560, 1440) approved logo is present
+FAIL portable ru (3840, 2160) approved logo is present
+FAIL portable de (390, 844) approved logo is present
+FAIL portable de (960, 540) approved logo is present
+FAIL portable de (1280, 720) approved logo is present
+FAIL portable de (1280, 720) untextured normal button
+FAIL portable de (1280, 720) untextured hover button
+FAIL portable de (1280, 720) untextured pressed button
+FAIL portable de (1280, 720) untextured hover_pressed button
+FAIL portable de (1280, 720) untextured disabled button
+FAIL portable de (1280, 720) untextured normal button
+FAIL portable de (1280, 720) untextured hover button
+FAIL portable de (1280, 720) untextured pressed button
+FAIL portable de (1280, 720) untextured hover_pressed button
+FAIL portable de (1280, 720) untextured disabled button
+FAIL portable de (1280, 720) untextured normal button
+FAIL portable de (1280, 720) untextured hover button
+FAIL portable de (1280, 720) untextured pressed button
+FAIL portable de (1280, 720) untextured hover_pressed button
+FAIL portable de (1280, 720) untextured disabled button
+FAIL portable de (1280, 720) untextured normal button
+FAIL portable de (1280, 720) untextured hover button
+FAIL portable de (1280, 720) untextured pressed button
+FAIL portable de (1280, 720) untextured hover_pressed button
+FAIL portable de (1280, 720) untextured disabled button
+FAIL portable de (1280, 720) untextured normal button
+FAIL portable de (1280, 720) untextured hover button
+FAIL portable de (1280, 720) untextured pressed button
+FAIL portable de (1280, 720) untextured hover_pressed button
+FAIL portable de (1280, 720) untextured disabled button
+FAIL portable de (1280, 720) untextured normal button
+FAIL portable de (1280, 720) untextured hover button
+FAIL portable de (1280, 720) untextured pressed button
+FAIL portable de (1280, 720) untextured hover_pressed button
+FAIL portable de (1280, 720) untextured disabled button
+FAIL portable de (1280, 720) selected campaign uses a flat style
+FAIL portable de (2560, 1440) approved logo is present
+FAIL portable de (3840, 2160) approved logo is present
+A connection to the bus can't be made
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+
+[trace 09:00:42 +7040ms] session f914f17b6a18: 1.33.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, gl_compatibility / opengl3
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"rendered","display_driver":"X11","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"gl_compatibility","script":"/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/tools/tests/game_files_presentation.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/game-file-selector-logo-20261028/baseline-2/game_files_presentation/data/godot/app_userdata/Cursed Lands"}
+[trace 09:00:52 +17328ms] game files: /home/llm2x/Documents/EI/inspection/extracted/app
+GAME_FILES_PRESENTATION {"checks":1110,"failures":261,"samples":[{"content_width":344.0,"language":"en","scale":1.0,"screen":"desktop","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"desktop","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"desktop","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"en","scale":2.0,"screen":"desktop","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"en","scale":3.0,"screen":"desktop","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"ru","scale":1.0,"screen":"desktop","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"desktop","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"desktop","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"ru","scale":2.0,"screen":"desktop","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"ru","scale":3.0,"screen":"desktop","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"de","scale":1.0,"screen":"desktop","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"desktop","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"desktop","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"de","scale":2.0,"screen":"desktop","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"de","scale":3.0,"screen":"desktop","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"en","scale":1.0,"screen":"portable","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"portable","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"en","scale":1.0,"screen":"portable","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"en","scale":2.0,"screen":"portable","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"en","scale":3.0,"screen":"portable","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"ru","scale":1.0,"screen":"portable","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"portable","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"ru","scale":1.0,"screen":"portable","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"ru","scale":2.0,"screen":"portable","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"ru","scale":3.0,"screen":"portable","scroll_width":3744.0,"size":"(3840, 2160)"},{"content_width":344.0,"language":"de","scale":1.0,"screen":"portable","scroll_width":358.0,"size":"(390, 844)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"portable","scroll_width":928.0,"size":"(960, 540)"},{"content_width":700.0,"language":"de","scale":1.0,"screen":"portable","scroll_width":1248.0,"size":"(1280, 720)"},{"content_width":1400.0,"language":"de","scale":2.0,"screen":"portable","scroll_width":2496.0,"size":"(2560, 1440)"},{"content_width":2100.0,"language":"de","scale":3.0,"screen":"portable","scroll_width":3744.0,"size":"(3840, 2160)"}]}
+[trace 09:00:52 +17368ms] clean exit

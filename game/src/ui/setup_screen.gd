@@ -33,42 +33,22 @@ var _play: Button
 var _iso_button: Button
 var _iso_hint: Label
 var _iso_dialog: FileDialog
+var _presentation: GameFilesPresentation
 
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var bg := ColorRect.new()
-	bg.color = Color(0.08, 0.07, 0.06)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
-
-	var scroll := ScrollContainer.new()
-	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	scroll.offset_left = 16
-	scroll.offset_right = -16
-	scroll.offset_top = 16
-	scroll.offset_bottom = -16
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	add_child(scroll)
-	var center := CenterContainer.new()
-	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.add_child(center)
-	var box := VBoxContainer.new()
-	box.custom_minimum_size = Vector2(640, 0)
-	box.add_theme_constant_override("separation", 12)
-	center.add_child(box)
-
-	var title := Label.new()
-	title.text = RemakeText.t("Evil Islands - Remake")
-	title.add_theme_font_size_override("font_size", 32)
-	box.add_child(title)
+	_presentation = GameFilesPresentation.new()
+	add_child(_presentation)
+	var box := _presentation.body
+	_presentation.add_title(RemakeText.t("Evil Islands - Remake"))
 	_choices = CampaignChoices.new()
 	if selected_campaign.is_empty():
 		selected_campaign = GameData.campaign_id
 	_choices.current = selected_campaign
 	_choices.selected.connect(_choose_campaign)
 	box.add_child(_choices)
+	_presentation.set_choices(_choices)
 	_play = Button.new()
 	_play.text = RemakeText.t("Play selected game")
 	_play.pressed.connect(func():
@@ -77,13 +57,13 @@ func _ready() -> void:
 	box.add_child(_play)
 	_buttons.append(_play)
 	var info := Label.new()
-	info.autowrap_mode = TextServer.AUTOWRAP_WORD
+	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info.text = RemakeText.t("Install either game or both. Choose a game above, then its installed folder, GOG installer or private .eipack. Each game keeps its own saves.")
 	box.add_child(info)
 	if back_text:
 		var current := Label.new()
 		current.name = "Current"
-		current.autowrap_mode = TextServer.AUTOWRAP_WORD
+		current.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		current.modulate = Color(0.75, 0.85, 0.95)
 		current.text = RemakeText.t("Current game files: %s") % DataSwitch.describe()
 		box.add_child(current)
@@ -155,7 +135,7 @@ func _ready() -> void:
 		box.add_child(back)
 		_buttons.append(back)
 	_status = Label.new()
-	_status.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.modulate = Color(1, 0.6, 0.5)
 	box.add_child(_status)
 
@@ -180,6 +160,7 @@ func _ready() -> void:
 	_iso_dialog.files_selected.connect(_import_discs)
 	add_child(_iso_dialog)
 	_choose_campaign(selected_campaign)
+	_presentation.refresh()
 	set_process(false)
 
 

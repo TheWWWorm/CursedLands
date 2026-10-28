@@ -1,0 +1,8 @@
+dbus-daemon[2852918]: [session uid=1000 pid=2852918] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=2852919 comm="/home/llm2x/.local/bin/godot-4 --path /home/llm2x/" label="unconfined")
+dbus-daemon[2852918]: [session uid=1000 pid=2852918] Successfully activated service 'org.a11y.Bus'
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+   GDScript backtrace (most recent call first):
+       [0] _collect (res://src/platform/crash_report.gd:113)
+       [1] _ready (res://src/platform/crash_report.gd:70)
+       [2] _ready (res://src/ei/game_data.gd:693)
