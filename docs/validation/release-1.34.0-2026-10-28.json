@@ -215,7 +215,15 @@
       "ru",
       "de"
     ],
-    "all_previous_keys_and_variants_preserved": true
+    "all_previous_keys_and_variants_preserved": true,
+    "fallback_art_regression": {
+      "entries_checked": 9630,
+      "campaigns": 2,
+      "languages": 3,
+      "negative_control": "Missing Game mechanics icons before the correction; test passes after the correction.",
+      "chromium_images_loaded": 1152,
+      "browser_failed_responses": 0
+    }
   },
   "platform_runtime": {
     "linux-x86_64": {
