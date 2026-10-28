@@ -451,7 +451,7 @@ func blank_hit(def: GameUnit, src: GameUnit, owner_only := false, hit_flags := 0
 		src = null
 	if src and src != def \
 			and world.relation(def.faction, src.faction) != 0:
-		world.ai._hate(def, src.faction)
+		world.ai._hate(def, src.faction, true)
 	if def.controller < 0:
 		world.ai.on_attacked(def, src)
 	else:
@@ -468,7 +468,7 @@ func missed(def: GameUnit, src: GameUnit) -> void:
 	if def.dead or src == null or not is_instance_valid(src) or src == def:
 		return
 	if world.relation(def.faction, src.faction) != 0:
-		world.ai._hate(def, src.faction)
+		world.ai._hate(def, src.faction, true)
 	if def.controller < 0:
 		world.ai.on_attacked(def, src)
 	else:

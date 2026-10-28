@@ -594,6 +594,24 @@
       ]
     },
     {
+      "id": "creatures/hostility_spread",
+      "category": "creatures",
+      "script": "tools/tests/hostility_spread.gd",
+      "marker": "HOSTILITY_SPREAD",
+      "min_checks": 14,
+      "quick": false,
+      "description": "An attacked unit's hostility reaches friends within its help radius 30 ticks later and travels on; strangers and distant friends stay neutral",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/ai_live_eligibility",
       "category": "creatures",
       "script": "tools/tests/ai_live_eligibility.gd",
@@ -634,7 +652,7 @@
       "category": "creatures",
       "script": "tools/tests/creature_alerts.gd",
       "marker": "CREATURE_ALERTS",
-      "min_checks": 20,
+      "min_checks": 21,
       "quick": false,
       "description": "Authored bridge goblin perception, pig murder witnesses and original rabbits witnessing nonfatal assault; compressed hostility replication",
       "kind": "remake_regression",

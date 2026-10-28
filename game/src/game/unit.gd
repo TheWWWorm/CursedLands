@@ -3661,11 +3661,13 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 	# the diplomacy makes it a friend — then the hit hook.
 	if source and is_instance_valid(source) and source != self \
 			and world.relation(faction, source.faction) != 0:
-		world.ai._hate(self, source.faction)
+		world.ai._hate(self, source.faction, true)
 	if controller < 0:
 		world.ai.on_attacked(self, source)
 	else:
 		world.ai.on_player_attacked(self, source)
+	# Damage passes a marked hostility on at once (553da9), not next tick.
+	world.ai.propagate_hostility(self)
 
 
 func die(killer: GameUnit = null) -> void:

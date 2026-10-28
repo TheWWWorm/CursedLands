@@ -3944,7 +3944,7 @@ func _repair_apply(cmd: Dictionary, player: int) -> bool:
 func steal(u: GameUnit, t: GameUnit) -> void:
 	if steal_value(u) <= steal_value(t):
 		if t.faction != u.faction and world.relation(t.faction, u.faction) != 2:
-			world.ai._hate(t, u.faction)
+			world.ai._hate(t, u.faction, true)
 		return
 	if t.controller >= 0:
 		return

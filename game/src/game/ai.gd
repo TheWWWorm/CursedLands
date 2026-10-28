@@ -1536,7 +1536,6 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 		keep[by.get_instance_id()] = by
 		u.set_meta("noticed", keep)
 	hit_hook(u, by)
-	seen_assault(u, by)
 	if int(logic(u).get("alarm_cond", 0)) == 1:
 		_alert(u)
 	if fearful(u):
@@ -1790,9 +1789,7 @@ func hit_hook(u: GameUnit, by: GameUnit) -> void:
 ## or more.
 func call_for_help(u: GameUnit, at: Vector2, threat: GameUnit = null) -> void:
 	if u.dead: return
-	var r := float(logic(u).get("help_radius", GameData.ai_value("Logic", "CallForHelpRadius", 7.0)))
-	if r == GameData.ai_value("Logic", "CallForHelpRadiusDefault", 7.0):
-		r = GameData.ai_value("Logic", "CallForHelpRadius", 7.0)
+	var r := help_radius(u)
 	for o: GameUnit in world.live_units_near(u.pos, r):
 		if o == u or o.controller >= 0 or world.relation(u.faction, o.faction) != 0:
 			continue
@@ -1801,6 +1798,15 @@ func call_for_help(u: GameUnit, at: Vector2, threat: GameUnit = null) -> void:
 
 
 var _help := []   # delayed sounds: [unit, spot, ticks left]
+
+
+## The AI's help radius: the.mob logic "help" radius, or ai.reg [Logic]
+## CallForHelpRadius when it is CallForHelpRadiusDefault.
+func help_radius(u: GameUnit) -> float:
+	var r := float(logic(u).get("help_radius", GameData.ai_value("Logic", "CallForHelpRadius", 7.0)))
+	if r == GameData.ai_value("Logic", "CallForHelpRadiusDefault", 7.0):
+		r = GameData.ai_value("Logic", "CallForHelpRadius", 7.0)
+	return r
 
 ## (source, loudness, ticks, point): a sound at the source unit.
 ## Every unit within 50 m that is hostile to the source's side
@@ -1845,6 +1851,8 @@ func tick() -> void:
 				var loud := u.noise() * u.detect(3)
 				if loud > 0.0:
 					noise_event(u, loud)
+	if world.authority:
+		_hostility_tick()
 	if _help.is_empty():
 		return
 	var keep := []
@@ -1890,22 +1898,6 @@ func on_corpse(dead: GameUnit) -> void:
 		player_perceive(o)
 
 
-## Visible assaults make neutral friends hostile before the victim dies.
-func seen_assault(victim: GameUnit, attacker: GameUnit) -> void:
-	if attacker == victim or attacker.dead: return
-	# A neutral friend reacts when it can actually see the assault. Seeing
-	# only an attacker or hearing a warning gives no knowledge of who hit whom.
-	for observer: GameUnit in _notice_candidates(victim):
-		if observer == victim or observer == attacker or observer.dead or observer.controller >= 0 \
-				or world.relation(observer.faction, victim.faction) != 0 \
-				or world.relation(observer.faction, attacker.faction) == 0 \
-				or _hates(observer, attacker.faction): continue
-		var noticed := player_perceive(observer, true)
-		if noticed.has(victim.get_instance_id()) and noticed.has(attacker.get_instance_id()):
-			_hate(observer, attacker.faction)
-			call_for_help(observer, attacker.pos, attacker)
-
-
 ## "Has seen murder" (twice, for a creature killer): friends among the
 ## observers of the victim and killer gain hostility toward the killer.
 ## The observer lists come from the perception grid, not a distance sphere.
@@ -1930,7 +1922,12 @@ func seen_murder(dead: GameUnit, killer: GameUnit) -> void:
 
 
 ## side `f` into the unit's hostility mask (and its party's).
-func _hate(o: GameUnit, f: int) -> void:
+## A changed mask marks the unit (unit flag 0x80000, 52e940), and so does
+## `attacked` (an attack, failed theft or provoking spell: 455680), even
+## when the side was already there; `_hostility_tick` passes it on.
+func _hate(o: GameUnit, f: int, attacked := false) -> void:
+	if attacked:
+		_hostility_mark(o)
 	if _hates(o, f):
 		return
 	var who: Array = [o]
@@ -1943,6 +1940,98 @@ func _hate(o: GameUnit, f: int) -> void:
 				h = {"w": world.get_instance_id(), "f": []}
 			(h.f as Array).append(f)
 			x.set_meta("hate", h)
+			_hostility_mark(x)
+
+
+func _hate_sides(o: GameUnit) -> Array:
+	var h: Dictionary = o.get_meta("hate", {})
+	return h.get("f", []) if int(h.get("w", 0)) == world.get_instance_id() else []
+
+
+# Hostility spreading (552e00 / 552d00). A marked unit adds its own sides to
+# its claims, then trades with each diplomacy friend in its observer list
+# within its help radius: each learns the other's sides it has not claimed.
+# A claim waits 30 ticks in the receiver's heard calls (5ccea0) and then
+# joins its mask (5cc9d0 -> 552cf0), which marks it again, so the hostility
+# travels on through the group. Like the delayed sounds, claims are not saved.
+var _hostility_marked := {}   # instance id -> unit
+var _claims := []   # [unit, ticks left, sides]
+
+
+func _hostility_mark(o: GameUnit) -> void:
+	_hostility_marked[o.get_instance_id()] = o
+
+
+func _claimed(o: GameUnit) -> Array:
+	var c: Dictionary = o.get_meta("hate_claims", {})
+	return c.get("f", []) if int(c.get("w", 0)) == world.get_instance_id() else []
+
+
+func _claim(o: GameUnit, sides: Array) -> void:
+	var have := _claimed(o).duplicate()
+	for f in sides:
+		if not f in have:
+			have.append(f)
+	o.set_meta("hate_claims", {"w": world.get_instance_id(), "f": have})
+
+
+func _claim_hostility(receiver: GameUnit, sides: Array) -> void:
+	_claim(receiver, sides)
+	_claims.append([receiver, 0x1e, sides])
+
+
+func _hostility_tick() -> void:
+	if not _claims.is_empty():
+		var keep := []
+		for e: Array in _claims:
+			var o: GameUnit = e[0]
+			if not is_instance_valid(o) or o.dead:
+				continue
+			e[1] = int(e[1]) - 1
+			if int(e[1]) >= 0:
+				keep.append(e)
+				continue
+			for f in e[2]:
+				_hate(o, int(f))
+		_claims = keep
+	if _hostility_marked.is_empty():
+		return
+	var marked := _hostility_marked.values()
+	_hostility_marked = {}
+	for u: GameUnit in marked:
+		if is_instance_valid(u) and not u.dead:
+			_propagate_hostility(u)
+
+
+## Passes a marked unit's hostility on now (the damage path), if marked.
+func propagate_hostility(u: GameUnit) -> void:
+	if world.authority and _hostility_marked.erase(u.get_instance_id()) and not u.dead:
+		_propagate_hostility(u)
+
+
+func _propagate_hostility(u: GameUnit) -> void:
+	var mine := _hate_sides(u)
+	_claim(u, mine)
+	var r2 := int(help_radius(u) * help_radius(u))
+	for o in _notice_candidates(u):
+		if not is_instance_valid(o) or not o is GameUnit or o == u or o.dead \
+				or world.relation(u.faction, o.faction) != 0:
+			continue
+		var d: Vector2 = o.pos - u.pos
+		if int(d.x * d.x + d.y * d.y) >= r2:
+			continue
+		var theirs := _hate_sides(o)
+		var their_claims := _claimed(o)
+		var mine_claims := _claimed(u)
+		# Nothing is traded while the other's claims equal this unit's mask.
+		if mine.size() == their_claims.size() and mine.all(func(f): return f in their_claims):
+			continue
+		var give := mine.filter(func(f): return not f in their_claims)
+		var take := theirs.filter(func(f): return not f in mine_claims)
+		if not give.is_empty():
+			_claim_hostility(o, give)
+		if not take.is_empty():
+			_claim_hostility(u, take)
 
 
 func _hates(o: GameUnit, f: int) -> bool:

@@ -471,7 +471,7 @@ static func _cast_unit_one(world: GameWorld, caster: GameUnit, spell: String, p:
 	# The native branch checks creature type, without an alive-only gate.
 	if tu != null and p.code in PROVOKING_EFFECTS:
 		if world.relation(tu.faction, caster.faction) != 0:
-			world.ai._hate(tu, caster.faction)
+			world.ai._hate(tu, caster.faction, true)
 		if tu.controller < 0:
 			world.ai.on_attacked(tu, caster)
 		else:
