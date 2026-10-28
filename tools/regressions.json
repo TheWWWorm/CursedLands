@@ -753,6 +753,20 @@
       "timeout": 420
     },
     {
+      "id": "arena_cyclops_rabbit",
+      "script": "tools/tests/arena_cyclops_rabbit.gd",
+      "summary": "ARENA_CYCLOPS_RABBIT",
+      "contract": "Cyclops throws keep native timing, are not cancelled by hits and still land when the victim falls mid wind-up; exploding hares arm, reach and visibly blast large or promoted enemies at every star, including on the final tick.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 40,
+      "timeout": 420
+    },
+    {
       "id": "arena_opening_viability",
       "script": "tools/tests/arena_opening_viability.gd",
       "summary": "ARENA_OPENING_VIABILITY",
@@ -2801,6 +2815,62 @@
       ],
       "min_checks": 1060,
       "timeout": 600
+    },
+    {
+      "id": "arena_stat_growth_placement",
+      "script": "tools/tests/arena_stat_growth_placement.gd",
+      "summary": "ARENA_STAT_GROWTH_PLACEMENT",
+      "contract": "Every recruit statistic and spell grows with each star; replica boards inspect Trials spells, not native ones (two-star shaman 21/21/0.8); armor names its exception types instead of ranges in EN/RU/DE; the deployment ring agrees with ArenaRun.deploy spacing and near misses snap to a valid spot.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--astral-path={astral_data}"
+      ],
+      "min_checks": 1000,
+      "timeout": 600
+    },
+    {
+      "id": "arena_options_menu_ui_en",
+      "script": "tools/tests/arena_options_menu_ui.gd",
+      "summary": "ARENA_OPTIONS_MENU_UI",
+      "contract": "The autochess menu offers a localized, unclipped Options entry that opens the campaign Options screen and returns to preparation, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=en"
+      ],
+      "min_checks": 28,
+      "timeout": 300
+    },
+    {
+      "id": "arena_options_menu_ui_ru",
+      "script": "tools/tests/arena_options_menu_ui.gd",
+      "summary": "ARENA_OPTIONS_MENU_UI",
+      "contract": "The autochess menu offers a localized, unclipped Options entry that opens the campaign Options screen and returns to preparation, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=ru"
+      ],
+      "min_checks": 28,
+      "timeout": 300
+    },
+    {
+      "id": "arena_options_menu_ui_de",
+      "script": "tools/tests/arena_options_menu_ui.gd",
+      "summary": "ARENA_OPTIONS_MENU_UI",
+      "contract": "The autochess menu offers a localized, unclipped Options entry that opens the campaign Options screen and returns to preparation, at 1280x720, 2560x1440 and 3840x2160.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--lang=de"
+      ],
+      "min_checks": 28,
+      "timeout": 300
     },
     {
       "id": "arena_horde_roster",

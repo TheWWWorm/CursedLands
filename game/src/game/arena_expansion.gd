@@ -9,6 +9,10 @@ const POPPER := 32
 # health promotion curve so three-star targets do not outgrow that blast.
 const POPPER_DAMAGE := [60, 125, 300]
 const POPPER_FUSE := 0.6
+# Both distances end at the enemy's body edge, not its centre. Stars and large
+# species (cyclopes, trolls, golems) otherwise keep a hare in melee contact
+# outside a centre-based fuse, and the death blast could not reach them.
+const POPPER_ARM_RADIUS := 2.0
 const POPPER_RADIUS := 2.5
 const POPPER_TARGETS := 3
 const CHARACTERS := {
