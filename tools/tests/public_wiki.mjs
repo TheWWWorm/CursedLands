@@ -14,7 +14,7 @@ const repo = path.resolve(new URL('../..', import.meta.url).pathname);
 let source = await fs.readFile(path.join(repo, 'worker.js'), 'utf8');
 source = source.replace("import parts from './parts.json';", 'const parts = ' + await fs.readFile(path.join(repo, 'parts.json'), 'utf8') + ';');
 const worker = (await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'))).default;
-const mime = {'.html':'text/html', '.css':'text/css', '.js':'text/javascript', '.mjs':'text/javascript', '.json':'application/json', '.webp':'image/webp', '.png':'image/png'};
+const mime = {'.html':'text/html', '.css':'text/css', '.js':'text/javascript', '.mjs':'text/javascript', '.json':'application/json', '.webp':'image/webp', '.png':'image/png', '.svg':'image/svg+xml', '.ttf':'font/ttf'};
 const requests = [], errors = [];
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://' + req.headers.host);
@@ -57,8 +57,10 @@ async function evaluate(expression) {
   return result.result.value;
 }
 async function ready() {
-  await until(() => evaluate("!!document.querySelector('#article h1') && document.querySelector('#notice').textContent === ''"), 'article ready');
-  await until(() => evaluate('Array.from(document.images).every(i=>i.complete && i.naturalWidth>0)'), 'illustrations loaded');
+  await until(() => evaluate("!!document.querySelector('#article-heading h1, #article h1') && document.querySelector('#notice').textContent === ''"), 'article ready');
+  // Rows can arrive after the article. Request lazy thumbnails as they appear
+  // so the check can still verify every illustration, including offscreen ones.
+  await until(() => evaluate('(()=>{const images=Array.from(document.images);images.forEach(i=>{i.loading="eager"});return images.every(i=>i.complete && i.naturalWidth>0)})()'), 'illustrations loaded', 180);
 }
 async function select(selector, value) {
   await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event('change',{bubbles:true}));})()`);
@@ -127,7 +129,7 @@ try {
     check(await evaluate('document.documentElement.lang') === lang, lang + ' language updates page and interface');
     const shot = await command('Page.captureScreenshot', {format:'png'});
     await fs.writeFile(path.join(output, 'wiki-' + lang + '.png'), Buffer.from(shot.data, 'base64'));
-    report.languages[lang] = await evaluate('({title:document.querySelector("#article h1").textContent, label:document.querySelector("label[for=search]").textContent})');
+    report.languages[lang] = await evaluate('({title:document.querySelector("#article-heading h1, #article h1").textContent, label:document.querySelector("label[for=search]").textContent})');
     check(await evaluate('document.documentElement.scrollWidth <= innerWidth'), lang + ' desktop has no horizontal overflow');
     const localized = JSON.parse(await fs.readFile(path.join(root, 'wiki/data', lang, 'index.json'), 'utf8'));
     await select('#category', 'Items');
@@ -156,7 +158,7 @@ try {
     const horn = localized.entries.find(v => v.key === 'item/wand%205');
     for (const fixed of [doll, horn]) {
       await openArticle(fixed.key, lang);
-      check(await evaluate('document.querySelector("#article h1").textContent') === fixed.title, lang + ' fixed item uses its authored name: ' + fixed.title);
+      check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === fixed.title, lang + ' fixed item uses its authored name: ' + fixed.title);
       check(await evaluate('document.querySelector("#versions").hidden && document.querySelectorAll("#variant option").length === 1'), lang + ' fixed item has no material or blueprint choices: ' + fixed.title);
     }
   }
@@ -166,7 +168,7 @@ try {
   for (const key of ['item/gipat%20special%20high%20plate', 'item/gipat%20special%20brigand%20plate']) {
     await openArticle(key);
     const row = index.entries.find(v => v.key === key);
-    check(await evaluate('document.querySelector("#article h1").textContent') === row.title, 'NPC armour has a distinct garment and wearer name: ' + row.title);
+    check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === row.title, 'NPC armour has a distinct garment and wearer name: ' + row.title);
     check(await evaluate('!!document.querySelector("#article img") && document.querySelector("#versions").hidden'), 'NPC armour has an illustration and its fixed material');
     await select('#category', 'Items'); await select('#item-category', 'armor_plate');
     await screenshot(key.includes('brigand') ? 'wiki-estera-armour' : 'wiki-erfar-armour');
@@ -187,23 +189,23 @@ try {
   assert(changedItem, 'an authored quest item differs between the two campaigns');
   const baseItem = index.entries.find(row => row.key === changedItem.key);
   await openArticle(baseItem.key);
-  check(await evaluate('document.querySelector("#article h1").textContent') === baseItem.title, 'base campaign uses original quest-item name');
+  check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === baseItem.title, 'base campaign uses original quest-item name');
   await evaluate('document.querySelector("[data-campaign=lost_in_astral]").click()'); await ready();
   check(await evaluate('new URLSearchParams(location.search).get("campaign")') === 'lost_in_astral', 'campaign tab opens shareable expansion URL');
   check(await evaluate('document.querySelectorAll("#results a").length') === astral.entries.filter(v => v.listed !== false).length, 'expansion has its own complete continuous contents list');
   await evaluate('history.back()'); await until(() => evaluate('!new URLSearchParams(location.search).has("campaign")'), 'base campaign history'); await ready();
-  check(await evaluate('document.querySelector("#article h1").textContent') === baseItem.title, 'browser Back restores base campaign and article');
+  check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === baseItem.title, 'browser Back restores base campaign and article');
   await openArticle(changedItem.key, 'en', '', 'lost_in_astral');
-  check(await evaluate('document.querySelector("#article h1").textContent') === changedItem.title, 'same quest-item ID uses expansion name in expansion tab');
+  check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === changedItem.title, 'same quest-item ID uses expansion name in expansion tab');
   const astralSight = {en:"Dead man's sight",ru:'Зрение мертвеца',de:'Totensicht'};
   for (const lang of ['en', 'ru', 'de']) {
     const localized = JSON.parse(await fs.readFile(path.join(root, 'wiki/data/lost_in_astral', lang, 'index.json'), 'utf8'));
     await openArticle('spell/detect_life', lang);
-    check(await evaluate('document.querySelector("#article h1").textContent') === names.detect_life[lang], lang + ' missing base spell has a localized deep-link name');
+    check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === names.detect_life[lang], lang + ' missing base spell has a localized deep-link name');
     await select('#category', 'Spells');
     check(await evaluate('Array.from(document.querySelectorAll("#results a")).every(a=>new URL(a.href).searchParams.get("page") !== "spell/detect_life")'), lang + ' unnamed dormant base prototype does not clutter spell list');
     await openArticle('spell/detect_life', lang, '', 'lost_in_astral');
-    check(await evaluate('document.querySelector("#article h1").textContent') === astralSight[lang], lang + ' expansion spell uses its authored name');
+    check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === astralSight[lang], lang + ' expansion spell uses its authored name');
     check(await evaluate('document.querySelectorAll("#campaigns a").length === 2 && document.querySelector("#campaigns [aria-current=page]").dataset.campaign === "lost_in_astral"'), lang + ' exactly two campaign tabs with correct active state');
     await select('#category', 'Spells');
     check(await evaluate('document.querySelectorAll("#results a").length') === 35, lang + ' expansion lists 35 named base spells');
@@ -238,7 +240,7 @@ try {
   check(await evaluate('!new URLSearchParams(location.search).has("campaign") && document.querySelector("#campaigns [aria-current=page]").dataset.campaign === "cursed_lands"'), 'base tab restores legacy base-game URL');
   const modifiedSpell = index.entries.find(v => v.kind === 'spell' && v.listed === false);
   await openArticle(modifiedSpell.key);
-  check(await evaluate('document.querySelector("#article h1").textContent') === modifiedSpell.title, 'referenced rune-equipped spell remains accessible by deep link');
+  check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent') === modifiedSpell.title, 'referenced rune-equipped spell remains accessible by deep link');
   await select('#category', 'Creatures');
   check(await evaluate('document.querySelectorAll("#results a").length') === index.entries.filter(v => v.kind === 'creature').length, 'all creatures available without paging');
   const bottom = await evaluate('(()=>{const e=document.querySelector("#results");e.scrollTop=e.scrollHeight;return e.scrollTop;})()');
@@ -269,7 +271,7 @@ try {
         }
         assert(row);
         await openArticle(row.key,lang,'',campaign);
-        check(await evaluate('document.querySelector("#article h1").textContent')===row.title,campaign+' '+lang+' localized '+kind+' article');
+        check(await evaluate('document.querySelector("#article-heading h1, #article h1").textContent')===row.title,campaign+' '+lang+' localized '+kind+' article');
         if (kind==='map') check(await evaluate('!!document.querySelector("#article figure.map-overview img")'),campaign+' '+lang+' authored map image');
       }
       await openArticle('spell/'+code,lang,'',campaign);
