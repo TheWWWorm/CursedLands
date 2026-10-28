@@ -108,8 +108,8 @@
       "sha256": "705903ae1382f0150f115d6f10a30f5b2f3d6ade649c474afe6366c39174fb65"
     },
     "art.mjs": {
-      "bytes": 657,
-      "sha256": "d774d0180aaee9d6271122f80f422f80898d8bc79712707c4ccdabfdcc290adb"
+      "bytes": 681,
+      "sha256": "f63ad2fe5eaaeedd7ac27897d13fe36dc1f36ab8b0e0219e34bcdca40146de5b"
     },
     "camp-bag.webp": {
       "bytes": 1816,
@@ -56768,5 +56768,5 @@
       "sha256": "29aec0935f5d56923fe3c1a66f35e4965ab6eda83b3eaabd8b673a828109e313"
     }
   },
-  "bytes": 206692142
+  "bytes": 206692166
 }

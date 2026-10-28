@@ -262,3 +262,5 @@ uses an isolated muted profile with FPS visible and the cursor free.
 For standalone web releases, run `python3 tools/check_web_release.py /path/to/CursedLands-VERSION-web.zip` before upload. It requires the complete committed public wiki and compares every file byte. `python3 -B -m unittest tools.tests.test_web_release` covers omitted, partial, changed and complete bundles.
 
 Run `python3 -B -m unittest tools.tests.test_wiki_localization` when changing public wiki translation inputs. It checks that the Lost in Astral crawl tutorial uses the reviewed harpy translation rather than the different base-game ogre text.
+
+Run `node tools/tests/wiki_art.mjs` when changing public wiki artwork or categories. It checks that failed or absent illustrations resolve to an existing fallback for every published entry in both campaigns and all three languages.
