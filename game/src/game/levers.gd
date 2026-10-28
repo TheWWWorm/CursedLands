@@ -118,10 +118,18 @@ func science_ok(nid: int, use_value: float, quest_items: Array) -> bool:
 		var u := int(l[0]) & int(k[0])
 		if u & 8 and int(k[1]) == int(l[1]):
 			return true
-		# (an unsigned compare in the original: a negative Use value passes)
-		if u & 7 and (int(l[2]) & 0xFFFFFFFF) <= (int(k[2]) & 0xFFFFFFFF):
+		# Remake fix (as the Rebirth edition): the original compares unsigned,
+		# so a negative Use value (Dex < 25 without Use skill) opened every
+		# skill lock. Signed here; a lock of 0 still opens for anyone.
+		var lock := _int32(int(l[2]))
+		if u & 7 and (lock == 0 or lock <= _int32(int(k[2]))):
 			return true
 	return false
+
+
+static func _int32(x: int) -> int:
+	x &= 0xFFFFFFFF
+	return x - 0x100000000 if x >= 0x80000000 else x
 
 
 ## Script SwitchLeverState(obj, state) / SwitchLeverStateEx(obj, state, time)

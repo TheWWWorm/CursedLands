@@ -472,6 +472,38 @@
       ]
     },
     {
+      "id": "quests/lever_skill_sign",
+      "category": "quests",
+      "script": "tools/tests/lever_skill_sign.gd",
+      "marker": "LEVER_SKILL_SIGN",
+      "min_checks": 25,
+      "quick": true,
+      "description": "A negative Use value no longer opens skill-locked levers; level 0 locks and quest keys still open",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res"
+      ]
+    },
+    {
+      "id": "quests/lever_skill_sign_astral",
+      "category": "quests",
+      "script": "tools/tests/lever_skill_sign.gd",
+      "marker": "LEVER_SKILL_SIGN",
+      "min_checks": 25,
+      "quick": true,
+      "description": "Run with original Lost in Astral content. A negative Use value no longer opens skill-locked levers; level 0 locks and quest keys still open",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res"
+      ]
+    },
+    {
       "id": "creatures/ai_activity_health",
       "category": "creatures",
       "script": "tools/tests/ai_activity_health.gd",
