@@ -69,7 +69,7 @@ func _arm() -> void:
 	if not enabled:
 		return
 	for u: GameUnit in world.unit_rows():
-		if bool(u.info.get("always_active", false)):
+		if always_active(u):
 			_timer[u.uid] = _rearm(u)
 	if restored and world.traps:
 		for nid in world.traps.traps:
@@ -180,7 +180,7 @@ func expire() -> void:
 		var left := int(_timer[uid]) - 1
 		if left > 0:
 			_timer[uid] = left
-		elif u.alert or bool(u.info.get("always_active", false)) or _knows_enemy(u):
+		elif u.alert or always_active(u) or _knows_enemy(u):
 			_timer[uid] = _rearm(u)
 		else:
 			_timer.erase(uid)
@@ -189,6 +189,14 @@ func expire() -> void:
 			# and the next move step sets the walk again.
 			if u.action in ["walk", "run", "crawl"]:
 				u._set_action("idle")
+
+
+## The flag of the unit's current behaviour descriptor, which an alarm
+## switches (5d6bee sets it; load arming 596b9e and expiry 58d8ce read it).
+func always_active(u: GameUnit) -> bool:
+	var ls: Array = u.info.get("logic", [])
+	var i := int(u.get_meta("logic_idx", 0))
+	return bool((ls[i] if i < ls.size() else u.info).get("always_active", false))
 
 
 func _knows_enemy(u: GameUnit) -> bool:

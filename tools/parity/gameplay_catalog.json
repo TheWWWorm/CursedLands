@@ -558,6 +558,24 @@
       ]
     },
     {
+      "id": "creatures/alarm_behaviour",
+      "category": "creatures",
+      "script": "tools/tests/alarm_behaviour.gd",
+      "marker": "ALARM_BEHAVIOUR",
+      "min_checks": 12,
+      "quick": false,
+      "description": "An alarm rebuilds motivations, clears the AI action and applies the new descriptor's always-active flag",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/object_activity_absence",
       "category": "creatures",
       "script": "tools/tests/object_activity_absence.gd",

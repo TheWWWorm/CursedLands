@@ -2278,6 +2278,15 @@ func invoke_alarm(i: int, at: Vector2, force: bool) -> void:
 			u.remove_meta("alarm_left")   #  re-inits the countdown
 			u.mode = "standard"
 			u.mode_data = {}
+			# The descriptor switch (5d6630) rebuilds the whole motivation list from the
+			# descriptor (5d97e0), script-set ones included, clears the AI
+			# target and sets AI state 0 (5d6c19-5d6c26). A descriptor that is
+			# always active wakes the unit (5d6c3c -> 58d5d0).
+			u.remove_meta("um")
+			u.remove_meta("ai_state")
+			u.remove_meta("ai_target")
+			if bool(ls[i].get("always_active", false)):
+				world.active_set.wake_unit(u)
 
 
 ## an AI that has noticed a hostile (its enemy list) is alerted
