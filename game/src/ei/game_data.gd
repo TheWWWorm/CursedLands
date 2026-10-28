@@ -103,6 +103,9 @@ const OPTIONS := [
 	# Ground contact remains opt in pending wider device cost measurements.
 	["gfx_ground_contact", 1, 2, 22, 6, 0],
 	["gfx_terrain_cliffs", 1, 2, 22, 7, 1],
+	# Derived ground relief maps (TerrainSurfaceMaps) are opt in: about 6-9 % of
+	# a ground-filled Forward+ frame. Off compiles the established programs.
+	["gfx_terrain_surface", 1, 2, 22, 8, 0],
 	# Lighting and shadows (group 14). Independent effects; DOF is opt in.
 	["gfx_firelight", 1, 2, 14, 0, 1], ["gfx_torch_glow", 1, 2, 14, 1, 1],
 	["gfx_lava_light", 1, 2, 14, 2, 1], ["gfx_foliage_light", 1, 2, 14, 3, 1],
@@ -413,7 +416,7 @@ const REMAKE_OPTIONS := {
 	"gamepad": ["Gamepad", "Controller settings (vibration, stick dead zone, pointer speed, target range, button pictures) and the button layout."],
 	"gamepad_buttons": ["Buttons", "Choose which controller button does what. The D-pad and the sticks keep their roles."],
 	"gfx_firelight": ["Dynamic firelight", "Warm, flickering torches and fire; spell lights brighten nearby surfaces and fade out softly. Nearby fire and lava lights share a limited number of shadows."],
-	"gfx_materials": ["Surface materials", "Metal equipment catches the light; wood, stone and ground have subtle surface relief, and loose sand shows wind ripples. Uses the original textures and equipment materials."],
+	"gfx_materials": ["Surface materials", "Metal equipment catches the light; wood and stone have subtle surface relief. Uses the original textures and equipment materials."],
 	"gfx_foliage_light": ["Leaf backlighting", "Sunlight shines softly through leaves while trunks remain solid."],
 	"gfx_weather_surfaces": ["Rain on surfaces", "Rain gradually darkens exposed ground and adds wet highlights and water ripples. Surfaces dry after the rain; caves, snow and lava stay unchanged."],
 	"gfx_detailed_heads": ["Portrait heads", "People with a face portrait (Zak, the mercenaries, most men and some women) wear the portrait's own head model and face painting instead of the figure's head. A worn helmet keeps the original head."],
@@ -468,6 +471,7 @@ const REMAKE_OPTIONS := {
 	"gfx_bloom": ["Bloom", "Glow around bright lights."],
 	"gfx_weather_mist": ["Local water mist", "Thin drifting mist above verified water and swamp surfaces, strongest on misty mornings and after rain. Requires Volumetric fog and the Forward+ renderer."],
 	"gfx_depth_of_field": ["Depth of field", "Softens the distant background at low camera angles. Focus follows the visible scene smoothly; tactical views stay sharp. Requires a compatible Forward+ or Mobile build. Off by default."],
+	"gfx_terrain_surface": ["Ground relief maps", "Ground, rock and dirt gain fine relief and roughness derived from the original terrain textures, and loose sand shows wind ripples. Requires Terrain detail, Surface materials and the Forward+ renderer. Off by default."],
 	"gfx_terrain_cliffs": ["Steep terrain detail", "Rounds tall natural cliffs, including snowy slopes, and reduces texture stretching on rock, grass and moss. Requires Terrain detail. Keeps original collision heights, flat ground, paths and painted material boundaries."],
 	"gfx_severed_limbs": ["Severed limbs fly off", "A severed head, arm or leg is cut from the figure and thrown to the ground, where it lies for a while. Off: as the original, the part stays on the body, bloodied."],
 	"display_mode": ["Display mode", "Windowed, fullscreen, or a borderless window covering the screen."],
@@ -531,7 +535,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"gfx_sky", "gfx_water", "gfx_wind", "gfx_volumetric", "gfx_terrain", "gfx_heat_haze",
 	"gfx_grass", "gfx_soft_ground", "gfx_ground_contact", "gfx_water_interaction", "gfx_water_caustics", "gfx_water_current", "gfx_water_waves", "gfx_waterfalls", "gfx_vegetation_interaction", "gfx_biome_cover",
 	"gfx_ambient_wildlife", "gfx_ambient_particles",
-	"gfx_clouds", "gfx_cloud_shadows", "gfx_cloud_reflections", "gfx_terrain_cliffs", "gfx_weather_mist",
+	"gfx_clouds", "gfx_cloud_shadows", "gfx_cloud_reflections", "gfx_terrain_cliffs", "gfx_terrain_surface", "gfx_weather_mist",
 	"gfx_ssao", "gfx_bloom", "gfx_depth_of_field", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_rain_puddles", "gfx_lava_light", "gfx_detailed_heads",

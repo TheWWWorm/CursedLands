@@ -3302,33 +3302,33 @@
       "id": "terrain_surface_maps",
       "script": "tools/tests/terrain_surface_maps.gd",
       "summary": "TERRAIN_SURFACE",
-      "contract": "Terrain surface maps derived on the GPU from installed atlases remove broad painted shading, keep per-type roughness and sand weight, isolate padded slots, and rotate into the same local axes as painted relief for all tile rotations; cliff, transition and caustic land variants compile with the maps, and projected cliff rock fades their relief and roughness.",
+      "contract": "Terrain surface maps derived on the GPU from installed atlases remove broad painted shading, keep per-type roughness and sand weight, isolate padded slots, and rotate into the same local axes as painted relief for all tile rotations; cliff, transition and caustic land variants compile with the maps, and projected cliff rock fades their relief and roughness. Ground relief maps is an opt-in Terrain option (off by default, EN/RU/DE), required with Terrain detail and Surface materials, and turned off by lower graphics tiers.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 63,
+      "min_checks": 79,
       "timeout": 240
     },
     {
       "id": "terrain_surface_live",
       "script": "tools/tests/terrain_surface_live.gd",
       "summary": "TERRAIN_SURFACE_LIVE",
-      "contract": "Actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, Surface materials off restores the established relief, and its help is translated.",
+      "contract": "Actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, a fresh profile has no derived maps (Ground relief maps off by default), Ground relief maps or Surface materials off restores the established relief, and its help is translated.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 31,
+      "min_checks": 39,
       "timeout": 480
     },
     {
       "id": "terrain_surface_live_1440",
       "script": "tools/tests/terrain_surface_live.gd",
       "summary": "TERRAIN_SURFACE_LIVE",
-      "contract": "At 2560×1440, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, Surface materials off restores the established relief, and its help is translated.",
+      "contract": "At 2560×1440, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, a fresh profile has no derived maps (Ground relief maps off by default), Ground relief maps or Surface materials off restores the established relief, and its help is translated.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
@@ -3336,14 +3336,14 @@
       "args": [
         "--surface-res=2560x1440"
       ],
-      "min_checks": 31,
+      "min_checks": 39,
       "timeout": 600
     },
     {
       "id": "terrain_surface_live_2160",
       "script": "tools/tests/terrain_surface_live.gd",
       "summary": "TERRAIN_SURFACE_LIVE",
-      "contract": "At 3840×2160, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, Surface materials off restores the established relief, and its help is translated.",
+      "contract": "At 3840×2160, actual Suslanger loose sand gains derived relief and ripples in raster, traced terrain binds the same maps and strength, the selected strength exceeds unit gain, a fresh profile has no derived maps (Ground relief maps off by default), Ground relief maps or Surface materials off restores the established relief, and its help is translated.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
@@ -3351,19 +3351,19 @@
       "args": [
         "--surface-res=3840x2160"
       ],
-      "min_checks": 31,
+      "min_checks": 39,
       "timeout": 600
     },
     {
       "id": "terrain_surface_help",
       "script": "tools/tests/terrain_surface_help.gd",
       "summary": "TERRAIN_SURFACE_HELP",
-      "contract": "Updated Surface materials help (ground relief and sand ripples) is translated and readable in its actual row in EN/RU/DE at 720p, 1440p and 4K.",
+      "contract": "Ground relief maps help (opt-in ground relief and sand ripples, off by default) is translated and readable in its actual Terrain row in EN/RU/DE at 720p, 1440p and 4K.",
       "issues": [],
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 35,
+      "min_checks": 37,
       "timeout": 300
     },
     {

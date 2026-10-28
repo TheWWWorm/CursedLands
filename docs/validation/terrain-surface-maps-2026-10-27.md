@@ -14,7 +14,8 @@ from the player's installed original atlases.
 
 ## Change
 
-With **Surface materials** and **Remake terrain** on (Forward+ only), the land
+With **Ground relief maps** (Terrain and vegetation, off by default), **Surface
+materials** and **Remake terrain** on (Forward+ only), the land
 builds one `rgba8` array matching the padded terrain atlas at load time, on
 the rendering device (`TerrainSurfaceMaps`, about 30 ms for a two-layer test
 atlas, including mips):
@@ -36,9 +37,12 @@ atlas, including mips):
 - **Cliffs:** projected wall rock fades the map relief and roughness by its
   wall weight in both renderers, so a ground tile's roughness never lands on a
   vertical face.
-- **Off / unsupported:** Surface materials off, original terrain, Mobile and
-  Compatibility keep the established path; the array is released.
-- The Surface materials help text mentions sand ripples in EN/RU/DE.
+- **Off / unsupported:** Ground relief maps off (the default), Surface
+  materials off, original terrain, Mobile and Compatibility keep the
+  established path; the array is released.
+- **Ground relief maps** has its own label and help in EN/RU/DE; lower graphics
+  tiers and Original look turn it off with Surface materials, whose help is
+  unchanged from before this work.
 
 ## Strength (follow-up)
 
@@ -198,8 +202,23 @@ range covers the two runs:
 | PT, frame cost of maps | +1.29 to 1.42 ms (6.1 to 6.8 %) | +0.55 to 0.56 ms (2.6 to 2.7 %) |
 | PT, raster pass GPU cost | +0.41 to 0.44 ms | +0.10 to 0.11 ms |
 
-Times with maps off are unchanged. Profile script and raw rows:
+Times with maps off are unchanged between these two builds. Both "off" states
+still carried the map code behind runtime switches, so these deltas
+understate the full cost against the established program; see the next
+section for that comparison. Profile script and raw rows:
 `local/validation/terrain-surface-20261027/perf/fused/`.
+
+Tests for the opt-in default (pack built from the merged branch): the
+36-case suite plus `options_rows_reachable`, `options_rows_reachable_ui` and
+`unavailable_graphics_ui`. 37 of 39 passed on the first run; the two live
+cases failed only on a help check still pointing at Surface materials. After
+moving that check to Ground relief maps, all three live cases pass, 39/0 each
+(`runs/opt-in-suite.json`, `runs/opt-in-live-rerun.json`). The new live and
+maps tests do not run on the previous build `c5cf84b4`, which lacks the option
+and transform (`runs/opt-in-negative-control.log`). Unregistered GPU tests on
+the same pack: sampling 96/0 on Forward+ and Mobile, transitions 75/0,
+Mobile junctions 60/0; the stale Forward+ junction harness is unchanged
+(45 of 60 failing, as before).
 
 Related tests on the fused pack:
 - The 34-case suite plus `path_trace_cover_receivers` and
@@ -214,12 +233,57 @@ Related tests on the fused pack:
   `transition_junction_sample` signature. Both tests are unregistered, and
   the failures predate this work.
 
+### Off by default, and free while off (28 October)
+
+The owner asked whether the maps cost anything while off; if not, the feature
+should merge with Ground relief maps off by default. Measured first against
+local main `cccf554c` (same 4K sand view, default options, RTX 3090 Ti, two
+alternating runs per build), the first opt-in build still cost about 5 % with
+the option off: raster GPU 4.23–4.25 → 4.45–4.50 ms, PT frame 20.2–20.3 →
+21.0–21.5 ms. The land program and the path-tracer hit program carried the
+map code, behind runtime switches, even when no map was bound.
+
+Now the map code is compiled in only while the option is on:
+- Raster: `EITerrain.TERRAIN_SHADER` is main's text again. With the option on,
+  `GroundSurfaceShader.land_with_maps()` adds the maps (and the `tile_coord`
+  split) before cliff, transition, caustic and colour-cache sources are
+  applied. Off, every land variant is composed from main's text; on, the
+  transform reproduces the previously tested fused program byte for byte
+  (apart from its `#define EI_SURFACE_MAPS`).
+- Path tracer: the map changes in `path_trace.hlsl` are under
+  `PATH_TERRAIN_SURFACE_MAPS`, with main's code in each `#else`. The builder
+  adds `closest_hit_{terrain,transitions}_maps` (and transmission) programs,
+  selected only when the terrain header's map bit is set. All 65 existing
+  binaries rebuild byte-identical to local main's; the 8 new ones are
+  byte-identical to the tested fused hit programs.
+- Mobile and Compatibility never request maps, so they now run main's land
+  program again (including Mobile's compact centre sample).
+
+Same benchmark after the change (alternating runs, two per build):
+
+| 4K sand view | Local main | Option off | Option on |
+| --- | --- | --- | --- |
+| Raster GPU | 4.21–4.26 ms | 4.31–4.32 ms | 4.61 ms |
+| PT raster pass GPU | 5.17–5.20 ms | 5.16–5.20 ms | 5.45–5.46 ms |
+| PT frame | 19.9–20.1 ms | 20.1–20.3 ms | 21.3–21.9 ms |
+
+The off programs are identical to main's; the remaining 0.05–0.10 ms raster
+and 0.2 ms frame differences are within this view's run-to-run spread (about
+0.1 ms raster and 0.4 ms PT frame between runs of one build). Benchmark
+script and rows: `local/validation/terrain-surface-20261027/perf/opt-in/`
+(the first opt-in attempt's rows in `first-attempt/`).
+
+Against local main, the option on costs about 0.30–0.37 ms raster GPU (7–9 %)
+and 1.1–1.6 ms PT frame (6–8 %) at this terrain-filled 4K view; the fused walk
+removed about 0.3 ms raster and 0.9 ms PT of a cost that was higher before.
+
 ## Original-game comparison
 
 Not applicable: the original renderer has no normal or roughness maps and no
 path tracer. The atlases, tile rotations and ground types used here are the
 original data; the original look remains available with Remake terrain off,
-and Surface materials off restores the previous remake relief exactly.
+and Ground relief maps off (the default) or Surface materials off restores the
+previous remake relief exactly.
 
 ## Limitations
 

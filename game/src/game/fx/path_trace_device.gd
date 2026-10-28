@@ -90,7 +90,9 @@ var _rigid_history := not OS.get_cmdline_user_args().has("--ei-camera-only-histo
 func shader_prefix() -> String: return "res://src/game/fx/shaders/path_trace_"
 func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_CLOSEST_HIT and terrain.data.size()>=Terrain.HEADER and terrain.data.decode_u32(0)>0:
-		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain")
+		# Header bit 1: Ground relief maps bound; only then the mapped hit program.
+		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain") \
+			+("_maps" if (terrain.data.decode_u32(44)&2)!=0 else "")
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
 		return shader_prefix()+"raygen"+("_rtxdi" if _rtxdi_mode else "")+("_sharc" if _sharc_mode>0 else "")+("_update" if _sharc_mode==2 else "")+("_deep" if _deep_paths and _sharc_mode!=2 else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)

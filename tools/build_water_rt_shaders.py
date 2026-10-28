@@ -32,6 +32,10 @@ def main():
         stages.append(('raygen_deep_no_emitters', 'raygen', ['PATH_ROULETTE', 'PATH_NO_EMITTERS']))
         stages.append(('closest_hit_terrain', 'closest_hit', ['PATH_TERRAIN_MATERIALS']))
         stages.append(('closest_hit_transitions', 'closest_hit', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS']))
+        # Ground relief maps (TerrainSurfaceMaps) get their own hit programs,
+        # so the established terrain programs stay unchanged while it is off.
+        stages.append(('closest_hit_terrain_maps', 'closest_hit', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_SURFACE_MAPS']))
+        stages.append(('closest_hit_transitions_maps', 'closest_hit', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS', 'PATH_TERRAIN_SURFACE_MAPS']))
         for deep in (False, True):
             for no_emitters in (False, True):
                 name = 'raygen_water' + ('_deep' if deep else '') + ('_no_emitters' if no_emitters else '')
@@ -40,7 +44,9 @@ def main():
     if args.shader == 'path_trace':
         for no_emitters in (False, True):
             stages.append(('raygen_transmission'+('_no_emitters' if no_emitters else ''), 'raygen', ['PATH_TRANSMISSION']+(['PATH_NO_EMITTERS'] if no_emitters else [])))
-        for name, definitions in [('closest_hit', []), ('closest_hit_terrain', ['PATH_TERRAIN_MATERIALS']), ('closest_hit_transitions', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS'])]:
+        for name, definitions in [('closest_hit', []), ('closest_hit_terrain', ['PATH_TERRAIN_MATERIALS']), ('closest_hit_transitions', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS']),
+                                  ('closest_hit_terrain_maps', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_SURFACE_MAPS']),
+                                  ('closest_hit_transitions_maps', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS', 'PATH_TERRAIN_SURFACE_MAPS'])]:
             stages.append((name+'_transmission', 'closest_hit', definitions+['PATH_TRANSMISSION_HIT']))
     prefix = args.shader + '_'
     source = SHADERS / (args.shader + '.hlsl')

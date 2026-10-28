@@ -60,7 +60,7 @@ func padded(tile:int,x:int,y:int)->Vector2i:
 	return Vector2i(o.x*80+8+x,o.y*80+8+y)
 
 func _ready()->void:
-	GameData.options.merge({"gfx_terrain":1,"gfx_materials":1,"auto_graphics":0,"confine_mouse":0,
+	GameData.options.merge({"gfx_terrain":1,"gfx_materials":1,"gfx_terrain_surface":1,"auto_graphics":0,"confine_mouse":0,
 		"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},true)
 	RenderingServer.set_render_loop_enabled(true)
 	await frames(3)
@@ -110,11 +110,40 @@ func _ready()->void:
 	await rotation_reference(atlas,maps)
 	await fused_reference(atlas,maps)
 	variants()
+	check(TerrainSurfaceMaps.requested(),"all three options on request derived maps")
+	GameData.options.gfx_terrain_surface=0
+	check(not TerrainSurfaceMaps.requested(),"Ground relief maps off keeps the established relief")
+	GameData.options.gfx_terrain_surface=1
+	option_entries()
 	GameData.options.gfx_materials=0
 	check(not TerrainSurfaceMaps.requested(),"Surface materials off keeps the established relief")
 	GameData.options.gfx_materials=1;GameData.options.gfx_terrain=0
 	check(not TerrainSurfaceMaps.requested(),"original terrain needs no derived maps")
 	finish()
+
+## Ground relief maps: an opt-in Terrain option in all three languages.
+## Surface materials keeps its earlier scope and help.
+func option_entries()->void:
+	var rows:=GameData.OPTIONS.filter(func(row:Array)->bool:return row[0]=="gfx_terrain_surface")
+	check(rows.size()==1 and rows[0][2]==2 and rows[0][3]==OptionsPanel.TERRAIN_GROUP and rows[0][5]==0,"Ground relief maps is a two-choice Terrain option, off by default")
+	check(GameData.OPTIONS_APPLIED.has("gfx_terrain_surface"),"Ground relief maps changes are applied")
+	var base:=GameData.options.duplicate();base.gfx_terrain_surface=1
+	check(GfxDetect.tier_values(0,base).gfx_terrain_surface==1 and GfxDetect.tier_values(3,base).gfx_terrain_surface==0
+		and GfxDetect.tier_values(GfxDetect.ORIGINAL,base).gfx_terrain_surface==0,"lower graphics tiers and Original look turn the maps off with Surface materials")
+	var entry: Array=GameData.REMAKE_OPTIONS.gfx_terrain_surface
+	check(entry[0]=="Ground relief maps" and entry[1].contains("loose sand") and entry[1].contains("Off by default"),"Ground relief maps label and help")
+	for text: String in entry:
+		for language: String in ["ru","de"]:
+			RemakeText.lang=language
+			var translated:=RemakeText.t(text)
+			check(not translated.is_empty() and translated!=text,"Ground relief maps text translated: "+language+" "+text.left(24))
+	RemakeText.lang="en"
+	var materials: String=GameData.REMAKE_OPTIONS.gfx_materials[1]
+	check(not materials.contains("ground") and not materials.contains("sand"),"Surface materials help no longer claims ground relief")
+	for language: String in ["ru","de"]:
+		RemakeText.lang=language
+		check(RemakeText.t(materials)!=materials,"Surface materials help translated: "+language)
+	RemakeText.lang="en"
 
 ## Cliff, transition and caustic land variants keep the derived-map hooks and
 ## compile: projected wall rock fades the ground tile's map relief and
@@ -122,7 +151,16 @@ func _ready()->void:
 func variants()->void:
 	const Cliff=preload("res://src/game/fx/terrain_cliff_shader.gd")
 	const Transition=preload("res://src/game/fx/terrain_transition_shader.gd")
-	var base:=EITerrain.TERRAIN_SHADER
+	# Off: the established program, byte for byte, in every variant.
+	var plain:=EITerrain.TERRAIN_SHADER
+	var plain_variants:=[plain,Cliff.source(plain),Transition.source(Cliff.source(EITerrain.WaterCaustics.source(plain))),
+		Transition.source(Cliff.source(plain),true),Transition.source(Cliff.source(plain),true,true)]
+	check(plain_variants.all(func(code:String)->bool:return not code.contains("surface_maps") and not code.contains("sand_ripple") \
+		and not code.contains("ground_sample_mapped") and not code.contains("tile_coord(") and not code.contains("#define EI_SURFACE_MAPS")),
+		"without Ground relief maps no land variant contains derived-map code")
+	check(plain.contains(GroundSurfaceShader.UNMAPPED_CENTER) and TerrainSamplingShader.compact(plain)!=plain,"Mobile still shares the established centre sample")
+	var base:=GroundSurfaceShader.land_with_maps(plain)
+	check(base!=plain and base.contains("#define EI_SURFACE_MAPS") and GroundSurfaceShader.land_with_maps(base)==base,"the derived-map land program is a single, idempotent transform")
 	var cliff:=Cliff.source(base)
 	check(cliff.contains("coverage * (1.0-cliff_planes.y)"),"projected cliff rock fades the derived roughness")
 	check(cliff.contains("painted_relief * fade * (1.0-cliff_planes.y)"),"projected cliff rock fades the derived relief")
@@ -170,7 +208,7 @@ const float tiles_per_axis=2.0;
 const float atlas_padding=0.125;
 const float source_texel=1.0/128.0;
 const bool blend_edges=true;
-"""+GroundSurfaceShader.TILE_FUNCTIONS+GroundSurfaceShader.SURFACE_FUNCTIONS+"""
+"""+GroundSurfaceShader.mapped_tiles(GroundSurfaceShader.TILE_FUNCTIONS)+GroundSurfaceShader.SURFACE_FUNCTIONS+"""
 float ground_height(vec3 colour) { return sqrt(max(dot(colour, vec3(0.2126, 0.7152, 0.0722)), 0.0)); }
 void main() {
 	ivec2 at=ivec2(gl_GlobalInvocationID.xy);
@@ -223,7 +261,7 @@ const float tiles_per_axis=2.0;
 const float atlas_padding=0.125;
 const float source_texel=1.0/128.0;
 const bool blend_edges=true;
-"""+GroundSurfaceShader.TILE_FUNCTIONS+GroundSurfaceShader.SURFACE_FUNCTIONS+"""
+"""+GroundSurfaceShader.mapped_tiles(GroundSurfaceShader.TILE_FUNCTIONS)+GroundSurfaceShader.SURFACE_FUNCTIONS+"""
 float peak(vec4 v) { return max(max(v.x, v.y), max(v.z, v.w)); }
 void main() {
 	ivec2 at=ivec2(gl_GlobalInvocationID.xy);

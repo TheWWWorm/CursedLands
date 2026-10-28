@@ -41,7 +41,7 @@ shader_type spatial;
 render_mode cull_disabled, ambient_light_disabled;
 varying vec3 ei_e;
 varying float ei_k;
-""" + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SURFACE_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + """varying vec3 wpos;
+""" + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + """varying vec3 wpos;
 varying vec2 soft_profile;
 """ + GroundSurfaceShader.SOFT_FUNCTIONS + """void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
@@ -73,7 +73,7 @@ varying vec2 soft_profile;
 	ei_e = COLOR.rgb;
 	ei_k = COLOR.a * 4.0;
 }
-""" + GroundSurfaceShader.TILE_FUNCTIONS + GroundSurfaceShader.SURFACE_FUNCTIONS + GroundSurfaceShader.SAND_FUNCTIONS + """float ground_height(vec3 colour) {
+""" + GroundSurfaceShader.TILE_FUNCTIONS + """float ground_height(vec3 colour) {
 	// A shallow visual approximation, not geometry: painted bright ridges
 	// rise above dark cracks. Work in perceptual brightness, not linear RGB.
 	return sqrt(max(dot(colour, vec3(0.2126, 0.7152, 0.0722)), 0.0));
@@ -101,19 +101,16 @@ void fragment() {
 		vec2 dx = dFdx(local);
 		vec2 dy = dFdy(local);
 		vec4 traits;
-		float fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));
-		// Derived surface maps (TerrainSurfaceMaps) come from the colour's own
-		// owner walk where relief is drawn.
-		vec4 surface = vec4(0.0, 0.0, 1.0, 0.0);
 		// The fragment's own sample stays in its own tile. GLES3 (web /
 		// Android) interpolates UV a hair past the tile edge on some edge
 		// pixels, and the shift to the neighbour then drew dotted lines along
 		// the triangle edges. Derivatives keep the unclamped value.
-		c = ground_sample_mapped(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, surface_maps && fade > 0.0, traits, surface);
+		c = ground_sample(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, traits);
 		float stone = traits.x;
 		float soft = traits.y;
 		grass = traits.z;
 		float relief = mix(mix(mix(0.13, 0.10, stone), 0.055, soft), 0.025, traits.w);
+		float fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));
 		// The cotangent frame follows the original rotated/mirrored tile UVs
 		// and sloping terrain, without changing mesh or navigation vertices.
 		vec3 p2 = cross(dFdy(VERTEX), NORMAL);
@@ -121,9 +118,6 @@ void fragment() {
 		vec3 tangent = p2 * dx.x + p1 * dy.x;
 		vec3 bitangent = p2 * dx.y + p1 * dy.y;
 		float frame_scale = inversesqrt(max(max(dot(tangent, tangent), dot(bitangent, bitangent)), 1e-12));
-		// Coverage 0 keeps the established brightness relief and response.
-		float coverage = 0.0;
-		float pixel_span = max(length(dFdx(wpos)), length(dFdy(wpos)));
 		if (fade > 0.0) {
 			vec2 step_uv = vec2(source_texel * tiles_per_axis * 1.5 / (1.0 - 2.0 * border), 0.0);
 			vec4 unused_traits;
@@ -132,15 +126,7 @@ void fragment() {
 			vec3 down = ground_sample(tile, local - step_uv.yx, dx, dy, unused_traits);
 			vec3 up = ground_sample(tile, local + step_uv.yx, dx, dy, unused_traits);
 			vec2 slope = vec2(ground_height(right) - ground_height(left), ground_height(up) - ground_height(down));
-			// The map's painted detail lacks the broad painted shading, which
-			// otherwise becomes a second, embossed copy of the baked light.
-			if (surface_maps) {
-				coverage = surface_coverage(tile, clamp(local, vec2(0.0), vec2(0.99999)));
-				slope = mix(slope, surface.xy * surface_tuning.x, coverage);
-			}
-			// Loose sand has its own grain; snow keeps the soft response.
-			float sand = surface.a * coverage;
-			float painted_relief = mix(mix(mix(mix(1.1, 2.4, stone), 0.35, soft), 0.15, traits.w), 0.8, sand);
+			float painted_relief = mix(mix(mix(1.1, 2.4, stone), 0.35, soft), 0.15, traits.w);
 			NORMAL = normalize(NORMAL - (tangent * slope.x + bitangent * slope.y) * frame_scale * painted_relief * fade);
 			// Local contrast, bounded by nearby colours to avoid bright halos.
 			vec3 average = (left + right + down + up) * 0.25;
@@ -155,24 +141,12 @@ void fragment() {
 			vec2 b = texture(detail_nm, wpos.xz * 0.45).xy * 2.0 - 1.0;
 			vec2 e = texture(detail_nm, wpos.xy * 0.45).xy * 2.0 - 1.0;
 			vec2 f = texture(detail_nm, wpos.xz * 1.7 + 0.37).xy * 2.0 - 1.0;
-			vec2 fine = f * mix(mix(0.25, 0.85, grass), 0.6, sand);
+			vec2 fine = f * mix(0.25, 0.85, grass);
 			vec3 pert = vec3(0.0, a.y, a.x) * bw.x + vec3(b.x + fine.x, 0.0, b.y + fine.y) * bw.y + vec3(e.x, e.y, 0.0) * bw.z;
-			if (sand > 0.0) {
-				vec2 ripple = sand_ripple(wpos.xz, pixel_span);
-				pert += vec3(ripple.x, 0.0, ripple.y) * sand * bw.y;
-			}
 			// Tangential perturbation keeps steep slopes' base normal intact.
 			pert -= wn * dot(wn, pert);
-			wn = normalize(wn + pert * mix(relief, 0.09, sand) * fade);
+			wn = normalize(wn + pert * relief * fade);
 			NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
-		}
-		// Derived roughness in the optional material response: dry sand and
-		// soil stay matte; ice and smooth stone crests catch the light.
-		if (surface_maps && ei_surface_fx.x > 0.5 && fade > 0.0) {
-			float base_rough = mix(mix(mix(mix(0.94, 0.84, stone), 0.98, soft), 0.96, grass), 0.25, traits.w);
-			float map_rough = clamp(base_rough + (surface.z - base_rough) * surface_tuning.w, 0.05, 1.0);
-			float rough = mix(base_rough, map_rough, coverage);
-			ei_surface = vec3(0.6 * (1.0 - smoothstep(0.5, 0.85, rough)) * fade, rough, 0.0);
 		}
 		// large, soft brightness variation that breaks up the tile repeats
 		float mac = texture(macro_tex, wpos.xz * 0.012).r;
@@ -926,6 +900,8 @@ var details: TerrainDetails
 var color_cache: TerrainColorCache
 static var _land_shader: Shader
 static var _land_caustics_shader: Shader
+## Land and caustic land programs with Ground relief maps, by source.
+static var _land_mapped_shaders := {}
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
 static var _water_interaction_shader: Shader
@@ -1354,14 +1330,19 @@ func apply_gfx() -> void:
 	else:
 		_transitions = null
 	var caustics: bool = _caustics != null and _caustics.admitted > 0
-	var transition_base := WaterCaustics.source(TERRAIN_SHADER) if caustics else TERRAIN_SHADER
+	var land := land_base()
+	var transition_base := WaterCaustics.source(land) if caustics else land
 	if _cliffs != null: transition_base = _cliffs.source(transition_base)
 	# Creating a Shader starts RD compilation before its first visible draw.
 	# Compose the selected combination once, including its live samplers.
 	if _transitions != null and _transitions.admitted > 0:
 		_land_mat.shader = _transitions.shader(transition_base)
 	elif _cliffs != null and _cliffs.admitted > 0:
-		_land_mat.shader = _cliffs.shader(WaterCaustics.source(TERRAIN_SHADER) if caustics else TERRAIN_SHADER)
+		_land_mat.shader = _cliffs.shader(WaterCaustics.source(land) if caustics else land)
+	elif land != TERRAIN_SHADER:
+		var code := WaterCaustics.source(land) if caustics else land
+		if not _land_mapped_shaders.has(code): _land_mapped_shaders[code] = Gfx.make_shader(code,true,true)
+		_land_mat.shader = _land_mapped_shaders[code]
 	elif caustics:
 		if _land_caustics_shader == null:
 			_land_caustics_shader = Gfx.make_shader(WaterCaustics.source(TERRAIN_SHADER),true,true)
@@ -1548,10 +1529,18 @@ static func _selected_water_shader() -> Shader:
 	return _water_fx_shader
 
 
+## The land program: derived maps are compiled in only when requested, so
+## Ground relief maps off keeps the established program and its cost.
+func land_base() -> String:
+	var mapped := GameData.option("gfx_terrain") != 0 and TerrainSurfaceMaps.requested()
+	return GroundSurfaceShader.land_with_maps(TERRAIN_SHADER) if mapped else TERRAIN_SHADER
+
+
 ## The colour cache substitutes only immutable tile colour. Its live material
 ## must use the same optional terrain-receiver effects as ordinary sectors.
 func land_shader_source() -> String:
-	var code := WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
+	var land := land_base()
+	var code := WaterCaustics.source(land) if _caustics != null and _caustics.admitted > 0 else land
 	if _cliffs != null: code = _cliffs.source(code)
 	return _transitions.source(code) if _transitions != null else code
 

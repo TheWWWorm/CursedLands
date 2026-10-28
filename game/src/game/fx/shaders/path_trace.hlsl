@@ -739,8 +739,10 @@ uint4 land_layout() { return terrain_data.Load4(0); }
 float4 land_sampling() { return asfloat(terrain_data.Load4(16)); }
 uint4 land_detail() { return terrain_data.Load4(32); }
 uint4 land_extra() { return terrain_data.Load4(48); }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 // Derived-map strength: relief gain, ripple gain, ripple reach, roughness contrast.
 float4 land_tuning() { return asfloat(terrain_data.Load4(64)); }
+#endif
 uint land_tile(int2 cell) {
     uint4 layout=land_layout();
     cell=clamp(cell,int2(0,0),int2(layout.xy)-1);
@@ -774,8 +776,12 @@ float tile_lod(float footprint) {
     float span=min(abs(footprint*(1.0-2.0*border)*scale),max(gutter,0.5/float(width)));
     return max(log2(max(span*float(width),1.0)),0.0);
 }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 // Colour and derived surface lookups share these texels and mip choices.
 float4 tile_coord(float packed,float2 p,float atlas_lod) {
+#else
+float3 tile_sample(float packed,float2 p,float atlas_lod) {
+#endif
     int code=int(packed+0.5),tile=code&63,rotation=(code>>14)&3;
     float4 sampling=land_sampling();float per_row=sampling.x;
     float border=8.0*sampling.z*per_row,interior=1.0-2.0*border,padding=sampling.y,span=1.0+2.0*padding;
@@ -789,6 +795,7 @@ float4 tile_coord(float packed,float2 p,float atlas_lod) {
         float margin=min(min(local.x,1.0-local.x),min(local.y,1.0-local.y))/(per_row*span);
         atlas_lod=min(atlas_lod,max(log2(max(margin*float(width),1.0)),0.0));
     }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
     return float4(uv,float((code>>6)&255),atlas_lod);
 }
 float3 tile_sample(float packed,float2 p,float atlas_lod) {
@@ -814,10 +821,18 @@ float3 original_walk(int2 cell,float2 p,float atlas_lod,bool mapped,out float4 t
     int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
     surface=float4(0,0,1,0);
     float4 info=tile_info(cell);float3 colour=tile_texels(info.r,p,atlas_lod,mapped,surface);traits=tile_traits(info.g);
+#else
+    return terrain_colours.SampleLevel(colour_sampler,float3(uv,float((code>>6)&255)),atlas_lod).rgb;
+}
+float3 transition_original_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
+    int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
+    float4 info=tile_info(cell);float3 colour=tile_sample(info.r,p,atlas_lod);traits=tile_traits(info.g);
+#endif
     if(land_sampling().w<0.5)return colour;
     float2 weight=0.5*(1.0-smoothstep(0.0,0.12,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
     if(weight.x>0.0) {
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
         info=tile_info(cell+int2(step_cell.x,0));float4 side=surface;
         colour=lerp(colour,tile_texels(info.r,p-float2(step_cell.x,0),atlas_lod,mapped,side),weight.x);
         surface=lerp(surface,side,weight.x);traits=lerp(traits,tile_traits(info.g),weight.x);
@@ -831,6 +846,21 @@ float3 original_walk(int2 cell,float2 p,float atlas_lod,bool mapped,out float4 t
             other_surface=lerp(other_surface,side,weight.x);other_traits=lerp(other_traits,tile_traits(info.g),weight.x);
         }
         colour=lerp(colour,other,weight.y);surface=lerp(surface,other_surface,weight.y);traits=lerp(traits,other_traits,weight.y);
+#else
+        info=tile_info(cell+int2(step_cell.x,0));
+        colour=lerp(colour,tile_sample(info.r,p-float2(step_cell.x,0),atlas_lod),weight.x);
+        traits=lerp(traits,tile_traits(info.g),weight.x);
+    }
+    if(weight.y>0.0) {
+        info=tile_info(cell+int2(0,step_cell.y));
+        float3 other=tile_sample(info.r,p-float2(0,step_cell.y),atlas_lod);float4 other_traits=tile_traits(info.g);
+        if(weight.x>0.0) {
+            info=tile_info(cell+step_cell);
+            other=lerp(other,tile_sample(info.r,p-float2(step_cell),atlas_lod),weight.x);
+            other_traits=lerp(other_traits,tile_traits(info.g),weight.x);
+        }
+        colour=lerp(colour,other,weight.y);traits=lerp(traits,other_traits,weight.y);
+#endif
     }
     return colour;
 }
@@ -844,6 +874,7 @@ float4 transition_junction_row(int2 cell) {
     if(offset==0u||any(cell<0)||any(cell>=int2(layout.xy)))return 0.0;
     return asfloat(terrain_data.Load4(offset+16u*(uint(cell.y)*layout.x+uint(cell.x))));
 }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 float surface_owned(int2 cell) {
     float4 row=transition_row(cell);
     return (row.a<0.5||row.r==row.g)?1.0:0.0;
@@ -855,6 +886,7 @@ float surface_coverage(int2 cell,float2 p) {
     return lerp(lerp(surface_owned(b),surface_owned(b+int2(1,0)),f.x),
                 lerp(surface_owned(b+int2(0,1)),surface_owned(b+int2(1,1)),f.x),f.y);
 }
+#endif
 float cliff_eligible(int2 cell) {
     uint4 layout=land_layout();
     if(land_detail().z==0u||any(cell<0)||any(cell>=int2(layout.xy)))return 0.0;
@@ -1019,8 +1051,13 @@ float3 transition_fill(float slot,float2 grid,float atlas_lod) {
 	float2 phase=frac(grid*0.5); float2 p=1.0-abs(phase*2.0-1.0);
 	return tile_sample(slot-1.0,p,atlas_lod);
 }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 // traits enters as the original's traits.
 float3 transition_pair_from(int2 cell,float2 p,float atlas_lod,float3 original,inout float4 traits) {
+#else
+float3 transition_pair_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
+	float3 original=transition_original_sample(cell,p,atlas_lod,traits);
+#endif
 	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
 	float4 row=transition_row(cell);
 	if (row.a<0.5 || row.r==row.g) { return original; }
@@ -1160,7 +1197,11 @@ float3 transition_junction_sample(int2 cell,float2 p,float atlas_lod,float4 row,
 	traits=lerp(original_traits,surface,amount);
 	return lerp(original,color,amount);
 }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,float4 original_traits,out float4 traits) {
+#else
+float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
+#endif
 	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
 	float4 row=transition_row(cell);
 	// All pure tiles remain authored, even inside the junction halo.
@@ -1178,9 +1219,17 @@ float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,flo
 	// mutually exclusive fallback. Zero influence returns it exactly.
 	float4 legacy_traits=(float4)0.0; float3 legacy=(float3)0.0;
 	if (blend<1.0) {
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 		legacy_traits=original_traits;legacy=transition_pair_from(cell,p,atlas_lod,original,legacy_traits);
 		if (blend<=0.0) { traits=legacy_traits; return legacy; }
 	}
+#else
+		legacy=transition_pair_sample(cell,p,atlas_lod,legacy_traits);
+		if (blend<=0.0) { traits=legacy_traits; return legacy; }
+	}
+	float4 original_traits;
+	float3 original=transition_original_sample(cell,p,atlas_lod,original_traits);
+#endif
 	float3 junction=transition_junction_sample(cell,p,atlas_lod,row,metadata,original,original_traits,traits);
 	if (blend>=1.0) { return junction; }
 	traits=lerp(legacy_traits,traits,blend);
@@ -1188,10 +1237,16 @@ float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,flo
 }
 
 #else
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,float4 original_traits,out float4 traits) {
     traits=original_traits;return original;
+#else
+float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
+    return transition_original_sample(cell,p,atlas_lod,traits);
+#endif
 }
 #endif
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 // Ground colour and, when mapped, the derived map from one owner walk.
 float3 ground_sample(int2 cell,float2 p,float atlas_lod,bool mapped,out float4 traits,out float4 surface) {
     float4 original_traits;float3 original=original_walk(cell,p,atlas_lod,mapped,original_traits,surface);
@@ -1215,6 +1270,12 @@ float2 sand_ripple(float2 xz,float span) {
 // surface_relief: derived slope in hit-UV axes (XY), coverage (Z), sand (W).
 bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale,out float4 surface_relief) {
     albedo=0.0;painted_scale=1.0;surface_relief=0.0;uint4 layout=land_layout();
+#else
+// Returns linear albedo and evaluates the same detail normal/material fields
+// for primary and secondary rays. Vertex-to-tile identity survives XY jitter.
+bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale) {
+    albedo=0.0;painted_scale=1.0;uint4 layout=land_layout();
+#endif
     if(layout.x==0u)return false;
     uint id=terrain_data.Load(layout.w+(vertex/3u)*4u);
     if(id==0u||id>layout.x*layout.y)return false;
@@ -1237,6 +1298,7 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     float grazing=max(abs(dot(s.geometric_normal,WorldRayDirection())),0.1);
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
     bool mapped=(land_detail().w&2u)!=0u;float coverage=0.0;float4 surface;
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,mapped,traits,surface);
     [branch] if(mapped)coverage=surface_coverage(cell,clamp(local,0.0,0.99999));
@@ -1245,6 +1307,9 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Back from local p to hit-UV axes: the tile's quarter turn, then V flip.
     float2 turned=tile_turn(surface.xy,int(code>>14u)&3);
     surface_relief=float4(turned.x,-turned.y,coverage,sand);
+#else
+    float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
+#endif
     float3 planes=cliff_weights(cell,saturate(local),s.geometric_normal,distance);
     float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
     float fade=1.0-smoothstep(25.0,70.0,distance);
@@ -1252,7 +1317,11 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Preserve the established bounded painted relief on ordinary terrain.
     // Its four compact atlas taps run below, once, instead of evaluating the
     // complete neighbouring transition field four additional times per hit.
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
     painted_scale=(1.0-planes.y)*lerp(lerp(lerp(1.0,1.15,traits.x),0.45,traits.y),1.0,sand)*(1.0-0.8*traits.w);
+#else
+    painted_scale=(1.0-planes.y)*lerp(lerp(1.0,1.15,traits.x),0.45,traits.y)*(1.0-0.8*traits.w);
+#endif
     [branch] if(fade>0.0) {
         uint normal_layer=land_detail().x;
         [branch] if(normal_layer>0u) {
@@ -1264,13 +1333,21 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
             [branch] if(weights.x>0.0)x=colours.SampleLevel(colour_sampler,float3(s.position.zy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
             [branch] if(weights.y>0.0) {
                 y=colours.SampleLevel(colour_sampler,float3(s.position.xz*0.45,normal_layer-1u),lod).rg*2.0-1.0;
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
                 fine=(colours.SampleLevel(colour_sampler,float3(s.position.xz*1.7+0.37,normal_layer-1u),fine_lod).rg*2.0-1.0)*lerp(lerp(0.25,0.85,traits.z),0.6,sand);
                 if(sand>0.0)fine+=sand_ripple(s.position.xz,footprint)*sand;
+#else
+                fine=(colours.SampleLevel(colour_sampler,float3(s.position.xz*1.7+0.37,normal_layer-1u),fine_lod).rg*2.0-1.0)*lerp(0.25,0.85,traits.z);
+#endif
             }
             [branch] if(weights.z>0.0)z=colours.SampleLevel(colour_sampler,float3(s.position.xy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
             float3 perturbation=float3(0,x.y,x.x)*weights.x+float3(y.x+fine.x,0,y.y+fine.y)*weights.y+float3(z.x,z.y,0)*weights.z;
             perturbation-=n*dot(n,perturbation);
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
             float relief=lerp(lerp(lerp(lerp(0.13,0.10,traits.x),0.055,traits.y),0.025,traits.w),0.09,sand);
+#else
+            float relief=lerp(lerp(lerp(0.13,0.10,traits.x),0.055,traits.y),0.025,traits.w);
+#endif
             n=land_normal(n,perturbation*relief*fade,s.geometric_normal);
         }
     }
@@ -1288,18 +1365,27 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
     // Terrain types supply a restrained dielectric response. Colour brightness
     // never classifies a surface as metal, ice or polished stone.
     if((land_detail().w&1u)!=0u) {
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
         float base_rough=lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w);
         float map_rough=clamp(base_rough+(surface.z-base_rough)*land_tuning().w,0.05,1.0);
         s.roughness=lerp(base_rough,map_rough,coverage*(1.0-planes.y));
+#else
+        s.roughness=lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w);
+#endif
         s.metalness=0.0;s.specular=0.5;
     }
     return true;
 }
 
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
 // surface: derived terrain slope in hit-UV axes and its coverage (XY, Z).
 // Full coverage needs no colour taps: the map already holds the relief.
 float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 uv1,float2 uv2,
                      float3 texel,float2 step_uv,float lod,float strength,bool terrain,float3 surface) {
+#else
+float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 uv1,float2 uv2,
+                     float3 texel,float2 step_uv,float lod,float strength,bool terrain) {
+#endif
     float3 r1=cross(edge2,n),r2=cross(n,edge1);
     float3 u=r1*uv1.x+r2*uv2.x,v=r1*uv1.y+r2*uv2.y;
     // The oriented triangle area can reverse under mirrored placement or
@@ -1307,6 +1393,7 @@ float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 
     float area=dot(cross(edge1,edge2),n);
     if(abs(area)<1e-10||abs(uv1.x*uv2.y-uv1.y*uv2.x)<1e-10)return n;
     float scale=sign(area)*rsqrt(max(max(dot(u,u),dot(v,v)),1e-12));
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
     float bound=terrain?0.30:0.12;
     // The map holds perceptual-brightness differences; these taps use doubled
     // linear luminance differences. 2.5 is their ratio for typical ground.
@@ -1319,6 +1406,15 @@ float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 
         float below=dot(colours.SampleLevel(colour_sampler,texel+float3(0,step_uv.y,0),lod).rgb,lum);
         slope=lerp(clamp(float2(right-left,below-above)*2.0,-bound,bound),slope,surface.z);
     }
+#else
+    const float3 lum=float3(0.2126,0.7152,0.0722);
+    float left=dot(colours.SampleLevel(colour_sampler,texel-float3(step_uv.x,0,0),lod).rgb,lum);
+    float right=dot(colours.SampleLevel(colour_sampler,texel+float3(step_uv.x,0,0),lod).rgb,lum);
+    float above=dot(colours.SampleLevel(colour_sampler,texel-float3(0,step_uv.y,0),lod).rgb,lum);
+    float below=dot(colours.SampleLevel(colour_sampler,texel+float3(0,step_uv.y,0),lod).rgb,lum);
+    float bound=terrain?0.30:0.12;
+    float2 slope=clamp(float2(right-left,below-above)*2.0,-bound,bound);
+#endif
     float3 perturbation=(u*slope.x+v*slope.y)*scale*strength;
     // Limit the displacement continuously as either valid hemisphere is
     // approached. A hard return to n makes relief pop at grazing angles.
@@ -1475,7 +1571,11 @@ void main(inout Surface result,Attributes attributes) {
         // double normals and four extra colour fetches on mapped props.
         strength=0.0;
     }
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
     float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;float4 surface_relief=0.0;
+#else
+    float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;
+#endif
     #if defined(PATH_TERRAIN_MATERIALS)
     [branch] if(terrain&&land_layout().x>0u) {
         float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
@@ -1483,7 +1583,11 @@ void main(inout Surface result,Attributes attributes) {
         float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
         if(frame.camera.x<0.5)footprint*=distance;
         footprint=max(footprint,result.cone*RayTCurrent());
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
         detailed_terrain=terrain_material(i,texel.xy,density,result,footprint,distance,terrain_albedo,painted_scale,surface_relief);
+#else
+        detailed_terrain=terrain_material(i,texel.xy,density,result,footprint,distance,terrain_albedo,painted_scale);
+#endif
         strength*=painted_scale;
     }
     #endif
@@ -1506,7 +1610,11 @@ void main(inout Surface result,Attributes attributes) {
             mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
             float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
             float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
             texel,step_scale/float2(width,height),relief_lod,strength,terrain,surface_relief.xyz);
+#else
+            texel,step_scale/float2(width,height),relief_lod,strength,terrain);
+#endif
     }
     // Detailed terrain already sampled its colour from the shared raster atlas.
     [branch] if(!detailed_terrain||any(a.emission_layer.rgb>0.0))colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;

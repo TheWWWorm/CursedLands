@@ -1,7 +1,8 @@
 extends "res://tools/tests/path_trace_camera_routes.gd"
 ## Actual Suslanger loose sand (zone19) with derived terrain surface maps:
 ## sand gains its own relief and wind ripples in raster, traced terrain binds
-## the same maps, and Surface materials off restores the established path.
+## the same maps, and Ground relief maps (off by default) or Surface
+## materials off restores the established path.
 
 func sand_site(session: Session) -> Vector2:
 	# The flattest open spot with loose sand all around it, clear of objects.
@@ -26,6 +27,22 @@ func sand_site(session: Session) -> Vector2:
 			var score:=sand-(high-low)*2.0
 			if score>best:best=score;result=Vector2(x,y)
 	return result
+
+## Every live land material except the colour cache's, with or without the
+## derived-map program. Biome cover (and its mounds) is off in this profile.
+func terrain_materials() -> Array[ShaderMaterial]:
+	var result: Array[ShaderMaterial]=[]
+	for mesh: Node in t.find_children("*","MeshInstance3D",true,false):
+		var material:=(mesh as MeshInstance3D).get_active_material(0) as ShaderMaterial
+		if material!=null and material.shader!=null and material.shader.code.contains("float ground_height(vec3 colour)") \
+			and not material.shader.code.contains("#define EI_BAKED_TERRAIN") and not result.has(material):result.append(material)
+	return result
+
+## Off compiles the established land program: no map code, nothing bound.
+func unmapped() -> bool:
+	var materials:=terrain_materials()
+	return t._surface_maps==null and not materials.is_empty() \
+		and materials.all(func(m:ShaderMaterial)->bool:return not m.shader.code.contains("#define EI_SURFACE_MAPS") and not m.shader.code.contains("surface_maps"))
 
 func land_materials() -> Array[ShaderMaterial]:
 	var result: Array[ShaderMaterial]=[]
@@ -87,7 +104,10 @@ func run() -> void:
 	var context:=await setup_route()
 	if context.is_empty():get_tree().quit(1);return
 	var session: Session=context[0];var game: Game=context[1]
-	GameData.options.merge({"pt_mode":0,"gfx_soft_ground":0,"gfx_terrain_cliffs":1},true)
+	# A fresh profile keeps Ground relief maps off: nothing is derived or bound.
+	check(GameData.option("gfx_terrain_surface")==0 and Gfx.on("gfx_materials") and Gfx.on("gfx_terrain"),"fresh profile: Ground relief maps off, materials and terrain detail on")
+	check(unmapped(),"Ground relief maps are off by default: the established land program, no maps")
+	GameData.options.merge({"pt_mode":0,"gfx_soft_ground":0,"gfx_terrain_cliffs":1,"gfx_terrain_surface":1},true)
 	t.apply_gfx();Gfx.apply_env(game._env);await frames(20)
 	for unit: GameUnit in session.world.units.values():unit.hide()
 	var site:=sand_site(session)
@@ -124,13 +144,13 @@ func run() -> void:
 		var key:=material.shader.get_instance_id()
 		if not references.has(key):
 			var reference:=Shader.new()
-			reference.code=material.shader.code.replace(TerrainSamplingShader.CENTER,
+			reference.code=material.shader.code.replace(GroundSurfaceShader.MAPPED_CENTER,
 				"c = ground_sample(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, traits);").replace(
 				"coverage = surface_coverage(tile, clamp(local, vec2(0.0), vec2(0.99999)));",
 				"surface = ground_surface(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, coverage);")
 			references[key]=reference
 		restore.append([material,material.shader]);material.shader=references[key]
-	check(references.values().all(func(r:Shader)->bool:return not r.code.contains(TerrainSamplingShader.CENTER) \
+	check(references.values().all(func(r:Shader)->bool:return not r.code.contains(GroundSurfaceShader.MAPPED_CENTER) \
 		and r.code.contains("surface = ground_surface(tile")),"separate-walk reference replaces the fused centre sample")
 	await frames(30);var separate:=await capture("sand-raster-separate-walks")
 	for row: Array in restore:row[0].shader=row[1]
@@ -158,6 +178,7 @@ func run() -> void:
 	if rt.device!=null:
 		check(rt.device.terrain.surface==t._surface_maps,"PT retains the derived surface maps")
 		check((rt.device.terrain.data.decode_u32(44)&2)!=0,"PT terrain header enables the derived maps")
+		check(rt.device.shader_stage_path(RenderingDevice.SHADER_STAGE_CLOSEST_HIT).ends_with("_maps"),"PT uses the derived-map terrain hit program")
 		var header:=func()->Vector4:
 			var d: PackedByteArray=rt.device.terrain.data
 			return Vector4(d.decode_float(64),d.decode_float(68),d.decode_float(72),d.decode_float(76))
@@ -174,22 +195,31 @@ func run() -> void:
 				if not (is_finite(c.r) and is_finite(c.g) and is_finite(c.b)):finite=false
 		check(finite,"traced terrain output stays finite with derived maps")
 		check(difference(traced,lit_on,view)>0.0,"traced capture is distinct from raster")
-	# Option off: no derived maps in raster or PT.
+	# Either option off: no derived maps in raster or PT.
+	GameData.options.gfx_terrain_surface=0;t.apply_gfx();Gfx.apply_env(game._env)
+	check(unmapped(),"Ground relief maps off restores the established land program and releases the maps")
+	if rt.device!=null:
+		await frames(4);check(await ready_scene(rt),"traced terrain rebuilds without ground relief maps")
+		check(rt.device.terrain.surface==null and (rt.device.terrain.data.decode_u32(44)&2)==0,"PT header clears the maps with Ground relief maps off")
+		var hit: String=rt.device.shader_stage_path(RenderingDevice.SHADER_STAGE_CLOSEST_HIT)
+		check(hit.contains("closest_hit_t") and not hit.ends_with("_maps"),"PT returns to the established terrain hit program: "+hit.get_file())
+	GameData.options.gfx_terrain_surface=1;t.apply_gfx();Gfx.apply_env(game._env);await frames(4)
+	check(t._surface_maps!=null and not land_materials().is_empty() and land_materials().size()==terrain_materials().size(),
+		"Ground relief maps on derives the maps and compiles them into every land program again")
 	GameData.options.gfx_materials=0;t.apply_gfx();Gfx.apply_env(game._env)
-	check(t._surface_maps==null and land_materials().all(func(m:ShaderMaterial)->bool:return m.get_shader_parameter("surface_maps")==false),
-		"Surface materials off releases the derived maps")
+	check(unmapped(),"Surface materials off restores the established land program and releases the maps")
 	if rt.device!=null:
 		await frames(4);check(await ready_scene(rt),"traced terrain rebuilds without derived maps")
 		check(rt.device.terrain.surface==null and (rt.device.terrain.data.decode_u32(44)&2)==0,"PT header clears the derived maps")
 		await frames(90);await capture("sand-pt-established")
 	GameData.options.gfx_materials=1;GameData.options.pt_mode=0;t.apply_gfx();Gfx.apply_env(game._env);await frames(20)
 	check(t._surface_maps!=null,"Surface materials on derives the maps again")
-	# Localized option help mentions the new ground relief.
-	var help:String=GameData.REMAKE_OPTIONS["gfx_materials"][1]
+	# Localized option help describes the opt-in ground relief.
+	var help:String=GameData.REMAKE_OPTIONS["gfx_terrain_surface"][1]
 	for language: String in ["en","ru","de"]:
 		RemakeText.lang=language
 		var text:=RemakeText.t(help)
-		check(not text.is_empty() and (language=="en" or text!=help),"Surface materials help is translated: "+language)
+		check(not text.is_empty() and (language=="en" or text!=help),"Ground relief maps help is translated: "+language)
 		check(text.contains(["sand","песке","Sand"][["en","ru","de"].find(language)]),"help mentions loose sand: "+language)
 	RemakeText.lang="en"
 	FileAccess.open(out.path_join("terrain-surface-live.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,

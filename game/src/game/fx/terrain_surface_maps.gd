@@ -106,7 +106,7 @@ static func supported() -> bool:
 		and RenderingServer.get_current_rendering_method() == "forward_plus"
 
 static func requested() -> bool:
-	return Gfx.on("gfx_terrain") and Gfx.on("gfx_materials") and supported()
+	return Gfx.on("gfx_terrain") and Gfx.on("gfx_materials") and Gfx.on("gfx_terrain_surface") and supported()
 
 ## Per atlas slot (layer * slots per atlas + slot) original ground type.
 static func slot_types(tile_types: PackedInt32Array, layers: int, per_atlas: int) -> PackedInt32Array:

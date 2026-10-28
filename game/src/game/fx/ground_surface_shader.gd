@@ -156,8 +156,7 @@ vec4 tile_traits(float type) {
 }
 // p is in the unrotated, visible 48/64 tile interior. Samples from a
 // neighbour can extend into its authored border, never an unrelated tile.
-// Colour and derived surface lookups share these texels and footprints.
-void tile_coord(float packed, vec2 p, vec2 dx, vec2 dy, out vec3 uv_layer, out vec2 grad_x, out vec2 grad_y) {
+vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
 	int code = int(packed + 0.5);
 	int tile = code & 63;
 	int rotation = (code >> 14) & 3;
@@ -181,14 +180,7 @@ void tile_coord(float packed, vec2 p, vec2 dx, vec2 dy, out vec3 uv_layer, out v
 	float shrink = min(1.0, safe_span / max(max(length(gx), length(gy)), 1e-8));
 	gx *= shrink; gy *= shrink;
 	// END_ATLAS_FOOTPRINT
-	uv_layer = vec3(uv, float((code >> 6) & 255));
-	grad_x = gx * vec2(1.0, -1.0);
-	grad_y = gy * vec2(1.0, -1.0);
-}
-vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
-	vec3 uv; vec2 gx; vec2 gy;
-	tile_coord(packed, p, dx, dy, uv, gx, gy);
-	return textureGrad(atlases, uv, gx, gy).rgb;
+	return textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;
 }
 #ifdef EI_BAKED_TERRAIN
 uniform sampler2D baked_ground : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
@@ -406,6 +398,83 @@ static func mapped_sampler(code: String) -> String:
 			mapped = body.replace(HEADER, "vec3 ground_sample_mapped(ivec2 cell,vec2 p,vec2 dx,vec2 dy,bool mapped,out vec4 traits,inout vec4 surface) {") \
 				.replace(CALL, "land_original_mapped(cell,p,dx,dy,mapped,surface,")
 	return code.replace("// GROUND_SAMPLE_MAPPED", mapped)
+
+## The land fragment's centre sample when derived maps are compiled in.
+const MAPPED_CENTER := "c = ground_sample_mapped(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, surface_maps && fade > 0.0, traits, surface);"
+const UNMAPPED_CENTER := "c = ground_sample(tile, clamp(local, vec2(0.0), vec2(0.99999)), dx, dy, traits);"
+
+## Colour and derived surface lookups share one tile's texels and footprint.
+static func mapped_tiles(code: String) -> String:
+	return code.replace("vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {", """// Colour and derived surface lookups share these texels and footprints.
+void tile_coord(float packed, vec2 p, vec2 dx, vec2 dy, out vec3 uv_layer, out vec2 grad_x, out vec2 grad_y) {""").replace(
+		"\treturn textureGrad(atlases, vec3(uv, float((code >> 6) & 255)), gx * vec2(1.0, -1.0), gy * vec2(1.0, -1.0)).rgb;\n}", """	uv_layer = vec3(uv, float((code >> 6) & 255));
+	grad_x = gx * vec2(1.0, -1.0);
+	grad_y = gy * vec2(1.0, -1.0);
+}
+vec3 tile_sample(float packed, vec2 p, vec2 dx, vec2 dy) {
+	vec3 uv; vec2 gx; vec2 gy;
+	tile_coord(packed, p, dx, dy, uv, gx, gy);
+	return textureGrad(atlases, uv, gx, gy).rgb;
+}""")
+
+## EITerrain.TERRAIN_SHADER with the derived maps compiled in (Ground relief
+## maps). Without them the land program stays the established one, so the
+## option costs nothing while off. Cliff, transition and caustic sources are
+## applied on top. Returns the code unchanged if an anchor has moved.
+static func land_with_maps(code: String) -> String:
+	if code.contains("#define EI_SURFACE_MAPS"):
+		return code
+	var edits := [
+		["shader_type spatial;", "shader_type spatial;\n#define EI_SURFACE_MAPS"],
+		[LAND_UNIFORMS + SOFT_UNIFORMS, LAND_UNIFORMS + SURFACE_UNIFORMS + SOFT_UNIFORMS],
+		["float ground_height(vec3 colour) {", SURFACE_FUNCTIONS + SAND_FUNCTIONS + "float ground_height(vec3 colour) {"],
+		["\t\tfloat fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));\n\t\t// The cotangent frame", "\t\t// The cotangent frame"],
+		["\t\tvec4 traits;\n\t\t// The fragment's own sample", """		vec4 traits;
+		float fade = detail * (1.0 - smoothstep(25.0, 70.0, length(VERTEX)));
+		// Derived surface maps (TerrainSurfaceMaps) come from the colour's own
+		// owner walk where relief is drawn.
+		vec4 surface = vec4(0.0, 0.0, 1.0, 0.0);
+		// The fragment's own sample"""],
+		[UNMAPPED_CENTER, MAPPED_CENTER],
+		["1e-12));\n\t\tif (fade > 0.0) {", """1e-12));
+		// Coverage 0 keeps the established brightness relief and response.
+		float coverage = 0.0;
+		float pixel_span = max(length(dFdx(wpos)), length(dFdy(wpos)));
+		if (fade > 0.0) {"""],
+		["\t\t\tfloat painted_relief = mix(mix(mix(1.1, 2.4, stone), 0.35, soft), 0.15, traits.w);", """			// The map's painted detail lacks the broad painted shading, which
+			// otherwise becomes a second, embossed copy of the baked light.
+			if (surface_maps) {
+				coverage = surface_coverage(tile, clamp(local, vec2(0.0), vec2(0.99999)));
+				slope = mix(slope, surface.xy * surface_tuning.x, coverage);
+			}
+			// Loose sand has its own grain; snow keeps the soft response.
+			float sand = surface.a * coverage;
+			float painted_relief = mix(mix(mix(mix(1.1, 2.4, stone), 0.35, soft), 0.15, traits.w), 0.8, sand);"""],
+		["vec2 fine = f * mix(0.25, 0.85, grass);", "vec2 fine = f * mix(mix(0.25, 0.85, grass), 0.6, sand);"],
+		["\t\t\t// Tangential perturbation", """			if (sand > 0.0) {
+				vec2 ripple = sand_ripple(wpos.xz, pixel_span);
+				pert += vec3(ripple.x, 0.0, ripple.y) * sand * bw.y;
+			}
+			// Tangential perturbation"""],
+		["wn = normalize(wn + pert * relief * fade);", "wn = normalize(wn + pert * mix(relief, 0.09, sand) * fade);"],
+		["\t\t}\n\t\t// large, soft brightness variation", """		}
+		// Derived roughness in the optional material response: dry sand and
+		// soil stay matte; ice and smooth stone crests catch the light.
+		if (surface_maps && ei_surface_fx.x > 0.5 && fade > 0.0) {
+			float base_rough = mix(mix(mix(mix(0.94, 0.84, stone), 0.98, soft), 0.96, grass), 0.25, traits.w);
+			float map_rough = clamp(base_rough + (surface.z - base_rough) * surface_tuning.w, 0.05, 1.0);
+			float rough = mix(base_rough, map_rough, coverage);
+			ei_surface = vec3(0.6 * (1.0 - smoothstep(0.5, 0.85, rough)) * fade, rough, 0.0);
+		}
+		// large, soft brightness variation"""],
+	]
+	var result := code
+	for edit: Array in edits:
+		if result.count(edit[0]) != 1:
+			push_error("Ground relief maps: land shader anchor moved: " + String(edit[0]).left(48))
+			return code
+		result = result.replace(edit[0], edit[1])
+	return mapped_tiles(result)
 
 ## Fragment-only: implicit-derivative noise lookups (land shader).
 const SAND_FUNCTIONS := """// World-space wind ripples on loose sand, as a tilt in world XZ. The existing
