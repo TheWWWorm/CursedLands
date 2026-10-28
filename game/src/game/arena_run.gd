@@ -7,6 +7,7 @@ signal changed
 const SAVE_PATH := "user://arena-expedition.json"
 const PROFILE_PATH := "user://arena-profile.json"
 const DEPLOY := Rect2(20, 20, 10.5, 24)
+const DEPLOY_SPACING := 2.5
 var commander := "hero"
 var expansion := false
 var run_seed := 1
@@ -318,7 +319,7 @@ func recruit_point(family: int) -> Vector2:
 	for x: float in ([22.0, 25.0, 28.0] if ranged else [28.0, 25.0, 22.0]):
 		for y: float in [32.0, 28.0, 36.0, 24.0, 40.0, 21.0, 43.0]:
 			var point := Vector2(x, y)
-			if army.any(func(entry): return entry.deployed and point.distance_to(Vector2(entry.point[0], entry.point[1])) < 2.5): continue
+			if army.any(func(entry): return entry.deployed and point.distance_to(Vector2(entry.point[0], entry.point[1])) < DEPLOY_SPACING): continue
 			if deployment_check.is_valid() and not deployment_check.call(point): continue
 			return point
 	return Vector2.INF
@@ -462,6 +463,16 @@ func offer_cost(offer: Dictionary) -> int:
 	return int(rule.cost) * ArenaRules.rank_copies(int(offer.family), int(offer.get("rank", 0)))
 
 
+## Saved formations require this spacing (see the load validation). Board
+## previews ask the same rule, so a valid ring always means a valid deploy.
+func spacing_error(uid: int, point: Vector2) -> String:
+	for other: Dictionary in army:
+		if other.uid == uid or not other.deployed: continue
+		if point.distance_to(Vector2(other.point[0], other.point[1])) < DEPLOY_SPACING:
+			return RemakeText.t("Leave more space between creatures.")
+	return ""
+
+
 func deploy(uid: int, point: Vector2) -> String:
 	if preparing_battle: return RemakeText.t("Finish the current encounter first.")
 	if stage != "prepare": return RemakeText.t("Arrange your army between battles.")
@@ -470,10 +481,8 @@ func deploy(uid: int, point: Vector2) -> String:
 	if not is_finite(point.x) or not is_finite(point.y) or not DEPLOY.has_point(point):
 		return RemakeText.t("Deploy inside the blue half of the battlefield.")
 	if not entry.deployed and deployed_count() >= capacity(): return RemakeText.t("Army full. Upgrade your company or withdraw a creature.")
-	for other: Dictionary in army:
-		if other.uid == uid or not other.deployed: continue
-		if point.distance_to(Vector2(other.point[0], other.point[1])) < 2.5:
-			return RemakeText.t("Leave more space between creatures.")
+	var spacing := spacing_error(uid, point)
+	if not spacing.is_empty(): return spacing
 	_checkpoint()
 	entry.deployed = true
 	entry.point = [point.x, point.y]

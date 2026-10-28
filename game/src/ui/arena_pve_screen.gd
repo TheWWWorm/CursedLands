@@ -30,6 +30,7 @@ var _tooltips: ArenaTooltips
 var _hit_numbers: ArenaHitNumbers
 var _modal_layer: Control
 var _wiki: WikiPanel
+var _options: OptionsPanel
 var _modal_panel: ArenaHudPanel
 var _modal_box: VBoxContainer
 var _equipment_panel: ArenaEquipmentPanel
@@ -1521,8 +1522,9 @@ func _hover_inspector(dt: float) -> void:
 func _place(point: Vector2) -> void:
 	if _item_uid > 0: return
 	if landing or field.match_state != battle or run.stage != "prepare" or selected_uid <= 0: return
-	var error := battle.placement_error(point)
-	if error.is_empty(): error = run.deploy(selected_uid, point)
+	var target := battle.placement_point(point)
+	var error := battle.placement_error(point) if not target.is_finite() else ""
+	if error.is_empty(): error = run.deploy(selected_uid, target)
 	if error.is_empty(): _clear_selection()
 	_feedback(error)
 
@@ -1738,6 +1740,7 @@ func _input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if is_instance_valid(_wiki) and _wiki.visible: return
+	if is_instance_valid(_options) and _options.visible: return
 	if event is InputEventKey and event.pressed and _camera_input_allowed():
 		var key: int = event.physical_keycode if event.physical_keycode else event.keycode
 		if key in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_Q, KEY_E, KEY_HOME]:
@@ -2488,6 +2491,7 @@ func _menu_action(id: int) -> void:
 	_close_modal()
 	match id:
 		2: exit_requested.emit()
+		6: _open_options()
 		3: run.arrange()
 		4: run.undo()
 
@@ -2497,7 +2501,7 @@ func _show_menu() -> void:
 	_open_modal(RemakeText.t("Autochess") if run is ArenaTournamentRun else RemakeText.t("Trials of the Allods"))
 	_menu_items.clear()
 	_button(_modal_box, RemakeText.t("Return to battle" if run.stage == "fight" else "Continue"), _close_modal, "", true).grab_focus()
-	for pair in [[3, "Auto arrange"], [4, "Undo"], [0, "Guide"]]:
+	for pair in [[3, "Auto arrange"], [4, "Undo"], [0, "Guide"], [6, "Options"]]:
 		var id := int(pair[0])
 		var button := _button(_modal_box, RemakeText.t(pair[1]), func(): _menu_action(id), "")
 		if id == 3:
@@ -2950,6 +2954,27 @@ func _open_wiki() -> void:
 		_wiki.closed.connect(func(): _modal_panel.show(); _close_modal())
 	_wiki.open()
 	WikiContext.navigate(_wiki, context)
+
+
+## The campaign Options screen: graphics, sound, controls and interface.
+## Like the wiki it owns the modal pause; online clocks keep running.
+func _open_options() -> void:
+	_open_modal(RemakeText.t("Options"))
+	_modal_panel.hide()
+	if not is_instance_valid(_options):
+		_options = OptionsPanel.new()
+		# Interface800 scales itself from the viewport, outside the arena HUD.
+		add_child(_options)
+		_options.closed.connect(_options_closed)
+	# The panel freezes the current frame as its backdrop. Draw one frame
+	# without the arena menu first, or it stays visible behind the board.
+	await RenderingServer.frame_post_draw
+	if _modal_layer.visible and not _modal_panel.visible: _options.open()
+
+
+func _options_closed() -> void:
+	_modal_panel.show()
+	_close_modal()
 
 
 func _capture_health_changes() -> void:

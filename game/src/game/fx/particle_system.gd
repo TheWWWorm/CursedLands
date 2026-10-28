@@ -139,6 +139,10 @@ func finish_emitters() -> void:
 	_cancel_delayed()
 	for ef in effects:
 		if ef.e.type == 0x204d: continue # living wisps still sparkle between battles
+		# One-shot bursts already end by themselves (ONE_SHOT lifetimes). A
+		# blast that ended the battle (an exploding hare) emits for its first
+		# seven ticks; stopping it on the resolving tick erased the explosion.
+		if ef.e.type in ONE_SHOT and ef.until >= 0: continue
 		ef.e.stop()
 		ef.until = mini(ef.until, tick + 24) if ef.until >= 0 else tick + 24
 	for bolt: FxLightning in bolts: bolt.until = mini(bolt.until, tick + 12)

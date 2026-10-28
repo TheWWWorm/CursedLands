@@ -86,7 +86,7 @@ func tick() -> void:
 		if not alive(rabbit): continue
 		if row.has("fuse"):
 			if world.time >= float(row.fuse): rabbit.die()
-		elif not _near(rabbit, false, 2.0).is_empty():
+		elif not _near_bodies(rabbit, ArenaExpansion.POPPER_ARM_RADIUS).is_empty():
 			row.fuse = world.time + ArenaExpansion.POPPER_FUSE
 			_notice("popper_armed", rabbit, ArenaExpansion.POPPER_FUSE)
 	for uid: int in shields.keys():
@@ -125,6 +125,41 @@ func _near(origin: GameUnit, allies: bool, radius: float, except: GameUnit = nul
 		var db := origin.pos.distance_squared_to(b.pos)
 		return a.uid < b.uid if is_equal_approx(da, db) else da < db)
 	return found
+
+## Enemies whose body edge lies within `radius` of the origin's centre,
+## nearest edge first. Body radii grow with stars and species size.
+func _near_bodies(origin: GameUnit, radius: float) -> Array[GameUnit]:
+	var found: Array[GameUnit] = []
+	for u: GameUnit in world.unit_rows():
+		if u == origin or not alive(u) or not world.is_enemy(origin, u): continue
+		if _edge_distance(origin, u) <= radius: found.append(u)
+	found.sort_custom(func(a: GameUnit, b: GameUnit):
+		var da := _edge_distance(origin, a)
+		var db := _edge_distance(origin, b)
+		return a.uid < b.uid if is_equal_approx(da, db) else da < db)
+	return found
+
+static func _edge_distance(origin: GameUnit, u: GameUnit) -> float:
+	return maxf(0.0, origin.pos.distance_to(u.pos) - u.body_radius())
+
+## A Trials blow already committed to its release frame still lands when its
+## chosen victim falls during the wind-up (a cyclops' rock is released 65
+## native ticks into its throw). The nearest living enemy within the same reach
+## receives it, with a fresh roll. Campaign combat has no arena effects and
+## keeps discarding such a blow.
+func redirect_strike(u: GameUnit) -> GameUnit:
+	if not active or not alive(u) or not rows.has(u.uid): return null
+	var ranged: bool = u.stats.get("ranged", false)
+	var best: GameUnit = null
+	var best_distance := INF
+	for v: GameUnit in world.unit_rows():
+		if v == u or not alive(v) or v.hidden or not world.is_enemy(u, v): continue
+		var distance := u.pos.distance_to(v.pos)
+		if distance > (float(u.stats.get("reach", 0.0)) if ranged else u.melee_reach(v)): continue
+		if distance < best_distance or (is_equal_approx(distance, best_distance) and v.uid < best.uid):
+			best = v
+			best_distance = distance
+	return best
 
 func _notice(key: String, u: GameUnit, amount := 0.0, source: GameUnit = null) -> void:
 	totals[key] = int(totals.get(key, 0)) + 1
@@ -290,7 +325,7 @@ func on_death(fallen: GameUnit, killer: GameUnit) -> void:
 		var blast := float(ArenaExpansion.POPPER_DAMAGE[star])
 		_notice("popper_blast", fallen, blast)
 		# Flat, bounded fire damage. No ally damage, item recursion or echoes.
-		for victim: GameUnit in _near(fallen, false, ArenaExpansion.POPPER_RADIUS).slice(0, ArenaExpansion.POPPER_TARGETS):
+		for victim: GameUnit in _near_bodies(fallen, ArenaExpansion.POPPER_RADIUS).slice(0, ArenaExpansion.POPPER_TARGETS):
 			_packet(fallen, victim, blast, 3, "popper_hit", true)
 	var team := _team(fallen)
 	var level := _member(fallen, "spirit")

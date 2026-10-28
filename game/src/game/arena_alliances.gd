@@ -82,3 +82,15 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 		unit.stats = stats
 		unit.max_hp = health
 		unit.hp = health
+
+
+## Replica boards copy the authority's tuned stats but spawn the native
+## prototype. Recruits also need their Trials spells, or inspection reads
+## campaign spell power (a promoted shaman showed rank-one fire damage).
+static func tune_prototype(unit: GameUnit, placement: Dictionary) -> void:
+	if placement.get("echo", false): return
+	var family := int(placement.get("family", -1))
+	var rank := int(placement.get("rank", 0))
+	if family < 0 or family >= ArenaRules.FAMILIES.size() or ArenaRules.prototype(family, rank).is_empty(): return
+	if String(unit.proto.get("_spell_cache_key", "")) == "%s:trials:%d:%d" % [unit.proto.get("name", ""), family, rank]: return
+	unit.proto = ArenaRules.recruit_prototype(family, rank, unit.proto)
