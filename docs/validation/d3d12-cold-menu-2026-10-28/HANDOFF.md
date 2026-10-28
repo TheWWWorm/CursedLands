@@ -88,6 +88,26 @@ carry the FSR/DLSS patches this one edits; do not apply it there.
   mode and the rebuild passes every mode (README, "Proton reproduction").
   The native Windows regression and the native related checks have **not** run
   with the rebuilt executable and are still required.
+
+## Native qualification (Windows test machine, 2026-10-28)
+
+- Steps 3–4 done natively for `main` at `a9f95e07`, as recorded in README
+  "Native Windows qualification of the final patch":
+  - The final patch rebuilt with the integration flag set gives
+    `890c744a3e6e`.
+  - The published 1.34.0 executable fails DLSS, TAA and FSR 2 with 30–31 s
+    frames.
+  - The rebuild passes all three: menu 14–25 s, longest frame 8.0–12.5 s,
+    each mode drew after preparation.
+  - `rtx_frame_generation.gd` 68/68, `path_trace_rr_live.gd` 38/38 and
+    `path_trace_rr_guides.gd` 95/95, natively.
+- Remaining for the release:
+  - build the release executable through the normal export, with the embedded
+    icon and metadata;
+  - run the native regression once more on that exact package, because the
+    release executable will have a different hash;
+  - copy the runner and fixture into `qualification/`;
+  - capture PresentMon pacing if the release checklist requires it.
 - Step 5 is for the next release build: its recipe must copy the runner and
   fixture into `qualification/`.
 

@@ -137,8 +137,9 @@ shows the 7.0 s ordinary-shader frame described below.
 
 Executables (SHA-256 prefixes): published 1.34.0 `92ebff4d6abe`,
 unfixed rebuild `b783c5aa7783`, fixed rebuild `4937b04613d7`. These native
-results predate the frame counters added during integration; rerun the
-native regression with the rebuilt executable.
+results predate the frame counters added during integration. The final patch
+was qualified natively afterwards (see "Native Windows qualification of the
+final patch").
 
 ### Proton reproduction on the integration workstation
 
@@ -173,16 +174,46 @@ The native runs below remain the qualification for these fixtures.
 Executables (SHA-256 prefixes): rebuilt template `779b6fd9b34b` (patch
 `012609ea5c56`), tested as `CursedLands.exe` in a copy of the 1.34.0 package.
 
+### Native Windows qualification of the final patch
+
+This run used the Windows test machine (RTX 4090 Laptop GPU, NVIDIA
+32.0.16.2101, Windows 10.0.26300) and `main` at `a9f95e07`:
+
+- **Engine:** the 23-patch tree plus the committed
+  `temporal-shader-preparation.patch` (`012609ea5c56`), built with the
+  integration flag set (without `agility_sdk_multiarch`, `winrt` and
+  `disable_path_overrides`). The result is executable `890c744a3e6e`. This
+  build is not byte-identical to the workstation's `779b6fd9b34b`; both come
+  from the same sources and patch.
+- **Test:** `CursedLands.exe` in a copy of the 1.34.0 package, run with the
+  final fixture and runner. The 1.33.0 release was the seed, with a 1920×1080
+  window and a new profile per mode.
+
+| Mode | Published 1.34.0: menu / longest frame | Final rebuild: menu / longest frame / frames preparing → active / mode active after menu |
+|---|---:|---:|
+| DLSS + PT + FG | 40.3 s / 31.0 s — FAIL | 25.0 s / 12.5 s / 20,546 → 30 / 68.6 s — PASS |
+| TAA | 36.4 s / 30.5 s — FAIL | 14.6 s / 8.0 s / 8,661 → 30 / 53.2 s — PASS |
+| FSR 2 | 36.6 s / 30.9 s — FAIL | 14.3 s / 8.0 s / 13,283 → 30 / 54.6 s — PASS |
+
+The published executable also fails the frame-counter check because it has no
+counters. Its stall failures are the regression signal.
+
 ### Related Windows checks
 
 These ran with the same executables on new profiles with DLSS requested at
 launch. `path_trace_rr_*` used test scripts staged as in `check_regressions.py --packaged`.
 
-| Fixture | Unfixed | Fixed |
-|---|---:|---:|
-| `rtx_frame_generation.gd` (DLSS SR + DLSS-G, resize, scaled output, HUD mask) | 68/68 | 68/68 |
-| `path_trace_rr_live.gd` | 38/38 | 38/38 |
-| `path_trace_rr_guides.gd` | — | 95/95 |
+| Fixture | Unfixed | Fixed | Final rebuild `890c744a3e6e` |
+|---|---:|---:|---:|
+| `rtx_frame_generation.gd` (DLSS SR + DLSS-G, resize, scaled output, HUD mask) | 68/68 | 68/68 | 68/68 |
+| `path_trace_rr_live.gd` | 38/38 | 38/38 | 38/38 |
+| `path_trace_rr_guides.gd` | — | 95/95 | 95/95 |
+
+On native Windows, `path_trace_rr_live.gd` passes all 38 checks, including the
+6 that fail under Proton for both executables. `rtx_frame_generation.gd`
+measured actual DLSS-G presentation, which Proton does not provide. PresentMon
+pacing (`tools/run_native_dlss_qualification.ps1`) was not captured in this
+run.
 
 `rtx_frame_generation.gd` sampled DLSS immediately after creating the menu
 scene. On a new profile, the fixed renderer starts DLSS only after the background
