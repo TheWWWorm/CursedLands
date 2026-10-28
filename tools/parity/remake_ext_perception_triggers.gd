@@ -43,7 +43,7 @@ class TermUnit extends GameUnit:
 	func sense_bonus(_which: int) -> float: return 0.0
 
 func kinds() -> Array:
-	return ["perception_group", "perception_ticks"]
+	return ["perception_group", "perception_ticks", "perception_candidates"]
 
 func _units(data: Dictionary, world: GameWorld, trace: Node, term_units: bool) -> Array:
 	var units := []
@@ -85,7 +85,9 @@ func _observe(result, units: Array, vm: ScriptVM, trace: Node) -> Dictionary:
 	return {"truth": vm._truthy(result), "value_bits": trace.bits(value)}
 
 func capture(kind: String, data: Dictionary, trace: Node) -> Array:
-	return _group_case(data, trace) if kind == "perception_group" else _ticks_case(data, trace)
+	if kind == "perception_group":
+		return _group_case(data, trace)
+	return _ticks_case(data, trace, kind == "perception_candidates")
 
 func _group_case(data: Dictionary, trace: Node) -> Array:
 	var world := FlatWorld.new()
@@ -120,15 +122,27 @@ func _group_case(data: Dictionary, trace: Node) -> Array:
 	world.free()
 	return states
 
-func _ticks_case(data: Dictionary, trace: Node) -> Array:
+## perception_candidates: production UnitAI._notice_candidates on a
+## registered host world. Every unit passes a staging point in the supplied
+## arrival order, so the coarse buckets hold the native placement order;
+## moves are applied in their listed order.
+func _ticks_case(data: Dictionary, trace: Node, candidates := false) -> Array:
 	var world := FlatWorld.new()
-	world.authority = false
+	world.authority = candidates
 	world.zone = {"type": "game"}
 	world.time = 1.0
-	var ai := TickAI.new(world)
+	if candidates:
+		world.nav.size = Vector2i(4096, 4096)
+	var ai: UnitAI = UnitAI.new(world) if candidates else TickAI.new(world)
 	world.ai = ai
 	var units := _units(data, world, trace, true)
-	ai.everyone = units.duplicate()
+	if candidates:
+		for i in data.arrivals:
+			var at: Vector2 = units[int(i)].pos
+			units[int(i)].pos = Vector2(2000.0, 2000.0)
+			units[int(i)].pos = at
+	else:
+		(ai as TickAI).everyone = units.duplicate()
 	var observer: Dictionary = data.observer
 	var w: TermUnit = units[int(data.watcher)]
 	w.terms = data.units[int(data.watcher)].merged({"sight": observer.sight, "sight_factor": observer.sight_factor,
@@ -150,12 +164,16 @@ func _ticks_case(data: Dictionary, trace: Node) -> Array:
 		for key in tick.get("positions", {}):
 			var xy: Array = tick.positions[key]
 			units[int(key)].pos = Vector2(float(xy[0]), float(xy[1]))
+		for move: Array in tick.get("moves", []):
+			units[int(move[0])].pos = Vector2(float(move[1][0]), float(move[1][1]))
 		for i in tick.get("dead", []):
 			units[int(i)].dead = true
 		world.rays.clear()
 		for key in tick.get("rays", {}):
 			world.rays[units[int(key)].uid] = float(tick.rays[key])
 		if not w.dead:
+			if candidates:
+				w.remove_meta("ai_near_t")   # refreshed every tick, as on the native side
 			ai.player_perceive(w)
 		var noticed := []
 		for x in (w.get_meta("noticed", {}) as Dictionary).values():
@@ -163,7 +181,13 @@ func _ticks_case(data: Dictionary, trace: Node) -> Array:
 		noticed.sort()
 		var result = vm._eval(expression, inst)
 		var value := 0.0 if result == null else float(result)
-		states.append({"count_bits": trace.bits(value), "fired": vm._truthy(result), "noticed": noticed})
+		var state := {"count_bits": trace.bits(value), "fired": vm._truthy(result), "noticed": noticed}
+		if candidates:
+			var near := []
+			for x in w.get_meta("ai_near", []):
+				near.append(units.find(x))
+			state.candidates = near
+		states.append(state)
 	made[1].free()
 	world.free()
 	return states

@@ -7,11 +7,14 @@ set insertion 0x4b2ef0, the player visibility aggregation 0x66e0f0 and the
 expression evaluator 0x4b41e0 (GroupSize, GroupHas, Any, Every, IsUnitVisible
 0xe5) execute. Layer 2 (perception_ticks): the native AI perception update
 0x5caa00 (drop pass, 0x5ca5a0 acquisition scan, 0x5ca410 eye/facing) runs per
-tick for one watcher, then the same evaluator reads its list.
+tick for one watcher, then the same evaluator reads its list. Layer 3
+(perception_candidates): the same update with its candidate refresh 0x5ca1d0,
+the notice-cell table 0x5bf8f0 and the unit-cell placement/move routines
+0x5c0df0 / 0x5c11d0 executing natively.
 
 Python never decides membership or truth. Hooks supply only the boundaries
-listed in the contracts (allocator, debug log sink, spatial candidates,
-terrain ray, fixture accessors).
+listed in the contracts (allocator, debug log sink, spatial candidates in
+layers 1-2, terrain ray, fixture accessors).
 """
 import math
 import struct
@@ -27,6 +30,14 @@ PERCEIVE = 0x5caa00      # AI perception update: drop pass then 0x5ca5a0 scan
 SCRATCH = 0x7b2788       # global perception scratch passed in ECX by 0x5cb700
 CANDIDATES = 0x5ca1d0    # spatial candidate list builder (friend-cell grid, rand refresh)
 RAY = 0x5bc3e0           # terrain sight-ray factor
+# perception_candidates: the candidate list 0x5ca1d0 runs natively over a
+# unit-cell map filled by the native placement/move routines.
+CELL_TABLE = 0x5bf8f0    # static table of notice-cell offsets (CRT qsort 0x6e88bc)
+CELL_PLACE, CELL_MOVE = 0x5c0df0, 0x5c11d0
+MAP_STAMP = 0x5b6a80     # AI-map occupancy stamp called by both (thiscall, 2 args)
+RAND = 0x6e77b7          # CRT rand: the candidate refresh countdown draw
+UNIT_CELLS = 0x124       # 16 m unit-cell map inside the map record (*0x7b2788)
+UNIT_CELL = 0x54
 MALLOC, FREE, PLEX = 0x70056f, 0x700598, 0x6fe8af
 # Debug log stream operators used by the perception routines: thiscall,
 # return the stream, pop their argument(s).
@@ -240,7 +251,21 @@ def facing_quaternion(angle):
     return [math.cos(half), 0.0, 0.0, math.sin(half)]
 
 
-def ticks_case(o, case):
+def unit_cells(o, grid, size):
+    """Empty native unit-cell map (+4 width, +8 height, +0x14 cells; each cell
+    holds two pointer lists, units at +0x20) with the fixture list block size."""
+    cell_map = grid + UNIT_CELLS
+    cells = o.alloc(size * size * UNIT_CELL)
+    o.uc.mem_write(cells, bytes(size * size * UNIT_CELL))
+    for i in range(size * size):
+        for offset in (4, 0x20):
+            o.write(cells + i * UNIT_CELL + offset + 0x18, 10)
+    o.write(cell_map + 4, size, size)
+    o.write(cell_map + 0x14, cells)
+    return cell_map
+
+
+def ticks_case(o, case, native_candidates=False):
     if o.campaign != "original":
         raise ValueError("perception_ticks is qualified only for the base executable")
     fixture = Perception(o, case)
@@ -275,19 +300,36 @@ def ticks_case(o, case):
 
     o.hook(RAY, terrain_ray)
 
-    def candidates():
-        # Supplied spatial broadphase: every other living-or-dead actor,
-        # refreshed every tick (the native grid refresh is random 8..11 ticks).
-        others = [i for i in range(len(units)) if i != watcher]
-        fixture.set_list(brain + CANDIDATE_HEAD - 4, others)
-        o.ret(cleanup=8)
+    if native_candidates:
+        # Native cell table, unit-cell map, placement (append to the cell's
+        # list) and moves; only the occupancy stamp and rand are supplied.
+        o.run(CELL_TABLE, o.alloc(16))
+        cell_map = unit_cells(o, grid, case["grid_cells"])
+        o.hook(MAP_STAMP, lambda: o.ret(1, cleanup=8))
+        o.hook(RAND, lambda: o.ret(0))
+        o.write(brain + CANDIDATE_HEAD - 4 + 0x18, 10)   # candidate list block size
+        for i in case["arrivals"]:
+            if o.run(CELL_PLACE, cell_map, [units[i]]) & 0xff != 1:
+                raise RuntimeError(f"Cell placement failed for actor {i}")
+        point = o.alloc(12)
+    else:
+        def candidates():
+            # Supplied spatial broadphase: every other living-or-dead actor,
+            # refreshed every tick (the native grid refresh is random 8..11 ticks).
+            others = [i for i in range(len(units)) if i != watcher]
+            fixture.set_list(brain + CANDIDATE_HEAD - 4, others)
+            o.ret(cleanup=8)
 
-    o.hook(CANDIDATES, candidates)
+        o.hook(CANDIDATES, candidates)
     command = fixture.compile(case["trigger"])
     states, perceiving = [], True
     for tick in case["ticks"]:
         for key, xy in tick.get("positions", {}).items():
             o.floats(units[int(key)] + 0x1c, *xy)
+        for i, xy in tick.get("moves", []):
+            o.floats(point, xy[0], xy[1], 0.0)
+            if o.run(CELL_MOVE, cell_map, [units[i], point]) & 0xff != 1:
+                raise RuntimeError(f"Cell move failed for actor {i}")
         for i in tick.get("dead", []):
             fixture.set_dead(i, True)
         rays.clear()
@@ -296,14 +338,24 @@ def ticks_case(o, case):
             # Declared assumption: no perception update for a dead watcher.
             perceiving = False
         if perceiving:
+            if native_candidates:
+                o.write(brain + PERCEPTION + 0x20, 0)   # refresh countdown: every tick
             o.run(PERCEIVE, SCRATCH, [brain, brain + PERCEPTION])
             forward = struct.unpack("<3f", o.uc.mem_read(SCRATCH + 0x14, 12))
             if abs(forward[0] - math.cos(observer["facing"])) > 1e-5 or abs(forward[1] - math.sin(observer["facing"])) > 1e-5:
                 raise RuntimeError(f"Fixture facing mismatch {forward}")
         result = fixture.evaluate(case["trigger"], command)
-        states.append({"count_bits": result["value_bits"], "fired": result["truth"],
-                       "noticed": sorted(fixture.read_list(brain + NOTICED_LIST))})
+        state = {"count_bits": result["value_bits"], "fired": result["truth"],
+                 "noticed": sorted(fixture.read_list(brain + NOTICED_LIST))}
+        if native_candidates:
+            state["candidates"] = fixture.read_list(brain + CANDIDATE_HEAD - 4)
+        states.append(state)
     return states
 
 
-CAPTURES = {"perception_group": group_case, "perception_ticks": ticks_case}
+def candidates_case(o, case):
+    return ticks_case(o, case, native_candidates=True)
+
+
+CAPTURES = {"perception_group": group_case, "perception_ticks": ticks_case,
+            "perception_candidates": candidates_case}

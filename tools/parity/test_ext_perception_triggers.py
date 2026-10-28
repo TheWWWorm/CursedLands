@@ -45,6 +45,21 @@ class PerceptionInputsTest(unittest.TestCase):
                 for key in list(tick.get("positions", {})) + list(tick.get("rays", {})):
                     self.assertTrue(0 < int(key) < len(data["units"]))
 
+    def test_candidate_inputs_are_well_formed(self):
+        rows = [row for row in family.scenarios(fuzz=30) if row["kind"] == "perception_candidates"]
+        self.assertGreaterEqual(len(rows), 30)
+        for row in rows:
+            data = row["inputs"]
+            count = len(data["units"])
+            self.assertEqual(sorted(data["arrivals"]), list(range(count)), row["id"])
+            for tick in data["ticks"]:
+                self.assertTrue(set(tick) <= {"moves", "dead"}, row["id"])
+                for i, xy in tick.get("moves", []):
+                    self.assertTrue(0 <= i < count and len(xy) == 2, row["id"])
+            # Every unit stays inside the supplied unit-cell map.
+            positions = [row["pos"] for row in data["units"]] + [xy for t in data["ticks"] for _, xy in t.get("moves", [])]
+            self.assertTrue(all(0 <= v < 16 * data["grid_cells"] for p in positions for v in p), row["id"])
+
     def test_layer_one_variants_cover_dead_duplicates_and_corpses(self):
         ids = {row["id"].split("/")[1] for row in family.scenarios() if row["kind"] == "perception_group"}
         for name in ["npc_duplicate_entry", "npc_list_holds_corpse", "dead_npc_retained_list", "hero_corpse_list"]:
@@ -104,6 +119,17 @@ class PerceptionNativeSensitivityTest(unittest.TestCase):
         data["observer"]["hostile_sides"] = []
         neutral = [s["fired"] for s in self.capture("perception_ticks", data)]
         self.assertNotEqual(hostile, neutral)
+
+    def test_arrival_order_drives_candidate_order(self):
+        row = next(r for r in family.scenarios() if r["id"] == "perception_candidates/one_cell_arrivals")
+        first = self.capture("perception_candidates", copy.deepcopy(row["inputs"]))[0]["candidates"]
+        data = copy.deepcopy(row["inputs"])
+        data["arrivals"] = list(reversed(data["arrivals"]))
+        second = self.capture("perception_candidates", data)[0]["candidates"]
+        self.assertEqual(sorted(first), sorted(second))
+        self.assertNotEqual(first, second)
+        # Head insertion: the last cell first, then the latest arrival in the watcher's cell.
+        self.assertEqual(first[:2], [6, 4])
 
 
 @unittest.skipUnless((ASTRAL / "game.exe").exists(), "Lost in Astral executable not available")

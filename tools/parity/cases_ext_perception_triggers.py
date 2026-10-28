@@ -47,8 +47,27 @@ CONTRACTS = {
                   "as sorted fixture indices (native push-front order is not compared).",
         "tolerances": {},
     },
+    "perception_candidates": {
+        "entry": ["0x5caa00", "0x5ca1d0", "0x5bf8f0", "0x5c0df0", "0x5c11d0", "0x5ca5a0"],
+        "scope": "Original AI perception update 0x5caa00 with its candidate-list refresh 0x5ca1d0 running natively: "
+                 "the notice-cell table built by 0x5bf8f0 (CRT qsort 0x6e88bc), the 16 m unit-cell map filled by native "
+                 "placement 0x5c0df0 in the supplied arrival order and native moves 0x5c11d0, then the acquisition "
+                 "scan 0x5ca5a0; versus production GameWorld.notice_units_near through UnitAI._notice_candidates "
+                 "(registered world, coarse buckets filled in the same arrival and move order) and "
+                 "UnitAI.player_perceive.",
+        "stubs": ["AI-map occupancy stamp 0x5b6a80 = success (both placement and moves)",
+                  "CRT rand 0x6e77b7 = 0; the refresh countdown is reset every tick (remake: ai_near_t cleared)",
+                  "empty unit-cell map of the supplied size with the fixture list block size",
+                  "terrain sight ray 0x5bc3e0 = 1 (remake: GameWorld.sight_ray)",
+                  "senses, flat ground and zero eye height as in perception_ticks",
+                  "debug log stream operators", "CRT malloc/free and CPlex block allocator"],
+        "limits": "One watcher; arrival order is supplied rather than produced by spawning, saving or loading; "
+                  "the 8..11-tick refresh interval and its random draw are not compared. Candidate lists are "
+                  "compared in native list order (head first); noticed lists as sorted indices.",
+        "tolerances": {},
+    },
 }
-STEP_COUNTS = {"perception_ticks": "ticks"}
+STEP_COUNTS = {"perception_ticks": "ticks", "perception_candidates": "ticks"}
 
 
 ASTRAL_CONTRACTS = {
@@ -208,6 +227,73 @@ def ticks_input(heroes, path, trigger="cross", obs=None, rays=None, deaths=None,
             "observer": obs or observer(), "trigger": TRIGGERS[trigger], "ticks": ticks}
 
 
+CENTRE = (104.0, 104.0)   # cell (6, 6) of 16 m; every query stays inside the map
+
+
+def candidates_input(positions, arrivals, ticks, sight=25.0, life=0.0, grid_cells=16):
+    """positions[0] is the watcher; ticks: [{"moves": [[i, [x, y]], ...], "dead": [...]}]."""
+    units = [unit_row(0, positions[0], life_detect=0.0)] + [unit_row(i, pos) for i, pos in
+                                                           enumerate(positions[1:], start=1)]
+    return {"units": units, "groups": {"Heroes": list(range(1, len(units)))},
+            "player_units": list(range(1, len(units))), "watcher": 0, "grid_cells": grid_cells,
+            "arrivals": list(arrivals), "observer": observer(sight=sight, life=life, cone_half=3.0),
+            "trigger": TRIGGERS["cross"], "ticks": ticks}
+
+
+def cell_point(dx, dy, ox=0.0, oy=0.0):
+    return [CENTRE[0] + 16 * dx + ox, CENTRE[1] + 16 * dy + oy]
+
+
+def candidate_scenarios(seed, fuzz):
+    rows = {}
+    # One unit per D <= 1 cell (equal distances: the unstable native sort).
+    ring = [(dx, dy) for dy in range(-2, 3) for dx in range(-2, 3) if not (abs(dx) == 2 and abs(dy) == 2)]
+    positions = [list(CENTRE)] + [cell_point(dx, dy, 3, -2) for dx, dy in ring]
+    rows["equal_distance_cells"] = candidates_input(positions, range(len(positions)), [{}])
+    rows["equal_distance_cells_reversed_arrival"] = candidates_input(
+        positions, reversed(range(len(positions))), [{}])
+    # Several arrivals in one cell; moving out and back makes a new arrival.
+    crowd = [list(CENTRE)] + [cell_point(0, 0, -6 + i, 3 - i) for i in range(5)] + [cell_point(1, 0, 2, 2)]
+    rows["one_cell_arrivals"] = candidates_input(crowd, [0, 3, 1, 5, 2, 4, 6], [
+        {}, {"moves": [[3, cell_point(1, 0, -3, 1)]]}, {"moves": [[3, cell_point(0, 0, 4, 4)]]},
+        {"moves": [[6, cell_point(0, 0, 0, 7)], [1, cell_point(-1, 0, 5, 0)]]}, {"dead": [2]}, {}])
+    # The regression layout of tools/tests/notice_candidate_order.gd.
+    layout = [[104, 104], [105, 104], [88, 88], [120, 120], [100, 106], [136, 104], [72, 104], [104, 72],
+              [120, 104], [89, 90], [152, 104], [168, 104]]
+    rows["mixed_cells"] = candidates_input(layout, range(len(layout)), [
+        {}, {"moves": [[2, [110, 99]]]}, {"dead": [8]}, {"moves": [[1, [105, 120]], [1, [105, 104]]]}])
+    # The watcher crosses cells; nearest-even cell boundaries (x = 112).
+    rows["watcher_moves"] = candidates_input(layout, [5, 3, 0, 1, 2, 4, 6, 7, 8, 9, 10, 11], [
+        {}, {"moves": [[0, [111.75, 104]]]}, {"moves": [[0, [112, 104]]]}, {"moves": [[0, [128.25, 90]]]},
+        {"moves": [[0, [104, 104]], [4, [112, 112]]]}], sight=12.0)
+    # Sense radii choose the cells: sight 6 (D <= 0), life sense 40 (D <= 2).
+    rows["small_sight"] = candidates_input(layout, range(len(layout)), [{}], sight=6.0)
+    rows["life_sense_cells"] = candidates_input(layout, range(len(layout)), [{}], sight=6.0, life=40.0)
+    rng = random.Random(seed ^ 0xce115)
+    for trial in range(fuzz):
+        count = rng.randint(4, 14)
+        positions = [list(CENTRE)] + [[round(CENTRE[0] + rng.uniform(-44, 44), 2),
+                                       round(CENTRE[1] + rng.uniform(-44, 44), 2)] for _ in range(count)]
+        arrivals = list(range(len(positions)))
+        rng.shuffle(arrivals)
+        ticks = []
+        current = [list(p) for p in positions]
+        for _ in range(6):
+            tick = {}
+            for _ in range(rng.randint(0, 3)):
+                i = rng.randrange(len(current))
+                current[i] = [round(min(max(current[i][0] + rng.uniform(-20, 20), 60.0), 148.0), 2),
+                              round(min(max(current[i][1] + rng.uniform(-20, 20), 60.0), 148.0), 2)]
+                tick.setdefault("moves", []).append([i, list(current[i])])
+            if rng.random() < 0.2:
+                tick["dead"] = [rng.randrange(1, len(current))]
+            ticks.append(tick)
+        rows[f"seeded_{trial:03}"] = candidates_input(
+            positions, arrivals, ticks, sight=rng.choice([6.0, 10.0, 25.0, 40.0]),
+            life=rng.choice([0.0, 0.0, 12.0, 30.0]))
+    return rows
+
+
 def scenarios(seed=20261021, fuzz=12):
     rows = []
 
@@ -264,6 +350,9 @@ def scenarios(seed=20261021, fuzz=12):
     add("perception_ticks", "first_notice_from_outside_cone",
         ticks_input([([3, 6], {})], [[3, 6], [3, 5], [4, 4], [5, 3], [6, 2]]))
 
+    for name, inputs in candidate_scenarios(seed, fuzz).items():
+        add("perception_candidates", name, inputs)
+
     rng = random.Random(seed ^ 0x5ee5)
     for trial in range(fuzz):
         obs = observer(sight=rng.choice([6.0, 8.5, 10.0, 15.0]), sight_factor=rng.choice([1.0, 0.75, 0.5]),
@@ -304,6 +393,13 @@ def validate(case, steps, role):
         if case["kind"] == "perception_group":
             grouped = case["inputs"]["expression"]["call"] in GROUP_CALLS
             ok = _check_group_state(state) and (("members" in state) == grouped)
+        elif case["kind"] == "perception_candidates":
+            count = len(case["inputs"]["units"])
+            ok = (set(state) == {"count_bits", "fired", "noticed", "candidates"}
+                  and isinstance(state["candidates"], list) and len(set(state["candidates"])) == len(state["candidates"])
+                  and all(type(i) is int and 0 < i < count for i in state["candidates"])
+                  and isinstance(state["noticed"], list) and state["noticed"] == sorted(set(state["noticed"]))
+                  and all(type(i) is int and 0 < i < count for i in state["noticed"]))
         else:
             ok = (set(state) == {"count_bits", "fired", "noticed"} and type(state["fired"]) is bool
                   and type(state["count_bits"]) is int and 0 <= state["count_bits"] <= 0xffffffff

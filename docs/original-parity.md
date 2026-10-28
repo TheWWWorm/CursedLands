@@ -258,7 +258,7 @@ game first, then Lost in Astral where qualified):
 | Dialogue triggers | `dialogue_topics`, `_zone`, `_merc`, `_complete` | 158 | 139 / 19 | not qualified | [dialogue](original-parity-dialogue.md) |
 | NPC script commands | `npc_motivation`, `npc_diplomacy`, `npc_alarm` | 213 | 137 / 76 | 137 / 76 | [npc-commands](original-parity-npc-commands.md) |
 | NPC AI decisions | `npc_ai_fear`, `_suspicion`, `_target_score`, `_motivation` | 182 | 98 / 84 | not qualified | [npc-ai](original-parity-npc-ai.md) |
-| Perception triggers | `perception_group`, `perception_ticks` | 452 | 393 / 59 | 384 / 32 (`perception_group` only, 416) | [perception-triggers](original-parity-perception-triggers.md) |
+| Perception triggers | `perception_group`, `perception_ticks`, `perception_candidates` | 471 | 469 / 2 (2026-10-28) | 384 / 32 (`perception_group` only, 416) | [perception-triggers](original-parity-perception-triggers.md) |
 
 Every family was shown to fail on a mutated scratch copy of the remake (see
 each page). Differences are findings about the remake, not harness errors.

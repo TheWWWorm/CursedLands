@@ -132,6 +132,37 @@ vision with a blocked ray, half ray, crawling hero, watcher dying, two heroes,
 exact sight/retention thresholds, first notice from outside the cone, and a
 seeded fuzz set (random senses, facing, hostility, walks, rays, deaths).
 
+### `perception_candidates` (layer 3: the candidate list)
+
+The same watcher and trigger as `perception_ticks`, but the candidate list
+0x5ca1d0 is not stubbed. Native: the notice-cell table is built by 0x5bf8f0
+(its CRT `qsort` 0x6e88bc is unstable, so cells of equal distance keep the
+sort's order). Every actor is placed with 0x5c0df0 in the supplied
+`arrivals` order into an empty 16 m unit-cell map (`grid_cells` × `grid_cells`
+cells at map record +0x124). Per tick, `moves` run through 0x5c11d0 in their
+listed order, the refresh countdown is reset, and 0x5caa00 runs (refresh,
+then scan). Remake: a registered host `GameWorld` with coarse buckets. Every
+unit passes a staging point in arrival order, moves set `pos` in the same
+order, `ai_near_t` is cleared each tick, and production
+`UnitAI.player_perceive` runs.
+
+Observation per tick: `candidates` in native list order (head first; remake
+`ai_near` meta), plus `count_bits`, `fired` and sorted `noticed` as in layer 2.
+Scenarios: one actor in each of the 21 cells with D ≤ 1 (in two arrival
+orders), several arrivals in one cell with moves out and back, the layout of
+`tools/tests/notice_candidate_order.gd`, a watcher crossing cell boundaries
+(including x = 112, a nearest-even boundary), small sight versus large life
+sense, and 12 seeded crowds (shuffled arrivals, random moves of any actor
+including the watcher, deaths, sight 6–40, life 0–30). Some seeded queries
+reach x < 0, so the remake falls back to its exhaustive path there.
+
+Original order: the refresh walks the cells in table order and each cell's
+list from head to tail. Arrivals are appended to a cell's tail by placement,
+and by a move only when the cell changes. Every unit is inserted at the
+candidate list head (0x5ca37a–0x5ca3d0), so the list ends with the first
+arrival in the watcher's own cell. See
+[the validation record](validation/notice-candidate-order-2026-10-28.md).
+
 ## Supplied boundaries (stubs)
 
 See each contract's `stubs` list: supplied noticed/corpse list contents;
@@ -140,7 +171,9 @@ position accessors; CRT malloc/free and the CPlex allocator 0x6fe8af; the
 debug log stream operators (0x6fc2dd, 0x6fc986, 0x6fc070, 0x434fe0,
 0x6fc7ba); the spatial candidate list 0x5ca1d0 (every other actor, refreshed
 every tick on both sides — the native 8..11-tick random refresh and the remake
-`_notice_candidates` cache are both removed); the terrain ray 0x5bc3e0 /
+`_notice_candidates` cache are both removed; `perception_candidates` runs it
+natively and supplies only the AI-map occupancy stamp 0x5b6a80, `rand` and the
+refresh countdown); the terrain ray 0x5bc3e0 /
 `GameWorld.sight_ray`; flat ground and zero eye height; senses as listed.
 Hostility, party test, Aggression target lookup (empty motivation list), list
 node allocation/removal, corpse transfer, facing computation, distances and
@@ -260,6 +293,16 @@ zone12magess, zone16, zone17, zone19, zone3obr ×9, zone7letter, zone8) or the
 zone15night, zone16, zone17, zone18, zone3obr, zone4, zone6, zone7zasada),
 truth 1 → 0 and 0 → 1 respectively. Nothing-noticed and living-mutual
 snapshots matched for every authored condition.
+
+### G. Candidate list order (perception_candidates, 2026-10-28)
+
+Before the fix, all 19 scenarios differed. The remake returned the candidates
+in registry order, and the original returns table order and arrival order,
+reversed by head insertion. `GameWorld.notice_units_near` now uses the
+original order: the 2026-10-28 run gives 19 match, 0 differ for this kind, and
+`--case perception_` gives **469 match, 2 differ** (group D). The `noticed`
+sets matched in every tick. The order of the noticed list itself (head
+insertion of new entries in 0x5ca5a0) is still not compared.
 
 ### Lost in Astral (`perception_group` only)
 
