@@ -100,7 +100,7 @@ func _text_box() -> RichTextLabel:
 ## Screen px per 800×600 unit: the height's, or GameHUD.log_scale (portrait).
 func _k() -> float:
 	var hud := get_canvas_layer_node() as GameHUD
-	return hud.log_scale() if hud else Interface800.canvas_size(self).y / 600.0
+	return hud.log_scale() if hud else UiScale.canvas_height(self)
 
 
 func _off() -> float:

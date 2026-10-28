@@ -89,7 +89,7 @@ func _hero() -> GameUnit:
 
 ## Local pixels per 800×600 unit (the widget is 40 wide).
 func _k() -> float:
-	return size.x / 40.0
+	return UiScale.by_width(size, 40.0)
 
 
 ## 800×600 point -> local (the widget's bottom is y 510; its top, y 250 in

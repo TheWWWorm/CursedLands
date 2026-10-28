@@ -137,7 +137,7 @@ func _geom() -> Array:
 	var c := vs * 0.5 + Vector2(0, -vs.y * 0.06)
 	var cell := r * (0.34 if entries.size() <= 8 else 0.29)
 	if _anchor.is_finite():
-		var k := minf(vs.x, vs.y) / 600.0 * _content_scale
+		var k := UiScale.by_min_side(vs) * _content_scale
 		var outer := r + cell * 1.35
 		# Reserve room for the title and the four-line help below the disc.
 		var half_width := maxf(outer + 4.0 * k, 300.0 * k)
@@ -214,7 +214,7 @@ func _draw() -> void:
 	var c: Vector2 = g[0]
 	var r: float = g[1]
 	var cell: float = g[2]
-	var k := minf(size.x, size.y) / 600.0 * _content_scale
+	var k := UiScale.by_min_side(size) * _content_scale
 	var font := Interface800.font()
 	# The backing disc and its bronze ring.
 	draw_circle(c, r + cell * 1.35, Interface800.PANEL)

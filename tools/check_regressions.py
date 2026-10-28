@@ -2,9 +2,14 @@
 """Run issue-linked Godot checks with isolated profiles and retained evidence.
 
 Original game data is external. Rendered checks always use GPU Lab; this script
-does not change the desktop or the player's settings. See docs/regression-checks.md.
+does not change the desktop or the player's settings. Process control (stop on
+the first diagnostic, timeouts, the summary-line contract and the rendered
+window size) is shared with the gameplay catalog runner through
+tools/parity/process.py. See docs/regression-checks.md.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import nullcontext
 import hashlib
 import json
 import os
@@ -13,11 +18,13 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "tools/parity"))
-from gameplay import parse_summary
+from gameplay import MemoryGate, auto_jobs, available_memory, jobs_argument, uses_network
+from process import DIAGNOSTIC, RENDERED_RESOLUTION, parse_summary, rendered_arguments, run_program
 
 MANIFEST = REPO / "tools/regressions.json"
 SETTINGS = """[options]
@@ -33,6 +40,15 @@ net_directory=0
 net_upnp=0
 net_lan=0
 """
+# `gpu-lab run` names its job on the first line and prints only a 64 KiB tail
+# of the job's output at the end; the job directory holds the whole log.
+GPU_LAB_JOB = re.compile(r"^GPU Lab job: (\w+)$", re.M)
+# Seconds a rendered case may wait in the GPU Lab queue beyond its own timeout.
+QUEUE_ALLOWANCE = 600
+# GPU Lab virtual monitors have no EDID: the engine reports this refresh-rate
+# diagnostic at start-up. `verdict` excuses it with its context line; the
+# process control must not end the test when it appears.
+INFRASTRUCTURE = re.compile(r'^ERROR: Parameter "monitors" is null\.$')
 
 
 def digest(path):
@@ -62,9 +78,8 @@ def engine_arguments(engine, case, packaged=False):
         # Match both production authority workers. The packaged Linux desktop
         # defaults to a separate render thread, which can fail dummy mesh disposal.
         return command + ["--headless", "--render-thread", "safe"]
-    return command + ["--display-driver", "x11", "--rendering-method",
-                      case.get("rendering_method", "gl_compatibility"),
-                      "--windowed", "--resolution", "1280x720"]
+    return command + rendered_arguments(case.get("rendering_method", "gl_compatibility"),
+                                        case.get("resolution", RENDERED_RESOLUTION))
 
 
 def stage_tests(destination):
@@ -86,9 +101,9 @@ def stage_tests(destination):
     return destination / "tests"
 
 
-def verdict(log, case, returncode):
+def verdict(log, case, returncode, error=None):
     """A clean exit alone is insufficient: require the named assertion result."""
-    errors = []
+    errors = [error] if error else []
     infrastructure = []
     lines = log.splitlines()
     if case.get("expected_start"):
@@ -100,10 +115,10 @@ def verdict(log, case, returncode):
             actual = json.loads(starts[0])
             if any(actual.get(key) != value for key, value in case["expected_start"].items()):
                 raise ValueError("Wrong profile, campaign, script or display")
-        except (ValueError, TypeError) as error:
-            errors.append(str(error))
+        except (ValueError, TypeError) as exc:
+            errors.append(str(exc))
     for index, line in enumerate(lines):
-        if not re.match(r"^(?:SCRIPT ERROR:|ERROR:|FAIL\b)", line):
+        if not (DIAGNOSTIC.match(line) or re.match(r"FAIL\b", line)):
             continue
         # GPU Lab virtual monitors have no EDID. Keep this exact, observed
         # refresh-rate diagnostic visible without disguising game failures.
@@ -116,14 +131,32 @@ def verdict(log, case, returncode):
     summary = None
     try:
         summary = parse_summary(log, case["summary"], case["min_checks"])
-    except (ValueError, KeyError, TypeError) as error:
-        errors.append(str(error))
+    except (ValueError, KeyError, TypeError) as exc:
+        errors.append(str(exc))
     if returncode != 0:
         errors.append("Process exit: " + str(returncode))
     if summary is not None and summary["failures"]:
         errors.append("Assertion result does not satisfy the manifest")
     return {"passed": not errors, "result": summary, "errors": errors,
             "infrastructure_diagnostics": infrastructure}
+
+
+def gpu_lab_job_directory(gpu_lab, text):
+    """The retained log folder of the job that `gpu-lab run` announced."""
+    found = GPU_LAB_JOB.search(text)
+    if not found:
+        return None
+    try:
+        info = json.loads(subprocess.check_output([gpu_lab, "job", found.group(1)], text=True))
+        directory = info.get("directory")
+    except (subprocess.CalledProcessError, OSError, ValueError, AttributeError):
+        return None
+    return Path(directory) if directory else None
+
+
+def gpu_lab_stdout(gpu_lab, text):
+    directory = gpu_lab_job_directory(gpu_lab, text)
+    return directory / "stdout.log" if directory else None
 
 
 def main():
@@ -138,6 +171,9 @@ def main():
     parser.add_argument("--tier", choices=("headless", "rendered", "all"), default="headless")
     parser.add_argument("--only", action="append", default=[], help="case ID; repeat to select several")
     parser.add_argument("--output", type=Path, help="new directory for profiles, logs and results.json")
+    parser.add_argument("--jobs", type=jobs_argument, default=1,
+                        help="cases to run at once (a number, or auto for CPU threads and free memory); "
+                             "each keeps its own process and profile, and GPU Lab queues rendered cases")
     parser.add_argument("--list", action="store_true")
     args = parser.parse_args()
     cases = json.loads(MANIFEST.read_text(encoding="utf-8"))["cases"]
@@ -190,7 +226,15 @@ def main():
         report["pack"] = {"path": str(pack), "sha256": digest(pack)}
     # Tests are read-only, so one staged copy per run serves every case.
     scripts = stage_tests(output / "tools")
-    for case in selected:
+    jobs = min(len(selected), auto_jobs(available=available_memory()) if args.jobs == "auto" else args.jobs)
+    report["jobs"] = jobs
+    stop = threading.Event()
+    network_lock = threading.Lock()
+    memory = MemoryGate(stop)
+    results = {}
+    lock = threading.Lock()
+
+    def run_case(case):
         profile = output / case["id"]
         settings = profile_settings(profile)
         settings.parent.mkdir(parents=True)
@@ -202,38 +246,68 @@ def main():
                     "display": case["mode"], "script": str(script),
                     "profile": {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
                                 "volume_stream": 0, "volume_voice": 0}}
-        case = {**case, "expected_start": expected}
+        spec = {**case, "expected_start": expected}
         command += ["--", "--no-movies", "--ei-path=" + paths[case["data"] + "_data"],
                     "--tool=" + str(REPO / "tools/parity/gameplay_bootstrap.gd"),
                     "--suite-script=" + expected["script"], "--suite-script-root=" + str(scripts),
                     "--suite-campaign=" + expected["campaign"], "--suite-display=" + case["mode"]]
         command += [arg.format(**paths) for arg in case.get("args", [])]
         timeout = case.get("timeout", 420)
-        if case["mode"] == "rendered":
+        rendered = case["mode"] == "rendered"
+        if rendered:
             command = [gpu_lab, "run", "--gpu", "auto", "--cwd", str(REPO), "--timeout", str(timeout),
                        "--", "env"] + [f"{key}={value}" for key, value in isolated.items()] + command
-        started = time.monotonic()
+        log = profile / "run.log"
+        # Cases that open the fixed game ports never overlap one another.
+        networked = jobs > 1 and uses_network(script, REPO / "game")
         print("RUN", case["id"], flush=True)
-        with (profile / "run.log").open("w") as stream:
-            try:
-                result = subprocess.run(command, cwd=REPO, env={**os.environ, **isolated},
-                                        stdout=stream, stderr=subprocess.STDOUT,
-                                        timeout=timeout + (600 if case["mode"] == "rendered" else 0))
-                code = result.returncode
-            except subprocess.TimeoutExpired:
-                code = 124
-        row = {"id": case["id"], "script": case["script"], "script_sha256": digest(REPO / case["script"]),
-               "contract": case["contract"], "issues": case.get("issues", []), "mode": case["mode"],
-               "seconds": round(time.monotonic() - started, 2), "command": command,
-               "log": str(profile.relative_to(output) / "run.log"),
-               **verdict((profile / "run.log").read_text(encoding="utf-8", errors="replace"), case, code)}
-        report["cases"].append(row)
-        report["passed"] = all(item["passed"] for item in report["cases"])
-        (output / "results.json").write_text(json.dumps(report, indent=2) + "\n")
-        print("PASS" if row["passed"] else "FAIL", case["id"], row["result"], flush=True)
-        for error in row["errors"][:8]:
-            print(" ", error, flush=True)
-    return 0 if report["passed"] else 1
+        started = time.monotonic()
+        with network_lock if networked else nullcontext(), memory:
+            code, error = run_program(command, log, {**os.environ, **isolated},
+                                      timeout + (QUEUE_ALLOWANCE if rendered else 0), stop,
+                                      grace=10.0 if rendered else 0.0,
+                                      mirror=(lambda text: gpu_lab_stdout(gpu_lab, text)) if rendered else None,
+                                      tolerate=INFRASTRUCTURE if rendered else None)
+        text = log.read_text(encoding="utf-8", errors="replace")
+        if rendered:
+            # Keep the wrapper's own output; judge the job's complete log.
+            directory = gpu_lab_job_directory(gpu_lab, text)
+            if directory and (directory / "stdout.log").is_file():
+                (profile / "gpu-lab.log").write_text(text)
+                text = "".join((directory / name).read_text(encoding="utf-8", errors="replace")
+                               for name in ("stdout.log", "stderr.log") if (directory / name).is_file())
+                log.write_text(text)
+        return {"id": case["id"], "script": case["script"], "script_sha256": digest(REPO / case["script"]),
+                "contract": case["contract"], "issues": case.get("issues", []), "mode": case["mode"],
+                "seconds": round(time.monotonic() - started, 2), "command": command,
+                "log": str(profile.relative_to(output) / "run.log"),
+                **verdict(text, spec, code, error)}
+
+    def record(index, row):
+        with lock:
+            results[index] = row
+            report["cases"] = [results[i] for i in sorted(results)]
+            report["passed"] = all(item["passed"] for item in report["cases"])
+            (output / "results.json").write_text(json.dumps(report, indent=2) + "\n")
+            print("PASS" if row["passed"] else "FAIL", row["id"], row["result"], flush=True)
+            for error in row["errors"][:8]:
+                print(" ", error, flush=True)
+
+    pool = ThreadPoolExecutor(max_workers=jobs)
+    try:
+        futures = {pool.submit(run_case, case): index for index, case in enumerate(selected)}
+        for future in as_completed(futures):
+            record(futures[future], future.result())
+    except BaseException:
+        # Ctrl-C or a runner error stops the whole selection: queued cases
+        # never start and running ones are ended by run_program.
+        stop.set()
+        raise
+    finally:
+        pool.shutdown(wait=True, cancel_futures=True)
+    report["complete"] = len(report["cases"]) == len(selected)
+    (output / "results.json").write_text(json.dumps(report, indent=2) + "\n")
+    return 0 if report["passed"] and report["complete"] else 1
 
 
 if __name__ == "__main__":

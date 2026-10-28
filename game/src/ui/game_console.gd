@@ -178,7 +178,7 @@ func _input(e:InputEvent):
 		input.grab_focus();_history_choices()
 	elif ctrl and e.keycode==KEY_SPACE:
 		input.grab_focus();_complete(true)
-	elif e.keycode==KEY_ESCAPE:
+	elif UiInput.is_cancel(e):
 		if suggestions.visible:suggestions.hide()
 		elif search.visible:search.text="";search.hide();_render_output();input.grab_focus()
 		else:_close()

@@ -33,11 +33,13 @@ func _ready() -> void:
 			DirAccess.copy_absolute(a.trim_prefix("--save="),SaveInfo.path("eq")); save="eq"
 		if a.begins_with("--zones="): zones = Array(a.trim_prefix("--zones=").split(","))
 	var fails := 0
+	var compared := 0
 	for z in (zones if save.is_empty() else [""]):
+		compared += 1
 		var a: Array = await trace(z, save, true, 1000)
 		var b: Array = await trace(z, save, false, 1000)
 		var ok := a == b
 		if not ok: fails += 1
 		print("EQUIV ", z if z else "save", " ", "same" if ok else "DIFFERENT", " ", a.slice(-1), " ", b.slice(-1))
-	print("MEMO_EQUIV failures=", fails)
+	print("MEMO_EQUIV ", compared, " checks ", fails, " failures")
 	get_tree().quit(1 if fails else 0)

@@ -238,18 +238,20 @@ func _gui_input(e: InputEvent) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if _probing or not is_visible_in_tree() or not (e is InputEventKey and e.pressed):
 		return
-	match e.keycode:
-		KEY_UP, KEY_DOWN:
-			# -1 is the closing action, also reached by mouse/gamepad motion
-			# outside the report rows. Keep keyboard activation in agreement.
-			_sel = wrapi(_sel + (1 if e.keycode == KEY_DOWN else -1), -1, _row_defs().size())
-			queue_redraw()
-		KEY_ENTER, KEY_KP_ENTER:
-			if _sel < 0: _answer(true)
-			else: act(_sel)
-		KEY_ESCAPE:
-			_answer(true)
-		_: return
+	if UiInput.is_cancel(e):
+		_answer(true)
+	elif UiInput.is_confirm(e):
+		if _sel < 0: _answer(true)
+		else: act(_sel)
+	else:
+		match e.keycode:
+			KEY_UP, KEY_DOWN:
+				# -1 is the closing action, also reached by mouse/gamepad motion
+				# outside the report rows. Keep keyboard activation in agreement.
+				_sel = wrapi(_sel + (1 if e.keycode == KEY_DOWN else -1), -1, _row_defs().size())
+				queue_redraw()
+			_:
+				return
 	get_viewport().set_input_as_handled()
 
 

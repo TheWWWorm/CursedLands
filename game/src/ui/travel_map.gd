@@ -479,7 +479,7 @@ func _process(frame_dt: float) -> void:
 	if _pivot == null:
 		return
 	if _extra and _extra.theme:
-		var fs := maxi(6, int(round(Interface800.canvas_size(self).x * Interface800.FONT_EM[1])))
+		var fs := UiScale.font_px_for_width(Interface800.canvas_size(self).x, 1)
 		if _extra.theme.default_font_size != fs:
 			_extra.theme.default_font_size = fs
 	if _turn != 0:
@@ -509,7 +509,7 @@ func _update_pivot() -> void:
 # ------------------------------------------------------------------ layout
 
 func _k() -> float:
-	return size.y / 600.0
+	return UiScale.by_height(size)
 
 
 ## 800×600 rect -> local: the left half keeps to the left edge, the right half
@@ -552,7 +552,7 @@ func _strip(from: Vector2, to: Vector2, width: float, right: bool) -> void:
 func _text(r: Rect2, s: String, align := HORIZONTAL_ALIGNMENT_LEFT, right := false) -> void:
 	var k := _k()
 	var font := Interface800.font()
-	var fs := maxi(6, int(round(800.0 * Interface800.FONT_EM[2] * k)))
+	var fs := UiScale.font_px(k, 2)
 	var rr := _r(r, right)
 	var y := rr.position.y + (rr.size.y + font.get_ascent(fs) - font.get_descent(fs)) * 0.5
 	_hud.draw_string(font, Vector2(rr.position.x + k, y + k), s, align, rr.size.x, fs, Interface800.SHADOW)
@@ -780,7 +780,7 @@ func _exit_tree() -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not is_visible_in_tree() or not (e is InputEventKey and e.pressed and not e.echo):
 		return
-	if e.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(e):
 		menu.emit()
 	elif EIKeymap.event_action(e) == "tutorial_script":
 		help.emit("global_map_nocamp" if _nocamp else "global_map")

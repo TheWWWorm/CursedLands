@@ -77,7 +77,7 @@ static func plate(fill: Color, border: Color, padding: int) -> StyleBoxFlat:
 func layout_shell() -> void:
 	if _surface == null: return
 	var safe := Portability.safe_rect(size).grow(-16)
-	_ui_scale = clampf(minf(safe.size.x / 1248.0, safe.size.y / 768.0), 1.0, 3.0)
+	_ui_scale = UiScale.dialog(safe.size)
 	if theme.default_font is FontFile or theme.default_font is SystemFont:
 		theme.default_font.oversampling = _ui_scale
 	_surface.scale = Vector2.ONE * _ui_scale

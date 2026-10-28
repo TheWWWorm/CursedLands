@@ -493,7 +493,7 @@ func _imported(error: String) -> void:
 
 func _input(event: InputEvent) -> void:
 	if not visible or is_instance_valid(_modal): return
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(event):
 		get_viewport().set_input_as_handled()
 		close()
 

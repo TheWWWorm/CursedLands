@@ -403,7 +403,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event.keycode == KEY_SPACE:
 		match_state.toggle_pause()
 		get_viewport().set_input_as_handled()
-	elif event.keycode == KEY_ESCAPE:
+	elif UiInput.is_cancel(event):
 		_cancel_placement()
 		if match_state.phase == ArenaMatch.Phase.FIGHT: match_state.toggle_pause()
 		get_viewport().set_input_as_handled()

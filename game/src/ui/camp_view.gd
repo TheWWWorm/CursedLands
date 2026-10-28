@@ -565,7 +565,7 @@ var _touch_pan := Vector2.ZERO
 var _touch_spell_info := false
 
 func _s() -> float:
-	return minf(size.x / 800.0, size.y / 600.0) * _touch_zoom
+	return UiScale.fit(size) * _touch_zoom
 
 
 func _o() -> Vector2:

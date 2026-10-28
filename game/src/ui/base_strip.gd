@@ -169,7 +169,7 @@ func state_text(pid: int) -> String:
 
 
 func _k() -> float:
-	return Interface800.canvas_size(self).y / 600.0
+	return UiScale.canvas_height(self)
 
 
 ## 800×600 -> local: the strip keeps to the window's right edge.
@@ -234,7 +234,7 @@ func _draw() -> void:
 		return
 	var f := DialogPanel.font()
 	var k := _k()
-	var fs := int(round(Interface800.FONT_EM[0] * 800.0 * k))
+	var fs := UiScale.font_px(k, 0, 0)
 	for i in _cells.size():
 		var r := cell(i)
 		var pid := int(_cells[i][0])

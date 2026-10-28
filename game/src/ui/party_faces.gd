@@ -61,7 +61,7 @@ var _fit := 1.0   # remake: the strip's scale-down to fit its room (see above)
 
 
 func _k() -> float:
-	return Interface800.canvas_size(self).y / 600.0 * _fit
+	return UiScale.canvas_height(self) * _fit
 
 
 ## 800×600 point -> local: the layout is centred horizontally, its bottom on
@@ -80,7 +80,7 @@ func _update_fit() -> void:
 	if hud == null or _cells.is_empty():
 		return
 	var vs := Interface800.canvas_size(self)
-	var k := vs.y / 600.0
+	var k := UiScale.by_height(vs)
 	var left: Control = hud._move_dial if hud.portrait() else hud._weapons
 	var right: Control = hud._clock_dial if hud.portrait() else hud._belt
 	if not is_instance_valid(left) or not is_instance_valid(right):

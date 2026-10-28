@@ -54,7 +54,7 @@ func _ready() -> void:
 
 # Height-scaled and centred like the field screen's other widgets.
 func _k() -> float:
-	return maxf(size.y, 1.0) / 600.0
+	return UiScale.by_height(size)
 
 
 func kv() -> Vector2:
@@ -66,7 +66,7 @@ func _origin() -> Vector2:
 
 
 func font_px(i: int) -> int:
-	return maxi(6, int(round(800.0 * _k() * FONT_EM[i])))
+	return UiScale.font_px(_k(), i)
 
 
 func _layout() -> Dictionary:

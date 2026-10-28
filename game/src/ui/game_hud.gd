@@ -1215,7 +1215,7 @@ func _quick_ok(save := true) -> bool:
 
 
 func _draw_esc_hints() -> void:
-	var k := _esc_hints.size.y / 600.0
+	var k := UiScale.by_height(_esc_hints.size)
 	var A := PadInput.button_of("interact")
 	PadPrompts.draw_hints(_esc_hints, [[A, RemakeText.t("Select")], [PadInput.button_of("cancel"), RemakeText.t("Resume")],
 		[PadInput.button_of("pause"), OptionsPanel._t("string action_quicksave", "Quick save"), _quick_ok(true)],
@@ -1285,16 +1285,12 @@ func portrait() -> bool:
 
 ## Unit panel and minimap scale (screen px per 800×600 unit).
 func top_scale() -> float:
-	var vs := ui_size()
-	var k := vs.y / 600.0
-	return minf(k, vs.x / (185.0 * 2.0 + 10.0)) if vs.x < vs.y else k
+	return UiScale.by_height_within(ui_size(), 185.0 * 2.0 + 10.0)
 
 
 ## Message log scale: its frame (175..625) across the width.
 func log_scale() -> float:
-	var vs := ui_size()
-	var k := vs.y / 600.0
-	return minf(k, vs.x / 452.0) if vs.x < vs.y else k
+	return UiScale.by_height_within(ui_size(), 452.0)
 
 
 ## Where the message log's y 0 sits (0 in the original layout).

@@ -35,7 +35,7 @@ func _cursor_tex(kind: String, frame: int) -> Texture2D:
 func _draw() -> void:
 	if field == null or not field.call("overlay_visible"):
 		return
-	var k := size.y / 600.0
+	var k := UiScale.by_height(size)
 	var mark: Dictionary = field.call("marker")
 	if not mark.is_empty():
 		var feet: Vector2 = mark.feet

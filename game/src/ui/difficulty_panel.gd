@@ -103,8 +103,8 @@ func _cancel() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not visible or _mods.visible or not (event is InputEventKey and event.pressed): return
-	if event.keycode == KEY_ESCAPE: _cancel()
-	elif event.keycode in [KEY_ENTER, KEY_KP_ENTER]: _accept()
+	if UiInput.is_cancel(event): _cancel()
+	elif UiInput.is_confirm(event): _accept()
 	else: return
 	get_viewport().set_input_as_handled()
 

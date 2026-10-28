@@ -1,5 +1,8 @@
 """Make sure the release guard itself cannot turn missing/failed checks green."""
 import importlib.util
+import os
+import sys
+import time
 import json
 from pathlib import Path
 import subprocess
@@ -127,7 +130,7 @@ class PackagedFixtureTests(unittest.TestCase):
             engine.write_bytes(b"engine")
             engine.with_suffix(".pck").write_bytes(b"pack")
 
-            def run(command, **kwargs):
+            def run(command, log, env, timeout, *extra, **options):
                 script = Path(next(arg.split("=", 1)[1] for arg in command
                                    if arg.startswith("--suite-script=")))
                 base = script.parent / "../benchmarks/base.gd"
@@ -141,9 +144,9 @@ class PackagedFixtureTests(unittest.TestCase):
                             "script": str(script), "profile": {
                                 "confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
                                 "volume_stream": 0, "volume_voice": 0}}
-                kwargs["stdout"].write("GAMEPLAY_SUITE_START " + json.dumps(expected) +
-                                       "\nPROBE 3 checks 0 failures\n")
-                return subprocess.CompletedProcess(command, 0)
+                Path(log).write_text("GAMEPLAY_SUITE_START " + json.dumps(expected) +
+                                     "\nPROBE 3 checks 0 failures\n")
+                return 0, None
 
             args = ["check_regressions.py", "--packaged", "--engine", str(engine),
                     "--base-data", str(root), "--output", str(root / "results")]
@@ -151,7 +154,7 @@ class PackagedFixtureTests(unittest.TestCase):
                     patch.object(runner.sys, "argv", args), \
                     patch.object(runner.shutil, "which", side_effect=lambda value: value), \
                     patch.object(runner.subprocess, "check_output", return_value="source\n"), \
-                    patch.object(runner.subprocess, "run", side_effect=run):
+                    patch.object(runner, "run_program", side_effect=run):
                 self.assertEqual(runner.main(), 0)
             result = json.loads((root / "results/results.json").read_text())
             self.assertTrue(result["passed"])
@@ -181,7 +184,7 @@ class SourceFixtureTests(unittest.TestCase):
             engine.write_bytes(b"engine")
             seen = {}
 
-            def run(command, **kwargs):
+            def run(command, log, env, timeout, *extra, **options):
                 script = Path(next(arg.split("=", 1)[1] for arg in command
                                    if arg.startswith("--suite-script=")))
                 suite_root = Path(next(arg.split("=", 1)[1] for arg in command
@@ -199,9 +202,9 @@ class SourceFixtureTests(unittest.TestCase):
                             "script": str(script), "profile": {
                                 "confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
                                 "volume_stream": 0, "volume_voice": 0}}
-                kwargs["stdout"].write("GAMEPLAY_SUITE_START " + json.dumps(expected) +
-                                       "\nPROBE 1 checks 0 failures\n")
-                return subprocess.CompletedProcess(command, 0)
+                Path(log).write_text("GAMEPLAY_SUITE_START " + json.dumps(expected) +
+                                     "\nPROBE 1 checks 0 failures\n")
+                return 0, None
 
             args = ["check_regressions.py", "--engine", str(engine),
                     "--base-data", str(root), "--output", str(root / "results")]
@@ -209,7 +212,7 @@ class SourceFixtureTests(unittest.TestCase):
                     patch.object(runner.sys, "argv", args), \
                     patch.object(runner.shutil, "which", side_effect=lambda value: value), \
                     patch.object(runner.subprocess, "check_output", return_value="source\n"), \
-                    patch.object(runner.subprocess, "run", side_effect=run):
+                    patch.object(runner, "run_program", side_effect=run):
                 self.assertEqual(runner.main(), 0)
             self.assertIn("script", seen, "the engine was never started")
             result = json.loads((root / "results/results.json").read_text())
@@ -220,3 +223,97 @@ class SourceFixtureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SharedProcessTests(unittest.TestCase):
+    """Both runners take their process rules from tools/parity/process.py."""
+
+    def test_both_runners_share_process_control(self):
+        import gameplay
+        import process
+        self.assertIs(runner.run_program, process.run_program)
+        self.assertIs(gameplay.run_program, process.run_program)
+        self.assertIs(runner.parse_summary, gameplay.parse_summary)
+        self.assertIs(runner.DIAGNOSTIC, gameplay.DIAGNOSTIC)
+        focused = runner.engine_arguments("/qualified/game", {"mode": "rendered"}, packaged=True)
+        catalog = gameplay.engine_argv("/qualified/game", "/runtime", "rendered")
+        self.assertEqual(focused[focused.index("--resolution") + 1], catalog[catalog.index("--resolution") + 1],
+                         "the two runners must open the same rendered window")
+        self.assertEqual(focused[focused.index("--resolution") + 1], process.RENDERED_RESOLUTION)
+
+    def test_case_may_declare_its_own_resolution(self):
+        command = runner.engine_arguments("/qualified/game", {"mode": "rendered", "resolution": "1920x1080"}, packaged=True)
+        self.assertEqual(command[command.index("--resolution") + 1], "1920x1080")
+
+    def test_script_error_stops_the_process_early(self):
+        import process
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "run.log"
+            script = "import sys,time\nprint('SCRIPT ERROR: boom', flush=True)\ntime.sleep(30)\n"
+            started = time.monotonic()
+            code, error = process.run_program([sys.executable, "-c", script], log, dict(os.environ), timeout=20)
+            self.assertLess(time.monotonic() - started, 10, "a diagnostic must end the process at once")
+            self.assertIn("Runtime/script error", error)
+            self.assertNotEqual(code, 0)
+
+    def test_tolerated_diagnostic_does_not_stop_the_process(self):
+        """The virtual-monitor refresh-rate error ends no rendered test; the verdict judges it with its context."""
+        import process
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "run.log"
+            script = ("import sys,time\nprint('ERROR: Parameter \"monitors\" is null.', flush=True)\n"
+                      "print('   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)', flush=True)\n"
+                      "time.sleep(1.5)\nprint('DONE 3 checks 0 failures')\n")
+            code, error = process.run_program([sys.executable, "-c", script], log, dict(os.environ), timeout=20,
+                                              tolerate=runner.INFRASTRUCTURE)
+            self.assertIsNone(error)
+            self.assertEqual(code, 0)
+            self.assertIn("DONE 3 checks", log.read_text())
+            # Without the tolerance the same line ends the process, as any diagnostic does.
+            code, error = process.run_program([sys.executable, "-c", script.replace("1.5", "30")], log,
+                                              dict(os.environ), timeout=20)
+            self.assertIn("Runtime/script error", error)
+
+    def test_only_complete_lines_are_judged(self):
+        """A tolerated line written in two pieces must not be mistaken for a failure."""
+        import process
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "run.log"
+            script = ("import sys,time\nsys.stdout.write('ERROR: Parameter'); sys.stdout.flush()\ntime.sleep(0.6)\n"
+                      "sys.stdout.write(' \"monitors\" is null.\\n'); sys.stdout.flush()\ntime.sleep(0.6)\n")
+            code, error = process.run_program([sys.executable, "-c", script], log, dict(os.environ), timeout=20,
+                                              tolerate=runner.INFRASTRUCTURE)
+            self.assertIsNone(error)
+            self.assertEqual(process.diagnostic_in('x\nSCRIPT ERROR: boom\n', runner.INFRASTRUCTURE), "SCRIPT ERROR: boom")
+            self.assertIsNone(process.diagnostic_in('ERROR: Parameter "monitors" is null.\n', runner.INFRASTRUCTURE))
+
+    def test_timeout_stops_the_process(self):
+        import process
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "run.log"
+            code, error = process.run_program([sys.executable, "-c", "import time; time.sleep(30)"], log,
+                                              dict(os.environ), timeout=1)
+            self.assertIn("exceeded 1 seconds", error)
+
+    def test_mirror_file_is_scanned_for_diagnostics(self):
+        import process
+        with tempfile.TemporaryDirectory() as directory:
+            log = Path(directory) / "run.log"
+            remote = Path(directory) / "stdout.log"
+            script = ("import time,sys\nprint('GPU Lab job: abc', flush=True)\ntime.sleep(0.5)\n"
+                      f"open({str(remote)!r},'w').write('ERROR: remote failure\\n')\ntime.sleep(30)\n")
+            started = time.monotonic()
+            code, error = process.run_program([sys.executable, "-c", script], log, dict(os.environ), timeout=20,
+                                              mirror=lambda text: remote if "GPU Lab job: abc" in text else None)
+            self.assertLess(time.monotonic() - started, 10)
+            self.assertIn("Runtime/script error", error)
+
+    def test_rendered_verdict_reports_runner_error(self):
+        case = {"mode": "rendered", "summary": "PROBE", "min_checks": 1}
+        result = runner.verdict("PROBE 2 checks 0 failures\n", case, 130, "Test exceeded 5 seconds")
+        self.assertFalse(result["passed"])
+        self.assertIn("Test exceeded 5 seconds", result["errors"])
+
+    def test_focused_runner_offers_parallel_jobs(self):
+        self.assertEqual(runner.jobs_argument("auto"), "auto")
+        self.assertEqual(runner.jobs_argument("3"), 3)

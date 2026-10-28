@@ -137,12 +137,15 @@ func _gui_input(e: InputEvent) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not (e is InputEventKey and e.pressed):
 		return
-	match e.keycode:
-		KEY_ENTER, KEY_KP_ENTER: _answer(true)
-		KEY_ESCAPE:
-			if esc_closes:
-				_dismiss()
-			else:
-				_answer(false)
-		_: return
+	if UiInput.is_cancel(e):
+		if esc_closes:
+			_dismiss()
+		else:
+			_answer(false)
+	elif UiInput.is_confirm(e):
+		_answer(true)
+	else:
+		match e.keycode:
+			_:
+				return
 	get_viewport().set_input_as_handled()

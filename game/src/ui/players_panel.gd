@@ -66,7 +66,7 @@ func close() -> void:
 
 # Even scale (the whole panel fits a narrow screen too), centred.
 func _k() -> float:
-	return minf(maxf(size.y, 1.0) / 600.0, maxf(size.x, 1.0) / 800.0)
+	return UiScale.fit(size)
 
 
 func kv() -> Vector2:
@@ -78,7 +78,7 @@ func _origin() -> Vector2:
 
 
 func font_px(i: int) -> int:
-	return maxi(9, int(round(800.0 * _k() * FONT_EM[i])))
+	return UiScale.font_px(_k(), i, 9)
 
 
 ## [pid, name, colour, ping text] sorted by player slot, the host first.
@@ -254,7 +254,7 @@ func box() -> MessageBox:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or not (e is InputEventKey and e.pressed) or MessageBox.is_up(_box):
 		return
-	if e.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(e):
 		get_viewport().set_input_as_handled()
 		press("close")
 
@@ -288,7 +288,7 @@ class EscButton extends Interface800:
 		visible = false
 
 	func _k() -> float:
-		return minf(maxf(size.y, 1.0) / 600.0, maxf(size.x, 1.0) / 800.0)
+		return UiScale.fit(size)
 
 	func kv() -> Vector2:
 		return Vector2(_k(), _k())
@@ -297,7 +297,7 @@ class EscButton extends Interface800:
 		return (size - Vector2(800.0, 600.0) * _k()) * 0.5
 
 	func font_px(i: int) -> int:
-		return maxi(9, int(round(800.0 * _k() * FONT_EM[i])))
+		return UiScale.font_px(_k(), i, 9)
 
 	## Where the button is on the screen (tools click it).
 	func rect() -> Rect2:

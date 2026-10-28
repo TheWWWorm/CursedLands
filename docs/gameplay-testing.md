@@ -176,6 +176,12 @@ sharing the private display. Ctrl-C or a runner error stops every running
 program. The report keeps the selection order. Private
 player saves and preferences are neither copied nor changed.
 
+Process control (ending a program on its first runtime diagnostic or at its
+timeout, the summary-line contract and the 1280×800 rendered window) lives in
+[`tools/parity/process.py`](../tools/parity/process.py) and is shared with the
+focused runner, so the two cannot drift; `tools/raise_min_checks.py` raises
+`min_checks` from green reports and keeps shared registrations at one threshold.
+
 The bootstrap preserves the ordinary `--tool` scene layout so a separate
 simulation worker uses the same RPC paths as its frontend. Real-time programs
 retain their normal clock; they are not forced through Godot's fixed-FPS

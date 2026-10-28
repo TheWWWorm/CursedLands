@@ -594,7 +594,7 @@ func _layout() -> void:
 	# Base breakpoints on the available viewport, not a container minimum that
 	# can still carry the previous wide layout after the window is resized.
 	var available := get_viewport_rect().size-Vector2(28,28)
-	var scale := clampf(available.y / 900.0, 0.85, 3.0)
+	var scale := UiScale.reading(available.y)
 	if not is_equal_approx(scale, _ui_scale):
 		_ui_scale = scale
 		theme.default_font_size = roundi(16 * scale)
@@ -610,8 +610,19 @@ func _layout() -> void:
 		_status.add_theme_font_size_override("font_size", roundi(14 * scale))
 		_article.add_theme_font_size_override("normal_font_size", roundi(18 * scale))
 		_article.add_theme_font_size_override("bold_font_size", roundi(18 * scale))
+		for label: Label in [_page_subtitle, _action_status, _version_title, _model_title, _builder_status]:
+			label.add_theme_font_size_override("font_size", roundi(13 * scale))
+		# Toolbar, narrow-mode controls, sidebar buttons and search controls
+		# carry the theme's 16 px button text at the reading scale.
+		for node: Node in _actions.get_children() + _compact_controls.get_children() + _sidebar.find_children("*", "Button", true, false):
+			if node is Button and not node.get_meta("wiki_result", false):
+				node.add_theme_font_size_override("font_size", roundi(16 * scale))
+		for control: Control in [_query, _category, _subcategory]:
+			control.add_theme_font_size_override("font_size", roundi(16 * scale))
+		_camp_constructor.set_ui_scale(scale)
 		for button: Node in find_children("*", "Button", true, false):
-			if not button.get_meta("map_pin",false) and not button.get_meta("equipment_slot",false) and not button.get_meta("workbench_slot",false):button.custom_minimum_size.y = roundi((65 if button.get_meta("wiki_result",false) else 34)*scale)
+			if button.get_meta("rune_piece", false) or button.get_meta("rune_family", false): _scale_workbench_button(button)
+			elif not button.get_meta("map_pin",false) and not button.get_meta("equipment_slot",false) and not button.get_meta("workbench_slot",false) and not button.get_meta("spell_choice",false):button.custom_minimum_size.y = roundi((65 if button.get_meta("wiki_result",false) else 34)*scale)
 		if not html.is_empty(): _render_article()
 	var narrow := available.x / scale < 850
 	_compact_controls.visible=narrow
@@ -655,7 +666,7 @@ func _input(event: InputEvent) -> void:
 	# LineEdit consumes Escape during GUI dispatch. Handle the modal's close
 	# before that dispatch, while letting an open choice popup close first.
 	if not visible or not event is InputEventKey or not event.pressed or event.echo: return
-	if event.keycode != KEY_ESCAPE: return
+	if not UiInput.is_cancel(event): return
 	for child in get_children():
 		if child is Window and child.visible:return
 	if _category.get_popup().visible or _subcategory.get_popup().visible or _runes.get_popup().visible or _versions.get_popup().visible: return
@@ -666,7 +677,7 @@ func _input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not visible or not event is InputEventKey or not event.pressed or event.echo: return
-	if event.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(event):
 		close()
 	elif event.alt_pressed and event.keycode == KEY_LEFT:
 		history(-1)
@@ -701,6 +712,16 @@ func pad_targets() -> Array:
 		rect = rect.intersection(view)
 		if rect.has_area(): targets.append({"rect": rect, "id": "wiki_page_%d" % index})
 	return targets
+
+
+## Rune family tabs and rune pieces are rebuilt per spell; size them for the
+## current reading scale (13 px labels, 14 px buttons and 44 px pieces at 1×).
+func _scale_workbench_button(button: Button) -> void:
+	var scale := maxf(_ui_scale, 0.85)
+	button.add_theme_font_size_override("font_size", roundi(14 * scale))
+	if button.get_meta("rune_piece", false):
+		button.custom_minimum_size = Vector2(44, 44) * scale
+		button.add_theme_constant_override("icon_max_width", roundi(32 * scale))
 
 
 func _button(parent: Control, text: String, callback: Callable, tip := "") -> Button:
@@ -841,7 +862,7 @@ func _refresh_workbench(spell: String) -> void:
 	_assembly.hide();_rune_families.hide();_rune_palette.hide();_item_spells.hide()
 	for child in _rune_families.get_children():_rune_families.remove_child(child);child.queue_free()
 	for family: Array in [["e","Power"],["m","Stamina cost"],["d","Duration"],["r","Range"],["a","Area"],["t","Targets"],["f","Target filter"],["i","Special"]]:
-		var tab := Button.new();tab.text=RemakeText.t(family[1]);tab.add_theme_font_size_override("font_size",14);tab.toggle_mode=true;tab.button_pressed=_rune_group==family[0]
+		var tab := Button.new();tab.text=RemakeText.t(family[1]);tab.set_meta("rune_family",true);_scale_workbench_button(tab);tab.toggle_mode=true;tab.button_pressed=_rune_group==family[0]
 		tab.pressed.connect(func():_rune_group=family[0];_source.read(func():_refresh_workbench(spell)))
 		_rune_families.add_child(tab)
 	for child in _rune_palette.get_children():_rune_palette.remove_child(child);child.queue_free()
@@ -849,7 +870,7 @@ func _refresh_workbench(spell: String) -> void:
 		if _runes.disabled:break
 		var code := String(_runes.get_item_metadata(i))
 		if not code.begins_with(_rune_group):continue
-		var button := Button.new();button.text=WikiCatalog.rune_title(code);button.icon=WikiWorkbench.piece_icon("rune:"+code);button.expand_icon=true;button.custom_minimum_size=Vector2(44,44);button.add_theme_font_size_override("font_size",14);button.add_theme_constant_override("icon_max_width",32);button.tooltip_text=RemakeText.t("Add rune")+": "+WikiCatalog.rune_title(code)
+		var button := Button.new();button.text=WikiCatalog.rune_title(code);button.icon=WikiWorkbench.piece_icon("rune:"+code);button.expand_icon=true;button.set_meta("rune_piece",true);_scale_workbench_button(button);button.tooltip_text=RemakeText.t("Add rune")+": "+WikiCatalog.rune_title(code)
 		button.pressed.connect(func():_runes.select(i);_with_rune());_rune_palette.add_child(button)
 	var parsed := Spells.parse(spell)
 	var rows := []

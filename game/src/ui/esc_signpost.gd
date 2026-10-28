@@ -216,7 +216,7 @@ func board_at(p: Vector2) -> String:
 
 
 func _unhandled_key_input(e: InputEvent) -> void:
-	if visible and e is InputEventKey and e.pressed and not e.echo and e.keycode == KEY_ESCAPE:
+	if visible and e is InputEventKey and e.pressed and not e.echo and UiInput.is_cancel(e):
 		_sfx("buttons\\menu\\ok.wav")   # Esc (0x1b) plays ok.wav and closes
 		pressed.emit("resume")
 		get_viewport().set_input_as_handled()

@@ -14,6 +14,14 @@ var _detail_text: RichTextLabel
 var _spell_choices: ScrollOptionButton
 var _selector: PanelContainer
 var _identity := ""
+## The encyclopedia's reading scale: the spell selector beside the canvas is
+## ordinary chrome (24 px title, 16 px search and choices, 44 px rows at 1×)
+## and follows it, while the canvas itself scales as one picture.
+var ui_scale := 1.0
+var _selector_title: Label
+var _selector_search: LineEdit
+var _spell_list: VBoxContainer
+var _selector_notes: Array[Label] = []
 
 func setup(magic: String,item: String,catalog: WikiCatalog,board: WikiWorkbench) -> void:
 	var identity := GameData.campaign_id+"|"+magic+"|"+item
@@ -62,10 +70,10 @@ func setup(magic: String,item: String,catalog: WikiCatalog,board: WikiWorkbench)
 		choices.item_selected.connect(func(i):spell_chosen.emit(choices.get_item_metadata(i)));side.add_child(choices);side.move_child(choices,1)
 	_selector=PanelContainer.new();_selector.add_theme_stylebox_override("panel",WikiCampArt.panel_style());add_child(_selector)
 	var selector_body := VBoxContainer.new();selector_body.add_theme_constant_override("separation",12);_selector.add_child(selector_body)
-	var selector_title := Label.new();selector_title.text=RemakeText.t("Spells");selector_title.add_theme_font_size_override("font_size",24);selector_body.add_child(selector_title)
-	var search := LineEdit.new();search.placeholder_text=RemakeText.t("Search spells");selector_body.add_child(search)
+	var selector_title := Label.new();selector_title.text=RemakeText.t("Spells");selector_body.add_child(selector_title);_selector_title=selector_title
+	var search := LineEdit.new();search.placeholder_text=RemakeText.t("Search spells");selector_body.add_child(search);_selector_search=search
 	var list_scroll := ScrollContainer.new();list_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;list_scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL;selector_body.add_child(list_scroll)
-	var spell_list := VBoxContainer.new();spell_list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;spell_list.add_theme_constant_override("separation",8);list_scroll.add_child(spell_list)
+	var spell_list := VBoxContainer.new();spell_list.size_flags_horizontal=Control.SIZE_EXPAND_FILL;list_scroll.add_child(spell_list);_spell_list=spell_list
 	var spell_rows := []
 	if item:spell_rows.append({"name":RemakeText.t("No enchantment"),"magic":""})
 	for record: Dictionary in WikiLibrary.read().records:
@@ -78,12 +86,13 @@ func setup(magic: String,item: String,catalog: WikiCatalog,board: WikiWorkbench)
 		for child in spell_list.get_children():spell_list.remove_child(child);child.queue_free()
 		for row: Dictionary in spell_rows:
 			if WikiSearch.score(search.text,row.name,"")<0:continue
-			var choice := Button.new();choice.text=row.name;choice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;choice.alignment=HORIZONTAL_ALIGNMENT_LEFT;choice.custom_minimum_size.y=44;choice.add_theme_font_size_override("font_size",16);choice.add_theme_constant_override("icon_max_width",32);choice.expand_icon=true
+			var choice := Button.new();choice.text=row.name;choice.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;choice.alignment=HORIZONTAL_ALIGNMENT_LEFT;choice.expand_icon=true;_scale_choice(choice)
 			if row.magic:choice.icon=WikiWorkbench.piece_icon("spell:"+row.magic)
 			choice.pressed.connect(func():spell_chosen.emit(row.magic));spell_list.add_child(choice)
 	search.text_changed.connect(func(_text):filter_list.call());filter_list.call()
 	var selected := Label.new();selected.text=WikiCatalog.spell_title(magic) if magic else RemakeText.t("No enchantment");selected.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;selector_body.add_child(selected)
 	var count := Label.new();count.text=RemakeText.t("Runes: %s / 8") % Spells.mods_of(magic).size();selector_body.add_child(count)
+	_selector_notes=[selected,count];_apply_selector_scale()
 	if item and magic and not Spells.mods_of(magic).is_empty():
 		var installed := GridContainer.new();installed.columns=4;side.add_child(installed);side.move_child(installed,2)
 		var runes := Spells.mods_of(magic)
@@ -145,18 +154,42 @@ func _piece(tray: HBoxContainer,id: String,title: String,frame_name: String) -> 
 	elif not icon.texture:icon.texture=load("res://icons/wiki/rune.svg")
 	return button
 
+## Called by the panel when its reading scale changes; sizes the selector's
+## text and rows and lays the canvas out around the wider selector.
+func set_ui_scale(scale: float) -> void:
+	ui_scale=maxf(scale,0.85)
+	_apply_selector_scale()
+	_layout()
+
+func _scale_choice(choice: Button) -> void:
+	choice.set_meta("spell_choice",true)   # the panel's generic button sizing leaves these rows alone
+	choice.custom_minimum_size.y=roundi(44*ui_scale)
+	choice.add_theme_font_size_override("font_size",roundi(16*ui_scale))
+	choice.add_theme_constant_override("icon_max_width",roundi(32*ui_scale))
+
+func _apply_selector_scale() -> void:
+	if _selector==null or not is_instance_valid(_selector) or _selector_title==null:return
+	_selector_title.add_theme_font_size_override("font_size",roundi(24*ui_scale))
+	_selector_search.add_theme_font_size_override("font_size",roundi(16*ui_scale))
+	for note: Label in _selector_notes:note.add_theme_font_size_override("font_size",roundi(16*ui_scale))
+	for choice: Node in _spell_list.get_children():
+		if choice is Button:_scale_choice(choice)
+	_spell_list.add_theme_constant_override("separation",roundi(8*ui_scale))
+	(_selector.get_child(0) as Control).add_theme_constant_override("separation",roundi(12*ui_scale))
+
 func _layout() -> void:
 	if not _canvas:return
 	var compact := size.x<760
-	var side_by_side := size.x>=1140
+	var selector_width := 320*ui_scale
+	var side_by_side := size.x>=800+selector_width+20
 	_selector.visible=side_by_side
 	if is_instance_valid(_spell_choices):_spell_choices.visible=not side_by_side
-	var extent := size.x-(340 if side_by_side else 0)
-	var factor := extent/800.0
+	var extent := size.x-(selector_width+20.0 if side_by_side else 0.0)
+	var factor := UiScale.by_width(Vector2(extent, 0.0))
 	if not compact:factor=minf(factor,maxf(1.0,(get_viewport_rect().size.y-185.0)/600.0))
 	custom_minimum_size.y=(1120 if compact else 600)*factor
 	_canvas.position.x=(extent-800*factor)/2;_canvas.scale=Vector2.ONE*factor;_canvas.size=Vector2(800,1120 if compact else 600)
-	_selector.position=Vector2(size.x-320,0);_selector.size=Vector2(320,600*factor)
+	_selector.position=Vector2(size.x-selector_width,0);_selector.size=Vector2(selector_width,600*factor)
 	_top.position=Vector2.ZERO;_top.size=Vector2(800,100)
 	_bottom.position=Vector2(0,500);_bottom.size=Vector2(800,100)
 	_board.position=Vector2(200,100);_board.size=Vector2(400,400)

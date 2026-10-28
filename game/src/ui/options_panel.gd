@@ -612,7 +612,7 @@ func _refresh_keys() -> void:
 ## lacks is refused (cancel.wav, still waiting); else ok.wav and the key goes
 ## to the row — after a «key_already_mapped» box when another action has it.
 func _key_pressed(e: InputEventKey) -> void:
-	if e.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(e):
 		_waiting = false
 		_stop_pad_wait()
 		queue_redraw()
@@ -1188,58 +1188,59 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		_key_pressed(e)
 		get_viewport().set_input_as_handled()
 		return
-	match e.keycode:
-		KEY_ESCAPE:
-			if _parent(_group) >= 0:   # remake: a sub-page goes back one level (B too)
-				sound("save\\select")
-				_go_back()
-			else:
-				_cancel()
-		KEY_ENTER, KEY_KP_ENTER:
-			if _rows.has(_sel) and _rows[_sel].kind == "padbtn":   # remake: wait for a controller button
-				sound("messbox\\ok")
-				_start_pad_wait()
-			elif _rows.has(_sel) and _rows[_sel].kind == "keys":   # case 0xd
-				_waiting = true
-				sound("messbox\\ok")
-				queue_redraw()
-			else:
-				_toggle(_sel)
-		KEY_PAGEUP, KEY_PAGEDOWN:
-			sound("save\\select")   # remake: the buttons wrap around (first ↔ last)
-			var i := TAB_ORDER.find(_tab()) + (-1 if e.keycode == KEY_PAGEUP else 1)
-			_show_group(TAB_ORDER[posmod(i, TAB_ORDER.size())])
-		KEY_LEFT, KEY_RIGHT:
-			if _rows.has(_sel) and _rows[_sel].get("disabled", false): return
-			if _rows.has(_sel) and _rows[_sel].kind == "dropdown":
-				_toggle(_sel)
-			elif _rows.has(_sel) and _rows[_sel].kind == "slider":
-				var row: Dictionary = _rows[_sel]
-				var d := -1 if e.keycode == KEY_LEFT else 1
-				_set_value(row.name, clampi(int(_values.get(row.name, 0)) + d, 0, int(row.max)))
-			elif _rows.has(_sel) and not (_rows[_sel].get("choices", []) as Array).is_empty():
-				# Remake choice rows: Left / Right step through the choices.
-				var row: Dictionary = _rows[_sel]
-				var d := -1 if e.keycode == KEY_LEFT else 1
-				sound("messbox\\ok")
-				_set_value(row.name, posmod(int(_values.get(row.name, 0)) + d, int(row.max)))
-		KEY_UP, KEY_DOWN:
+	if UiInput.is_cancel(e):
+		if _parent(_group) >= 0:   # remake: a sub-page goes back one level (B too)
 			sound("save\\select")
-			var d := -1 if e.keycode == KEY_UP else 1
-			var r := _sel
-			for i in 14:   # remake: wraps around (top ↔ bottom), past empty and grey rows
-				r = posmod(r + d, 14)
-				if _rows.has(r) and not _rows[r].get("disabled", false):
-					_sel = r
-					break
+			_go_back()
+		else:
+			_cancel()
+	elif UiInput.is_confirm(e):
+		if _rows.has(_sel) and _rows[_sel].kind == "padbtn":   # remake: wait for a controller button
+			sound("messbox\\ok")
+			_start_pad_wait()
+		elif _rows.has(_sel) and _rows[_sel].kind == "keys":   # case 0xd
+			_waiting = true
+			sound("messbox\\ok")
 			queue_redraw()
-		_:
-			# a key the screen leaves alone that maps to
-			# tutorial_script shows the screen's tutorial ((1)).
-			if EIKeymap.event_action(e) == "tutorial_script" and not e.echo:
-				_tutorial.show_screen("options", true)
-			else:
-				return
+		else:
+			_toggle(_sel)
+	else:
+		match e.keycode:
+			KEY_PAGEUP, KEY_PAGEDOWN:
+				sound("save\\select")   # remake: the buttons wrap around (first ↔ last)
+				var i := TAB_ORDER.find(_tab()) + (-1 if e.keycode == KEY_PAGEUP else 1)
+				_show_group(TAB_ORDER[posmod(i, TAB_ORDER.size())])
+			KEY_LEFT, KEY_RIGHT:
+				if _rows.has(_sel) and _rows[_sel].get("disabled", false): return
+				if _rows.has(_sel) and _rows[_sel].kind == "dropdown":
+					_toggle(_sel)
+				elif _rows.has(_sel) and _rows[_sel].kind == "slider":
+					var row: Dictionary = _rows[_sel]
+					var d := -1 if e.keycode == KEY_LEFT else 1
+					_set_value(row.name, clampi(int(_values.get(row.name, 0)) + d, 0, int(row.max)))
+				elif _rows.has(_sel) and not (_rows[_sel].get("choices", []) as Array).is_empty():
+					# Remake choice rows: Left / Right step through the choices.
+					var row: Dictionary = _rows[_sel]
+					var d := -1 if e.keycode == KEY_LEFT else 1
+					sound("messbox\\ok")
+					_set_value(row.name, posmod(int(_values.get(row.name, 0)) + d, int(row.max)))
+			KEY_UP, KEY_DOWN:
+				sound("save\\select")
+				var d := -1 if e.keycode == KEY_UP else 1
+				var r := _sel
+				for i in 14:   # remake: wraps around (top ↔ bottom), past empty and grey rows
+					r = posmod(r + d, 14)
+					if _rows.has(r) and not _rows[r].get("disabled", false):
+						_sel = r
+						break
+				queue_redraw()
+			_:
+				# a key the screen leaves alone that maps to
+				# tutorial_script shows the screen's tutorial ((1)).
+				if EIKeymap.event_action(e) == "tutorial_script" and not e.echo:
+					_tutorial.show_screen("options", true)
+				else:
+					return
 	get_viewport().set_input_as_handled()
 
 

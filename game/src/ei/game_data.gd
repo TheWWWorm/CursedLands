@@ -1135,7 +1135,7 @@ class TipLayer extends CanvasLayer:
 
 	func _fs() -> int:
 		if _compact(): return roundi(16 * _kv().y)
-		return maxi(6, int(round(get_viewport().get_visible_rect().size.x * Interface800.FONT_EM[0])))
+		return UiScale.font_px_for_width(get_viewport().get_visible_rect().size.x, 0)
 
 	func _line_h(f: Font, fs: int, s: String) -> float:
 		return f.get_string_size(s if s != "" else "w", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).y

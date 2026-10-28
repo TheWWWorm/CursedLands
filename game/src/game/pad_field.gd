@@ -875,7 +875,7 @@ func _input(e: InputEvent) -> void:
 		elif e is InputEventMouseButton and e.pressed:
 			if e.button_index == MOUSE_BUTTON_LEFT: finish_keyboard_aim()
 			elif e.button_index == MOUSE_BUTTON_RIGHT: close_wheel()
-		elif e is InputEventKey and e.pressed and e.keycode == KEY_ESCAPE:
+		elif UiInput.is_cancel(e):
 			close_wheel()
 		get_viewport().set_input_as_handled()
 

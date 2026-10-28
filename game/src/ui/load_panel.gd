@@ -567,20 +567,24 @@ func _process(frame_dt: float) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or is_instance_valid(_box) or not (e is InputEventKey and e.pressed):
 		return
-	match e.keycode:
-		KEY_F2: _begin_rename()
-		KEY_ENTER, KEY_KP_ENTER: _accept()
-		KEY_ESCAPE: _cancel()
-		KEY_DELETE:
-			if (save_mode or _renaming) and _single(): _edit_key(e)
-			else: _delete()
-		KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
-			sound("save\\select")
-			var d := {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -ROWS, KEY_PAGEDOWN: ROWS}[e.keycode] as int
-			_select(sel + d, e.shift_pressed)
-		_:
-			if not _edit_key(e):
-				return
+	if UiInput.is_cancel(e):
+		_cancel()
+	elif UiInput.is_confirm(e):
+		_accept()
+	else:
+		match e.keycode:
+			KEY_F2:
+				_begin_rename()
+			KEY_DELETE:
+				if (save_mode or _renaming) and _single(): _edit_key(e)
+				else: _delete()
+			KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
+				sound("save\\select")
+				var d := {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -ROWS, KEY_PAGEDOWN: ROWS}[e.keycode] as int
+				_select(sel + d, e.shift_pressed)
+			_:
+				if not _edit_key(e):
+					return
 	get_viewport().set_input_as_handled()
 
 

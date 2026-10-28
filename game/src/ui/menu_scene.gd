@@ -367,7 +367,7 @@ func board_rect(part: String) -> Rect2:
 	for i in rr.size():
 		if REG[i][1] == part:
 			var vs := get_viewport().get_visible_rect().size
-			var k := vs.y / 600.0
+			var k := UiScale.by_height(vs)
 			var r: Rect2 = rr[i]
 			return Rect2(Vector2(vs.x * 0.5 + (r.position.x - 400.0) * k, r.position.y * k), r.size * k)
 	return Rect2()

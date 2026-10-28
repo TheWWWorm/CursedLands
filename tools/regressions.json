@@ -1291,7 +1291,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 10
+      "min_checks": 25
     },
     {
       "id": "local_host_clock_resync",
@@ -1858,7 +1858,7 @@
       "args": [
         "--cliff-composed"
       ],
-      "min_checks": 21
+      "min_checks": 24
     },
     {
       "id": "terrain_sun_shadows",
@@ -3110,6 +3110,8 @@
       "summary": "FOOTHILLS_ACTOR_CLOCK",
       "contract": "Actual Foothills mana recovery and Eagle Sight countdown follow normal/accelerated solo clock through repeated loads.",
       "issues": [
+        62,
+        116,
         119
       ],
       "data": "base",
@@ -3202,7 +3204,7 @@
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 300,
+      "min_checks": 561,
       "rendering_method": "gl_compatibility"
     },
     {
@@ -3214,7 +3216,7 @@
       "data": "base",
       "mode": "headless",
       "args": [],
-      "min_checks": 90,
+      "min_checks": 154,
       "timeout": 300
     },
     {
@@ -3979,6 +3981,7 @@
       "summary": "FOOTHILLS_CAMPAIGN_FLOW",
       "contract": "Production new campaign, Ruins-to-Foothills travel, save, menu return and a fresh worker load retain distinct normal/fast simulation rates.",
       "issues": [
+        116,
         119
       ],
       "data": "base",
@@ -4558,6 +4561,179 @@
       "args": [],
       "min_checks": 7,
       "timeout": 300
+    },
+    {
+      "id": "ui_scale_rules",
+      "script": "tools/tests/ui_scale_rules.gd",
+      "summary": "UI_SCALE_RULES",
+      "contract": "UiScale carries every interface scale rule unchanged from the screens' former formulas, and the encyclopedia sizes its secondary labels, rune family tabs and rune pieces from the reading scale (2.5x or more from 720p to 2160p).",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 100,
+      "timeout": 300
+    },
+    {
+      "id": "ui_cancel_action",
+      "script": "tools/tests/ui_cancel_action.gd",
+      "summary": "UI_CANCEL_ACTION",
+      "contract": "Panels take cancel and confirm from the remake_cancel / remake_confirm InputMap actions through UiInput: Escape and Enter work by default, a synthesized pad key counts, and rebinding the action moves the message box, internet panel and chat line together.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 24,
+      "timeout": 300
+    },
+    {
+      "id": "ui_scale_high_res",
+      "script": "tools/tests/ui_scale_high_res.gd",
+      "summary": "UI_SCALE_HIGH_RES",
+      "contract": "The encyclopedia's subtitle, status, version and model labels, rune family tabs and rune pieces are readable at 1280x720, 2560x1440 and 3840x2160 in EN/RU/DE: fonts and pieces grow at least 2.5x from 720p to 2160p, labels wrap without clipping and stay inside the panel; captures retained.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 129,
+      "timeout": 420
+    },
+    {
+      "id": "pack_alert_recovery",
+      "script": "tools/tests/pack_alert_recovery.gd",
+      "summary": "PACK_ALERT_RECOVERY",
+      "contract": "Authored wolf perception: a deferred corpse investigation and delayed warnings follow the original, and a one-hit unseen kill stays quiet.",
+      "issues": [
+        38
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 12,
+      "timeout": 420
+    },
+    {
+      "id": "ui_real_time",
+      "script": "tools/tests/ui_real_time.gd",
+      "summary": "UI_REAL_TIME",
+      "contract": "Game speed accelerates only the server tick: the animated cursor keeps 8 frames a second at either speed, and a held Space fast-forwards dialogue phrases by keyboard auto-repeat, stopping at the last phrase.",
+      "issues": [
+        107,
+        108
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 8,
+      "timeout": 420
+    },
+    {
+      "id": "memo_equivalence",
+      "script": "tools/tests/issue47_memo_equivalence.gd",
+      "summary": "MEMO_EQUIV",
+      "contract": "ScriptVM condition sharing does not change script behaviour: the same loaded zone traced with sharing on and off yields identical VM state and campaign variables every 50 ticks.",
+      "issues": [
+        47
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--zones=gz1g"
+      ],
+      "min_checks": 1,
+      "timeout": 600
+    },
+    {
+      "id": "pause_menu_ingame_frames",
+      "script": "tools/tests/pause_menu_ingame_frames.gd",
+      "summary": "PAUSE_MENU_INGAME",
+      "contract": "Opening the Esc menu over a running region never composites a frame that shows the settled signpost before its slide has begun.",
+      "issues": [
+        20,
+        89
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 1,
+      "timeout": 420
+    },
+    {
+      "id": "board_slide_frames",
+      "script": "tools/tests/board_slide_frames.gd",
+      "summary": "BOARD_SLIDE_FRAMES",
+      "contract": "The Options, Load and Save boards slide up from below without first showing the previous opening's settled picture from their SubViewport.",
+      "issues": [
+        20,
+        105
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 21,
+      "timeout": 420
+    },
+    {
+      "id": "esc_board_frames",
+      "script": "tools/tests/esc_board_frames.gd",
+      "summary": "ESC_BOARD_FRAMES",
+      "contract": "Boards opened from the in-game Esc menu through GameHUD do not show their previous settled picture before the slide's first pose has rendered; closing a board closes the menu and Esc reopens it.",
+      "issues": [
+        105,
+        111
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 44,
+      "timeout": 420
+    },
+    {
+      "id": "board_render_latency",
+      "script": "tools/tests/board_render_latency.gd",
+      "summary": "ESC_BOARD_FRAMES",
+      "contract": "The Esc-menu board checks hold with deliberately delayed board pictures (slow viewport), the condition reported after the first fix.",
+      "issues": [
+        111
+      ],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 44,
+      "timeout": 420
+    },
+    {
+      "id": "posture_transition_matrix",
+      "script": "tools/tests/posture_transition_matrix.gd",
+      "summary": "POSTURE_TRANSITION_MATRIX",
+      "contract": "Every one-shot (self cast, non-lethal hit, killing blow, damage reaction; targeted and direct) begun from crawl, kneel or stand keeps its displayed posture until it completes, then authority and replica cross into the gait requested during it and end in that gait.",
+      "issues": [
+        109,
+        113,
+        118
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 491,
+      "timeout": 900
+    },
+    {
+      "id": "speed_scaling_matrix",
+      "script": "tools/tests/speed_scaling_matrix.gd",
+      "summary": "SPEED_SCALING_MATRIX",
+      "contract": "World time, Eagle Sight countdown, mana recovery and the hero's walking distance follow the selected normal/fast rate on a fresh load, after a save taken at fast speed is loaded, and after zone travel, with the fast/normal ratio kept distinct.",
+      "issues": [
+        62,
+        98,
+        116,
+        119
+      ],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 51,
+      "timeout": 600
     }
   ]
 }

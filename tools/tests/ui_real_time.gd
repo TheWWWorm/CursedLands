@@ -62,5 +62,5 @@ func _ready() -> void:
 	check(not dialog.visible or dialog._mode != DialogPanel.PLAYING, "a new press goes past the last phrase")
 	game.queue_free(); session.queue_free()
 	await get_tree().process_frame
-	print("RESULT failures=", failures, " checks=", checks)
+	print("UI_REAL_TIME ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)

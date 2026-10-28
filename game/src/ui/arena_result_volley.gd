@@ -68,7 +68,7 @@ func present(starts: PackedVector2Array, target: Vector2, damage: int, friendly_
 		delay += 0.065
 	# Use the actual combat atlas, colours, sizing, drift and fade. Leave room
 	# for the native up/right motion beside the standings at the screen edge.
-	var glyph_scale := maxf(1.5, minf(size.x / 800.0, size.y / 600.0))
+	var glyph_scale := maxf(1.5, UiScale.fit(size))
 	var at := target - Vector2(30, 12) * scale_factor
 	at.x = minf(at.x, size.x - (124 + str(damage).length() * 4) * glyph_scale)
 	at.y = maxf(at.y, 106 * glyph_scale)

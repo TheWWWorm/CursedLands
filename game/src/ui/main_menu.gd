@@ -295,7 +295,7 @@ func _process(_dt: float) -> void:
 
 func _layout_campaign_bar() -> void:
 	var safe := Portability.safe_rect(size)
-	var ui_scale := maxf(0.75, minf(safe.size.x / 1280.0, safe.size.y / 800.0))
+	var ui_scale := maxf(0.75, UiScale.fit_frame(safe.size, 1280.0, 800.0))
 	var width := minf(600, maxf(0, safe.size.x / ui_scale - 32))
 	var centre := _scene.pole_center_x() if _scene and _scene.is_inside_tree() else safe.get_center().x
 	_campaign_bar.scale = Vector2.ONE * ui_scale

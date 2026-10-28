@@ -1729,7 +1729,7 @@ func _input(event: InputEvent) -> void:
 					_focus_modal()
 					get_viewport().set_input_as_handled()
 					return
-	if _item_uid > 0 and ((event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
+	if _item_uid > 0 and (UiInput.is_cancel(event) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
 		_cancel_item()
 		get_viewport().set_input_as_handled()
 		return
@@ -1757,7 +1757,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_SPACE and run.stage == "fight" and not _modal_layer.visible:
 			_toggle_pause(); get_viewport().set_input_as_handled()
-		elif event.keycode == KEY_ESCAPE:
+		elif UiInput.is_cancel(event):
 			if _modal_layer.visible: _close_modal()
 			elif selected_uid > 0 or not _hover_key.is_empty() or _inspector.visible:
 				_dismissed_hover = _hover_key

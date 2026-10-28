@@ -82,6 +82,24 @@ class RegistryTests(unittest.TestCase):
                             f'{row["id"]}: no script in the closure prints {row["marker"]}')
 
 
+    def test_same_registration_keeps_one_threshold(self):
+        """A script registered in both registries with the same arguments,
+        campaign and display must demand the same minimum check count;
+        tools/raise_min_checks.py keeps them together."""
+        campaign = {"base": "cursed_lands", "astral": "lost_in_astral"}
+        catalog = {}
+        for row in catalog_entries():
+            key = (row["script"], tuple(row.get("args", [])), row["campaign"], row.get("display", "headless"))
+            catalog.setdefault(key, []).append(row)
+        drift = []
+        for case in focused_cases():
+            key = (case["script"], tuple(case.get("args", [])), campaign[case["data"]], case["mode"])
+            for row in catalog.get(key, []):
+                if row["min_checks"] != case["min_checks"]:
+                    drift.append(f'{case["id"]} min_checks {case["min_checks"]} vs {row["id"]} {row["min_checks"]}')
+        self.assertEqual(drift, [])
+
+
 class ScriptSourceTests(unittest.TestCase):
     def test_imports_resolve(self):
         missing = []

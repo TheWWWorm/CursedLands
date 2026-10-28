@@ -60,6 +60,21 @@ register what else still passes, delete the six byte-identical two-line stubs
 equal to `arena_alliances`), allowlist helpers, and lint that every script is
 registered, a base of a registered script, or allowlisted with a reason.
 
+*Done (follow-up, 2026-10-28):* the rule is enforced.
+`tools/check_issue_coverage.py` (CI and `tools/tests/test_issue_coverage.py`)
+requires every issue the changelog links to appear in a registered case's
+`issues` list or in `tools/issue_coverage_exceptions.json` with a reason; the
+69 issues fixed before the registries recorded links are seeded there and an
+entry must go when a test covers it. The reopened families each have a matrix
+test now instead of one cell per report: `posture_transition_matrix` (every
+one-shot × start posture × requested gait × offset, authority and replica;
+#109/#113/#118) and `speed_scaling_matrix` (world time, Eagle Sight, mana and
+walking at both speeds on load, after a fast save is reloaded and after travel;
+#62/#98/#116/#119). The written-but-unregistered tests for #20/#38/#47/#89/
+#105/#107/#108/#111 are registered (`pack_alert_recovery`, `ui_real_time`,
+`memo_equivalence`, `pause_menu_ingame_frames`, `board_slide_frames`,
+`esc_board_frames`, `board_render_latency`).
+
 ## 4. Two runners with diverging process control
 
 80 focused cases duplicate catalog entries with the same script and
@@ -72,6 +87,16 @@ tag, or at least share `run_program`. Also, 133 of 843 registrations set
 `arena_item_first_click` 10 of 93), so a test that skips most of its body
 still passes; record the last green count and lint
 `min_checks >= 0.9 × last_green`.
+
+*Done (follow-up, 2026-10-28):* both runners share
+`tools/parity/process.py` (diagnostic patterns, summary parser, process-group
+control that ends a test on the first diagnostic or at its timeout, the same
+1280×800 window). The focused runner gained `--jobs`, the catalog's memory and
+network gates, and for GPU Lab jobs follows the job's live `stdout.log` so a
+diagnostic cancels the job and the complete log replaces the wrapper's 64 KiB
+tail. `tools/raise_min_checks.py --apply` raises `min_checks` to 90% of a
+green run's count and `test_registries.py` fails when the same registration
+carries two thresholds. Folding the manifest into the catalog is still open.
 
 ## 5. The script-only platform configuration is never run
 
@@ -114,6 +139,21 @@ navigation hooks and `options_panel.pad_targets()` returns an empty list. A
 shared `UiScale` helper (the SettingsDialog surface-scale-plus-oversampling
 pattern already does this well) and a `cancel`/`confirm` action pair are the
 fixes.
+
+*Done (follow-up, 2026-10-28):* `game/src/ui/ui_scale.gd` holds the scale
+rules (`fit`, `by_height`, `by_width`, `by_min_side`, `by_height_within`,
+`font_px`, `dialog`, `reading`, …) and every screen's `_k()`/`font_px()` names
+one of them; `game/src/ui/ui_input.gd` reads the `remake_cancel` /
+`remake_confirm` InputMap actions declared in `project.godot`, and the 22
+files compare through it. `tools/tests/test_ui_conventions.py` lints both.
+The encyclopedia's secondary labels, toolbar buttons, sidebar search
+controls, rune family tabs, rune pieces and the spell constructor's selector
+follow the reading scale (`ui_scale_rules`, `ui_scale_high_res` with EN/RU/DE
+captures at 720p/1440p/2160p; the first 2160p capture showed the toolbar and
+selector still at 1×, which the review had not listed); the
+`network_panel.gd` lines turned out to be
+inside an OptionButton popup that already inherits the canvas scale. Gamepad
+navigation hooks for the five panels remain open.
 
 ## 8. Gameplay code structure
 

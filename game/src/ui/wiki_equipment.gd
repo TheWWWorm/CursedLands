@@ -69,7 +69,7 @@ func _make_slot(slot: String) -> void:
 func _layout() -> void:
 	if not _canvas:return
 	var compact := size.x<760
-	var factor := size.x/800.0
+	var factor := UiScale.by_width(size)
 	if not compact:factor=minf(factor,maxf(1.0,(get_viewport_rect().size.y-200.0)/600.0))
 	custom_minimum_size.y=(1400 if compact else 600)*factor
 	_canvas.scale=Vector2.ONE*factor;_canvas.position.x=(size.x-800*factor)/2;_canvas.size=Vector2(800,1400 if compact else 600)

@@ -395,7 +395,7 @@ static func _str(key: String) -> String:
 # ------------------------------------------------------------------ layout
 
 func _k() -> float:
-	return minf(size.x / 800.0, size.y / 600.0)
+	return UiScale.fit(size)
 
 
 func _kv() -> Vector2:
@@ -548,7 +548,7 @@ func _label(r: Rect2, s: String, col: Color, align := HORIZONTAL_ALIGNMENT_LEFT)
 ##  and the ScrollText): Times New Roman
 ## 0.01867 × fitted interface width em.
 func _font_px() -> int:
-	return maxi(6, int(round(800.0 * _k() * Interface800.FONT_EM[1])))
+	return UiScale.font_px(_k(), 1)
 
 
 # ------------------------------------------------------------------ input
@@ -683,7 +683,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if mode != "travel":
 		if e.echo:
 			return
-		if e.keycode in [KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE]:
+		if UiInput.is_confirm(e) or UiInput.is_cancel(e):
 			close("tutorial\\ok")
 			get_viewport().set_input_as_handled()
 			return
@@ -693,17 +693,18 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			close("messbox\\ok")
 			get_viewport().set_input_as_handled()
 			return
-	match e.keycode:
-		KEY_ENTER, KEY_KP_ENTER:
-			travel()
-		KEY_ESCAPE:
-			_sound("messbox\\cancel")
-			back.emit()
-		KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
-			_sound("objectives\\select")
-			_select(sel + {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -5, KEY_PAGEDOWN: 5}[e.keycode])
-		_:
-			return
+	if UiInput.is_cancel(e):
+		_sound("messbox\\cancel")
+		back.emit()
+	elif UiInput.is_confirm(e):
+		travel()
+	else:
+		match e.keycode:
+			KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
+				_sound("objectives\\select")
+				_select(sel + {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -5, KEY_PAGEDOWN: 5}[e.keycode])
+			_:
+				return
 	get_viewport().set_input_as_handled()
 
 

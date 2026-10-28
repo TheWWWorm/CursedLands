@@ -375,7 +375,7 @@ func _layout() -> void:
 			close(false)
 			return
 		var frame := Interface800.fit_rect(Rect2(Vector2.ZERO, size))
-		var k := frame.size.x / 800.0
+		var k := UiScale.by_width(frame.size)
 		scale_factor = k
 		width = 180.0
 		x = frame.position.x + 610.0 * k

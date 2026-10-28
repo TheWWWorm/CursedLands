@@ -812,7 +812,7 @@ func _unhandled_input(e: InputEvent) -> void:
 		return
 	if world == null or hud.blocks_input():
 		return
-	if (touch_aim >= 0 or touch_force != "") and ((e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_RIGHT and e.pressed) or (e is InputEventKey and e.keycode == KEY_ESCAPE and e.pressed)):
+	if (touch_aim >= 0 or touch_force != "") and ((e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_RIGHT and e.pressed) or UiInput.is_cancel(e)):
 		cancel_touch_target()
 		get_viewport().set_input_as_handled()
 		return
@@ -853,28 +853,32 @@ func _unhandled_input(e: InputEvent) -> void:
 		if act:
 			_key_action(act, e.ctrl_pressed or e.alt_pressed, true)
 			return
-		match e.keycode:   # remake-only windows on keys the original leaves free
-			KEY_ENTER, KEY_KP_ENTER:   # co-op chat (NetStatus; Enter is unbound in keyboard.ini)
-				if session.multiplayer_game:
-					hud.chat_line.open()
-					get_viewport().set_input_as_handled()
-			KEY_BACKSPACE:   # a network game's chat list cleared
-				if session.multiplayer_game:
-					hud.clear_chat()
-					get_viewport().set_input_as_handled()
-			KEY_J:
-				hud.toggle_journal()
-			KEY_G:   # remake-only: the side-quest offers have no original entry point
-				if session.shop_available():
-					hud.toggle_side_quests()
-			KEY_B:
-				hud.toggle_inventory()
-			KEY_ESCAPE:
-				if pending_spell:
-					pending_spell = ""
-					hud.set_targeting("")
-				else:
-					hud.toggle_menu()
+		if UiInput.is_cancel(e):
+			if pending_spell:
+				pending_spell = ""
+				hud.set_targeting("")
+			else:
+				hud.toggle_menu()
+		elif UiInput.is_confirm(e):
+			# co-op chat (NetStatus; Enter is unbound in keyboard.ini)
+			if session.multiplayer_game:
+				hud.chat_line.open()
+				get_viewport().set_input_as_handled()
+		else:
+			match e.keycode:   # remake-only windows on keys the original leaves free
+				KEY_BACKSPACE:
+					# a network game's chat list cleared
+					if session.multiplayer_game:
+						hud.clear_chat()
+						get_viewport().set_input_as_handled()
+				KEY_J:
+					hud.toggle_journal()
+				KEY_G:
+					# remake-only: the side-quest offers have no original entry point
+					if session.shop_available():
+						hud.toggle_side_quests()
+				KEY_B:
+					hud.toggle_inventory()
 
 
 ## A burst belongs to its first self-cast, including time awaiting authority.

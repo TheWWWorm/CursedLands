@@ -55,6 +55,6 @@ func _cancel() -> void:
 	queue_free()
 
 func _input(event: InputEvent) -> void:
-	if is_visible_in_tree() and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+	if is_visible_in_tree() and UiInput.is_cancel(event):
 		get_viewport().set_input_as_handled()
 		_cancel()

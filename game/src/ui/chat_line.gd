@@ -45,7 +45,7 @@ func _place() -> void:
 
 
 func _fs() -> int:
-	return maxi(6, int(round(Interface800.canvas_size(self).x * Interface800.FONT_EM[1])))
+	return UiScale.font_px_for_width(Interface800.canvas_size(self).x, 1)
 
 
 ## a character is taken only while the line stays within 0x30c px.
@@ -78,7 +78,7 @@ func _send(t: String) -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if e is InputEventKey and e.pressed and e.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(e):
 		text = ""
 		release_focus()
 		visible = false

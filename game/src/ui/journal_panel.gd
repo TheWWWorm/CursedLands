@@ -58,7 +58,7 @@ func _ready() -> void:
 
 func open() -> void:
 	visible = true
-	var fs := maxi(10, int(round(Interface800.canvas_size(self).x * Interface800.FONT_EM[1])))
+	var fs := UiScale.font_px_for_width(Interface800.canvas_size(self).x, 1, 10)
 	for f in ["normal_font_size", "bold_font_size", "italics_font_size"]:
 		_text.add_theme_font_size_override(f, fs)
 	refresh()

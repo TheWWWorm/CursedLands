@@ -153,7 +153,7 @@ func _kv() -> Vector2:
 
 
 func _k() -> float:
-	return minf(size.x / 800.0, size.y / 600.0)
+	return UiScale.fit(size)
 
 
 func _origin() -> Vector2:
@@ -710,32 +710,34 @@ func _unhandled_input(e: InputEvent) -> void:
 	# phrase so holding it does not close the dialogue and its rewards unseen.
 	if e.echo and not (e.keycode == KEY_SPACE and _mode == PLAYING and _i < _phrases.size() - 1):
 		return
-	match e.keycode:
-		KEY_SPACE:
-			if _mode == PLAYING or _mode == LAST:
-				_click_sound()
-				_next()
-			elif _mode == STAGING:
-				_skip_staging()
-		KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE:
-			if e.keycode != KEY_ESCAPE and hud.game.session.multiplayer_game:
-				hud.chat_line.open()   # Enter opens the chat in a network game
-			elif _mode == PLAYING:
-				_click_sound()
-				_skip()
-			elif _mode == LAST:
-				_click_sound()
-				_finish()
-			elif _mode == TOPICS and e.keycode == KEY_ESCAPE:
-				_topics = {}
-				_topic_list.visible = false
-				visible = false
-		KEY_BACKSPACE:   # network only: clears the chat list
-			if not hud.game.session.multiplayer_game:
+	if UiInput.is_confirm(e) or UiInput.is_cancel(e):
+		if not UiInput.is_cancel(e) and hud.game.session.multiplayer_game:
+			hud.chat_line.open()   # Enter opens the chat in a network game
+		elif _mode == PLAYING:
+			_click_sound()
+			_skip()
+		elif _mode == LAST:
+			_click_sound()
+			_finish()
+		elif _mode == TOPICS and UiInput.is_cancel(e):
+			_topics = {}
+			_topic_list.visible = false
+			visible = false
+	else:
+		match e.keycode:
+			KEY_SPACE:
+				if _mode == PLAYING or _mode == LAST:
+					_click_sound()
+					_next()
+				elif _mode == STAGING:
+					_skip_staging()
+			KEY_BACKSPACE:
+				# network only: clears the chat list
+				if not hud.game.session.multiplayer_game:
+					return
+				hud.clear_chat()
+			_:
 				return
-			hud.clear_chat()
-		_:
-			return
 	get_viewport().set_input_as_handled()
 
 
@@ -841,7 +843,7 @@ class TopicList extends Control:
 		mouse_filter = Control.MOUSE_FILTER_STOP
 
 	func _k() -> float:
-		return minf(size.x / 800.0, size.y / 600.0)
+		return UiScale.fit(size)
 
 	func _r(r: Rect2) -> Rect2:
 		var origin := Interface800.fit_rect(Rect2(Vector2.ZERO, size)).position

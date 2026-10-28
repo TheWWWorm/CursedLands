@@ -199,7 +199,7 @@ func _draw() -> void:
 	if cam == null or game == null or game.world == null:
 		return
 	var vs := get_viewport_rect().size
-	var k := maxf(minf(vs.x, vs.y) / 600.0 * SCALE, 0.8)
+	var k := maxf(UiScale.by_min_side(vs) * SCALE, 0.8)
 	var size := FRAME_UV.size * k
 	for uid in _alpha:
 		var a := float(_alpha[uid])
@@ -233,7 +233,7 @@ func _region(dst: Rect2, uv: Rect2, mod: Color, plain: Color) -> void:
 ## Screen pixels from a unit's head top to just above its bar, for marks
 ## stacked over it (the gamepad target's cursor and name, PadPrompts).
 static func stack_px(vs: Vector2) -> float:
-	var k := maxf(minf(vs.x, vs.y) / 600.0 * SCALE, 0.8)
+	var k := maxf(UiScale.by_min_side(vs) * SCALE, 0.8)
 	return (LIFT + FRAME_UV.size.y + 3.0) * k
 
 

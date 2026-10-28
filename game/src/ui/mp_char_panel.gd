@@ -796,7 +796,7 @@ func _gui_input(e: InputEvent) -> void:
 ## View: Esc leaves the camp even when the panel has lost the focus to it.
 func _unhandled_key_input(e: InputEvent) -> void:
 	if visible and state == VIEW and _camp and e is InputEventKey and e.pressed and not e.echo \
-			and e.keycode == KEY_ESCAPE and not MessageBox.is_up(_box) and not _camp.tutorial_visible():
+			and UiInput.is_cancel(e) and not MessageBox.is_up(_box) and not _camp.tutorial_visible():
 		_close_camp()
 		get_viewport().set_input_as_handled()
 
@@ -1112,51 +1112,52 @@ func _key(e: InputEventKey) -> void:
 			if renaming:
 				_rename_key(e)
 				return
-			match e.keycode:
-				KEY_ESCAPE:
-					sound("messbox\\cancel")
-					_close(false)
-				KEY_ENTER, KEY_KP_ENTER:
-					_accept()
-				KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
-					# ±1 / ±10, clamped, kept in view.
-					if chars.is_empty():
-						return
-					sound("save\\select")
-					sel += {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -ROWS, KEY_PAGEDOWN: ROWS}[e.keycode]
-					_clamp_sel()
+			if UiInput.is_cancel(e):
+				sound("messbox\\cancel")
+				_close(false)
+			elif UiInput.is_confirm(e):
+				_accept()
+			else:
+				match e.keycode:
+					KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
+						# ±1 / ±10, clamped, kept in view.
+						if chars.is_empty():
+							return
+						sound("save\\select")
+						sel += {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -ROWS, KEY_PAGEDOWN: ROWS}[e.keycode]
+						_clamp_sel()
 		CREATE:
 			var hero := _hero()
-			match e.keycode:
-				KEY_ESCAPE:
-					sound("messbox\\cancel")
-					_set_state(SEL)
-				KEY_ENTER, KEY_KP_ENTER:
-					_next_from_create()
-				KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
-					var n := (voices[voice_list] as Array).size()
-					if n == 0:
-						return
-					voice_sel = clampi(voice_sel + {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -VOICE_ROWS, KEY_PAGEDOWN: VOICE_ROWS}[e.keycode], 0, n - 1)
-					voice_top = clampi(voice_top, voice_sel - VOICE_ROWS + 1, voice_sel)
-					_apply_voice(true)
-				KEY_BACKSPACE:
-					var s := String(hero.get("name", ""))
-					hero.name = s.substr(0, s.length() - 1)
-				_:
-					var c := char(e.unicode) if e.unicode >= 32 else ""
-					var s := String(hero.get("name", "")) + c
-					if c and MpCharacter.name_char_ok(c) and s.length() <= MpCharacter.NAME_MAX \
-							and text_width(s, 1) < NAME_EDIT.size.x and not e.ctrl_pressed:
-						hero.name = s
+			if UiInput.is_cancel(e):
+				sound("messbox\\cancel")
+				_set_state(SEL)
+			elif UiInput.is_confirm(e):
+				_next_from_create()
+			else:
+				match e.keycode:
+					KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
+						var n := (voices[voice_list] as Array).size()
+						if n == 0:
+							return
+						voice_sel = clampi(voice_sel + {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -VOICE_ROWS, KEY_PAGEDOWN: VOICE_ROWS}[e.keycode], 0, n - 1)
+						voice_top = clampi(voice_top, voice_sel - VOICE_ROWS + 1, voice_sel)
+						_apply_voice(true)
+					KEY_BACKSPACE:
+						var s := String(hero.get("name", ""))
+						hero.name = s.substr(0, s.length() - 1)
+					_:
+						var c := char(e.unicode) if e.unicode >= 32 else ""
+						var s := String(hero.get("name", "")) + c
+						if c and MpCharacter.name_char_ok(c) and s.length() <= MpCharacter.NAME_MAX \
+								and text_width(s, 1) < NAME_EDIT.size.x and not e.ctrl_pressed:
+							hero.name = s
 		KIT:
-			match e.keycode:
-				KEY_ESCAPE:
-					_press_kit(["back"])
-				KEY_ENTER, KEY_KP_ENTER:
-					_press_kit(["next"])
+			if UiInput.is_cancel(e):
+				_press_kit(["back"])
+			elif UiInput.is_confirm(e):
+				_press_kit(["next"])
 		VIEW:
-			if e.keycode == KEY_ESCAPE and not _camp.tutorial_visible():
+			if UiInput.is_cancel(e) and not _camp.tutorial_visible():
 				_close_camp()
 				return
 	_layout()
@@ -1166,25 +1167,26 @@ func _key(e: InputEventKey) -> void:
 ## The clan box: the first key replaces the
 ## text; Enter keeps "name | clan" and saves the file; Esc drops the edit.
 func _rename_key(e: InputEventKey) -> void:
-	match e.keycode:
-		KEY_ESCAPE:
-			renaming = false
-		KEY_ENTER, KEY_KP_ENTER:
-			renaming = false
-			var data: Dictionary = selected_record()
-			var hero := MpCharacter.hero_of(data)
-			hero.name = MpCharacter.with_clan(String(hero.get("name", "")), rename_text)
-			MpCharacter.save_file(String(chars[sel].file), data)
-		KEY_BACKSPACE:
-			rename_text = "" if _rename_fresh else rename_text.substr(0, rename_text.length() - 1)
-			_rename_fresh = false
-		_:
-			var c := char(e.unicode) if e.unicode >= 32 else ""
-			if c and MpCharacter.name_char_ok(c) and not e.ctrl_pressed:
-				var s := (c if _rename_fresh else rename_text + c)
-				if s.length() <= MpCharacter.NAME_MAX and text_width(s, 1) < RENAME_EDIT.size.x:
-					rename_text = s
+	if UiInput.is_cancel(e):
+		renaming = false
+	elif UiInput.is_confirm(e):
+		renaming = false
+		var data: Dictionary = selected_record()
+		var hero := MpCharacter.hero_of(data)
+		hero.name = MpCharacter.with_clan(String(hero.get("name", "")), rename_text)
+		MpCharacter.save_file(String(chars[sel].file), data)
+	else:
+		match e.keycode:
+			KEY_BACKSPACE:
+				rename_text = "" if _rename_fresh else rename_text.substr(0, rename_text.length() - 1)
 				_rename_fresh = false
+			_:
+				var c := char(e.unicode) if e.unicode >= 32 else ""
+				if c and MpCharacter.name_char_ok(c) and not e.ctrl_pressed:
+					var s := (c if _rename_fresh else rename_text + c)
+					if s.length() <= MpCharacter.NAME_MAX and text_width(s, 1) < RENAME_EDIT.size.x:
+						rename_text = s
+					_rename_fresh = false
 	queue_redraw()
 
 

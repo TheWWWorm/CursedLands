@@ -18,7 +18,7 @@ const GREY := Color8(0xa0, 0xa0, 0xa0)      # COLORREF
 const SHADOW := Color8(8, 8, 8)
 const PANEL := Color(0, 0, 0, 0xa0 / 255.0)
 const BAR := Color8(0xa0, 0x68, 0x00, 0xc8)  # the selection bar
-const FONT_EM := [0.01733, 0.01867, 0.024]   # × screen width
+const FONT_EM := UiScale.FONT_EM   # × screen width; see UiScale
 const FONT_NAMES := ["Times New Roman", "Liberation Serif", "DejaVu Serif", "serif"]
 
 static var _font: Font
@@ -35,7 +35,7 @@ static func canvas_size(control: CanvasItem) -> Vector2:
 ## may still cover the whole window; artwork, text and hit targets share this
 ## frame so wide windows do not stretch portraits, signposts or scrollbars.
 static func fit_rect(bounds: Rect2) -> Rect2:
-	var k := minf(bounds.size.x / 800.0, bounds.size.y / 600.0)
+	var k := UiScale.fit(bounds.size)
 	var extent := Vector2(800, 600) * k
 	return Rect2(bounds.get_center() - extent * 0.5, extent)
 
@@ -126,7 +126,7 @@ func pad_rect(r: Rect2) -> Rect2:
 
 
 func font_px(i: int) -> int:
-	return maxi(6, int(round(800.0 * kv().x * FONT_EM[i])))
+	return UiScale.font_px(kv().x, i)
 
 
 # ------------------------------------------------------------------ drawing

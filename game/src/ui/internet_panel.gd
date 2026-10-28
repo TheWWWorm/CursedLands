@@ -188,29 +188,32 @@ func _gui_input(e: InputEvent) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or not (e is InputEventKey and e.pressed):
 		return
-	match e.keycode:
-		KEY_ESCAPE: close()
-		KEY_ENTER, KEY_KP_ENTER:
-			if _focus:
-				_activate("refresh" if _focus == "url" else "close")
-			else:
-				_activate("use")
-		KEY_TAB: _activate("address" if _focus == "url" and host_page else "url")
-		KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
-			_focus = ""
-			var step := ROWS if e.keycode in [KEY_PAGEUP, KEY_PAGEDOWN] else 1
-			selected = clampi(selected + (-step if e.keycode in [KEY_UP, KEY_PAGEUP] else step), 0, directory.games.size() - 1)
-			top = clampi(top, maxi(0, selected - ROWS + 1), maxi(0, selected))
-		KEY_BACKSPACE:
-			if _focus:
-				cfg[_focus] = String(cfg[_focus]).left(-1)
-		_:
-			if _focus and e.keycode == KEY_V and (e.ctrl_pressed or e.meta_pressed):
-				cfg[_focus] = DisplayServer.clipboard_get().strip_edges().get_slice("\n", 0).left(256)
-			elif _focus and e.unicode >= 32:
-				cfg[_focus] = (String(cfg[_focus]) + char(e.unicode)).left(256)
-			else:
-				return
+	if UiInput.is_cancel(e):
+		close()
+	elif UiInput.is_confirm(e):
+		if _focus:
+			_activate("refresh" if _focus == "url" else "close")
+		else:
+			_activate("use")
+	else:
+		match e.keycode:
+			KEY_TAB:
+				_activate("address" if _focus == "url" and host_page else "url")
+			KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
+				_focus = ""
+				var step := ROWS if e.keycode in [KEY_PAGEUP, KEY_PAGEDOWN] else 1
+				selected = clampi(selected + (-step if e.keycode in [KEY_UP, KEY_PAGEUP] else step), 0, directory.games.size() - 1)
+				top = clampi(top, maxi(0, selected - ROWS + 1), maxi(0, selected))
+			KEY_BACKSPACE:
+				if _focus:
+					cfg[_focus] = String(cfg[_focus]).left(-1)
+			_:
+				if _focus and e.keycode == KEY_V and (e.ctrl_pressed or e.meta_pressed):
+					cfg[_focus] = DisplayServer.clipboard_get().strip_edges().get_slice("\n", 0).left(256)
+				elif _focus and e.unicode >= 32:
+					cfg[_focus] = (String(cfg[_focus]) + char(e.unicode)).left(256)
+				else:
+					return
 	get_viewport().set_input_as_handled()
 	queue_redraw()
 

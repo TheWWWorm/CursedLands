@@ -442,6 +442,6 @@ func _exit_tree() -> void:
 
 
 func _unhandled_input(e: InputEvent) -> void:
-	if visible and not loop and e is InputEventKey and e.pressed and not e.echo and e.keycode in [KEY_SPACE, KEY_ESCAPE]:
+	if visible and not loop and e is InputEventKey and e.pressed and not e.echo and (e.keycode == KEY_SPACE or UiInput.is_cancel(e)):
 		if _state != IDLE: stop()
 		get_viewport().set_input_as_handled()

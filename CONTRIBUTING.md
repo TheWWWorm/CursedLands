@@ -30,19 +30,29 @@ a Godot 4.7 binary (the stock headless build is enough).
 python3 -B -m unittest discover -s tools/tests -p 'test_*.py'
 python3 -B -m unittest discover -s tools/parity -p 'test_*.py'
 python3 tools/check_translations.py
+python3 tools/check_issue_coverage.py
 python3 tools/check_test_scripts.py --engine /path/to/godot --import-first
 ```
 
 - The `tools/tests` modules test the Python tools and the regression runner,
   and `tools/tests/test_registries.py` lints both test registries: every
   registered script exists, prints its completion marker, resolves its
-  `res://tools/` imports, and avoids the `var x := weakref(...)` form that
-  Godot 4.7 refuses to load.
+  `res://tools/` imports, avoids the `var x := weakref(...)` form that
+  Godot 4.7 refuses to load, and carries the same `min_checks` wherever the
+  same script is registered in both registries (`tools/raise_min_checks.py`
+  raises thresholds from green runs).
 - The `tools/parity` modules test the original-engine comparison tooling. The
   families that emulate the original executable are skipped when the `unicorn`
   package is not installed.
 - `check_translations.py` checks that every player-visible string has Russian
   and German text, including dynamically chosen keys and error messages.
+- `check_issue_coverage.py` checks that every issue the changelog links has a
+  registered regression test (`issues` in `tools/regressions.json` or
+  `tools/parity/gameplay_catalog.json`) or a reason in
+  `tools/issue_coverage_exceptions.json`. A fix entry that links an issue must
+  therefore register its test in the same change; the exceptions file lists the
+  issues fixed before the registries recorded links, and an entry must be
+  removed once a test covers it.
 - `check_test_scripts.py` loads all test and benchmark scripts in one headless
   engine process, so parse and analysis errors surface in under a minute.
 
@@ -69,7 +79,17 @@ source tree.
 
 - **A regression test in the same change.** For a bug fix, the test exercises
   the reported failure and fails on the unfixed code; register it in
-  `tools/regressions.json` or the gameplay catalog and run the related cases.
+  `tools/regressions.json` or the gameplay catalog with the issue number in
+  its `issues` list (`tools/check_issue_coverage.py` fails on a changelog
+  issue without one) and run the related cases. When a report repeats an
+  earlier one (posture transitions, game speed, corpse targeting, menu
+  frames), add its trigger to that family's matrix test instead of a new
+  single-cell test.
+- **Shared interface conventions.** Screens take their scale from a `UiScale`
+  rule and cancel/confirm from `UiInput` (the `remake_cancel` /
+  `remake_confirm` InputMap actions), not from a private `size / 600.0` ratio
+  or a `KEY_ESCAPE` comparison; `tools/tests/test_ui_conventions.py` enforces
+  this.
 - **Original-game evidence for behaviour fixes.** Compare with the original
   code or a run of the original game and record what was confirmed and what
   was inferred ([original parity](docs/original-parity.md)).

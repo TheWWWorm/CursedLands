@@ -55,6 +55,10 @@ python3 tools/check_regressions.py --tier all --list
 python3 tools/check_regressions.py --engine /path/to/godot \
   --base-data /path/to/base-game --only attack_path_current_target \
   --only recent_character_controls --output /path/to/new-focused-results
+
+# Several cases at once (default 1; auto follows CPU threads and free memory).
+# Cases that open the fixed game ports never overlap; GPU Lab queues rendered ones.
+python3 tools/check_regressions.py --jobs 4 ...
 ```
 
 The runner creates a new profile per case with mouse confinement disabled, FPS
@@ -69,8 +73,23 @@ is supplied; legacy fixtures may explicitly choose a different cap.
 
 Every case requires exactly one named completion result, its minimum assertion
 count, no failed assertions, a successful process exit and no script/game errors.
-The existing full-suite summary parser is reused. The exact GPU Lab X11 missing
-EDID refresh-rate diagnostic is retained separately; other errors still fail.
+Process control is shared with the gameplay catalog runner through
+[`tools/parity/process.py`](../tools/parity/process.py): the same diagnostic
+patterns, the same summary parser, a process group that is ended on the first
+`SCRIPT ERROR`/`ERROR` line or at the case's timeout instead of waiting the
+timeout out, and the same rendered window (1280×800; a case may declare its own
+`resolution`). For rendered cases the runner follows the GPU Lab job's live
+`stdout.log`, so a diagnostic cancels the job through the wrapper, and the
+complete job output replaces the wrapper's 64 KiB tail in `run.log` (the
+wrapper's own output is kept as `gpu-lab.log`). The exact GPU Lab X11 missing
+EDID refresh-rate diagnostic does not end the process and is retained
+separately; other errors still fail.
+
+`min_checks` is the floor below which a test is considered to have skipped its
+body. After a green run, `python3 tools/raise_min_checks.py --apply results.json`
+raises thresholds to 90% of the observed count (never lowering them), and
+`tools/tests/test_registries.py` fails when the same script, arguments,
+campaign and display carry different thresholds in the two registries.
 Missing required archives are setup failures. Output includes logs, generated
 screenshots, source/engine/test hashes, commands and a JSON result after each case.
 Results are never overwritten. This command runs synchronously when invoked; it
@@ -127,6 +146,21 @@ focused manifest because it requires separate original localized archives.
 Every issue or bug fix and every feature addition or change MUST include a
 registered regression test in the same change. Run it and related existing checks.
 A fix must include a test that fails against the unfixed behavior.
+`python3 tools/check_issue_coverage.py` enforces the link: every issue the
+changelog references must appear in a registered case's `issues` list (here or
+in the gameplay catalog) or carry a reason in
+`tools/issue_coverage_exceptions.json`; an exception is removed once a test
+covers its issue, and the check fails when a covered issue is still excused.
+
+Reports that reopened under new numbers are covered by matrix cases rather
+than one case per report: `posture_transition_matrix` runs every one-shot
+(self cast, non-lethal hit, killing blow, damage reaction; targeted and direct
+attacks) from crawl, kneel and stand with the other gaits requested at two
+offsets, on authority and replica (#109, #113, #118); `speed_scaling_matrix`
+measures world time, the Eagle Sight countdown, mana recovery and walking
+distance at both speeds on a fresh load, after a save taken at fast speed is
+reloaded, and after zone travel (#62, #98, #116, #119). When one of these
+families is reported again, add the new trigger as a cell of the matrix.
 
 Mechanism, prison-wall and Autochess checks also cover distant object teleports,
 deferred topology labels, severe timing overload, reserve rearrangement, first-click

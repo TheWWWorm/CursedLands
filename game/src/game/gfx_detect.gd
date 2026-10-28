@@ -1066,8 +1066,8 @@ class Overlay extends Interface800:
 		if not visible:
 			return
 		if e is InputEventKey or e is InputEventJoypadButton:
-			if e.is_pressed() and (e is InputEventKey and (e as InputEventKey).keycode == KEY_ESCAPE
-					or e is InputEventJoypadButton and (e as InputEventJoypadButton).button_index == JOY_BUTTON_B):
+			if UiInput.is_cancel(e) or (e.is_pressed() and e is InputEventJoypadButton
+					and (e as InputEventJoypadButton).button_index == JOY_BUTTON_B):
 				owner_detect.cancel()
 				status = RemakeText.t("Restoring the settings…")
 			get_viewport().set_input_as_handled()

@@ -185,9 +185,9 @@ func _draw() -> void:
 	if cam == null or not active():
 		return
 	var vs := get_viewport_rect().size
-	var k := minf(vs.x, vs.y) / 600.0
+	var k := UiScale.by_min_side(vs)
 	var font := Interface800.font()
-	var fs := clampi(int(round(800.0 * k * Interface800.FONT_EM[1])), 11, 22)
+	var fs := clampi(UiScale.font_px(k, 1, 0), 11, 22)
 	var sh := maxf(1.0, round(k))
 	var isz := float(fs) * 1.3
 	var placed: Array[Rect2] = []

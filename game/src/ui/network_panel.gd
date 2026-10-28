@@ -552,8 +552,7 @@ func _start_title() -> String:
 ## Width-only scaling makes three hint lines and adjacent rows collide on
 ## widescreen windows, even though their 800×600 rectangles do not overlap.
 func font_px(i: int) -> int:
-	var scale := kv()
-	return maxi(6, int(round(minf(scale.x, scale.y) * 800.0 * FONT_EM[i])))
+	return UiScale.font_px(minf(kv().x, kv().y), i)
 
 
 func _status_text() -> String:
@@ -1444,56 +1443,57 @@ func _unhandled_key_input(e: InputEvent) -> void:
 		queue_redraw()
 		get_viewport().set_input_as_handled()
 		return
-	match k.keycode:
-		KEY_ESCAPE:
-			if _focus != "":
-				_focus = ""
-			else:
-				go_back()
-		KEY_ENTER, KEY_KP_ENTER:
-			var rows := _rows() if page != MODES else []
-			if _focus == "" and page != MODES and _sel >= 0 and _sel < rows.size() \
-					and String(rows[_sel].kind) in ["choice", "dropdown", "switch", "link"] and rows[_sel].on:
-				_activate(String(rows[_sel].id))
-			else:
-				_focus = ""
-				if _ok_enabled():
-					_primary()
-		KEY_UP, KEY_DOWN:
+	if UiInput.is_cancel(k):
+		if _focus != "":
 			_focus = ""
-			_hover = ""   # the keys take over the selection from the pointer
-			var d := -1 if k.keycode == KEY_UP else 1
-			if page == MODES:
-				var s := _sel
-				var count := 2 if campaign_only else 4
-				for n in count:
-					s = posmod(s + d, count)
-					if _mode_off(s + 1).is_empty():
-						break
-				_sel = s
-			else:
-				_sel = clampi(_sel + d, 0, _rows().size() - 1)
-				var row: Dictionary = _rows()[_sel]
-				if row.kind == "edit" and row.on:
-					_focus = String(row.id)
-			sound("save\\select")
-		KEY_LEFT, KEY_RIGHT:
-			if _focus == "" and page != MODES:
-				var rows := _rows()
-				if _sel >= 0 and _sel < rows.size() and rows[_sel].on and String(rows[_sel].kind) in ["choice", "dropdown", "slider"]:
-					_activate(String(rows[_sel].id), -1 if k.keycode == KEY_LEFT else 1)
-		KEY_BACKSPACE:
-			_type("", true)
-		KEY_DELETE:
-			if _focus == "" and _book_sel >= 0 and _book_sel < addresses.size() and not joining:
-				addresses.remove_at(_book_sel)
-				_book_sel = -1
-				_save_book()
-		_:
-			if k.unicode >= 32 and _focus != "":
-				_type(char(k.unicode))
-			else:
-				return
+		else:
+			go_back()
+	elif UiInput.is_confirm(k):
+		var rows := _rows() if page != MODES else []
+		if _focus == "" and page != MODES and _sel >= 0 and _sel < rows.size() \
+				and String(rows[_sel].kind) in ["choice", "dropdown", "switch", "link"] and rows[_sel].on:
+			_activate(String(rows[_sel].id))
+		else:
+			_focus = ""
+			if _ok_enabled():
+				_primary()
+	else:
+		match k.keycode:
+			KEY_UP, KEY_DOWN:
+				_focus = ""
+				_hover = ""   # the keys take over the selection from the pointer
+				var d := -1 if k.keycode == KEY_UP else 1
+				if page == MODES:
+					var s := _sel
+					var count := 2 if campaign_only else 4
+					for n in count:
+						s = posmod(s + d, count)
+						if _mode_off(s + 1).is_empty():
+							break
+					_sel = s
+				else:
+					_sel = clampi(_sel + d, 0, _rows().size() - 1)
+					var row: Dictionary = _rows()[_sel]
+					if row.kind == "edit" and row.on:
+						_focus = String(row.id)
+				sound("save\\select")
+			KEY_LEFT, KEY_RIGHT:
+				if _focus == "" and page != MODES:
+					var rows := _rows()
+					if _sel >= 0 and _sel < rows.size() and rows[_sel].on and String(rows[_sel].kind) in ["choice", "dropdown", "slider"]:
+						_activate(String(rows[_sel].id), -1 if k.keycode == KEY_LEFT else 1)
+			KEY_BACKSPACE:
+				_type("", true)
+			KEY_DELETE:
+				if _focus == "" and _book_sel >= 0 and _book_sel < addresses.size() and not joining:
+					addresses.remove_at(_book_sel)
+					_book_sel = -1
+					_save_book()
+			_:
+				if k.unicode >= 32 and _focus != "":
+					_type(char(k.unicode))
+				else:
+					return
 	get_viewport().set_input_as_handled()
 	queue_redraw()
 

@@ -120,7 +120,7 @@ func _ready() -> void:
 ## Screen px per 800×600 unit: the height's, or GameHUD.top_scale (portrait).
 func _k() -> float:
 	var hud := get_canvas_layer_node() as GameHUD
-	return hud.top_scale() if hud else Interface800.canvas_size(self).y / 600.0
+	return hud.top_scale() if hud else UiScale.canvas_height(self)
 
 
 func _p(v: Vector2, fixed := false) -> Vector2:
@@ -353,7 +353,7 @@ func _draw_height_ruler(c: CanvasItem, u: GameUnit) -> void:
 func _text(c: CanvasItem, r: Rect2, s: String, col := TEXT, align := HORIZONTAL_ALIGNMENT_LEFT, fit_name := false) -> void:
 	var k := _k()
 	var font := Interface800.font()
-	var fs := maxi(6, int(round(800.0 * Interface800.FONT_EM[0] * k)))
+	var fs := UiScale.font_px(k, 0)
 	var sh := maxf(1.0, round(k))
 	if fit_name:
 		var key := [s, fs, r.size.x * k]

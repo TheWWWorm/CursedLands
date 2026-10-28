@@ -50,5 +50,5 @@ func _ready() -> void:
 			check(absf(selected-level)<0.05,"real Karansul pool retains its original surface level at yaw %.2f pitch %.2f (%.3f / %.3f)" % [yaw,pitch,selected,level])
 			check(reflection._select_plane(camera,true)==selected,"liquid cell index selects the full scan's level at yaw %.2f pitch %.2f" % [yaw,pitch])
 	TexUpscale.shutdown()
-	print("WATER_REFLECTION_LEVELS ",checks," checks ",failures)
+	print("WATER_REFLECTION_LEVELS ",checks," checks ",failures.size()," failures ",failures)
 	get_tree().quit(1 if failures else 0)

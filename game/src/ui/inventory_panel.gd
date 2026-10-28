@@ -175,17 +175,17 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	if _camp.visible and _camp.mode == "swap":
 		# Esc withdraws the offer (the screen closes with the
 		# pairing); the money field takes digits and Backspace first.
-		if e.keycode == KEY_ESCAPE:
+		if UiInput.is_cancel(e):
 			hud.game.session.swap.send({"t": "withdraw"})
 			get_viewport().set_input_as_handled()
 			return
 		if _camp.swap_type(e):
 			get_viewport().set_input_as_handled()
 			return
-	if e.keycode == KEY_ESCAPE:
+	if UiInput.is_cancel(e):
 		visible = false
 		get_viewport().set_input_as_handled()
-	elif e.keycode in [KEY_ENTER, KEY_KP_ENTER] and hud.game.session.multiplayer_game:
+	elif UiInput.is_confirm(e) and hud.game.session.multiplayer_game:
 		hud.chat_line.open()
 		get_viewport().set_input_as_handled()
 	elif e.keycode == KEY_BACKSPACE and hud.game.session.multiplayer_game:

@@ -15,18 +15,14 @@ from pathlib import Path
 import re
 import shlex
 import shutil
-import signal
-import subprocess
 import sys
 import threading
 import time
 import xml.etree.ElementTree as ET
 
 from compare import digest
+from process import DIAGNOSTIC, rendered_arguments, run_program, parse_summary
 from run import HERE, REPO, PROFILE, command, file_hash, isolated_environment, stage_game, write_json
-
-
-DIAGNOSTIC = re.compile(r"^\s*(ERROR:|SCRIPT ERROR:|Parse Error:)", re.M)
 
 
 def catalog(selection=None):
@@ -163,67 +159,7 @@ def engine_argv(godot, runtime, display="headless", rendering_method="gl_compati
     base = [str(godot), "--path", str(runtime), "--render-thread", "safe", "--audio-driver", "Dummy"]
     if display == "headless":
         return base + ["--headless"]
-    # A real renderer on an explicitly selected, private X display. Pixel/UI
-    # checks must never silently fall back to the headless dummy renderer.
-    return base + ["--display-driver", "x11", "--rendering-method", rendering_method,
-                   "--windowed", "--resolution", "1280x800", "--position", "0,0"]
-
-
-def run_program(argv, log, env, timeout, stop=None):
-    """Abort a broken Godot script promptly, owning only this process group.
-    A set `stop` event (interrupt or another program's crash) ends it too."""
-    start = time.monotonic()
-    error = None
-    with log.open("w") as stream, log.open(errors="replace") as reader:
-        process = subprocess.Popen(argv, stdout=stream, stderr=subprocess.STDOUT, env=env,
-                                   start_new_session=True)
-        pending = ""
-        try:
-            while process.poll() is None:
-                pending += reader.read()
-                if DIAGNOSTIC.search(pending):
-                    error = "Runtime/script error; stopped this test process"
-                    break
-                if time.monotonic() - start > timeout:
-                    error = f"Test exceeded {timeout} seconds"
-                    break
-                if stop is not None and stop.is_set():
-                    error = "Run stopped before this test finished"
-                    break
-                # Preserve any incomplete line across reads.
-                pending = pending.rsplit("\n", 1)[-1]
-                time.sleep(0.1)
-        finally:
-            if process.poll() is None:
-                try:
-                    os.killpg(process.pid, signal.SIGKILL)
-                except ProcessLookupError:
-                    pass
-            process.wait()
-    return process.returncode, error
-
-
-def parse_summary(text, marker, minimum):
-    """Require the selected program's own unique terminal summary."""
-    lines = [line[len(marker) + 1:] for line in text.splitlines() if line.startswith(marker + " ")]
-    if len(lines) != 1:
-        raise ValueError(f"Expected exactly one {marker} summary, found {len(lines)}")
-    tail = lines[0].strip()
-    if tail.startswith("{"):
-        data = json.loads(tail)
-        checks, failed = data["checks"], data["failures"]
-        if isinstance(failed, list):
-            failed = len(failed)
-    else:
-        found = (re.match(r"(\d+) checks\s+(\d+) failures(?:[;\s]|$)", tail)
-                 or re.fullmatch(r"(\d+) checks;\s*failures=(\d+)", tail)
-                 or re.match(r"checks=(\d+)\s+failures=(\d+)(?:\s|$)", tail))
-        if not found:
-            raise ValueError(f"Unrecognized {marker} summary")
-        checks, failed = map(int, found.groups())
-    if type(checks) is not int or type(failed) is not int or checks < minimum or not 0 <= failed <= checks:
-        raise ValueError(f"Invalid/incomplete counts: checks={checks}, failures={failed}, minimum={minimum}")
-    return {"checks": checks, "failures": failed}
+    return base + rendered_arguments(rendering_method)
 
 
 def assess(text, spec, exit_code, error=None):

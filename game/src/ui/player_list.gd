@@ -69,7 +69,7 @@ func lines() -> Array:
 
 
 func _draw() -> void:
-	var k := Interface800.canvas_size(self).y / 600.0
+	var k := UiScale.canvas_height(self)
 	var right := Interface800.canvas_size(self).x - 5.0 * k
 	var f := DialogPanel.font()
 	var fs := int(round(12.0 * k))

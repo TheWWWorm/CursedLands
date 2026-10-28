@@ -868,7 +868,7 @@
       "category": "animation",
       "script": "tools/tests/creature_weapon_animations.gd",
       "marker": "CREATURE_WEAPON_ANIMATIONS",
-      "min_checks": 100,
+      "min_checks": 196,
       "quick": true,
       "description": "Available attack clips across original creature prototypes",
       "kind": "remake_regression",
@@ -1138,7 +1138,7 @@
       "category": "effects",
       "script": "tools/tests/healing_presentation.gd",
       "marker": "HEALING_PRESENTATION",
-      "min_checks": 10,
+      "min_checks": 22,
       "quick": false,
       "description": "Healing effect lifetime across host and guest",
       "kind": "remake_regression",
@@ -1728,7 +1728,7 @@
       "category": "spells",
       "script": "tools/tests/spell_constructor_transactions.gd",
       "marker": "SPELL_CONSTRUCTOR_TRANSACTIONS",
-      "min_checks": 45,
+      "min_checks": 52,
       "quick": false,
       "description": "Multi-rune assembly/disassembly, paused replies, duplicate delivery and atomic refusal",
       "kind": "remake_regression",
@@ -1918,7 +1918,7 @@
       "category": "inventory",
       "script": "tools/tests/camp_transactions.gd",
       "marker": "CAMP_TRANSACTIONS",
-      "min_checks": 40,
+      "min_checks": 53,
       "quick": false,
       "description": "Repair and exchange stacks, stale selections, private purses and replayed commands",
       "kind": "remake_regression",
@@ -4946,7 +4946,7 @@
       "category": "pathing",
       "script": "tools/tests/direct_movement.gd",
       "marker": "DIRECT_MOVEMENT",
-      "min_checks": 33,
+      "min_checks": 44,
       "quick": false,
       "description": "Loaded original terrain and hero, deterministic authority ticks. A local wall on the navigation grid isolates steering from route following.",
       "kind": "remake_regression",
@@ -6111,7 +6111,11 @@
         "res/texts.res",
         "res/figures.res"
       ],
-      "display": "headless"
+      "display": "headless",
+      "issues": [
+        62,
+        98
+      ]
     },
     {
       "id": "interface/pause_menu_clock",
@@ -6601,7 +6605,10 @@
         "res/database.res",
         "res/texts.res"
       ],
-      "display": "rendered"
+      "display": "rendered",
+      "issues": [
+        47
+      ]
     },
     {
       "id": "settings/mod_profiles",

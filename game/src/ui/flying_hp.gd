@@ -123,7 +123,7 @@ func _draw() -> void:
 ## Keep at least 18 px digits, then follow the smaller viewport scale so
 ## ultrawide windows do not inflate them just because they are wider.
 static func readable_layout(at: Vector2, number: int, flags: int, party: bool, age_ms: int, viewport: Vector2) -> Array[Dictionary]:
-	var scale := maxf(1.5, minf(viewport.x / 800.0, viewport.y / 600.0))
+	var scale := maxf(1.5, UiScale.fit(viewport))
 	var glyphs := _layout(at / scale, number, flags, party, age_ms, viewport / scale)
 	for glyph: Dictionary in glyphs:
 		var r: Rect2 = glyph.rect
