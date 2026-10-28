@@ -17,9 +17,10 @@ const MUSIC_TICK := 90
 ## the struck body part's armour slots (16 bytes
 ## per part: three item slots, 7 = none; tried in the order +8, +0, +4).
 const HIT_SLOTS := [[7, 7, 0], [3, 7, 1], [3, 6, 1], [3, 6, 1], [4, 5, 2], [4, 5, 2]]
-## casting is hostile for spells 0..8 and 0x1a.
+## casting is hostile for spells 0..8 and 0x1a (Antimagic).
+## Remake fix (as the Rebirth edition): Antimagic does not start battle music.
 const HOSTILE_SPELLS := ["arrow", "lightning", "acid_ray", "fireball", "inv_lit", "acid_column", "firewall",
-	"litnwall", "acid_fog", "antimagic"]
+	"litnwall", "acid_fog"]
 
 static var instance: GameSound
 

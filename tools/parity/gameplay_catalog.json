@@ -1026,6 +1026,38 @@
       ]
     },
     {
+      "id": "commands/antimagic_battle_music",
+      "category": "commands",
+      "script": "tools/tests/antimagic_battle_music.gd",
+      "marker": "ANTIMAGIC_BATTLE_MUSIC",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Casting Antimagic no longer starts battle music; damage spells and attacks still do",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res"
+      ]
+    },
+    {
+      "id": "commands/antimagic_battle_music_astral",
+      "category": "commands",
+      "script": "tools/tests/antimagic_battle_music.gd",
+      "marker": "ANTIMAGIC_BATTLE_MUSIC",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Run with original Lost in Astral content. Casting Antimagic no longer starts battle music; damage spells and attacks still do",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res"
+      ]
+    },
+    {
       "id": "commands/direct_command_priority",
       "category": "commands",
       "script": "tools/tests/direct_command_priority.gd",
