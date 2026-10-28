@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+## 1.35.0 — 2026-10-28
+
 - Let texture packs replace main-menu and Esc-menu signpost textures in `menus.res`, and add `tools/export_textures.py`, which exports the original MMP textures as lossless full-colour PNGs in the texture-pack folder layout so modders can edit and repackage them without MMP or DXT tools.
 - Keep the Windows Direct3D 12 main menu responsive when DLSS, TAA or FSR 2 needs new motion-vector shaders, for example after an update. The menu now draws while these shaders compile in the background, and the selected mode starts when they are ready; previously the first frame could stall for tens of seconds or never finish.
+- Fix original-game bugs that the Rebirth edition also fixes: Destruction and Astral Rift quick casts now aim at enemies instead of the caster, a negative Use value no longer opens skill-locked levers, Antimagic no longer starts battle music, timed effects keep counting down on distant sleeping units, and the disassembly fee includes the repair cost of wear.
+- Show Lost in Astral's own loading movies on Gipat2 and Jigran, and order the AI's list of nearby units as the original refresh does.
+- Keep Autochess live-board tournament saves loadable after round 30.
 
 ## 1.34.0 — 2026-10-28
 
