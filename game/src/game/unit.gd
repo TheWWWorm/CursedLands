@@ -1844,6 +1844,14 @@ func _tick(dt: float) -> void:
 			_order_started_tick = roundi(world.time / TICK)
 			_wait_on = null
 			path = PackedVector2Array()
+	elif controller < 0 and world.time >= ai_next and order.get("story", false) and order.get("type", "") == "follow":
+		# A scripted Follow: the motivations still run, and a hostile ends it.
+		world.ai.think(self, false)
+		if order.is_empty() and not orders.is_empty():
+			order = orders.pop_front()
+			_order_started_tick = roundi(world.time / TICK)
+			_wait_on = null
+			path = PackedVector2Array()
 	elif controller < 0 and world.time >= ai_next and not order.get("ai", false) and world.ai.calm_tick(self):
 		return   #  cast a buff / heal over the calm walk
 	elif controller >= 0 and order.has("swarm") and world.ai.swarm_tick(self):

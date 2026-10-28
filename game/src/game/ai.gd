@@ -110,7 +110,10 @@ func _read_mots(u: GameUnit, lg: Dictionary = EMPTY_DESCRIPTOR) -> Dictionary:
 ## no stagger); the remake runs it once
 ## logic tick while the unit is idle, and while it is busy rechoose() (AI
 ## attack / cast orders) or calm_tick() (other orders of a calm motivation).
-func think(u: GameUnit) -> void:
+## `calm` false: a scripted Follow (AI state 6) is held. The original's Think
+## (5d53b0) still runs the motivations before the state's handler, so
+## Aggression, Fear and Suspection end the follow; the calm one leaves it.
+func think(u: GameUnit, calm := true) -> void:
 	if world.dialog_actors.has(u.uid) or world.dialog_movers.has(u): return
 	var _profile := world.profile_scope("aithink", u.uid) if world.profile_simulation else null
 	var now := world.time
@@ -193,6 +196,8 @@ func think(u: GameUnit) -> void:
 	if ms.corpse and ms.susp and foes.is_empty(): _investigate_corpses(u)
 	if ms.susp and _investigate(u):
 		u.remove_meta("calm")
+		return
+	if not calm:
 		return
 	# The calm motivations' enter (5d0af0; Guard, Patrol, Sentry, Follow)
 	# clears the combat flag that Aggression, Suspection and Fear set, so a
@@ -1452,6 +1457,10 @@ func _act(u: GameUnit, ch: Dictionary) -> void:
 		_attack(u, t)
 	else:
 		u.command({"type": "cast", "spell": ch.opt.slot, "target": t, "range": float(ch.opt.range), "ai": true})
+	# As rechoose: a scripted state (Follow, 6) becomes the attack or cast state.
+	if u.has_meta("ai_state"):
+		u.set_meta("ai_state", 3 if ch.opt.slot == "" else 4)
+		u.set_meta("ai_target", t)
 
 
 func _attack(u: GameUnit, t: GameUnit) -> void:

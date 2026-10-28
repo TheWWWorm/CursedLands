@@ -576,6 +576,24 @@
       ]
     },
     {
+      "id": "creatures/scripted_follow_engage",
+      "category": "creatures",
+      "script": "tools/tests/scripted_follow_engage.gd",
+      "marker": "SCRIPTED_FOLLOW_ENGAGE",
+      "min_checks": 10,
+      "quick": false,
+      "description": "A unit following by script still attacks a noticed hostile; calm motivations leave the follow alone",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/ai_live_eligibility",
       "category": "creatures",
       "script": "tools/tests/ai_live_eligibility.gd",
