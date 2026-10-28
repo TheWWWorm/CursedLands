@@ -239,7 +239,7 @@
     ],
     "control": "24-patch template with the 1.34.0 PCK, the configuration qualified natively on Windows; interleaved per mode with the release package",
     "first_attempt": "All three modes failed on the release package while the host load average was 21-28: the 1.33.0 seed pass took 140-184 s (45-74 s normally) and preparation did not finish within 150 s. The interleaved rerun at normal load passed for both the release package and the control.",
-    "native_windows": "The same sources and patch were qualified natively on Windows (rebuild 890c744a3e6e passes; 1.34.0 fails). A native run on the archived release package follows this record and is documented in docs/validation/d3d12-cold-menu-2026-10-28/README.md."
+    "native_windows": "The same sources and patch were qualified natively on Windows (rebuild 890c744a3e6e passes; 1.34.0 fails). The archived release package itself was not rerun natively; it differs from the qualified rebuild only in its embedded icon/version resources and the 1.35.0 PCK, and passed the same check under Proton."
   },
   "five_platform_script_parity": {
     "version": "1.35.0",
