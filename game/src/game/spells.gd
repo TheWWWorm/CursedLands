@@ -90,11 +90,17 @@ static func parse(spell: String) -> Dictionary:
 ## index (spells.sdb order): the elemental attacks 0-8 and 17, 19, 25, 30, 32,
 ## 34, 36, 38 (Stench, Stun, Weaken, Feeblemind, Slow, Charm, Shrink ...).
 const OFFENSIVE := [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 19, 25, 30, 32, 34, 36, 38]
+## Remake fix (as the Rebirth edition): the list above stops at 38, so
+## Destruction and Astral Rift (types 40 and 41, damage spells) are quick-cast
+## and belt-used at their own caster in the original.
+const OFFENSIVE_FIXED := ["rick_magic", "curse_magic"]
 
 
 static func offensive(spell: String) -> bool:
-	var proto: Dictionary = parse(spell).proto
-	return not proto.is_empty() and GameData.db.table("spell_prototypes").find(proto) in OFFENSIVE
+	var p := parse(spell)
+	var proto: Dictionary = p.proto
+	return not proto.is_empty() and (GameData.db.table("spell_prototypes").find(proto) in OFFENSIVE \
+		or String(p.code) in OFFENSIVE_FIXED)
 
 
 static func title(spell: String) -> String:

@@ -2076,6 +2076,42 @@
       ]
     },
     {
+      "id": "commands/damage_spell_quick_cast",
+      "category": "commands",
+      "script": "tools/tests/damage_spell_quick_cast.gd",
+      "marker": "DAMAGE_SPELL_QUICK_CAST",
+      "min_checks": 22,
+      "quick": false,
+      "description": "Destruction and Astral Rift quick casts and belt uses aim at the nearest enemy, not the caster",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/damage_spell_quick_cast_astral",
+      "category": "commands",
+      "script": "tools/tests/damage_spell_quick_cast.gd",
+      "marker": "DAMAGE_SPELL_QUICK_CAST",
+      "min_checks": 22,
+      "quick": false,
+      "description": "Destruction and Astral Rift quick casts and belt uses aim at the nearest enemy, not the caster",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "commands/direct_release_aim",
       "category": "commands",
       "script": "tools/tests/direct_release_aim.gd",
