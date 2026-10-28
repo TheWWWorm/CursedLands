@@ -1,6 +1,7 @@
 extends "mod_profiles.gd"
-## Texture packs can replace MMP entries with PNG images, and high-resolution
-## clothing/armour keeps its resolution over an original-size skin.
+## Texture packs can replace MMP entries with PNG images, including the menu
+## signpost textures in menus.res, and high-resolution clothing/armour keeps its
+## resolution over an original-size skin.
 ## Run only with --mod-tests and a disposable profile.
 
 func png(size: int, color: Color, transparent_top := false) -> PackedByteArray:
@@ -47,15 +48,31 @@ func _ready() -> void:
 	var skin_size := original_skin.get_size()
 	var big := skin_size.x * 4
 	var world := GameData.textures.names_with_suffix(".mmp")[0].trim_suffix(".mmp")
+	# A signpost texture that only menus.res holds, so load_image must take the menus path.
+	var menu := ""
+	for n: String in (GameData.menus.names_with_suffix(".mmp") if GameData.menus else PackedStringArray()):
+		if not GameData.textures.has(n): menu = n.trim_suffix(".mmp"); break
+	check(not menu.is_empty(), "menus.res has a signpost texture outside textures.res")
+	if menu.is_empty(): return finish()
+	var menu_original := GameData.load_image(menu)
+	check(menu_original != null, "original signpost texture decodes")
+	var yellow := Color8(240, 200, 20, 255)
+	var menu_override := {"archive":"menus.res","entry":menu+".mmp","file":"menus.res/signpost.png"}
+	var menu_only := manifest("png.menu"); menu_only.api = 2; menu_only.options = []
+	menu_only.overrides = [menu_override]
+	check(ModSchema.manifest_error(menu_only).is_empty(), "menus.res MMP entries accept PNG replacements")
+	for entry in ["menus.reg", "probe.mod"]:
+		var invalid := menu_only.duplicate(true); invalid.overrides[0].entry = entry
+		check(not ModSchema.manifest_error(invalid).is_empty(), "menus.res non-texture entry stays rejected: " + entry)
 	var m := manifest("png.fixture")
 	m.api = 2; m.options = []
 	m.overrides = [
 		{"archive":"redress.res","entry":mask+"png-armour.mmp","file":"redress.res/png-armour.png"},
 		{"archive":"redress.res","entry":mask+"png-skin.mmp","file":"redress.res/png-skin.png"},
-		{"archive":"textures.res","entry":world+".mmp","file":"textures.res/world.png"}]
+		{"archive":"textures.res","entry":world+".mmp","file":"textures.res/world.png"}, menu_override]
 	check(ModSchema.manifest_error(m).is_empty(), "PNG replacement files are accepted for MMP entries")
 	var assets := {"redress.res/png-armour.png":png(big, blue, true), "redress.res/png-skin.png":png(skin_size.x, red),
-		"textures.res/world.png":png(128, green)}
+		"textures.res/world.png":png(128, green), "menus.res/signpost.png":png(96, yellow)}
 	check(ModStore.import_package(pack(m, assets)).is_empty(), "PNG texture package imports")
 	check(ModStore.create_profile("PNG texture test").is_empty(), "create isolated texture profile")
 	check(ModStore.set_packages(["png.fixture@1.0"]).is_empty(), "select PNG package")
@@ -66,6 +83,12 @@ func _ready() -> void:
 	check(world_image != null and world_image.get_size() == Vector2i(128, 128) and world_image.get_pixel(3, 3).is_equal_approx(green), "world texture loads from PNG")
 	var world_tex := GameData.get_texture(world, true)
 	check(world_tex != null and world_tex.get_width() == 128, "authored-mip texture path accepts PNG")
+	check(GameData.menus.read(menu + ".mmp") == assets["menus.res/signpost.png"], "menus.res reader returns the signpost PNG")
+	var menu_image := GameData.load_image(menu)
+	check(menu_image != null and menu_image.get_size() == Vector2i(96, 96) and menu_image.get_format() == Image.FORMAT_RGBA8 \
+		and menu_image.get_pixel(7, 7).is_equal_approx(yellow), "signpost texture loads from PNG as RGBA")
+	var menu_tex := GameData.get_texture(menu)
+	check(menu_tex != null and menu_tex.get_width() == 96 and menu_tex.get_image().get_pixel(7, 7).is_equal_approx(yellow), "signpost model texture uses the PNG")
 	# High-resolution armour over the original skin: compose at the armour's size.
 	var armoured := EIUnitModel._compose(mask, [skin, "png-armour"] as Array[String])
 	check(armoured != null and armoured.get_size() == Vector2(big, big), "armour layer keeps its %dpx resolution over a %dpx skin" % [big, skin_size.x])
@@ -86,4 +109,7 @@ func _ready() -> void:
 	DataSwitch.clear_caches()
 	check(GameData.open(GameData.root).is_empty(), "reload unmodded data")
 	check(not GameData.redress.has(mask + "png-armour.mmp") and GameData.textures.read(world + ".mmp") == GameData.textures.read_original(world + ".mmp"), "disabling restores original textures")
+	var restored := GameData.load_image(menu)
+	check(GameData.menus.read(menu + ".mmp") == GameData.menus.read_original(menu + ".mmp") and restored != null \
+		and restored.get_size() == menu_original.get_size() and restored.get_data() == menu_original.get_data(), "disabling restores the original signpost texture")
 	finish()

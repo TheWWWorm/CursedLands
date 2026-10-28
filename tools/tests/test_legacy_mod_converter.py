@@ -162,6 +162,27 @@ class ConversionTest(unittest.TestCase):
         for path, data in before.items():
             self.assertEqual(path.read_bytes(), data)
 
+    def test_menu_signpost_texture_converts_but_menu_models_block(self):
+        entry = "escmenu00.mmp"
+        old = struct.pack("<5I", 0x504D4D, 1, 1, 4, 0x33544E50) + bytes(56) + bytes([0, 0, 255, 255])
+        new = old[:-4] + bytes([255, 0, 0, 255])
+        self.put(self.base, "res/menus.res", archive({entry: old, "menus.reg": b"old", "unmoco1.mod": b"old"}))
+        self.put(self.source, "res/menus.res", archive({entry: new, "menus.reg": b"old", "unmoco1.mod": b"old"}))
+        code, out, report = self.run_cli()
+        self.assertEqual(code, 0)
+        self.assertEqual(report["unchanged_entries"], 2)
+        with zipfile.ZipFile(out / "test.legacy.eimod") as z:
+            path = "assets/menus.res/" + entry
+            self.assertEqual(json.loads(z.read("mod.json"))["overrides"], [{"archive": "menus.res", "entry": entry, "file": path}])
+            self.assertEqual(z.read(path), new)
+        for changed in ("menus.reg", "unmoco1.mod"):
+            entries = {entry: new, "menus.reg": b"old", "unmoco1.mod": b"old", changed: b"new"}
+            self.put(self.source, "res/menus.res", archive(entries))
+            report = self.converter().analyze()
+            self.assertEqual(report["status"], "blocked")
+            self.assertEqual({(b["code"], b["location"]) for b in report["blockers"]},
+                             {("unsupported_archive", "menus.res/" + changed)})
+
     def test_multiple_distinct_archives_and_conflicting_precedence(self):
         self.sound()
         self.put(self.source, "res/second.res", archive({"same.wav": wav(100)}))
@@ -304,6 +325,8 @@ class ConversionTest(unittest.TestCase):
     def test_schema_matches_engine_contract(self):
         source = (TOOLS.parent / "game/src/ei/database.gd").read_text()
         schema = (TOOLS.parent / "game/src/game/mod_schema.gd").read_text()
+        textures = set(re.findall(r'"([^"]+)"', re.search(r"RESOURCE_ARCHIVES := \[([^\]]+)\]", schema)[1]))
+        self.assertEqual({name for name, suffix in convert.ASSETS.items() if suffix == ".mmp"}, textures)
         for _, (_, table, fields) in convert.DB_FIELDS.items():
             spec, names = re.search(r'\["' + table + r'",\s*"([^"]*)",\s*"([^"]*)"', source).groups()
             names = iter(names.split(","))

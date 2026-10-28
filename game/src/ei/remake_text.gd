@@ -1980,7 +1980,7 @@ const TEXTS := {
 	"Not enough space to extract the download.": ["Недостаточно места для распаковки загрузки.", "Nicht genügend Speicherplatz zum Entpacken des Downloads."],
 	"This build supports texture packages, not legacy gameplay mods.": ["Эта сборка поддерживает пакеты текстур, но не старые игровые моды.", "Diese Version unterstützt Texturpakete, aber keine älteren Gameplay-Mods."],
 	"Package API 2 currently supports texture packs only.": ["API пакетов версии 2 сейчас поддерживает только текстуры.", "Paket-API 2 unterstützt derzeit nur Texturpakete."],
-	"Mods can replace textures.res, redress.res, sfx.res and speech.res.": ["Моды могут заменять ресурсы в textures.res, redress.res, sfx.res и speech.res.", "Mods können Ressourcen in textures.res, redress.res, sfx.res und speech.res ersetzen."],
+	"Mods can replace textures.res, redress.res, menus.res, sfx.res and speech.res.": ["Моды могут заменять ресурсы в textures.res, redress.res, menus.res, sfx.res и speech.res.", "Mods können Ressourcen in textures.res, redress.res, menus.res, sfx.res und speech.res ersetzen."],
 	"Texture overrides must be MMP files.": ["Для замены текстур нужны файлы MMP.", "Texturersatz erfordert MMP-Dateien."],
 	"Downloads": ["Загрузки", "Downloads"],
 	"Download mods…": ["Скачать моды…", "Mods herunterladen…"],

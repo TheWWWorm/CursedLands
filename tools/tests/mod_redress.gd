@@ -85,7 +85,7 @@ func _ready() -> void:
 		check(ModSchema.manifest_error(valid).is_empty(), "redress MMP accepted by package API %d" % api)
 	# A baseline build exits here with actual validation failures.
 	if failures: await finish(); return
-	for archive in ["redress.res", "textures.res"]:
+	for archive in ["redress.res", "textures.res", "menus.res"]:
 		var invalid := m.duplicate(true)
 		invalid.overrides = [{"archive":archive,"entry":"probe.wav","file":"assets/probe.wav"}]
 		for lang in ["en", "ru", "de"]:
@@ -94,7 +94,7 @@ func _ready() -> void:
 			check(not error.is_empty() and (lang == "en" or error != "Texture overrides must be MMP files."), "non-MMP rejected with translated message: " + archive + "/" + lang)
 			observations["error_"+lang] = error
 	RemakeText.lang = "en"
-	for archive in ["figures.res", "database.res", "menus.res"]:
+	for archive in ["figures.res", "database.res"]:
 		var invalid := m.duplicate(true); invalid.overrides[0].archive = archive
 		check(not ModSchema.manifest_error(invalid).is_empty(), "unrelated archive still rejected: " + archive)
 	var original_hash := FileAccess.get_sha256(GameData.res_path("redress.res"))

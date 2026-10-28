@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28",
+  "subject": "tools/export_textures.py MMP-to-PNG export",
+  "engine": "Godot 4.7-stable (Linux, headless)",
+  "data": {
+    "edition": "base game (Cursed Lands campaign), inspection/extracted/app",
+    "archives_sha256": {
+      "textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c",
+      "redress.res": "4a674a71784d7d6c21ed1099ac16a6a80dc881630c6e1395861d7310955784ac",
+      "menus.res": "8fc8036e6fda767de356a4c6f3a0f0557db367c51495c63ac2594bb01a1371ab"
+    }
+  },
+  "textures": {
+    "textures.res": {
+      "DXT1": 613,
+      "DXT3": 15,
+      "PNT3": 973,
+      "8888": 70,
+      "PV (raw)": 37,
+      "DD (raw)": 39,
+      "QU (raw)": 39
+    },
+    "redress.res": {
+      "PNT3": 1891,
+      "QU (raw)": 56
+    },
+    "menus.res": {
+      "DXT1": 4,
+      "DD (raw)": 1
+    },
+    "total": 3738,
+    "pixels": 195154756
+  },
+  "checks": [
+    {
+      "name": "decoder parity",
+      "method": "SHA-256 of RGBA8 pixels and size from export_textures.decode() versus game/src/ei/mmp_texture.gd EIMmp.decode() (GDScript reference path; native raw-kernel parity is covered by tools/tests/mmp_native.gd)",
+      "result": "3738 of 3738 identical"
+    },
+    {
+      "name": "lossless round trip",
+      "method": "every exported PNG decoded by EIMmp.decode() (the texture-pack PNG path) and compared with the original MMP decode",
+      "result": "3738 of 3738 identical"
+    },
+    {
+      "name": "full export",
+      "method": "python3 tools/export_textures.py <game> <out>",
+      "result": "3738 written, 0 skipped; 56 s wall time, 31 MB peak RSS, 139 MB of PNGs"
+    }
+  ],
+  "notes": "Original-game comparison under Wine is not applicable: the exporter is an offline modding tool and the original game has no PNG texture support. Parity is measured against the remake's MMP decoder, which renders the original textures in game."
+}

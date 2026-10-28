@@ -4143,14 +4143,14 @@
       "id": "mod_texture_png",
       "script": "tools/tests/mod_texture_png.gd",
       "summary": "MOD_TEXTURE_PNG",
-      "contract": "Texture packs replace MMP entries with PNG images through the real package reader; a high-resolution armour layer composes at its own size over an original-size skin, and disabling the package restores the originals.",
+      "contract": "Texture packs replace MMP entries with PNG images through the real package reader, including menus.res signpost textures loaded as RGBA while non-texture menus.res entries stay rejected; a high-resolution armour layer composes at its own size over an original-size skin, and disabling the package restores the originals.",
       "issues": [],
       "data": "base",
       "mode": "headless",
       "args": [
         "--mod-tests"
       ],
-      "min_checks": 26
+      "min_checks": 35
     },
     {
       "id": "legacy_figure",

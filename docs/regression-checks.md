@@ -177,6 +177,18 @@ python3 -m unittest discover -s tools/tests -p test_dlss_camera_contract.py -v
 This checks the committed patch stack against independent projection math and its
 unfixed negative control. It does not replace native Windows DLSS-G testing.
 
+The modding texture tools are covered by asset-free unittest modules:
+
+```sh
+python3 -B -m unittest discover -s tools/tests -p 'test_export_textures.py' -v
+python3 -B -m unittest discover -s tools/tests -p 'test_package_mod.py' -v
+```
+
+`test_export_textures.py` checks DXT1/DXT3/PNT3/raw decoding against the game's
+rounding, lossless PNG output, the package folder layout and preservation of
+edited images. Full-data parity with the game's decoder is recorded in
+[the texture export validation](validation/texture-export-2026-10-28.json).
+
 The gameplay catalog also registers `effects/path_trace_material_receivers` as a
 Forward+ rendered check. It explicitly asserts native unfiltered output before
 measuring the PT receiver’s material boundary. DLSS output reconstruction has its

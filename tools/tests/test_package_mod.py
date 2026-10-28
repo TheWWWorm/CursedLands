@@ -1,5 +1,6 @@
 """Texture-folder packaging; fixtures are generated and contain no game assets."""
 import json
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -50,6 +51,15 @@ class TextureFolders(unittest.TestCase):
         self.assertEqual(names, ["mod.json", "redress.res/unhufeax_01.gr.0.png", "textures.res/stone.mmp",
                                  "textures.res/sub/Grass00.PNG"])
 
+    def test_menu_signpost_textures_become_overrides(self):
+        write(self.root, "menus.res/escmenu00.png")
+        write(self.root, "menus.res/menus.reg", b"not a texture")
+        write(self.root, "menus.res/unmoco1.mod", b"not a texture")
+        manifest, names = self.build()
+        self.assertEqual(manifest["overrides"], [
+            {"archive": "menus.res", "entry": "escmenu00.mmp", "file": "menus.res/escmenu00.png"}])
+        self.assertEqual(names, ["menus.res/escmenu00.png", "mod.json"])
+
     def test_explicit_table_is_kept_and_extended(self):
         write(self.root, "assets/skin.mmp", b"MMP\0" + bytes(80))
         write(self.root, "redress.res/weapon.png")
@@ -76,6 +86,11 @@ class TextureFolders(unittest.TestCase):
         self.manifest["overrides"] = [{"archive": "textures.res", "entry": "STONE.mmp", "file": "textures.res/stone.png"}]
         with self.assertRaisesRegex(ValueError, "already listed"):
             self.build()
+
+    def test_folders_match_engine_texture_archives(self):
+        schema = (TOOLS.parent / "game/src/game/mod_schema.gd").read_text()
+        archives = re.search(r"RESOURCE_ARCHIVES := \[([^\]]+)\]", schema)[1]
+        self.assertEqual(set(package_mod.TEXTURE_FOLDERS), set(re.findall(r'"([^"]+)"', archives)))
 
 
 if __name__ == "__main__":

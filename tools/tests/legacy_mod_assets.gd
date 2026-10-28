@@ -55,7 +55,7 @@ func _ready() -> void:
 	for asset in expected.assets:
 		var bytes: PackedByteArray = archives[asset.archive].read(asset.entry)
 		check(digest(bytes) == asset.sha256, "resolver preserves source bytes: " + asset.entry)
-		if asset.archive == "textures.res":
+		if asset.archive in ["textures.res", "menus.res"]:
 			var name: String = asset.entry.trim_suffix(".mmp")
 			for mipmaps in [false, true]:
 				var decoded := GameData.load_image(name, mipmaps)

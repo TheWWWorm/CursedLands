@@ -8,7 +8,8 @@ import zipfile
 
 # Texture folders: <archive>/<entry path>.mmp or .png in the mod source become
 # overrides of <entry path>.mmp, so a texture pack needs no hand-written table.
-TEXTURE_FOLDERS = ("textures.res", "redress.res")
+# menus.res holds the menu signpost textures; only its MMP entries are replaceable.
+TEXTURE_FOLDERS = ("textures.res", "redress.res", "menus.res")
 TEXTURE_SUFFIXES = (".mmp", ".png")
 
 

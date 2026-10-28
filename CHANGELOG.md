@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Let texture packs replace main-menu and Esc-menu signpost textures in `menus.res`, and add `tools/export_textures.py`, which exports the original MMP textures as lossless full-colour PNGs in the texture-pack folder layout so modders can edit and repackage them without MMP or DXT tools.
+
 ## 1.34.0 — 2026-10-28
 
 - Add optional Ground relief maps for terrain; the option is off by default. Load placed map lights, retain high-resolution armour layers, accept PNG texture overrides, and restore the Gipath ogres' skull-belt models.

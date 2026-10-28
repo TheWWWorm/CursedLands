@@ -10,7 +10,8 @@ const FORMULA_HOOKS := {
 	"revival_seconds": [1.0, 30.0],
 	"revival_health": [1.0, 1000000.0],
 }
-const RESOURCE_ARCHIVES := ["textures.res", "redress.res"]
+## menus.res holds the main/Esc menu signpost textures (MMP only, not its models or menus.reg).
+const RESOURCE_ARCHIVES := ["textures.res", "redress.res", "menus.res"]
 ## Rules added after API 1 saves shipped. Missing entries retain these defaults.
 const ADDED_DEFAULTS := {"free_run": 0, "stamina_regen": 0, "armor_formula": 0}
 const RULES := {
@@ -134,7 +135,7 @@ static func manifest_error(m: Variant) -> String:
 	if not m.get("overrides", []) is Array or m.get("overrides", []).size() > 4096: return "Invalid archive overrides."
 	for a in m.get("overrides", []):
 		if not a is Dictionary or not safe_path(a.get("file")) or not safe_path(a.get("entry")): return "Invalid override path."
-		if a.get("archive", "") not in RESOURCE_ARCHIVES + ["sfx.res", "speech.res"]: return RemakeText.t("Mods can replace textures.res, redress.res, sfx.res and speech.res.")
+		if a.get("archive", "") not in RESOURCE_ARCHIVES + ["sfx.res", "speech.res"]: return RemakeText.t("Mods can replace textures.res, redress.res, menus.res, sfx.res and speech.res.")
 		if a.archive in RESOURCE_ARCHIVES and not a.entry.ends_with(".mmp"): return RemakeText.t("Texture overrides must be MMP files.")
 		if m.api == 2 and not resource_entry(a.archive, a.entry): return "Package API 2 currently supports texture packs only."
 	if not m.get("attachments", []) is Array or m.get("attachments", []).size() > 64: return "Invalid mod documentation."

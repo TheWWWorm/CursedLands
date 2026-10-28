@@ -19,7 +19,8 @@ from pathlib import Path
 from package_mod import package
 
 MAX_PACKAGE = 128 * 1024 * 1024
-ASSETS = {"textures.res": ".mmp", "redress.res": ".mmp", "sfx.res": ".wav", "speech.res": ".mp3"}
+# menus.res: only the signpost MMP textures; its models and menus.reg still block.
+ASSETS = {"textures.res": ".mmp", "redress.res": ".mmp", "menus.res": ".mmp", "sfx.res": ".wav", "speech.res": ".mp3"}
 # Database entry -> (one-based section ID, table name, field ID -> name/type).
 # Everything outside these fields is compared too, and blocks if changed.
 DB_FIELDS = {

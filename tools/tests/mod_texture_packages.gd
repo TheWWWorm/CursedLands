@@ -13,10 +13,17 @@ func _ready() -> void:
 	for api in [0, 1.5, 3, 4, true, "2"]:
 		invalid.api = api
 		check(not ModSchema.manifest_error(invalid).is_empty(), "unsupported API rejected: " + str(api))
-	for archive in ["figures.res", "database.res", "menus.res", "sfx.res"]:
+	for archive in ["figures.res", "database.res", "sfx.res"]:
 		invalid = m.duplicate(true)
 		invalid.overrides[0].archive = archive
 		check(not ModSchema.manifest_error(invalid).is_empty(), "broader resource capability remains unavailable: " + archive)
+	# menus.res signpost textures are texture-pack content; its models and menus.reg are not.
+	invalid = m.duplicate(true)
+	invalid.overrides[0].archive = "menus.res"
+	check(ModSchema.manifest_error(invalid).is_empty(), "menus.res signpost texture accepted")
+	for entry in ["menus.reg", "probe.mod", "probe.anm"]:
+		invalid.overrides[0].entry = entry
+		check(not ModSchema.manifest_error(invalid).is_empty(), "menus.res non-texture entry rejected: " + entry)
 	for field in ["lua", "files", "force_script_tutorials", "skip_start_animation"]:
 		invalid = m.duplicate(true)
 		invalid[field] = []
