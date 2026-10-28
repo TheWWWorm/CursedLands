@@ -628,24 +628,89 @@ func units_near(p: Vector2, r: float) -> Array:
 	return out
 
 
-## Exact perception broadphase. Sample membership/order before the query;
-## unusual, unregistered and off-map fixtures keep the original two passes.
+## The AI's nearby-unit list (original refresh 0x5ca1d0): the units of the
+## observer's 16 m notice `cells` other than the observer, in the original
+## list order. The refresh reads the cells in table order
+## (UnitAI.NOTICE_CELL_ORDER); a cell's units come in the order they entered
+## that cell (its unit list is appended to on placement and on every cell
+## change), and each unit is inserted at the list head. The list therefore
+## starts with the latest arrival of the last cell and ends with the first
+## arrival of the observer's own cell. The coarse buckets keep the same
+## arrival order. Exact perception broadphase: sample membership before the
+## query; unusual, unregistered and off-map fixtures keep the two passes.
 func notice_units_near(observer: GameUnit, radius: float, cells: Dictionary, alive: bool, tracked: bool) -> Array:
 	_spatial_order()
 	var p := observer.pos
 	var kernel: RefCounted = ai._unit_query if ai else null
+	var center := Vector2i(int(GameUnit._fistp(p.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(p.y * 2.0 - 0.5) / 32))
 	if kernel and authority and _spatial_registered and radius >= NavGrid.WIDE \
 			and p.x + radius < 65536.0 and p.y + radius < 65536.0 and nav.local_bucket_query(p, radius):
-		return kernel.order_units(kernel.near_cells(nav._call_buckets, p, radius, cells, observer, alive), _spatial_ranks)
+		return _bucket_list_order(kernel.near_cells(nav._call_buckets, p, radius, cells, observer, alive), center)
 	var list := nav.units_all_around(p, radius) if tracked and authority and nav.size.x > 0 else units_near(p, radius)
 	if kernel:
-		return kernel.in_cells(list, observer, p, cells, alive)
+		return _cell_list_order(kernel.in_cells(list, observer, p, cells, alive), center)
 	var out := []
-	var center := Vector2i(int(GameUnit._fistp(p.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(p.y * 2.0 - 0.5) / 32))
 	for u: GameUnit in list:
 		if u == observer or (alive and u.dead): continue
 		var cell := Vector2i(int(GameUnit._fistp(u.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(u.pos.y * 2.0 - 0.5) / 32))
 		if cells.has(cell - center): out.append(u)
+	return _cell_list_order(out, center)
+
+
+## `near` as read bucket by bucket (each bucket's arrival order). At positive
+## coordinates a coarse bucket is exactly one original cell, so only the
+## buckets are reordered: by cell rank, then everything reversed.
+func _bucket_list_order(near: Array, center: Vector2i) -> Array:
+	var n := near.size()
+	if n < 2:
+		return near
+	var starts := PackedInt32Array()
+	var runs := PackedInt64Array()
+	var key := -2
+	for i in n:
+		var b: int = (near[i] as GameUnit)._cabucket
+		if b != key:
+			key = b
+			runs.append((int(UnitAI.notice_cell_rank(Vector2i(b & 4095, b >> 12) - center)) << 20) | starts.size())
+			starts.append(i)
+	starts.append(n)
+	runs.sort()
+	var out := []
+	out.resize(n)
+	var at := n
+	for r in runs:
+		var run := int(r & 0xfffff)
+		for i in range(starts[run], starts[run + 1]):
+			at -= 1
+			out[at] = near[i]
+	return out
+
+
+## The same order for lists that do not come bucket by bucket. A unit's
+## arrival rank is its place in its bucket; units outside the buckets
+## (unregistered fixtures, clients, negative coordinates) follow them in
+## registry order.
+func _cell_list_order(list: Array, center: Vector2i) -> Array:
+	var n := list.size()
+	if n < 2:
+		return list
+	var keys := PackedInt64Array()
+	keys.resize(n)
+	for i in n:
+		var u: GameUnit = list[i]
+		var cell := Vector2i(int(GameUnit._fistp(u.pos.x * 2.0 - 0.5) / 32), int(GameUnit._fistp(u.pos.y * 2.0 - 0.5) / 32))
+		var arrival := 0x100000 + i
+		var bucket: Variant = nav._call_buckets.get(u._cabucket) if nav and u._cabucket != -1 else null
+		if bucket is Array:
+			var j := (bucket as Array).find(u)
+			if j >= 0:
+				arrival = j
+		keys[i] = (int(UnitAI.notice_cell_rank(cell - center)) << 42) | (arrival << 20) | i
+	keys.sort()
+	var out := []
+	out.resize(n)
+	for i in n:
+		out[n - 1 - i] = list[keys[i] & 0xfffff]
 	return out
 
 

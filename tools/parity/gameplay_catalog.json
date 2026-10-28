@@ -1008,6 +1008,23 @@
       ]
     },
     {
+      "id": "stealth/notice_candidate_order",
+      "category": "stealth",
+      "script": "tools/tests/notice_candidate_order.gd",
+      "marker": "NOTICE_CANDIDATE_ORDER",
+      "min_checks": 450,
+      "quick": true,
+      "description": "AI nearby-unit list in the original refresh order: spiral cells, arrival order within a cell, head insertion",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
       "id": "stealth/unit_visibility",
       "category": "stealth",
       "script": "tools/tests/unit_visibility.gd",
