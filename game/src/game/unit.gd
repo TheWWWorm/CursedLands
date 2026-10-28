@@ -3640,6 +3640,7 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 		return
 	# Preserve the original committed blow's planar range behavior, but
 	# a lift or floor transition must not make it hit another storey.
+	var dealt := true
 	if stats.get("ranged", false):
 		Projectile.launch(world, self, t, true).roll = roll
 		if world.session:
@@ -3648,6 +3649,12 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 	elif _melee_height_clear(t):
 		world.combat.melee(self, t, roll)
 		world.combat.weapon_spell(self, t)
+	else:
+		dealt = false
+	# 54f450: a blow or shot that is no backstab is heard,
+	# twice the attacker's hearing detectability for 26 ticks.
+	if dealt and not bool(roll.get("backstab", false)):
+		world.ai.noise_event(self, detect(3) * 2.0)
 	# Standing was required when this swing began. A later gait request must
 	# survive its impact, including when the victim dies and no attack follows.
 	# 549ec0: once the aimed part is no longer intact, the
