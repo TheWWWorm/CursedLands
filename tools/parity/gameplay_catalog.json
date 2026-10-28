@@ -2262,6 +2262,24 @@
       ]
     },
     {
+      "id": "effects/sleeping_effects",
+      "category": "effects",
+      "script": "tools/tests/sleeping_effects.gd",
+      "marker": "SLEEPING_EFFECTS",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Timed effects count down on frozen far units and wake the unit when they run out",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "inventory/belt_weight",
       "category": "inventory",
       "script": "tools/tests/belt_weight.gd",

@@ -996,7 +996,9 @@ func _tick_body(dt: float) -> void:
 	started = Time.get_ticks_usec() if profile_simulation else 0
 	for u: GameUnit in unit_rows():
 		if not active_set.is_awake(u):
-			continue
+			if u.buffs.is_empty() or not u.sleep_tick_effects():
+				continue
+			active_set.wake_unit(u)
 		u.tick(dt)
 		if chat:
 			ai.chatter(u, dt)

@@ -1629,6 +1629,23 @@ func _tick_effects() -> void:
 			b.until = world.time + float(left) * TICK
 
 
+
+## Remake fix (as the Rebirth edition): the original does not update a frozen
+## unit (ObjectActivity), so its effects stopped counting down. Count them down
+## once a tick; returns true instead when one would run out on this tick, so
+## the caller wakes the unit (58d5d0) and its ordinary update removes it.
+func sleep_tick_effects() -> bool:
+	if world == null or not world.authority:
+		return false
+	for b: Dictionary in buffs.values():
+		if valid_effect_ticks(b.get(EFFECT_TICKS)) and int(b[EFFECT_TICKS]) - 1 <= 0:
+			return true
+	for b: Dictionary in buffs.values():
+		if valid_effect_ticks(b.get(EFFECT_TICKS)):
+			b[EFFECT_TICKS] = int(b[EFFECT_TICKS]) - 1
+			b.until = world.time + float(b[EFFECT_TICKS]) * TICK
+	return false
+
 ## 510890: client presentation only. It decrements positive counters and
 ## retains zero records/stats until the authoritative list changes.
 func client_tick_effects() -> void:
