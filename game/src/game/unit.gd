@@ -1765,8 +1765,17 @@ func _tick(dt: float) -> void:
 				_resolve_direct_hit(d)
 			else:
 				var hit_target = _pending_hit.get("target")
+				var roll: Dictionary = _pending_hit.get("roll", {})
+				# Trials only: a victim lost during a long wind-up passes the
+				# committed blow to another enemy in reach (ArenaCombatEffects).
+				if world.arena_effects and world.authority \
+						and not (is_instance_valid(hit_target) and hit_target is GameUnit and not hit_target.dead):
+					hit_target = world.arena_effects.redirect_strike(self)
+					if hit_target:
+						roll = world.combat.strike_roll(self, hit_target)
+						strike_miss = not roll.hit
 				if is_instance_valid(hit_target) and hit_target is GameUnit:
-					_resolve_hit(hit_target, _pending_hit.get("roll", {}))
+					_resolve_hit(hit_target, roll)
 			_pending_hit = {}
 	if world.profile_simulation: world.profile_record("unit_housekeeping",started,uid)
 	# The perception of a Player-motivation unit runs on every AI tick, busy,
