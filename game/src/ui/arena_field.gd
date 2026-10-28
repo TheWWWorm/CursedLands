@@ -324,7 +324,9 @@ func _process(_dt: float) -> void:
 			and match_state.phase == ArenaMatch.Phase.DEPLOY and not erase and hovered == null \
 			and get_viewport().gui_get_hovered_control() == self
 		if ghost.visible:
-			ghost.position = Vector3(hover_point.x, match_state.world.terrain.height_at(hover_point.x, hover_point.y), -hover_point.y)
+			var at := placement_target()
+			if not at.is_finite(): at = hover_point
+			ghost.position = Vector3(at.x, match_state.world.terrain.height_at(at.x, at.y), -at.y)
 			ghost.rotation.y = GameUnit.MODEL_YAW_OFFSET if team == 0 else GameUnit.MODEL_YAW_OFFSET + PI
 	if _ground_material: _ground_material.set_shader_parameter("deploying", match_state.phase == ArenaMatch.Phase.DEPLOY)
 	_sync_unit_markers()
@@ -409,8 +411,23 @@ func _draw_overlay() -> void:
 			if not rects.is_empty(): _selection_corners(Rect2(rects[0]).grow(5 * k), ArenaCreatureCard.GOLD if selected else color)
 
 	if ghost and ghost.visible:
-		var valid := match_state.placement_error(hover_point).is_empty()
-		_ring(hover_point, 0.9, (BLUE if team == 0 else RED) if valid else Color("ffcf75"), 3)
+		var target := placement_target()
+		var valid := target.is_finite()
+		_ring(target if valid else hover_point, 0.9, (BLUE if team == 0 else RED) if valid else Color("ffcf75"), 3)
+
+
+## Where a ground click would deploy the ghost: the hover point, the nearest
+## valid spot beside it, or INF. Re-evaluated as the hover or board changes.
+var _target_key := []
+var _target := Vector2.INF
+func placement_target() -> Vector2:
+	if hover_point == Vector2.INF or match_state == null or not is_instance_valid(match_state.world): return Vector2.INF
+	var key := [hover_point, Engine.get_process_frames() / 6]
+	if key != _target_key:
+		_target_key = key
+		if match_state.has_method("placement_point"): _target = match_state.placement_point(hover_point)
+		else: _target = hover_point if match_state.placement_error(hover_point).is_empty() else Vector2.INF
+	return _target
 
 
 func _selection_corners(rect: Rect2, color: Color) -> void:
