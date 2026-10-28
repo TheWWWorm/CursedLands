@@ -90,6 +90,7 @@ func _bindings(owner: RefCounted,images: Array[RID]) -> Array[RDUniform]:
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,10,[owner._instance_geometry]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,13,[owner._terrain_data]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,[owner._terrain_atlas]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,41,[owner._terrain_surface]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,15,[owner._cloud_image]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,16,[owner._cloud_sampler]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,21,[owner._lighting_offsets]),

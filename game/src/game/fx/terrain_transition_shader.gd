@@ -333,4 +333,4 @@ static func source(original: String, junctions := false, pair_only := false) -> 
 		# These exact blocks keep their four coordinates and downstream math.
 		# Pair-only programs retain their original relief source byte-for-byte.
 		code = code.replace(TERRAIN_RELIEF, SHARED_RELIEF).replace(CONTACT_RELIEF, SHARED_RELIEF)
-	return code.replace("// END_GROUND_TILE_SAMPLER", functions)
+	return GroundSurfaceShader.mapped_sampler(code.replace("// END_GROUND_TILE_SAMPLER", functions))

@@ -64,12 +64,17 @@ func run() -> void:
 	var expected := PackedInt32Array([0,0,0,1,256,65537,2147483647,0,0,0,0,0,73,73,8,0,0])
 	check(primitive_bytes(collector,scene)==expected.to_byte_array(),"full-width refined primitive IDs retain leading, internal and trailing nonterrain gaps")
 	check(collector.terrain_triangles==7 and collector.atlas==terrain._detail_atlases,"snapshot retains exact terrain triangle count and atlas owner")
-	check(collector.data.decode_u32(0)==16 and collector.data.decode_u32(4)==16 and collector.data.decode_u32(8)==64
-		and collector.data.decode_u32(12)==1088,"material-table header offsets remain unchanged")
-	check(collector.data.decode_u32(64)==(49153|(9<<16)|(1<<24)|(1<<25))
-		and collector.data.decode_u32(68)==(2|(3<<16)),"tile rotation, traits, cliff admission and blend flags remain unchanged")
+	# 80-byte header: the derived-map strength float4 sits at offset 64.
+	const H := 80
+	var tuning:=TerrainSurfaceMaps.tuning
+	check(Collector.HEADER==H and collector.data.decode_float(64)==tuning.x and collector.data.decode_float(68)==tuning.y
+		and collector.data.decode_float(72)==tuning.z and collector.data.decode_float(76)==tuning.w,"header carries the derived-map strength")
+	check(collector.data.decode_u32(0)==16 and collector.data.decode_u32(4)==16 and collector.data.decode_u32(8)==H
+		and collector.data.decode_u32(12)==H+1024,"material-table header offsets remain unchanged")
+	check(collector.data.decode_u32(H)==(49153|(9<<16)|(1<<24)|(1<<25))
+		and collector.data.decode_u32(H+4)==(2|(3<<16)),"tile rotation, traits, cliff admission and blend flags remain unchanged")
 	var guards: int=collector.data.decode_u32(40);var pairs: int=collector.data.decode_u32(56);var junctions: int=collector.data.decode_u32(60)
-	check(guards==1156 and collector.data.slice(guards,guards+9)==cliff.guards
+	check(guards==H+1092 and collector.data.slice(guards,guards+9)==cliff.guards
 		and collector.data.slice(guards+9,guards+12)==PackedByteArray([0,0,0]),"cliff guards follow the complete primitive table with zero alignment padding")
 	check(collector.data.slice(guards+12,pairs)==cliff.blend_rows.to_byte_array()
 		and collector.data.slice(pairs,junctions)==transition.rows.to_byte_array()
@@ -80,7 +85,7 @@ func run() -> void:
 	scene.geometries=[{"offset":0,"count":51}];collector=collect(scene,terrain)
 	check(primitive_bytes(collector,scene)==reference_primitives(scene).to_byte_array() and collector.terrain_triangles==0,"all nonterrain geometry retains a zero primitive table")
 	scene.vertices.resize(0);scene.geometries.clear();collector=collect(scene,terrain)
-	check(primitive_bytes(collector,scene).is_empty() and collector.data.decode_u32(40)==1088,"empty geometry retains metadata without stray primitive IDs")
+	check(primitive_bytes(collector,scene).is_empty() and collector.data.decode_u32(40)==H+1024,"empty geometry retains metadata without stray primitive IDs")
 
 	# Same-process relative timing avoids a hardware-specific millisecond limit.
 	# The reference is the formerly unbounded per-triangle material copy. A

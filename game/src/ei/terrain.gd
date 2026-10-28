@@ -864,6 +864,8 @@ const DECAL_LAYER := 1 << 18
 var _atlases: TextureLayered
 var _soft_vertices: ImageTexture
 var _detail_atlases: TextureLayered
+## TerrainSurfaceMaps for _detail_atlases, or null (unsupported / disabled).
+var _surface_maps: TextureLayered
 var _atlas_hd := false
 ## Pixel resolution may exceed the map header's logical atlas/tile sizes.
 var _atlas_source_size := 512
@@ -898,6 +900,8 @@ var details: TerrainDetails
 var color_cache: TerrainColorCache
 static var _land_shader: Shader
 static var _land_caustics_shader: Shader
+## Land and caustic land programs with Ground relief maps, by source.
+static var _land_mapped_shaders := {}
 static var _water_shader: Shader
 static var _water_fx_shader: Shader
 static var _water_interaction_shader: Shader
@@ -1326,14 +1330,19 @@ func apply_gfx() -> void:
 	else:
 		_transitions = null
 	var caustics: bool = _caustics != null and _caustics.admitted > 0
-	var transition_base := WaterCaustics.source(TERRAIN_SHADER) if caustics else TERRAIN_SHADER
+	var land := land_base()
+	var transition_base := WaterCaustics.source(land) if caustics else land
 	if _cliffs != null: transition_base = _cliffs.source(transition_base)
 	# Creating a Shader starts RD compilation before its first visible draw.
 	# Compose the selected combination once, including its live samplers.
 	if _transitions != null and _transitions.admitted > 0:
 		_land_mat.shader = _transitions.shader(transition_base)
 	elif _cliffs != null and _cliffs.admitted > 0:
-		_land_mat.shader = _cliffs.shader(WaterCaustics.source(TERRAIN_SHADER) if caustics else TERRAIN_SHADER)
+		_land_mat.shader = _cliffs.shader(WaterCaustics.source(land) if caustics else land)
+	elif land != TERRAIN_SHADER:
+		var code := WaterCaustics.source(land) if caustics else land
+		if not _land_mapped_shaders.has(code): _land_mapped_shaders[code] = Gfx.make_shader(code,true,true)
+		_land_mat.shader = _land_mapped_shaders[code]
 	elif caustics:
 		if _land_caustics_shader == null:
 			_land_caustics_shader = Gfx.make_shader(WaterCaustics.source(TERRAIN_SHADER),true,true)
@@ -1430,6 +1439,17 @@ func apply_gfx() -> void:
 	if det or (Gfx.on("gfx_weather_surfaces") and Gfx.on("gfx_rain_puddles")):
 		_land_mat.set_shader_parameter("macro_tex", Gfx.noise("macro", 256, 0.015, 3))
 	_land_mat.set_shader_parameter("atlases", _detail_atlases if det else _atlases)
+	# Derived on this GPU from the installed atlases; nothing is stored.
+	if det and TerrainSurfaceMaps.requested():
+		if _surface_maps == null:
+			_surface_maps = TerrainSurfaceMaps.create(_detail_atlases, tile_types, texture_size / tile_size,
+				tile_size + TERRAIN_GUTTER * 2)
+	else:
+		_surface_maps = null
+	_land_mat.set_shader_parameter("surface_maps", _surface_maps != null)
+	_land_mat.set_shader_parameter("surface_atlases", _surface_maps)
+	_land_mat.set_shader_parameter("surface_tuning", TerrainSurfaceMaps.tuning)
+	if is_instance_valid(color_cache): color_cache.sync_parameter("surface_tuning", TerrainSurfaceMaps.tuning)
 	_land_mat.set_shader_parameter("tiles_per_axis", float(texture_size) / tile_size)
 	_land_mat.set_shader_parameter("atlas_padding", float(TERRAIN_GUTTER) / tile_size if det else 0.0)
 	_land_mat.set_shader_parameter("source_texel", 1.0 / texture_size)
@@ -1509,10 +1529,18 @@ static func _selected_water_shader() -> Shader:
 	return _water_fx_shader
 
 
+## The land program: derived maps are compiled in only when requested, so
+## Ground relief maps off keeps the established program and its cost.
+func land_base() -> String:
+	var mapped := GameData.option("gfx_terrain") != 0 and TerrainSurfaceMaps.requested()
+	return GroundSurfaceShader.land_with_maps(TERRAIN_SHADER) if mapped else TERRAIN_SHADER
+
+
 ## The colour cache substitutes only immutable tile colour. Its live material
 ## must use the same optional terrain-receiver effects as ordinary sectors.
 func land_shader_source() -> String:
-	var code := WaterCaustics.source(TERRAIN_SHADER) if _caustics != null and _caustics.admitted > 0 else TERRAIN_SHADER
+	var land := land_base()
+	var code := WaterCaustics.source(land) if _caustics != null and _caustics.admitted > 0 else land
 	if _cliffs != null: code = _cliffs.source(code)
 	return _transitions.source(code) if _transitions != null else code
 

@@ -1,8 +1,8 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "c9d2677dfa4bb5b3acef721b421cd1ebbae002d8b040ca1e04acc574c09d4128",
-  "source_sha256": "0a739b3f608b42a65ead4415064c72f5df862cce93f2a049b59a55742439bf2e",
+  "builder_sha256": "b6bf87c9c24a5eb0b6593bc4148900d99003a6e8893ac05cb6ad5cb8e8583686",
+  "source_sha256": "40e71c4bd521e520c544b48c706ec9b8bbd23d3bd3d2bb004d030244369c9d11",
   "includes": {
     "path_trace_transmission.hlsli": "2411f711a10f6de90d93e037b26579d2b047c92bfe51b46a0c42b80a7eb9902f"
   },
@@ -25,6 +25,10 @@
     "path_trace_closest_hit_terrain.spv": "be35254aa19c6f4a67a3ea56b5f6911528e1173032d0415a67935323e318d7b9",
     "path_trace_closest_hit_transitions.dxil": "2718309b8ee2fd2e8aea5652ea2606666302310d9bf66d3d8b645d246295941a",
     "path_trace_closest_hit_transitions.spv": "a722d1426b374cdc03f08a16208c3d42c5335e8b3e5d041bc52cc2a4f787e212",
+    "path_trace_closest_hit_terrain_maps.dxil": "a3b622e859be8da72d3013274de5c1c36343b39598262e048f84b31496c627c1",
+    "path_trace_closest_hit_terrain_maps.spv": "c43c64eba2de6665e629be0bd697f7d01f461ae169d18a9b5511829287acebb1",
+    "path_trace_closest_hit_transitions_maps.dxil": "f3ed297064a7d0df030ea7bd265a92c32297b70db5928edf0ebfb70f7e6d3c4c",
+    "path_trace_closest_hit_transitions_maps.spv": "2ae713d2a25661d53ddc4b668e249eb35c955ecb35f5291c2e446e788373f687",
     "path_trace_raygen_water.dxil": "caab63b06c9f73d8a730a37cc995fb41316294b30dbc27f7088147b6c8144b25",
     "path_trace_raygen_water.spv": "e25733a3eb2865b0d35399fed72061d4bfead0e0588062656b05cdb2ddf23e88",
     "path_trace_raygen_water_no_emitters.dxil": "0578f2839a40525db0153ee750b75f79f676e47dcc4f3703a2eac9908bf7387d",
@@ -42,6 +46,10 @@
     "path_trace_closest_hit_terrain_transmission.dxil": "98087869ab5af3bb943298fd29451d70647bf453a16b699256e267419ef3364a",
     "path_trace_closest_hit_terrain_transmission.spv": "44798f47df78032b73e05121e5fb65fbae6830a77b015c96e4c2b35e34486569",
     "path_trace_closest_hit_transitions_transmission.dxil": "419d03b4669059addcf2eab6b0ea9f91406a87ae88bca3372f480d28ca50367f",
-    "path_trace_closest_hit_transitions_transmission.spv": "04dfbc6b66bb0a7d6b3328227212543ab16d53e4a1aad2085dc8e3d07bd448ad"
+    "path_trace_closest_hit_transitions_transmission.spv": "04dfbc6b66bb0a7d6b3328227212543ab16d53e4a1aad2085dc8e3d07bd448ad",
+    "path_trace_closest_hit_terrain_maps_transmission.dxil": "758a287a3233736309e6fe00a2903f1936ed46eb8c5a917023306088f01b62d1",
+    "path_trace_closest_hit_terrain_maps_transmission.spv": "6a49c318e7cdf61fcfc202652417280faf675403bdaacc988356034d246f6385",
+    "path_trace_closest_hit_transitions_maps_transmission.dxil": "3c31d0626e20e7bbaa58b8ddbf5094042cfc51fcc2a047406222bccd4fc55380",
+    "path_trace_closest_hit_transitions_maps_transmission.spv": "1acd824f30205fffcae447f2021be27c5fc4c103d17b977adf781131c69a1fea"
   }
 }
