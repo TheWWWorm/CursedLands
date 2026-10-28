@@ -98,6 +98,13 @@ func _run() -> void:
 		save_result();get_tree().quit(1);return
 	scene.process_mode = Node.PROCESS_MODE_DISABLED
 	add_child(scene);scene.set_hour(12);scene.camera.current = true
+	# With uncached motion-vector shaders, DLSS starts once they finish compiling
+	# in the background; the scene keeps drawing meanwhile.
+	var ready_before := int(status().get("dlss_evaluations",0))
+	var ready_start := Time.get_ticks_msec()
+	while int(status().get("dlss_evaluations",0)) - ready_before < 2 and Time.get_ticks_msec() - ready_start < 120000:
+		await RenderingServer.frame_post_draw
+	check(int(status().get("dlss_evaluations",0)) - ready_before >= 2,"DLSS starts after shader preparation (%d ms)" % (Time.get_ticks_msec() - ready_start))
 	await sample("off",false)
 	await sample("on-motion",true,true)
 	await sample("disabled",false,true)

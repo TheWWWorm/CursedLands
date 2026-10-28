@@ -35,6 +35,20 @@ guides keep ordinary SR active. The native bridge does not own these textures.
 See [Ray Reconstruction setup and limits](../../docs/integrations/dlss-ray-reconstruction.md)
 and [the validation report](../../docs/validation/pt-transport-2026-10-26/rr-validation.md).
 
+`temporal-shader-preparation.patch` is the twenty-fourth Windows patch, applied
+after `dlss-ray-reconstruction.patch`. The first frame that needs motion vectors
+enables the advanced scene-shader group for every loaded material. DLSS, FSR 2,
+MetalFX and TAA joined that compilation inside one frame while holding a shader
+version's lock. With an uncached group on D3D12 this took 37 s, and could
+deadlock once pipeline jobs waiting for the same lock filled the four-thread
+worker pool; the 1.34.0 menu then never appeared. These modes now use the FSR
+SDK's background preparation: the main view keeps its ordinary pass, without
+motion vectors, DLSS-G tagging or a compositor's motion-vector request, until
+the shaders and their pipelines are ready. The FSR SDK path is unchanged.
+Rebuild the Windows executable; a PCK-only update cannot apply it. Run
+`tools/run_native_d3d12_cold_start.ps1` with the previous release as
+`-SeedPackage`. See [the investigation](../../docs/validation/d3d12-cold-menu-2026-10-28/README.md).
+
 `water-raytracing-uniform-stages.patch` is an optional Vulkan experiment applied
 after the common patches. It fixes RT uniform stage masks and adds a capability
 guard. See [the water experiment](../../docs/integrations/water-raytracing-experiment.md).
