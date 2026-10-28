@@ -43,6 +43,10 @@ point in time and are not updated afterwards.
 - Release notes under [`releases/`](releases/); the changelog is [CHANGELOG.md](../CHANGELOG.md)
 - Android: [stability](android-stability.md) and [startup recovery](android-startup-recovery.md)
 
+## Maintenance
+
+- [Project review, 2026-10-28](project-review-2026-10-28.md): ranked open improvements (repository size, web build reproducibility, unregistered tests, runner drift, script-only platform lane, native provenance, UI scale, code structure)
+
 ## Records
 
 Dated performance, checkpoint and handoff files in this folder (for example
