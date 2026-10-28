@@ -1284,6 +1284,9 @@ func move_to(p: Vector2, run := true, queue := false) -> void:
 ## `aim` = body part for an aimed strike (0 head .. 5 left leg), -1 = random.
 ## `run`: the double-click flag (see Session._double_stand).
 func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice := false) -> void:
+	# 554b30: an aim at a part that is no longer intact is none.
+	if t != null and t != self and aim >= 0 and aim < mini(6, t.parts.size()) and int(t.parts[aim].state) != 3:
+		aim = -1
 	command({"type": "attack", "target": t, "aim": aim, "run": run, "path_notice": path_notice}, queue)
 
 
@@ -3575,13 +3578,16 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 		if world.session:
 			world.session.broadcast({"t": "arrow", "a": uid, "b": t.uid})
 		world.combat.weapon_spell(self, t)
-		return
-	if not _melee_height_clear(t):
-		return
-	world.combat.melee(self, t, roll)
-	world.combat.weapon_spell(self, t)
+	elif _melee_height_clear(t):
+		world.combat.melee(self, t, roll)
+		world.combat.weapon_spell(self, t)
 	# Standing was required when this swing began. A later gait request must
 	# survive its impact, including when the victim dies and no attack follows.
+	# 549ec0: once the aimed part is no longer intact, the
+	# attack order's later blows are unaimed.
+	if strike_aim >= 0 and strike_aim < mini(6, t.parts.size()) and int(t.parts[strike_aim].state) != 3 \
+			and order.get("type", "") == "attack" and int(order.get("aim", -1)) == strike_aim:
+		order.aim = -1
 
 
 ## the original death rule. After a blow refolds the stats
