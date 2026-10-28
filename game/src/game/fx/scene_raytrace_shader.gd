@@ -44,6 +44,18 @@ varying vec3 ei_rt_rest;
 #endif
 #endif
 
+// Traced receivers fade out by distance from the eye as well as from the
+// snapshot centre. The centre trails the camera by up to the 16 m recentre
+// step, so a centre-only fade let the far PT boundary creep toward a moving
+// camera and jump back when the next snapshot was published. The eye reach
+// keeps receivers inside the same centre bound, preserving the occluder margin.
+float ei_rt_coverage(vec3 world) {
+    float reach=ei_rt_state.w-16.0;
+    float eye=1.0-smoothstep(reach-12.0,reach,distance(world,ei_rt_eye));
+    float scene=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance(world,ei_rt_center.xyz));
+    return min(eye,scene);
+}
+
 vec3 ei_rt_position(ivec2 p,float depth,ivec2 size,mat4 trace_projection,mat4 trace_inverse) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
     vec3 forward=-vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]);
@@ -147,7 +159,7 @@ bool ei_rt_ground_sample(mat4 trace_projection,mat4 trace_inverse,out vec3 gi,ou
     if(ei_pt_active>0.5)visibility0.rgb=clamp(visibility0.rgb,vec3(0.0),gi);
     // Grass uses the ground's diffuse illumination, never its glossy lobe.
     if(ei_pt_active<=0.5) {
-        float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance(ei_rt_ground,ei_rt_center.xyz));
+        float fade=ei_rt_coverage(ei_rt_ground);
         gi=mix(ei_lin(ei_ambient),gi,fade);
         visibility0=mix(vec4(1.0),visibility0,fade);visibility1=mix(vec4(1.0),visibility1,fade);
     }
@@ -242,7 +254,7 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,mat4 trace_project
     // A valid diagonal tap can weigh exp(-8); its absolute weight must not
     // turn an otherwise compatible receiver into conventional-lighting holes.
     if(total<(ei_pt_active>0.5?0.000001:0.01))return false;
-    float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);
+    float fade=ei_rt_coverage(world);
     if(ei_pt_active>0.5) {
         gi/=total;visibility0=a/total;visibility1=b/total;
 #ifdef EI_TERRAIN_LIGHT

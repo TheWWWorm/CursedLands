@@ -620,6 +620,7 @@ func _stop_net() -> void:
 func _close_session() -> void:
 	if _session and _session.local_host.frontend:
 		await _session.local_host.stop()
+		LocalHost.prepare_standby(get_tree())
 	if _session and _session.online:
 		_session.multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 		_session.online = false

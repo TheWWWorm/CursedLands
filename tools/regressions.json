@@ -4091,6 +4091,46 @@
       "mode": "rendered",
       "args": [],
       "min_checks": 90
+    },
+    {
+      "id": "path_trace_cpu_caches",
+      "script": "tools/tests/path_trace_cpu_caches.gd",
+      "summary": "PT_CPU_CACHES",
+      "contract": "Unchanged PT frames skip figure-replacement and first-person scans; a body-spell replacement rebinds every traced part in one scan on its first frame; a preparation cover selects the larger gathering budget.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 15
+    },
+    {
+      "id": "local_host_standby",
+      "script": "tools/tests/local_host_standby.gd",
+      "summary": "LOCAL_HOST_STANDBY",
+      "contract": "A pre-started simulation worker takes over the next solo start, ends cleanly when discarded, on owner shutdown or for other game files, never reports a crash, and keeps the running owner crash marker.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 24
+    },
+    {
+      "id": "path_trace_receiver_coverage",
+      "script": "tools/tests/path_trace_receiver_coverage.gd",
+      "summary": "PT_RECEIVER_COVERAGE",
+      "contract": "The far path-traced lighting boundary stays at the same eye distance while travelling within one snapshot and when the recentred snapshot is published.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 6
     }
   ]
 }

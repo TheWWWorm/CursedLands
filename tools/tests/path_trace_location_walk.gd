@@ -8,6 +8,7 @@ var h: GameUnit
 var rt: Node
 var zone := "gz4g"
 var dlss := false
+var frame_generation := false
 var storm := false
 var direct_input := false
 var peaceful := false
@@ -90,6 +91,8 @@ func run() -> void:
 			var xy := arg.trim_prefix("--pt-start=").split(",")
 			if xy.size()==2: start=Vector2(float(xy[0]),float(xy[1]))
 		if arg=="--pt-dlss": dlss=true
+		if arg=="--pt-fg": frame_generation=true
+		if arg=="--pt-qhd": resolution=Vector2i(2560,1440)
 		if arg=="--pt-storm": storm=true
 		if arg=="--pt-direct-input": direct_input=true
 		if arg=="--pt-peaceful": peaceful=true
@@ -104,7 +107,7 @@ func run() -> void:
 		"auto_graphics":0,"display_mode":0,"vsync":0,"fps_limit":0,"q_aa":0,"q_shadows":2,
 		"gfx_terrain":1,"gfx_ground_contact":0,"gfx_depth_of_field":0,"gfx_water_reflections":2,
 		"rt_shadows":0,"rt_gi":0,"pt_mode":1,"pt_accumulation":0,"q_rt_lighting":0,"render_scale":0,
-		"rtx_upscaling":4 if dlss else 0,"rtx_frame_generation":0,"fsr_upscaling":0,"fsr_frame_generation":0,
+		"rtx_upscaling":4 if dlss else 0,"rtx_frame_generation":1 if frame_generation else 0,"fsr_upscaling":0,"fsr_frame_generation":0,
 		"character_light":0,"autosave":0,"show_tutorial":0,"scroll_border":0,
 		"net_upnp":0,"net_lan":0,"net_directory":0},true)
 	GameData.resolution_size="2560x1440"
@@ -166,7 +169,9 @@ func run() -> void:
 	rt=g.get_node("SceneRaytrace")
 	check(await ready_scene(rt),"live location prepares PT")
 	print("LOCATION_INITIAL ",JSON.stringify(rt.stats))
-	check(rt.stats.get("display_size",[])==[3840,2160] and rt.stats.get("size",[])==[960,540],"4K display and Low/Performance trace sizes")
+	# Ray Reconstruction traces the full DLSS input; NRD traces Low quality.
+	var trace_size: Array=rt.stats.get("render_size",[]) if rt.stats.get("ray_reconstruction",false) else [resolution.x/4,resolution.y/4]
+	check(rt.stats.get("display_size",[])==[resolution.x,resolution.y] and rt.stats.get("size",[])==trace_size,"%dx%d display and Low/Performance trace sizes"%[resolution.x,resolution.y])
 	check(h.model._view_active,"production first-person body is active")
 	verify_scenery_placement()
 	if dlss: check(RtxGraphics.sr_active(),"DLSS Performance SDK is active")

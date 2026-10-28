@@ -12,6 +12,12 @@ const GI_SAMPLES := [1,2,4]
 const SHADOW_SAMPLES := [1,2,4]
 const RECEIVER_RADIUS := 72.0
 const PATH_LIGHT_LIMIT := 64
+## Snapshot gathering budgets (microseconds per frame). Live replacement shares
+## the frame with a lit scene; uncovered loading keeps the frame responsive. An
+## explicit preparation cover pauses the game, so packing may use most of it.
+const GATHER_LIVE_US := 1500
+const GATHER_LOADING_US := 6000
+const GATHER_COVERED_US := 16000
 const REASON := "Scene ray tracing needs a ray-tracing GPU and the qualified DX12 or Vulkan Forward+ renderer. Conventional lighting remains available."
 
 var game: Game
@@ -217,9 +223,9 @@ func _process(dt: float) -> void:
 	if _profile_cpu:
 		cpu_timings["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	# Live travel shares the frame with rendering and simulation, while the
-	# previous scene stays lit. Initial preparation has its own fixed budget.
+	# previous scene stays lit. A preparation cover permits a larger budget.
 	if _gather!=null:
-		var complete:=_gather.step(_travel_gather_budget if device!=null else 6000)
+		var complete:=_gather.step(gather_budget_us())
 		if _profile_cpu:cpu_timings["gather_detail"]=_gather.profile_gather.duplicate(true)
 		if complete:_queue_candidate()
 	if _pending_stage>=0:
@@ -371,6 +377,12 @@ func _process(dt: float) -> void:
 		# slow handoff cannot discard its own diagnosis or reuse stale stages.
 		stats.merge(cpu_timings,true)
 		stats["cpu_total_ms"]=(Time.get_ticks_usec()-cpu_start)/1000.0
+
+func gather_budget_us() -> int:
+	# Preserve the bounded live-travel boost while retaining the remote's
+	# separate uncovered and covered first-load budgets.
+	if device!=null:return _travel_gather_budget
+	return GATHER_COVERED_US if not _preparation_owner.is_empty() else GATHER_LOADING_US
 
 func _begin_preparation() -> void:
 	_end_preparation()
