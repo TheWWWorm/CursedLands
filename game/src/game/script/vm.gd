@@ -200,6 +200,7 @@ func _tick(dt: float) -> void:
 	_refresh_heroes()
 	preload("res://src/game/script/story_astral_eavesdrop.gd").recover(self)
 	preload("res://src/game/script/story_astral_fortunes.gd").recover(self)
+	preload("res://src/game/script/story_compat.gd").wormface_riddle(self)
 	_check_interactions()
 	briefings.tick()
 	# Script threads keep running during a conversation: the world tick

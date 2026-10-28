@@ -78,6 +78,12 @@ python3 tools/parity/gameplay.py \
   --godot /path/to/godot --out /tmp/rendered-gameplay \
   --display rendered --render-display :91
 
+# Programs run in parallel (default --jobs auto); each keeps its own process
+# and profile. --jobs 1 runs them one at a time.
+python3 tools/parity/gameplay.py \
+  --game-dir /path/to/base-game --astral-dir /path/to/lost-in-astral \
+  --godot /path/to/godot --out /tmp/lia-quests --case lia_
+
 # Repeat the retained program selection against the current source.
 /path/to/results/reproduce.sh /tmp/gameplay-repeat
 
@@ -159,7 +165,13 @@ volume_voice=0
 
 The bootstrap checks those preferences before running the test. Autosave,
 tutorials and public network discovery are disabled. Network tests use local
-peers; programs run sequentially to avoid conflicting fixture ports. Private
+peers on fixed fixture ports. Programs run in parallel: `--jobs auto` (the
+default) runs one per three CPU threads, at most as many as free memory holds
+at about 4.5 GiB each beyond an 8 GiB reserve, and starts the next program only
+while that much memory is still free. Programs whose script (or a script it
+extends or preloads) opens sockets run one at a time, as do rendered programs
+sharing the private display. Ctrl-C or a runner error stops every running
+program. The report keeps the selection order. Private
 player saves and preferences are neither copied nor changed.
 
 The bootstrap preserves the ordinary `--tool` scene layout so a separate
@@ -230,7 +242,11 @@ retain the expanded 166-check fixture passing in both campaigns with unchanged
 production code.
 
 Tests requiring private saves, manual input or unbounded play sessions are not
-automatically included. Add a self-contained fixture with an explicit numeric
+automatically included. A fixture that freezes the session and advances the
+script VM directly lets few frames pass, so the world `Game.attach_world`
+queued for deletion stays loaded. After each map change, call
+`tools/tests/world_release.gd` (as `lia_kel_support.gd`'s `freeze()` does) and
+check that only one world remains. Add a self-contained fixture with an explicit numeric
 summary and campaign assignment before registering it. Keep a failing
 behavior visible while investigating; never lower coverage or change an
 expected outcome merely to get a green run.

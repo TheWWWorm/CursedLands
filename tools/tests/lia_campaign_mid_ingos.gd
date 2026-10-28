@@ -39,7 +39,7 @@ func ritual() -> bool:
 	if not await leave("gz21k_gz23k","gz23k"): return false
 	# Keep ordinary arrival threads, then select the exact quest chain once its
 	# initial bindings are ready. The untested side quests remain outside scope.
-	ticks(8); vm().instances.clear(); start(["VCheck#0#1","VCheck#0#4"]); ticks(25)
+	ticks(8); threads(["VCheck#0#1","VCheck#0#4"]); ticks(25)
 	teleport(Vector2(128,186))
 	check(value("q.gz23k.q4k.2") == 1 and value("q.gz21k.q5k") == 0,"mark approach does not grant the uncollected second ingredient")
 	use(357423); ticks(25)
@@ -47,7 +47,7 @@ func ritual() -> bool:
 	check(value("q.gz21k.q5k") == 1,"both actually earned ingredients start the ritual quest")
 	await roundtrip("campaign_ritual_both_ingredients",["q.gz21k.q3k","q.gz23k.q4k","q.gz21k.q5k"],["dflower","svermark"])
 	if not await leave("gz21k_gz23k","gz21k"): return false
-	ticks(8); vm().instances.clear(); start(["VCheck#3#1"]); ticks(25)
+	ticks(8); threads(["VCheck#3#1"]); ticks(25)
 	teleport(Vector2(293,85)); use(1005001)
 	check(value("q.gz21k.q5k") == 2 and not s.state.quest_items.has("dflower"),"real ritual use consumes the flower and completes the ritual quest")
 	ticks(55)
@@ -129,7 +129,7 @@ func mine() -> void:
 	await enter("gz21k")
 	gate("gz21k_gz22k",true,"earned ritual hand-in permits the ordinary far-forest exit")
 	if not await leave("gz21k_gz22k","gz22k"): return
-	ticks(8); vm().instances.clear(); start(["Lever#0#2"])
+	ticks(8); threads(["Lever#0#2"])
 	for edge: String in ["gz22k_gz24k","gz22k_gz24ak","gz22k_gz24bk"]:
 		gate(edge,false,"mine approach remains blocked before its physical switch: "+edge)
 	use(5636)
@@ -138,7 +138,7 @@ func mine() -> void:
 	check(value("z.gz24k") == 0,"mine switch reveals the correct not-yet-completed mine destination")
 	await roundtrip("campaign_mine_switch",["z.gz22k_gz24k","z.gz22k_gz24ak","z.gz22k_gz24bk"],["kkey01"])
 	if not await leave("gz22k_gz24k","gz24k"): return
-	ticks(8); vm().instances.clear(); start(["VCheck#0#1","Lever#0#1","Lever#0#2"]); ticks(25)
+	ticks(8); threads(["VCheck#0#1","Lever#0#1","Lever#0#2"]); ticks(25)
 	use(4370,false)
 	check(value("q.gz24k.q15k.3") == 0,"second mine mechanism requires the new key from the first chest")
 	use(1015001)

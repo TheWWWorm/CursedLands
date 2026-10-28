@@ -89,6 +89,8 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 		_escape_party(ast)
 	if zone == "gz2h":
 		preload("res://src/game/script/story_revenge.gd").apply(ast)
+	if zone == "gz4h":
+		_wormface_riddle(ast)
 	if zone != "cz1h": return
 	# Kel walks to (300.5, 61), but the shipped escape script tests (301, 61).
 	# The ordinary route happens to cross the latter's 0.3 m circle. A route
@@ -107,6 +109,97 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 		for condition: Array in block.conds:
 			if condition == check:
 					condition[2][0][2][1][1] = 300.5
+
+
+## The Wormfaces' Riddle (fq6): VLever1#0#0 enables its three levers once
+## the last fortune is bought, and Start disables them on the first cave
+## visit. WorldScript starts Start first, and the native trigger walk polls
+## the newer instance first, so a fortune bought before that visit leaves
+## the levers disabled after both one-shot checks are gone. This repairs the
+## original's passability: with the complete authored contract recognized,
+## an unanswered riddle whose watchers still wait gets its levers back. It
+## also releases saves already left in that state. Pulled levers, a given
+## answer or a finished fragment are never reopened.
+const WORMFACE_LEVERS := [16426, 1047355, 1088298]
+const WORMFACE_META := &"wormface_riddle"
+
+static func _wormface_riddle(ast: ScriptParser) -> void:
+	var expected := P.parse("""
+DeclareScript Start (this : object)
+DeclareScript VLever1#0#0 (this : object)
+DeclareScript VLever1#0#1 (this : object)
+DeclareScript VLever2#0#1 (this : object)
+DeclareScript VLever3#0#1 (this : object)
+Script Start (
+ if (IsEqual(GSGetVar(0, "q.gz4h.q19h.1"), 0)) then (
+  KillScript()
+  GSSetVar(0, "CaveLever", 0)
+  EnableLever(Lever1, 0)
+  EnableLever(Lever2, 0)
+  EnableLever(Lever3, 0)
+ )
+)
+Script VLever1#0#0 (
+ if (IsEqual(GSGetVar(0, "b.skelet.fq6"), 2) IsEqual(GSGetVar(0, "q.gz4h.fq6"), 0)) then (
+  KillScript()
+  EnableLever(Lever1, 1)
+  EnableLever(Lever2, 1)
+  EnableLever(Lever3, 1)
+  SwitchLeverState(Lever1, 0)
+  SwitchLeverState(Lever2, 0)
+  SwitchLeverState(Lever3, 0)
+  GSSetVar(0, "CaveLever", 0)
+ )
+)
+Script VLever1#0#1 (
+ if (IsEqual(GetLeverState(Lever1), 1)) then (
+  KillScript()
+  GSSetVar(0, "CaveLever", Add(GSGetVar(0, "CaveLever"), 1))
+  GSSetVar(0, "CaveLever", Mul(GSGetVar(0, "CaveLever"), 10))
+ )
+)
+Script VLever2#0#1 (
+ if (IsEqual(GetLeverState(Lever2), 1)) then (
+  KillScript()
+  GSSetVar(0, "CaveLever", Add(GSGetVar(0, "CaveLever"), 2))
+  GSSetVar(0, "CaveLever", Mul(GSGetVar(0, "CaveLever"), 10))
+ )
+)
+Script VLever3#0#1 (
+ if (IsEqual(GetLeverState(Lever3), 1)) then (
+  KillScript()
+  GSSetVar(0, "CaveLever", Add(GSGetVar(0, "CaveLever"), 3))
+  GSSetVar(0, "CaveLever", Mul(GSGetVar(0, "CaveLever"), 10))
+ )
+)
+""")
+	for name: String in expected.scripts:
+		if ast.scripts.get(name, {}) != expected.scripts[name]: return
+	for i in WORMFACE_LEVERS.size():
+		var bind := [P.S_SET, "Lever%d" % (i + 1), [P.N_CALL, "GetObjectByID", [[P.N_STR, str(WORMFACE_LEVERS[i])]]]]
+		if not ast.world.has(bind): return
+	for name: String in ["Start", "VLever1#0#0", "VLever1#0#1", "VLever2#0#1", "VLever3#0#1"]:
+		if not ast.world.has([P.S_CALL, name, [[P.N_VAR, "NULL"]]]): return
+	ast.set_meta(WORMFACE_META, true)
+
+## Polled with the other per-tick story checks; idle once the levers are on.
+static func wormface_riddle(vm: ScriptVM) -> void:
+	if not vm.ast.has_meta(WORMFACE_META) or vm.session.state.campaign_id != CampaignProfile.ASTRAL: return
+	var st := vm.session.state
+	if st.get_var(0, "b.skelet.fq6") != 2.0 or st.get_var(0, "q.gz4h.fq6") != 0.0 \
+			or st.get_var(0, "CaveLever") != 0.0: return
+	var levers: Dictionary = vm.world.levers
+	for id: int in WORMFACE_LEVERS:
+		if not levers.has(id) or bool(levers[id].get("enabled", true)) or int(levers[id].get("state", 0)) != 0: return
+	var waiting := {}
+	for inst: ScriptVM.Instance in vm.instances:
+		if inst.killed and inst.frames.is_empty(): continue
+		if inst.sname in ["Start", "VLever1#0#0"] or (inst.sname == "WorldScript" and inst.src == ""): return
+		if inst.sname in ["VLever1#0#1", "VLever2#0#1", "VLever3#0#1"] and not inst.killed: waiting[inst.sname] = true
+	if waiting.size() != 3: return
+	for id: int in WORMFACE_LEVERS:
+		levers[id].enabled = true
+		vm.session.broadcast({"t": "lever", "nid": id, "enabled": true})
 
 
 ## The Portal's escape watcher is saved with the region. After the first

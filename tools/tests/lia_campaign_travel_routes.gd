@@ -28,7 +28,8 @@ func select_route(exit_number: int, destination: String, entrance: int) -> bool:
 	check(s._lmp_entrance == entrance,"world load retains the selected entrance")
 	var arrival: Rect2 = s.world.zone.exits[entrance].deploy
 	check(arrival.grow(5).has_point(hero().pos),"hero deploys at the selected authored map point")
-	vm().instances.clear(); vm().briefings.active = ""; vm().briefings._pending_dialog.clear()
+	if not map_startup: vm().instances.clear()
+	vm().briefings.active = ""; vm().briefings._pending_dialog.clear()
 	game.hud._dialog.hide()
 	return true
 

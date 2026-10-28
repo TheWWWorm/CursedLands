@@ -48,7 +48,8 @@ GODOT=/path/to/godot-4 PYTHON=/path/to/parity-venv/bin/python \
   tools/parity/run_lia_quests.sh /path/to/NEW-evidence-directory
 ```
 
-This runs all `lia_kel_` and `lia_campaign_` gameplay cases, the existing
+This runs all `lia_kel_` and `lia_campaign_` gameplay cases, the Rod-fragment
+first-visit cases, the existing
 arrival, Revenge, Slave Lists return and tomb-exit regressions, the
 interaction-callback regression, and every `lia_` native checkpoint.
 The campaign cases include late Jigran through the ending and all four region
@@ -56,6 +57,28 @@ maps. Each native checkpoint is replayed twice in
 fresh profiles. The directory must not exist: previous evidence is never
 silently replaced. The gameplay report and native checkpoint report have
 separate results and scopes. A nonzero exit means a failed check or capture.
+
+Each `lia_kel_` and `lia_campaign_` program also has a `_startup` variant
+(`--map-startup`). The plain programs start only the quest threads under test
+after entering a map; the variant keeps every thread the map's WorldScript
+starts, as an ordinary visit does, so a startup script that undoes an accepted
+quest fails. `lia_kel_fortune_orders` and `lia_fragment_first_entry` buy each
+Rod-of-Life fortune before the first visit to its map and after one. Gameplay programs
+run in parallel (`JOBS`, default `auto`; `JOBS=1` runs them one at a time).
+
+For a quick remake-only check of every quest Kel's revival depends on
+(fortunes, fragments, orders, startup variants, departures, hand-offs and the
+rescue), without native checkpoints:
+
+```sh
+BASE_GAME=/path/to/EvilIslands ASTRAL_GAME=/path/to/patched-LostInAstral \
+GODOT=/path/to/godot-4 tools/parity/run_lia_kel.sh /path/to/NEW-evidence-directory
+```
+
+`JOBS=auto` (the default) picks the number of parallel programs from CPU
+threads and free memory. The 20 programs take about 26 minutes one at a time
+and under five minutes with seven jobs on a 32-thread, 64 GB workstation.
+Programs that open fixed network ports always run one at a time.
 
 Run only selected original checkpoints:
 

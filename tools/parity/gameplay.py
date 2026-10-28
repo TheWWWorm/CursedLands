@@ -7,6 +7,8 @@ failures, 2 means at least one setup, capture, or runtime error.
 """
 import argparse
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import nullcontext
 import json
 import os
 from pathlib import Path
@@ -16,6 +18,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import threading
 import time
 import xml.etree.ElementTree as ET
 
@@ -70,6 +73,87 @@ def argument_paths(spec, data_roots):
     return [re.sub(r"\{([a-z_]+)\}", replace, value) for value in spec["args"]]
 
 
+NETWORK = re.compile(r"\.host\(|\.join\(|create_server|create_client|LanDiscovery|MultiplayerPeer|WebSocket|"
+                     r"PacketPeerUDP|TCPServer|StreamPeerTCP|UPNP")
+
+
+def uses_network(script, runtime, seen=None):
+    """Whether a test or a script it extends/preloads opens fixed local ports."""
+    seen = set() if seen is None else seen
+    if script in seen or not script.is_file():
+        return False
+    seen.add(script)
+    text = script.read_text(errors="replace")
+    if NETWORK.search(text):
+        return True
+    for base in re.findall(r'(?:^extends\s+|preload\()"([^"]+\.gd)"', text, re.M):
+        path = runtime / base[6:] if base.startswith("res://") else script.parent / base
+        if uses_network(path, runtime, seen):
+            return True
+    return False
+
+
+# One loaded-map program peaks near 4.2 GiB and uses about 1.5 cores
+# (LiA quest run, 2026-10-28); keep room for the desktop and other work.
+PROGRAM_MEMORY = 9 * 2**29
+MEMORY_RESERVE = 8 * 2**30
+
+
+def available_memory():
+    """MemAvailable in bytes, or None where the system does not report it."""
+    try:
+        for line in Path("/proc/meminfo").read_text().splitlines():
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1]) * 1024
+    except (OSError, ValueError, IndexError):
+        pass
+    return None
+
+
+def auto_jobs(cpus=None, available=None):
+    """Parallel programs this machine can hold: CPU threads and free memory."""
+    jobs = max(1, (cpus or os.cpu_count() or 1) // 3)
+    if available is not None:
+        jobs = min(jobs, max(1, (available - MEMORY_RESERVE) // PROGRAM_MEMORY))
+    return int(jobs)
+
+
+def jobs_argument(value):
+    if value == "auto":
+        return value
+    try:
+        jobs = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError("--jobs must be a positive number or auto") from None
+    if jobs < 1:
+        raise argparse.ArgumentTypeError("--jobs must be a positive number or auto")
+    return jobs
+
+
+class MemoryGate:
+    """Hold a program back while free memory is below one program's peak plus
+    the reserve. The first program always starts, so a run never stalls."""
+    def __init__(self, stop, available=available_memory, poll=2.0):
+        self.stop, self.available, self.poll = stop, available, poll
+        self.active = 0
+        self.condition = threading.Condition()
+
+    def __enter__(self):
+        with self.condition:
+            while self.active and not self.stop.is_set():
+                free = self.available()
+                if free is None or free >= PROGRAM_MEMORY + MEMORY_RESERVE:
+                    break
+                self.condition.wait(self.poll)
+            self.active += 1
+        return self
+
+    def __exit__(self, *exc):
+        with self.condition:
+            self.active -= 1
+            self.condition.notify_all()
+
+
 def missing_assets(spec, data_roots):
     return [f"{campaign}/{name}" for campaign, files in required_assets(spec).items()
             for name in files if campaign not in data_roots or not (data_roots[campaign] / name).is_file()]
@@ -85,8 +169,9 @@ def engine_argv(godot, runtime, display="headless", rendering_method="gl_compati
                    "--windowed", "--resolution", "1280x800", "--position", "0,0"]
 
 
-def run_program(argv, log, env, timeout):
-    """Abort a broken Godot script promptly, owning only this process group."""
+def run_program(argv, log, env, timeout, stop=None):
+    """Abort a broken Godot script promptly, owning only this process group.
+    A set `stop` event (interrupt or another program's crash) ends it too."""
     start = time.monotonic()
     error = None
     with log.open("w") as stream, log.open(errors="replace") as reader:
@@ -101,6 +186,9 @@ def run_program(argv, log, env, timeout):
                     break
                 if time.monotonic() - start > timeout:
                     error = f"Test exceeded {timeout} seconds"
+                    break
+                if stop is not None and stop.is_set():
+                    error = "Run stopped before this test finished"
                     break
                 # Preserve any incomplete line across reads.
                 pending = pending.rsplit("\n", 1)[-1]
@@ -280,6 +368,9 @@ def main():
     parser.add_argument("--seed", type=int, default=20261020)
     parser.add_argument("--timeout", type=int, help="Override per-program timeout in seconds")
     parser.add_argument("--render-display", help="Private X display for rendered cases, e.g. :91; never uses the desktop implicitly")
+    parser.add_argument("--jobs", type=jobs_argument, default="auto",
+                        help="Programs to run at once (default auto: CPU threads and free memory); "
+                             "each keeps its own process and profile")
     parser.add_argument("--list", action="store_true")
     args = parser.parse_args()
     tests = [row for row in catalog(args.replay_selection) if (not args.quick or row["quick"])
@@ -337,16 +428,21 @@ def main():
         if args.with_original: reproduce.append("--with-original")
         if args.timeout: reproduce += ["--timeout", str(args.timeout)]
         if args.render_display: reproduce += ["--render-display", args.render_display]
+        reproduce += ["--jobs", str(args.jobs)]
         (output / "reproduce.sh").write_text('#!/bin/sh\nset -eu\noutput=${1:?"NEW_OUTPUT_DIRECTORY required"}\nshift\nexec '
                                             + shlex.join(reproduce) + ' --out "$output" "$@"\n')
         (output / "reproduce.sh").chmod(0o755)
         save_report(report, output)
         env = isolated_environment(output / "import-profile", name, data)
         env.pop("EI_FIXED_FPS", None)
-        print(f"Importing snapshot for {len(tests)} gameplay programs...", flush=True)
+        jobs = min(len(tests), auto_jobs(available=available_memory()) if args.jobs == "auto" else args.jobs)
+        print(f"Importing snapshot for {len(tests)} gameplay programs ({jobs} at a time)...", flush=True)
         command(engine + ["--editor", "--import"], output / "import-bootstrap.log", env, 240, import_bootstrap=True)
         command(engine + ["--editor", "--import"], output / "import.log", env, 240)
-        for index, spec in enumerate(tests):
+        network_lock, display_lock = threading.Lock(), threading.Lock()
+        stop = threading.Event()
+        memory = MemoryGate(stop)
+        def run_one(index, spec):
             directory = output / "tests" / spec["id"]
             directory.mkdir(parents=True)
             log = directory / "run.log"
@@ -355,19 +451,13 @@ def main():
             if missing:
                 message = f"Missing campaign data: {', '.join(missing)}"
                 log.write_text(message + "\n")
-                report["tests"].append(dict(spec, status="error", checks=0, failures=0, error=message,
-                    diagnostics=[], failure_messages=[], log=log.relative_to(output).as_posix()))
-                save_report(report, output)
-                print(f"[{index+1}/{len(tests)}] {spec['id']}: error ({message})", flush=True)
-                continue
+                return dict(spec, status="error", checks=0, failures=0, error=message,
+                    diagnostics=[], failure_messages=[], log=log.relative_to(output).as_posix())
             if spec.get("display") == "rendered" and not args.render_display:
                 message = "Rendered test requires --render-display pointing to a private X server"
                 log.write_text(message + "\n")
-                report["tests"].append(dict(spec, status="error", checks=0, failures=0, error=message,
-                    diagnostics=[], failure_messages=[], log=log.relative_to(output).as_posix()))
-                save_report(report, output)
-                print(f"[{index+1}/{len(tests)}] {spec['id']}: error ({message})", flush=True)
-                continue
+                return dict(spec, status="error", checks=0, failures=0, error=message,
+                    diagnostics=[], failure_messages=[], log=log.relative_to(output).as_posix())
             env = isolated_environment(directory / "profile", name, test_data)
             env.pop("EI_FIXED_FPS", None)
             display = spec.get("display", "headless")
@@ -378,16 +468,40 @@ def main():
                              "--tool=res://tools/gameplay_bootstrap.gd", "--suite-script=res://" + spec["script"],
                              "--suite-seed=" + str(args.seed), "--suite-campaign=" + spec["campaign"],
                              "--suite-display=" + display, *argument_paths(spec, data_roots)]
-            start = time.monotonic()
-            exit_code, error = run_program(argv, log, env, args.timeout or spec["timeout"])
+            # Programs that open the fixed game ports never overlap one another,
+            # nor do rendered programs sharing the private display.
+            with network_lock if uses_network(runtime / spec["script"], runtime) else nullcontext(), \
+                    display_lock if display == "rendered" else nullcontext(), memory:
+                start = time.monotonic()
+                exit_code, error = run_program(argv, log, env, args.timeout or spec["timeout"], stop)
             result = dict(spec, **assess(log.read_text(errors="replace"), spec, exit_code, error))
             result.update(seconds=round(time.monotonic() - start, 3),
                           log=log.relative_to(output).as_posix(), log_sha256=file_hash(log),
                           exit_code=exit_code, argv=argv)
-            report["tests"].append(result)
-            save_report(report, output)
-            print(f"[{index+1}/{len(tests)}] {spec['id']}: {result['status']} "
-                  f"({result['checks']} checks, {result['failures']} failed)", flush=True)
+            return result
+        done = {}
+        lock = threading.Lock()
+        def record(index, result):
+            # Keep the report in selection order whatever finishes first.
+            with lock:
+                done[index] = result
+                report["tests"] = [done[i] for i in sorted(done)]
+                save_report(report, output)
+                print(f"[{len(done)}/{len(tests)}] {result['id']}: {result['status']} "
+                      f"({result['checks']} checks, {result['failures']} failed)", flush=True)
+        pool = ThreadPoolExecutor(max_workers=jobs)
+        try:
+            futures = {pool.submit(run_one, index, spec): index for index, spec in enumerate(tests)}
+            for future in as_completed(futures):
+                record(futures[future], future.result())
+        except BaseException:
+            # Ctrl-C or a runner error stops the whole selection, as a
+            # sequential run did: queued programs never start and running
+            # ones are killed promptly by run_program.
+            stop.set()
+            raise
+        finally:
+            pool.shutdown(wait=True, cancel_futures=True)
         if args.with_original:
             print("Running independent original-executable comparisons...", flush=True)
             argv = [sys.executable, str(HERE / "run.py"), "--game-dir", str(data),

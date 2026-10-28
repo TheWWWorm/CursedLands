@@ -24,7 +24,8 @@ func complete(id: String, player := 0) -> void:
 		check(await until(func():return host.state.get_pvar(player,id)==2.0),"guest completes original dialogue "+id)
 	else:
 		vm.briefings.complete(0,id)
-		ticks(1)
+	# #OnBriefingComplete starts in the next script pass, for either closer.
+	ticks(1)
 
 func _ready() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS

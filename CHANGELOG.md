@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep the Lost in Astral “Wormfaces’ Riddle” levers usable when the fortune-teller’s last prediction is bought before the first visit to the Wormface caves. Both the original game and earlier releases disabled them permanently in that order, which made the first Rod of Life fragment unobtainable. Saves already stuck there are repaired on load; answered riddles are not reopened.
+
 ## 1.33.0 — 2026-10-27
 
 - Add Odalisque as a selectable Autochess commander with original expression paintings, and charge players Underlords-style damage for surviving enemy recruits after a lost round.
