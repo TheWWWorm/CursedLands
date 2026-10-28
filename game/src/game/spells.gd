@@ -363,8 +363,10 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			for u: GameUnit in victims:
 				_buff(u, p.code, effect_ticks, {})
 		"feeblemind":   # a flag that refuses spell-casting orders
+			# The original (553220) sets it except on weapon type 16, the
+			# creatures whose attacks are spells: they keep casting.
 			for u: GameUnit in victims:
-				_buff(u, "feeblemind", effect_ticks, {"no_cast": true})
+				_buff(u, "feeblemind", effect_ticks, {"no_cast": int(u.proto.get("weapon_type_id", -1)) != 16})
 		# senses and detectability (GameUnit.sense / detect).
 		"invisibility":   # sight detectability - effect / 100
 			for u: GameUnit in victims:

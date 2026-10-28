@@ -630,6 +630,24 @@
       ]
     },
     {
+      "id": "combat/feeblemind_spell_creatures",
+      "category": "combat",
+      "script": "tools/tests/feeblemind_spell_creatures.gd",
+      "marker": "FEEBLEMIND_SPELL_CREATURES",
+      "min_checks": 6,
+      "quick": false,
+      "description": "Feeblemind leaves weapon-type-16 creatures casting; other units cannot cast",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/ai_live_eligibility",
       "category": "creatures",
       "script": "tools/tests/ai_live_eligibility.gd",
