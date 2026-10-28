@@ -76,6 +76,49 @@ screenshots, source/engine/test hashes, commands and a JSON result after each ca
 Results are never overwritten. This command runs synchronously when invoked; it
 does not install a scheduler or configure remote CI.
 
+## Asset-free checks
+
+Two checks need the repository and, for the second, an engine binary, but no
+game data. Run them before a long regression run; they catch the mistakes that
+otherwise surface only at the end of one.
+
+```sh
+python3 -B -m unittest discover -s tools/tests -p 'test_*.py'
+python3 tools/check_test_scripts.py --engine /path/to/godot --import-first
+```
+
+`tools/tests/test_registries.py` lints this manifest and the gameplay catalog:
+every registered script exists, its completion marker is printed somewhere in
+the script's import closure, case IDs are unique, `res://tools/` and relative
+imports resolve, and no script uses the `var x := weakref(...)` form that
+Godot 4.7 rejects as an inference-from-Variant error.
+
+`tools/check_test_scripts.py` stages `tools/tests`, `tools/benchmarks` and the
+top-level tool scripts exactly as this runner does, then loads every script in
+one headless engine process and reports the engine's own parse or analysis
+diagnostic for each script that fails. `--import-first` builds the project's
+import cache, which a fresh checkout lacks and which holds the global
+class-name table. Scripts that reference API added by the engine patches are
+listed in the tool and reported as skipped on a stock engine; pass
+`--patched-engine` with a patched binary to require them.
+
+Twenty native-versus-script parity scripts that were never registered now run
+as focused headless cases (`audio_native`, `figure_geometry`, `grass_chunks`,
+`lightning_geometry`, `mmp_native`, `mmp_texture`, `motion_build`,
+`motion_records`, `nav_preparation`, `net_smooth_native`, `picking_bounds`,
+`picking_deformation`, `soft_ground_paint`, `spell_particles`,
+`surface_material_color`, `unit_presentation`, `water_wave_field`,
+`water_wave_domain`, `script_perception`) plus `water_current_render` as a
+rendered case. Their `min_checks` are the counts of the first green run, so a
+script that silently skips part of its body fails. `figure_geometry` covers the
+expansion forms only with Lost in Astral data. `water_raytrace_native` and
+`water_surface_native` remain unregistered: they print no summary line yet.
+
+Both runners stage the tests: `extends "res://tools/tests/..."` cannot resolve
+from the source tree, because the Godot project root is `game/`. This runner
+copies the tests into the output directory once per run, in source and packaged
+runs alike, and rewrites `res://tools/` to that copy.
+
 Eleven previously unregistered headless scripts, including the live attack-path,
 corpse-memory, trap-target, posture and character-control checks, are now also in
 the full gameplay catalog. The multilingual rendered group remains in this

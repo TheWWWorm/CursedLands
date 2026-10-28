@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Translate the mod profile, package, manifest, save-copy and sandbox messages into Russian and German. Messages that include a runtime value (an option, package or file name) are now built from translated placeholders, and the save and difficulty status labels translate the message they show.
+- Repair the focused regression runner: it now stages the test scripts next to the game in source runs as well, so the 80 registered cases whose scripts extend `res://tools/tests/...` run without a packaged build. Twelve test scripts that Godot 4.7 refused to load (inferred `weakref`/`JSON` types and stale overridden signatures) load again, and twenty native-versus-script parity tests that were never registered now run as focused cases.
+- Add asset-free checks: `tools/check_test_scripts.py` loads every test script in one headless engine process, `tools/tests/test_registries.py` lints both test registries, the translation check covers returned error messages, the parity unit tests skip the emulator families when `unicorn` is absent, and a GitHub Actions workflow runs these on every push. Add `CONTRIBUTING.md` and a documentation index.
+
 ## 1.35.0 — 2026-10-28
 
 - Let texture packs replace main-menu and Esc-menu signpost textures in `menus.res`, and add `tools/export_textures.py`, which exports the original MMP textures as lossless full-colour PNGs in the texture-pack folder layout so modders can edit and repackage them without MMP or DXT tools.

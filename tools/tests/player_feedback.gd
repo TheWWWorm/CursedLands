@@ -9,7 +9,7 @@ class PathUnit extends GameUnit:
 		return PackedVector2Array([to])
 
 class SpellUnit extends GameUnit:
-	func take_damage(amount: float, source: GameUnit, _part := -1, _types := PackedFloat32Array(), _hit_flags := 0, layers := Callable(), _owner_only := false) -> void:
+	func take_damage(amount: float, source: GameUnit, _part := -1, _types := PackedFloat32Array(), _hit_flags := 0, layers := Callable(), _owner_only := false, _context: Dictionary = {}) -> void:
 		body_damage(amount * float(source.get_meta("coop_dmg_mul",1.0)) if source else amount,layers)
 
 class DamageCombat extends Combat:

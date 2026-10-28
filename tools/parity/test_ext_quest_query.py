@@ -1,4 +1,5 @@
 """Input and observation checks for the quest_query family (no game data)."""
+import importlib.util
 import unittest
 
 import cases_ext_quest_query as family
@@ -6,7 +7,13 @@ from cases import make_inputs
 from compare import validate_trace, digest
 
 
+# The original executable is emulated with Unicorn; the families that need it
+# are skipped where the package is not installed so the asset-free tests run.
+NEEDS_UNICORN = unittest.skipUnless(importlib.util.find_spec("unicorn"), "unicorn is not installed")
+
+
 class QuestQueryInputsTest(unittest.TestCase):
+    @NEEDS_UNICORN
     def test_object_calls_are_the_only_arguments_of_their_parent(self):
         from native_ext_quest_query import OBJECT_CALLS
 

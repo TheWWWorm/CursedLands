@@ -156,7 +156,7 @@ func background_begin(helper: RefCounted,fixture: Dictionary,label: String) -> i
 func background_reference(helper: RefCounted,references: Array[WeakRef]) -> WeakRef:
 	var job: RefCounted=helper.get("_background_job")
 	if job==null:return null
-	var reference:=weakref(job);references.append(reference)
+	var reference: WeakRef = weakref(job);references.append(reference)
 	return reference
 
 func released(reference: WeakRef) -> bool:

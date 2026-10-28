@@ -12,7 +12,7 @@ const SEATS := [420812,137765,506671]
 class ObservedSession extends Session:
 	var record := false
 	var snapshots := []
-	func _apply_snap(snaps: Array,t: float,serial := -1) -> void:
+	func _apply_snap(snaps: Array, t: float, serial := -1, _precise_bodies := false) -> void:
 		if record and world and not _zone_holding and not _remote_loading:
 			for sn: Array in snaps:
 				if int(sn[0]) in [420812,137765,506671]:

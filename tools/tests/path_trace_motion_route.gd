@@ -24,7 +24,7 @@ func stage(label: String, seconds: float, predicate := Callable()) -> void:
 		"captured_frames": capture_count, "capture_note": "Readbacks included: frame times are not benchmark results."
 	}, "\t"))
 
-func frames(count: int) -> void:
+func frames(count := 4) -> void:
 	for i in count:
 		await super.frames(1)
 		if capture_phase.is_empty(): continue

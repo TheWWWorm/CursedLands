@@ -45,6 +45,8 @@ func _ready() -> void:
 		model.free()
 	var seen := {}
 	for family: Dictionary in ArenaRules.FAMILIES:
+		# Expansion forms are Lost in Astral models; they exist only with that campaign's data.
+		if family.get("expansion", false) and GameData.campaign_id != CampaignProfile.ASTRAL: continue
 		for prototype: String in family.forms:
 			if seen.has(prototype): continue
 			seen[prototype]=true

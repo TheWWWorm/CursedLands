@@ -105,7 +105,7 @@ func run() -> void:
 	var one:=disabled.surface(fixed,0);var two:=disabled.surface(fixed,0)
 	check(readbacks(disabled)==2 and equal_channels(one.arrays,two.arrays),"disabled-source-cache reference still forces actual readback")
 	var ephemeral:=Figure._build_mesh(part,Vector3(.23,.71,.61));var life:=Cache.new()
-	var key:=ephemeral.get_instance_id();var weak:=weakref(ephemeral)
+	var key:=ephemeral.get_instance_id();var weak: WeakRef = weakref(ephemeral)
 	life.surface(ephemeral,0);ephemeral=null
 	check(weak.get_ref()==null,"retained source watches do not keep an unused mesh alive")
 	life._erase(key)

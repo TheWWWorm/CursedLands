@@ -102,7 +102,7 @@ static func manifest_error(m: Variant) -> String:
 			if not hook is String or not FORMULA_HOOKS.has(hook) or hooks.has(hook): return RemakeText.t("Invalid formula hooks.")
 			hooks[hook] = true
 	for key in ["id", "version"]:
-		if not identifier(m.get(key)): return "Invalid mod " + key + "."
+		if not identifier(m.get(key)): return RemakeText.t("Invalid mod %s.") % key
 	if not m.get("title") is String or m.title.is_empty() or m.title.length() > 100: return "Invalid mod title."
 	if not m.get("description", "") is String or m.get("description", "").length() > 3000: return "Invalid description."
 	if not m.get("campaigns") is Array or m.campaigns.is_empty(): return "Declare the supported campaigns."
@@ -113,19 +113,19 @@ static func manifest_error(m: Variant) -> String:
 		if mode not in MODES: return "Unknown game mode."
 		if m.has("script") and mode == "original_multiplayer": return RemakeText.t("Formula mods support single player and campaign co-op.")
 	for key in ["requires", "after", "conflicts"]:
-		if not m.get(key, []) is Array or m.get(key, []).size() > 64: return "Invalid " + key + "."
+		if not m.get(key, []) is Array or m.get(key, []).size() > 64: return RemakeText.t("Invalid %s.") % key
 		for id in m.get(key, []):
 			if not identifier(id) or id == m.id: return "Invalid dependency or conflict."
 	if not m.get("options", []) is Array or m.get("options", []).size() > 64: return "Too many options."
 	var ids := {}
 	for o in m.get("options", []):
 		if not o is Dictionary or not identifier(o.get("id")): return "Invalid option ID."
-		if ids.has(o.id): return "Duplicate option ID: " + o.id
+		if ids.has(o.id): return RemakeText.t("Duplicate option ID: %s") % o.id
 		ids[o.id] = true
 		if not o.get("label") is String or o.label.is_empty() or o.label.length() > 120: return "Invalid option label."
 		if not o.get("help", "") is String or o.get("help", "").length() > 2000: return "Invalid option help."
 		var binding: String = str(o.get("binding", ""))
-		if not CAPABILITIES.has(binding) and not (binding.is_empty() and m.has("script")): return "Unsupported capability: " + binding
+		if not CAPABILITIES.has(binding) and not (binding.is_empty() and m.has("script")): return RemakeText.t("Unsupported capability: %s") % binding
 		var cap: Dictionary = CAPABILITIES.get(binding, {"min": -1000000.0, "max": 1000000.0})
 		if o.get("type", "") not in ["integer", "number"]: return RemakeText.t("Mod options require a numeric value.")
 		if not finite_number(o.get("min")) or not finite_number(o.get("max")) or not finite_number(o.get("step", 1.0)): return "Invalid numeric bounds."

@@ -206,7 +206,7 @@ func _ready() -> void:
 	compare(field,details,world,"same-frame smooth figure rebuild")
 	var detached:=actors[0];world.remove_child(detached)
 	compare(field,details,world,"detached actor is excluded");world.add_child(detached)
-	var removed:=actors.pop_back();world.erase_unit(48);removed.free()
+	var removed: GameUnit = actors.pop_back();world.erase_unit(48);removed.free()
 	compare(field,details,world,"removed actor is absent immediately")
 	check(kernel.contacts(world.visible_units(),null,field.focus,GameUnit,EIUnitModel,TerrainDetails,64.0,32,GameUnit.STANCE_CRAWL)==null,"missing terrain collector declines")
 	check(kernel.contacts(world.visible_units(),details,Vector2(INF,0),GameUnit,EIUnitModel,TerrainDetails,64.0,32,GameUnit.STANCE_CRAWL)==null,"non-finite focus preserves script fallback")

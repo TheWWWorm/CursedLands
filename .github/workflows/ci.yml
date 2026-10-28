@@ -1,0 +1,57 @@
+# Asset-free checks. Nothing here needs the original game files, a display or
+# the patched engine; the gameplay and rendering regressions stay on a
+# workstation with an owned copy of the game (see CONTRIBUTING.md).
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  GODOT_VERSION: 4.7-stable
+
+jobs:
+  python:
+    name: Python tools, registries and translations
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # docs/validation holds 1.5 GB of captures; only the sources are needed.
+          sparse-checkout: |
+            game
+            tools
+            engine_patches
+          filter: blob:none
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Tool and runner unit tests
+        run: python3 -B -m unittest discover -s tools/tests -p 'test_*.py'
+      - name: Parity tooling unit tests
+        run: python3 -B -m unittest discover -s tools/parity -p 'test_*.py'
+      - name: Translation coverage
+        run: python3 tools/check_translations.py
+
+  scripts:
+    name: Test scripts load on Godot ${{ env.GODOT_VERSION }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            game
+            tools
+          filter: blob:none
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download the stock headless-capable editor
+        run: |
+          curl -sSL -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
+          unzip -q godot.zip
+          chmod +x "Godot_v${GODOT_VERSION}_linux.x86_64"
+          "./Godot_v${GODOT_VERSION}_linux.x86_64" --version
+      - name: Parse every test and benchmark script
+        run: python3 tools/check_test_scripts.py --engine "$PWD/Godot_v${GODOT_VERSION}_linux.x86_64" --import-first --timeout 1500

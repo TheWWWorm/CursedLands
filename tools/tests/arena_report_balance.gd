@@ -36,7 +36,7 @@ func _ready() -> void:
 		var health := banshee.max_hp
 		ArenaAlliances.apply(arena.world, arena.run.army, arena.run.enemy_army())
 		check(banshee.max_hp == health, "alliance reapplication does not compound tuning")
-		var saved := JSON.parse_string(JSON.stringify(arena.run.snapshot()))
+		var saved: Dictionary = JSON.parse_string(JSON.stringify(arena.run.snapshot()))
 		var restored := ArenaRun.new(); restored.auto_save = false
 		check(restored.restore(saved) and restored.army == saved.army, "existing banshee roster survives save round trip")
 		var starts: Array[float] = []

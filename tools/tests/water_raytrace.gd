@@ -123,7 +123,7 @@ func run() -> void:
 				await frames(5); await shot("tree-water-mode-%d"%mode)
 		# Simulate the backend reporting an allocation/pipeline failure after
 		# its texture was already being used; the water must recover to Mirror.
-		t._reflection._raytrace_prepared(false)
+		t._reflection._raytrace_prepared(false, t._reflection._rt.get_instance_id())
 		await frames(5)
 		check(t._reflection._rt == null and t._reflection._rt_failed,"backend failure releases hardware resources")
 		check(t._water_mat.get_shader_parameter("planar_texture") == t._reflection.viewport.get_texture(),"backend failure restores the planar texture")

@@ -174,7 +174,7 @@ func run() -> void:
 	rt._rr_effect.enabled=true
 	check(await rr_ready(rt),"current-frame guide resumption restores RR")
 	retired_images.assign(rt._rr_effect._images)
-	var retired_effect:=weakref(rt._rr_effect)
+	var retired_effect: WeakRef = weakref(rt._rr_effect)
 	GameData.options.pt_ray_reconstruction=0;GameData.options.pt_target_fps=0;GameData.options.pt_denoiser=1
 	await frames(45)
 	check(rt._rr_effect==null and camera.compositor==null and not rt.device.ray_reconstruction,"RR Off detaches its callback and releases the camera override")

@@ -4,6 +4,7 @@ The optional native test runs only when PARITY_GAME_EXE names the pinned
 original executable; everything else needs no original assets.
 """
 import copy
+import importlib.util
 import json
 import math
 import os
@@ -36,7 +37,13 @@ def finite(value):
     return True
 
 
+# The original executable is emulated with Unicorn; the families that need it
+# are skipped where the package is not installed so the asset-free tests run.
+NEEDS_UNICORN = unittest.skipUnless(importlib.util.find_spec("unicorn"), "unicorn is not installed")
+
+
 class NpcAiInputTests(unittest.TestCase):
+    @NEEDS_UNICORN
     def test_kinds_are_registered_with_contract_capture_and_remake(self):
         declared = cases.contracts("original")
         self.assertEqual(set(declared), set(KINDS))
@@ -119,6 +126,7 @@ class NpcAiInputTests(unittest.TestCase):
             for unit in row["inputs"]["units"]:
                 self.assertFalse(unit.get("noticed") and unit.get("dead"), row["id"])
 
+    @NEEDS_UNICORN
     def test_motivation_sets_cover_the_aggression_modes(self):
         import native_ext_npc_ai as native
         for row in cases.scenarios(20261020, 12):

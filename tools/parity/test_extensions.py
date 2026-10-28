@@ -1,5 +1,10 @@
 """Extension families register without editing the shared runner."""
+import importlib.util
 import unittest
+
+if importlib.util.find_spec("unicorn") is None:
+    # The capture table lives in the Unicorn-backed original runner.
+    raise unittest.SkipTest("unicorn is not installed")
 
 import extensions
 from cases import contracts_for, make_inputs

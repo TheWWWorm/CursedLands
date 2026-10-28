@@ -6,7 +6,7 @@ var observing := false
 var observed_phase := ""
 var previous_state := {}
 
-func frames(count: int) -> void:
+func frames(count := 4) -> void:
 	for i in count:
 		var start := Time.get_ticks_usec()
 		await super.frames(1)

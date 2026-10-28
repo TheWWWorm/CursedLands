@@ -172,7 +172,7 @@ func snap(name_: String) -> Image:
 func comparison(a: Image,b: Image) -> Dictionary:
 	var changed:=0; var peak:=0; var sum:=0; var x:=a.get_data(); var y:=b.get_data()
 	for i in x.size():
-		var d:=abs(int(x[i])-int(y[i])); peak=maxi(peak,d); sum+=d
+		var d: int = abs(int(x[i])-int(y[i])); peak=maxi(peak,d); sum+=d
 		if d>2: changed+=1
 	return {"channels":changed,"peak":peak,"mean":float(sum)/x.size(),"exact":x==y}
 

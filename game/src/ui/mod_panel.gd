@@ -91,7 +91,7 @@ func open(page := "mods") -> void:
 	_packages = ModStore.profile().packages.duplicate()
 	_pending_profile = ModStore.active_id()
 	_show_page(page)
-	if ModStore.startup_error != "": _status.text = ModStore.startup_error
+	if ModStore.startup_error != "": _status.text = RemakeText.t(ModStore.startup_error)
 
 func close() -> void:
 	if not visible: return

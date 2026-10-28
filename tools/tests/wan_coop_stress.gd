@@ -55,7 +55,7 @@ class ObservedSession extends Session:
 		started=at; packets.clear(); actors.clear(); watched.clear(); observed_us=0
 		for uid in ids: watched[int(uid)]=true
 		recording=true
-	func _apply_snap(snaps: Array,t: float,serial := -1) -> void:
+	func _apply_snap(snaps: Array, t: float, serial := -1, _precise_bodies := false) -> void:
 		if recording and world!=null and not _zone_holding and not _remote_loading:
 			var start := Time.get_ticks_usec()
 			var now := Time.get_ticks_msec()-started

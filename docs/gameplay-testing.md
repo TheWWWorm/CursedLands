@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 493 registered test configurations across 19
-areas, using 350 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 507 registered test configurations across 19
+areas, using 359 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several

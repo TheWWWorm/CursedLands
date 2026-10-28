@@ -459,6 +459,8 @@ func _load_slot(slot: String) -> void:
 
 
 func _set_status(t: String) -> void:
+	# Mod and save problems arrive as English keys; connection messages are already translated.
+	t = RemakeText.t(t)
 	if _net:
 		_net.status = t
 		_net.queue_redraw()
@@ -601,7 +603,7 @@ func _start_coop() -> void:
 
 func _show_setup_error(error: String) -> void:
 	_difficulty.open(false)
-	_difficulty._status.text = error
+	_difficulty._status.text = RemakeText.t(error)
 
 
 ## Back on the Multiplayer screen's first page: to the signpost; an open

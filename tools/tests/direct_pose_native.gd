@@ -97,7 +97,7 @@ func metadata_checks(pose: DirectPose,library: AnimationLibrary,anim: Animation)
 	# the fixture's previously sampled resources and AnimationPlayer connections.
 	var transient:RefCounted=ClassDB.instantiate("DirectPoseKernel")
 	var resource:Animation=Animation.new()
-	var weak_resource:=weakref(resource)
+	var weak_resource: WeakRef = weakref(resource)
 	check(transient.sample(pose.model,pose.parts,resource,.3,EIAnimPart,false,false)!=null,"temporary resource can be sampled")
 	resource=null
 	check(weak_resource.get_ref()==null,"metadata does not keep animation resources alive")
@@ -110,7 +110,7 @@ func metadata_checks(pose: DirectPose,library: AnimationLibrary,anim: Animation)
 	transient.sample(pose.model,pose.parts,held[0],.3,EIAnimPart,false,false)
 	after=transient.metadata_stats()
 	check(after.clips==64 and after.rebuilds==before.rebuilds+1,"evicted clip rebuilds metadata on reuse")
-	var weak_kernel:=weakref(transient)
+	var weak_kernel: WeakRef = weakref(transient)
 	transient=null
 	check(weak_kernel.get_ref()==null,"animation signal connections do not retain the helper")
 	for clip in held:

@@ -8,7 +8,7 @@ class CaptureSession extends Session:
 		set_process(false); set_physics_process(false)
 		local_host = LocalHost.new(); local_host.session = self
 		_pool_epoch = 0; _load_serial = 0
-	func _apply_snap(snaps: Array, time: float, serial := -1) -> void:
+	func _apply_snap(snaps: Array, time: float, serial := -1, _precise_bodies := false) -> void:
 		received.append({"rows":snaps,"time":time,"serial":serial})
 	func _exit_tree() -> void:
 		local_host.free()

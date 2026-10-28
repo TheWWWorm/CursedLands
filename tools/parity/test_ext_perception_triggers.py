@@ -4,6 +4,7 @@ The optional native tests run only when the user's original executable is
 present; they prove the native observation reacts to the supplied lists.
 """
 import copy
+import importlib.util
 import os
 from pathlib import Path
 import unittest
@@ -92,6 +93,12 @@ class PerceptionInputsTest(unittest.TestCase):
                 validate_trace(self._trace(inputs, state), inputs, "remake")
 
 
+# The original executable is emulated with Unicorn; the families that need it
+# are skipped where the package is not installed so the asset-free tests run.
+NEEDS_UNICORN = unittest.skipUnless(importlib.util.find_spec("unicorn"), "unicorn is not installed")
+
+
+@NEEDS_UNICORN
 @unittest.skipUnless((GAME / "game.exe").exists(), "original executable not available")
 class PerceptionNativeSensitivityTest(unittest.TestCase):
     """Mutating one supplied input must change the native observation."""
@@ -132,6 +139,7 @@ class PerceptionNativeSensitivityTest(unittest.TestCase):
         self.assertEqual(first[:2], [6, 4])
 
 
+@NEEDS_UNICORN
 @unittest.skipUnless((ASTRAL / "game.exe").exists(), "Lost in Astral executable not available")
 class PerceptionAstralSensitivityTest(unittest.TestCase):
     def capture(self, data):

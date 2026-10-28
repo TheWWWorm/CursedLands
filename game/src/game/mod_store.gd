@@ -185,9 +185,9 @@ static func values_error(values: Dictionary) -> String:
 	var definitions := {}
 	for o in option_definitions(): definitions[o.key] = o
 	for key in values:
-		if not definitions.has(key): return "Unknown mod option: " + str(key)
+		if not definitions.has(key): return RemakeText.t("Unknown mod option: %s") % str(key)
 		var error := ModSchema.value_error(definitions[key], values[key])
-		if error != "": return str(key) + ": " + error
+		if error != "": return str(key) + ": " + RemakeText.t(error)
 	return ""
 
 static func apply_values(values: Dictionary) -> String:
@@ -240,7 +240,7 @@ static func configuration_error(config: Variant) -> String:
 		if not p is Dictionary or not ModSchema.identifier(p.get("id")) or not ModSchema.identifier(p.get("version")) or not p.get("digest") is String or not p.get("gameplay") is bool: return "Invalid required package."
 		if p.digest.length() != 64 or not p.digest.is_valid_hex_number() or ids.has(p.id): return "Invalid package fingerprint."
 		ids[p.id] = true
-	if content_signature(config) != content_signature(snapshot()): return "Required setup: " + required_summary(config) + ". Select a matching mod profile first."
+	if content_signature(config) != content_signature(snapshot()): return RemakeText.t("Required setup: %s. Select a matching mod profile first.") % required_summary(config)
 	return values_error(config.values)
 
 static func saved_error(config: Variant) -> String:
@@ -253,7 +253,7 @@ static func mode_error(mode: String) -> String:
 	if startup_error != "": return startup_error
 	if mode == "original_multiplayer" and effective().get("sandbox", false): return "Sandbox profiles support single player and campaign co-op."
 	for key in _mounted:
-		if mode not in catalog[key].get("modes", ModSchema.MODES): return str(catalog[key].title) + " does not support this game mode."
+		if mode not in catalog[key].get("modes", ModSchema.MODES): return RemakeText.t("%s does not support this game mode.") % str(catalog[key].title)
 	return ""
 
 static func store_profile(id: String, p: Dictionary) -> String:
@@ -358,15 +358,15 @@ static func rescan() -> void:
 		var m: Variant = JSON.parse_string(file.get_as_text())
 		var error := ModSchema.manifest_error(m)
 		if error != "":
-			errors.append(folder + ": " + error)
+			errors.append(folder + ": " + RemakeText.t(error))
 			continue
 		var key: String = m.id + "@" + m.version
 		if folder != key or catalog.has(key):
-			errors.append("Invalid installed package folder: " + folder)
+			errors.append(RemakeText.t("Invalid installed package folder: %s") % folder)
 			continue
 		var result := inspect_package(base, m)
 		if not result.error.is_empty():
-			errors.append(key + ": " + result.error)
+			errors.append(key + ": " + RemakeText.t(result.error))
 			continue
 		catalog[key] = result.package
 
@@ -385,7 +385,7 @@ static func inspect_package(base: String, manifest: Dictionary, cancelled := Cal
 		if cancelled.is_valid() and cancelled.call(): return {"error": "Download cancelled."}
 		var path := base.path_join(name)
 		var asset := FileAccess.open(path, FileAccess.READ)
-		if asset == null or asset.get_length() > MAX_PACKAGE: return {"error": "Missing or oversized asset: " + name}
+		if asset == null or asset.get_length() > MAX_PACKAGE: return {"error": RemakeText.t("Missing or oversized asset: %s") % name}
 		if name in manifest.get("script", {}).get("modules", {}).values():
 			script_bytes += asset.get_length()
 			if asset.get_length() > 1048576 or script_bytes > 4194304: return {"error": RemakeText.t("Formula sources exceed their size limit.")}
@@ -403,20 +403,20 @@ static func resolve(p: Dictionary) -> Dictionary:
 	var ready: Array = p.get("packages", []).duplicate()
 	var script_count := 0
 	for key in ready:
-		if not key is String or not catalog.has(key): return {"error": "Missing package: " + str(key), "order": []}
+		if not key is String or not catalog.has(key): return {"error": RemakeText.t("Missing package: %s") % str(key), "order": []}
 		var m: Dictionary = catalog[key]
 		if m.has("script"):
 			if not ModFormula.supported(): return {"error": RemakeText.t("Formula mods currently require Windows or Linux on a 64-bit PC."), "order": []}
 			script_count += 1
 			if script_count > 8: return {"error": RemakeText.t("A profile can enable at most eight formula mods."), "order": []}
-		if nodes.has(m.id): return {"error": "Choose one version of " + m.id, "order": []}
-		if GameData.campaign_id not in m.campaigns: return {"error": m.title + " does not support this campaign.", "order": []}
+		if nodes.has(m.id): return {"error": RemakeText.t("Choose one version of %s") % m.id, "order": []}
+		if GameData.campaign_id not in m.campaigns: return {"error": RemakeText.t("%s does not support this campaign.") % m.title, "order": []}
 		nodes[m.id] = key
 	for key in ready:
 		for id in catalog[key].get("requires", []):
 			if not nodes.has(id): return {"error": catalog[key].title + " requires " + id, "order": []}
 		for id in catalog[key].get("conflicts", []):
-			if nodes.has(id): return {"error": catalog[key].title + " conflicts with " + id, "order": []}
+			if nodes.has(id): return {"error": RemakeText.t("%s conflicts with %s") % [catalog[key].title, id], "order": []}
 	while not ready.is_empty():
 		var advanced := false
 		for key in ready.duplicate():
@@ -437,7 +437,7 @@ static func resolve(p: Dictionary) -> Dictionary:
 		for o in m.get("options", []):
 			if not str(o.get("binding", "")).is_empty(): writes.append("binding:" + o.binding)
 		for target in writes:
-			if targets.has(target): return {"error": "Conflict on " + target + " between " + targets[target] + " and " + m.title, "order": []}
+			if targets.has(target): return {"error": RemakeText.t("Conflict on %s between %s and %s") % [target, targets[target], m.title], "order": []}
 			targets[target] = m.title
 	return {"error": "", "order": order}
 
@@ -487,8 +487,8 @@ static func patch_database(db: RefCounted, multiplayer_db: bool) -> String:
 			var found: Dictionary = {}
 			for row in db.table(p.table):
 				if str(row.get("name", "")).to_lower() == p.record.to_lower(): found = row; break
-			if found.is_empty() or not found.has(p.field) or not ModSchema.finite_number(found[p.field]): return "Cannot patch " + key + ": " + p.table + "/" + p.record + "/" + p.field
-			if found[p.field] is int and float(p.value) != floorf(float(p.value)): return "This database field requires a whole number: " + p.field
+			if found.is_empty() or not found.has(p.field) or not ModSchema.finite_number(found[p.field]): return RemakeText.t("Cannot patch %s: %s") % [key, p.table + "/" + p.record + "/" + p.field]
+			if found[p.field] is int and float(p.value) != floorf(float(p.value)): return RemakeText.t("This database field requires a whole number: %s") % p.field
 			pending.append([found, p.field, p.value])
 	for edit in pending:
 		edit[0][edit[1]] = int(edit[2]) if edit[0][edit[1]] is int else float(edit[2])
@@ -529,9 +529,9 @@ static func stage_package(path: String, staging: String, cancelled := Callable()
 	var empty_allowed: Array = m.get("attachments", []).duplicate()
 	for name in names:
 		if name.ends_with("/"): continue
-		if not allowed.has(name): zip.close(); return {"error": "Undeclared file: " + name}
+		if not allowed.has(name): zip.close(); return {"error": RemakeText.t("Undeclared file: %s") % name}
 	for name in allowed:
-		if not inspected.sizes.has(name): zip.close(); return {"error": "Missing asset: " + name}
+		if not inspected.sizes.has(name): zip.close(); return {"error": RemakeText.t("Missing asset: %s") % name}
 	var script_bytes := 0
 	for name in m.get("script", {}).get("modules", {}).values():
 		script_bytes += int(inspected.sizes[name])
@@ -545,7 +545,7 @@ static func stage_package(path: String, staging: String, cancelled := Callable()
 		if cancelled.is_valid() and cancelled.call(): zip.close(); _remove_tree(staging); return {"error": "Download cancelled."}
 		var data := zip.read_file(name)
 		if data.size() != inspected.sizes[name] or (data.is_empty() and name not in empty_allowed):
-			zip.close(); _remove_tree(staging); return {"error": "Damaged or empty package member: " + name}
+			zip.close(); _remove_tree(staging); return {"error": RemakeText.t("Damaged or empty package member: %s") % name}
 		error = atomic_write(staging.path_join(name), data)
 		if error != "": zip.close(); _remove_tree(staging); return {"error": error}
 	zip.close()
@@ -622,4 +622,4 @@ static func copy_default_save(slot: String) -> String:
 		for extension in [".sav", ".info.sav", ".shot.png"]:
 			if FileAccess.file_exists(destination + extension): DirAccess.remove_absolute(destination + extension)
 		return error
-	return "Save copied to this profile: " + new_slot
+	return RemakeText.t("Save copied to this profile: %s") % new_slot

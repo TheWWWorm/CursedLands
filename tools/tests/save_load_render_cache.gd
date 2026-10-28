@@ -71,7 +71,7 @@ func run() -> void:
 	check(session.save_game("render-cache-reload")==OK,"save created through the production serializer")
 	var rt:Node=game.get_node("SceneRaytrace")
 	for reload in 2:
-		var old_terrain:=weakref(game.world.terrain)
+		var old_terrain: WeakRef = weakref(game.world.terrain)
 		var before:=pages()
 		var immutable:=programs(rt)
 		var old_device:RefCounted=rt.device

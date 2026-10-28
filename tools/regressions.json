@@ -3540,6 +3540,34 @@
       "timeout": 180
     },
     {
+      "id": "mod_messages_localized",
+      "script": "tools/tests/mod_messages_localized.gd",
+      "summary": "MOD_MESSAGES_LOCALIZED",
+      "contract": "Mod profile, package, schema, save-copy and sandbox messages have RU/DE text, composed messages are translated at the source and keep their runtime values, and English output is unchanged.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [
+        "--mod-tests"
+      ],
+      "min_checks": 403,
+      "timeout": 180
+    },
+    {
+      "id": "mod_messages_localized_ui",
+      "script": "tools/tests/mod_messages_localized_ui.gd",
+      "summary": "MOD_MESSAGES_LOCALIZED_UI",
+      "contract": "Translated mod profile, unknown-option and unreadable-save messages are shown in EN/RU/DE in the real mod and difficulty panels and wrap without clipping at 1280x720, 2560x1440 and 3840x2160, with native-resolution captures and text rasterized larger at 4K.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [
+        "--mod-tests"
+      ],
+      "min_checks": 118,
+      "timeout": 300
+    },
+    {
       "id": "stamina_ack",
       "script": "tools/tests/stamina_ack.gd",
       "summary": "RESULT",
@@ -4290,6 +4318,246 @@
         "--ei-pt-tuning"
       ],
       "min_checks": 6
+    },
+    {
+      "id": "audio_native",
+      "script": "tools/tests/audio_native.gd",
+      "summary": "AUDIO_NATIVE",
+      "contract": "Native audio decoding matches the script decoder byte for byte across the shipped assets and synthetic inputs, with timings recorded.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 8671,
+      "timeout": 300
+    },
+    {
+      "id": "figure_geometry",
+      "script": "tools/tests/figure_geometry.gd",
+      "summary": "FIGURE_GEOMETRY",
+      "contract": "Native current figure geometry equals the script measurement for nested, reparented, edited and freed parts and for every authored arena prototype in idle, walk and attack poses.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 807,
+      "timeout": 300
+    },
+    {
+      "id": "grass_chunks",
+      "script": "tools/tests/grass_chunks.gd",
+      "summary": "GRASS_CHUNKS",
+      "contract": "Native grass chunk generation equals the scalar generator exactly, with immutable worker inputs and correct lifetime.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 3655,
+      "timeout": 300
+    },
+    {
+      "id": "lightning_geometry",
+      "script": "tools/tests/lightning_geometry.gd",
+      "summary": "LIGHTNING_GEOMETRY",
+      "contract": "Native bolt geometry and RNG state equal the legacy script path after each draw and tick for every bolt kind, projection, camera offset and arena origin.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1271,
+      "timeout": 300
+    },
+    {
+      "id": "mmp_native",
+      "script": "tools/tests/mmp_native.gd",
+      "summary": "MMP_NATIVE",
+      "contract": "Native MMP decoding is byte-exact against the independent script decoder for every 16-bit input, random masks, shipped assets and malformed lengths.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 401,
+      "timeout": 300
+    },
+    {
+      "id": "mmp_texture",
+      "script": "tools/tests/mmp_texture.gd",
+      "summary": "MMP_TEXTURE",
+      "contract": "Authored MMP mip payloads validate independently of backend support, including real chains that end before the 1x1 level.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 5945,
+      "timeout": 300
+    },
+    {
+      "id": "motion_build",
+      "script": "tools/tests/motion_build.gd",
+      "summary": "MOTION_BUILD",
+      "contract": "Native owned motion records equal the original GDScript constructor across route edges and seek boundaries.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 57185,
+      "timeout": 300
+    },
+    {
+      "id": "motion_records",
+      "script": "tools/tests/motion_records.gd",
+      "summary": "MOTION_RECORDS",
+      "contract": "Scalar and native motion evaluators agree on identical routes at exact interval boundaries, backward seeks, standing turns and blocked rates.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 10221,
+      "timeout": 300
+    },
+    {
+      "id": "nav_preparation",
+      "script": "tools/tests/nav_preparation.gd",
+      "summary": "NAV_PREPARATION",
+      "contract": "Preparing static navigation caches in a different order or on independent workers preserves the lazy graph's paths, reachable regions and relocated targets.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 6560,
+      "timeout": 300
+    },
+    {
+      "id": "net_smooth_native",
+      "script": "tools/tests/net_smooth_native.gd",
+      "summary": "NET_SMOOTH_NATIVE",
+      "contract": "Native network smoothing equals the script implementation on the same input series.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 61441,
+      "timeout": 300
+    },
+    {
+      "id": "picking_bounds",
+      "script": "tools/tests/picking_bounds.gd",
+      "summary": "PICKING_BOUNDS",
+      "contract": "Native early pointer classification agrees with the unclassified scalar clip path.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 432,
+      "timeout": 300
+    },
+    {
+      "id": "picking_deformation",
+      "script": "tools/tests/picking_deformation.gd",
+      "summary": "PICKING_DEFORMATION",
+      "contract": "The native morph and skin stage of pointer bounds equals the scalar result exactly.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1558,
+      "timeout": 300
+    },
+    {
+      "id": "soft_ground_paint",
+      "script": "tools/tests/soft_ground_paint.gd",
+      "summary": "SOFT_GROUND_PAINT",
+      "contract": "The optional CPU soft-ground raster matches full-image parity across ordered overlaps, fading, sector boundaries, foot sizes, travel and invalid fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 26,
+      "timeout": 300
+    },
+    {
+      "id": "spell_particles",
+      "script": "tools/tests/spell_particles.gd",
+      "summary": "SPELL_PARTICLES",
+      "contract": "Native batched spell particle ticks equal the script simulation after the original scene-dependent initialization.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 101055,
+      "timeout": 300
+    },
+    {
+      "id": "surface_material_color",
+      "script": "tools/tests/surface_material_color.gd",
+      "summary": "SURFACE_MATERIAL_COLOR",
+      "contract": "Native byte coloring and full material compositing equal the scalar fallback.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 5290,
+      "timeout": 300
+    },
+    {
+      "id": "unit_presentation",
+      "script": "tools/tests/unit_presentation.gd",
+      "summary": "UNIT_PRESENTATION",
+      "contract": "Native unit presentation state equals the script path across the generated cases.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 40969,
+      "timeout": 300
+    },
+    {
+      "id": "water_current_render",
+      "script": "tools/tests/water_current_render.gd",
+      "summary": "WATER_CURRENT_RENDER",
+      "contract": "Real-map water current appearance and clock controls, then the isolated production shader helpers, match the scalar path.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 20,
+      "timeout": 300
+    },
+    {
+      "id": "water_wave_field",
+      "script": "tools/tests/water_wave_field.gd",
+      "summary": "WATER_WAVE_FIELD",
+      "contract": "Analytic wave propagation and advection match the compiled path, and the controller lifetime is correct.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 31,
+      "timeout": 300
+    },
+    {
+      "id": "water_wave_domain",
+      "script": "tools/tests/water_wave_domain.gd",
+      "summary": "WATER_WAVE_DOMAIN",
+      "contract": "The wave domain oracle matches exactly, including fractional window alignment, currents, liquid exclusions and level changes.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 1701,
+      "timeout": 300
+    },
+    {
+      "id": "script_perception",
+      "script": "tools/tests/script_perception.gd",
+      "summary": "SCRIPT_PERCEPTION",
+      "contract": "Script vision builtins (UnitSee, GroupSee, PlayerSee, IsUnitVisible) read the AI's retained noticed and corpse lists as the original does.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 7,
+      "timeout": 300
     }
   ]
 }

@@ -30,7 +30,7 @@ func _run():
 	g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
 	for cycle in 12:
 		var zone:String=["gz1h","gz1h","gz2h","bz2h"][cycle%4]
-		var previous:=weakref(s.world) if s.world else null
+		var previous: WeakRef = weakref(s.world) if s.world else null
 		if not await s.load_game_shown("descriptor-"+zone):
 			failures.append("load "+str(cycle));break
 		while s.world==null or s._remote_loading or s.loading_game:await get_tree().process_frame

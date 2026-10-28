@@ -54,7 +54,7 @@ func _ready() -> void:
 	var unknown := rules(); unknown[0].fill(0)
 	check(cache.key(terrain, unknown) != original_key and not factory.call("create", terrain, unknown).reused,
 		"changed verified artwork cannot reuse known cliffs")
-	var weak_field := weakref(first); var weak_world := weakref(terrain)
+	var weak_field: WeakRef = weakref(first); var weak_world: WeakRef = weakref(terrain)
 	first = null; terrain.free()
 	check(weak_field.get_ref() == null and weak_world.get_ref() == null, "cache retains no previous field or world")
 	var snow := snow_fixture()

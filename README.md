@@ -236,12 +236,14 @@ The [original-engine comparison suite](docs/original-parity.md) runs bounded
 scenarios against the original executable and the remake independently, records
 the first differing observation, and retains reproducible inputs. It requires
 an owned original installation; no original executable or assets are included.
-The [gameplay regression suite](docs/gameplay-testing.md) collects 259 test
+The [gameplay regression suite](docs/gameplay-testing.md) collects 507 test
 configurations covering quests, creatures, animation, effects, stealth,
 commands, pathing, spells, inventory, progression, party members, save/load,
 combat, networking, dialogue, co-op progress, settings, interface and Arena
 into one isolated runner, with per-program reports, a player-feature inventory,
-27 rendered UI configurations and optional original comparisons.
+77 rendered configurations and optional original comparisons. The checks that
+need no game data, and what every change must include, are in
+[CONTRIBUTING.md](CONTRIBUTING.md); the guides are indexed in [docs/README.md](docs/README.md).
 
 ## License
 

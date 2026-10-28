@@ -108,7 +108,7 @@ func run() -> void:
 		"GPU-upscaled HD output retains its existing exact-pixel fallback")
 	var life_pixels:=pattern(Vector2i(4,4));var life:=ImageTexture.create_from_image(life_pixels)
 	remember(life,life_pixels);var life_cache:=Cache.new();life_cache.image(life,-1,16)
-	var id:=life.get_instance_id();var owner:=weakref(life);life=null
+	var id:=life.get_instance_id();var owner: WeakRef = weakref(life);life=null
 	check(owner.get_ref()==null,"retained image and cache watches do not keep the texture owner alive")
 	if source_script:source_script.call("memory_stats")
 	life_cache._erase(id)

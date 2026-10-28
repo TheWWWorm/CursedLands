@@ -33,9 +33,9 @@ class VerdictTests(unittest.TestCase):
         windows_settings = Path(env["APPDATA"]) / "Godot/app_userdata/Cursed Lands/settings.cfg"
         self.assertEqual(str(windows_settings).lower(), str(runner.profile_settings(profile)).lower())
 
-    def test_packaged_staging_preserves_utf8_scripts(self):
+    def test_staging_preserves_utf8_scripts(self):
         with tempfile.TemporaryDirectory() as directory:
-            staged = runner.stage_packaged_tests(Path(directory))
+            staged = runner.stage_tests(Path(directory))
             for script in staged.rglob("*.gd"):
                 text = script.read_text(encoding="utf-8")
                 self.assertNotIn("res://tools/", text, script.name)
@@ -155,6 +155,67 @@ class PackagedFixtureTests(unittest.TestCase):
                 self.assertEqual(runner.main(), 0)
             result = json.loads((root / "results/results.json").read_text())
             self.assertTrue(result["passed"])
+
+
+class SourceFixtureTests(unittest.TestCase):
+    def test_source_run_stages_res_tools_imports(self):
+        """Without --packaged the engine runs from game/, where res://tools/ does
+        not exist; the suite script must still be a staged copy whose imports resolve."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            repo = root / "repo"
+            scripts = repo / "tools/tests"
+            (repo / "tools/benchmarks").mkdir(parents=True)
+            scripts.mkdir()
+            (repo / "game").mkdir()
+            (repo / "game/project.godot").write_text('[application]\nconfig/version="1.0.0"\n')
+            (scripts / "probe.gd").write_text('extends "res://tools/tests/base.gd"\n')
+            (scripts / "base.gd").write_text('extends Node\n')
+            manifest = repo / "tools/regressions.json"
+            manifest.write_text(json.dumps({"cases": [{
+                "id": "probe", "mode": "headless", "data": "base",
+                "script": "tools/tests/probe.gd", "summary": "PROBE",
+                "min_checks": 1, "contract": "staged base class",
+            }]}))
+            engine = root / "godot"
+            engine.write_bytes(b"engine")
+            seen = {}
+
+            def run(command, **kwargs):
+                script = Path(next(arg.split("=", 1)[1] for arg in command
+                                   if arg.startswith("--suite-script=")))
+                suite_root = Path(next(arg.split("=", 1)[1] for arg in command
+                                       if arg.startswith("--suite-script-root=")))
+                seen["script"], seen["root"] = script, suite_root
+                self.assertEqual(script.parent, suite_root)
+                self.assertNotEqual(script, repo / "tools/tests/probe.gd", "source run must not use the repo copy")
+                self.assertTrue((root / "results").resolve() in script.resolve().parents)
+                text = script.read_text()
+                self.assertNotIn("res://tools/", text)
+                self.assertIn((suite_root / "base.gd").as_posix(), text)
+                self.assertTrue((suite_root / "base.gd").is_file())
+                self.assertIn("--path", command)
+                expected = {"campaign": "cursed_lands", "display": "headless",
+                            "script": str(script), "profile": {
+                                "confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
+                                "volume_stream": 0, "volume_voice": 0}}
+                kwargs["stdout"].write("GAMEPLAY_SUITE_START " + json.dumps(expected) +
+                                       "\nPROBE 1 checks 0 failures\n")
+                return subprocess.CompletedProcess(command, 0)
+
+            args = ["check_regressions.py", "--engine", str(engine),
+                    "--base-data", str(root), "--output", str(root / "results")]
+            with patch.object(runner, "REPO", repo), patch.object(runner, "MANIFEST", manifest), \
+                    patch.object(runner.sys, "argv", args), \
+                    patch.object(runner.shutil, "which", side_effect=lambda value: value), \
+                    patch.object(runner.subprocess, "check_output", return_value="source\n"), \
+                    patch.object(runner.subprocess, "run", side_effect=run):
+                self.assertEqual(runner.main(), 0)
+            self.assertIn("script", seen, "the engine was never started")
+            result = json.loads((root / "results/results.json").read_text())
+            self.assertTrue(result["passed"])
+            self.assertEqual(result["cases"][0]["script"], "tools/tests/probe.gd",
+                             "results keep the repository path, not the staged copy")
 
 
 if __name__ == "__main__":

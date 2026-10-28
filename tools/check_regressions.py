@@ -67,11 +67,19 @@ def engine_arguments(engine, case, packaged=False):
                       "--windowed", "--resolution", "1280x720"]
 
 
-def stage_packaged_tests(destination):
-    """Keep test data and relative benchmark dependencies outside the game pack."""
+def stage_tests(destination):
+    """Copy the test scripts, their fixtures and relative benchmark dependencies
+    next to each other and point `res://tools/` imports at that copy.
+
+    The Godot project root is `game/`, so `extends "res://tools/tests/..."`
+    never resolves from the source tree or from a pack; staging is required in
+    both modes, not only for packaged runs."""
     for name in ("tests", "benchmarks"):
         shutil.copytree(REPO / "tools" / name, destination / name,
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    # A few tests extend the wiki export tools that live directly under tools/.
+    for script in (REPO / "tools").glob("*.gd"):
+        shutil.copy2(script, destination / script.name)
     for script in destination.rglob("*.gd"):
         text = script.read_text(encoding="utf-8")
         script.write_text(text.replace("res://tools/", destination.as_posix() + "/"), encoding="utf-8")
@@ -180,6 +188,8 @@ def main():
     }
     if args.packaged:
         report["pack"] = {"path": str(pack), "sha256": digest(pack)}
+    # Tests are read-only, so one staged copy per run serves every case.
+    scripts = stage_tests(output / "tools")
     for case in selected:
         profile = output / case["id"]
         settings = profile_settings(profile)
@@ -187,11 +197,7 @@ def main():
         settings.write_text(SETTINGS)
         isolated = isolation_environment(profile)
         command = engine_arguments(engine, case, args.packaged)
-        scripts = REPO / "tools/tests"
-        script = REPO / case["script"]
-        if args.packaged:
-            scripts = stage_packaged_tests(profile / "tools")
-            script = scripts / script.name
+        script = scripts / Path(case["script"]).name
         expected = {"campaign": "cursed_lands" if case["data"] == "base" else "lost_in_astral",
                     "display": case["mode"], "script": str(script),
                     "profile": {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,

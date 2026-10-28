@@ -126,7 +126,7 @@ func _ready() -> void:
 	check(not screen.field.showing_boards() and screen._tournament_battles.viewed_player==opponent,"clicking a map cell focuses its live board")
 	var watched:=screen.field.match_state
 	check(watched==screen._tournament_battles.boards[opponent] and not screen._modal_layer.visible, "scouting switches to live board without modal pause")
-	var total:=league.rivals.reduce(func(n,bot): return n+bot.gold,0)
+	var total: int = league.rivals.reduce(func(n,bot): return n+bot.gold,0)
 	await get_tree().create_timer(2.0).timeout
 	check(league.rivals.reduce(func(n,bot): return n+bot.gold,0)<total, "rivals keep buying while watched")
 	check(screen.field.match_state==watched, "watching preserves board identity")

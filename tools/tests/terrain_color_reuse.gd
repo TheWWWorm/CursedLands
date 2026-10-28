@@ -56,7 +56,7 @@ func run()->void:
 	if old==null:first.free();finish();return
 	var pixels:=old.get_image().get_data()
 	var first_material:ShaderMaterial=first.color_cache._resident[Vector2i.ZERO].material
-	var weak:=weakref(first);first.free()
+	var weak: WeakRef = weakref(first);first.free()
 	check(weak.get_ref()==null,"shared pages do not retain their terrain")
 	var second:=make_terrain(.75)
 	check(texture(second)==old and second.color_cache.built==0 and second.color_cache.reused==1,"recreated terrain reuses the uploaded texture without a bake")

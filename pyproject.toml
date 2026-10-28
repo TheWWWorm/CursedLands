@@ -1,0 +1,9 @@
+[project]
+name = "cursed-lands-tools"
+version = "0"
+description = "Python tools and tests for the Cursed Lands engine (not a distributable package)"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tools/tests", "tools/parity"]
+python_files = "test_*.py"

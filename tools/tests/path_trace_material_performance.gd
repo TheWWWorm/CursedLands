@@ -58,7 +58,8 @@ func select_hit(device: Object,reference: bool) -> void:
 	var variant: Dictionary=reference_variants[key] if reference else device._variants[key]
 	device._shader=variant.shader;device._pipeline=variant.pipeline;selected_shader=variant.shader
 	if rd.hit_sbt_set_pipeline(device._sbt,device._pipeline)!=OK:hit_selected.emit.call_deferred(false);return
-	if device._set.is_valid():rd.free_rid(device._set);device._set=RID()
+	var pt: Variant=device  # the path-tracing device keeps its ray uniform set in _set
+	if pt._set.is_valid():rd.free_rid(pt._set);pt._set=RID()
 	device._history_valid=false
 	hit_selected.emit.call_deferred(true)
 

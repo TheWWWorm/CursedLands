@@ -10,9 +10,9 @@ class FailingNrd extends "res://src/game/fx/path_trace_nrd.gd":
 	var freed := true
 	func render(_frame: PackedByteArray) -> bool:
 		attempts+=1;return false
-	func dispose() -> void:
+	func dispose(release: Callable=Callable()) -> void:
 		var images: Array[RID]=_textures.duplicate();var rd:=_rd
-		super.dispose()
+		super.dispose(release)
 		if rd!=null:freed=images.all(func(rid: RID):return not rd.texture_is_valid(rid))
 signal replaced
 func replace_nrd(replacement: RefCounted) -> void:

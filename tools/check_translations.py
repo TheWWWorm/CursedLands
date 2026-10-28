@@ -53,6 +53,27 @@ for pattern in (r'^const ANDROID_INSTALL_NOTE := (' + STRING + r')',
         key = json.loads(match[1])
         if key and key not in entries:
             errors.append(f'Mod download text missing RU/DE key: {key}')
+# Mod profile, package, save and sandbox messages are returned as English keys
+# and translated where they are shown. A message built by concatenation can
+# never match a key, so it must use a %s placeholder translated at the source.
+def message_statements(source, function=None):
+    if function:
+        source = source.split('\nfunc ' + function + '(', 1)[1].split('\nfunc ', 1)[0]
+    for match in re.finditer(r'(?:\breturn|"error":|errors\.append\()\s*([^\n;]*)', source):
+        yield match[1]
+
+for relative, function in (('game/mod_store.gd', None), ('game/mod_schema.gd', None),
+                           ('game/session.gd', 'sandbox_action'), ('ui/save_transfer.gd', None)):
+    for statement in message_statements((ROOT / relative).read_text(), function):
+        literals = [json.loads(m[0]) for m in re.finditer(STRING, statement)]
+        literals = [key for key in literals if re.search(r'[A-Za-z]+ [A-Za-z]', key)]
+        if not literals:
+            continue
+        if '+' in statement and 'RemakeText.t(' not in statement:
+            errors.append(f'{relative}: concatenated message cannot be translated: {statement.strip()}')
+        for key in literals:
+            if key not in entries:
+                errors.append(f'{relative}: message missing RU/DE key: {key}')
 # Renderer labels and recovery help are chosen dynamically by platform.
 renderer_source = (ROOT / 'platform/renderer_choice.gd').read_text()
 for match in re.finditer(r'^const WINDOWS_[A-Z_]+ := (.+)$', renderer_source, re.M):

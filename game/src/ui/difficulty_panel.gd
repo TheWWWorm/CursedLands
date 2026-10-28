@@ -89,7 +89,7 @@ func _accept() -> void:
 	elif ModStore.editable("difficulty") == "":
 		error = ModStore.apply_rules({"difficulty": level})
 	if error != "":
-		_status.text = error
+		_status.text = RemakeText.t(error)
 		return
 	visible = false
 	if _new_game: accepted.emit(level)

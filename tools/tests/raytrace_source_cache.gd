@@ -18,7 +18,7 @@ func _ready() -> void:
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	var changed: Dictionary=cache.surface(mesh,0)
 	check(cache.misses==2 and changed.arrays[Mesh.ARRAY_VERTEX][0]==Vector3(3,2,1),"mesh change invalidates old source geometry")
-	var key:=mesh.get_instance_id();var ref:=weakref(mesh);mesh=null
+	var key:=mesh.get_instance_id();var ref: WeakRef = weakref(mesh);mesh=null
 	check(ref.get_ref()==null,"source cache does not retain mesh resources")
 	cache._erase(key)
 	check(cache._entries.is_empty() and cache._bytes==0,"expired source entry can be released")
