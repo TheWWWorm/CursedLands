@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep the Windows Direct3D 12 main menu responsive when DLSS, TAA or FSR 2 needs new motion-vector shaders, for example after an update. The menu now draws while these shaders compile in the background, and the selected mode starts when they are ready; previously the first frame could stall for tens of seconds or never finish.
+
 ## 1.34.0 — 2026-10-28
 
 - Add optional Ground relief maps for terrain; the option is off by default. Load placed map lights, retain high-resolution armour layers, accept PNG texture overrides, and restore the Gipath ogres' skull-belt models.

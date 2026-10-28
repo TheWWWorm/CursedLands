@@ -1,0 +1,122 @@
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
+@@ -123,8 +123,8 @@ bool RenderForwardClustered::RenderBufferDataForwardClustered::ensure_mfx_tempor
+ #endif
+ 
+ void RenderForwardClustered::RenderBufferDataForwardClustered::free_data() {
+-	fsr_pipelines_queued = false;
+-	fsr_scene_prepared = false;
++	temporal_pipelines_queued = false;
++	temporal_scene_prepared = false;
+ 	if (fsr_sdk_context) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
+ 	if (dlss_context) {
+ 		memdelete(dlss_context);
+@@ -1832,49 +1832,61 @@ void RenderForwardClustered::_render_scene(RenderDataRD *p_render_data, const Co
+ 	}
+ 
+ 	bool using_frame_generation = scale_type != SCALE_DLSS && !is_reflection_probe && rb->get_frame_generation() && rb->get_view_count() == 1;
+-	bool fsr_preparing = false;
++	bool temporal_preparing = false;
+ 	// Cancellation does not cancel shared compiler jobs. Keep material
+ 	// validation on the base group until the optional group actually finishes.
+ 	if (scene_shader.defer_advanced_compilation.is_set() && scene_shader.shader.is_group_compilation_ready(SceneShaderForwardClustered::SHADER_GROUP_ADVANCED)) {
+ 		scene_shader.defer_advanced_compilation.clear();
+ 	}
++	// DLSS, FSR 2, MetalFX and TAA need motion vectors, like the FSR SDK below.
++	// A compositor effect's motion-vector request (DLSS Ray Reconstruction
++	// guides) waits with them: only the temporal pass consumes those vectors.
++	bool temporal_requested = rb->get_view_count() == 1 && !using_debug_mvs &&
++			(scale_type == SCALE_DLSS || scale_type == SCALE_FSR2 || scale_type == SCALE_MFX || using_taa);
+ #ifdef FSR_SDK_ENABLED
+-	if (!is_reflection_probe && rb_data.is_valid() && !rb_data->fsr_scene_prepared && (scale_type == SCALE_FSR_SDK || using_frame_generation)) {
+-		// Enabling motion vectors starts the advanced scene-shader group.
+-		// Waiting for it on the first draw can freeze the menu for seconds.
++	const bool fsr_requested = scale_type == SCALE_FSR_SDK || using_frame_generation;
++	temporal_requested = temporal_requested || fsr_requested;
++#endif
++	if (!is_reflection_probe && rb_data.is_valid() && !rb_data->temporal_scene_prepared && temporal_requested) {
++		// Enabling motion vectors starts the advanced scene-shader group for
++		// every material already loaded. Joining it on the first draw froze the
++		// menu for seconds; on D3D12 with an uncached group it could deadlock:
++		// the render thread held a shader version's lock while pipeline jobs
++		// waiting for that lock occupied every compiler worker.
+ 		// Keep the ordinary color pass until both shaders and its pipelines
+ 		// have finished on Godot's compiler workers. Low priority reserves
+ 		// workers for pipelines needed by the ordinary frames during preparation.
+ 		scene_shader.enable_advanced_shader_group(false, false);
+-		fsr_preparing = !scene_shader.shader.is_group_compilation_ready(SceneShaderForwardClustered::SHADER_GROUP_ADVANCED);
+-		scene_shader.defer_advanced_compilation.set_to(fsr_preparing);
+-		if (!fsr_preparing) {
+-			if (!rb_data->fsr_pipelines_queued) {
++		temporal_preparing = !scene_shader.shader.is_group_compilation_ready(SceneShaderForwardClustered::SHADER_GROUP_ADVANCED);
++		scene_shader.defer_advanced_compilation.set_to(temporal_preparing);
++		if (!temporal_preparing) {
++			if (!rb_data->temporal_pipelines_queued) {
+ 				GlobalPipelineData requirements = global_pipeline_data_required;
+ 				requirements.use_motion_vectors = true;
+ 				requirements.texture_samples = rb->get_texture_samples();
+ 				for (SelfList<GeometryInstanceSurfaceDataCache> *E = geometry_surface_compilation_all_list.first(); E; E = E->next()) {
+ 					_mesh_generate_all_pipelines_for_surface_cache(E->self(), requirements);
+ 				}
+-				rb_data->fsr_pipelines_queued = true;
++				rb_data->temporal_pipelines_queued = true;
+ 			}
+-			fsr_preparing = !scene_shader.are_pipelines_ready();
+-			rb_data->fsr_scene_prepared = !fsr_preparing;
++			temporal_preparing = !scene_shader.are_pipelines_ready();
++			rb_data->temporal_scene_prepared = !temporal_preparing;
+ 		}
+ 	}
++#ifdef FSR_SDK_ENABLED
+ 	if (!is_reflection_probe) {
+-		FidelityFX::get_singleton()->temporal_shaders_initializing.set(fsr_preparing ? 1 : 0);
++		FidelityFX::get_singleton()->temporal_shaders_initializing.set(temporal_preparing && fsr_requested ? 1 : 0);
+ 	}
+ #endif
+-	using_frame_generation = using_frame_generation && !fsr_preparing;
+-	using_taa = using_taa && !fsr_preparing;
+-	bool using_upscaling = scale_type != SCALE_NONE && !fsr_preparing;
++	using_frame_generation = using_frame_generation && !temporal_preparing;
++	using_taa = using_taa && !temporal_preparing;
++	bool using_upscaling = scale_type != SCALE_NONE && !temporal_preparing;
+ 
+ 	// check if we need motion vectors
+ 	bool motion_vectors_required;
+ 	if (using_debug_mvs) {
+ 		motion_vectors_required = true;
+-	} else if (ce_needs_motion_vectors) {
++	} else if (ce_needs_motion_vectors && !temporal_preparing) {
+ 		motion_vectors_required = true;
+ 	} else if (!is_reflection_probe && using_taa) {
+ 		motion_vectors_required = true;
+@@ -2525,7 +2537,7 @@ void RenderForwardClustered::_render_scene(RenderDataRD *p_render_data, const Co
+ 		_process_compositor_effects(RSE::COMPOSITOR_EFFECT_CALLBACK_TYPE_POST_TRANSPARENT, p_render_data);
+ 	}
+ 
+-	if (rb_data.is_valid() && fsr_preparing && scale_type != SCALE_NONE) {
++	if (rb_data.is_valid() && temporal_preparing && scale_type != SCALE_NONE) {
+ 		for (uint32_t v = 0; v < rb->get_view_count(); v++) {
+ 			copy_effects->copy_to_rect(rb->get_internal_texture(v), rb->get_upscaled_texture(v), Rect2i(Point2i(), rb->get_target_size()), false, false, true);
+ 		}
+@@ -2726,7 +2738,7 @@ void RenderForwardClustered::_render_scene(RenderDataRD *p_render_data, const Co
+ 		if (using_frame_generation) {
+ 			fsr_sdk_effect->prepare_frame_generation(rb_data->get_fsr_sdk_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
+ 		}
+-		if (scale_type == SCALE_DLSS && rb->get_frame_generation() && rb->get_view_count() == 1) {
++		if (scale_type == SCALE_DLSS && !temporal_preparing && rb->get_frame_generation() && rb->get_view_count() == 1) {
+ 			dlss_effect->prepare_frame_generation(rb_data->get_dlss_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
+ 		}
+ 	}
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
+@@ -106,8 +106,8 @@ public:
+ 
+ 	public:
+ 		ClusterBuilderRD *cluster_builder = nullptr;
+-		bool fsr_pipelines_queued = false;
+-		bool fsr_scene_prepared = false;
++		bool temporal_pipelines_queued = false;
++		bool temporal_scene_prepared = false;
+ 
+ 		struct SSEffectsData {
+ 			Projection ssil_last_frame_projections[RendererSceneRender::MAX_RENDER_VIEWS];
