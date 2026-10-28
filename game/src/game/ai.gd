@@ -207,9 +207,15 @@ func think(u: GameUnit, calm := true) -> void:
 		return
 	match u.mode:
 		"follow":
+			# The Follow motivation (5d1e10): with no AI action under way the unit
+			# enters the Follow state on its target. That state's tick (5d6f90, the
+			# follow order's `_follow_tick`) keeps it within 2 m, sets off only
+			# once the target is 4 m from its goal, leads a walking target and
+			# steps aside; the motivations keep running (a calm order).
 			var t: GameUnit = u.mode_data.get("target")
-			if t and is_instance_valid(t) and not t.dead and u.pos.distance_to(t.pos) > 3.0:
-				u.command({"type": "follow", "target": t, "dist": 2.0, "once": true})
+			if t and is_instance_valid(t) and not t.dead \
+					and not (u.order.get("type", "") == "follow" and u.order.get("target") == t):
+				u.command({"type": "follow", "target": t, "calm": true})
 		"sentry":
 			_sentry(u, home)
 		"guard":

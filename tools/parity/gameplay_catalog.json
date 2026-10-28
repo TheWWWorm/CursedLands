@@ -612,6 +612,24 @@
       ]
     },
     {
+      "id": "creatures/umfollow_escort",
+      "category": "creatures",
+      "script": "tools/tests/umfollow_escort.gd",
+      "marker": "UMFOLLOW_ESCORT",
+      "min_checks": 8,
+      "quick": false,
+      "description": "A UMFollow escort keeps the original 2 / 4 m follow distances and leads a walking target",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/hostility_spread",
       "category": "creatures",
       "script": "tools/tests/hostility_spread.gd",
