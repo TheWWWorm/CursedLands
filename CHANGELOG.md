@@ -2,12 +2,15 @@
 
 ## Unreleased
 
-- Smooth path-traced sunlight across terrain contours while retaining nearby object shadows and soft sunlight. Skip redundant direct-light resampling in scenes where the existing sampler already evaluates every local light.
-- Reduce path-tracing CPU time per frame: the traced scene rescans figures only after one is replaced and keeps its list of first-person bodies until the view mode changes. On the test system 4K path-traced frames take about a tenth less time; a replaced figure still keeps all of its traced parts from its first frame.
-- Start the campaign's simulation worker in the background while intro movies and menus are shown, so the first new game or save load of a session no longer waits for it to compile. On the test system the first save load is about a third faster. Unused workers exit when the game closes or uses other game files.
-- Keep the far edge of path-traced lighting at a constant distance from the camera. It no longer creeps closer while travelling and jumps back each time the traced area is recentred.
-- Gather path-traced scene geometry in larger steps while its preparation cover is shown, and keep the running game's crash record when its simulation worker starts on Windows.
-- Keep the Lost in Astral “Wormfaces’ Riddle” levers usable when the fortune-teller’s last prediction is bought before the first visit to the Wormface caves. Both the original game and earlier releases disabled them permanently in that order, which made the first Rod of Life fragment unobtainable. Saves already stuck there are repaired on load; answered riddles are not reopened.
+## 1.34.0 — 2026-10-28
+
+- Add optional Ground relief maps for terrain; the option is off by default. Load placed map lights, retain high-resolution armour layers, accept PNG texture overrides, and restore the Gipath ogres' skull-belt models.
+- Reduce path-tracing frame cost, smooth terrain sunlight and wall receivers, preserve lighting coverage during camera travel, and prepare Ray Reconstruction scenes before the camera arrives to retain ground detail.
+- Start the campaign simulation worker during movies and menus to reduce the first game or save load, and preserve the owner's Windows crash record when the worker starts.
+- Keep the Lost in Astral Wormfaces' Riddle levers usable when the final fortune-teller prediction is bought before the first cave visit. Repair affected saves on load without reopening answered riddles.
+- Correct Autochess creature statistics and armour descriptions, snap slightly invalid placements to the nearest valid position, fix exploding-hare blasts, open creature details at the side, and add Options to the Autochess menu.
+- Redesign the game-file selector, make the skill-reset option reachable, add an option for the Esc signpost opening animation, and save multiplayer names when leaving the field or screen.
+- Add unused faces and inventory models to the cut-content wiki, including the drawing compass.
 
 ## 1.33.0 — 2026-10-27
 
