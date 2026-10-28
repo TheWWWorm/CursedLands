@@ -182,11 +182,12 @@ func _process(dt: float) -> void:
 	var lead := (motion*64.0).limit_length(Scene.RADIUS*2.0-32.0) if continuous else Vector3.ZERO
 	var drifting := device!=null and camera.global_position.distance_to(_center)>12.0
 	_travel_build_budget=6000 if drifting or lead.length()>4.0 else 1500
-	# Dense ground below a descending camera needs more CPU gathering than a
-	# level route. Reserve a bounded extra slice only for very fast travel;
-	# otherwise even the faster GPU builder receives its input after arrival.
+	# Reserve an extra CPU slice only for very fast travel (>64 m prediction).
+	# RR also has full-input-resolution private targets to stage after the
+	# geometry, so its gather must finish earlier. Ordinary walking retains
+	# the smaller budget; this never increases the GPU builder's slice.
 	var fast_candidate := building!=null and _candidate_lead.length()>64.0
-	_travel_gather_budget=9000 if lead.length()>64.0 or fast_candidate else _travel_build_budget
+	_travel_gather_budget=(15000 if _rr_active else 9000) if lead.length()>64.0 or fast_candidate else _travel_build_budget
 	var candidate_drift := camera.global_position.distance_to(building.center) if building!=null else 0.0
 	var obsolete := candidate_drift>32.0
 	if building!=null and not _candidate_lead.is_zero_approx():
