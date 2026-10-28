@@ -684,6 +684,24 @@
       ]
     },
     {
+      "id": "combat/strike_reach_cancel",
+      "category": "combat",
+      "script": "tools/tests/strike_reach_cancel.gd",
+      "marker": "STRIKE_REACH_CANCEL",
+      "min_checks": 6,
+      "quick": false,
+      "description": "A blow is not dealt to a target that left the planned reach by the impact; a feebleminded caster loses its spell",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/ai_live_eligibility",
       "category": "creatures",
       "script": "tools/tests/ai_live_eligibility.gd",

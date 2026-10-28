@@ -1813,6 +1813,11 @@ func _tick(dt: float) -> void:
 					if hit_target:
 						roll = world.combat.strike_roll(self, hit_target)
 						strike_miss = not roll.hit
+				# 549d40: a target that left the planned reach
+				# by the impact escapes the blow; the order goes on.
+				if is_instance_valid(hit_target) and hit_target is GameUnit and hit_target == _pending_hit.get("target") \
+						and _pending_hit.has("reach2") and pos.distance_squared_to(hit_target.pos) >= float(_pending_hit.reach2):
+					hit_target = null
 				if is_instance_valid(hit_target) and hit_target is GameUnit:
 					_resolve_hit(hit_target, roll)
 			_pending_hit = {}
@@ -3191,9 +3196,24 @@ func _do_attack(dt: float) -> void:
 	strike_aim = int(order.get("aim", -1))
 	var roll := world.combat.strike_roll(self, t)
 	strike_miss = not roll.hit
-	_pending_hit = {"t": (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) * TICK / attack_rate, "target": t, "roll": roll}
+	var impact := (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) / attack_rate
+	_pending_hit = {"t": impact * TICK, "target": t, "roll": roll, "reach2": _strike_limit2(t, reach, impact)}
 	GameSound.unit(self, "attack")
 	world.on_attack(self, t)
+
+
+## The planned reach of a strike (54ca40): the target must still
+## be within it at the impact (549d40), or the blow is not
+## dealt. Reach + 0.5 m, and for a moving target in reach in front of the unit
+## also half the way it can go before the impact. The original adds the
+## unit's turn ticks to that time; the strike here starts already facing it.
+func _strike_limit2(t: GameUnit, reach: float, impact_ticks: float) -> float:
+	var lim := reach + 0.5
+	var to := t.pos - pos
+	if t._moving and to.length_squared() <= reach * reach \
+			and Vector2.from_angle(facing).dot(to) > to.length() * 0.5:
+		lim += 0.5 * impact_ticks * t.speed() * TICK
+	return lim * lim
 
 
 ## Closing in on an attack target (the original). The unit heads for

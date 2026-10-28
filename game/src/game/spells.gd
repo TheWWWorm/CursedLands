@@ -629,6 +629,10 @@ static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target
 		var c: GameUnit = _deref(caster_ref)
 		if c == null or c.dead or not is_instance_valid(world) or c.world != world:
 			return
+		# 549d40: a caster that can no longer cast (Feeblemind)
+		# by the release loses the spell.
+		if c.cannot_cast():
+			return
 		var t: GameUnit = _deref(target_ref)
 		if needs_target and (t == null or t.dead or t.world != world or world.units.get(t.uid) != t):
 			return
