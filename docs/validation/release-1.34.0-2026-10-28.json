@@ -1,0 +1,251 @@
+{
+  "version": "1.34.0",
+  "release_type": "stable",
+  "date": "2026-10-28",
+  "release_tag": "v1.34.0",
+  "game_tree": "fa44ebe8b6a41928496ba739f69da1c2ff7eee51",
+  "acceptance_passed": true,
+  "semver": "MINOR: optional Ground relief maps and other backward-compatible features; campaign protocol 23 and Autochess protocol 5 remain unchanged.",
+  "linux_regressions": {
+    "groups": {
+      "headless": {
+        "cases": 12,
+        "checks": 3064,
+        "ids": [
+          "path_trace_travel_history",
+          "arena_cyclops_rabbit",
+          "arena_rank_stats",
+          "arena_stat_growth_placement",
+          "path_trace_terrain_sun_budget",
+          "map_lights",
+          "mod_texture_png",
+          "legacy_figure",
+          "esc_menu_rise",
+          "network_name_persists",
+          "options_rows_reachable",
+          "wiki_cut_faces_items"
+        ]
+      },
+      "ui": {
+        "cases": 12,
+        "checks": 1732,
+        "ids": [
+          "game_files_presentation",
+          "arena_options_menu_ui_en",
+          "arena_options_menu_ui_ru",
+          "arena_options_menu_ui_de",
+          "arena_inspector_side_ui_en",
+          "arena_inspector_side_ui_ru",
+          "arena_inspector_side_ui_de",
+          "terrain_surface_help",
+          "menu_signpost_lights",
+          "esc_menu_rise_ui",
+          "options_rows_reachable_ui",
+          "wiki_cut_faces_items_ui"
+        ]
+      },
+      "graphics": {
+        "cases": 12,
+        "checks": 644,
+        "ids": [
+          "path_trace_coverage_handoff",
+          "path_trace_perspective_receivers",
+          "path_trace_rtxdi_sparse",
+          "path_trace_terrain_terminator",
+          "path_trace_terrain_sun_continuity",
+          "path_trace_terrain_sun_radius",
+          "terrain_surface_maps",
+          "terrain_surface_live",
+          "tex_upscale_push_constants",
+          "path_trace_cpu_caches",
+          "local_host_standby",
+          "path_trace_receiver_coverage"
+        ]
+      }
+    },
+    "cases": 36,
+    "checks": 5440
+  },
+  "lia_quest_regressions": {
+    "programs": 20,
+    "checks": 2342,
+    "failures": 0,
+    "runtime": "source snapshot; patched LiA 1.02 reference"
+  },
+  "windows_proton_regressions": [
+    {
+      "case": "path_trace_terrain_terminator",
+      "summary": "SCENE_RT_DEVICE 93 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "0c07971c4920520de7671e461a2177853bc41f01d444ed424714be84d782774f"
+    },
+    {
+      "case": "path_trace_terrain_sun_continuity",
+      "summary": "SCENE_RT_DEVICE 31 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "b1138a450e1b63c675eee6437f5d3cb568d49d94f6b515265cc9665bc7a3d70b"
+    },
+    {
+      "case": "path_trace_terrain_sun_radius",
+      "summary": "SCENE_RT_DEVICE 37 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "43518548ec16739177884dd52b9679a34b452614d0fe452be7585263cf70fc96"
+    },
+    {
+      "case": "path_trace_rtxdi_sparse",
+      "summary": "SCENE_RT_DEVICE 37 checks 0 failures",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090 Ti",
+        "vendor": "10de",
+        "device": "2203",
+        "uuid": "0eee028eb998532f095be936c7f6191d",
+        "capabilities_overridden": false
+      },
+      "fixture_sha256": "201b2b46ea72ea7108f192cf13c41f8ef8ac17fcbd655166e18dfd4b194982c5"
+    }
+  ],
+  "five_platform_script_parity": {
+    "version": "1.34.0",
+    "compiled_scripts": 460,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 69,
+    "debuggable": false,
+    "apk_sha256": "171fa245cce6bfced81f93fcc65aa2b1bb8150f42952d60adbec75e4ce103379",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "fd995a02c0fdb84f77316252af72390c43839132ac284362f9a1010da9b8d0c4"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.34.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "fresh": {
+      "version": "1.34.0",
+      "passed": true,
+      "engine_start_resolved": true,
+      "canvas_visible": true,
+      "isolated": true,
+      "original_game_data_imported": false,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      }
+    },
+    "upgrade": {
+      "version": "1.34.0",
+      "previous_version": "1.33.0",
+      "cache_upgrade": {
+        "passed": true,
+        "old_cache": "cursed-engine-2-d25e14b22a818a93459d",
+        "new_cache": "cursed-engine-2-5bbb74d7e276046d084c",
+        "indexeddb_preserved": true,
+        "database_names": [
+          "/userfs",
+          "cursed-lands-data-v1"
+        ],
+        "pck_sha256": "cd7a27377035e92d1263a177f76f0bcb7d2c18ca55a3c8cae3fbd54d2d43d67a",
+        "old_tab_wait_verified": true
+      },
+      "cache": {
+        "keys": [
+          "cursed-engine-2-5bbb74d7e276046d084c"
+        ],
+        "packs": {
+          "cursed-engine-2-5bbb74d7e276046d084c": "cd7a27377035e92d1263a177f76f0bcb7d2c18ca55a3c8cae3fbd54d2d43d67a"
+        },
+        "worker": "activated",
+        "waiting": null,
+        "isolated": true
+      }
+    },
+    "public_wiki_checks": null,
+    "new_wiki_combinations": 6
+  },
+  "public_wiki": {
+    "article_version": "1.34.0",
+    "frontend_version": "1.34.0",
+    "campaigns": [
+      "cursed_lands",
+      "lost_in_astral"
+    ],
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "all_previous_keys_and_variants_preserved": true
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "36 packaged Linux cases, 5440 checks, plus 20 source-based LiA quest programs; rendered cases use GPU Lab."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_fg_tested": false,
+      "scope": "Four packaged D3D12 path-tracing cases under GE-Proton 11-11 on GPU Lab; no native Windows or FG runtime."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Unsigned universal export, compiled script parity and embedded icon checked; no macOS runtime available."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 APK version code 69, compiled script parity, non-debuggable manifest and unchanged signing certificate checked; no Android device runtime."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium start, upgrade from the published 1.33.0 cache with storage preserved, and localized standalone wiki checks."
+    }
+  },
+  "limits": [
+    "Native Windows, macOS and Android device runtimes were not exercised in this release suite.",
+    "The RTX 5090 and standard frame generation were not exercised on the test GPUs.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "local_evidence": "local/validation/release-1.34.0-20261028",
+  "visual_manifest_sha256": "265422a42ef0dc089dfb4330d708697fc732406b870b6fb1f54e262f7fb37426"
+}
