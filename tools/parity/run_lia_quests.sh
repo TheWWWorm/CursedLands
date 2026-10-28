@@ -14,7 +14,7 @@ if "$python" "$suite/gameplay.py" --game-dir "$BASE_GAME" --astral-dir "$ASTRAL_
     --godot "$GODOT" --out "$output/gameplay" --display headless --jobs "${JOBS:-auto}" \
     --case lia_kel_ --case lia_campaign_ --case lia_fragment_first_entry --case use_callback_orders \
     --case lia_revenge_return --case lia_slave_lists_return \
-    --case lia_tomb_exit --case zone7_arrival; then
+    --case lia_tomb_exit --case zone7_arrival --case lia_first_visit_orders_; then
     :
 else
     status=$?

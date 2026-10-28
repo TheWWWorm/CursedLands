@@ -203,6 +203,69 @@ Final run with the final fixtures, four jobs: every `lia_` program
 `quest_inventory_lifecycle`, 62 programs, 12,621 checks, 0 failed, about
 21 minutes (82 minutes of program time). Catalog minimums equal these counts.
 
+## All LiA quests
+
+### Completion coverage
+
+An inventory of the shipped LiA data found 126 quest variables (`q.<map>.<id>`
+set by map scripts or granted by dialogue rewards in `database.res`). 119 have a
+gameplay program that asserts their completion: 117 by name, and `q.gz1h.q2h`
+and `q.gz1h.q3h` through `lia_kel_early_story`'s constants. The other seven
+have no granter in the shipped data, so no playthrough can receive them:
+
+- `q.gz1h.q01h` (no grant anywhere);
+- `q.gz2h.q23h` and `q.gz2h.q24h` (the brief_79 offer is commented out in
+  `bz2h`, and their checks need the same flag to be 1 and 0 at once);
+- `q.gz8g.q3g`, `q4g`, `q8g`, `q9g` (no LiA grant; the same quests are given
+  and covered under `gz7g`, `gz11g`, `gz9g` and `gz5h`).
+
+### First-visit order sweep
+
+`quests/lia_first_visit_orders_01`–`_12` (`tools/tests/lia_first_visit_orders.gd`)
+generalize the riddle's order check to every LiA map. Cases come from the
+shipped data: each map against every `q.`/`b.`/`z.` flag its scripts read that
+another map's script or a dialogue reward grants, with each granted value
+(166 cases). Each case plays two fresh campaigns. Both enter the map through its
+authored WorldScript, wait in a village of the same island and return; the
+flag is set before the first visit or during the wait. After the return the
+map's quest state must match: party, levers (state and usability), waiting
+quest watchers (scripts whose condition reads a quest, dialogue or zone flag or
+a lever, without random choices; a watcher and its alternating `a` twin count
+as one), units (dead, hidden, faction), objects, quest items and all flags.
+
+A first version compared every live thread after visits of different lengths
+and reported 71 differences in 166 cases. The noise came from alternating
+village watchers, random chests and map variants, cosmetic fire scripts and
+the different time spent in the map. The symmetric orders and the watcher
+filter leave six differences, each reviewed against the map scripts
+(inference from the scripts; no native run was needed for states the campaign
+cannot reach):
+
+| Case | Difference | Review |
+| --- | --- | --- |
+| `gz1h b.skelet.fq2=2` | lever 2261640 usable only after an earlier visit | Portal is the chapter's starting map; the fortune is always bought after the first visit, which `lia_kel_fortune_orders` covers. |
+| `bz2h q.gz3h.q13h=2` | merc10 hidden | `q13h` comes from brief_37, long after the Elder's brief_9 in this first village. Only with brief_9 unset, as the isolated case sets it, does `VCheck#1#0` hide merc10 again. |
+| `bz5h b.merc8.brief_24=1` | runtime unit 1500000640 | merc8 (1000059191) is on the base map and present in both orders. `AddMob("bz5hmerc8.mob")` spawns a second copy under a new runtime id, which a revisit does not restore. No quest depends on the copy. |
+| `bz12g q.gz7g.q21g=2` | `VCheck#0#0` still waiting | The Witch is shown in both orders; the watcher waits for `q21g = 0`, which `GSSetVarMax` never sets again. |
+| `bz12g q.gz7g.q21g=3` | Witch visibility, `VCheck#0#0` | `q21g = 3` is the escort's death, followed by `EndOfGame`. |
+| `gz11d2 z.gz9g=2` | `Start` still waiting | `bz8g` sets `z.gz9g` to 2 and back to 0 five ticks later in one conversation handler; the party cannot arrive while it is 2. |
+
+These are listed in the test with their reasons and exact differing entries;
+any other difference in those cases fails. No new order-dependent quest lock
+was found. Whether the original also spawns the second merc8 copy was not
+checked; it does not affect any quest.
+
+The sweep catches the reported regression on its own. With the riddle repair
+in `vm.gd` disabled (`--game-source` pointing at an unfixed copy), shard 02
+fails exactly one check, case `gz4h b.skelet.fq6=2.0`. Levers 16426, 1047355
+and 1088298 stay disabled when the fortune is bought after the first visit,
+and are enabled when it is bought before. On the fixed source all 12 shards
+pass, with 546 checks and no failures. Each shard takes 5–6.5 minutes. With
+seven at once the full sweep finishes in about 13 minutes. A later run
+finished in 66 minutes because the runner's memory gate started shards one at
+a time while other workloads held memory. That cause is inferred from the
+per-shard finish times; free memory during the run was not logged.
+
 ## Scope and uncertainty
 
 - Quest flags before each visit are supplied and travel is direct map entry;
@@ -215,6 +278,11 @@ Final run with the final fixtures, four jobs: every `lia_` program
   `gate(..., false, ...)` in `lia_campaign_ingos_portal` and
   `lia_campaign_mid_ingos`) can pass without the thread having run. The plain
   programs still cover those.
-- The static scan looks for the startup enable/disable pattern only. Other kinds
-  of order-dependent locks are covered only where the fragment tests exercise
-  them.
+- The static scan looks for the startup enable/disable pattern only; the
+  first-visit order sweep covers other order dependencies, within its limits:
+  - each case sets one flag in otherwise early campaign state, so differences
+    that need several flags together are not generated;
+  - units are frozen and objectives are not played (the `lia_kel_`/
+    `lia_campaign_` programs cover those);
+  - scripts with random choices are excluded from the watcher comparison;
+    their levers, units and flags are still compared.

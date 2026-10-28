@@ -6655,6 +6655,234 @@
       ]
     },
     {
+      "id": "quests/lia_first_visit_orders_01",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 1 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=0/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_02",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 2 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=1/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_03",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 3 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=2/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_04",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 4 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=3/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_05",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 5 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=4/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_06",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 6 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=5/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_07",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 7 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=6/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_08",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 8 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=7/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_09",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 9 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=8/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_10",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 10 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=9/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_11",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 43,
+      "quick": false,
+      "description": "Shard 11 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=10/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_12",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 43,
+      "quick": false,
+      "description": "Shard 12 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=11/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
       "id": "quests/lia_kel_gipat",
       "category": "quests",
       "script": "tools/tests/lia_kel_gipat.gd",
