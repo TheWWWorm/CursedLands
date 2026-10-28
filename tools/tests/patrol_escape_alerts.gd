@@ -33,13 +33,19 @@ func _ready()->void:
 	w.zone.type="game";w.time+=GameUnit.TICK;w.set_relation(1,0,1)
 	guard.remove_meta("noticed");ally.remove_meta("noticed");hero.pos=Vector2(5,0);ally.pos=Vector2(-2,0);ally.facing=0
 	check(not w.is_enemy(ally,hero),"neutral friend starts peaceful")
-	w.ai.on_attacked(guard,hero)
+	# The original passes an attacked unit's hostility to the friends within
+	# its help radius as a claim that lands 30 ticks later (552e00 / 552d00).
+	var assault:=func()->void:
+		for u:GameUnit in [guard,ally]:u.remove_meta("hate");u.remove_meta("hate_claims");u.remove_meta("noticed")
+		w.time+=GameUnit.TICK;w.ai._hate(guard,hero.faction,true);w.ai.on_attacked(guard,hero)
+		for i in 32:w.time+=GameUnit.TICK;w.ai.tick()
+	assault.call()
 	check(w.is_enemy(ally,hero) and not guard.dead,"witness becomes hostile before its friend dies")
-	ally.remove_meta("hate");ally.remove_meta("noticed");ally.facing=PI;w.time+=GameUnit.TICK
-	w.ai.on_attacked(guard,hero)
-	check(not w.is_enemy(ally,hero),"friend who cannot see the assault remains neutral")
-	ally.facing=0;ally.pos=Vector2(-50,0);w.time+=GameUnit.TICK
-	w.ai.on_attacked(guard,hero)
+	ally.facing=PI
+	assault.call()
+	check(w.is_enemy(ally,hero),"a friend within the help radius turns hostile without seeing the assault")
+	ally.facing=0;ally.pos=Vector2(-50,0)
+	assault.call()
 	check(not w.is_enemy(ally,hero),"distant friend receives no global hostility")
 	for u:GameUnit in [guard,ally,hero]:u.free()
 	w.free();print("PATROL_ESCAPE_ALERTS ",checks," checks ",failures," failures");get_tree().quit(1 if failures else 0)

@@ -363,8 +363,10 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			for u: GameUnit in victims:
 				_buff(u, p.code, effect_ticks, {})
 		"feeblemind":   # a flag that refuses spell-casting orders
+			# The original (553220) sets it except on weapon type 16, the
+			# creatures whose attacks are spells: they keep casting.
 			for u: GameUnit in victims:
-				_buff(u, "feeblemind", effect_ticks, {"no_cast": true})
+				_buff(u, "feeblemind", effect_ticks, {"no_cast": int(u.proto.get("weapon_type_id", -1)) != 16})
 		# senses and detectability (GameUnit.sense / detect).
 		"invisibility":   # sight detectability - effect / 100
 			for u: GameUnit in victims:
@@ -383,9 +385,10 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 			for u: GameUnit in victims:
 				if caster == null:
 					continue
-				var ok := true
-				#  is the owning side: for a hero, its player's party.
-				while ok and (u.faction != caster.faction or u.controller != caster.controller):
+				# Tried at least once, then until the target has the caster's
+				# player (6818aa): an NPC caster's player is none, so one stage.
+				var ok := tame(world, caster, u, power)
+				while ok and u.controller != caster.controller:
 					ok = tame(world, caster, u, power)
 				if not ok and world.session:
 					world.session.failed(caster, 7)   # "Can't charm"
@@ -471,7 +474,7 @@ static func _cast_unit_one(world: GameWorld, caster: GameUnit, spell: String, p:
 	# The native branch checks creature type, without an alive-only gate.
 	if tu != null and p.code in PROVOKING_EFFECTS:
 		if world.relation(tu.faction, caster.faction) != 0:
-			world.ai._hate(tu, caster.faction)
+			world.ai._hate(tu, caster.faction, true)
 		if tu.controller < 0:
 			world.ai.on_attacked(tu, caster)
 		else:
@@ -625,6 +628,10 @@ static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target
 	_after(world, secs, func():
 		var c: GameUnit = _deref(caster_ref)
 		if c == null or c.dead or not is_instance_valid(world) or c.world != world:
+			return
+		# 549d40: a caster that can no longer cast (Feeblemind)
+		# by the release loses the spell.
+		if c.cannot_cast():
 			return
 		var t: GameUnit = _deref(target_ref)
 		if needs_target and (t == null or t.dead or t.world != world or world.units.get(t.uid) != t):
@@ -1162,19 +1169,26 @@ static func _trace_ok(world: GameWorld, p: Dictionary, from: Vector2, from_z: fl
 	return world.terrain_ray(from, from_z, u.pos, world.ground_at(u.pos.x, u.pos.y) + h) >= 0.1
 
 
-## Taming, the original: it works when `power` exceeds the target's
-## level x 10 + its tame value (prototype "tame skills"; "base level" is taken
-## as the level, inferred). Each success advances one stage: 1 the target stops
-## being hostile to the tamer's side, 2 it takes the tamer's side, 3 it joins
-## the tamer's party. On failure, or if a player already owns it, it attacks.
+## Taming, the original (551ae0): it works when `power` exceeds the target's
+## current stage x 10 + its tame value (prototype "tame skills"), so the three
+## stages need tame, tame + 10 and tame + 20 whatever the creature's level.
+## Each success stops the target's action and advances one stage: 1 the target
+## stops being hostile to the tamer's side, 2 it takes the tamer's side, 3 it
+## joins the tamer's party. A failure undoes a taming the tamer's side had
+## begun (552280), and the attempt counts as an attack (455680), as it always
+## does on a unit a player owns.
 static func tame(world: GameWorld, tamer: GameUnit, u: GameUnit, power: float) -> bool:
-	if u.dead or u.has_meta("hero") or u.controller >= 0:
+	if u.dead:
 		return false
-	var need := float(u.proto.get("base_level", 0)) * 10.0 + float(u.proto.get("tame_skills", 0.0))
-	if power <= need:
-		world.ai.on_attacked(u, tamer)
+	var stage := int(u.get_meta("tame_stage", 0))
+	var owned := u.has_meta("hero") or u.controller >= 0
+	if owned or power <= float(stage) * 10.0 + float(u.proto.get("tame_skills", 0.0)):
+		if stage != 0 and int(u.get_meta("tame_faction", -1)) == tamer.faction:
+			_undo_taming(u)
+		if world.relation(u.faction, tamer.faction) != 0:
+			world.ai._hate(u, tamer.faction, true)
 		return false
-	var stage := int(u.get_meta("tame_stage", 0)) + 1
+	stage += 1
 	u.set_meta("tame_stage", stage)
 	u.set_meta("tame_faction", tamer.faction)
 	match stage:
@@ -1182,9 +1196,6 @@ static func tame(world: GameWorld, tamer: GameUnit, u: GameUnit, power: float) -
 			var peace: Array = u.get_meta("peace", [])
 			peace.append(tamer.faction)
 			u.set_meta("peace", peace)
-			u.orders.clear()
-			u.order = {}
-			u.target = null
 		2:
 			u.set_meta("tame_original_faction", u.faction)
 			u.faction = tamer.faction
@@ -1193,7 +1204,30 @@ static func tame(world: GameWorld, tamer: GameUnit, u: GameUnit, power: float) -
 			u.controller = tamer.controller
 			u.mode = "player"
 			ActorRefs.pet_key(u)
+	u.orders.clear()
+	u.order = {}
+	u.target = null
 	return true   # no text-window line (shows nothing)
+
+
+## 552280: the taming's peace ends, a creature that had taken the
+## tamer's side goes back to its own, a pet leaves its player and its Tamed
+## mode, and the stage returns to 0.
+static func _undo_taming(u: GameUnit) -> void:
+	var stage := int(u.get_meta("tame_stage", 0))
+	if stage == 0:
+		return
+	if stage >= 3:
+		u.controller = -1
+		u.mode = "standard"
+		for key in ["pet_id", "pet", "lent_of", "orphan_of"]:
+			u.remove_meta(key)
+	u.remove_meta("peace")
+	if stage > 1 and u.has_meta("tame_original_faction"):
+		u.faction = int(u.get_meta("tame_original_faction"))
+	u.remove_meta("tame_stage")
+	u.remove_meta("tame_faction")
+	u.remove_meta("tame_original_faction")
 
 
 ## Spell filter, the original (spell flags low word, set

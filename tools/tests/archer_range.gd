@@ -160,6 +160,9 @@ func _combat_cases(u:GameUnit,start:Vector2,axis:Vector2) -> void:
 			hero.pos=start;hero.facing=axis.angle();hero.action="idle";hero.path=PackedVector2Array();hero.mana=100000
 			u.pos=start+axis*(reach+(3.0 if outside else -.1))
 			for unit:GameUnit in [hero,u]:s.world.nav.track_unit(unit);unit._sync_transform(0)
+			# A party order on a unit goes on only while the party has noticed
+			# it (54dd70); the hero has seen this target.
+			var known:Dictionary=hero.get_meta("noticed",{});known[u.get_instance_id()]=u;hero.set_meta("noticed",known)
 			hero.order={"type":"cast","spell":spell,"target":u}
 			for tick in 400:
 				hero._do_cast(GameUnit.TICK)

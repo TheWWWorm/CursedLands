@@ -1284,7 +1284,45 @@ func move_to(p: Vector2, run := true, queue := false) -> void:
 ## `aim` = body part for an aimed strike (0 head .. 5 left leg), -1 = random.
 ## `run`: the double-click flag (see Session._double_stand).
 func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice := false) -> void:
+	# 554b30: an aim at a part that is no longer intact is none.
+	if t != null and t != self and aim >= 0 and aim < mini(6, t.parts.size()) and int(t.parts[aim].state) != 3:
+		aim = -1
+	if cannot_reach_high(t):
+		if not queue:
+			orders.clear()
+			order = {}
+			target = null
+		ack(EIAcks.TOO_HIGH)
+		return
 	command({"type": "attack", "target": t, "aim": aim, "run": run, "path_notice": path_notice}, queue)
+
+
+## 54dd70: a party unit's order on a unit goes on only while
+## the target is known: of its side or player, noticed by the unit (5cb7f0),
+## or in the player's group (66e0d0), which 66e0f0 fills
+## from the noticed lists of all the party's units.
+func party_knows(t: GameUnit) -> bool:
+	if controller < 0 or t == null or t.faction == faction or t.controller == controller:
+		return true
+	var id := t.get_instance_id()
+	if (get_meta("noticed", {}) as Dictionary).has(id):
+		return true
+	for u: GameUnit in world.unit_rows():
+		if u.controller == controller and not u.dead and (u.get_meta("noticed", {}) as Dictionary).has(id):
+			return true
+	return false
+
+
+## 554b30 / 54d960 / 54c800: a blow
+## cannot reach a living flyer whose altitude is 1.5 or more, unless a bow or
+## crossbow is in hand. The remake keeps no height above the ground, so the
+## original's relative Z term is 0.
+func cannot_reach_high(t: GameUnit) -> bool:
+	if t == null or t == self or not is_instance_valid(t) or t.dead or t.move_class() != 0:
+		return false
+	if GameSound.held_weapon_type(self) in [5, 6]:
+		return false
+	return float(t.proto.get("altitude", 0.0)) >= 1.5
 
 
 func is_idle() -> bool:
@@ -1791,6 +1829,11 @@ func _tick(dt: float) -> void:
 					if hit_target:
 						roll = world.combat.strike_roll(self, hit_target)
 						strike_miss = not roll.hit
+				# 549d40: a target that left the planned reach
+				# by the impact escapes the blow; the order goes on.
+				if is_instance_valid(hit_target) and hit_target is GameUnit and hit_target == _pending_hit.get("target") \
+						and _pending_hit.has("reach2") and pos.distance_squared_to(hit_target.pos) >= float(_pending_hit.reach2):
+					hit_target = null
 				if is_instance_valid(hit_target) and hit_target is GameUnit:
 					_resolve_hit(hit_target, roll)
 			_pending_hit = {}
@@ -1839,6 +1882,14 @@ func _tick(dt: float) -> void:
 		path = PackedVector2Array()
 	elif controller < 0 and world.time >= ai_next and order.get("calm", false):
 		world.ai.think(self)   # a calm motivation's walk: the AI keeps choosing
+		if order.is_empty() and not orders.is_empty():
+			order = orders.pop_front()
+			_order_started_tick = roundi(world.time / TICK)
+			_wait_on = null
+			path = PackedVector2Array()
+	elif controller < 0 and world.time >= ai_next and order.get("story", false) and order.get("type", "") == "follow":
+		# A scripted Follow: the motivations still run, and a hostile ends it.
+		world.ai.think(self, false)
 		if order.is_empty() and not orders.is_empty():
 			order = orders.pop_front()
 			_order_started_tick = roundi(world.time / TICK)
@@ -3028,6 +3079,14 @@ func _do_attack(dt: float) -> void:
 		order = {}
 		target = null
 		return
+	if cannot_reach_high(t):
+		target = null
+		_fail_order(EIAcks.TOO_HIGH)
+		return
+	if not party_knows(t):
+		target = null
+		_fail_order(EIAcks.NO_TARGET)
+		return
 	# an AI unit keeps attacking a target it has noticed; a
 	# live hostile never leaves an NPC's noticed list, so only
 	# a target of another side that is not hostile (a revenge target) is
@@ -3157,9 +3216,24 @@ func _do_attack(dt: float) -> void:
 	strike_aim = int(order.get("aim", -1))
 	var roll := world.combat.strike_roll(self, t)
 	strike_miss = not roll.hit
-	_pending_hit = {"t": (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) * TICK / attack_rate, "target": t, "roll": roll}
+	var impact := (hit_ticks if hit_ticks >= 1.0 else _hit_ticks()) / attack_rate
+	_pending_hit = {"t": impact * TICK, "target": t, "roll": roll, "reach2": _strike_limit2(t, reach, impact)}
 	GameSound.unit(self, "attack")
 	world.on_attack(self, t)
+
+
+## The planned reach of a strike (54ca40): the target must still
+## be within it at the impact (549d40), or the blow is not
+## dealt. Reach + 0.5 m, and for a moving target in reach in front of the unit
+## also half the way it can go before the impact. The original adds the
+## unit's turn ticks to that time; the strike here starts already facing it.
+func _strike_limit2(t: GameUnit, reach: float, impact_ticks: float) -> float:
+	var lim := reach + 0.5
+	var to := t.pos - pos
+	if t._moving and to.length_squared() <= reach * reach \
+			and Vector2.from_angle(facing).dot(to) > to.length() * 0.5:
+		lim += 0.5 * impact_ticks * t.speed() * TICK
+	return lim * lim
 
 
 ## Closing in on an attack target (the original). The unit heads for
@@ -3343,6 +3417,10 @@ func _do_cast(dt: float) -> void:
 	# Preserve that distinction from an intentionally targetless point spell.
 	var lost_target: bool = (t == null and typeof(order.get("target")) == TYPE_OBJECT) \
 		or (t != null and (t.dead or t.world != world or world.units.get(t.uid) != t))
+	if t != null and not lost_target and not party_knows(t):
+		_fail_order(EIAcks.NO_TARGET)
+		path = PackedVector2Array()
+		return
 	if lost_target or refused:
 		if refused and world.session:
 			world.session.failed(self, 9)   # "Can't cast spells"
@@ -3562,18 +3640,28 @@ func _resolve_hit(t: GameUnit, roll := {}) -> void:
 		return
 	# Preserve the original committed blow's planar range behavior, but
 	# a lift or floor transition must not make it hit another storey.
+	var dealt := true
 	if stats.get("ranged", false):
 		Projectile.launch(world, self, t, true).roll = roll
 		if world.session:
 			world.session.broadcast({"t": "arrow", "a": uid, "b": t.uid})
 		world.combat.weapon_spell(self, t)
-		return
-	if not _melee_height_clear(t):
-		return
-	world.combat.melee(self, t, roll)
-	world.combat.weapon_spell(self, t)
+	elif _melee_height_clear(t):
+		world.combat.melee(self, t, roll)
+		world.combat.weapon_spell(self, t)
+	else:
+		dealt = false
+	# 54f450: a blow or shot that is no backstab is heard,
+	# twice the attacker's hearing detectability for 26 ticks.
+	if dealt and not bool(roll.get("backstab", false)):
+		world.ai.noise_event(self, detect(3) * 2.0)
 	# Standing was required when this swing began. A later gait request must
 	# survive its impact, including when the victim dies and no attack follows.
+	# 549ec0: once the aimed part is no longer intact, the
+	# attack order's later blows are unaimed.
+	if strike_aim >= 0 and strike_aim < mini(6, t.parts.size()) and int(t.parts[strike_aim].state) != 3 \
+			and order.get("type", "") == "attack" and int(order.get("aim", -1)) == strike_aim:
+		order.aim = -1
 
 
 ## the original death rule. After a blow refolds the stats
@@ -3644,7 +3732,7 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		remove_meta("attacker")
 		world.ai.hit_hook(self, null)
 		return
-	if _anim_lock <= 0.0 and world.random_float() < 0.5:
+	if _anim_lock <= 0.0 and world.random_float() < 0.5 and _can_react_for(_hit_reaction_len()):
 		_anim_lock = minf(model.act("hit", 1, 0.05), 0.6)
 		action = "hit"
 		GameSound.unit(self, "hit")
@@ -3653,11 +3741,27 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 	# the diplomacy makes it a friend — then the hit hook.
 	if source and is_instance_valid(source) and source != self \
 			and world.relation(faction, source.faction) != 0:
-		world.ai._hate(self, source.faction)
+		world.ai._hate(self, source.faction, true)
 	if controller < 0:
 		world.ai.on_attacked(self, source)
 	else:
 		world.ai.on_player_attacked(self, source)
+	# Damage passes a marked hostility on at once (553da9), not next tick.
+	world.ai.propagate_hostility(self)
+
+
+## 549d00: a unit standing in an attack whose next strike is
+## due before a hit reaction of `secs` would end plays no reaction, so being
+## hit never delays its blows.
+func _can_react_for(secs: float) -> bool:
+	return not (order.get("type", "") == "attack" and not _moving and _attack_cd < secs)
+
+
+func _hit_reaction_len() -> float:
+	var clip := model.action_clip("hit", 1) if model else ""
+	if clip == "" or not model.has_anim(clip):
+		return 0.6
+	return minf(model.player.get_animation("ei/" + clip).length, 0.6)
 
 
 func die(killer: GameUnit = null) -> void:

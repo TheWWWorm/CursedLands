@@ -139,6 +139,9 @@ func authority_cases() -> void:
 	check(hero.action.begins_with("cast"),"buffered cast executes after recovery without another click")
 	# A targeted cast must finish turning even when camera heading differs.
 	clean(); dummy.pos=anchor+Vector2(-2,2); dummy._sync_transform(0); s.world.nav.track_unit(dummy)
+	# A party order on a unit goes on only while the party has noticed it
+	# (54dd70); the player targets the dummy it sees.
+	var known: Dictionary = hero.get_meta("noticed", {}); known[dummy.get_instance_id()] = dummy; hero.set_meta("noticed", known)
 	steer_authority(Vector2.RIGHT); g.pending_spell="arrow{}"; g.cast_on(dummy)
 	check(hero.orders.size()==1,"learned targeted spell is accepted by authority")
 	for i in 40:

@@ -78,6 +78,10 @@ func _ready()->void:
 			"rabbit witnesses both the nearby friend and attacker")
 		other.take_damage(minf(.6,other.max_hp*.1),hero)
 		check(not other.dead and w.is_enemy(other,hero),"surviving rabbit becomes hostile after damage")
+		# The original passes it to friends in the help radius as a claim that
+		# lands 30 ticks later (552e00 / 552d00), before the victim can die.
+		check(not w.is_enemy(rabbit,hero),"the friend's hostility waits for the claim")
+		for i in 31:w.ai.tick()
 		check(w.is_enemy(rabbit,hero),"rabbit witnessing a nonfatal assault becomes hostile")
 		var remote_rabbit := replica.spawn_unit(witness_record)
 		remote_rabbit.apply_snapshot(NetSnapshot.unpack(NetSnapshot.pack([rabbit.snapshot()]))[0])

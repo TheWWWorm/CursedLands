@@ -558,6 +558,24 @@
       ]
     },
     {
+      "id": "creatures/alarm_behaviour",
+      "category": "creatures",
+      "script": "tools/tests/alarm_behaviour.gd",
+      "marker": "ALARM_BEHAVIOUR",
+      "min_checks": 12,
+      "quick": false,
+      "description": "An alarm rebuilds motivations, clears the AI action and applies the new descriptor's always-active flag",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/object_activity_absence",
       "category": "creatures",
       "script": "tools/tests/object_activity_absence.gd",
@@ -567,6 +585,204 @@
       "description": "A revisited zone catches up on the party's absence near its entrance only",
       "kind": "remake_regression",
       "timeout": 600,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/scripted_follow_engage",
+      "category": "creatures",
+      "script": "tools/tests/scripted_follow_engage.gd",
+      "marker": "SCRIPTED_FOLLOW_ENGAGE",
+      "min_checks": 10,
+      "quick": false,
+      "description": "A unit following by script still attacks a noticed hostile; calm motivations leave the follow alone",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/umfollow_escort",
+      "category": "creatures",
+      "script": "tools/tests/umfollow_escort.gd",
+      "marker": "UMFOLLOW_ESCORT",
+      "min_checks": 8,
+      "quick": false,
+      "description": "A UMFollow escort keeps the original 2 / 4 m follow distances and leads a walking target",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/hostility_spread",
+      "category": "creatures",
+      "script": "tools/tests/hostility_spread.gd",
+      "marker": "HOSTILITY_SPREAD",
+      "min_checks": 14,
+      "quick": false,
+      "description": "An attacked unit's hostility reaches friends within its help radius 30 ticks later and travels on; strangers and distant friends stay neutral",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/charm_taming",
+      "category": "creatures",
+      "script": "tools/tests/charm_taming.gd",
+      "marker": "CHARM_TAMING",
+      "min_checks": 17,
+      "quick": false,
+      "description": "Charm stages need more than stage x 10 + tame; a failure undoes a begun taming and provokes; owned units resist",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/aimed_broken_part",
+      "category": "combat",
+      "script": "tools/tests/aimed_broken_part.gd",
+      "marker": "AIMED_BROKEN_PART",
+      "min_checks": 7,
+      "quick": false,
+      "description": "An aimed attack becomes unaimed once its part is broken; an aim at a broken part is none",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/feeblemind_spell_creatures",
+      "category": "combat",
+      "script": "tools/tests/feeblemind_spell_creatures.gd",
+      "marker": "FEEBLEMIND_SPELL_CREATURES",
+      "min_checks": 6,
+      "quick": false,
+      "description": "Feeblemind leaves weapon-type-16 creatures casting; other units cannot cast",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/high_flyer_refusal",
+      "category": "combat",
+      "script": "tools/tests/high_flyer_refusal.gd",
+      "marker": "HIGH_FLYER_REFUSAL",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Attacks on flyers at altitude 1.5 or more are refused without a bow; AI melee reach leaves them out",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/strike_reach_cancel",
+      "category": "combat",
+      "script": "tools/tests/strike_reach_cancel.gd",
+      "marker": "STRIKE_REACH_CANCEL",
+      "min_checks": 6,
+      "quick": false,
+      "description": "A blow is not dealt to a target that left the planned reach by the impact; a feebleminded caster loses its spell",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/party_target_lost",
+      "category": "combat",
+      "script": "tools/tests/party_target_lost.gd",
+      "marker": "PARTY_TARGET_LOST",
+      "min_checks": 7,
+      "quick": false,
+      "description": "A party order on a unit nobody in the party has noticed ends with no target",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/hit_reaction_tempo",
+      "category": "combat",
+      "script": "tools/tests/hit_reaction_tempo.gd",
+      "marker": "HIT_REACTION_TEMPO",
+      "min_checks": 4,
+      "quick": false,
+      "description": "A fighter whose next strike is due before a hit reaction would end plays none",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/attack_noise",
+      "category": "combat",
+      "script": "tools/tests/attack_noise.gd",
+      "marker": "ATTACK_NOISE",
+      "min_checks": 4,
+      "quick": false,
+      "description": "A blow that is no backstab is heard by hostile units in hearing range, which become suspicious",
+      "kind": "remake_regression",
+      "timeout": 300,
       "args": [],
       "campaign": "cursed_lands",
       "required_files": [
@@ -616,7 +832,7 @@
       "category": "creatures",
       "script": "tools/tests/creature_alerts.gd",
       "marker": "CREATURE_ALERTS",
-      "min_checks": 20,
+      "min_checks": 21,
       "quick": false,
       "description": "Authored bridge goblin perception, pig murder witnesses and original rabbits witnessing nonfatal assault; compressed hostility replication",
       "kind": "remake_regression",

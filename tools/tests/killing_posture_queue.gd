@@ -19,6 +19,9 @@ func _ready()->void:
 			var b:=w.spawn_unit({'prototype':'Human Hero','position':Vector3(6,5,0)})
 			for u:GameUnit in [a,b]:u.set_process(false);u.set_physics_process(false);u.ai_next=INF;u._perceive_next=INF
 			a.controller=0;a.set_meta('hero',{});a.faction=0;b.faction=1;w.set_relation(0,1,2)
+			# A party order on a unit goes on only while the party has noticed it
+			# (54dd70); perception is off here, so the attacker is given that entry.
+			a.set_meta('noticed',{b.get_instance_id():b})
 			a.facing=0;b.facing=0
 			a.stats.dmg_min=10000.0;a.stats.dmg_max=10000.0;a.stats.to_hit=10000.0;a.stats.dmg_types=PackedFloat32Array([0,0,1,0,0,0,0])
 			a.restore_gait(2);a._anim_lock=0;a.action='idle';a._update_pose()
