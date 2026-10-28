@@ -835,6 +835,8 @@ func _target_score(u: GameUnit, o: GameUnit) -> float:
 ## search prices cells flat, as for the attack approach it stands for (unit
 ## see GameUnit._path_to).
 func _reachable(u: GameUnit, o: GameUnit) -> bool:
+	if u.cannot_reach_high(o):
+		return false
 	var reach: float = u.stats.reach if u.stats.get("ranged", false) else u.melee_reach(o)
 	if u.pos.distance_to(o.pos) <= reach:
 		return true

@@ -666,6 +666,24 @@
       ]
     },
     {
+      "id": "combat/high_flyer_refusal",
+      "category": "combat",
+      "script": "tools/tests/high_flyer_refusal.gd",
+      "marker": "HIGH_FLYER_REFUSAL",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Attacks on flyers at altitude 1.5 or more are refused without a bow; AI melee reach leaves them out",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/ai_live_eligibility",
       "category": "creatures",
       "script": "tools/tests/ai_live_eligibility.gd",

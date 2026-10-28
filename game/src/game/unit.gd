@@ -1287,7 +1287,26 @@ func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice :=
 	# 554b30: an aim at a part that is no longer intact is none.
 	if t != null and t != self and aim >= 0 and aim < mini(6, t.parts.size()) and int(t.parts[aim].state) != 3:
 		aim = -1
+	if cannot_reach_high(t):
+		if not queue:
+			orders.clear()
+			order = {}
+			target = null
+		ack(EIAcks.TOO_HIGH)
+		return
 	command({"type": "attack", "target": t, "aim": aim, "run": run, "path_notice": path_notice}, queue)
+
+
+## 554b30 / 54d960 / 54c800: a blow
+## cannot reach a living flyer whose altitude is 1.5 or more, unless a bow or
+## crossbow is in hand. The remake keeps no height above the ground, so the
+## original's relative Z term is 0.
+func cannot_reach_high(t: GameUnit) -> bool:
+	if t == null or t == self or not is_instance_valid(t) or t.dead or t.move_class() != 0:
+		return false
+	if GameSound.held_weapon_type(self) in [5, 6]:
+		return false
+	return float(t.proto.get("altitude", 0.0)) >= 1.5
 
 
 func is_idle() -> bool:
@@ -3038,6 +3057,10 @@ func _do_attack(dt: float) -> void:
 	if t == null or not is_instance_valid(t) or t.dead or t.hidden:
 		order = {}
 		target = null
+		return
+	if cannot_reach_high(t):
+		target = null
+		_fail_order(EIAcks.TOO_HIGH)
 		return
 	# an AI unit keeps attacking a target it has noticed; a
 	# live hostile never leaves an NPC's noticed list, so only
