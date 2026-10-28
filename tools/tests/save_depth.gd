@@ -87,8 +87,9 @@ func probe_taming() -> void:
 	check(b.faction==h.faction,"stage-2 faction survives as a control")
 	check(int(b.get_meta("tame_original_faction",-1))==int(rows[1].original_faction) and int(b.get_meta("tame_faction",-1))==int(rows[1].tamer_faction),"original and tamer faction history survive reload")
 	check(a.get_meta("peace",[])==rows[0].peace and b.get_meta("peace",[])==rows[1].peace,"allowed-hostility masks survive all partial stages")
-	check(not Spells.tame(s.world,h,b,0.0) and int(b.get_meta("tame_stage",0))==2,"failed charm retains the intermediate stage")
 	check(Spells.tame(s.world,h,b,1000000.0) and CampaignState.is_pet(b),"one more success completes stage-2 taming after load")
+	# The original undoes a begun taming on a failure (551ae0 -> 552280).
+	check(not Spells.tame(s.world,h,a,0.0) and int(a.get_meta("tame_stage",0))==0 and not a.has_meta("peace"),"failed charm undoes the reloaded partial taming")
 	check(pets.size()==1 and int(pets[0].get_meta("tame_stage",0))==3,"fully tamed pet survives as a control")
 
 func probe_pet() -> void:
