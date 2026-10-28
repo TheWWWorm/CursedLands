@@ -200,7 +200,9 @@ func record_board(player: int, winner: int, survivors: Array) -> void:
 	board_results[player] = {"winner":winner, "survivors":survivors.duplicate()}
 	var loss := 0 if winner == 0 else draw_damage() if winner == -1 else defeat_damage(int(survivors[1]))
 	_apply_round_loss(player,loss)
-	var result := _human_result.duplicate(true) if player == 0 else {"wave":wave,"winner":winner,"seconds":0,"damage":[0,0],"gold":0}
+	# A CPU company is saved as an ordinary company, whose round stays within
+	# the expedition limit; its result uses that round, as its history does.
+	var result := _human_result.duplicate(true) if player == 0 else {"wave":company(player).wave,"winner":winner,"seconds":0,"damage":[0,0],"gold":0}
 	result["health_lost"] = loss
 	company(player).last_result = result
 	if board_results.size() == _round_players().size() and not _human_result.is_empty(): _settle_round()

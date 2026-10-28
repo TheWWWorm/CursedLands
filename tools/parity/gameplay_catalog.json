@@ -5216,6 +5216,24 @@
       "display": "headless"
     },
     {
+      "id": "arena/arena_late_round_save",
+      "category": "arena",
+      "script": "tools/tests/arena_late_round_save.gd",
+      "marker": "ARENA_LATE_ROUND_SAVE",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Live-board tournaments past round 30 still save and reload",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless"
+    },
+    {
       "id": "arena/arena_pve_lifecycle",
       "category": "arena",
       "script": "tools/tests/arena_pve_lifecycle.gd",

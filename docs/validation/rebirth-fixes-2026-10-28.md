@@ -35,3 +35,11 @@ Final source, headless, with the base campaign and Lost in Astral data:
 - **Unregistered lever tests:** `lever_use_flags` passes 240/240 in each campaign. `locked_hover` passes 26/26 with Lost in Astral data; it uses a Lost in Astral zone, so it errors on the base campaign.
 
 `object_activity.gd` and `object_activity_absence.gd` now print a runner marker and are registered in the gameplay catalog, so the active-set behaviour that the frozen-effects fix touches is covered by the runner.
+
+## Combined with the nearby-unit order fix
+
+`fix/notice-candidate-order` merged cleanly (`f0f65faf`). A combined headless run covered 179 programs: the related set above, all campaign flows, perception, registry, AI activity and every arena program. 174 passed.
+
+- **Four existing arena failures:** `arena_economy`, `arena_elimination_places`, `arena_live_shop` and `arena_result_health`. Each fails identically on unmodified `8c54bfa5`.
+- **`arena_tournament`:** this one did not fail on main. With the merged changes, the fights went differently and the human company survived past round 30. From round 31 every tournament save was rejected on reload. The cause predates these changes: with live boards, a CPU company's result recorded the tournament round instead of the company's own round, which stays within the expedition's 30 rounds. On reload the CPU company is checked against that limit. `arena/arena_late_round_save` reproduces this deterministically: 9 failures before the fix, 100/100 after. All 32 arena programs were rerun with the fix: `arena_tournament` passes 199/199, and the other four failures are unchanged.
+- **Original-code comparison:** `run.py --case perception_` gives 469 match, 2 differ (the known group D). The 177 parity unit tests pass.
