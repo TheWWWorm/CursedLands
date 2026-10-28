@@ -67,6 +67,30 @@ carry the FSR/DLSS patches this one edits; do not apply it there.
    into the package's `qualification/` folder, next to the DLSS qualification.
    Release notes: describe the change in neutral terms; there is no GitHub issue.
 
+## Integration status (integration workstation, 2026-10-28)
+
+- Step 1 done: merged into local main; the only conflict was the two Unreleased
+  `CHANGELOG.md` entries, both kept.
+- Integration review: the TAA/FSR 2 cases only checked that the mode was
+  selected and stopped 30 frames after the menu. The patch now also counts
+  main-view frames drawn while preparing and with the temporal pass
+  (`temporal_preparing_frames`, `temporal_active_frames` in
+  `FidelityFX.get_status()`). The fixture requires both for every mode, keeps
+  measuring until the mode draws, allows 150 s for that, and no longer holds the
+  seed pass to the menu budget.
+- Step 2 done as a raw template: the 24-patch Windows template was rebuilt with
+  the same command as the 1.34.0 template (the workstation recipe, without the
+  `agility_sdk_multiarch`, `winrt` and `disable_path_overrides` flags listed
+  above). The 22-patch tree plus `dlss-ray-reconstruction.patch` matched the
+  1.34.0 template sources byte for byte before this patch was applied.
+  The icon and release metadata come from the release export, which has not run.
+- Steps 3–4: under Proton in GPU Lab the published 1.34.0 executable fails every
+  mode and the rebuild passes every mode (README, "Proton reproduction").
+  The native Windows regression and the native related checks have **not** run
+  with the rebuilt executable and are still required.
+- Step 5 is for the next release build: its recipe must copy the runner and
+  fixture into `qualification/`.
+
 ## Not done here
 
 - No commit to main, no push of main, no release, no version bump.

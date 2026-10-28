@@ -13,7 +13,7 @@ extends Node
 ## by the runner.
 const BUDGET_MS := 60000      # process start to presented main menu
 const SETTLE_FRAMES := 30     # presented frames required after the menu
-const SETTLE_MS := 90000      # background motion-vector compilation, then the mode starts
+const SETTLE_MS := 150000     # background motion-vector compilation, then the mode starts
 ## Longest single frame allowed while the menu opens. The ordinary shaders of
 ## materials whose generated code changed still compile when first drawn
 ## (7-8 s for the 1.34.0 terrain, with or without a temporal mode); joining the
@@ -45,6 +45,14 @@ func check(ok: bool, message: String) -> void:
 func status() -> Dictionary:
 	return RtxGraphics.bridge().call("get_status") if RtxGraphics.bridge() else {}
 
+## Main-view frame counters from the Windows renderer: frames drawn while the
+## motion-vector shaders prepare, and frames drawn with the temporal pass.
+func temporal_frames() -> Dictionary:
+	if not Engine.has_singleton("FidelityFX"): return {}
+	var s: Dictionary = Engine.get_singleton("FidelityFX").call("get_status")
+	if not s.has("temporal_active_frames"): return {}
+	return {"preparing": int(s.temporal_preparing_frames), "active": int(s.temporal_active_frames)}
+
 func _scene_shader_entries() -> int:
 	var count := 0
 	var root := DirAccess.open("user://shader_cache/SceneForwardClusteredShaderRD")
@@ -75,6 +83,7 @@ func _run() -> void:
 		return
 	var cached_before := _scene_shader_entries()
 	result.scene_shader_entries_before = cached_before
+	var temporal_before := temporal_frames()
 	var vp := get_viewport()
 	var main := get_parent()
 	# Every presented frame from the loading screen on: the unfixed renderer
@@ -86,13 +95,15 @@ func _run() -> void:
 	var menu_ms := Time.get_ticks_msec()
 	result.process_to_menu_ms = menu_ms
 	result.open_menu_ms = menu_ms - started
-	check(menu_ms <= BUDGET_MS, "main menu presented within %d ms of process start (%d ms)" % [BUDGET_MS, menu_ms])
+	if mode != "seed":   # the seed pass only fills the previous release's cache
+		check(menu_ms <= BUDGET_MS, "main menu presented within %d ms of process start (%d ms)" % [BUDGET_MS, menu_ms])
 	# The menu must stay live while the motion-vector shaders finish.
 	var before := status()
 	var gap := 0.0
 	var frames := 0
 	var last := Time.get_ticks_usec()
 	var evaluated := 0
+	var active := 0
 	while true:
 		await RenderingServer.frame_post_draw
 		var now := Time.get_ticks_usec()
@@ -100,7 +111,11 @@ func _run() -> void:
 		last = now
 		frames += 1
 		evaluated = int(status().get("dlss_evaluations", 0)) - int(before.get("dlss_evaluations", 0))
-		if frames >= SETTLE_FRAMES and (mode != "dlss" or evaluated >= SETTLE_FRAMES): break
+		if not temporal_before.is_empty():
+			active = int(temporal_frames().active) - int(temporal_before.active)
+		# Keep measuring until the mode itself draws, so the switch is covered too.
+		var mode_ready := mode == "seed" or (evaluated >= SETTLE_FRAMES if mode == "dlss" else active >= SETTLE_FRAMES)
+		if frames >= SETTLE_FRAMES and mode_ready: break
 		if Time.get_ticks_msec() - menu_ms > SETTLE_MS: break
 	result.frames_after_menu = frames
 	result.max_frame_gap_ms = gap
@@ -119,6 +134,12 @@ func _run() -> void:
 		finish(1 if not failures.is_empty() else 0)
 		return
 	# The seed pass cached the ordinary group; this mode adds motion vectors.
+	var temporal_after := temporal_frames()
+	result.temporal_frames = {"before": temporal_before, "after": temporal_after}
+	check(not temporal_after.is_empty(), "renderer reports temporal-pass frame counters")
+	if not temporal_after.is_empty():
+		check(int(temporal_after.preparing) > int(temporal_before.preparing), "menu drew the ordinary pass while motion-vector shaders prepared (%d frames)" % (int(temporal_after.preparing) - int(temporal_before.preparing)))
+		check(active >= SETTLE_FRAMES, "temporal pass drew after preparation (%d frames)" % active)
 	check(cached_after > cached_before, "motion-vector shaders compiled in this run (%d -> %d)" % [cached_before, cached_after])
 	if mode == "dlss":
 		check(vp.scaling_3d_mode == Viewport.SCALING_3D_MODE_DLSS, "DLSS selected on the main view")

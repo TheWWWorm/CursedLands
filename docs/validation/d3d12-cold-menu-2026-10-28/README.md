@@ -100,7 +100,14 @@ reported settings, then the package under test opens the real menu
 - no frame longer than 20 s;
 - frames keep presenting afterwards;
 - motion-vector shaders compiled in that run;
-- the mode finally active (actual DLSS SDK evaluations, or TAA/FSR 2 selected).
+- the mode finally active: actual DLSS SDK evaluations, and for every mode
+  main-view frames drawn first while preparing and then with the temporal pass
+  (`temporal_preparing_frames` and `temporal_active_frames` in
+  `FidelityFX.get_status()`). The fixture keeps measuring frame times until
+  the mode draws, so the switch itself is covered.
+
+The seed pass only fills the previous release's cache. It is not held to the
+menu budget, because the previous release has the same stall on a new profile.
 
 A process that never reports is killed after 240 s. Synthetic seeds without the
 previous release (ordinary shaders only, or one changed terrain option) did not
@@ -129,7 +136,42 @@ started, and the process exited cleanly. With DLSS off, the same state still
 shows the 7.0 s ordinary-shader frame described below.
 
 Executables (SHA-256 prefixes): published 1.34.0 `92ebff4d6abe`,
-unfixed rebuild `b783c5aa7783`, fixed rebuild `4937b04613d7`.
+unfixed rebuild `b783c5aa7783`, fixed rebuild `4937b04613d7`. These native
+results predate the frame counters added during integration; rerun the
+native regression with the rebuilt executable.
+
+### Proton reproduction on the integration workstation
+
+The integration rebuild added the frame counters above to the patch and
+re-ran the unchanged fixture under GE-Proton 11-11 (vkd3d-proton) in GPU Lab,
+RTX 3090, 1920×1080 window, 1.33.0 seed, 1.34.0 PCK. The native runner refuses
+Wine; a workstation copy of it seeded and measured each mode the same way, in
+one locked suite prefix with a new profile per mode. The stall is in Godot's
+own shader compilation, so it reproduces here, but this is supplementary
+evidence, not native Windows qualification.
+
+| Mode | Published 1.34.0: menu / longest frame | 24-patch rebuild: menu / longest frame / frames preparing → active |
+|---|---:|---:|
+| DLSS + PT + FG | 60.1 s / 49.2 s — FAIL | 25.9 s / 13.2 s / 15,841 → 30 — PASS |
+| TAA | 47.5 s / 38.0 s — FAIL | 29.0 s / 14.1 s / 10,525 → 30 — PASS |
+| FSR 2 | 74.6 s / 59.1 s — FAIL | 28.8 s / 14.3 s / 12,471 → 30 — PASS |
+
+The modes started 74–83 s after the menu, so the settle limit is now 150 s
+(it was 90 s). A second run of the final fixture also passed every mode
+(menus at 16–22 s, longest frames 8.1–9.3 s, modes active 46–55 s after the
+menu, with warmer host driver caches). On a new profile, the 1.33.0 seed pass
+itself drew a 44–73 s frame in every mode, which is why the seed pass is no
+longer held to the menu budget.
+
+Under Proton, `path_trace_rr_guides.gd` passed 95/95 with the rebuild.
+`rtx_frame_generation.gd` reports blocked (no DLSS-G under Proton) for both
+executables. `path_trace_rr_live.gd` failed the same 6 of 38 checks with the
+published 1.34.0 executable and the rebuild ("baseline uses NRD" and five
+dependent RR-off checks), so that failure belongs to the Proton environment.
+The native runs below remain the qualification for these fixtures.
+
+Executables (SHA-256 prefixes): rebuilt template `779b6fd9b34b` (patch
+`012609ea5c56`), tested as `CursedLands.exe` in a copy of the 1.34.0 package.
 
 ### Related Windows checks
 

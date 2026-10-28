@@ -44,7 +44,11 @@ deadlock once pipeline jobs waiting for the same lock filled the four-thread
 worker pool; the 1.34.0 menu then never appeared. These modes now use the FSR
 SDK's background preparation: the main view keeps its ordinary pass, without
 motion vectors, DLSS-G tagging or a compositor's motion-vector request, until
-the shaders and their pipelines are ready. The FSR SDK path is unchanged.
+the shaders and their pipelines are ready. The FSR SDK path is otherwise
+unchanged, except that a compositor's motion-vector request now also waits
+while it prepares. `FidelityFX.get_status()` reports the main-view frames drawn
+while preparing and with the temporal pass active
+(`temporal_preparing_frames`, `temporal_active_frames`).
 Rebuild the Windows executable; a PCK-only update cannot apply it. Run
 `tools/run_native_d3d12_cold_start.ps1` with the previous release as
 `-SeedPackage`. See [the investigation](../../docs/validation/d3d12-cold-menu-2026-10-28/README.md).

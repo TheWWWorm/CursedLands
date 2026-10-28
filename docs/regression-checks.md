@@ -168,7 +168,8 @@ work; headless assertions do not replace them. The supplied load-crash path has
 its own [Windows/Wine D3D12 repeated-load protocol](validation/load-crashes-cursor-2026-10-25/README.md).
 
 The first D3D12 main menu after an update with a temporal mode selected has a
-native Windows runner. It cannot run under GPU Lab or Wine:
+native Windows runner. It refuses Wine; a Proton reproduction on the
+integration workstation is supplementary evidence only:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\run_native_d3d12_cold_start.ps1 `
@@ -179,7 +180,8 @@ powershell -ExecutionPolicy Bypass -File tools\run_native_d3d12_cold_start.ps1 `
 For DLSS (with PT and frame generation), TAA and FSR 2, the previous release
 first opens the menu in a new profile with the same settings. The package under
 test must then present the menu within 60 s of process start, with no frame
-longer than 20 s, keep drawing, and finally use the mode. A process that never
+longer than 20 s, keep drawing while the shaders prepare, and finally draw the
+mode (renderer frame counters, plus DLSS evaluations). A process that never
 reports is killed after 240 s. Unfixed 1.34.0 fails every mode; see
 [the investigation](validation/d3d12-cold-menu-2026-10-28/README.md).
 

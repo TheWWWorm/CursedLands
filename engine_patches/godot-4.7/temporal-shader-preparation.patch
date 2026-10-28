@@ -1,6 +1,30 @@
+--- a/drivers/fsr_sdk/fsr_sdk.cpp
++++ b/drivers/fsr_sdk/fsr_sdk.cpp
+@@ -64,6 +64,8 @@
+ 	d["frame_generation_active"] = fg_active.get() != 0;
+ 	d["last_error"] = last_error.get();
+ 	d["temporal_shaders_initializing"] = temporal_shaders_initializing.get() != 0;
++	d["temporal_preparing_frames"] = (int64_t)temporal_preparing_frames.get();
++	d["temporal_active_frames"] = (int64_t)temporal_active_frames.get();
+ 	d["upscaler_initializing"] = initializing_effect.get() == 1;
+ 	d["frame_generation_initializing"] = initializing_effect.get() == 2;
+ 	d["upscaler_create_ms"] = sr_create_usec.get() / 1000.0;
+--- a/drivers/fsr_sdk/fsr_sdk.h
++++ b/drivers/fsr_sdk/fsr_sdk.h
+@@ -57,6 +57,10 @@
+ 	SafeNumeric<uint32_t> last_error{ 0 };
+ 	SafeNumeric<uint32_t> fg_active{ 0 };
+ 	SafeNumeric<uint32_t> temporal_shaders_initializing{ 0 };
++	// Main-view frames drawn while temporal-mode shaders prepare, and with the
++	// temporal pass (DLSS, FSR 2, MetalFX, TAA or FSR SDK) active.
++	SafeNumeric<uint64_t> temporal_preparing_frames{ 0 };
++	SafeNumeric<uint64_t> temporal_active_frames{ 0 };
+ 	Mutex fg_mutex;
+ 	ffxContext fg_context = nullptr;
+ 	ffxContext swap_context = nullptr;
 --- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
 +++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
-@@ -123,8 +123,8 @@ bool RenderForwardClustered::RenderBufferDataForwardClustered::ensure_mfx_tempor
+@@ -123,8 +123,8 @@
  #endif
  
  void RenderForwardClustered::RenderBufferDataForwardClustered::free_data() {
@@ -11,7 +35,7 @@
  	if (fsr_sdk_context) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
  	if (dlss_context) {
  		memdelete(dlss_context);
-@@ -1832,49 +1832,61 @@ void RenderForwardClustered::_render_scene(RenderDataRD *p_render_data, const Co
+@@ -1832,49 +1832,66 @@
  	}
  
  	bool using_frame_generation = scale_type != SCALE_DLSS && !is_reflection_probe && rb->get_frame_generation() && rb->get_view_count() == 1;
@@ -71,6 +95,11 @@
  	if (!is_reflection_probe) {
 -		FidelityFX::get_singleton()->temporal_shaders_initializing.set(fsr_preparing ? 1 : 0);
 +		FidelityFX::get_singleton()->temporal_shaders_initializing.set(temporal_preparing && fsr_requested ? 1 : 0);
++		if (temporal_preparing) {
++			FidelityFX::get_singleton()->temporal_preparing_frames.increment();
++		} else if (temporal_requested && rb_data.is_valid()) {
++			FidelityFX::get_singleton()->temporal_active_frames.increment();
++		}
  	}
  #endif
 -	using_frame_generation = using_frame_generation && !fsr_preparing;
@@ -89,7 +118,7 @@
  		motion_vectors_required = true;
  	} else if (!is_reflection_probe && using_taa) {
  		motion_vectors_required = true;
-@@ -2525,7 +2537,7 @@ void RenderForwardClustered::_render_scene(RenderDataRD *p_render_data, const Co
+@@ -2525,7 +2542,7 @@
  		_process_compositor_effects(RSE::COMPOSITOR_EFFECT_CALLBACK_TYPE_POST_TRANSPARENT, p_render_data);
  	}
  
@@ -98,7 +127,7 @@
  		for (uint32_t v = 0; v < rb->get_view_count(); v++) {
  			copy_effects->copy_to_rect(rb->get_internal_texture(v), rb->get_upscaled_texture(v), Rect2i(Point2i(), rb->get_target_size()), false, false, true);
  		}
-@@ -2726,7 +2738,7 @@ void RenderForwardClustered::_render_scene(RenderDataRD *p_render_data, const Co
+@@ -2726,7 +2743,7 @@
  		if (using_frame_generation) {
  			fsr_sdk_effect->prepare_frame_generation(rb_data->get_fsr_sdk_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
  		}
@@ -109,7 +138,7 @@
  	}
 --- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
 +++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
-@@ -106,8 +106,8 @@ public:
+@@ -106,8 +106,8 @@
  
  	public:
  		ClusterBuilderRD *cluster_builder = nullptr;
