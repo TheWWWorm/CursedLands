@@ -48,7 +48,15 @@ var _frame_number := 0
 var _previous_view := Projection()
 var _previous_view_projection := Projection()
 var _previous_camera := Transform3D.IDENTITY
+var _previous_camera_velocity := Vector3.ZERO
+var _previous_camera_step := Vector3.ZERO
+var _camera_motion_idle := 0
+var _candidate_lead := Vector3.ZERO
+var _travel_build_budget := 1500
+var _travel_gather_budget := 1500
+var _stationary_travel_frames := 0
 var _history_key := ""
+var _rr_view_key := ""
 var _mode := ""
 var _path_mode := false
 var _path_signature := PackedByteArray()
@@ -128,7 +136,7 @@ func _process(dt: float) -> void:
 			# Keep this controller's cache until RT is disabled or it exits.
 			_release(path_mode!=_path_mode or not wanted)
 		_path_mode=path_mode
-		_mode = mode; _terrain = terrain; _clear_failure(); _history_key=""
+		_mode = mode; _terrain = terrain; _clear_failure(); _history_key="";_rr_view_key=""
 	if not wanted or not is_instance_valid(terrain) or not terrain.is_visible_in_tree() or game.simulation_only:
 		_preparation_seen="";_end_preparation()
 		if device != null or _gather != null or _pending_device!=null or _failure_watch!=null: _release()
@@ -146,7 +154,7 @@ func _process(dt: float) -> void:
 	var prepare := visible_request and request!=_preparation_seen
 	var terrain_preparing := ShaderCompilationScreen.terrain_pending(terrain)
 	if prepare:
-		_clear_failure();_history_key="";_poll=0.0
+		_clear_failure();_history_key="";_rr_view_key="";_poll=0.0
 	elif not visible_request:
 		_preparation_seen="";_end_preparation()
 	var may_retry := _allow_retry(camera.global_position,dt)
@@ -166,7 +174,27 @@ func _process(dt: float) -> void:
 	if _profile_cpu:
 		cpu_timings["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var building := _gather if _gather!=null else _pending_scene
-	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
+	var motion := camera.global_position-_previous_camera.origin
+	var continuous := _rr_view_key!="" and _continuous_camera_motion(motion,dt)
+	_stationary_travel_frames=_stationary_travel_frames+1 if motion.length()<0.01 else 0
+	# Start travel work before the fixed sixteen-metre threshold and aim ahead
+	# of sustained movement. A one-off camera cut still targets its exact pose.
+	var lead := (motion*64.0).limit_length(Scene.RADIUS*2.0-32.0) if continuous else Vector3.ZERO
+	var drifting := device!=null and camera.global_position.distance_to(_center)>12.0
+	_travel_build_budget=6000 if drifting or lead.length()>4.0 else 1500
+	# Dense ground below a descending camera needs more CPU gathering than a
+	# level route. Reserve a bounded extra slice only for very fast travel;
+	# otherwise even the faster GPU builder receives its input after arrival.
+	var fast_candidate := building!=null and _candidate_lead.length()>64.0
+	_travel_gather_budget=9000 if lead.length()>64.0 or fast_candidate else _travel_build_budget
+	var candidate_drift := camera.global_position.distance_to(building.center) if building!=null else 0.0
+	var obsolete := candidate_drift>32.0
+	if building!=null and not _candidate_lead.is_zero_approx():
+		var path_start: Vector3=building.center-_candidate_lead
+		var closest:=Geometry3D.get_closest_point_to_segment(camera.global_position,path_start,building.center)
+		obsolete=camera.global_position.distance_to(closest)>32.0 \
+			or (_stationary_travel_frames>=4 and candidate_drift>32.0)
+	if building!=null and (obsolete or (prepare and terrain_preparing)):
 		# A saved/first-person camera may settle after loading has started a
 		# snapshot. Retiring that snapshot must not retire the explicit loading
 		# request too: its replacement still owes the player a lit first frame.
@@ -183,14 +211,14 @@ func _process(dt: float) -> void:
 	if terrain_preparing: return
 	if _gather==null and _pending_device==null and may_retry \
 		and _retired_devices.is_empty() and _retired_scenes.is_empty() \
-		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>16.0):
-		_begin_snapshot(terrain,camera)
+		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>(4.0 if lead.length()>4.0 else 16.0)):
+		_begin_snapshot(terrain,camera,lead if device!=null else Vector3.ZERO)
 	if _profile_cpu:
 		cpu_timings["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
-	# Loading can use the larger preparation budget. Live travel shares the
-	# frame with rendering and simulation, while the previous scene stays lit.
+	# Live travel shares the frame with rendering and simulation, while the
+	# previous scene stays lit. Initial preparation has its own fixed budget.
 	if _gather!=null:
-		var complete:=_gather.step(1500 if device!=null else 6000)
+		var complete:=_gather.step(_travel_gather_budget if device!=null else 6000)
 		if _profile_cpu:cpu_timings["gather_detail"]=_gather.profile_gather.duplicate(true)
 		if complete:_queue_candidate()
 	if _pending_stage>=0:
@@ -199,7 +227,7 @@ func _process(dt: float) -> void:
 		if _profile_cpu:
 			_profile_prepare["total_us"]=Time.get_ticks_usec()-prepare_started
 			cpu_timings["prepare_detail"]=_profile_prepare.duplicate(true)
-	elif _pending_device!=null and not _pending_ready:Device.dispatch(_pending_device,&"build_step")
+	elif _pending_device!=null and not _pending_ready:Device.dispatch(_pending_device,&"build_step",[_travel_build_budget])
 	if _profile_cpu:
 		cpu_timings["cpu_gather_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
@@ -223,7 +251,12 @@ func _process(dt: float) -> void:
 				get_tree().paused or _gather!=null or _pending_device!=null or not _preparation_owner.is_empty() or not device.output_ready())
 		size=_budget.size(size)
 	elif device!=null:device.measure_budget=false
-	if _pending_ready and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
+	# A predictive snapshot may finish before the camera reaches it. Keep it
+	# private until its complete near-field covers the current view; never
+	# publish a distant prediction merely because its textures are allocated.
+	var candidate_near := _pending_scene==null or _candidate_lead.is_zero_approx() \
+		or camera.global_position.distance_to(_pending_scene.center)<=32.0
+	if _pending_ready and candidate_near and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
 		var validation_started:=Time.get_ticks_usec()
 		var changed:=_pending_scene.topology_changed()
 		if _profile_cpu:
@@ -257,7 +290,7 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
 			RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
 			RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
-			RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,0))
+			RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,Scene.RADIUS))
 			RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
 			RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
 			RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
@@ -277,6 +310,8 @@ func _process(dt: float) -> void:
 	if _profile_cpu:cpu_timings["cpu_pending_render_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0
 	stats["rebuilding"]=_gather!=null or _pending_device!=null
 	stats["snapshot_generation"]=_snapshot_generation
+	stats["travel_build_budget_us"]=_travel_build_budget
+	stats["travel_gather_budget_us"]=_travel_gather_budget
 	stats["retirement_device_queue"]=_retired_devices.size()
 	stats["retirement_scene_queue"]=_retired_scenes.size()
 	stats["retirement_last_frames"]=_retirement_last_frames
@@ -391,7 +426,7 @@ func _set_ray_reconstruction(camera: Camera3D,active: bool) -> void:
 	if is_instance_valid(_rr_camera) and _rr_camera.compositor==_rr_compositor:_rr_camera.compositor=_rr_original
 	if _rr_effect!=null:Device.dispatch(_rr_effect,&"dispose")
 	_rr_effect=null;_rr_camera=null;_rr_original=null;_rr_compositor=null
-	_rr_active=active;_history_key=""
+	_rr_active=active;_history_key="";_rr_view_key=""
 	RenderingServer.global_shader_parameter_set(&"ei_pt_rr_active",float(active))
 	if not active:return
 	_rr_camera=camera;_rr_original=camera.compositor
@@ -421,7 +456,7 @@ func _settle_preparation(size: Vector2i) -> void:
 	if _preparation_visible_frame<0: _preparation_visible_frame=Engine.get_frames_drawn()
 	elif Engine.get_frames_drawn()>_preparation_visible_frame: _end_preparation()
 
-func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
+func _begin_snapshot(terrain: EITerrain,camera: Camera3D,lead := Vector3.ZERO) -> void:
 	_failed=false
 	_gather=Scene.new();_gather.lighting_camera_mask=camera.cull_mask
 	_gather.profile_cpu=_profile_cpu
@@ -430,7 +465,8 @@ func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_gather.path_materials=_path_mode
 	_gather.path_transmission=_transmission_mode
 	# No water-plane clipping: ceilings and underground rooms participate.
-	_gather.begin(terrain,camera.global_position,-1.0e20,device!=null)
+	_candidate_lead=lead
+	_gather.begin(terrain,camera.global_position+lead,-1.0e20,device!=null)
 	if device==null: _center=camera.global_position
 
 func _queue_candidate() -> void:
@@ -548,7 +584,7 @@ func _activate_candidate() -> void:
 	device=_pending_device;_scene=_pending_scene;_center=_scene.center;stats=_pending_stats
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={}
 	_ready_gpu=true;_bound=false
-	if not preserve:_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
+	if not preserve:_history_key="";_rr_view_key="";_path_signature=PackedByteArray();_accumulation_frames=0
 	_snapshot_generation+=1;_clear_failure()
 	_topology_pending=false
 	# Replace global bindings before retiring their previous GPU owners.
@@ -585,7 +621,7 @@ func _allow_retry(position: Vector3,dt: float) -> bool:
 
 func _reject_candidate(reason: String) -> void:
 	var failed_scene := _pending_scene
-	var position := failed_scene.center if failed_scene!=null else _center
+	var position := failed_scene.center-_candidate_lead if failed_scene!=null else _center
 	if device==null: stats=_pending_stats
 	_cancel_candidate()
 	_remember_failure(reason,position,failed_scene if reason.begins_with("snapshot_") else null)
@@ -645,13 +681,31 @@ func _path_cloud_frame() -> PackedFloat32Array:
 	for i in 4:data[i]=state[i];data[4+i]=phases[i];data[8+i]=domain[i]
 	return data
 
+func _continuous_camera_motion(step: Vector3,dt: float) -> bool:
+	if step.length()>=Scene.RADIUS*0.5 or _previous_camera_step.length()<0.01:return false
+	# Fixed-step camera motion can span variable presentation intervals; normal
+	# gameplay can instead keep velocity constant while frame lengths vary.
+	return step.distance_to(_previous_camera_step)<=maxf(0.1,_previous_camera_step.length()*0.35) \
+		or (step/maxf(dt,0.001)).distance_to(_previous_camera_velocity)<=maxf(1.0,_previous_camera_velocity.length()*0.35)
+
 func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0,publish_points := true) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
 	var view := Projection(transform.affine_inverse())
 	var projection := camera.get_camera_projection()
 	var key := "%s:%s:%s:%s"%[_mode,size,camera.get_instance_id(),camera.cull_mask]
-	var history := key==_history_key and transform.origin.distance_to(_previous_camera.origin)<2.0 \
-		and transform.basis.z.dot(_previous_camera.basis.z)>0.95
+	var camera_step := transform.origin-_previous_camera.origin
+	var camera_velocity := camera_step/maxf(delta_seconds,0.001)
+	var same_view := key==_history_key and transform.basis.z.dot(_previous_camera.basis.z)>0.95
+	var history := same_view and camera_step.length()<2.0
+	# Raster motion vectors reproject continuous travel even when a frame moves
+	# farther than the strict lighting-cache limit. Repeatedly resetting RR at
+	# that limit erases terrain texture while an uncovered region is gathering.
+	# Keep isolated jumps and direction/velocity discontinuities as camera cuts.
+	var continuous_travel := _continuous_camera_motion(camera_step,delta_seconds)
+	# Entering/leaving a bounded local-light list resets strict PT caches, but
+	# is not a camera cut. RR sees those local radiance changes in the image.
+	var same_rr_view := key==_rr_view_key and transform.basis.z.dot(_previous_camera.basis.z)>0.95
+	var rr_history := same_rr_view and (camera_step.length()<2.0 or continuous_travel)
 	var data := PackedFloat32Array()
 	for matrix: Projection in [projection.inverse(),Projection(transform),_previous_view_projection,_previous_view]:
 		for axis in 4:
@@ -738,7 +792,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		# torch must not invalidate every distant pixel as it does our bounded
 		# lighting caches. Keep the stricter cache reset in data[82], but reset
 		# RR only for view discontinuities and abrupt global illumination.
-		_rr_reset=not (history and same_projection and same_cloud_mode and (same_lighting \
+		_rr_reset=not (rr_history and same_projection and same_cloud_mode and (same_lighting \
 			or _small_lighting_change(bytes,_path_signature,outdoor_tolerance,false)))
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
@@ -757,6 +811,13 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		data.append_array(PackedFloat32Array([mini(_lights.size(),PATH_LIGHT_LIMIT),float(gentle_change and weather_fading),GameData.option("pt_sharc"),1]))
 		data.append_array(local_positions);data.append_array(local_colours)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
+	# A fixed-rate camera can present the same pose between simulation ticks.
+	# Those duplicate poses do not turn the next regular step into a teleport.
+	_camera_motion_idle=_camera_motion_idle+1 if camera_step.length()<0.01 else 0
+	if camera_step.length()>=0.01 or _camera_motion_idle>=4:
+		_previous_camera_velocity=camera_velocity
+		_previous_camera_step=camera_step
+	_rr_view_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
 
@@ -866,7 +927,7 @@ func _release(release_programs := true) -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_colour",null)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_guide",null)
 	stats["active"]=false;stats["rebuilding"]=false
-	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
+	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key="";_rr_view_key=""
 	_cancel_candidate();_clear_failure()
 	_scene=null;_lights.clear();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
 	_ground_cache=Scene.Ground.new()

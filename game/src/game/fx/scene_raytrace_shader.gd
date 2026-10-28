@@ -3,7 +3,7 @@ extends RefCounted
 ## previews, water and particles retain their own lighting models.
 const COMMON := """
 global uniform vec4 ei_rt_state; // enabled, shadows, GI, receiver radius
-global uniform vec4 ei_rt_center;
+global uniform vec4 ei_rt_center; // acceleration centre and retained geometry radius
 global uniform mat4 ei_rt_view_projection;
 global uniform mat4 ei_rt_inverse_view_projection;
 global uniform mat4 ei_rt_view;
@@ -63,6 +63,20 @@ vec3 ei_rt_position(ivec2 p,float depth,ivec2 size,mat4 trace_projection,mat4 tr
     return ei_rt_eye+ray*(depth/dot(ray,forward));
 }
 
+float ei_rt_receiver_bound() {
+    return ei_pt_active>0.5?max(ei_rt_state.w,ei_rt_center.w):ei_rt_state.w;
+}
+
+float ei_pt_receiver_blend(vec3 world) {
+    // Quality range follows the continuously moving eye, not an acceleration
+    // snapshot that jumps on promotion. The wider retained geometry still
+    // supplies an independent safety bound while a replacement is prepared.
+    float view_fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_eye));
+    float bound=ei_rt_receiver_bound();
+    float scene_fade=1.0-smoothstep(bound-12.0,bound,length(world-ei_rt_center.xyz));
+    return view_fade*scene_fade;
+}
+
 #ifdef EI_GRASS_LIGHT
 // Procedural blades and cover are not in the RT scene. Sample their planted
 // root instead of matching a raised blade/cap to the underlying terrain.
@@ -79,7 +93,7 @@ vec3 ei_rt_ground_light(ivec2 p,out vec3 sun) {
 }
 bool ei_rt_ground_sample(mat4 trace_projection,mat4 trace_inverse,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(0.0);visibility1=vec4(0.0);
-    if(ei_rt_state.x<0.5||distance(ei_rt_ground,ei_rt_center.xyz)>=ei_rt_state.w)return false;
+    if(ei_rt_state.x<0.5||distance(ei_rt_ground,ei_rt_center.xyz)>=ei_rt_receiver_bound())return false;
     vec4 clip=trace_projection*vec4(ei_rt_ground,1.0);
     vec2 uv=vec2(clip.x,-clip.y)/clip.w*0.5+0.5;
     if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;
@@ -181,7 +195,7 @@ bool ei_rt_sample_surface(vec3 world,vec3 normal,vec2 surface,mat4 trace_project
                         length(dy)/max(length(dFdy(uv)*vec2(size)),0.001));
     if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;
     float distance=length(world-ei_rt_center.xyz);
-    if(distance>=ei_rt_state.w)return false;
+    if(distance>=ei_rt_receiver_bound())return false;
     float depth=-(ei_rt_view*vec4(world,1.0)).z;
     vec2 pixel=uv*vec2(size)-0.5,blend=fract(pixel);
     ivec2 base=ivec2(floor(pixel));
@@ -299,7 +313,7 @@ const CAPTURE := """
 #endif
         if(matched) {
             if(ei_pt_active>0.5) {
-                ei_pt_blend=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_center.xyz));
+                ei_pt_blend=ei_pt_receiver_blend(world);
                 // Retain the terrain's authored underwater attenuation. The
                 // combined PT signal has no individual light direction, so
                 // use the same diffuse-depth factor as the ambient path.

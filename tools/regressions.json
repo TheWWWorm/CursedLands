@@ -3,6 +3,104 @@
   "scope": "Focused recent campaign/UI regressions; not a certification of all historical issues or platforms.",
   "cases": [
     {
+      "id": "path_trace_travel_history",
+      "script": "tools/tests/path_trace_travel_history.gd",
+      "summary": "PT_TRAVEL_HISTORY",
+      "contract": "Sustained fast travel and changing frame times retain RR motion history; genuine camera, projection and global-light discontinuities reset it without relaxing strict PT caches.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 22
+    },
+    {
+      "id": "path_trace_coverage_handoff",
+      "script": "tools/tests/path_trace_coverage_handoff.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Opaque PT composition retains unchanged near-surface lighting across sixteen-metre acceleration-scene handoffs, while rejecting out-of-bounds and occluded receivers.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 6
+    },
+    {
+      "id": "path_trace_travel_night",
+      "script": "tools/tests/path_trace_travel_coverage.gd",
+      "summary": "PT_TRAVEL_COVERAGE",
+      "contract": "Elevated-to-close LiA night travel has near-field PT coverage by arrival and retains the same ground illumination while the camera is held.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--travel-night"
+      ],
+      "min_checks": 10,
+      "timeout": 600
+    },
+    {
+      "id": "path_trace_travel_rr",
+      "script": "tools/tests/path_trace_travel_coverage.gd",
+      "summary": "PT_TRAVEL_COVERAGE",
+      "contract": "LiA doorway travel retains ground detail and RR history during fast motion, with complete near-field coverage by arrival. Requires a standard RR-capable Windows D3D12 runtime and DLSS launch profile.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--travel-rr",
+        "--travel-4k"
+      ],
+      "min_checks": 14,
+      "timeout": 600
+    },
+    {
+      "id": "path_trace_travel_rr_night",
+      "script": "tools/tests/path_trace_travel_coverage.gd",
+      "summary": "PT_TRAVEL_COVERAGE",
+      "contract": "Native 4K RR retains night ground illumination and history through the elevated-to-close LiA camera route. Requires a standard RR-capable Windows D3D12 runtime and DLSS launch profile.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--travel-night",
+        "--travel-rr",
+        "--travel-4k"
+      ],
+      "min_checks": 15,
+      "timeout": 600
+    },
+    {
+      "id": "path_trace_travel_coverage",
+      "script": "tools/tests/path_trace_travel_coverage.gd",
+      "summary": "PT_TRAVEL_COVERAGE",
+      "contract": "LiA 140 m traversal has complete near-field coverage by arrival without disabling PT or reporting a resource-budget failure.",
+      "issues": [],
+      "data": "astral",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 9,
+      "timeout": 600
+    },
+    {
+      "id": "path_trace_light_history",
+      "script": "tools/tests/path_trace_light_history.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Strict diffuse/specular caches preserve responsive torch and gradual daylight/rain history while rejecting source changes, camera cuts and progressive-motion mismatches.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [
+        "--ei-pt-tuning"
+      ],
+      "min_checks": 52
+    },
+    {
       "id": "path_trace_receivers",
       "script": "tools/tests/path_trace_receivers.gd",
       "summary": "SCENE_RT_DEVICE",
@@ -2899,9 +2997,7 @@
       "script": "tools/tests/foothills_actor_clock.gd",
       "summary": "FOOTHILLS_ACTOR_CLOCK",
       "contract": "Actual Foothills mana recovery and Eagle Sight countdown follow normal/accelerated solo clock through repeated loads.",
-      "issues": [
-        119
-      ],
+      "issues": [119],
       "data": "base",
       "mode": "headless",
       "args": [],
@@ -2913,9 +3009,7 @@
       "script": "tools/tests/foothills_actor_clock.gd",
       "summary": "FOOTHILLS_ACTOR_CLOCK",
       "contract": "Actual Foothills mana recovery and Eagle Sight countdown follow normal/accelerated solo clock through repeated loads.",
-      "issues": [
-        119
-      ],
+      "issues": [119],
       "data": "base",
       "mode": "rendered",
       "args": [],
@@ -3613,9 +3707,7 @@
       "script": "tools/tests/foothills_campaign_flow.gd",
       "summary": "FOOTHILLS_CAMPAIGN_FLOW",
       "contract": "Production new campaign, Ruins-to-Foothills travel, save, menu return and a fresh worker load retain distinct normal/fast simulation rates.",
-      "issues": [
-        119
-      ],
+      "issues": [119],
       "data": "base",
       "mode": "rendered",
       "args": [],
@@ -3627,9 +3719,7 @@
       "script": "tools/tests/worker_rate_presentation.gd",
       "summary": "WORKER_RATE_PRESENTATION",
       "contract": "A solo authority that cannot sustain fast speed keeps the selected dial, request and save rate while its owner presents the achieved rate without snapshot pull-back of Eagle Sight.",
-      "issues": [
-        119
-      ],
+      "issues": [119],
       "data": "base",
       "mode": "headless",
       "args": [
@@ -3643,9 +3733,7 @@
       "script": "tools/tests/worker_rate_presentation.gd",
       "summary": "WORKER_RATE_PRESENTATION",
       "contract": "A solo authority that cannot sustain fast speed keeps the selected dial, request and save rate while its owner presents the achieved rate without snapshot pull-back of Eagle Sight.",
-      "issues": [
-        119
-      ],
+      "issues": [119],
       "data": "base",
       "mode": "rendered",
       "args": [

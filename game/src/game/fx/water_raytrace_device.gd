@@ -327,10 +327,14 @@ func _build_textures() -> int:
 
 ## The controller queues at most one step per frame. A canceled owner cannot
 ## schedule more work, and its previous scene remains visible throughout.
-func build_step() -> void:
+func build_step(budget_us := 1500) -> void:
 	if _closed or not _building:return
-	if _build_resource_stage>=0:
-		_advance_resource_build();return
+	# A moving main view can spend a larger, still bounded slice preparing its
+	# next region. Do not turn tiny completed phases into mandatory idle frames.
+	var deadline:=Time.get_ticks_usec()+clampi(budget_us,1500,6000)
+	while _build_resource_stage>=0:
+		if not _advance_resource_build():return
+		if budget_us<=1500 or Time.get_ticks_usec()>=deadline:return
 	var started := Time.get_ticks_usec();var built := 0
 	# Retain the private CPU snapshots until each array layer and all its mips
 	# have been uploaded. The controller keeps displaying the old scene and
@@ -341,13 +345,14 @@ func build_step() -> void:
 				_building=false;_pending_images.clear();_notify(&"prepared",[false]);return
 			_pending_images[_texture_cursor]=null
 			_texture_cursor+=1;built+=1
-			if built>=4 or Time.get_ticks_usec()-started>=1500:break
+			if built>=(4 if budget_us<=1500 else 64) or Time.get_ticks_usec()>=deadline:break
 		if _texture_cursor==_pending_images.size():_pending_images.clear()
 		var elapsed := (Time.get_ticks_usec()-started)/1000.0
 		build_timings["texture_upload_ms"]=build_timings.get("texture_upload_ms",0.0)+elapsed
 		build_timings["texture_upload_step_ms"]=maxf(build_timings.get("texture_upload_step_ms",0.0),elapsed)
 		build_timings["largest_step_ms"]=maxf(build_timings.get("largest_step_ms",0.0),elapsed)
-		return
+		if not _pending_images.is_empty() or budget_us<=1500 or Time.get_ticks_usec()>=deadline:return
+		built=0
 	while _build_cursor<_instances.size():
 		var instance := _instances[_build_cursor]
 		if instance.mask!=0:
@@ -356,7 +361,7 @@ func build_step() -> void:
 			instance.blas=_geometry_blas(geometry)
 			if not instance.blas.is_valid():_building=false;_notify(&"prepared",[false]);return
 		_build_cursor+=1
-		if built>=16 or Time.get_ticks_usec()-started>=1500:break
+		if built>=(16 if budget_us<=1500 else 4096) or Time.get_ticks_usec()>=deadline:break
 	if _build_cursor==_instances.size():
 		_building=false
 		_ready=_build_tlas()
