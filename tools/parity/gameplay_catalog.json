@@ -1578,6 +1578,38 @@
       ]
     },
     {
+      "id": "inventory/disassembly_wear",
+      "category": "inventory",
+      "script": "tools/tests/disassembly_wear.gd",
+      "marker": "DISASSEMBLY_WEAR",
+      "min_checks": 60,
+      "quick": true,
+      "description": "Taking a worn weapon or armour apart adds its repair cost to the fee",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res"
+      ]
+    },
+    {
+      "id": "inventory/disassembly_wear_astral",
+      "category": "inventory",
+      "script": "tools/tests/disassembly_wear.gd",
+      "marker": "DISASSEMBLY_WEAR",
+      "min_checks": 60,
+      "quick": true,
+      "description": "Run with original Lost in Astral content. Taking a worn weapon or armour apart adds its repair cost to the fee",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res"
+      ]
+    },
+    {
       "id": "inventory/gipat_infusions_astral",
       "category": "inventory",
       "script": "tools/tests/gipat_infusions.gd",

@@ -695,8 +695,12 @@ static func construct_price(bp: String, mat: String, spell := "") -> int:
 	return int(price(item) * float(coef[Deal.CONSTR]))
 
 
+## Remake fix (as the Rebirth edition): the original subtracts a worn weapon's
+## or armour's repair cost here as in every deal (60fa70), so taking a worn
+## item apart and rebuilding it was cheaper than repairing it. Added instead.
 static func deconstruct_price(id: String) -> int:
-	return int(price(id) * float(coef[Deal.DECONSTR]))
+	var p := float(price(id))
+	return maxi(0, int(p * float(coef[Deal.DECONSTR]) + p * float(coef[Deal.REPAIR]) * _worn_fraction(id)))
 
 
 ## Weapon damage range (x = min, y = max). the original item builder (
