@@ -27,6 +27,9 @@
 // part its detailed blade shadows block without darkening indirect light.
 [[vk::binding(20,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_sun : register(u2000000);
 [[vk::binding(21,0)]] ByteAddressBuffer lighting_offsets : register(t2100000);
+// Shared world-vertex terrain self visibility.
+[[vk::binding(42,0)]] ByteAddressBuffer terrain_sun_samples : register(t4200000);
+[[vk::binding(43,0)]] ByteAddressBuffer terrain_sun_values : register(t4300000);
 // First angular moments of the radiance being denoised. These are light/path
 // directions, never receiver normals. XYZ is the weighted mean (not unit
 // length); W is its energy. SHARC owns bindings 22 through 27.
@@ -66,9 +69,18 @@ struct Frame {
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
 struct Surface { float3 position; float offset; float3 normal; float hit; float3 albedo; float visible; float3 emission; float cone; float roughness; float metalness; float specular; uint instance_id; float3 geometric_normal; uint primitive_id; };
-// Visibility rays skip closest-hit. Their miss flag shares the word used by
+// Ordinary visibility rays skip closest-hit. Their miss flag shares the word used by
 // closest-hit for leaf transmission, keeping the payload at 96 bytes.
+// cone enters closest-hit as the texture footprint. After material sampling
+// it stores 1 + interpolated terrain self-visibility (zero on
+// other surfaces). A negative cone marks only a foreign-component query.
+// It never changes the incoming material footprint.
 struct Attributes { float2 bary; };
+uint terrain_component(uint instance,uint primitive) {
+    uint base=terrain_sun_samples.Load(32u+instance*4u);
+    if(base==0xffffffffu)return 0xffffffffu;
+    return terrain_sun_samples.Load(terrain_sun_samples.Load(20u)+(base/3u+primitive)*4u);
+}
 Vertex vertex_at(uint i) {
     Vertex v;
     v.position_u=asfloat(vertices.Load4(i*64));
@@ -172,7 +184,7 @@ float3 surface_origin(Surface s,float3 direction) {
     precise float3 origin=mad(s.geometric_normal,dot(direction,s.geometric_normal)>=0.0?s.offset:-s.offset,s.position);
     return origin;
 }
-float visibility(Surface s,float3 direction,float reach,bool directional) {
+float visibility(Surface s,float3 direction,float reach,bool directional,uint mask=2u) {
     Surface result=(Surface)0;
     float3 origin=surface_origin(s,direction);
     // Reconnect to the sampled light from the displaced origin. A fixed
@@ -185,8 +197,27 @@ float visibility(Surface s,float3 direction,float reach,bool directional) {
         float distance=length(delta);
         ray.Direction=delta/distance;ray.TMax=asfloat(asuint(distance)-1u);
     }
-    TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,2,0,0,0,ray,result);
+    TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,mask,0,0,0,ray,result);
     return result.visible;
+}
+float terrain_sun_visibility(Surface s,float3 direction) {
+    if(s.cone<=0.0)return visibility(s,direction,frame.camera.w,true);
+    float self=saturate(s.cone-1.0);
+    if(self<=0.0)return 0.0;
+    // Every object uses the original exact ray, retaining opaque traversal.
+    float objects=visibility(s,direction,frame.camera.w,true,16u);
+    uint active_components=terrain_sun_samples.Load(24u);
+    if(objects<=0.0 || active_components==0u)return self*objects;
+    uint component=terrain_component(s.instance_id,s.primitive_id);
+    if(active_components==1u && component==terrain_sun_samples.Load(28u))return self*objects;
+    // The common one-component world never pays for this fallback. Multiple
+    // or mixed-component placements work without a fixed mask/count limit.
+    Surface result=(Surface)0;result.cone=-1.0;
+    result.instance_id=component;
+    RayDesc ray={surface_origin(s,direction),0.0,direction,frame.camera.w};
+    TraceRay(scene,RAY_FLAG_FORCE_NON_OPAQUE|RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|
+        RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,32u,0,0,0,ray,result);
+    return self*objects*result.visible;
 }
 float3 f0(Surface s) {return lerp((0.08*s.specular).xxx,s.albedo,s.metalness);}
 float ggx_d(float nh,float alpha2) {
@@ -296,9 +327,11 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
     diffuse_moment=0.0;
     if(any(frame.sun.rgb>0.0)) {
         float3 direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,0u));
-        float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
+        Surface sunlight_surface=s;
+        if(s.cone>0.0)sunlight_surface.geometric_normal=s.normal;
+        float3 d,sp;float pdf;bsdf(sunlight_surface,v,direction,d,sp,pdf);
         if(any(d+sp>0.0)) {
-            float3 incoming=frame.sun.rgb*(PI*abs(dot(s.normal,direction))*cloud_visibility(s.position)*visibility(s,direction,frame.camera.w,true));
+            float3 incoming=frame.sun.rgb*(PI*abs(dot(s.normal,direction))*cloud_visibility(s.position)*terrain_sun_visibility(s,direction));
             diffuse=d*incoming;specular=sp*incoming;sunlight=diffuse;
         }
     }
@@ -728,6 +761,11 @@ void main(inout Surface result) {result.visible=1.0;}
 [shader("anyhit")]
 void main(inout Surface result,Attributes attributes) {
     uint4 material=geometry.Load4(instance_geometry.Load(InstanceID()*4u)*16u); uint i=material.x+3*PrimitiveIndex();
+    // Negative cone belongs only to the exact foreign-terrain shadow ray.
+    // Its instance_id word carries a component key, not a camera placement.
+    if(result.cone<0.0 && terrain_component(InstanceID(),PrimitiveIndex())==result.instance_id) {
+        IgnoreHit();return;
+    }
     Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
     float3 w=float3(1.0-attributes.bary.x-attributes.bary.y,attributes.bary);
     if(colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),0.0).a*a.diffuse.a<asfloat(material.z))IgnoreHit();
@@ -1622,5 +1660,17 @@ void main(inout Surface result,Attributes attributes) {
     result.emission=0.0;
     [branch] if(any(a.emission_layer.rgb!=0.0))
         result.emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colour*a.emission_layer.rgb);
+    result.cone=0.0;
+    if(terrain) {
+        uint4 layout=terrain_sun_samples.Load4(0);
+        uint base=terrain_sun_samples.Load(32u+InstanceID()*4u);
+        if(base!=0xffffffffu) {
+            uint corner=layout.y+(base+PrimitiveIndex()*3u)*4u;
+            uint3 indices=terrain_sun_samples.Load3(corner);
+            float3 sun=float3(asfloat(terrain_sun_values.Load(indices.x*4u)),
+                asfloat(terrain_sun_values.Load(indices.y*4u)),asfloat(terrain_sun_values.Load(indices.z*4u)));
+            result.cone=1.0+saturate(dot(sun,w));
+        }
+    }
 }
 #endif

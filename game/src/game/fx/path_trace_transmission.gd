@@ -96,6 +96,7 @@ func _bindings(owner: RefCounted,images: Array[RID]) -> Array[RDUniform]:
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,21,[owner._lighting_offsets]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,39,[_metadata]),
 		_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,40,[_control])]
+	bindings.append_array(owner.terrain_sun.uniforms())
 	if owner._uses_emitters:
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[owner._emitters]))
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[owner._emitter_lookup]))

@@ -6,6 +6,8 @@ const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
 const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
 const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
 const DIRECT_COMPOSITE = preload("res://src/game/fx/shaders/path_trace_direct_composite.glsl")
+const TerrainSun = preload("res://src/game/fx/path_trace_terrain_sun.gd")
+var terrain_sun := TerrainSun.new()
 const Sharc = preload("res://src/game/fx/path_trace_sharc.gd")
 const Rtxdi = preload("res://src/game/fx/path_trace_rtxdi.gd")
 const Transmission = preload("res://src/game/fx/path_trace_transmission.gd")
@@ -17,6 +19,9 @@ var rtxdi := Rtxdi.new()
 var rtxdi_enabled := false
 var rtxdi_failed := false
 var _rtxdi_mode := false
+# Explicit diagnostic tuning keeps ReSTIR On literal. Managed presets use
+# the exact local-light sum when no emissive proposal needs reservoir reuse.
+var _rtxdi_force := OS.get_cmdline_user_args().has("--ei-pt-tuning")
 var sharc := Sharc.new()
 var sharc_enabled := false
 var sharc_failed := false
@@ -166,24 +171,52 @@ func extra_filter_uniforms(raw_targets: Array[RID]) -> Array[RDUniform]:
 func instance_id(_geometry_index: int, placement_index: int) -> int: return placement_index
 
 func instance_mask(geometry_index: int, mask: int) -> int:
-	return (8 if (mask&1)!=0 else 0) if not _geometry[geometry_index].get("dielectric",PackedFloat32Array()).is_empty() else mask
+	if not _geometry[geometry_index].get("dielectric",PackedFloat32Array()).is_empty():return 8 if (mask&1)!=0 else 0
+	var result:=mask&~(16|32)
+	if (mask&2)!=0:result|=32 if bool(_geometry[geometry_index].get("terrain",false)) else 16
+	return result
+
+func build(data: PackedByteArray,images: Array[Image],geometry_data: Array=[],placements: Array=[]) -> void:
+	if _closed:return
+	var captured:=Time.get_ticks_usec()
+	terrain_sun.capture_initial_poses(initial_poses)
+	var capture_us:=Time.get_ticks_usec()-captured
+	super.build(data,images,geometry_data,placements)
+
+	build_timings["terrain_sun_pose_capture_ms"]=capture_us/1000.0
+	if incremental_build and _building:
+		var launched:=Time.get_ticks_usec()
+		terrain_sun.begin_background_prepare(_build_data,_geometry,_build_placements,initial_poses)
+		build_timings["terrain_sun_background_launch_ms"]=(Time.get_ticks_usec()-launched)/1000.0
 
 func build_extra(data: PackedByteArray, placements: Array) -> bool:
-	return _build_environment() and _build_placement_data(placements) and _build_emitters(data,placements)
+	var ok:=_build_environment() and _build_placement_data(placements) and _build_emitters(data,placements) \
+		and terrain_sun.setup(self,data,_geometry,placements)
+	build_timings["terrain_sun_preparation"]=terrain_sun.preparation_stats()
+	return ok
+
+func build_extra_ready() -> bool:
+	return _build_extra_phase!=3 or terrain_sun.background_ready()
 
 func build_extra_step(data: PackedByteArray,placements: Array) -> int:
 	if not incremental_build:return super.build_extra_step(data,placements)
-	var started:=Time.get_ticks_usec();var ok:=false
-	var label: String=["environment","motion","emitters"][_build_extra_phase]
+	var started:=Time.get_ticks_usec();var result:=OK
+	var label: String=["environment","motion","emitters","terrain_sun"][_build_extra_phase]
 	match _build_extra_phase:
-		0:ok=_build_environment()
-		1:ok=_build_placement_data(placements)
-		2:ok=_build_emitters(data,placements)
+		0:result=OK if _build_environment() else ERR_CANT_CREATE
+		1:result=OK if _build_placement_data(placements) else ERR_CANT_CREATE
+		2:result=OK if _build_emitters(data,placements) else ERR_CANT_CREATE
+		3:result=terrain_sun.build_step(self,data,_geometry,placements,1500)
+	var elapsed: float=(Time.get_ticks_usec()-started)/1000.0
 	build_timings["extra_stage"]=label
-	build_timings["extra_"+label+"_ms"]=(Time.get_ticks_usec()-started)/1000.0
-	if not ok:return ERR_CANT_CREATE
+	if _build_extra_phase==3:
+		build_timings["extra_terrain_sun_ms"]=build_timings.get("extra_terrain_sun_ms",0.0)+elapsed
+		build_timings["extra_terrain_sun_step_ms"]=maxf(build_timings.get("extra_terrain_sun_step_ms",0.0),elapsed)
+		build_timings["terrain_sun_preparation"]=terrain_sun.preparation_stats()
+	else:build_timings["extra_"+label+"_ms"]=elapsed
+	if result!=OK:return result
 	_build_extra_phase+=1
-	return OK if _build_extra_phase==3 else ERR_BUSY
+	return OK if _build_extra_phase==4 else ERR_BUSY
 
 func _build_environment() -> bool:
 	nrd.program_cache=programs
@@ -317,6 +350,7 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 	if _uses_emitters:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
+	uniforms.append_array(terrain_sun.uniforms())
 	if _sharc_mode>0:uniforms.append_array(sharc.uniforms())
 	if _rtxdi_mode:uniforms.append_array(rtxdi.uniforms(_motion))
 	return uniforms
@@ -334,11 +368,12 @@ func update_scene(changes: Dictionary) -> bool:
 		if not changes.get("poses",[]).is_empty():sharc.invalidate()
 		for placement: Dictionary in changes.get("instances",[]):
 			var old: RDAccelerationStructureInstance=_instances[placement.index]
-			if old.transform!=placement.transform or old.mask!=placement.mask:
+			if old.transform!=placement.transform or old.mask!=instance_mask(_placement_geometry[placement.index],placement.mask):
 				sharc.invalidate();break
 	if not _update_motion(changes) or not _update_lighting_offsets(changes):
 		_render_failed();return false
 	if not super.update_scene(changes): return false
+	terrain_sun.update(changes)
 	if emitters.update(changes):
 		_history_valid = false
 		rtxdi.invalidate()
@@ -498,7 +533,12 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if not transmission_enabled and transmission.active:transmission.dispose()
 	if changes.has("rtxdi") and rtxdi_enabled!=bool(changes.rtxdi):
 		rtxdi_enabled=changes.rtxdi;rtxdi_failed=false;rtxdi.invalidate()
-	var di:=rtxdi_enabled and frame.decode_float(145*4)<=8.0 and not rtxdi_failed
+	var di_requested:=rtxdi_enabled and frame.decode_float(145*4)<=8.0 and not rtxdi_failed
+	# direct_light sums every source through seven lights; above that it uses
+	# four proposals. Keep RTXDI for larger sets and registered emitters, but
+	# avoid full-resolution reservoirs and resampling for an exact small sum.
+	var local_count:=mini(int(frame.decode_float(188*4)),64) if frame.decode_float(191*4)>0.5 else 7
+	var di:=di_requested and (_rtxdi_force or emitters.count>0 or local_count>7)
 	var enabled := frame.decode_float(190*4)>0.5 if frame.decode_float(191*4)>0.5 else sharc_enabled
 	if enabled!=_sharc_requested:sharc_failed=false;_sharc_requested=enabled
 	var requested := enabled and frame.decode_float(145*4)<=8.0 and not sharc_failed
@@ -509,7 +549,9 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 		sharc_failed=true;requested=false
 	if di and rtxdi._size!=size:_release_ray_set()
 	if di and not rtxdi.prepare_targets(_rd,size):rtxdi_failed=true;di=false
-	if di and not _prepare_live_variants(deep,requested,true):rtxdi_failed=true;di=false
+	# Prewarm the requested family's variants even while the exact path is
+	# selected, so a new spell/emitter cannot compile pipelines during play.
+	if di_requested and not _prepare_live_variants(deep,requested,true):rtxdi_failed=true;di=false
 	if di and not _select_pipeline(_uses_emitters,deep,1 if requested else 0,true):
 		rtxdi_failed=true;di=false
 	if not _select_pipeline(_uses_emitters,deep,1 if requested else 0,di):
@@ -520,6 +562,7 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	super.render(size,frame,changes,texture_filter)
 
 func trace_frame(frame: PackedByteArray) -> bool:
+	if not terrain_sun.render(frame):return false
 	if _sharc_mode==1:
 		if not _trace_sharc(frame):
 			# A failed optional pass must leave a usable ordinary PT frame.
@@ -717,6 +760,8 @@ func dispose() -> void:
 	transmission.dispose(release)
 	direct_sun.texture_rd_rid=RID()
 	if _rd!=null:_release_ray_set();_release_spatial();_release_direct();nrd.dispose(release);sharc.dispose(release);rtxdi.dispose(release)
+	# Main, transmission and SHARC descriptors were released above.
+	terrain_sun.dispose(release)
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
 	_direct_composite_shader=RID();_direct_composite_pipeline=RID()

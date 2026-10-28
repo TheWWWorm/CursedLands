@@ -208,6 +208,8 @@ func _build_resource_phase(phase: int) -> int:
 		5:return build_extra_step(_build_data,_build_placements)
 	return ERR_INVALID_PARAMETER
 
+func build_extra_ready() -> bool:return true
+
 func build_extra_step(data: PackedByteArray,placements: Array) -> int:
 	return OK if build_extra(data,placements) else ERR_CANT_CREATE
 
@@ -333,6 +335,8 @@ func build_step(budget_us := 1500) -> void:
 	# next region. Do not turn tiny completed phases into mandatory idle frames.
 	var deadline:=Time.get_ticks_usec()+clampi(budget_us,1500,6000)
 	while _build_resource_stage>=0:
+		# Pending CPU work is polled once per frame, never spun to the deadline.
+		if _build_resource_stage==5 and not build_extra_ready():return
 		if not _advance_resource_build():return
 		if budget_us<=1500 or Time.get_ticks_usec()>=deadline:return
 	var started := Time.get_ticks_usec();var built := 0

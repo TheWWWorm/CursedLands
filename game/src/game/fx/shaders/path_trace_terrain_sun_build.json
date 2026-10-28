@@ -1,0 +1,17 @@
+{
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "builder_sha256": "a8339f898356ab74fac28d4d27201e4e8b94da8951daae5efacf11c559385d32",
+  "source_sha256": "99655afef0ea116e30bcd03365e0ede66bb129899ce2b3e6f6b49d6caaf987ae",
+  "includes": {},
+  "files": {
+    "path_trace_terrain_sun_raygen.dxil": "b05231cdfb5cecaa406b988df1ae2e7120ab3c7ba8e2232ff4ce2c754434c53e",
+    "path_trace_terrain_sun_raygen.spv": "40fbee3bcf6b697a0688edc3f28aab0a375b2884286f9b43dad06cb81de7913a",
+    "path_trace_terrain_sun_miss.dxil": "040317270b2bfaf1f76f7f9c12ea2c4b5802a32d09deeab5e1f93cd7e0903bb2",
+    "path_trace_terrain_sun_miss.spv": "04d398ab831633e8b767ca42349231248774aa31fd80f74fe116fa5e6ab190e6",
+    "path_trace_terrain_sun_closest_hit.dxil": "c648f641ddc7068a0ec432f6442ede4c8fa9020e0b43607d721fbd16272a0a75",
+    "path_trace_terrain_sun_closest_hit.spv": "b208667dbeae9d8fa6ba5d8cdf49d99f8210b6bd77fa746a499180a03b2a0821",
+    "path_trace_terrain_sun_any_hit.dxil": "194c122564fd412fa8d77097e58da5640f1daf2804443279b592eb4347927540",
+    "path_trace_terrain_sun_any_hit.spv": "1aa8277b217e8a70eb9b73ed0136309a8f5f1c19b3d616fe9d0c7eb79a65aa93"
+  }
+}

@@ -43,7 +43,8 @@ func run() -> void:
 		RenderingServer.call_on_render_thread(device.dispose);await frames(8);finish();return
 	await read_terminal()
 	check(device.transmission.active and not device.transmission_failed,"actual dielectric dispatch is active")
-	check(device._instances[1].mask==8 and device._instances[0].mask==7,"dielectrics have a separate primary mask")
+	check(device._instances[1].mask==8 and device._instances[0].mask==(7|16),
+		"dielectrics keep a separate primary mask while opaque geometry retains visibility bits and the object-shadow selector")
 	var ray:=primary_ray();var entry: Vector3=ray.origin+ray.direction*(-ray.origin.y/ray.direction.y)
 	var eta:=1.0/1.333;var bent:=Vector3(ray.direction.x*eta,-sqrt(1.0-eta*eta*(1.0-ray.direction.y*ray.direction.y)),ray.direction.z*eta)
 	var distance:=2.0/-bent.y;var expected: Vector3=entry+bent*distance

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Smooth path-traced sunlight across terrain contours while retaining nearby object shadows and soft sunlight. Skip redundant direct-light resampling in scenes where the existing sampler already evaluates every local light.
 - Reduce path-tracing CPU time per frame: the traced scene rescans figures only after one is replaced and keeps its list of first-person bodies until the view mode changes. On the test system 4K path-traced frames take about a tenth less time; a replaced figure still keeps all of its traced parts from its first frame.
 - Start the campaign's simulation worker in the background while intro movies and menus are shown, so the first new game or save load of a session no longer waits for it to compile. On the test system the first save load is about a third faster. Unused workers exit when the game closes or uses other game files.
 - Keep the far edge of path-traced lighting at a constant distance from the camera. It no longer creeps closer while travelling and jumps back each time the traced area is recentred.

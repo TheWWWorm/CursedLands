@@ -20,9 +20,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dxc', type=Path, help='DXC 1.9.2609 executable; required when rebuilding')
     parser.add_argument('--check', action='store_true', help='Verify source/binary hashes; also reproduce outputs if --dxc is supplied')
-    parser.add_argument('--shader', choices=['water_raytrace', 'scene_raytrace', 'path_trace'], default='water_raytrace')
+    parser.add_argument('--shader', choices=['water_raytrace', 'scene_raytrace', 'path_trace',
+                                            'path_trace_terrain_sun'], default='water_raytrace')
     args = parser.parse_args()
     stages = [(stage, stage, []) for stage in STAGES]
+    # The terrain sun cache uses the four standard PATH_* stages. Only the
+    # main path integrator needs the material, transport and emitter variants.
     if args.shader == 'path_trace':
         # Keep scenes without emitters out of the larger raygen's register /
         # instruction footprint. Hit stages and payload layouts are shared.
