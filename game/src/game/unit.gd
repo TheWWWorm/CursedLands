@@ -1297,6 +1297,22 @@ func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice :=
 	command({"type": "attack", "target": t, "aim": aim, "run": run, "path_notice": path_notice}, queue)
 
 
+## 54dd70: a party unit's order on a unit goes on only while
+## the target is known: of its side or player, noticed by the unit (5cb7f0),
+## or in the player's group (66e0d0), which 66e0f0 fills
+## from the noticed lists of all the party's units.
+func party_knows(t: GameUnit) -> bool:
+	if controller < 0 or t == null or t.faction == faction or t.controller == controller:
+		return true
+	var id := t.get_instance_id()
+	if (get_meta("noticed", {}) as Dictionary).has(id):
+		return true
+	for u: GameUnit in world.unit_rows():
+		if u.controller == controller and not u.dead and (u.get_meta("noticed", {}) as Dictionary).has(id):
+			return true
+	return false
+
+
 ## 554b30 / 54d960 / 54c800: a blow
 ## cannot reach a living flyer whose altitude is 1.5 or more, unless a bow or
 ## crossbow is in hand. The remake keeps no height above the ground, so the
@@ -3067,6 +3083,10 @@ func _do_attack(dt: float) -> void:
 		target = null
 		_fail_order(EIAcks.TOO_HIGH)
 		return
+	if not party_knows(t):
+		target = null
+		_fail_order(EIAcks.NO_TARGET)
+		return
 	# an AI unit keeps attacking a target it has noticed; a
 	# live hostile never leaves an NPC's noticed list, so only
 	# a target of another side that is not hostile (a revenge target) is
@@ -3397,6 +3417,10 @@ func _do_cast(dt: float) -> void:
 	# Preserve that distinction from an intentionally targetless point spell.
 	var lost_target: bool = (t == null and typeof(order.get("target")) == TYPE_OBJECT) \
 		or (t != null and (t.dead or t.world != world or world.units.get(t.uid) != t))
+	if t != null and not lost_target and not party_knows(t):
+		_fail_order(EIAcks.NO_TARGET)
+		path = PackedVector2Array()
+		return
 	if lost_target or refused:
 		if refused and world.session:
 			world.session.failed(self, 9)   # "Can't cast spells"

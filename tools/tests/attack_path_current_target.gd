@@ -48,6 +48,9 @@ func _ready() -> void:
 	for u:GameUnit in [hero,target_unit]:
 		u.set_process(false);u.set_physics_process(false);u.ai_next=INF;u._perceive_next=INF;u.blocked=false;u.hidden=false;u.fogged=false;u.visible=true
 		u.resync_drawn()
+	# A party order on a unit goes on only while the party has noticed it
+	# (54dd70); perception is off here, so the hero is given that entry.
+	var known:Dictionary=hero.get_meta("noticed",{});known[target_unit.get_instance_id()]=target_unit;hero.set_meta("noticed",known)
 	target_unit.faction=1;hero.faction=0;s.world.set_relation(0,1,2)
 	for scenario in ["fleeing","approaching","stationary","paused","queued","revealed"]:
 		await run_case(scenario)
