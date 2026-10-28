@@ -4,7 +4,9 @@ extends Node
 var checks := 0
 var failures := 0
 var session: Session
+var peak_worlds := 0
 const Compat := preload("res://src/game/script/story_compat.gd")
+const WorldRelease := preload("world_release.gd")
 
 func contract_checks() -> void:
 	var text := EIMob.load_bytes(GameData.read_file("maps/zone1.mob")).script_text
@@ -33,6 +35,7 @@ func freeze() -> void:
 	session.set_physics_process(false)
 	session.world.set_process(false)
 	session.world.set_physics_process(false)
+	peak_worlds = maxi(peak_worlds, WorldRelease.release(get_tree(), session.world))
 
 func ticks(count: int) -> void:
 	for i in count:
@@ -107,5 +110,6 @@ func verify_return(game: Game) -> void:
 	check(not session.world.vm._by_name("Hero").dead, "reloading the return does not reactivate the completed escape failure")
 	game.queue_free(); session.queue_free()
 	for i in 8: await get_tree().process_frame
+	check(peak_worlds == 1, "each map change releases the previous map")
 	print("LIA_SLAVE_LISTS_RETURN ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

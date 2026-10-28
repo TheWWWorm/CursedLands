@@ -48,14 +48,55 @@ GODOT=/path/to/godot-4 PYTHON=/path/to/parity-venv/bin/python \
   tools/parity/run_lia_quests.sh /path/to/NEW-evidence-directory
 ```
 
-This runs all `lia_kel_` and `lia_campaign_` gameplay cases, the existing
+This runs all `lia_kel_` and `lia_campaign_` gameplay cases, the Rod-fragment
+first-visit cases, the existing
 arrival, Revenge, Slave Lists return and tomb-exit regressions, the
-interaction-callback regression, and every `lia_` native checkpoint.
+interaction-callback regression, the first-visit order sweep below, and every
+`lia_` native checkpoint.
 The campaign cases include late Jigran through the ending and all four region
 maps. Each native checkpoint is replayed twice in
 fresh profiles. The directory must not exist: previous evidence is never
 silently replaced. The gameplay report and native checkpoint report have
 separate results and scopes. A nonzero exit means a failed check or capture.
+
+Each `lia_kel_` and `lia_campaign_` program also has a `_startup` variant
+(`--map-startup`). The plain programs start only the quest threads under test
+after entering a map; the variant keeps every thread the map's WorldScript
+starts, as an ordinary visit does, so a startup script that undoes an accepted
+quest fails. `lia_kel_fortune_orders` and `lia_fragment_first_entry` buy each
+Rod-of-Life fortune before the first visit to its map and after one. Gameplay programs
+run in parallel (`JOBS`, default `auto`; `JOBS=1` runs them one at a time).
+
+The command also runs the first-visit order sweep, `lia_first_visit_orders_01`
+to `_12` (`tools/tests/lia_first_visit_orders.gd`). It derives its cases from
+the shipped data rather than a list: every LiA map against every quest,
+fortune, dialogue or zone flag the map's scripts read that another map or a
+dialogue reward grants, with each granted value (166 cases). Each case plays
+two fresh campaigns that both visit the map, wait in a village and return; the
+flag is set either before the first visit or during the wait. The map's quest
+state after the return must be the same: party, levers (state and usability),
+waiting quest watchers, units, objects, quest items and flags. A startup script
+that consumes an untouched quest, as the Wormfaces' Riddle did, shows as a
+difference. Six reviewed differences, all in states the campaign cannot reach
+or without a lost quest, are listed with their reasons in the test; any other
+difference in those cases still fails. `--only=TEXT` reruns matching cases
+(for example `--only="gz4h b.skelet.fq6"`). The 12 shards take about 13
+minutes with the automatic job count, or about 66 minutes one at a time,
+which is what the runner falls back to when free memory is low.
+
+For a quick remake-only check of every quest Kel's revival depends on
+(fortunes, fragments, orders, startup variants, departures, hand-offs and the
+rescue), without native checkpoints:
+
+```sh
+BASE_GAME=/path/to/EvilIslands ASTRAL_GAME=/path/to/patched-LostInAstral \
+GODOT=/path/to/godot-4 tools/parity/run_lia_kel.sh /path/to/NEW-evidence-directory
+```
+
+`JOBS=auto` (the default) picks the number of parallel programs from CPU
+threads and free memory. The 20 programs take about 26 minutes one at a time
+and under five minutes with seven jobs on a 32-thread, 64 GB workstation.
+Programs that open fixed network ports always run one at a time.
 
 Run only selected original checkpoints:
 

@@ -6,6 +6,7 @@
 - Start the campaign's simulation worker in the background while intro movies and menus are shown, so the first new game or save load of a session no longer waits for it to compile. On the test system the first save load is about a third faster. Unused workers exit when the game closes or uses other game files.
 - Keep the far edge of path-traced lighting at a constant distance from the camera. It no longer creeps closer while travelling and jumps back each time the traced area is recentred.
 - Gather path-traced scene geometry in larger steps while its preparation cover is shown, and keep the running game's crash record when its simulation worker starts on Windows.
+- Keep the Lost in Astral “Wormfaces’ Riddle” levers usable when the fortune-teller’s last prediction is bought before the first visit to the Wormface caves. Both the original game and earlier releases disabled them permanently in that order, which made the first Rod of Life fragment unobtainable. Saves already stuck there are repaired on load; answered riddles are not reopened.
 
 ## 1.33.0 — 2026-10-27
 

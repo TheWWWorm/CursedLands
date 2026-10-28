@@ -2,11 +2,18 @@ extends Node
 ## Shared loaded-map fixtures. Only the named authored quest threads advance;
 ## travel, enemy combat and walking are accelerated by direct map entry,
 ## teleportation and kill cheats. Outcomes are never assigned by the fixture.
+const WorldRelease = preload("world_release.gd")
 var s: Session
 var game: Game
 var checks := 0
 var failures: Array[String] = []
 var evidence: Array = []
+## --map-startup keeps every thread a map's WorldScript starts, as an ordinary
+## visit does. Named quest threads must then already be running or finished;
+## a startup script that undoes an accepted quest fails the program's checks.
+var map_startup := OS.get_cmdline_user_args().has("--map-startup")
+## Most maps loaded at once after a freeze (see world_release.gd).
+var peak_worlds := 0
 
 func check(ok: bool, label: String) -> bool:
 	checks += 1
@@ -40,6 +47,7 @@ func freeze() -> void:
 	s.world.set_process(false); s.world.set_physics_process(false)
 	game.rig.set_process(false); game.hud._tutorial.close()
 	s.world.vm.briefings._check = INF
+	peak_worlds = maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 
 func enter(zone: String) -> void:
 	await s.enter_zone(zone,1,false)
@@ -47,10 +55,33 @@ func enter(zone: String) -> void:
 	# Finish the map's two-tick global bindings before selecting its quest
 	# threads. This retains original named objects, Heroes and lever metadata.
 	ticks(8)
-	s.world.vm.instances.clear()
+	if not map_startup: s.world.vm.instances.clear()
 	s.world.vm.briefings.active = ""; s.world.vm.briefings._pending_dialog.clear()
 	game.hud._dialog.hide()
 	check(s.zone_id == zone and hero() != null,"loaded authored map "+zone)
+
+## Like enter(), but the map's startup threads keep running.
+func visit(zone: String) -> void:
+	await s.enter_zone(zone,1,false)
+	freeze()
+	ticks(60)
+	vm().briefings.active = ""; vm().briefings._pending_dialog.clear()
+	game.hud._dialog.hide()
+	check(s.zone_id == zone and hero() != null,"visited authored map with its startup threads "+zone)
+
+## Leave for another map so the next visit restores the saved region.
+func enter_away(zone: String) -> void:
+	await s.enter_zone(zone,1,false)
+	freeze()
+	ticks(4)
+
+func running(name: String) -> bool:
+	return vm().instances.any(func(i): return i.sname == name and (not i.killed or not i.frames.is_empty()))
+
+## A fresh campaign state in the same process.
+func boot_again() -> void:
+	game.queue_free(); s.queue_free(); await frames(4)
+	boot()
 
 func vm() -> ScriptVM: return s.world.vm
 func value(key: String) -> float: return s.state.get_var(0,key)
@@ -66,9 +97,15 @@ func ticks(n := 3) -> void:
 
 func start(names: Array) -> void:
 	for name: String in names:
-		if check(vm().ast.scripts.has(name),s.zone_id+": authored thread "+name):
+		if check(vm().ast.scripts.has(name),s.zone_id+": authored thread "+name) and not map_startup:
 			vm().spawn(name,[null])
 	ticks()
+
+## After an ordinary passage, like enter(): only the named quest threads run
+## unless --map-startup keeps the map's own.
+func threads(names: Array) -> void:
+	if not map_startup: vm().instances.clear()
+	start(names)
 
 func teleport(point: Vector2, actor: GameUnit = null) -> void:
 	var u := actor if actor != null else hero()
@@ -156,6 +193,8 @@ func roundtrip(slot: String, vars: Array, items: Array = []) -> void:
 	check(accounting() == before,"reload/poll does not replay rewards: "+slot)
 
 func finish(marker: String, scope: String) -> void:
+	print("PEAK_WORLDS ",peak_worlds)
+	check(peak_worlds == 1,"each map change releases the previous map")
 	var report := {"checks":checks,"failures":failures,"assertions":evidence,"scope":scope}
 	FileAccess.open("user://"+marker.to_lower()+".json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
 	game.queue_free(); s.queue_free(); await frames(8)

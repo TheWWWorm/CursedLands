@@ -86,7 +86,7 @@ func portal_keys() -> void:
 	check(value("z.gz21k_gz25k") == 2,"actual key exchange opens the ice-desert route")
 	await enter("gz21k")
 	if not await leave("gz21k_gz25k","gz25k"): return
-	ticks(8); vm().instances.clear(); start(["VCheck#0#1"]); ticks(25)
+	ticks(8); threads(["VCheck#0#1"]); ticks(25)
 	gate("gz26k",false,"forgotten portal destination remains closed before the ice-pass mechanism")
 	teleport(Vector2(95,173))
 	check(value("q.gz25k.q20k") == 1,"ice-pass approach still requires its keyed mechanism")

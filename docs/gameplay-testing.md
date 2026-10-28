@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 404 registered test configurations across 19
-areas, using 315 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 492 registered test configurations across 19
+areas, using 349 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -13,11 +13,13 @@ the independent [original-executable suite](original-parity.md).
 The reports keep those two kinds of evidence separate.
 
 The [LiA quest checkpoint command](original-checkpoints.md#run-the-lia-quest-checks)
-combines 34 selected gameplay programs with independently recorded
+combines 75 selected gameplay programs with independently recorded
 patched-original saves, including the existing interaction/return regressions. It covers
 the numbered LiA campaign route through the ending, early Portal and torch
 cellar, all three Rod of Life fragments, Кель's death and rescue, route gates,
-map points, missing prerequisites and save/reload continuation. The
+map points, missing prerequisites, save/reload continuation, and every map's
+quest state with each externally granted flag set before or after the first
+visit. The
 [campaign qualification](validation/lia-campaign-checkpoints-2026-10-23.md)
 records prepared chapter seams, native comparisons and their limits. Repeated
 `--case` filters combine selections.
@@ -32,8 +34,8 @@ is available coverage, not a claim that every configuration was run for this pat
 
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
-library. The 58 rendered configurations also require an explicitly selected
-private X display supplied by GPU Lab; the other 346 run headlessly.
+library. The 77 rendered configurations also require an explicitly selected
+private X display supplied by GPU Lab; the other 415 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
@@ -78,6 +80,12 @@ python3 tools/parity/gameplay.py \
   --godot /path/to/godot --out /tmp/rendered-gameplay \
   --display rendered --render-display :91
 
+# Programs run in parallel (default --jobs auto); each keeps its own process
+# and profile. --jobs 1 runs them one at a time.
+python3 tools/parity/gameplay.py \
+  --game-dir /path/to/base-game --astral-dir /path/to/lost-in-astral \
+  --godot /path/to/godot --out /tmp/lia-quests --case lia_
+
 # Repeat the retained program selection against the current source.
 /path/to/results/reproduce.sh /tmp/gameplay-repeat
 
@@ -107,25 +115,25 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 105 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers, all 28 installed base side-quest archives, and the LiA campaign through its ending, map-point matrix, three-fragment/Kel-rescue route and pending final-battle save repair |
+| Quests | 146 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers, all 28 installed base side-quest archives, and the LiA campaign through its ending, map-point matrix, three-fragment/Kel-rescue route, pending final-battle save repair, and every LiA map's quest state with each externally granted flag set before or after the first visit |
 | Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
-| Animation | 20 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
-| Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
+| Animation | 21 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
+| Effects | 18 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
 | Stealth | 8 | Invisibility, silence, pursuit, remembered targets, loopback peers, perception, partial visibility, theft completion/cancellation, quest pockets and personal hostility |
-| Commands | 25 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
-| Pathing | 15 | Turn refinement, topology, ray boundaries, relocation, route previews, narrow passages, client placement, lift capacity, direct movement and campaign-map reveal |
+| Commands | 27 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
+| Pathing | 19 | Turn refinement, topology, ray boundaries, relocation, route previews, narrow passages, client placement, lift capacity, direct movement and campaign-map reveal |
 | Spells | 9 | Stamina waits and regeneration, single acknowledgements, training requirements on host/guest, execution-time revalidation, paused construction transactions, seeded shop generation in both campaigns |
-| Inventory | 29 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
+| Inventory | 30 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
 | Progression | 5 | Training purchase orders, refunds and rank limits, guest training, XP distribution, downed companion XP and revival |
 | Party | 4 | Wounded pets, disconnected ownership, companion/pet chapter substitution, travel, save/load and revival camera |
 | Persistence | 16 | Hostility, wounds, stamina, commands, actor references, frozen clock, casts, taming, pets, potions, wall effects, profile seeds and network save choices |
-| Combat | 5 | Hit rolls, backstabs, ranged attacks, wounds, severance, healing, resurrection, body cache and wisp spells |
+| Combat | 6 | Hit rolls, backstabs, ranged attacks, wounds, severance, healing, resurrection, body cache and wisp spells |
 | Network | 5 | Seeded snapshot codec, packet loss and reordering, stale generations, perception lists, generated large campaign documents and acknowledgement batching |
 | Dialogue | 12 | Authored topics, walking/staging, cues, captive/elder/guard routes, Nalo rescue and Shaina disguise |
 | Co-op | 50 | Fresh heroes, malformed origins, classes/roles, ownership, renaming/reconnect, personal/shared checkpoints, chapter state, solo return and network world transfers |
-| Settings | 20 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
-| Interface | 20 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
-| Arena | 29 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
+| Settings | 22 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
+| Interface | 41 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
+| Arena | 41 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
 
 An assertion count is a count of checks, **not games played or unique
 features**. Large parameter sweeps contribute many checks. Several optimized
@@ -159,7 +167,13 @@ volume_voice=0
 
 The bootstrap checks those preferences before running the test. Autosave,
 tutorials and public network discovery are disabled. Network tests use local
-peers; programs run sequentially to avoid conflicting fixture ports. Private
+peers on fixed fixture ports. Programs run in parallel: `--jobs auto` (the
+default) runs one per three CPU threads, at most as many as free memory holds
+at about 4.5 GiB each beyond an 8 GiB reserve, and starts the next program only
+while that much memory is still free. Programs whose script (or a script it
+extends or preloads) opens sockets run one at a time, as do rendered programs
+sharing the private display. Ctrl-C or a runner error stops every running
+program. The report keeps the selection order. Private
 player saves and preferences are neither copied nor changed.
 
 The bootstrap preserves the ordinary `--tool` scene layout so a separate
@@ -230,7 +244,11 @@ retain the expanded 166-check fixture passing in both campaigns with unchanged
 production code.
 
 Tests requiring private saves, manual input or unbounded play sessions are not
-automatically included. Add a self-contained fixture with an explicit numeric
+automatically included. A fixture that freezes the session and advances the
+script VM directly lets few frames pass, so the world `Game.attach_world`
+queued for deletion stays loaded. After each map change, call
+`tools/tests/world_release.gd` (as `lia_kel_support.gd`'s `freeze()` does) and
+check that only one world remains. Add a self-contained fixture with an explicit numeric
 summary and campaign assignment before registering it. Keep a failing
 behavior visible while investigating; never lower coverage or change an
 expected outcome merely to get a green run.

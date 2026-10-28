@@ -386,7 +386,7 @@
       "category": "quests",
       "script": "tools/tests/quest_inventory_lifecycle.gd",
       "marker": "QUEST_INVENTORY_LIFECYCLE",
-      "min_checks": 15,
+      "min_checks": 21,
       "quick": false,
       "description": "Quest item transfer, removal and persistence",
       "kind": "remake_regression",
@@ -2816,7 +2816,7 @@
       "category": "quests",
       "script": "tools/tests/lia_revenge_return.gd",
       "marker": "LIA_REVENGE_RETURN",
-      "min_checks": 13,
+      "min_checks": 14,
       "quick": false,
       "description": "Take the west bridge on a prior visit, then return for Revenge. The unused east-route watcher must not consume the mansion's reused area 2.",
       "kind": "remake_regression",
@@ -2838,7 +2838,7 @@
       "category": "quests",
       "script": "tools/tests/lia_slave_lists_return.gd",
       "marker": "LIA_SLAVE_LISTS_RETURN",
-      "min_checks": 21,
+      "min_checks": 22,
       "quick": false,
       "description": "Prepared escape checkpoint, original shelter dismissal and real map revisit. Keep the saved Portal VM: starting a fresh map misses the stale death watch.",
       "kind": "remake_regression",
@@ -6482,7 +6482,7 @@
       "category": "quests",
       "script": "tools/tests/lia_kel_early_story.gd",
       "marker": "LIA_KEL_EARLY_STORY",
-      "min_checks": 122,
+      "min_checks": 123,
       "quick": false,
       "description": "LiA poison/disguise actual objectives, missing item/enemy gates, normal hand-ins, Kel/elder route and full saves",
       "kind": "remake_regression",
@@ -6499,11 +6499,34 @@
       ]
     },
     {
+      "id": "quests/lia_kel_early_story_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_early_story.gd",
+      "marker": "LIA_KEL_EARLY_STORY",
+      "min_checks": 123,
+      "quick": false,
+      "description": "LiA poison/disguise actual objectives, missing item/enemy gates, normal hand-ins, Kel/elder route and full saves; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone1thief.mob",
+        "maps/zone1rats.mob",
+        "maps/bz2h.mob"
+      ]
+    },
+    {
       "id": "quests/lia_kel_torch_cellar",
       "category": "quests",
       "script": "tools/tests/lia_kel_torch_cellar.gd",
       "marker": "LIA_KEL_TORCH_CELLAR",
-      "min_checks": 71,
+      "min_checks": 72,
       "quick": false,
       "description": "LiA first fortune torch, active Portal region, both basement exits, normal confirmation travel and save/reload",
       "kind": "remake_regression",
@@ -6518,11 +6541,32 @@
       ]
     },
     {
+      "id": "quests/lia_kel_torch_cellar_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_torch_cellar.gd",
+      "marker": "LIA_KEL_TORCH_CELLAR",
+      "min_checks": 72,
+      "quick": false,
+      "description": "LiA first fortune torch, active Portal region, both basement exits, normal confirmation travel and save/reload; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone1dun1.mob"
+      ]
+    },
+    {
       "id": "quests/lia_kel_suslanger",
       "category": "quests",
       "script": "tools/tests/lia_kel_suslanger.gd",
       "marker": "LIA_KEL_SUSLANGER",
-      "min_checks": 106,
+      "min_checks": 107,
       "quick": false,
       "description": "Five Suslanger fortune outcomes, actual carrier keys, clock gates, undead, 3-1-2 mechanism, first fragment and saves",
       "kind": "remake_regression",
@@ -6538,11 +6582,312 @@
       ]
     },
     {
+      "id": "quests/lia_kel_suslanger_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_suslanger.gd",
+      "marker": "LIA_KEL_SUSLANGER",
+      "min_checks": 107,
+      "quick": false,
+      "description": "Five Suslanger fortune outcomes, actual carrier keys, clock gates, undead, 3-1-2 mechanism, first fragment and saves; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone2.mob",
+        "maps/zone4.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_fragment_first_entry",
+      "category": "quests",
+      "script": "tools/tests/lia_fragment_first_entry.gd",
+      "marker": "LIA_FRAGMENT_FIRST_ENTRY",
+      "min_checks": 115,
+      "quick": false,
+      "description": "Fortune and Rod-fragment maps entered through their own startup scripts in both purchase orders, including the Wormfaces' Riddle bought before the first cave visit",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone3.mob",
+        "maps/zone4.mob",
+        "maps/zone11.mob",
+        "maps/zone11dun1.mob",
+        "maps/bz23k.mob",
+        "maps/zone24.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_fortune_orders",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_fortune_orders.gd",
+      "marker": "LIA_KEL_FORTUNE_ORDERS",
+      "min_checks": 133,
+      "quick": false,
+      "description": "Suslanger fq2..fq5 and Gipat fq8..fq12 entered through each map's authored startup scripts, fortune bought before the first visit and after a first visit",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone2.mob",
+        "maps/bz5h.mob",
+        "maps/zone9.mob",
+        "maps/zone9mushroom.mob",
+        "maps/zone11.mob",
+        "maps/zone11clerk.mob",
+        "maps/bz11g.mob",
+        "maps/zone16.mob",
+        "maps/zone7.mob",
+        "maps/zone7invalid.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_01",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 1 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=0/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_02",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 2 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=1/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_03",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 3 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=2/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_04",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 4 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=3/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_05",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 5 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=4/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_06",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 6 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=5/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_07",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 7 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=6/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_08",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 8 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=7/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_09",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 9 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=8/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_10",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Shard 10 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=9/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_11",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 43,
+      "quick": false,
+      "description": "Shard 11 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=10/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_first_visit_orders_12",
+      "category": "quests",
+      "script": "tools/tests/lia_first_visit_orders.gd",
+      "marker": "LIA_FIRST_VISIT_ORDERS",
+      "min_checks": 43,
+      "quick": false,
+      "description": "Shard 12 of 12: every LiA map against each quest, fortune or dialogue flag it reads that is granted elsewhere, entered through its authored WorldScript with the flag set before the first visit or during a stay elsewhere after it, then revisited; party, levers, quest watchers, units, objects, quest items and flags must not depend on the order (reviewed differences listed in the test)",
+      "kind": "remake_regression",
+      "timeout": 3600,
+      "args": [
+        "--shard=11/12"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
       "id": "quests/lia_kel_gipat",
       "category": "quests",
       "script": "tools/tests/lia_kel_gipat.gd",
       "marker": "LIA_KEL_GIPAT",
-      "min_checks": 114,
+      "min_checks": 115,
       "quick": false,
       "description": "Six Gipat fortune outcomes, randomized objects, captive/giant progression, crypt key, second fragment and saves",
       "kind": "remake_regression",
@@ -6563,11 +6908,38 @@
       ]
     },
     {
+      "id": "quests/lia_kel_gipat_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_gipat.gd",
+      "marker": "LIA_KEL_GIPAT",
+      "min_checks": 115,
+      "quick": false,
+      "description": "Six Gipat fortune outcomes, randomized objects, captive/giant progression, crypt key, second fragment and saves; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone9.mob",
+        "maps/zone9mushroom.mob",
+        "maps/zone11.mob",
+        "maps/zone11clerk.mob",
+        "maps/zone16.mob",
+        "maps/zone7.mob",
+        "maps/zone7invalid.mob",
+        "maps/zone11dun1.mob"
+      ]
+    },
+    {
       "id": "quests/lia_kel_ingos",
       "category": "quests",
       "script": "tools/tests/lia_kel_ingos.gd",
       "marker": "LIA_KEL_INGOS",
-      "min_checks": 149,
+      "min_checks": 150,
       "quick": false,
       "description": "Complete Haburu dialogue/object chain, water inventory, cow destination, keyed doors, third fragment and saves",
       "kind": "remake_regression",
@@ -6590,16 +6962,65 @@
       ]
     },
     {
+      "id": "quests/lia_kel_ingos_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_ingos.gd",
+      "marker": "LIA_KEL_INGOS",
+      "min_checks": 150,
+      "quick": false,
+      "description": "Complete Haburu dialogue/object chain, water inventory, cow destination, keyed doors, third fragment and saves; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz23k.mob",
+        "maps/zone23.mob",
+        "maps/zone21.mob",
+        "maps/zone22.mob",
+        "maps/zone22tree1.mob",
+        "maps/zone22tree2.mob",
+        "maps/zone22tree3.mob",
+        "maps/zone22tree4.mob",
+        "maps/zone22tree5.mob",
+        "maps/zone24.mob"
+      ]
+    },
+    {
       "id": "quests/lia_kel_rescue",
       "category": "quests",
       "script": "tools/tests/lia_kel_rescue.gd",
       "marker": "LIA_KEL_RESCUE",
-      "min_checks": 145,
+      "min_checks": 146,
       "quick": false,
       "description": "Travel-synchronized rescue, all missing-fragment guards, native stored-fragment retention, Kel party/stats/equipment restoration and reload",
       "kind": "remake_regression",
       "timeout": 480,
       "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz31j.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_rescue_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_rescue.gd",
+      "marker": "LIA_KEL_RESCUE",
+      "min_checks": 146,
+      "quick": false,
+      "description": "Travel-synchronized rescue, all missing-fragment guards, native stored-fragment retention, Kel party/stats/equipment restoration and reload; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [
+        "--map-startup"
+      ],
       "campaign": "lost_in_astral",
       "required_files": [
         "res/database.res",
@@ -6629,7 +7050,7 @@
       "category": "quests",
       "script": "tools/tests/lia_kel_prologue.gd",
       "marker": "LIA_KEL_PROLOGUE",
-      "min_checks": 152,
+      "min_checks": 153,
       "quick": false,
       "description": "Fresh LiA opening, portal key, prison/night escape, pursuit map, catacomb clothing and real Shelter arrival",
       "kind": "remake_regression",
@@ -6652,11 +7073,40 @@
       ]
     },
     {
+      "id": "quests/lia_kel_prologue_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_prologue.gd",
+      "marker": "LIA_KEL_PROLOGUE",
+      "min_checks": 153,
+      "quick": false,
+      "description": "Fresh LiA opening, portal key, prison/night escape, pursuit map, catacomb clothing and real Shelter arrival; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zonezero.mob",
+        "maps/bz1r.mob",
+        "maps/bz1h.mob",
+        "maps/zone1.mob",
+        "maps/zone1evil.mob",
+        "maps/cz1h.mob",
+        "maps/zone1dun2.mob",
+        "maps/cz2h.mob",
+        "maps/zone1cityg.mob",
+        "maps/bz2h.mob"
+      ]
+    },
+    {
       "id": "quests/lia_kel_departures",
       "category": "quests",
       "script": "tools/tests/lia_kel_departures.gd",
       "marker": "LIA_KEL_DEPARTURES",
-      "min_checks": 84,
+      "min_checks": 85,
       "quick": false,
       "description": "Earned first fragment and actual island departure; Kel belongings, archived party, scripted death and return",
       "kind": "remake_regression",
@@ -6675,11 +7125,36 @@
       ]
     },
     {
+      "id": "quests/lia_kel_departures_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_departures.gd",
+      "marker": "LIA_KEL_DEPARTURES",
+      "min_checks": 85,
+      "quick": false,
+      "description": "Earned first fragment and actual island departure; Kel belongings, archived party, scripted death and return; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone4.mob",
+        "maps/bz7h.mob",
+        "maps/zone7.mob",
+        "maps/bz31j.mob",
+        "maps/zone35.mob",
+        "maps/cz3j.mob"
+      ]
+    },
+    {
       "id": "quests/lia_kel_handoffs",
       "category": "quests",
       "script": "tools/tests/lia_kel_handoffs.gd",
       "marker": "LIA_KEL_HANDOFFS",
-      "min_checks": 95,
+      "min_checks": 96,
       "quick": false,
       "description": "Fragment retention across real Gipat, Ingos and Jigran island and party handoffs",
       "kind": "remake_regression",
@@ -6705,11 +7180,43 @@
       ]
     },
     {
+      "id": "quests/lia_kel_handoffs_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_handoffs.gd",
+      "marker": "LIA_KEL_HANDOFFS",
+      "min_checks": 96,
+      "quick": false,
+      "description": "Fragment retention across real Gipat, Ingos and Jigran island and party handoffs; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone11dun1.mob",
+        "maps/bz14g.mob",
+        "maps/cz0k.mob",
+        "maps/zone21.mob",
+        "maps/bz23k.mob",
+        "maps/zone24.mob",
+        "maps/cz4k.mob",
+        "maps/cz1j.mob",
+        "maps/zone31.mob",
+        "maps/bz31j.mob",
+        "maps/zone32.mob",
+        "maps/zone32duel.mob",
+        "maps/cz2j.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_late_arrival",
       "category": "quests",
       "script": "tools/tests/lia_campaign_late_arrival.gd",
       "marker": "LIA_CAMPAIGN_LATE_ARRIVAL",
-      "min_checks": 198,
+      "min_checks": 199,
       "quick": false,
       "description": "Actual Jigran arrival through carried q1j to q6j and duel/material offers",
       "kind": "remake_regression",
@@ -6731,11 +7238,39 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_late_arrival_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_late_arrival.gd",
+      "marker": "LIA_CAMPAIGN_LATE_ARRIVAL",
+      "min_checks": 199,
+      "quick": false,
+      "description": "Actual Jigran arrival through carried q1j to q6j and duel/material offers; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/cz1j.mob",
+        "maps/zone31.mob",
+        "maps/zone31vil.mob",
+        "maps/zone32.mob",
+        "maps/zone32necro.mob",
+        "maps/zone32hero.mob",
+        "maps/zone33.mob",
+        "maps/bz31j.mob",
+        "maps/bz32j.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_late_supplies",
       "category": "quests",
       "script": "tools/tests/lia_campaign_late_supplies.gd",
       "marker": "LIA_CAMPAIGN_LATE_SUPPLIES",
-      "min_checks": 162,
+      "min_checks": 163,
       "quick": false,
       "description": "Carried Jigran q8j through q12j and western map quest offers",
       "kind": "remake_regression",
@@ -6753,11 +7288,35 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_late_supplies_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_late_supplies.gd",
+      "marker": "LIA_CAMPAIGN_LATE_SUPPLIES",
+      "min_checks": 163,
+      "quick": false,
+      "description": "Carried Jigran q8j through q12j and western map quest offers; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone31.mob",
+        "maps/zone33.mob",
+        "maps/zone33battle.mob",
+        "maps/bz31j.mob",
+        "maps/bz32j.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_late_convoy",
       "category": "quests",
       "script": "tools/tests/lia_campaign_late_convoy.gd",
       "marker": "LIA_CAMPAIGN_LATE_CONVOY",
-      "min_checks": 166,
+      "min_checks": 167,
       "quick": false,
       "description": "Carried q13j through q17j into actual Kel belongings offer",
       "kind": "remake_regression",
@@ -6776,11 +7335,36 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_late_convoy_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_late_convoy.gd",
+      "marker": "LIA_CAMPAIGN_LATE_CONVOY",
+      "min_checks": 167,
+      "quick": false,
+      "description": "Carried q13j through q17j into actual Kel belongings offer; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone31.mob",
+        "maps/zone34.mob",
+        "maps/zone34battle.mob",
+        "maps/zone35.mob",
+        "maps/bz31j.mob",
+        "maps/bz32j.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_late_ending",
       "category": "quests",
       "script": "tools/tests/lia_campaign_late_ending.gd",
       "marker": "LIA_CAMPAIGN_LATE_ENDING",
-      "min_checks": 214,
+      "min_checks": 215,
       "quick": false,
       "description": "Prepared post-rescue state through actual final campaign trigger",
       "kind": "remake_regression",
@@ -6802,11 +7386,39 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_late_ending_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_late_ending.gd",
+      "marker": "LIA_CAMPAIGN_LATE_ENDING",
+      "min_checks": 215,
+      "quick": false,
+      "description": "Prepared post-rescue state through actual final campaign trigger; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz31j.mob",
+        "maps/bz32j.mob",
+        "maps/zone34.mob",
+        "maps/zone34dun1.mob",
+        "maps/zone34mon.mob",
+        "maps/zone35.mob",
+        "maps/zone35battle.mob",
+        "maps/cz4j.mob",
+        "maps/zonefinal.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_mid_gipat",
       "category": "quests",
       "script": "tools/tests/lia_campaign_mid_gipat.gd",
       "marker": "LIA_CAMPAIGN_GIPAT",
-      "min_checks": 169,
+      "min_checks": 170,
       "quick": false,
       "description": "Gipat key and mechanism chains with actual dungeon and healer returns",
       "kind": "remake_regression",
@@ -6825,11 +7437,36 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_mid_gipat_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_mid_gipat.gd",
+      "marker": "LIA_CAMPAIGN_GIPAT",
+      "min_checks": 170,
+      "quick": false,
+      "description": "Gipat key and mechanism chains with actual dungeon and healer returns; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone11.mob",
+        "maps/zone11dun1.mob",
+        "maps/bz11g.mob",
+        "maps/zone13.mob",
+        "maps/bz12g.mob",
+        "maps/zone14.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_gipat_arrival",
       "category": "quests",
       "script": "tools/tests/lia_campaign_gipat_arrival.gd",
       "marker": "LIA_CAMPAIGN_GIPAT_ARRIVAL",
-      "min_checks": 158,
+      "min_checks": 159,
       "quick": false,
       "description": "Carried Gipat q1g through q6g and actual q7g offer",
       "kind": "remake_regression",
@@ -6848,11 +7485,36 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_gipat_arrival_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_gipat_arrival.gd",
+      "marker": "LIA_CAMPAIGN_GIPAT_ARRIVAL",
+      "min_checks": 159,
+      "quick": false,
+      "description": "Carried Gipat q1g through q6g and actual q7g offer; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz7h.mob",
+        "maps/zone7.mob",
+        "maps/zone7dun1.mob",
+        "maps/zone11.mob",
+        "maps/zone11harpy.mob",
+        "maps/bz8g.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_gipat_settlements",
       "category": "quests",
       "script": "tools/tests/lia_campaign_gipat_settlements.gd",
       "marker": "LIA_CAMPAIGN_GIPAT_SETTLEMENTS",
-      "min_checks": 177,
+      "min_checks": 178,
       "quick": false,
       "description": "Carried Gipat q7g through q12g and actual village gates",
       "kind": "remake_regression",
@@ -6872,16 +7534,70 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_gipat_settlements_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_gipat_settlements.gd",
+      "marker": "LIA_CAMPAIGN_GIPAT_SETTLEMENTS",
+      "min_checks": 178,
+      "quick": false,
+      "description": "Carried Gipat q7g through q12g and actual village gates; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone9.mob",
+        "maps/zone9battle.mob",
+        "maps/zone11.mob",
+        "maps/zone10.mob",
+        "maps/bz8g.mob",
+        "maps/bz11g.mob",
+        "maps/bz14g.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_gipat_healer",
       "category": "quests",
       "script": "tools/tests/lia_campaign_gipat_healer.gd",
       "marker": "LIA_CAMPAIGN_GIPAT_HEALER",
-      "min_checks": 205,
+      "min_checks": 206,
       "quick": false,
       "description": "Carried Gipat q13g through q17g with both letter delivery branches",
       "kind": "remake_regression",
       "timeout": 900,
       "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone10.mob",
+        "maps/zone10hunter.mob",
+        "maps/zone10karavan.mob",
+        "maps/zone15.mob",
+        "maps/zone11.mob",
+        "maps/zone11dun1.mob",
+        "maps/zone13.mob",
+        "maps/bz11g.mob",
+        "maps/bz12g.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_campaign_gipat_healer_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_gipat_healer.gd",
+      "marker": "LIA_CAMPAIGN_GIPAT_HEALER",
+      "min_checks": 206,
+      "quick": false,
+      "description": "Carried Gipat q13g through q17g with both letter delivery branches; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
       "campaign": "lost_in_astral",
       "required_files": [
         "res/database.res",
@@ -6919,12 +7635,36 @@
       "category": "quests",
       "script": "tools/tests/lia_campaign_travel_routes.gd",
       "marker": "LIA_CAMPAIGN_TRAVEL_ROUTES",
-      "min_checks": 51,
+      "min_checks": 52,
       "quick": false,
       "description": "Actual Jigran settlement/west and Ingos one-way map trips, arrival and return saves",
       "kind": "remake_regression",
       "timeout": 300,
       "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz32j.mob",
+        "maps/zone33.mob",
+        "maps/zone34.mob",
+        "maps/zone21.mob",
+        "maps/zone23.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_campaign_travel_routes_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_travel_routes.gd",
+      "marker": "LIA_CAMPAIGN_TRAVEL_ROUTES",
+      "min_checks": 52,
+      "quick": false,
+      "description": "Actual Jigran settlement/west and Ingos one-way map trips, arrival and return saves; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--map-startup"
+      ],
       "campaign": "lost_in_astral",
       "required_files": [
         "res/database.res",
@@ -6955,7 +7695,7 @@
       "category": "quests",
       "script": "tools/tests/lia_campaign_shaina.gd",
       "marker": "LIA_CAMPAIGN_SHAINA",
-      "min_checks": 178,
+      "min_checks": 179,
       "quick": false,
       "description": "Shaina infiltration, q9 handoffs and earned optional caravan/captive chain",
       "kind": "remake_regression",
@@ -6972,11 +7712,34 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_shaina_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_shaina.gd",
+      "marker": "LIA_CAMPAIGN_SHAINA",
+      "min_checks": 179,
+      "quick": false,
+      "description": "Shaina infiltration, q9 handoffs and earned optional caravan/captive chain; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz2h.mob",
+        "maps/bz5h.mob",
+        "maps/zone2.mob",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_gipat_palantir",
       "category": "quests",
       "script": "tools/tests/lia_campaign_gipat_palantir.gd",
       "marker": "LIA_CAMPAIGN_GIPAT_PALANTIR",
-      "min_checks": 201,
+      "min_checks": 202,
       "quick": false,
       "description": "Carried Gipat q18g through q24g with Witch and Babur escort gates",
       "kind": "remake_regression",
@@ -6999,11 +7762,40 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_gipat_palantir_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_gipat_palantir.gd",
+      "marker": "LIA_CAMPAIGN_GIPAT_PALANTIR",
+      "min_checks": 202,
+      "quick": false,
+      "description": "Carried Gipat q18g through q24g with Witch and Babur escort gates; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone12.mob",
+        "maps/zone7.mob",
+        "maps/zone7witch.mob",
+        "maps/zone16.mob",
+        "maps/zone16babur.mob",
+        "maps/zone15.mob",
+        "maps/bz11g.mob",
+        "maps/bz12g.mob",
+        "maps/bz13g.mob",
+        "maps/bz8g.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_gipat_departure",
       "category": "quests",
       "script": "tools/tests/lia_campaign_gipat_departure.gd",
       "marker": "LIA_CAMPAIGN_GIPAT_DEPARTURE",
-      "min_checks": 194,
+      "min_checks": 195,
       "quick": false,
       "description": "Earned Gipat q25g through q28g and actual Ingos arrival",
       "kind": "remake_regression",
@@ -7027,11 +7819,41 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_gipat_departure_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_gipat_departure.gd",
+      "marker": "LIA_CAMPAIGN_GIPAT_DEPARTURE",
+      "min_checks": 195,
+      "quick": false,
+      "description": "Earned Gipat q25g through q28g and actual Ingos arrival; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone10.mob",
+        "maps/zone10dday.mob",
+        "maps/zone9.mob",
+        "maps/zone12.mob",
+        "maps/zone14.mob",
+        "maps/zone11.mob",
+        "maps/bz11g.mob",
+        "maps/bz12g.mob",
+        "maps/bz14g.mob",
+        "maps/cz0k.mob",
+        "maps/zone21.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_suslanger_departure",
       "category": "quests",
       "script": "tools/tests/lia_campaign_suslanger_departure.gd",
       "marker": "LIA_CAMPAIGN_SUSLANGER_DEPARTURE",
-      "min_checks": 215,
+      "min_checks": 216,
       "quick": false,
       "description": "Suslanger main hand-ins, report, ritual, rescues and earned northern departure",
       "kind": "remake_regression",
@@ -7058,11 +7880,44 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_suslanger_departure_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_suslanger_departure.gd",
+      "marker": "LIA_CAMPAIGN_SUSLANGER_DEPARTURE",
+      "min_checks": 216,
+      "quick": false,
+      "description": "Suslanger main hand-ins, report, ritual, rescues and earned northern departure; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz2h.mob",
+        "maps/bz3h.mob",
+        "maps/bz4h.mob",
+        "maps/bz7h.mob",
+        "maps/zone2.mob",
+        "maps/zone2necro.mob",
+        "maps/zone2undead.mob",
+        "maps/zone3.mob",
+        "maps/zone3report.mob",
+        "maps/zone3harpy.mob",
+        "maps/zone3sack.mob",
+        "maps/zone4.mob",
+        "maps/zone5.mob",
+        "maps/zone5raz.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_early_suslanger",
       "category": "quests",
       "script": "tools/tests/lia_campaign_early_suslanger.gd",
       "marker": "LIA_CAMPAIGN_SUSLANGER",
-      "min_checks": 395,
+      "min_checks": 396,
       "quick": false,
       "description": "Suslanger main quest gates and actual captive/camp returns",
       "kind": "remake_regression",
@@ -7095,11 +7950,50 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_early_suslanger_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_early_suslanger.gd",
+      "marker": "LIA_CAMPAIGN_SUSLANGER",
+      "min_checks": 396,
+      "quick": false,
+      "description": "Suslanger main quest gates and actual captive/camp returns; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone1letter.mob",
+        "maps/bz2h.mob",
+        "maps/zone3.mob",
+        "maps/zone3plen.mob",
+        "maps/zone3plen2.mob",
+        "maps/zone3dun1.mob",
+        "maps/zone3pu.mob",
+        "maps/zone3att.mob",
+        "maps/zone3def.mob",
+        "maps/bz3h.mob",
+        "maps/zone4.mob",
+        "maps/zone4duot.mob",
+        "maps/bz4h.mob",
+        "maps/zone3perst.mob",
+        "maps/zone3harad.mob",
+        "maps/zone3spear.mob",
+        "maps/zone2.mob",
+        "maps/zone2mest.mob",
+        "maps/bz5h.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_mid_ingos",
       "category": "quests",
       "script": "tools/tests/lia_campaign_mid_ingos.gd",
       "marker": "LIA_CAMPAIGN_INGOS",
-      "min_checks": 240,
+      "min_checks": 241,
       "quick": false,
       "description": "Ingos arrival and laboratory handoffs, paired ritual prerequisites, keyed mine and actual earned returns",
       "kind": "remake_regression",
@@ -7121,11 +8015,39 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_mid_ingos_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_mid_ingos.gd",
+      "marker": "LIA_CAMPAIGN_INGOS",
+      "min_checks": 241,
+      "quick": false,
+      "description": "Ingos arrival and laboratory handoffs, paired ritual prerequisites, keyed mine and actual earned returns; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone21.mob",
+        "maps/zone21flower.mob",
+        "maps/zone21flower1.mob",
+        "maps/bz21k.mob",
+        "maps/zone22.mob",
+        "maps/zone23.mob",
+        "maps/zone24.mob",
+        "maps/cz2k.mob",
+        "maps/cz1k.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_ingos_investigation",
       "category": "quests",
       "script": "tools/tests/lia_campaign_ingos_investigation.gd",
       "marker": "LIA_CAMPAIGN_INGOS_INVESTIGATION",
-      "min_checks": 323,
+      "min_checks": 324,
       "quick": false,
       "description": "Earned Ingos factory, forest, supplies, materials, arrow and spy handoffs",
       "kind": "remake_regression",
@@ -7148,11 +8070,40 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_ingos_investigation_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_ingos_investigation.gd",
+      "marker": "LIA_CAMPAIGN_INGOS_INVESTIGATION",
+      "min_checks": 324,
+      "quick": false,
+      "description": "Earned Ingos factory, forest, supplies, materials, arrow and spy handoffs; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone21.mob",
+        "maps/zone21hvost.mob",
+        "maps/zone22.mob",
+        "maps/zone22spy.mob",
+        "maps/zone23.mob",
+        "maps/zone23caboom.mob",
+        "maps/zone23capital.mob",
+        "maps/bz21k.mob",
+        "maps/bz22k.mob",
+        "maps/bz23k.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_ingos_portal",
       "category": "quests",
       "script": "tools/tests/lia_campaign_ingos_portal.gd",
       "marker": "LIA_CAMPAIGN_INGOS_PORTAL",
-      "min_checks": 219,
+      "min_checks": 220,
       "quick": false,
       "description": "Earned Ingos missing-person, betrayal, key-exchange, ice-pass and portal departure",
       "kind": "remake_regression",
@@ -7176,16 +8127,67 @@
       ]
     },
     {
+      "id": "quests/lia_campaign_ingos_portal_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_ingos_portal.gd",
+      "marker": "LIA_CAMPAIGN_INGOS_PORTAL",
+      "min_checks": 220,
+      "quick": false,
+      "description": "Earned Ingos missing-person, betrayal, key-exchange, ice-pass and portal departure; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone21.mob",
+        "maps/zone21his.mob",
+        "maps/zone22.mob",
+        "maps/zone23.mob",
+        "maps/zone23pred.mob",
+        "maps/zone25.mob",
+        "maps/zone26.mob",
+        "maps/bz21k.mob",
+        "maps/bz22k.mob",
+        "maps/cz3k.mob",
+        "maps/cz4k.mob"
+      ]
+    },
+    {
       "id": "quests/lia_campaign_late_legacy_battle",
       "category": "quests",
       "script": "tools/tests/lia_campaign_late_legacy_battle.gd",
       "marker": "LIA_CAMPAIGN_LATE_LEGACY_BATTLE",
-      "min_checks": 78,
+      "min_checks": 79,
       "quick": false,
       "description": "Legacy pending final-battle group migration and last-survivor gate",
       "kind": "remake_regression",
       "timeout": 900,
       "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone35.mob",
+        "maps/zone35battle.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_campaign_late_legacy_battle_startup",
+      "category": "quests",
+      "script": "tools/tests/lia_campaign_late_legacy_battle.gd",
+      "marker": "LIA_CAMPAIGN_LATE_LEGACY_BATTLE",
+      "min_checks": 79,
+      "quick": false,
+      "description": "Legacy pending final-battle group migration and last-survivor gate; every map keeps its authored startup threads",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--map-startup"
+      ],
       "campaign": "lost_in_astral",
       "required_files": [
         "res/database.res",

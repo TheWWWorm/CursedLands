@@ -3,6 +3,8 @@ extends Node
 ## direct to isolate inventory lifetime from combat/pathfinding and dialogue UI.
 var checks:=0
 var failures:=0
+var peak_worlds:=0
+const WorldRelease:=preload("world_release.gd")
 func check(ok: bool, label: String) -> void:
 	checks+=1
 	if not ok: failures+=1
@@ -14,6 +16,7 @@ func _ready() -> void:
 	s.set_physics_process(false)
 	s.state=CampaignState.new();s.state.ensure_hero(0,"Human Hero")
 	await s.enter_zone("gz3g",1,false)
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	var w:=s.world;var vm:=w.vm
 	vm.instances.clear()
 	if not w.units.has(3323):vm._add_mob("zone3obr.mob")
@@ -28,8 +31,11 @@ func _ready() -> void:
 	check(not s.state.quest_items.has("awl") and not s.state.quest_items.has("knife"),"authored M4 turn-in consumes both items")
 	check(s.save_game("quest_inventory")==OK,"stolen-carrier checkpoint saves")
 	check(await s.load_game_shown("quest_inventory"),"stolen-carrier checkpoint reloads")
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	await s.enter_zone("bz1g",1,false)
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	await s.enter_zone("gz3g",1,false)
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	w=s.world;vm=w.vm;vm.instances.clear()
 	hero=s.party_units(0)[0]
 	for nid in [3323,3470]:
@@ -45,6 +51,7 @@ func _ready() -> void:
 	vm.briefings._rewards("z15")
 	check(not s.state.quest_items.has("dragonamulet") and not s.state.quest_items.has("dcbook"),"authored Z15 dialogue consumes the Dragon Amulet and book")
 	await s.enter_zone("gz7g",1,false)
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	vm=s.world.vm
 	for i in 5:vm.tick(GameUnit.TICK)
 	vm.instances.clear()
@@ -55,6 +62,7 @@ func _ready() -> void:
 	check(not s.state.quest_items.has("cagekey00"),"actual Dead City cage-open handler consumes the Cage Key")
 	# An object argument means the named unit's carried bag, not player 0.
 	await s.enter_zone("gz11k",1,false)
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	vm=s.world.vm
 	for i in 5:vm.tick(GameUnit.TICK)
 	vm.instances.clear()
@@ -70,6 +78,7 @@ func _ready() -> void:
 		check(s.state.quest_items.has("driadidol00"),"unit removal leaves the player's separate copy intact")
 		check(guardian.get_meta("pockets").has("tiny potion 1"),"unit removal preserves unrelated carried loot")
 	await s.enter_zone("gz6g",1,false)
+	peak_worlds=maxi(peak_worlds,WorldRelease.release(get_tree(),s.world))
 	vm=s.world.vm
 	for i in 5:vm.tick(GameUnit.TICK)
 	vm.instances.clear()
@@ -84,6 +93,7 @@ func _ready() -> void:
 		check(dragon.mode=="guard" and dragon.mode_data.get("point")==Vector2(78,336),"crossing the original boundary sends the dragon home")
 		for i in 155:vm.tick(GameUnit.TICK)
 		check(s.state.get_var(0,"GFol")==0,"original 150-tick delay clears the dragon-follow flag")
+	check(peak_worlds==1,"each map change releases the previous map")
 	g.queue_free();s.queue_free()
 	for i in 10:await get_tree().process_frame
 	print("QUEST_INVENTORY_LIFECYCLE ",checks," checks ",failures," failures")

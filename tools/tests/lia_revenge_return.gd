@@ -4,12 +4,15 @@ extends Node
 var checks := 0
 var failures := []
 var session: Session
+var peak_worlds := 0
+const WorldRelease := preload("world_release.gd")
 func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok: failures.append(label)
 	print("PASS " if ok else "FAIL ", label)
 func freeze() -> void:
 	session.set_physics_process(false); session.world.set_process(false); session.world.set_physics_process(false)
+	peak_worlds = maxi(peak_worlds, WorldRelease.release(get_tree(), session.world))
 func ticks(count: int) -> void:
 	for i in count:
 		session.world.time += GameUnit.TICK
@@ -73,5 +76,6 @@ func finish_quest(game: Game) -> void:
 	for i in 8: await get_tree().process_frame
 	TexUpscale.shutdown()
 	FileAccess.open("user://lia-revenge-return.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures}))
+	check(peak_worlds == 1, "each map change releases the previous map")
 	print("LIA_REVENGE_RETURN ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

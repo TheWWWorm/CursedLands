@@ -7,11 +7,13 @@ import re
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 import xml.etree.ElementTree as ET
 
-from gameplay import argument_paths, assess, catalog, engine_argv, missing_assets, parse_summary, run_program, save_report
+from gameplay import (MEMORY_RESERVE, PROGRAM_MEMORY, MemoryGate, auto_jobs, argument_paths, assess, catalog, engine_argv, missing_assets, parse_summary, run_program,
+                      save_report, uses_network)
 from run import HERE, PROFILE, REPO
 
 
@@ -230,6 +232,18 @@ class GameplayExecution(unittest.TestCase):
             self.assertNotEqual(code, 0)
             self.assertIn("exceeded", error)
 
+    def test_stopped_run_terminates_owned_program(self):
+        # An interrupt or another program's crash ends parallel workers too.
+        stop = threading.Event()
+        threading.Timer(0.3, stop.set).start()
+        with tempfile.TemporaryDirectory() as folder:
+            start = time.monotonic()
+            code, error = run_program([sys.executable, "-c", "import time; time.sleep(30)"],
+                                      Path(folder) / "run.log", os.environ.copy(), 60, stop)
+            self.assertNotEqual(code, 0)
+            self.assertIn("stopped", error)
+            self.assertLess(time.monotonic() - start, 5)
+
     def test_all_catalog_programs_and_markers_exist(self):
         rows = catalog()
         self.assertEqual({row["category"] for row in rows},
@@ -293,6 +307,57 @@ class GameplayExecution(unittest.TestCase):
                 self.assertEqual(result.returncode, 2)
                 self.assertIn("source folders", result.stderr)
                 self.assertFalse(out.exists())
+
+    def test_parallel_jobs_must_be_positive(self):
+        with tempfile.TemporaryDirectory() as folder:
+            out = Path(folder) / "must-not-exist"
+            result = subprocess.run([sys.executable, str(HERE / "gameplay.py"), "--out", str(out),
+                                     "--game-dir", folder, "--godot", "must-not-launch", "--jobs", "0"],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("--jobs", result.stderr)
+            self.assertFalse(out.exists())
+
+    def test_automatic_jobs_fit_cpu_threads_and_free_memory(self):
+        self.assertEqual(auto_jobs(cpus=32, available=None), 10)
+        self.assertEqual(auto_jobs(cpus=32, available=MEMORY_RESERVE + 4 * PROGRAM_MEMORY + 1), 4)
+        self.assertEqual(auto_jobs(cpus=32, available=MEMORY_RESERVE // 2), 1)
+        self.assertEqual(auto_jobs(cpus=2, available=10**15), 1)
+
+    def test_memory_gate_holds_programs_until_memory_frees(self):
+        free = [0]
+        stop = threading.Event()
+        gate = MemoryGate(stop, available=lambda: free[0], poll=0.05)
+        order = []
+        with gate:
+            # The first program always starts; the second waits for memory.
+            second = threading.Thread(target=lambda: gate.__enter__() and order.append("second"))
+            second.start()
+            second.join(0.3)
+            self.assertEqual(order, [])
+            free[0] = PROGRAM_MEMORY + MEMORY_RESERVE
+            second.join(2)
+            self.assertEqual(order, ["second"])
+        gate.__exit__(None, None, None)
+        # A stopped run admits waiters at once so they can end promptly.
+        free[0] = 0
+        with gate:
+            stop.set()
+            with gate:
+                self.assertEqual(gate.active, 2)
+
+    def test_programs_opening_fixed_ports_are_found_through_their_bases(self):
+        # A parallel run serializes these; base scripts carry the sockets.
+        self.assertTrue(uses_network(REPO / "tools/tests/lia_tomb_exit.gd", REPO))
+        self.assertTrue(uses_network(REPO / "tools/tests/shelter_kel.gd", REPO))
+        self.assertFalse(uses_network(REPO / "tools/tests/lia_kel_gipat.gd", REPO))
+        with tempfile.TemporaryDirectory(dir=REPO / "tools/tests") as folder:
+            base, child = Path(folder) / "base.gd", Path(folder) / "child.gd"
+            base.write_text('extends Node\nfunc go(s): s.host()\n')
+            child.write_text('extends "base.gd"\n')
+            self.assertTrue(uses_network(child, REPO))
+            child.write_text('extends Node\nconst B := preload("base.gd")\n')
+            self.assertTrue(uses_network(child, REPO))
 
 
 if __name__ == "__main__":

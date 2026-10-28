@@ -81,7 +81,7 @@ func harpy_and_sack() -> void:
 func sergeant() -> void:
 	await enter("gz4h")
 	if not await leave("gz4h_gz5h","gz5h"): return
-	ticks(8); vm().instances.clear(); start(["VCheck#0#1"]); ticks(25)
+	ticks(8); threads(["VCheck#0#1"]); ticks(25)
 	teleport(Vector2(195,319))
 	check(value("q.gz5h.q23h") == 1,"outside northern arrival radius does not offer the Sergeant")
 	teleport(Vector2(206,319))
@@ -90,7 +90,7 @@ func sergeant() -> void:
 	await complete("b.Sergant.brief_87")
 	check(value("q.gz5h.q24h") == 1,"actual Sergeant conversation starts the three-site clearance")
 	if not await leave("gz5h_bz7h","gz5h"): return
-	ticks(8); vm().instances.clear(); start(["VCheck#1#1"]); ticks(25)
+	ticks(8); threads(["VCheck#1#1"]); ticks(25)
 	teleport(Vector2(250,126)); kill([2025967,2025970,2025965,2025964,2025966])
 	check(value("q.gz5h.q24h.4") == 1,"last first-camp enemy prevents that clearance objective")
 	kill([2025969])
