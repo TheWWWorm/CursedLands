@@ -2,7 +2,8 @@ class_name LoadingScreen
 extends CanvasLayer
 ## Zone / save loading screen. the original picks Movies\progres*.bik
 ## by the zone's allod (progres2 Gipat, progres3 Ingos, progres4 Suslanger,
-## else progres; progres1 for gz1g and bz7g). The movie is a 12-frame progress
+## else progres; progres1 for gz1g and bz7g). Lost in Astral's own game.exe
+## also maps Gipat2 to progres2 and Jigran to progres5. The movie is a 12-frame progress
 ## picture (800×600, all five files): it is not played but stepped. Each load
 ## stage (n), which opens the movie on its first call, decodes
 ## forward up to frame min(n, frames − 1) (never back: a smaller n shows the
@@ -142,7 +143,8 @@ static func movie_for(zone: Dictionary) -> String:
 	var id := String(zone.get("id", ""))
 	if id in ["gz1g", "bz7g"]:
 		return "progres1"
-	return {"gipat": "progres2", "ingos": "progres3", "suslanger": "progres4"}.get(
+	return {"gipat": "progres2", "gipat2": "progres2", "ingos": "progres3", "suslanger": "progres4",
+		"jigran": "progres5"}.get(
 		String(zone.get("allod", "")).to_lower(), "progres")
 
 

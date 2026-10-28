@@ -4334,6 +4334,40 @@
       "display": "rendered"
     },
     {
+      "id": "interface/loading_movies",
+      "category": "interface",
+      "script": "tools/tests/loading_movies.gd",
+      "marker": "LOADING_MOVIES",
+      "min_checks": 40,
+      "quick": true,
+      "description": "Each zone's loading movie follows its campaign's executable and exists",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/texts.res",
+        "movies/progres.bik"
+      ]
+    },
+    {
+      "id": "interface/loading_movies_astral",
+      "category": "interface",
+      "script": "tools/tests/loading_movies.gd",
+      "marker": "LOADING_MOVIES",
+      "min_checks": 40,
+      "quick": true,
+      "description": "Each zone's loading movie follows its campaign's executable and exists",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/texts.res",
+        "movies/progres5.bik"
+      ]
+    },
+    {
       "id": "interface/tooltip_lifetime_ui",
       "category": "interface",
       "script": "tools/tests/tooltip_lifetime_ui.gd",
