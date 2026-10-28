@@ -10,7 +10,7 @@
 - Keep the Lost in Astral Wormfaces' Riddle levers usable when the final fortune-teller prediction is bought before the first cave visit. Repair affected saves on load without reopening answered riddles.
 - Correct Autochess creature statistics and armour descriptions, snap slightly invalid placements to the nearest valid position, fix exploding-hare blasts, open creature details at the side, and add Options to the Autochess menu.
 - Redesign the game-file selector, make the skill-reset option reachable, add an option for the Esc signpost opening animation, and save multiplayer names when leaving the field or screen.
-- Add unused faces and inventory models to the cut-content wiki, including the drawing compass.
+- Add unused faces and inventory models to the cut-content wiki, including the drawing compass, and localize the Lost in Astral stealth example in the public guide.
 
 ## 1.33.0 — 2026-10-27
 
