@@ -4,9 +4,11 @@ extends Node
 ## game hours in the original while Zak stayed at the entrance; the remake
 ## moved it and its patrol into a trap. This checks the freeze, the wake when
 ## the party comes near, the expiry once it leaves, and runtime spawns.
+var checks := 0
 var failures := 0
 
 func check(ok: bool, label: String) -> void:
+	checks += 1
 	if not ok: failures += 1
 	print("PASS " if ok else "FAIL ", label)
 
@@ -113,5 +115,5 @@ func _ready() -> void:
 	Spells.apply(w, hero, "clairvoyence{}", null, gob.pos + Vector2(20, 0))
 	ticks(s, 2)
 	check(w.active_set.is_awake(gob), "clairvoyance nearby wakes it")
-	print("RESULT failures=", failures)
+	print("OBJECT_ACTIVITY ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)

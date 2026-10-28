@@ -3,9 +3,11 @@ extends Node
 ## original does (base 57a48a): 100 object steps per campaign hour away, at
 ## most 1000, waking only the objects within 70 m of the entrance's deploy
 ## centre. No scripts run and the clock stands still meanwhile.
+var checks := 0
 var failures := 0
 
 func check(ok: bool, label: String) -> void:
+	checks += 1
 	if not ok: failures += 1
 	print("PASS " if ok else "FAIL ", label)
 
@@ -47,5 +49,5 @@ func _ready() -> void:
 			far_moved += 1
 	check(near_moved > 0, "units near the entrance moved meanwhile (%d of %d)" % [near_moved, near])
 	check(far_moved == 0, "units far from the entrance stayed put (%d moved)" % far_moved)
-	print("RESULT failures=", failures)
+	print("OBJECT_ACTIVITY_ABSENCE ", checks, " checks ", failures, " failures")
 	get_tree().quit(1 if failures else 0)
