@@ -366,6 +366,9 @@ func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null, use
 			if int(u.get_meta("arena_placement", {}).get("run_uid", 0)) == selected_run_uid and selected_run_uid > 0:
 				except = u
 	if not bounds().grow(-radius).has_point(point): return RemakeText.t("Place creatures inside the arena boundary.")
+	if use_selection and run and selected_run_uid > 0:
+		var spacing := run.spacing_error(selected_run_uid, point)
+		if not spacing.is_empty(): return spacing
 	for unit: GameUnit in world.unit_rows():
 		if unit == except: continue
 		# Reserve destinations, not the temporary positions along a run-in.
@@ -382,6 +385,20 @@ func placement_error(point: Vector2, radius := 0.8, except: GameUnit = null, use
 		if path.is_empty() or path[-1].distance_to(point) > 0.3:
 			return RemakeText.t("Choose clear ground for this creature.")
 	return ""
+
+
+## A click slightly too close to another creature lands beside it instead
+## of failing. Candidates use the full placement_error, nearest first.
+func placement_point(point: Vector2, reach := 1.5) -> Vector2:
+	if not is_instance_valid(world) or not point.is_finite(): return Vector2.INF
+	if placement_error(point).is_empty(): return point
+	for ring in range(1, 7):
+		var distance := reach * float(ring) / 6.0
+		var steps := 8 + ring * 4
+		for step in steps:
+			var candidate := point + Vector2.from_angle(TAU * float(step) / float(steps)) * distance
+			if placement_error(candidate).is_empty(): return candidate
+	return Vector2.INF
 
 
 func start() -> bool:
@@ -668,6 +685,7 @@ func apply_board(data: Dictionary) -> void:
 				unit.set_meta("arena_placement", record.placement)
 				unit.display_name = RemakeText.t("Spirit echo") if record.placement.get("echo", false) else ArenaRules.title(record.prototype, int(record.placement.get("family", -1)), int(record.placement.get("rank", 0)))
 				unit.stats = record.runtime_stats.duplicate(true)
+				ArenaAlliances.tune_prototype(unit, record.placement)
 				keep[uid] = true
 				if deploying and rendered:
 					var target: Vector2 = record.placement.get("point", unit.pos)

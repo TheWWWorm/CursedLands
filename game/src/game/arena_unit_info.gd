@@ -97,10 +97,26 @@ static func _number(value: float) -> String:
 	return str(roundi(value)) if is_equal_approx(value, roundf(value)) else ("%.1f" % value)
 
 
-static func _armor_range(armor: PackedFloat32Array, start: int) -> String:
-	var low := mini(roundi(armor[start]), mini(roundi(armor[start + 1]), roundi(armor[start + 2])))
-	var high := maxi(roundi(armor[start]), maxi(roundi(armor[start + 1]), roundi(armor[start + 2])))
-	return str(low) if low == high else "%d–%d" % [low, high]
+## A group's common value: most of its three damage types share it. The
+## other types are named, e.g. a troll's piercing hide, instead of a range.
+static func _armor_base(armor: PackedFloat32Array, start: int) -> int:
+	var values := [roundi(armor[start]), roundi(armor[start + 1]), roundi(armor[start + 2])]
+	for value: int in values:
+		if values.count(value) > 1: return value
+	return values.min()
+
+
+static func _armor_line(rows: Array[Dictionary], start: int, rank: int) -> String:
+	var parts: Array[String] = []
+	for stats: Dictionary in rows: parts.append(str(_armor_base(stats.armor, start)))
+	var text := _series(parts, rank) if rows.size() == 3 else parts[0]
+	for type in range(start, start + 3):
+		var differs := rows.any(func(stats): return roundi(stats.armor[type]) != _armor_base(stats.armor, start))
+		if not differs: continue
+		var own: Array[String] = []
+		for stats: Dictionary in rows: own.append(str(roundi(stats.armor[type])))
+		text += " · " + RemakeText.t(WikiCatalog.DAMAGE_TYPES[type]) + " " + (_series(own, rank) if rows.size() == 3 else own[0])
+	return text
 
 
 static func _series(parts: Array[String], rank: int) -> String:
@@ -126,11 +142,11 @@ static func summary(id: String, unit: GameUnit = null, family := -1, rank := 0, 
 		var parts: Array[String] = []
 		for stats: Dictionary in rows:
 			match fields[title]:
-				"physical": parts.append(_armor_range(stats.armor, 0))
-				"elemental": parts.append(_armor_range(stats.armor, 3))
 				"damage": parts.append("%d–%d" % [stats.min, stats.max])
+				"physical", "elemental": pass
 				_: parts.append(_number(float(stats[fields[title]])))
-		var value := _series(parts, rank) if rows.size() == 3 else parts[0]
+		var value := _armor_line(rows, 0 if fields[title] == "physical" else 3, rank) if fields[title] in ["physical", "elemental"] \
+			else _series(parts, rank) if rows.size() == 3 else parts[0]
 		var line := RemakeText.t(title) % value if title.contains("%s") else RemakeText.t(title) + "  " + value
 		if title == "Damage":
 			var best := 6
