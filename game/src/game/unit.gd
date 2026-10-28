@@ -3725,7 +3725,7 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		remove_meta("attacker")
 		world.ai.hit_hook(self, null)
 		return
-	if _anim_lock <= 0.0 and world.random_float() < 0.5:
+	if _anim_lock <= 0.0 and world.random_float() < 0.5 and _can_react_for(_hit_reaction_len()):
 		_anim_lock = minf(model.act("hit", 1, 0.05), 0.6)
 		action = "hit"
 		GameSound.unit(self, "hit")
@@ -3741,6 +3741,20 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		world.ai.on_player_attacked(self, source)
 	# Damage passes a marked hostility on at once (553da9), not next tick.
 	world.ai.propagate_hostility(self)
+
+
+## 549d00: a unit standing in an attack whose next strike is
+## due before a hit reaction of `secs` would end plays no reaction, so being
+## hit never delays its blows.
+func _can_react_for(secs: float) -> bool:
+	return not (order.get("type", "") == "attack" and not _moving and _attack_cd < secs)
+
+
+func _hit_reaction_len() -> float:
+	var clip := model.action_clip("hit", 1) if model else ""
+	if clip == "" or not model.has_anim(clip):
+		return 0.6
+	return minf(model.player.get_animation("ei/" + clip).length, 0.6)
 
 
 func die(killer: GameUnit = null) -> void:

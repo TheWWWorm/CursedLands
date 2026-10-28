@@ -720,6 +720,24 @@
       ]
     },
     {
+      "id": "combat/hit_reaction_tempo",
+      "category": "combat",
+      "script": "tools/tests/hit_reaction_tempo.gd",
+      "marker": "HIT_REACTION_TEMPO",
+      "min_checks": 4,
+      "quick": false,
+      "description": "A fighter whose next strike is due before a hit reaction would end plays none",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "creatures/ai_live_eligibility",
       "category": "creatures",
       "script": "tools/tests/ai_live_eligibility.gd",
