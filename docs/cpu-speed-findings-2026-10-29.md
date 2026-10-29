@@ -220,21 +220,46 @@ creation 0.89 s: part nodes and meshes, since libraries and atlases are
 prepared ahead), shader warm-up 1.80 s (terrain colour cache 0.86 s =
 creation 0.28 s + an 8-page native bake 0.58 s on the four pool threads;
 materials 0.35 s; first picture 0.39 s), world take-over 0.32 s, attach
-0.19 s. The next change, designed but not started: create the colour
-cache in the ahead build (`TerrainColorCache.create` works out of the
-tree; `terrain.gd` guards it with `is_inside_tree()` for its own
-`apply_gfx`), and in `_rpc_zone` focus the rig on the local hero's record
-position (`r.position`, `r.controller == my_index`; `CameraRig.focus`
-applies the camera transform at once, and `village_start_view` would take
-that position early) and start the page bake (`_select` + `_start_jobs(true)`)
-before the 1.28 s replica spawn, joining it in `ShaderWarmup.run` where
-`prepare(cam)` runs today; ~0.8 s off the critical path. A rendered
-regression (as `focused/terrain_color_loading`) must check the early
-start bakes each page once and the warm-up finds them resident. The
-remaining build-ahead items: `EIUnitModel.prewarm` 1.74 s is serial per
-record (its per-record library decode and atlas composition could be a
-wide group if `EIAnim._libraries` and `_textures` writes are made
-thread-safe), object instantiation 0.67 s, the mob read 0.20 s.
+0.19 s.
+
+Done in this pass (seventh): the colour cache is created in the client's
+build ahead (`Session._construct_world`; `TerrainColorCache.create` works
+out of the tree) and, after the zone message, `_prepare_ground_ahead`
+focuses the rig where the local hero's record stands
+(`CameraRig.village_start_view(zone, at)`, else `focus`) and starts the
+view's page bakes (`prepare_start`, pumped every 16 spawned records by
+`prepare_pump`) before the replica spawn; `ShaderWarmup.run`'s
+`prepare(cam)` joins them. Solo Portal load 11 → 10 s warm; the client's
+part after the message 3.5 → 2.8 s
+(`local/validation/cpu-speed-20261029/ground-ahead/solo-load-wallclock.txt`).
+A presenting co-op host (`_build_world` + `_start_pose`, not `_rpc_zone`)
+does not get the early start yet. Remaining on the client's path after the
+message: model creation 0.89 s (part nodes and meshes; whole models could
+be pre-built ahead per map record and adopted when the host's record's
+gear plan matches), the world take-over 0.32 s, attach 0.19 s, the
+materials' warm-up 0.35 s and the first picture 0.39 s. Remaining in the
+build ahead: `EIUnitModel.prewarm` 1.74 s is serial per record, object
+instantiation 0.67 s, the mob read 0.20 s.
+
+`prewarm` cannot simply run its record loop as a wide group (reviewed,
+not changed): the loop writes seven shared caches after their heavy work
+(`EIFigure._models`, `Items._cache`, `_template_paths`, `EIAnim._libraries`,
+`_textures`, `_surface_textures`, `RaytraceTextureSource._owners`), reads
+`GameData.figures` / `textures` through one shared `FileAccess`
+(`EIResArchive._read_range` seeks then reads), calls `NetStatus.keep_alive`
+(main-loop and peer polling), and a nested `Portability.group` inside
+`EIAnim.library` would start 8 × 8 threads (or block pool tasks on pool
+tasks where `wide_lanes` is 0). The feasible split: phase 0 on the main
+thread derives the plans and deduplicates to the unique library keys (67)
+and atlas keys (92) and reads their bytes; phase 1 runs a wide group over
+those unique items with pure functions (`EIMmp.decode` + an
+`_compose_image(images) -> Image` / `_compose_surface_image`, and a
+`build_library(bytes, keys, scale)` split out of `EIAnim.library` with a
+`parallel` flag on `_copied`); phase 2 on the main thread creates the
+textures, calls `RaytraceTextureSource.remember` and inserts into the
+caches. Most of the 1.74 s is those 67 builds and 92 compositions; the
+other ~320 records are cache hits. `height_scale` reparses nothing
+expensive: 413 calls take 44 ms headless (measured), so it needs no cache.
 
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the

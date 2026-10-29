@@ -103,7 +103,9 @@ func refresh()->void:
 		for node in terrain.get_children():
 			if not (node is EITerrainSector or node is MeshInstance3D) or not String(node.name).begins_with("Sector_"):continue
 			var parts:=String(node.name).split("_");var key:=Vector2i(int(parts[1]),int(parts[2]))
-			_sectors.append({"key":key,"node":node,"box":node.global_transform*node.get_aabb()})
+			# Terrain-local: the cache may be created before the terrain
+			# enters the tree (the world built ahead); _select maps the boxes.
+			_sectors.append({"key":key,"node":node,"box":node.transform*node.get_aabb()})
 	var source := terrain.land_shader_source()
 	if source != _shader_source:
 		_shader_source=source
@@ -155,9 +157,10 @@ func sync_parameter(key:StringName,value:Variant)->void:
 func _select(camera:Camera3D)->void:
 	_serial+=1;_wanted.clear();_wanted_keys.clear()
 	var planes:=camera.get_frustum()
+	var to_world:Transform3D=terrain.global_transform if terrain.is_inside_tree() else terrain.transform
 	for record:Dictionary in _sectors:
 		if not is_instance_valid(record.node):continue
-		var box:AABB=record.box
+		var box:AABB=to_world*record.box
 		var centre:=box.get_center();var half:=box.size*.5
 		var inside:=true
 		for plane:Plane in planes:
@@ -265,6 +268,18 @@ func _install(key:Vector2i,node:Node3D,texture:Texture2D,bytes:int)->bool:
 	_resident[key]={"node":node,"material":material,"bytes":bytes,"used":_serial};_bytes+=bytes
 	_refresh_soft(key)
 	return true
+
+## Loading, early: select this view's pages and start their bakes on the
+## pool, then return; the caller does other work (the replica spawn) while
+## they bake. prepare_pump joins finished pages and starts the rest within
+## the same bound; prepare(camera) finally joins them all.
+func prepare_start(camera:Camera3D)->void:
+	if not _enabled:return
+	_select(camera);_start_jobs(true)
+
+func prepare_pump()->void:
+	if not _enabled or _jobs.is_empty():return
+	_finish();_start_jobs(true)
 
 func prepare(camera:Camera3D)->void:
 	if not _enabled:return

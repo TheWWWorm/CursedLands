@@ -1129,6 +1129,10 @@ func _construct_world(z: Dictionary, authority: bool) -> GameWorld:
 	w.retain_logic_debt = local_host.worker
 	_building = true   # NetStatus.keep_alive polls the network meanwhile
 	w.load_map(z.mpr, z.get("mob", z.mpr), authority)
+	if w.presentation and w.terrain and not is_instance_valid(w.terrain.color_cache) and TerrainColorCache.available(w.terrain):
+		# Its atlas digest and baked shader now, out of the tree, rather
+		# than in the shader warm-up after the zone message.
+		w.terrain.color_cache = TerrainColorCache.create(w.terrain)
 	if w.presentation and MoviePlayer.enabled and String(z.get("id", "")) == ENDING_ZONE:   # the end credits' movies, ahead of time
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Crdtfin")) + ["crdt"]
 			+ Array(MoviePlayer.ini_movies("Crdtfout")))
@@ -1398,8 +1402,11 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		world.add_mob_objects(f)
 	for nid in levers:
 		world.lever_sys.restore_row(int(nid), levers[nid])
-	for r: Dictionary in records:
-		_spawn_record(r)
+	_prepare_ground_ahead(z, records)
+	for i in records.size():
+		_spawn_record(records[i])
+		if i % 16 == 15:
+			_pump_ground()
 	_relink_heroes()
 	LoadingScreen.step(10)
 	game.attach_world(world)
@@ -1424,6 +1431,45 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		GameData.trace("%d host messages held during the loading screen" % held.size())
 	for c: Callable in held:
 		c.call()   # a further zone holds again: the rest waits for it
+
+
+## Client, after the zone message and before the host's units spawn: the
+## camera goes where the local hero's record stands (village_start_view
+## would take it there after the spawn), and the terrain colour cache
+## starts baking that view's pages on the pool while the 400 replicas are
+## made; ShaderWarmup.run's prepare(cam) then joins them instead of
+## waiting for the whole bake.
+func _prepare_ground_ahead(z: Dictionary, records: Array) -> void:
+	if world == null or not world.presentation or world.terrain == null or game == null or game.rig == null:
+		return
+	var at: Variant = _hero_record_position(records)
+	if not at is Vector3:
+		return
+	if not game.rig.village_start_view(z, at):
+		game.rig.focus(at)
+	var terrain: EITerrain = world.terrain
+	if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available(terrain):
+		terrain.color_cache = TerrainColorCache.create(terrain)
+	var cam := game.rig.camera
+	if is_instance_valid(terrain.color_cache) and cam and cam.is_inside_tree():
+		terrain.color_cache.prepare_start(cam)
+
+
+func _pump_ground() -> void:
+	if world and world.terrain and is_instance_valid(world.terrain.color_cache):
+		world.terrain.color_cache.prepare_pump()
+
+
+## The world position of the first record the local player controls, or null.
+func _hero_record_position(records: Array) -> Variant:
+	if world == null or world.terrain == null:
+		return null
+	for r in records:
+		if not r is Dictionary or int(r.get("controller", -1)) != my_index or not r.get("position") is Vector3:
+			continue
+		var p: Vector3 = r.position
+		return EISpace.pos(p.x, p.y, world.terrain.height_at(p.x, p.y))
+	return null
 
 
 ## Each LMP connection loads only its own destination. Reliable events use

@@ -330,7 +330,10 @@ func set_opening_view(view: Transform3D) -> void:
 	_opening_view = view
 	_apply()
 
-func village_start_view(zone: Dictionary) -> bool:
+## `at`: where the hero will stand when its unit does not exist yet (the
+## client focuses there before it spawns the host's units, so the ground's
+## colour pages of that view can bake meanwhile).
+func village_start_view(zone: Dictionary, at: Variant = null) -> bool:
 	var reset := not _zone_view_initialized or GameData.option("village_start_view") == 1
 	_zone_view_initialized = true
 	if String(zone.get("type", "")) != "brief":
@@ -348,6 +351,8 @@ func village_start_view(zone: Dictionary) -> bool:
 	if not mine.is_empty():
 		focus(mine[0].position)
 		follow(mine[0] if GameData.option("cam_follow") == 1 else null)
+	elif at is Vector3:
+		focus(at)
 	return applied
 
 

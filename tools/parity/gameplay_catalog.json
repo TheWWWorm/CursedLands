@@ -2398,6 +2398,28 @@
       "focused": "zone_build_ahead"
     },
     {
+      "id": "network/zone_ground_ahead",
+      "category": "network",
+      "script": "tools/tests/zone_ground_ahead.gd",
+      "marker": "ZONE_GROUND_AHEAD",
+      "min_checks": 27,
+      "quick": true,
+      "description": "After the zone message a client focuses its camera where the local hero's record stands before it spawns the host's units (so the ground colour pages of that view bake meanwhile); the start view, follow and the spawned units are as before.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone2.mpr"
+      ],
+      "display": "headless",
+      "focused": "zone_ground_ahead"
+    },
+    {
       "id": "network/unit_prewarm_ahead",
       "category": "network",
       "script": "tools/tests/unit_prewarm_ahead.gd",
@@ -15798,6 +15820,26 @@
       "display": "rendered",
       "rendering_method": "forward_plus",
       "focused": "terrain_color_loading"
+    },
+    {
+      "id": "focused/terrain_color_ahead",
+      "category": "focused",
+      "script": "tools/tests/terrain_color_ahead.gd",
+      "marker": "TERRAIN_COLOR_AHEAD",
+      "min_checks": 10,
+      "quick": false,
+      "description": "The terrain colour cache can be created out of the tree and its loading bake started early (prepare_start) and pumped while other work runs; prepare then joins it with every page baked exactly once and the serial pixels.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "terrain_color_ahead"
     },
     {
       "id": "focused/terrain_cliff_disk",
