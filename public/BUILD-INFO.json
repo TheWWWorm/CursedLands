@@ -1,7 +1,7 @@
 {
-  "version": "1.36.0",
-  "source_tag": "v1.36.0",
-  "game_tree": "332cfc770d72285e977979de934fae44b37a1834",
+  "version": "1.36.1",
+  "source_tag": "v1.36.1",
+  "game_tree": "6bc7286949bf19a4ff93ce16747d9126dcb33fca",
   "protocol": 23,
   "platform": "web",
   "engine": "Godot 4.7.stable.official.5b4e0cb0f",
@@ -11,6 +11,6 @@
   "resource_count": 1526,
   "all_pck_resource_md5_valid": true,
   "original_game_data_bundled": false,
-  "pck_sha256": "054f33927d7043ce25a26948cf414f8b98309689aedc18a81dfa845f24be8d6d",
+  "pck_sha256": "23a858d04b0e3ed38ba5396ccd0b7a70b9698a058560435d89efc941fcedb3dc",
   "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
 }
