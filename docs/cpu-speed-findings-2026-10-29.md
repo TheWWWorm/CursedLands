@@ -365,12 +365,19 @@ is 4.13 s, of which `_build_world` 3.96–4.13 s and everything after it
 The library decode is the client's prewarm again, on the worker's main
 thread: a `GameWorld` that spawns its own units now starts the same
 background job from `on_mob` and joins it before the spawn loop (below).
-The next worker cuts in order: the class layers in parallel (0.6 s, native
-`_fixed_sets` sharing to check), the authority's meshes and mesh instances
+The next worker cuts in order: the class layers in parallel (0.6 s; done,
+fourteenth change), the authority's meshes and mesh instances
 (0.22 s; `_eye_offset`, `_view_neck`, `weld_mesh` and the severed-limb,
 enemy-bar and ground-mark readers are presentation-only, `EIFigureGeometry`
 needs only the geometry meta), the first action 0.17 s (`act("idle")` on an
 authority that advances manually), the mob read 0.2 s.
+
+Done in this pass (fourteenth): the standing classes' navigation layers
+are built on worker lanes at load (`NavGrid.build_layers`, one native
+`build_layer` per class, assembled on the main thread in the order the
+units stand, the closures and the painted units as before); the world asks
+for them in one call instead of `nav.layer` per unit. The original game
+builds its AI maps serially; the comparison is not applicable.
 
 Done in this pass (thirteenth): `GameWorld.load_map` with units and no
 caller's `on_mob` (the simulation worker, a co-op host) starts
@@ -482,7 +489,9 @@ Remaining leads, in order of expected value:
    (`_raster_box`) would remove it. Not done: the class layers
    (`nav.layer` per standing class, 0.45–0.7 s) could build in parallel if
    the native builder's `_fixed_sets` sharing per class group is made
-   thread-safe; `EIMapScene._place_objects` 0.75–1.15 s headless (3261
+   thread-safe (done, fourteenth change: `build_layers`, the native build
+   is pure and every lane computes its group's closures itself when they
+   are not known yet); `EIMapScene._place_objects` 0.75–1.15 s headless (3261
    `EIFigure.instantiate`: node trees, cached meshes 0.4 s when cold) and
    2.2 s on the client (materials, `GroundContact`, scenery batches) is
    scene-tree work and would need the meshes built ahead on the pool.

@@ -414,10 +414,14 @@ func load_map(mpr: String, mob_name := "", with_units := true, on_mob := Callabl
 			spawn_unit(r)
 			LoadingScreen.object_done()
 		# The nav grids of the units' standing classes, built while loading
-		# rather than on a unit's first path (NavGrid.layer).
+		# rather than on a unit's first path (NavGrid.layer), one lane per
+		# class (NavGrid.build_layers), in the order the units stand.
+		var classes := []
 		for u: GameUnit in unit_rows():
-			NetStatus.keep_alive()
-			nav.layer(u._classes[2])
+			if not classes.has(u._classes[2]):
+				classes.append(u._classes[2])
+		NetStatus.keep_alive()
+		nav.build_layers(classes)
 	LoadingScreen.objects_done()
 	return true
 

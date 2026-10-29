@@ -513,27 +513,78 @@ func layer(cls: int) -> Layer:
 	return L
 
 
+## The layers of `classes` not built yet, in that order, their native
+## builds on worker lanes (one per class: `build_layer` is pure over the
+## grid's arrays and makes its own grid and buffers) and assembled here as
+## `layer` assembles one: the same layers, built while loading (GameWorld.
+## load_map) in the time of the slowest class rather than one after another.
+## `layers_grouped` counts the layers the last call built on lanes.
+var layers_grouped := 0
+func build_layers(classes: Array) -> void:
+	var wanted: Array[int] = []
+	for c in classes:
+		var cls := clampi(int(c), 0, 7)
+		if not _layers.has(cls) and not wanted.has(cls):
+			wanted.append(cls)
+	layers_grouped = 0
+	var builder := _native_builder()
+	if wanted.size() < 2 or builder == null or not Portability.threads():
+		for cls in wanted:
+			layer(cls)
+		return
+	if _lists_dirty:
+		_rebuild_lists()
+	var inputs := []
+	for cls in wanted:
+		inputs.append(_layer_input(cls))
+	var built := []
+	built.resize(wanted.size())
+	Portability.group(func(i: int) -> void: built[i] = builder.build_layer(inputs[i]), wanted.size(), true)
+	for i in wanted.size():
+		var cls: int = wanted[i]
+		var L := _native_layer(cls, built[i])
+		if L == null:
+			L = _build_layer(cls)
+		else:
+			layers_grouped += 1
+		_layers[cls] = L
+
+
+## The native builder's input for a class: the grid's arrays (copy-on-write,
+## read only by the builder) and the class group's closures when known.
+func _layer_input(cls: int) -> Dictionary:
+	return {"size":size,"cls":cls,"alt":_alt,"mode":_mode_w,
+		"dry_raw":_dry_raw,"dry_weight":_dry_weight,"steep":_steep,"special_cells":_special_cells,
+		"diff":_dry_diff,"cost":_cost,"depth":_depth,"hq":_hq,"spans":_spans,
+		"fixed":_fixed_sets.get(_group(cls), PackedByteArray())}
+
+
+## A layer from the native builder's result (null for an empty one): the
+## class group's closures are kept and the units standing now are painted.
+func _native_layer(cls: int, built: Dictionary) -> Layer:
+	if built.is_empty():
+		return null
+	var result := Layer.new()
+	result.label_owner = weakref(self)
+	result.cls = cls
+	result.astar = built.astar
+	result.raw = built.raw
+	result.land = built.land
+	result.cost = built.cost
+	result.bmin = built.bmin
+	result.comp = built.comp
+	_fixed_sets[_group(cls)] = built.fixed
+	_paint_layer_units(result)
+	return result
+
+
 func _build_layer(cls: int) -> Layer:
 	if _lists_dirty:
 		_rebuild_lists()
 	var builder := _native_builder()
 	if builder:
-		var built: Dictionary = builder.build_layer({"size":size,"cls":cls,"alt":_alt,"mode":_mode_w,
-			"dry_raw":_dry_raw,"dry_weight":_dry_weight,"steep":_steep,"special_cells":_special_cells,
-			"diff":_dry_diff,"cost":_cost,"depth":_depth,"hq":_hq,"spans":_spans,
-			"fixed":_fixed_sets.get(_group(cls), PackedByteArray())})
-		if not built.is_empty():
-			var result := Layer.new()
-			result.label_owner = weakref(self)
-			result.cls = cls
-			result.astar = built.astar
-			result.raw = built.raw
-			result.land = built.land
-			result.cost = built.cost
-			result.bmin = built.bmin
-			result.comp = built.comp
-			_fixed_sets[_group(cls)] = built.fixed
-			_paint_layer_units(result)
+		var result := _native_layer(cls, builder.build_layer(_layer_input(cls)))
+		if result:
 			return result
 	var L := Layer.new()
 	L.label_owner = weakref(self)

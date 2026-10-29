@@ -2530,6 +2530,28 @@
       "focused": "world_prewarm_authority"
     },
     {
+      "id": "pathing/nav_layers_lanes",
+      "category": "pathing",
+      "script": "tools/tests/nav_layers_lanes.gd",
+      "marker": "NAV_LAYERS_LANES",
+      "min_checks": 20,
+      "quick": true,
+      "description": "The navigation layers of the units' standing classes are built on worker lanes while the authority world loads (NavGrid.build_layers) in the order the units stand: each equals the serial builder's layer cell for cell (closed cells, weights, costs, block minima, labels), the class groups' closures are the same, classes built already are kept, duplicates are built once and a single missing class is built serially.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "nav_layers_lanes"
+    },
+    {
       "id": "quests/catacomb_mechanisms",
       "category": "quests",
       "script": "tools/tests/catacomb_mechanisms.gd",
