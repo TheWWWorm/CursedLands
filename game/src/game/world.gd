@@ -815,7 +815,8 @@ func _process(_dt: float) -> void:
 ## Invisible replicas outside hearing keep animation time on a coarse clock.
 ## Observation and fresh snapshots consume pending time immediately; otherwise
 ## small staggered queues avoid updating unobservable figures every frame.
-## Authority always runs normally.
+## A drawing authority always runs normally; a headless one (the solo
+## campaign's worker) puts its unticked actors on the same queues.
 var _presentation_clock := 0.0
 var _presentation_frame := -1
 var _hidden_presentations: Array[Array] = []
@@ -851,7 +852,7 @@ func _step_hidden_presentations(dt: float) -> void:
 	# A long frame visits each slot once, delivering all elapsed time to its
 	# actors instead of repeatedly traversing the same queues with zero delta.
 	var steps := mini(int(_hidden_acc / HIDDEN_PRESENTATION_SLICE), _hidden_presentations.size())
-	if authority:
+	if authority and presentation:
 		steps = _hidden_presentations.size()
 	if steps > 0:
 		_hidden_acc = fmod(_hidden_acc, HIDDEN_PRESENTATION_SLICE)

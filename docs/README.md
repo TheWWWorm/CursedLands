@@ -45,6 +45,7 @@ point in time and are not updated afterwards.
 
 ## Maintenance
 
+- [CPU speed findings, 2026-10-29](cpu-speed-findings-2026-10-29.md): measured but unchanged leads (script-driven perception in the Foothills, parallel perception batch, worker presentation and snapshot costs, client frame profile plan, profiler overhead, defects met on the way)
 - [Project review, 2026-10-28](project-review-2026-10-28.md): ranked open improvements (repository size, web build reproducibility, unregistered tests, runner drift, script-only platform lane, native provenance, UI scale, code structure)
 
 ## Records

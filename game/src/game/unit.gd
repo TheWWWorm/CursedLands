@@ -98,6 +98,8 @@ var pos := Vector2.ZERO:
 			world.nav.rebucket(self)
 			if world.ai.activity.enabled:
 				world.ai.activity.moved(self)
+		# An authority placement outside a tick (a replica's arrives by snapshot).
+		if _presentation_sleeping and world and world.authority: wake_presentation()
 ## Order of registration in GameWorld.units (0 = not in it): nearby-unit
 ## queries return units in this order, the order of a scan of `units`.
 var _seq := 0:
@@ -112,6 +114,7 @@ var facing := 0.0:
 		if facing != value:
 			facing = value
 			if _sim_state: _sim_state.update(&"facing", value)
+			if _presentation_sleeping and world and world.authority: wake_presentation()
 ## Bumped on every figure replacement. Renderers that rebind replaced bodies
 ## skip their per-unit scan while no figure has changed anywhere.
 static var model_revision := 0
@@ -298,8 +301,6 @@ var _pool_left := -1
 var _pool_sent := true
 var _pool_step := -1
 var _pool_checked_step := -1
-var _step_dist := 0.0
-var _last_pos := Vector2.ZERO
 ## Consecutive casts/strikes can keep the same action string between every
 ## network snapshot. A generation distinguishes a new action from a repeated
 ## state packet, so clients restart its clip exactly once.
@@ -1694,6 +1695,8 @@ func client_tick_effects() -> void:
 
 func tick(dt: float) -> void:
 	var started := Time.get_ticks_usec() if world.profile_simulation else 0
+	_last_tick_step = world._logic_step
+	if _presentation_sleeping: wake_presentation()
 	if _direct_pose: _direct_pose.restore_pose()
 	direct_motion = Vector2.ZERO
 	_direct_previous = pos
@@ -4033,6 +4036,13 @@ func _on_clip_started() -> void:
 
 static var defer_hidden_pose := not OS.get_cmdline_user_args().has("--ei-eager-poses")
 static var sleep_hidden_replicas := not OS.get_cmdline_user_args().has("--ei-eager-replicas")
+## The solo campaign's simulation worker (a headless authority) keeps actors
+## the world is not ticking on the same coarse clock; `--ei-eager-authority`
+## presents every actor every frame there, as before.
+static var sleep_idle_authority := not OS.get_cmdline_user_args().has("--ei-eager-authority")
+## World logic step of this actor's last tick (the original's active set
+## leaves most of a zone's objects unticked most of the time).
+var _last_tick_step := -1
 var _presentation_sleeping := false
 var _presentation_advancing := false
 var _presentation_generation := 0
@@ -4082,6 +4092,21 @@ func _can_sleep_presentation() -> bool:
 	return pos.distance_squared_to(eye) > ANIM_HEAR * ANIM_HEAR
 
 
+## A headless authority draws nothing. An actor the world has not ticked for
+## two logic steps (asleep outside the original's active set, or deferred)
+## changes nothing a frame could show: its figure keeps the invisible
+## replicas' coarse presentation clock (every animation second still
+## arrives) until a tick, a placement or an observer wakes it.
+func _can_sleep_authority_presentation() -> bool:
+	return sleep_idle_authority and _headless and world != null and world.authority and not world.presentation \
+		and world.draw_frame_enabled() and is_inside_tree() and model != null and not anim_watched \
+		and _direct_pose == null and world._logic_step - _last_tick_step >= 2
+
+
+func _may_sleep_presentation() -> bool:
+	return _can_sleep_presentation() if world == null or not world.authority else _can_sleep_authority_presentation()
+
+
 func _sleep_model() -> void:
 	if _sleeping_model == model:
 		return
@@ -4105,7 +4130,7 @@ func _advance_sleeping_presentation() -> void:
 
 
 func _step_sleeping_presentation() -> void:
-	if not _can_sleep_presentation():
+	if not _may_sleep_presentation():
 		wake_presentation()
 	else:
 		_advance_sleeping_presentation()
@@ -4124,7 +4149,8 @@ func wake_presentation() -> void:
 		_sleeping_model.set_process(_sleeping_model_process)
 	_sleeping_model = null
 	# Its first visible frame starts at the latest authoritative placement.
-	net_view.got(pos, true, facing)
+	if world == null or not world.authority:
+		net_view.got(pos, true, facing)
 	_sync_transform(0.0)
 	if _wounds_dirty and world and world.presentation:
 		_wounds_dirty = false
@@ -4154,7 +4180,7 @@ func _process(dt: float) -> void:
 		_overview_present_due += interval * (floorf(-_overview_present_due / interval) + 1.0)
 	elif _overview_present_acc > 0.0:
 		dt += _overview_present_acc; _overview_present_acc = 0.0
-	if world and not world.authority and is_processing() and _can_sleep_presentation():
+	if world and is_processing() and _may_sleep_presentation():
 		_presentation_sleeping = true
 		_presentation_generation += 1
 		_presentation_stamp = world._presentation_clock
@@ -4221,7 +4247,7 @@ func _present_native_frame(dt: float) -> void:
 	# casters (Game sets the sun's caster mask): neither it nor its shadow can
 	# be seen, and a few hundred figures in the shadow splits cost more than
 	# everything on screen.
-	var far := _far if dormant else not _screen.is_on_screen() and not _headless
+	var far := _far if dormant or _headless else not _screen.is_on_screen()
 	if far != _far:
 		_far = far
 		for g in _geoms:
@@ -4258,16 +4284,20 @@ func _present_native_frame(dt: float) -> void:
 		_anim_moving = 0.5
 	else:
 		_anim_moving -= dt
+	# A headless process (the solo campaign's simulation worker) has no screen:
+	# its notifiers never report on-screen, so their queries are skipped.
 	var step := ANIM_OFFSCREEN_STEP
 	if anim_watched:
 		step = 0.0
 	elif _anim_moving > 0.0:
 		step = 0.0
-		if not _screen.is_on_screen() and not _body.is_on_screen():
+		if _headless or (not _screen.is_on_screen() and not _body.is_on_screen()):
 			var gs := GameSound.instance
 			if gs and gs.mixer and Vector2(gs.mixer.listener.x, gs.mixer.listener.y).distance_squared_to(pos) \
 					> ANIM_HEAR * ANIM_HEAR:
 				step = ANIM_FAR_MOVE_STEP
+	elif _headless:
+		pass
 	elif _body.is_on_screen():
 		var cam := get_viewport().get_camera_3d()
 		step = ANIM_FAR_STEP if cam and global_position.distance_squared_to(cam.global_position) \
@@ -4703,20 +4733,17 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	# attack waiting so is the command in force: clearing the flag in that
 	# gap played the attack -> neutral cross clip and back on every repeated
 	# attack click, and clicks a second apart kept the strike from starting.
-	var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
-	# Keep readiness across repeated swings, then relax after the cooldown
-	# and a short input gap. Walking away also ends readiness once the
-	# committed impact/animation finishes; direct control is not a stance.
-	var ready: bool = direct_controlled and _attack_cd > -0.3 and cmd.get("type", "") != "direct_move"
-	if alert and not ready and controller >= 0 and world and world.authority and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction") and (not direct_controlled or _anim_lock <= 0.0):
-		alert = false
+	# Player units on the authority only; the command lookups are skipped
+	# for the hundreds of NPCs drawn every frame.
+	if alert and controller >= 0 and world and world.authority:
+		var cmd := order if not order.is_empty() or orders.is_empty() else orders[0]
+		# Keep readiness across repeated swings, then relax after the cooldown
+		# and a short input gap. Walking away also ends readiness once the
+		# committed impact/animation finishes; direct control is not a stance.
+		var ready: bool = direct_controlled and _attack_cd > -0.3 and cmd.get("type", "") != "direct_move"
+		if not ready and cmd.get("type", "") not in ["attack","direct_attack"] and not _pending_hit.has("direction") and (not direct_controlled or _anim_lock <= 0.0):
+			alert = false
 	_update_pose()
-	if not dead:
-		_step_dist += pos.distance_to(_last_pos)
-		if _step_dist > 1.6:
-			_step_dist = 0.0
-			GameSound.step(self)
-	_last_pos = pos
 
 
 ## UI combat relationship, including an issued order before its first tick and
@@ -5057,7 +5084,7 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 		_sync_transform(0.0)
 		resync_drawn()
 	if _presentation_sleeping:
-		if not _can_sleep_presentation():
+		if not _may_sleep_presentation():
 			wake_presentation()
 		else:
 			_sleep_model()
