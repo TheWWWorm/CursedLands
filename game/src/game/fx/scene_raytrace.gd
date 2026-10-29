@@ -736,29 +736,35 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality],camera.near,
 		float(camera.projection==Camera3D.PROJECTION_ORTHOGONAL),camera.far,float(history),Scene.RADIUS*2.0,
 		_center.x,_center.y,_center.z,Scene.RADIUS]))
-	var colours := PackedFloat32Array()
-	var local_positions := PackedFloat32Array()
-	var local_colours := PackedFloat32Array()
-	var extra_signature := PackedFloat32Array()
-	for i in (PATH_LIGHT_LIMIT if _path_mode else 7):
-		var light: OmniLight3D = _lights[i].get_ref() if i<_lights.size() else null
-		var position := Vector4.ZERO; var colour := Color(0,0,0,0)
-		if light != null and light.is_visible_in_tree() and light.light_energy>0.0:
-			var p := light.global_position; position = Vector4(p.x,p.y,p.z,light.omni_range)
-			colour = light.light_color.srgb_to_linear()*light.light_energy
-			colour.a = maxf(light.light_size,0.04)
-			if _path_mode:
-				colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
-				# Readability lights explicitly disable glossy highlights.
-				if light.light_specular<=0.0:colour.a=-colour.a
-		var pos := PackedFloat32Array([position.x,position.y,position.z,position.w])
-		var rgb := PackedFloat32Array([colour.r,colour.g,colour.b,colour.a])
-		local_positions.append_array(pos);local_colours.append_array(rgb)
-		if i<7:
-			data.append_array(pos);colours.append_array(rgb)
-			if publish_points:RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
-		else:extra_signature.append_array(pos);extra_signature.append_array(rgb)
-	data.append_array(colours)
+	# Full-size tables stay zero for absent entries; only the present lights
+	# are read and written, instead of allocating four arrays per slot of the
+	# 64-entry table every frame.
+	var table := PATH_LIGHT_LIMIT if _path_mode else 7
+	var local_positions := PackedFloat32Array();local_positions.resize(table*4)
+	var local_colours := PackedFloat32Array();local_colours.resize(table*4)
+	for i in mini(_lights.size(),table):
+		var light: OmniLight3D = _lights[i].get_ref()
+		if light == null or not light.is_visible_in_tree() or light.light_energy<=0.0: continue
+		var p := light.global_position
+		local_positions[i*4]=p.x;local_positions[i*4+1]=p.y;local_positions[i*4+2]=p.z;local_positions[i*4+3]=light.omni_range
+		var colour := light.light_color.srgb_to_linear()*light.light_energy
+		colour.a = maxf(light.light_size,0.04)
+		if _path_mode:
+			colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
+			# Readability lights explicitly disable glossy highlights.
+			if light.light_specular<=0.0:colour.a=-colour.a
+		local_colours[i*4]=colour.r;local_colours[i*4+1]=colour.g;local_colours[i*4+2]=colour.b;local_colours[i*4+3]=colour.a
+	if publish_points:
+		for i in 7:RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),
+			Vector4(local_positions[i*4],local_positions[i*4+1],local_positions[i*4+2],local_positions[i*4+3]))
+	data.append_array(local_positions.slice(0,28));data.append_array(local_colours.slice(0,28))
+	# Extended entries interleave position and colour per light (see
+	# _small_lighting_change); absent entries stay zero.
+	var extra_signature := PackedFloat32Array();extra_signature.resize(maxi(table-7,0)*8)
+	for i in range(7,mini(_lights.size(),table)):
+		var at := (i-7)*8
+		for c in 4:
+			extra_signature[at+c]=local_positions[i*4+c];extra_signature[at+4+c]=local_colours[i*4+c]
 	if _path_mode:
 		# Cloud attenuation changes illumination, not the authored time of day.
 		var daylight := Gfx.sun_day(Gfx.sun)
@@ -866,7 +872,9 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	# advances sunlight and sky every frame, even with a stationary camera.
 	if current.size()!=previous.size() or current.size()<116*4 or (current.size()-116*4)%32!=0: return false
 	if current.slice(44*4,48*4)!=previous.slice(44*4,48*4): return false
-	if include_local:
+	# Unchanged light tables pass every per-light test below; skip the loops.
+	var compact_same := current.slice(48*4,104*4)==previous.slice(48*4,104*4)
+	if include_local and not compact_same:
 		for i in 7:
 			if not _small_light_motion(current,previous,(48+i*4)*4): return false
 	for offset in [32,40,104,108,112]:
@@ -889,10 +897,12 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	if not direction.is_finite() or not old_direction.is_finite() or direction.distance_squared_to(old_direction)>0.000001: return false
 	if not include_local:return true
 	var colour_offsets: Array[int]=[]
-	for i in 7:colour_offsets.append((76+i*4)*4)
-	for offset in range(116*4,current.size(),32):
-		if not _small_light_motion(current,previous,offset):return false
-		colour_offsets.append(offset+16)
+	if not compact_same:
+		for i in 7:colour_offsets.append((76+i*4)*4)
+	if current.slice(116*4)!=previous.slice(116*4):
+		for offset in range(116*4,current.size(),32):
+			if not _small_light_motion(current,previous,offset):return false
+			colour_offsets.append(offset+16)
 	for offset: int in colour_offsets:
 		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
 		if current.decode_float(offset+12)!=previous.decode_float(offset+12): return false

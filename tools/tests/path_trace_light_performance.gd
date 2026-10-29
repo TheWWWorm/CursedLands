@@ -35,7 +35,7 @@ func run() -> void:
 			for i in 64:motion.lamps[i].visible=i<choice[0]
 			motion.moving=choice[1];await frames(40)
 			check(rt._lights.size()==choice[0],"benchmark retains %d lights"%choice[0])
-			gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();sampling=true
+			phase_source=rt;gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();phase_samples.clear();sampling=true
 			var wall:=[];var viewport_gpu:=[];var previous:=Time.get_ticks_usec();var resets:=0
 			for i in 90:
 				await frames(1);var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
@@ -45,7 +45,7 @@ func run() -> void:
 			check(resets==0,"small light motion keeps the frame history (%d resets)"%resets)
 			runs.append({"lights":choice[0],"moving":choice[1],"round":round_index,"history_resets":resets,
 				"frame_ms":summary(wall),"rt_gpu_ms":summary(gpu_samples.duplicate()),"main_gpu_ms":summary(viewport_gpu),
-				"controller_cpu_ms":summary(cpu_samples.duplicate()),"nrd":rt.device.nrd_active})
+				"controller_cpu_ms":summary(cpu_samples.duplicate()),"controller_phases_ms":phase_summary(),"nrd":rt.device.nrd_active})
 			print("MANY_LIGHT_BENCH ",JSON.stringify(runs.back()))
 	FileAccess.open(out.path_join("path-light-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"runs":runs,
 		"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),

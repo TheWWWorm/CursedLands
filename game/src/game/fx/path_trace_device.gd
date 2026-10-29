@@ -709,6 +709,7 @@ func reconstruct(frame: PackedByteArray) -> bool:
 		raw_reconstruction_frames+=1
 		return true
 	if not _reconstruct_direct(frame):return false
+	if _profile_stages:_rd.capture_timestamp("PT direct filter")
 	var previous := nrd_active
 	var failed_now := false
 	nrd_active=false

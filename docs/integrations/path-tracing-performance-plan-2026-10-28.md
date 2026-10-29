@@ -116,7 +116,12 @@ eight to one at four bounces.
    replacement, presented first-person views, the native transform tracker,
    morph poses) and `cpu_frame_ms` / `cpu_render_ms`, so the next step can
    target the measured phase. The native tracker itself cannot be rebuilt on
-   this workstation (no C++ toolchain).
+   this workstation (no C++ toolchain). First step taken: the frame-constant
+   phase builds the light tables from the present lights only and skips the
+   per-light history comparison for unchanged tables (0.12–0.23 ms down to
+   0.08–0.20 ms per frame depending on the light count; measurements in the
+   validation record). Scene update and render submission, about 0.45 ms
+   each, are the remaining controller phases.
 
 Not worth changing: visibility ray flags, sky and cloud evaluation, light
 array indexing and the multi-sample loop (the presets use one sample).

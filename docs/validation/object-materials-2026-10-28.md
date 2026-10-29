@@ -397,6 +397,64 @@ freezes the simulation and `path_trace_transmission_live` disables the
 daylight update (2 resets in 15 frames on both packs), so the live reset rate
 under an advancing clock was not reproduced here.
 
+## Where the river's ray time goes (Low, 1280×720)
+
+`path_trace_performance.gd` on the committed pack, `--pt-case=path-2-low`,
+two runs per configuration, ray-stage medians (`terrain-*`, `attr-*`,
+`cases-*`, `stages-*` runs):
+
+| Configuration | Rays |
+| --- | ---: |
+| No detail features | 0.41–0.50 ms |
+| Surface materials only | 0.39–0.42 ms |
+| Leaf lighting only | 0.38–0.44 ms |
+| Terrain relief and transitions only | 0.47–0.50 ms |
+| Terrain with cliff projection | 0.58–0.65 ms |
+| All detail features | 0.59–0.66 ms |
+
+Object surface materials and leaf lighting cost nothing measurable on this
+view; terrain relief and transitions add about 0.05 ms and the cliff
+projection about 0.1 ms, so the cliff walls of the river banks are the one
+detail feature with a visible share (roughly a sixth of the ray stage).
+
+With every detail feature on, the Quality bounce count (`path-4-low`, which
+also enables refraction) measures 1.01–1.07 ms against 0.62–0.80 ms for two
+bounces; about half of that difference is the refraction pass on the still
+water (see above), the rest the compensated deep tail. Within one process the
+later cases run slower than the earlier ones by up to 25% (path-2-low
+0.62 ms in the first round, 0.77–0.85 ms after the four-bounce cases), which
+is consistent with the laptop GPU warming; every comparison in this record
+therefore interleaves its packs within a run or alternates run order.
+
+A new `PT direct filter` timestamp splits the reconstruction stage: the
+direct-light filter (its dispatch plus the four history copies) takes
+0.091–0.097 ms and NRD 0.185–0.196 ms of the 0.28 ms stage, with the final
+composite in the 0.012 ms "copies" slot.
+
+## Controller frame constants
+
+The controller rebuilt the 64-entry local-light tables every frame with four
+array allocations per slot and compared every slot's history record even when
+no light had changed. It now writes only the present lights into zero-filled
+tables and skips the per-light comparison when a table is unchanged; the
+uploaded frame bytes are identical. `path_trace_light_history` (58),
+`path_trace_bounce_lights` (17) and `spell_lighting_gallery_pt` (85) pass on
+the changed pack. The benchmarks now sample the controller's phase timings per
+frame under `--ei-profile-rt`; `cpu_frame_ms` medians, two runs per pack in
+ABBA order (`cpu-river-*`, `cpu-lights-*`):
+
+| Scene | Previous | Changed |
+| --- | ---: | ---: |
+| River, 1 light | 0.123–0.130 ms | 0.081–0.091 ms |
+| River, 7 probe lights | 0.119–0.137 ms | 0.082–0.107 ms |
+| 16 lights | 0.139–0.147 ms | 0.108–0.124 ms |
+| 64 lights, still | 0.189–0.192 ms | 0.164–0.189 ms |
+| 64 lights, one moving | 0.220–0.235 ms | 0.172–0.204 ms |
+
+The scene-update (0.39–0.52 ms) and render-submission (0.41–0.51 ms) phases
+are unchanged and remain the larger controller costs; the GPU ray stage is
+identical within noise, as expected for identical frames.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
