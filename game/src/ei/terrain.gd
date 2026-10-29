@@ -1165,6 +1165,13 @@ func _build(arc: EIResArchive) -> void:
 	_lava.resize(64)
 
 	var complete := true
+	# The sector bytes, the land vertices and the ground / water records stay
+	# serial: _read_vertices writes the shared heights / land_xy / land_n rows
+	# and _height_range, the _record_* calls the shared ground and water fields,
+	# and the archive is read in the authored order. A presenting build keeps
+	# one record per sector for the lanes below; _liquid_xy changes only x / z,
+	# which _record_water (y) never reads, so it moves to the lanes unchanged.
+	var records := []
 	for sy in sectors_y:
 		NetStatus.keep_alive()
 		for sx in sectors_x:
@@ -1180,37 +1187,48 @@ func _build(arc: EIResArchive) -> void:
 			_record_ground(land_tex, sx, sy)
 			var wverts := []
 			var water_mats := PackedInt32Array()
-			var vert_mats := PackedInt32Array()
+			var water_tex := PackedInt32Array()
 			if liquids:
 				water_mats = _read_u16s(d, tex_off + 1024)
-				if presentation: vert_mats = _vertex_materials(water_mats)
 				wverts = _read_vertices(d, 5 + VERTS * VERTS * 8, sx, sy, false)
-				_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
-				if presentation: land.append(_underwater(land[0], wverts[0], vert_mats))
-			if presentation:
-				var mi := EITerrainSector.new()
-				mi.tile_origin = Vector2i(sx * TILES, sy * TILES)
-				mi.configure(_mesh_arrays(land, land_tex, PackedInt32Array(), Vector2i(sx * TILES, sy * TILES)),
-					_land_mat, SHADOW_RECEIVER_LAYER | DECAL_LAYER, EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground"))
-				mi.name = "Sector_%d_%d" % [sx, sy]
-				add_child(mi)
-			if liquids:
-				var water_tex := _read_u16s(d, tex_off + 512)
+				if not presentation:
+					_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
+				water_tex = _read_u16s(d, tex_off + 512)
 				_record_water(wverts[0], water_mats, sx, sy)
 				_record_liquid_ground(water_tex, water_mats, sx, sy)
-				if presentation:
-					var wm := _make_mesh(wverts, water_tex, water_mats, _water_mat, Vector2i.ZERO, vert_mats)
-					if wm:
-						wm.name = "Water_%d_%d" % [sx, sy]
-						wm.layers = WaterReflection.WATER_LAYER
-						wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-						wm.extra_cull_margin = 8.0   # SetWaterLevel moves it in the shader
-						add_child(wm)
+			if presentation:
+				records.append({"sx": sx, "sy": sy, "land": land, "land_tex": land_tex,
+					"wverts": wverts, "water_mats": water_mats, "water_tex": water_tex})
 	_height_range_size = heights.size() if complete else -1
 	water_base = water.duplicate()
 	if not presentation:
 		set_process(false)
 		return
+	# The mesh arrays and the liquid vertex data of the sectors: pure per-sector
+	# work (~1 s of a 2 s build in one thread), one lane job each.
+	var arrays := []
+	arrays.resize(records.size())
+	Portability.group(func(i: int) -> void:
+		arrays[i] = _sector_arrays(records[i]), records.size(), true)
+	# The nodes, in the sectors' order: Sector_x_y, then its Water_x_y.
+	var pieces := EITerrainSector.preferred() and not Gfx.on("gfx_soft_ground")
+	for i in records.size():
+		var record: Dictionary = records[i]
+		var sx: int = record.sx
+		var sy: int = record.sy
+		var mi := EITerrainSector.new()
+		mi.tile_origin = Vector2i(sx * TILES, sy * TILES)
+		mi.configure(arrays[i][0], _land_mat, SHADOW_RECEIVER_LAYER | DECAL_LAYER, pieces)
+		mi.name = "Sector_%d_%d" % [sx, sy]
+		add_child(mi)
+		var water_arrays: Array = arrays[i][1]
+		if not water_arrays.is_empty():
+			var wm := _water_node(water_arrays, _water_mat)
+			wm.name = "Water_%d_%d" % [sx, sy]
+			wm.layers = WaterReflection.WATER_LAYER
+			wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			wm.extra_cull_margin = 8.0   # SetWaterLevel moves it in the shader
+			add_child(wm)
 	# Lava: map materials whose liquid tiles are of ground type 13.
 	for i in water_mat.size():
 		if water_mat[i] < 64 and liquid_ground[i] == LAVA:
@@ -2074,9 +2092,35 @@ func _make_mesh(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array
 	var arrays := _mesh_arrays(verts, tex, tile_mats, tile_origin, vert_mats)
 	if arrays.is_empty():
 		return null
+	return _water_node(arrays, mat)
+
+
+## The water node of a sector's (non-empty) _mesh_arrays.
+func _water_node(arrays: Array, mat: Material) -> MeshInstance3D:
 	var mi := EIWaterMesh.new()
 	mi.configure(arrays, mat)
 	return mi
+
+
+## [land arrays, water arrays] of one sector of _build ([] water: no liquid
+## tiles) from its record {sx, sy, land, land_tex, wverts, water_mats,
+## water_tex}. Runs on a worker lane: it reads the map's materials and sizes
+## and writes the record's own arrays only (the liquid x / y, the underwater
+## colours appended to `land`).
+func _sector_arrays(record: Dictionary) -> Array:
+	var sx: int = record.sx
+	var sy: int = record.sy
+	var land: Array = record.land
+	var wverts: Array = record.wverts
+	var water_arrays := []
+	if not wverts.is_empty():
+		var water_mats: PackedInt32Array = record.water_mats
+		var vert_mats := _vertex_materials(water_mats)
+		_liquid_xy(wverts[0], land[0], water_mats, sx, sy)
+		land.append(_underwater(land[0], wverts[0], vert_mats))
+		water_arrays = _mesh_arrays(wverts, record.water_tex, water_mats, Vector2i.ZERO, vert_mats)
+	var land_arrays := _mesh_arrays(land, record.land_tex, PackedInt32Array(), Vector2i(sx * TILES, sy * TILES))
+	return [land_arrays, water_arrays]
 
 
 func _mesh_arrays(verts: Array, tex: PackedInt32Array, tile_mats: PackedInt32Array, tile_origin := Vector2i.ZERO, vert_mats := PackedInt32Array()) -> Array:

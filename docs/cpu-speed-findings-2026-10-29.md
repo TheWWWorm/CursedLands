@@ -281,6 +281,26 @@ the same pure functions. The clip libraries stay serial per record (their
 decode is already wide inside `EIAnim.library`). Measurement in
 `local/validation/cpu-speed-20261029/prewarm-atlases/`.
 
+Done in this pass (tenth): the terrain's sector meshes. `EITerrain._build`
+keeps phase A serial (sector bytes, `_read_vertices` into the shared height
+rows, the ground and water records, in the authored order) and, for a
+presenting build, keeps one record per sector; phase B computes each
+sector's land and water mesh arrays and the liquid x/z placement on a wide
+`Portability.group` (`_sector_arrays`: `_vertex_materials`, `_liquid_xy`,
+`_underwater`, `_mesh_arrays` are pure over `materials`, `texture_size`,
+`tile_size`, `sectors_x`); phase C creates the nodes on the main thread in
+the old child order. `_liquid_xy` moves after `_record_water` on this path;
+it writes x/z only and `_record_water` reads y only. Test
+`tools/tests/terrain_build_lanes.gd` (81 checks): zone1's 48 sectors build
+in 1.53 s with 8 lanes in a cold headless process against 0.2 s for the
+headless (no mesh) build. Warm solo Portal load on GPU Lab with both
+changes (`local/validation/cpu-speed-20261029/terrain-lanes/
+solo-load-wallclock.txt`): the client's build ahead 6.4 s → 4.5 s, zone
+load to zone ready 10 s → 9 s. The build ahead now finishes about 1.5 s
+before the host's zone message, so the critical path is the simulation
+worker's authority build (~4 s) followed by the spawn, attach and first
+picture (~2.8 s) again; the next leads are there (below).
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal

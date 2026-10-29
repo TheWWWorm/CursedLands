@@ -13091,6 +13091,26 @@
       "focused": "terrain_sector"
     },
     {
+      "id": "focused/terrain_build_lanes",
+      "category": "focused",
+      "script": "tools/tests/terrain_build_lanes.gd",
+      "marker": "TERRAIN_BUILD_LANES",
+      "min_checks": 82,
+      "quick": true,
+      "description": "The presentation terrain build computes its sectors' mesh arrays and liquid data on worker lanes: sector and water meshes, child order, shared height rows, water levels and ground records equal the serial build's.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mpr"
+      ],
+      "display": "headless",
+      "focused": "terrain_build_lanes"
+    },
+    {
       "id": "focused/soft_ground_mesh",
       "category": "focused",
       "script": "tools/tests/soft_ground_mesh.gd",
