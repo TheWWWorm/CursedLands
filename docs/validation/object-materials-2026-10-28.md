@@ -610,6 +610,19 @@ remain to be rerun with upscaling selected; the RR fixtures that do not need
 the runtime (`rr_raw`, `rr_resources`, `rr_presentation`, `rr_staging`,
 `rr_handoff`) passed in the full set above.
 
+Rerun with `rtx_upscaling=4` selected at launch (`rr135b-*`, 1.35.0 package,
+head pack): `path_trace_rr_live` 38, `path_trace_rr_details` 67,
+`path_trace_rtxdi_live` 44 and the four `path_trace_rr_traversal_*` routes 49
+checks each pass. `path_trace_travel_rr` fails only the recorded native
+output size (2560×1514 cannot be reached on this 1463×914 screen) and
+`path_trace_travel_rr_night` that plus the catch-up frame count (63), the
+near-field coverage at the destination and the held-ground hue check, the
+same three it fails on the unchanged pack. `path_trace_transmission_live`
+exited cleanly after 78 seconds without printing any check in this
+configuration; its 21 runtime-independent checks pass on the 1.34.0 mirror,
+and the cause of the silent exit with the RR runtime active is not
+established.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
