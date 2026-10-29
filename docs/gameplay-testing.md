@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 831 registered test configurations across 20
-areas, using 628 scripts (the focused manifest was folded into this catalog
+`tools/parity/gameplay.py` runs 832 registered test configurations across 20
+areas, using 629 scripts (the focused manifest was folded into this catalog
 on 2026-10-29; its cases carry a `focused` ID, see
 [the focused checks](regression-checks.md)). It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.

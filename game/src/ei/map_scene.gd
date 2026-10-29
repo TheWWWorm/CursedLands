@@ -34,15 +34,29 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 	s._presentation = presentation
 	if mob_name.is_empty():
 		mob_name = map_name
+	# The .mob is parsed on a thread of its own while the terrain is built
+	# (EIMob.load_bytes is pure over the bytes read here) and joined before
+	# the objects are placed.
+	var mob_path := "maps/%s.mob" % mob_name
+	var mob_bytes := PackedByteArray()
+	var mob_thread: Thread = null
+	var has_mob := GameFiles.exists(GameData.root.path_join(mob_path))
+	if has_mob:
+		mob_bytes = GameData.read_file(mob_path)
+		if Portability.threads():
+			mob_thread = Thread.new()
+			mob_thread.start(EIMob.load_bytes.bind(mob_bytes))
 	s.terrain = EITerrain.load_map(map_name, presentation)
 	if s.terrain == null:
+		if mob_thread:
+			mob_thread.wait_to_finish()
 		return null
 	s.add_child(s.terrain)
 	LoadingScreen.map_read()
 	var t1 := Time.get_ticks_msec()
-	var mob_path := "maps/%s.mob" % mob_name
-	if GameFiles.exists(GameData.root.path_join(mob_path)):
-		s.mob = EIMob.load_bytes(GameData.read_file(mob_path))
+	if has_mob:
+		s.mob = mob_thread.wait_to_finish() if mob_thread else EIMob.load_bytes(mob_bytes)
+		s.stats.mob_thread = mob_thread != null
 		s._relocated_objects = CatacombLift.apply(map_name,mob_name,s.mob,s.terrain)
 		if on_mob.is_valid():
 			on_mob.call(s._left_unit_records())

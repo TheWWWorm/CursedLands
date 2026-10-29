@@ -370,7 +370,15 @@ fourteenth change), the authority's meshes and mesh instances
 (0.22 s; `_eye_offset`, `_view_neck`, `weld_mesh` and the severed-limb,
 enemy-bar and ground-mark readers are presentation-only, `EIFigureGeometry`
 needs only the geometry meta), the first action 0.17 s (`act("idle")` on an
-authority that advances manually), the mob read 0.2 s.
+authority that advances manually), the mob read 0.2 s (done, fifteenth
+change: parsed on a thread during the terrain build).
+
+Done in this pass (fifteenth): the .mob is parsed on a thread of its own
+while the terrain is built (`EIMapScene.load_map`; the parser is pure over
+the bytes read on the main thread) and joined before the objects are
+placed: 0.2 s of the Portal's map read off both processes' load paths
+(zone1: 50–60 ms). The original reads its .mob serially; the comparison is
+not applicable.
 
 Done in this pass (fourteenth): the standing classes' navigation layers
 are built on worker lanes at load (`NavGrid.build_layers`, one native
