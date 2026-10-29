@@ -175,18 +175,21 @@ func rebind(raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
 	if not _pack.is_valid() or not _resolve.is_valid():return false
 	_input_frame=frame;return true
 
-func _matrix(data: PackedByteArray,start: int) -> Projection:
+## The four frame matrices decoded once as floats: one conversion instead of
+## sixty-four per-float reads on the main thread every frame.
+func _matrix(values: PackedFloat32Array,start: int) -> Projection:
 	var result := Projection()
 	for column in 4:
-		var offset := (start+column*4)*4
-		result[column]=Vector4(data.decode_float(offset),data.decode_float(offset+4),data.decode_float(offset+8),data.decode_float(offset+12))
+		var offset := start+column*4
+		result[column]=Vector4(values[offset],values[offset+1],values[offset+2],values[offset+3])
 	return result
 
 func _matrices(frame: PackedByteArray) -> PackedFloat32Array:
-	var projection := _matrix(frame,0).inverse()
-	var view := _matrix(frame,16).inverse()
-	var previous_view := _matrix(frame,48)
-	var previous_projection := _matrix(frame,32)*previous_view.inverse()
+	var values := frame.slice(0,64*4).to_float32_array()
+	var projection := _matrix(values,0).inverse()
+	var view := _matrix(values,16).inverse()
+	var previous_view := _matrix(values,48)
+	var previous_projection := _matrix(values,32)*previous_view.inverse()
 	if frame.decode_float(82*4)<0.5:
 		previous_projection=projection;previous_view=view
 	# Godot Camera3D matrices use -1..1 clip depth. NRD expects D3D 0..1,
@@ -194,10 +197,11 @@ func _matrices(frame: PackedByteArray) -> PackedFloat32Array:
 	for column in 4:
 		projection[column].z=(projection[column].z+projection[column].w)*0.5
 		previous_projection[column].z=(previous_projection[column].z+previous_projection[column].w)*0.5
-	var result := PackedFloat32Array()
+	var result := PackedFloat32Array();result.resize(64)
+	var at := 0
 	for matrix: Projection in [projection,previous_projection,view,previous_view]:
 		for column in 4:
-			var v: Vector4=matrix[column];result.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
+			var v: Vector4=matrix[column];result[at]=v.x;result[at+1]=v.y;result[at+2]=v.z;result[at+3]=v.w;at+=4
 	return result
 
 func _dispatch(program: Dictionary,sets: Array[RID],grid: Vector2i) -> void:

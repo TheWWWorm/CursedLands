@@ -16,10 +16,15 @@ var frames:=0
 var resets:=0
 var bytes:=0
 var active:=false
-## Initial light candidates streamed per pixel before reuse (diagnostic override --ei-pt-di-candidates=N).
-var INITIAL_CANDIDATES:=_candidate_override(16)
+## Initial light candidates streamed per pixel before reuse: the RTXDI library's
+## default of eight; sixteen cost about 0.25 ms more per frame at 1280x720 and
+## the temporal reservoir carries the effective sample count (diagnostic
+## override --ei-pt-di-candidates=N).
+var INITIAL_CANDIDATES:=_candidate_override(8)
 ## Spatial samples, disocclusion boost samples, permutation sampling and
-## bias correction mode (1 = basic); diagnostic override --ei-pt-di-tuning=a,b,c,d.
+## bias correction mode (1 = basic; 2 = pairwise MIS needs the shader built
+## with that mode allowed and measured slower); diagnostic override
+## --ei-pt-di-tuning=a,b,c,d.
 ## Two spatial neighbours per frame: the temporal reservoir carries most of
 ## the effective sample count, disocclusions still draw eight, and each
 ## neighbour costs about a quarter of a millisecond at 1280×720 on the
@@ -59,10 +64,10 @@ func prepare_targets(rd: RenderingDevice,size: Vector2i) -> bool:
 		_current_frame=_rd.storage_buffer_create(2816)
 	var pixels:=ceili(size.x/16.0)*ceili(size.y/16.0)*256
 	_reservoirs=_rd.storage_buffer_create(pixels*2*24)
-	_surfaces=_rd.storage_buffer_create(pixels*2*32)
+	_surfaces=_rd.storage_buffer_create(pixels*2*48)
 	active=[_reservoirs,_surfaces,_neighbors,_control,_previous_frame,_current_frame].all(func(r: RID):return r.is_valid())
 	if not active:dispose();return false
-	_size=size;bytes=pixels*112+176+2816*2+2048
+	_size=size;bytes=pixels*144+176+2816*2+2048
 	return true
 
 func uniforms(motion: RID) -> Array[RDUniform]:
@@ -73,10 +78,11 @@ func uniforms(motion: RID) -> Array[RDUniform]:
 		u.add_id(pair[1]);result.append(u)
 	return result
 
-func _matrix(frame: PackedByteArray,offset: int) -> Projection:
+func _matrix(values: PackedFloat32Array,start: int) -> Projection:
 	var m:=Projection()
 	for c in 4:
-		m[c]=Vector4(frame.decode_float(offset+c*16),frame.decode_float(offset+c*16+4),frame.decode_float(offset+c*16+8),frame.decode_float(offset+c*16+12))
+		var o:=start+c*4
+		m[c]=Vector4(values[o],values[o+1],values[o+2],values[o+3])
 	return m
 
 func prepare(frame: PackedByteArray,rr: bool) -> bool:
@@ -84,13 +90,15 @@ func prepare(frame: PackedByteArray,rr: bool) -> bool:
 	var history:=REUSE and _valid and _last_frame.size()==2816 and frame.decode_float(82*4)>.5
 	if not history:resets+=1
 	var previous:=_last_frame if history else frame
-	var view:=_matrix(previous,64).inverse()
-	var projection:=_matrix(previous,0).inverse()*view
-	var data:=PackedByteArray();data.resize(176)
+	var values:=previous.slice(0,32*4).to_float32_array()
+	var view:=_matrix(values,16).inverse()
+	var projection:=_matrix(values,0).inverse()*view
+	var packed:=PackedFloat32Array();packed.resize(32)
 	for m in 2:
 		var matrix: Projection=projection if m==0 else view
 		for c in 4:
-			for row in 4:data.encode_float(m*64+c*16+row*4,matrix[c][row])
+			var v: Vector4=matrix[c];packed[m*16+c*4]=v.x;packed[m*16+c*4+1]=v.y;packed[m*16+c*4+2]=v.z;packed[m*16+c*4+3]=v.w
+	var data:=packed.to_byte_array();data.resize(176)
 	for i in 4:data.encode_u32(128+i*4,[_size.x,_size.y,1-_index,_index][i])
 	for i in 4:data.encode_u32(144+i*4,[int(history),INITIAL_CANDIDATES,int(rr),frames][i])
 	for i in 4:data.encode_u32(160+i*4,TUNING[i])

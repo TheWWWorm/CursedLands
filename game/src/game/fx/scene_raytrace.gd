@@ -82,6 +82,27 @@ var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-h
 # Diagnostic comparison against the old display-resolution PT workload.
 var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
 var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var _nrd_radiance := OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+## Rarely changing global shader parameters are written only when their value
+## changes; the camera matrices still go every frame.
+const POINT_GLOBALS: Array[StringName] = [&"ei_rt_point0",&"ei_rt_point1",&"ei_rt_point2",&"ei_rt_point3",&"ei_rt_point4",&"ei_rt_point5",&"ei_rt_point6"]
+var _global_values := {}
+var _light_ids := PackedInt64Array()
+
+func _set_global(name: StringName,value: Variant) -> void:
+	if _global_values.has(name) and _global_values[name]==value:return
+	_global_values[name]=value
+	RenderingServer.global_shader_parameter_set(name,value)
+## Diagnostic continuation-bounce override (--ei-pt-bounces=N) for cost attribution runs.
+var _bounce_override := _bounce_override_arg()
+
+static func _bounce_override_arg() -> int:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--ei-pt-bounces="):return clampi(int(arg.trim_prefix("--ei-pt-bounces=")),0,4)
+	return -1
+
+func _path_bounces() -> int:
+	return _bounce_override if _bounce_override>=0 else GameData.option("pt_mode")*2
 var _profile_prepare := {}
 var _ground_cache := Scene.Ground.new()
 var _source_cache := Scene.SourceCache.new()
@@ -303,10 +324,10 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
 			RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
 			RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
-			RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,Scene.RADIUS))
-			RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
-			RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
-			RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
+			_set_global(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,Scene.RADIUS))
+			_set_global(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
+			_set_global(&"ei_pt_active",float(_path_mode))
+			_set_global(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
 			stats["active"]=true
 		stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
 	if _profile_cpu:
@@ -350,7 +371,7 @@ func _process(dt: float) -> void:
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size()
-	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
+	stats["path_tracing"]=_path_mode;stats["path_bounces"]=_path_bounces() if _path_mode else 0
 	stats["path_samples"]=1 if _rr_active else (GI_SAMPLES[quality] if _path_mode else 0)
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 	stats["program_compilations"]=_programs.compilations
@@ -409,7 +430,7 @@ func _end_preparation() -> void:
 	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
 
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
-	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not _nrd_radiance
 	if target is PathDevice:
 		# Private replacements need the same raw-input contract as the visible
 		# RR view. Denoising their first frame allocates a second full-size NRD
@@ -757,8 +778,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			if light.light_specular<=0.0:colour.a=-colour.a
 		local_colours[i*4]=colour.r;local_colours[i*4+1]=colour.g;local_colours[i*4+2]=colour.b;local_colours[i*4+3]=colour.a
 	if publish_points:
-		for i in 7:RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),
-			Vector4(local_positions[i*4],local_positions[i*4+1],local_positions[i*4+2],local_positions[i*4+3]))
+		for i in 7:_set_global(POINT_GLOBALS[i],Vector4(local_positions[i*4],local_positions[i*4+1],local_positions[i*4+2],local_positions[i*4+3]))
 	data.append_array(local_positions.slice(0,28));data.append_array(local_colours.slice(0,28))
 	# Extended entries interleave position and colour per light (see
 	# _small_lighting_change); absent entries stay zero.
@@ -825,7 +845,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		stats["light_history_limited"]=gentle_change and reuse and limit<8.0
 		_path_signature=bytes
 		_path_cloud_signature=cloud_bytes
-		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
+		data.append_array(PackedFloat32Array([_path_bounces(),limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
 		for axis in 4:
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
@@ -937,12 +957,17 @@ func _collect_lights(focus: Vector3) -> void:
 		found.sort_custom(func(a: Array,b: Array) -> bool:return a[1].get_instance_id()<b[1].get_instance_id())
 	else:found.sort_custom(func(a: Array,b: Array) -> bool:
 		return a[1].get_instance_id()<b[1].get_instance_id() if is_equal_approx(a[0],b[0]) else a[0]<b[0])
-	var previous := _lights.map(func(w: WeakRef): return w.get_ref())
-	_lights.clear()
-	for i in mini(found.size(),PATH_LIGHT_LIMIT if _path_mode else 7): _lights.append(weakref(found[i][1]))
+	var count := mini(found.size(),PATH_LIGHT_LIMIT if _path_mode else 7)
+	var ids := PackedInt64Array();ids.resize(count)
+	for i in count:ids[i]=found[i][1].get_instance_id()
+	# The same ordered set keeps its weak references; the history key resets
+	# only when membership or order actually changes.
+	if ids!=_light_ids:
+		_lights.clear()
+		for i in count:_lights.append(weakref(found[i][1]))
+		_light_ids=ids;_history_key=""
 	stats["lights"]=_lights.size()
 	stats["local_light_shadow_samples"]=4 if _path_mode and _lights.size()>4 else _lights.size()
-	if previous!=_lights.map(func(w: WeakRef): return w.get_ref()): _history_key=""
 
 static func _light_priority(light: OmniLight3D,focus: Vector3) -> float:
 	var c:=light.light_color.srgb_to_linear()*light.light_energy
@@ -969,6 +994,7 @@ func _release(release_programs := true) -> void:
 	_flush_retirement()
 	_set_ray_reconstruction(null,false)
 	_set_gi_active(false)
+	_global_values.clear()
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",0.0)
@@ -977,7 +1003,7 @@ func _release(release_programs := true) -> void:
 	stats["active"]=false;stats["rebuilding"]=false
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key="";_rr_view_key=""
 	_cancel_candidate();_clear_failure()
-	_scene=null;_lights.clear();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
+	_scene=null;_lights.clear();_light_ids=PackedInt64Array();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
 	_ground_cache=Scene.Ground.new()
 	_source_cache.clear();_source_cache=Scene.SourceCache.new()
 	_topology_pending=false

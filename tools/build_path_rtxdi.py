@@ -37,6 +37,10 @@ def stages():
                 if deep: defines += ['PATH_ROULETTE']
                 if not emitters: defines += ['PATH_NO_EMITTERS']
                 yield name, defines
+    # The separate direct-light pass: resampling and one visibility ray.
+    for emitters in (True, False):
+        yield 'path_trace_raygen_di' + ('' if emitters else '_no_emitters'), \
+            ['PATH_RAYGEN', 'PATH_RTXDI', 'PATH_DI_PASS'] + ([] if emitters else ['PATH_NO_EMITTERS'])
 
 
 def main():

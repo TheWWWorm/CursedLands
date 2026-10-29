@@ -666,6 +666,33 @@ void main() {
         current=hit;view=-direction;
     }
 }
+#elif defined(PATH_DI_PASS)
+// Separate ReSTIR direct-light pass. The path integrator stored the visible
+// surface and its unfloored path terms; this thin program resamples the
+// local lights and emitters, traces one visibility ray, adds the light,
+// applies the ambient floor and encodes the direction moments. Keeping the
+// resampling out of the path raygen keeps that program's live state small.
+[shader("raygeneration")]
+void main() {
+    uint2 pixel=DispatchRaysIndex().xy;
+    Surface primary;float depth;
+    if(!di_load_surface(pixel,primary,depth))return;
+    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+    float3 view=frame.camera.x>0.5?mul(frame.camera_world,float4(0,0,1,0)).xyz:normalize(eye-primary.position);
+    float3 di_d,di_s,di_direct;float4 di_dm,di_sm;
+    di_lighting(primary,view,pixel,depth,di_d,di_s,di_direct,di_dm,di_sm);
+    float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+    float4 current=indirect_image[pixel];
+    float3 diffuse=max(current.rgb+di_d,ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
+    indirect_image[pixel]=float4(diffuse,current.a);
+    float4 glossy=shadow_image0[pixel];float3 specular=glossy.rgb+di_s;
+    shadow_image0[pixel]=float4(specular,glossy.a);
+    float4 direct=path_direct_specular[pixel];float3 direct_specular=direct.rgb+di_direct;
+    path_direct_specular[pixel]=float4(direct_specular,direct.a);
+    float3 sunlight=path_direct_sun[pixel].rgb;
+    path_diffuse_direction[pixel]=mean_direction(path_diffuse_direction[pixel]+di_dm,max(diffuse-sunlight,0.0));
+    path_specular_direction[pixel]=mean_direction(path_specular_direction[pixel]+di_sm,max(specular-direct_specular,0.0));
+}
 #elif defined(PATH_TRANSMISSION)
 #include "path_trace_transmission.hlsli"
 #elif defined(PATH_WATER_REFLECTION)
@@ -786,12 +813,6 @@ void main() {
         // across samples. The primary camera hit must never enter this value.
         if(distance.y>0.0)specular_distance=min(specular_distance,distance.y);
     }
-#ifdef PATH_RTXDI
-    float3 di_d,di_s,di_direct;float4 di_dm,di_sm;
-    di_lighting(primary,-direction,pixel,guide_image[pixel].w,di_d,di_s,di_direct,di_dm,di_sm);
-    diffuse+=di_d*float(samples);specular+=di_s*float(samples);direct_specular+=di_direct*float(samples);
-    diffuse_moment+=di_dm*float(samples);specular_moment+=di_sm*float(samples);
-#endif
     // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
     // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
     // storing integers above 2048 directly. The filter carries identity onward.
@@ -800,6 +821,20 @@ void main() {
     // outdoor sky or adding the full ambient term on top of traced light.
     // It is applied once at the receiver, never recursively at each bounce.
     float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+#ifdef PATH_RTXDI
+    // The resampled local light arrives from the separate direct-light pass,
+    // which keeps the ReSTIR code out of this path integrator. Store the
+    // receiver, publish the path terms unfloored with their raw moments, and
+    // let that pass add its light, apply the ambient floor and encode the
+    // moments.
+    { RAB_Surface stored;stored.hit=primary;stored.view=-direction;stored.depth=guide_image[pixel].w;di_store_surface(pixel,stored); }
+    indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
+    shadow_image0[pixel]=float4(specular/float(samples),1.0);
+    path_direct_specular[pixel]=float4(direct_specular/float(samples),primary.specular);
+    path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
+    path_diffuse_direction[pixel]=diffuse_moment/float(samples);
+    path_specular_direction[pixel]=specular_moment/float(samples);
+#else
     diffuse=max(diffuse/float(samples),ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
     indirect_image[pixel]=float4(diffuse,f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
@@ -807,6 +842,7 @@ void main() {
     path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
     path_diffuse_direction[pixel]=mean_direction(diffuse_moment/float(samples),max(diffuse-sunlight/float(samples),0.0));
     path_specular_direction[pixel]=mean_direction(specular_moment/float(samples),max((specular-direct_specular)/float(samples),0.0));
+#endif
     // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
     // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).
     uint surface=uint(round(saturate(primary.roughness)*63.0))|

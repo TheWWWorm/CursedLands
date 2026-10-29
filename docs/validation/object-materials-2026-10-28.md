@@ -623,6 +623,82 @@ configuration; its 21 runtime-independent checks pass on the 1.34.0 mirror,
 and the cause of the silent exit with the RR runtime active is not
 established.
 
+## ReSTIR follow-up: pairwise MIS, candidates, bounce attribution
+
+The research notes (RTXDI library defaults, HPG 2021 "Rearchitecting
+Spatiotemporal Resampling") suggested pairwise bias correction and fewer
+candidates. Measured on the many-light river with RTXDI forced
+(`pair-lights-*`, `cand8-lights-*`; RT GPU medians, round 1 / round 2):
+
+| Configuration | 7 lights | 64 lights, one moving |
+| --- | ---: | ---: |
+| Basic correction, 2 neighbours, 16 candidates (head) | 3.56 / 3.38, 3.42 / 3.49 ms | 3.95 / 3.96, 3.98 / 4.00 |
+| Pairwise MIS, 2 neighbours, 16 candidates | 4.36 / 4.36, 4.35 / 4.35 ms | 4.78 / 4.81, 4.85 / 4.85 |
+| Pairwise MIS, 1 neighbour | 3.61 / 3.58 ms | 4.09 / 4.09 |
+| Pairwise shader, basic mode selected at runtime | 3.53 / 3.42 ms | 4.04 / 4.05 |
+| Pairwise MIS, 8 candidates | 4.13 / 4.12 ms | 4.59 / 4.58 |
+
+Pairwise MIS costs 0.8–0.9 ms more than the basic mode here: the SDK's
+pairwise path evaluates the canonical sample at every neighbour and every
+neighbour's sample at the canonical surface, which outweighs the basic mode's
+second neighbour walk at two neighbours. The shader stays built for the basic
+mode only. Eight candidates instead of sixteen save about 0.25 ms; eight is
+the RTXDI library default and the temporal reservoir carries the effective
+sample count, so eight becomes the default. ABBA with eight candidates on the
+basic mode (`cand8-lights-*`): 3.15 / 3.23, 3.15 / 3.25 ms at seven lights
+against 3.36 / 3.55, 3.41 / 3.60 ms, and 3.56–3.70 against 3.89–3.98 ms at
+sixty-four with one moving. `path_trace_rtxdi` (27), `path_trace_rtxdi_sparse`
+(37), the emitter deep SHaRC RTXDI case (15) and `path_trace_light_history`
+(58) pass on that pack.
+
+Bounce attribution on the river (`bounce-*`, Low, all detail features,
+`--ei-pt-bounces=N`): one bounce 0.36–0.46 ms, two bounces 0.555–0.58 ms,
+four bounces (the roulette variant) 0.83–0.89 ms. The primary surface with
+its direct lighting and the first bounce is about two thirds of the Balanced
+ray stage; bounces three and four add about 0.3 ms over Balanced.
+
+Controller after the matrix decode and the cached globals and light list
+(`pair-river-*`, two blocks per run): frame constants 0.076–0.088 ms against
+0.090–0.095 ms, NRD native step 0.092–0.101 against 0.101–0.105 ms, totals
+0.97–1.17 against 1.09–1.13 ms. The ray stage is unchanged. NRD device (26),
+motion (42), directional (21), light history (58), RTXDI (27), RTXDI sparse
+(37) and the emitter deep SHaRC RTXDI case (15) pass on that pack.
+
+## Separate ReSTIR direct-light pass
+
+Following the RTXDI sample's structure (resampling in a thin program over a
+stored G-buffer, never fused with the path integrator; NVIDIA's HPG 2021
+paper reports that fusing "was counterbalanced by increased register usage
+and divergence"), the resampling, the final light evaluation and its
+visibility ray moved out of the path raygen into a second ray-generation
+dispatch (`PATH_DI_PASS`, programs `path_trace_raygen_di` and
+`_no_emitters`). The path raygen stores the visible surface (48-byte record
+with the exact offset and half-precision material) and publishes its path
+terms unfloored with raw direction moments; the direct-light pass loads the
+surface, resamples, traces one visibility ray, adds its light, applies the
+ambient floor and encodes the moments. Many-light river with RTXDI forced
+(`dipass2-lights-*`, RT GPU medians including both dispatches, ABBA against
+the eight-candidate fused pack):
+
+| Lights | Fused (eight candidates, two neighbours) | Separate pass |
+| --- | ---: | ---: |
+| 7 | 3.11–3.21 ms | 1.34–1.35 ms |
+| 16 | 3.17–3.24 ms | 1.37–1.39 ms |
+| 64, still | 3.58–3.65 ms | 1.50–1.55 ms |
+| 64, one moving | 3.62–3.67 ms | 1.52–1.59 ms |
+
+The plain estimator measured 1.49–1.51 ms at seven lights and 2.06–2.17 ms at
+sixty-four in the same session, so ReSTIR is now cheaper than the exact sum
+at every tested light count, where the fused version cost about twice as
+much. The resampling work is unchanged; the saving is the path raygen's
+occupancy, which the fused SDK code had been limiting for every ray of the
+frame. `path_trace_rtxdi` (27), `path_trace_rtxdi_sparse` (37) and the
+emitter deep SHaRC RTXDI case (15) pass, including the reservoir reuse and
+energy parity checks. An earlier attempt bound only the resources the
+direct-light program references; the library target keeps every declared
+binding in the set layout, so the pass binds the same set as the path
+programs without the SHaRC bindings.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

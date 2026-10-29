@@ -90,7 +90,17 @@ func _notify(signal_name: StringName, arguments: Array) -> void:
 static func _emit_retained(target: RefCounted, signal_name: StringName, arguments: Array) -> void:
 	target.emit_signal.callv([signal_name]+arguments)
 
+## Ray-tracing support cannot change while the process runs; the first
+## positive answer is kept instead of six engine queries per frame.
+static var _supported_known := false
+
 static func supported() -> bool:
+	if _supported_known: return true
+	var result := _query_supported()
+	if result: _supported_known = true
+	return result
+
+static func _query_supported() -> bool:
 	if DisplayServer.get_name() == "headless" or RenderingServer.get_current_rendering_method() != "forward_plus": return false
 	var driver := RenderingServer.get_current_rendering_driver_name()
 	if driver == "vulkan":

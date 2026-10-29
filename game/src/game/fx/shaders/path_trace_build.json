@@ -2,7 +2,7 @@
   "compiler": "dxcompiler.dll: 1.9(5512-01b62ad4)(1.9.2609.5) - 1.9.2609.5 (01b62ad47)",
   "compiler_sha256": "aa7965b3763d9c710baaa5a28cedcc633449962a75d1391d161a85304a41b3e2",
   "builder_sha256": "a8339f898356ab74fac28d4d27201e4e8b94da8951daae5efacf11c559385d32",
-  "source_sha256": "b61d287071b336fb5041bf77d4de02f03abf356eda27d3f85eb608359c6a02f8",
+  "source_sha256": "bd763affcf6e83ee7fd9f57563300ab5a375f3d82fde7d1b6dacad29e6392f33",
   "includes": {
     "path_trace_transmission.hlsli": "dec2a6c77464c6436f0be8b5117a13a270a3a375e6c34d98dfd14cad5668d99a"
   },

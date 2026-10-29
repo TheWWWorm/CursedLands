@@ -319,8 +319,11 @@ drops from five to two (eight after a disocclusion, as before), which saves
 current and previous frame blocks (binding 44 joins the RTXDI set), which
 measured within noise of the constant-buffer version and is kept for the
 addressing. The remaining ReSTIR cost is the temporal reservoir, the two
-neighbours with basic bias correction, and the candidate loop; a separate
-compute pass for the resampling (keeping the SDK code out of the path-loop
-raygen) is the next structural option. Measurements are in the validation
-record.
+neighbours with basic bias correction, and the candidate loop. Implemented next: the resampling and the final light
+evaluation run in a separate thin ray-generation pass over the stored
+surface (`PATH_DI_PASS`), which brought ReSTIR from 3.1–3.7 ms to
+1.34–1.59 ms on the many-light river, below the plain estimator at every
+light count; eight candidates replace sixteen and pairwise MIS was measured
+slower than the basic correction and left out. Measurements are in the
+validation record.
 

@@ -3,7 +3,11 @@
 #include <Rtxdi/DI/ReSTIRDIParameters.h>
 #include <Rtxdi/DI/Reservoir.hlsli>
 #include <Rtxdi/Utils/RandomSamplerState.hlsli>
-struct DIStoredSurface { float3 position; float depth; uint normal; uint geometric; uint albedo; uint material; };
+// 48 bytes per pixel. The 8-bit albedo/material words serve the previous
+// frame's neighbour tests; the current pixel's own shading in the separate
+// direct-light pass uses the half-precision material and the exact offset.
+struct DIStoredSurface { float3 position; float depth; uint normal; uint geometric; uint albedo; uint material;
+    uint instance; float offset; uint rough_metal; uint spec_visible; };
 struct DIControl {
     column_major float4x4 previous_view_projection;
     column_major float4x4 previous_view;
@@ -32,7 +36,10 @@ bool di_previous_orthographic() {return asfloat(di_previous_frame.Load(20u*16u))
 #define RTXDI_LIGHT_RESERVOIR_BUFFER di_reservoirs
 #define RTXDI_NEIGHBOR_OFFSETS_BUFFER di_neighbors
 // Keep candidate densities independent of visibility; shade with a fresh ray.
-// BASIC has the SDK's documented visibility-related bias, not an unbiased claim.
+// BASIC has the SDK's documented visibility-related bias, not an unbiased
+// claim. Pairwise MIS was measured 0.8 ms slower per frame at 1280x720 with
+// two neighbours (its extra target evaluations outweigh the second neighbour
+// walk of the basic mode), so only the basic path is compiled.
 #define RTXDI_ALLOWED_BIAS_CORRECTION RTXDI_BIAS_CORRECTION_BASIC
 struct RAB_Surface { Surface hit; float3 view; float depth; };
 struct RAB_LightInfo { uint index; bool previous; };
@@ -63,7 +70,23 @@ void di_store_surface(uint2 pixel,RAB_Surface s) {
     p.normal=di_pack_normal(s.hit.normal);p.geometric=di_pack_normal(s.hit.geometric_normal);
     p.albedo=di_pack4(float4(s.hit.albedo,0));
     p.material=di_pack4(float4(s.hit.roughness,s.hit.metalness,s.hit.specular,s.hit.visible));
+    p.instance=s.hit.instance_id;p.offset=s.hit.offset;
+    p.rough_metal=f32tof16(s.hit.roughness)|(f32tof16(s.hit.metalness)<<16u);
+    p.spec_visible=f32tof16(s.hit.specular)|(f32tof16(s.hit.visible)<<16u);
     di_surfaces[di_surface_address(pixel,di_control.layout.w)]=p;
+}
+// The current pixel's surface as the primary pass stored it, for the
+// separate direct-light pass. Depth zero marks a miss.
+bool di_load_surface(uint2 pixel,out Surface s,out float depth) {
+    DIStoredSurface p=di_surfaces[di_surface_address(pixel,di_control.layout.w)];
+    s=(Surface)0;depth=p.depth;
+    if(p.depth<=0.0)return false;
+    s.position=p.position;s.hit=1.0;s.offset=p.offset;s.instance_id=p.instance;
+    s.normal=di_unpack_normal(p.normal);s.geometric_normal=di_unpack_normal(p.geometric);
+    s.albedo=di_unpack4(p.albedo).rgb;
+    s.roughness=f16tof32(p.rough_metal&65535u);s.metalness=f16tof32(p.rough_metal>>16u);
+    s.specular=f16tof32(p.spec_visible&65535u);s.visible=f16tof32(p.spec_visible>>16u);
+    return true;
 }
 RAB_Surface RAB_EmptySurface() {return (RAB_Surface)0;}
 bool RAB_IsSurfaceValid(RAB_Surface s) {return s.depth>0.0;}
@@ -179,7 +202,6 @@ void di_clear(uint2 pixel) {
 }
 void di_lighting(Surface primary,float3 view,uint2 pixel,float depth,out float3 diffuse,out float3 specular,out float3 direct_specular,out float4 dm,out float4 sm) {
     RAB_Surface surface;surface.hit=primary;surface.view=view;surface.depth=depth;
-    di_store_surface(pixel,surface);
     RTXDI_RandomSamplerState rng=RTXDI_InitRandomSampler(pixel,di_control.state.w,7u);
     RTXDI_DIReservoir initial=RTXDI_EmptyDIReservoir();
     uint locals=di_local_count(false),triangles=0;

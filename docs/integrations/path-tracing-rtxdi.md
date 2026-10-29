@@ -25,13 +25,22 @@ registered emitter activate RTXDI again; its shader variants are prepared in
 advance. The diagnostic `--ei-pt-tuning` mode continues to honor the explicit
 RTXDI switch. Bounce count, resolution and reconstruction settings are unchanged.
 
-Each primary receiver generates 16 candidates from the existing local-light
+Each primary receiver generates 8 candidates (the RTXDI library default;
+sixteen measured about 0.25 ms more per frame at 1280×720 with no visible
+gain over the temporal reservoir) from the existing local-light
 table and registered emissive triangles. Local lights use a uniform proposal;
 emissive triangles use the existing power distribution. When both are present,
 each family receives half the proposal probability. Triangle sampling includes
 the area-to-solid-angle Jacobian and actual textured emission. The target is
 the luminance of the material's diffuse plus specular response.
 
+The resampling runs in its own ray-generation pass after the path pass: the
+path program stores the visible surface (position, normals, albedo and
+material, the exact self-intersection offset and the placement id) and
+publishes its path terms with raw direction moments; the direct-light pass
+loads that surface, resamples, traces one visibility ray, adds the light,
+applies the authored ambient floor and encodes the moments. Fusing the
+resampling into the path program had cost the whole frame its occupancy.
 `RTXDI_DISpatioTemporalResampling` merges the fresh reservoir with nearby
 reservoirs from the previous frame. It never reads another pixel's writes from
 the current dispatch. The SDK's BASIC correction reevaluates sample targets
