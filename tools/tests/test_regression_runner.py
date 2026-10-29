@@ -15,6 +15,14 @@ runner = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(runner)
 
 
+def catalog_entry(name, description, min_checks=1, **extra):
+    """A catalog entry registered for the focused runner as `name`."""
+    return {"id": "focused/" + name, "category": "focused", "script": f"tools/tests/{name}.gd",
+            "marker": name.upper(), "min_checks": min_checks, "quick": False, "description": description,
+            "kind": "remake_regression", "timeout": 60, "args": [], "campaign": "cursed_lands",
+            "required_files": [], "display": "headless", "focused": name, **extra}
+
+
 class VerdictTests(unittest.TestCase):
     case = {"summary": "PROBE", "min_checks": 3, "mode": "headless"}
 
@@ -52,7 +60,7 @@ class VerdictTests(unittest.TestCase):
         self.assertNotIn("--render-thread", rendered)
 
     def test_registered_pt_water_executes_with_hardware_ray_tracing(self):
-        cases = {case["id"]: case for case in json.loads(runner.MANIFEST.read_text())["cases"]}
+        cases = {case["id"]: case for case in runner.focused_cases(runner.CATALOG)}
         for name in ("path_trace_water", "path_trace_water_live"):
             with self.subTest(case=name):
                 command = runner.engine_arguments("/qualified/game", cases[name], packaged=True)
@@ -120,12 +128,10 @@ class PackagedFixtureTests(unittest.TestCase):
             (scripts / "helper.gd").write_text('extends "res://src/game/session.gd"\n')
             payload = b'{"cases":[1,2,3]}\n'
             (scripts / "fixtures/original.json").write_bytes(payload)
-            manifest = repo / "tools/regressions.json"
-            manifest.write_text(json.dumps({"cases": [{
-                "id": "probe", "mode": "headless", "data": "base",
-                "script": "tools/tests/probe.gd", "summary": "PROBE",
-                "min_checks": 3, "contract": "staged dependencies",
-            }]}))
+            manifest = repo / "tools/parity/gameplay_catalog.json"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text(json.dumps({"schema": 1, "tests": [catalog_entry(
+                "probe", "staged dependencies", min_checks=3)]}))
             engine = root / "game.x86_64"
             engine.write_bytes(b"engine")
             engine.with_suffix(".pck").write_bytes(b"pack")
@@ -150,7 +156,7 @@ class PackagedFixtureTests(unittest.TestCase):
 
             args = ["check_regressions.py", "--packaged", "--engine", str(engine),
                     "--base-data", str(root), "--output", str(root / "results")]
-            with patch.object(runner, "REPO", repo), patch.object(runner, "MANIFEST", manifest), \
+            with patch.object(runner, "REPO", repo), patch.object(runner, "CATALOG", manifest), \
                     patch.object(runner.sys, "argv", args), \
                     patch.object(runner.shutil, "which", side_effect=lambda value: value), \
                     patch.object(runner.subprocess, "check_output", return_value="source\n"), \
@@ -174,12 +180,10 @@ class SourceFixtureTests(unittest.TestCase):
             (repo / "game/project.godot").write_text('[application]\nconfig/version="1.0.0"\n')
             (scripts / "probe.gd").write_text('extends "res://tools/tests/base.gd"\n')
             (scripts / "base.gd").write_text('extends Node\n')
-            manifest = repo / "tools/regressions.json"
-            manifest.write_text(json.dumps({"cases": [{
-                "id": "probe", "mode": "headless", "data": "base",
-                "script": "tools/tests/probe.gd", "summary": "PROBE",
-                "min_checks": 1, "contract": "staged base class",
-            }]}))
+            manifest = repo / "tools/parity/gameplay_catalog.json"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text(json.dumps({"schema": 1, "tests": [catalog_entry(
+                "probe", "staged base class", min_checks=1)]}))
             engine = root / "godot"
             engine.write_bytes(b"engine")
             seen = {}
@@ -208,7 +212,7 @@ class SourceFixtureTests(unittest.TestCase):
 
             args = ["check_regressions.py", "--engine", str(engine),
                     "--base-data", str(root), "--output", str(root / "results")]
-            with patch.object(runner, "REPO", repo), patch.object(runner, "MANIFEST", manifest), \
+            with patch.object(runner, "REPO", repo), patch.object(runner, "CATALOG", manifest), \
                     patch.object(runner.sys, "argv", args), \
                     patch.object(runner.shutil, "which", side_effect=lambda value: value), \
                     patch.object(runner.subprocess, "check_output", return_value="source\n"), \
@@ -313,6 +317,42 @@ class SharedProcessTests(unittest.TestCase):
         result = runner.verdict("PROBE 2 checks 0 failures\n", case, 130, "Test exceeded 5 seconds")
         self.assertFalse(result["passed"])
         self.assertIn("Test exceeded 5 seconds", result["errors"])
+
+    def test_focused_cases_come_from_the_catalog(self):
+        """The folded registry: a catalog entry with `focused` is a case of
+        this runner under that ID, with the catalog's marker, display,
+        campaign, arguments and threshold; entries without it are not."""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "catalog.json"
+            path.write_text(json.dumps({"schema": 1, "tests": [
+                catalog_entry("probe", "a focused case", min_checks=4, display="rendered",
+                              rendering_method="forward_plus", args=["--texts={texts_ru}"], texts=["ru"],
+                              campaign="lost_in_astral", issues=[7]),
+                {**catalog_entry("other", "catalog only"), "id": "quests/other", "category": "quests"},
+            ]}))
+            for row in json.loads(path.read_text())["tests"]:
+                row.pop("focused", None) if row["id"] == "quests/other" else None
+            data = json.loads(path.read_text())
+            data["tests"][1].pop("focused")
+            path.write_text(json.dumps(data))
+            cases = runner.focused_cases(path)
+        self.assertEqual([case["id"] for case in cases], ["probe"])
+        case = cases[0]
+        self.assertEqual((case["catalog_id"], case["summary"], case["mode"], case["campaign"], case["data"]),
+                         ("focused/probe", "PROBE", "rendered", "lost_in_astral", "astral"))
+        self.assertEqual((case["min_checks"], case["rendering_method"], case["issues"], case["args"]),
+                         (4, "forward_plus", [7], ["--texts={texts_ru}"]))
+        self.assertEqual(sorted(case["needs"]), ["lost_in_astral", "texts_ru"])
+
+    def test_focused_ids_must_not_collide_with_entry_names(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "catalog.json"
+            path.write_text(json.dumps({"schema": 1, "tests": [
+                {**catalog_entry("probe", "x"), "id": "quests/probe", "category": "quests", "focused": "shadow"},
+                {**catalog_entry("shadow", "y"), "id": "quests/shadow", "category": "quests"},
+            ]}))
+            with self.assertRaises(ValueError):
+                runner.focused_cases(path)
 
     def test_focused_runner_offers_parallel_jobs(self):
         self.assertEqual(runner.jobs_argument("auto"), "auto")

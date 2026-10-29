@@ -96,7 +96,15 @@ network gates, and for GPU Lab jobs follows the job's live `stdout.log` so a
 diagnostic cancels the job and the complete log replaces the wrapper's 64 KiB
 tail. `tools/raise_min_checks.py --apply` raises `min_checks` to 90% of a
 green run's count and `test_registries.py` fails when the same registration
-carries two thresholds. Folding the manifest into the catalog is still open.
+carries two thresholds.
+
+*Done (follow-up, 2026-10-29):* the focused manifest is folded into the
+catalog. A catalog entry with a `focused` ID is a case of
+`tools/check_regressions.py`; the 79 duplicates are one entry each, the other
+291 cases sit in the `focused` category, `texts` declares the original
+localized archives, and `tools/regressions.json` is gone. Both runners,
+`raise_min_checks.py`, the issue-coverage gate and the registry lints read
+the one file.
 
 ## 5. The script-only platform configuration is never run
 
@@ -152,8 +160,15 @@ follow the reading scale (`ui_scale_rules`, `ui_scale_high_res` with EN/RU/DE
 captures at 720p/1440p/2160p; the first 2160p capture showed the toolbar and
 selector still at 1×, which the review had not listed); the
 `network_panel.gd` lines turned out to be
-inside an OptionButton popup that already inherits the canvas scale. Gamepad
-navigation hooks for the five panels remain open.
+inside an OptionButton popup that already inherits the canvas scale.
+
+*Done (follow-up, 2026-10-29):* of the five panels, `camp_view`,
+`dialog_panel` and `wiki_panel` already had pad hooks by then and
+`options_panel` takes the key bridge by design (`pad_targets()` is empty
+because its rows handle the arrows). `load_panel` and `mod_panel` had hooks or
+key handling but were not in the `pad_panel` group, so the main menu or
+Escape signpost underneath kept the D-pad; both join the group, the load
+screen names X as Delete and Y as Rename, and `ui_pad_panels` covers it.
 
 ## 8. Gameplay code structure
 

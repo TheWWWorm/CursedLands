@@ -8,9 +8,9 @@ reopened under new numbers (animation skip #109/#113/#118/#120, game speed
 after fixes landed whose tests were never registered or never written.
 
 This check reads the issue links in CHANGELOG.md and requires each issue to
-appear in the `issues` list of at least one case in tools/regressions.json or
-tools/parity/gameplay_catalog.json, or in tools/issue_coverage_exceptions.json
-with a reason. Issues fixed before the registries recorded links were seeded
+appear in the `issues` list of at least one entry of
+tools/parity/gameplay_catalog.json (the one registry of both runners), or in
+tools/issue_coverage_exceptions.json with a reason. Issues fixed before the registries recorded links were seeded
 into the exceptions file on 2026-10-28; remove an entry when a test is
 registered for it. Run without arguments; exit 1 lists the uncovered issues.
 """
@@ -21,7 +21,6 @@ import sys
 
 REPO = Path(__file__).resolve().parents[1]
 CHANGELOG = REPO / "CHANGELOG.md"
-FOCUSED = REPO / "tools/regressions.json"
 CATALOG = REPO / "tools/parity/gameplay_catalog.json"
 EXCEPTIONS = REPO / "tools/issue_coverage_exceptions.json"
 ISSUE_LINK = re.compile(r"\[#(\d+)\]\(https://github\.com/[^)]+/issues/\1\)")
@@ -41,9 +40,6 @@ def changelog_issues():
 
 def registered_issues():
     covered = {}
-    for row in json.loads(FOCUSED.read_text(encoding="utf-8"))["cases"]:
-        for issue in row.get("issues", []):
-            covered.setdefault(int(issue), []).append(row["id"])
     for row in json.loads(CATALOG.read_text(encoding="utf-8"))["tests"]:
         for issue in row.get("issues", []) or []:
             covered.setdefault(int(issue), []).append(row["id"])

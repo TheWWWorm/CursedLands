@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Run issue-linked Godot checks with isolated profiles and retained evidence.
+"""Run the focused Godot checks with isolated profiles and retained evidence.
 
-Original game data is external. Rendered checks always use GPU Lab; this script
+The cases are the gameplay catalog entries that carry a `focused` ID
+(tools/parity/gameplay_catalog.json): one registry for both runners, with the
+same script, arguments, marker and `min_checks`. Original game data is external. Rendered checks always use GPU Lab; this script
 does not change the desktop or the player's settings. Process control (stop on
 the first diagnostic, timeouts, the summary-line contract and the rendered
 window size) is shared with the gameplay catalog runner through
@@ -23,10 +25,14 @@ import time
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "tools/parity"))
-from gameplay import MemoryGate, auto_jobs, available_memory, jobs_argument, uses_network
+from gameplay import MemoryGate, TEXTS, auto_jobs, available_memory, catalog, jobs_argument, required_assets, uses_network
 from process import DIAGNOSTIC, RENDERED_RESOLUTION, parse_summary, rendered_arguments, run_program
 
-MANIFEST = REPO / "tools/regressions.json"
+# One registry for both runners: a catalog entry with `focused` is also a case
+# here, selected and reported under that short ID.
+CATALOG = REPO / "tools/parity/gameplay_catalog.json"
+DATA_OPTIONS = {"cursed_lands": "--base-data", "lost_in_astral": "--astral-data",
+                **{"texts_" + language: "--texts-" + language for language in TEXTS}}
 SETTINGS = """[options]
 confine_mouse=0
 show_fps=1
@@ -49,6 +55,25 @@ QUEUE_ALLOWANCE = 600
 # diagnostic at start-up. `verdict` excuses it with its context line; the
 # process control must not end the test when it appears.
 INFRASTRUCTURE = re.compile(r'^ERROR: Parameter "monitors" is null\.$')
+
+
+def focused_case(row):
+    """A catalog entry in the shape this runner reports: the short `focused`
+    ID, the catalog ID, the summary marker, the campaign and display, and the
+    data roots the entry's campaign, companion archives and `texts` need."""
+    needs = list(required_assets(row)) + ["texts_" + language for language in row.get("texts", [])]
+    case = {"id": row["focused"], "catalog_id": row["id"], "script": row["script"], "summary": row["marker"],
+            "contract": row["description"], "issues": list(row.get("issues", []) or []), "campaign": row["campaign"],
+            "data": "base" if row["campaign"] == "cursed_lands" else "astral", "mode": row.get("display", "headless"),
+            "args": list(row["args"]), "min_checks": row["min_checks"], "timeout": row["timeout"], "needs": needs}
+    for key in ("rendering_method", "resolution"):
+        if key in row:
+            case[key] = row[key]
+    return case
+
+
+def focused_cases(path=None):
+    return [focused_case(row) for row in catalog(path=path) if "focused" in row]
 
 
 def digest(path):
@@ -176,15 +201,15 @@ def main():
                              "each keeps its own process and profile, and GPU Lab queues rendered cases")
     parser.add_argument("--list", action="store_true")
     args = parser.parse_args()
-    cases = json.loads(MANIFEST.read_text(encoding="utf-8"))["cases"]
-    unknown = set(args.only) - {case["id"] for case in cases}
+    cases = focused_cases(CATALOG)
+    unknown = set(args.only) - {case["id"] for case in cases} - {case["catalog_id"] for case in cases}
     if unknown:
         parser.error("Unknown cases: " + ", ".join(sorted(unknown)))
-    selected = [case for case in cases if (case["id"] in args.only if args.only else
-                args.tier == "all" or case["mode"] == args.tier)]
+    selected = [case for case in cases if ((case["id"] in args.only or case["catalog_id"] in args.only) if args.only
+                else args.tier == "all" or case["mode"] == args.tier)]
     if args.list:
         for case in selected:
-            print(f'{case["id"]:34} {case["mode"]:8} {case["contract"]}')
+            print(f'{case["id"]:34} {case["mode"]:8} {case["catalog_id"]:44} {case["contract"]}')
         return 0
     if not args.output:
         parser.error("--output must name a new directory")
@@ -196,14 +221,15 @@ def main():
         parser.error("--packaged requires an adjacent PCK: " + str(pack))
     paths = {key: str(value.resolve()) for key, value in vars(args).items()
              if isinstance(value, Path) and key != "output"}
+    roots = {"cursed_lands": paths.get("base_data"), "lost_in_astral": paths.get("astral_data"),
+             **{"texts_" + language: paths.get("texts_" + language) for language in TEXTS}}
+    roots = {key: value for key, value in roots.items() if value}
     # Validate the whole selection before running anything. Missing archives are
     # an error, not a silently omitted language or campaign.
     for case in selected:
-        required = {case["data"] + "_data"}
-        required.update(re.findall(r"\{(\w+)\}", " ".join(case.get("args", []))))
-        for key in required:
-            if key not in paths or not Path(paths[key]).exists():
-                parser.error(f'{case["id"]} requires --{key.replace("_", "-")}')
+        for key in case["needs"]:
+            if key not in roots or not Path(roots[key]).exists():
+                parser.error(f'{case["id"]} requires {DATA_OPTIONS[key]}')
         if not (REPO / case["script"]).is_file():
             parser.error("Missing script: " + case["script"])
     gpu_lab = shutil.which("gpu-lab")
@@ -219,7 +245,7 @@ def main():
     source_hash.update((REPO / "game/project.godot").read_bytes())
     report = {
         "git_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
-        "game_source_sha256": source_hash.hexdigest(), "manifest_sha256": digest(MANIFEST),
+        "game_source_sha256": source_hash.hexdigest(), "catalog_sha256": digest(CATALOG),
         "engine": engine, "engine_sha256": digest(engine), "data": paths, "cases": [],
     }
     if args.packaged:
@@ -242,17 +268,16 @@ def main():
         isolated = isolation_environment(profile)
         command = engine_arguments(engine, case, args.packaged)
         script = scripts / Path(case["script"]).name
-        expected = {"campaign": "cursed_lands" if case["data"] == "base" else "lost_in_astral",
-                    "display": case["mode"], "script": str(script),
+        expected = {"campaign": case["campaign"], "display": case["mode"], "script": str(script),
                     "profile": {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0,
                                 "volume_stream": 0, "volume_voice": 0}}
         spec = {**case, "expected_start": expected}
-        command += ["--", "--no-movies", "--ei-path=" + paths[case["data"] + "_data"],
+        command += ["--", "--no-movies", "--ei-path=" + roots[case["campaign"]],
                     "--tool=" + str(REPO / "tools/parity/gameplay_bootstrap.gd"),
                     "--suite-script=" + expected["script"], "--suite-script-root=" + str(scripts),
                     "--suite-campaign=" + expected["campaign"], "--suite-display=" + case["mode"]]
-        command += [arg.format(**paths) for arg in case.get("args", [])]
-        timeout = case.get("timeout", 420)
+        command += [arg.format(**roots) for arg in case["args"]]
+        timeout = case["timeout"]
         rendered = case["mode"] == "rendered"
         if rendered:
             command = [gpu_lab, "run", "--gpu", "auto", "--cwd", str(REPO), "--timeout", str(timeout),
@@ -277,8 +302,9 @@ def main():
                 text = "".join((directory / name).read_text(encoding="utf-8", errors="replace")
                                for name in ("stdout.log", "stderr.log") if (directory / name).is_file())
                 log.write_text(text)
-        return {"id": case["id"], "script": case["script"], "script_sha256": digest(REPO / case["script"]),
-                "contract": case["contract"], "issues": case.get("issues", []), "mode": case["mode"],
+        return {"id": case["id"], "catalog_id": case["catalog_id"], "script": case["script"],
+                "script_sha256": digest(REPO / case["script"]),
+                "contract": case["contract"], "issues": case["issues"], "mode": case["mode"],
                 "seconds": round(time.monotonic() - started, 2), "command": command,
                 "log": str(profile.relative_to(output) / "run.log"),
                 **verdict(text, spec, code, error)}

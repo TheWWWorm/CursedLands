@@ -1,9 +1,18 @@
 # Focused checks for recurring reports
 
 Use this selection before accepting changes near recent campaign/UI repairs.
-[The manifest](../tools/regressions.json) records each behavior, issue links,
-campaign, renderer requirement and minimum assertion count. It supplements the
-[full gameplay suite](gameplay-testing.md); it does not certify every closed issue.
+The cases are the entries of [the gameplay catalog](../tools/parity/gameplay_catalog.json)
+that carry a `focused` ID: one registry for both runners, so a script, its
+arguments, completion marker and `min_checks` are recorded once. The focused
+runner selects (`--only`) and reports a case by that short ID or by the
+catalog ID; its `contract` is the entry's description, its campaign and
+display mode are the entry's `campaign` and `display`, and the original
+localized archives a case needs are listed in `texts` and referenced as
+`{texts_en}` / `{texts_ru}` / `{texts_de}` in its arguments (`--texts-*` on
+either runner). The migrated cases that had no catalog entry sit in the
+`focused` category; the 79 that duplicated a catalog entry are that entry.
+This selection supplements the [full gameplay suite](gameplay-testing.md); it
+does not certify every closed issue.
 
 `script_expression_native` requires the rebuilt terrain extension. It compares
 native and script evaluation, live variables/objects/levers, float32 boundaries,
@@ -87,9 +96,10 @@ separately; other errors still fail.
 
 `min_checks` is the floor below which a test is considered to have skipped its
 body. After a green run, `python3 tools/raise_min_checks.py --apply results.json`
-raises thresholds to 90% of the observed count (never lowering them), and
-`tools/tests/test_registries.py` fails when the same script, arguments,
-campaign and display carry different thresholds in the two registries.
+raises thresholds to 90% of the observed count (never lowering them); the
+results of either runner name the catalog entry. `tools/tests/test_registries.py`
+fails when a script with the same arguments, campaign, display and renderer is
+registered twice, so one registration has one threshold.
 Missing required archives are setup failures. Output includes logs, generated
 screenshots, source/engine/test hashes, commands and a JSON result after each case.
 Results are never overwritten. This command runs synchronously when invoked; it
@@ -106,11 +116,12 @@ python3 -B -m unittest discover -s tools/tests -p 'test_*.py'
 python3 tools/check_test_scripts.py --engine /path/to/godot --import-first
 ```
 
-`tools/tests/test_registries.py` lints this manifest and the gameplay catalog:
-every registered script exists, its completion marker is printed somewhere in
-the script's import closure, case IDs are unique, `res://tools/` and relative
-imports resolve, and no script uses the `var x := weakref(...)` form that
-Godot 4.7 rejects as an inference-from-Variant error.
+`tools/tests/test_registries.py` lints the catalog: every registered script
+exists, its completion marker is printed somewhere in the script's import
+closure, catalog IDs and `focused` IDs are unique (a focused ID never names
+another entry), `{texts_xx}` arguments are declared, `res://tools/` and
+relative imports resolve, and no script uses the `var x := weakref(...)` form
+that Godot 4.7 rejects as an inference-from-Variant error.
 
 `tools/check_test_scripts.py` stages `tools/tests`, `tools/benchmarks` and the
 top-level tool scripts exactly as this runner does, then loads every script in
@@ -139,18 +150,17 @@ copies the tests into the output directory once per run, in source and packaged
 runs alike, and rewrites `res://tools/` to that copy.
 
 Eleven previously unregistered headless scripts, including the live attack-path,
-corpse-memory, trap-target, posture and character-control checks, are now also in
-the full gameplay catalog. The multilingual rendered group remains in this
-focused manifest because it requires separate original localized archives.
+corpse-memory, trap-target, posture and character-control checks, are in the
+full gameplay catalog. The multilingual rendered group (`save_rename_en` and
+the like) lists its original localized archives in `texts`.
 
 Every issue or bug fix and every feature addition or change MUST include a
 registered regression test in the same change. Run it and related existing checks.
 A fix must include a test that fails against the unfixed behavior.
 `python3 tools/check_issue_coverage.py` enforces the link: every issue the
-changelog references must appear in a registered case's `issues` list (here or
-in the gameplay catalog) or carry a reason in
-`tools/issue_coverage_exceptions.json`; an exception is removed once a test
-covers its issue, and the check fails when a covered issue is still excused.
+changelog references must appear in a catalog entry's `issues` list or carry a
+reason in `tools/issue_coverage_exceptions.json`; an exception is removed once
+a test covers its issue, and the check fails when a covered issue is still excused.
 
 Reports that reopened under new numbers are covered by matrix cases rather
 than one case per report: `posture_transition_matrix` runs every one-shot
@@ -161,6 +171,14 @@ measures world time, the Eagle Sight countdown, mana recovery and walking
 distance at both speeds on a fresh load, after a save taken at fast speed is
 reloaded, and after zone travel (#62, #98, #116, #119). When one of these
 families is reported again, add the new trigger as a cell of the matrix.
+
+`zone_change_pools` checks that a party unit arrives in the next zone with
+the health and mana it left with and without the spell effects of the zone
+left, as the original's party record carries both pools and no effects (the
+console `travel` command and the global map share the deployment; see
+[the zone-pool validation](validation/zone-pools-2026-10-29.md)).
+`ui_pad_panels` checks that the load/save screen and the mod panel take the
+gamepad over the main menu or Escape signpost beneath them.
 
 Mechanism, prison-wall and Autochess checks also cover distant object teleports,
 deferred topology labels, severe timing overload, reserve rearrangement, first-click

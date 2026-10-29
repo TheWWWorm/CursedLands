@@ -38,17 +38,17 @@ python3 tools/check_test_scripts.py --engine /path/to/godot --import-first
   and `tools/tests/test_registries.py` lints both test registries: every
   registered script exists, prints its completion marker, resolves its
   `res://tools/` imports, avoids the `var x := weakref(...)` form that
-  Godot 4.7 refuses to load, and carries the same `min_checks` wherever the
-  same script is registered in both registries (`tools/raise_min_checks.py`
-  raises thresholds from green runs).
+  Godot 4.7 refuses to load, and is registered once per script, arguments,
+  campaign, display and renderer (`tools/raise_min_checks.py` raises
+  `min_checks` from green runs).
 - The `tools/parity` modules test the original-engine comparison tooling. The
   families that emulate the original executable are skipped when the `unicorn`
   package is not installed.
 - `check_translations.py` checks that every player-visible string has Russian
   and German text, including dynamically chosen keys and error messages.
 - `check_issue_coverage.py` checks that every issue the changelog links has a
-  registered regression test (`issues` in `tools/regressions.json` or
-  `tools/parity/gameplay_catalog.json`) or a reason in
+  registered regression test (`issues` in `tools/parity/gameplay_catalog.json`)
+  or a reason in
   `tools/issue_coverage_exceptions.json`. A fix entry that links an issue must
   therefore register its test in the same change; the exceptions file lists the
   issues fixed before the registries recorded links, and an entry must be
@@ -62,14 +62,16 @@ The same commands run in GitHub Actions (`.github/workflows/ci.yml`).
 
 Gameplay, interface and rendering regressions read the original game files, so
 they run only on a machine with an owned copy of the GOG base game (and Lost in
-Astral for the expansion cases). Two runners exist:
+Astral for the expansion cases). One registry,
+`tools/parity/gameplay_catalog.json`, serves two runners:
 
-- [`tools/check_regressions.py`](docs/regression-checks.md): focused cases in
-  `tools/regressions.json`, each with a contract, issue links and a minimum
-  assertion count. Headless cases need only the engine; rendered cases need a
-  display and are submitted to the GPU queue on the maintainer's workstation.
-- [`tools/parity/gameplay.py`](docs/gameplay-testing.md): the full catalog in
-  `tools/parity/gameplay_catalog.json`, run in parallel with retained logs.
+- [`tools/check_regressions.py`](docs/regression-checks.md): the catalog
+  entries that carry a `focused` ID, selected and reported by that short ID,
+  with isolated profiles and retained evidence per case. Headless cases need
+  only the engine; rendered cases need a display and are submitted to the GPU
+  queue on the maintainer's workstation.
+- [`tools/parity/gameplay.py`](docs/gameplay-testing.md): the full catalog,
+  run in parallel with retained logs and reproduction inputs.
 
 Both runners stage `tools/tests` next to the game so that `extends
 "res://tools/tests/..."` resolves; never run a test script directly from the
@@ -78,9 +80,9 @@ source tree.
 ## What a change must include
 
 - **A regression test in the same change.** For a bug fix, the test exercises
-  the reported failure and fails on the unfixed code; register it in
-  `tools/regressions.json` or the gameplay catalog with the issue number in
-  its `issues` list (`tools/check_issue_coverage.py` fails on a changelog
+  the reported failure and fails on the unfixed code; register it in the
+  gameplay catalog (with a `focused` ID when the focused runner should offer
+  it) with the issue number in its `issues` list (`tools/check_issue_coverage.py` fails on a changelog
   issue without one) and run the related cases. When a report repeats an
   earlier one (posture transitions, game speed, corpse targeting, menu
   frames), add its trigger to that family's matrix test instead of a new

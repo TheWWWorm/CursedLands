@@ -1,7 +1,9 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 507 registered test configurations across 19
-areas, using 359 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 812 registered test configurations across 20
+areas, using 609 scripts (the focused manifest was folded into this catalog
+on 2026-10-29; its cases carry a `focused` ID, see
+[the focused checks](regression-checks.md)). It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -143,7 +145,11 @@ useful regression evidence but is not original-executable parity.
 The catalog is `tools/parity/gameplay_catalog.json`. It declares each script,
 campaign, required baseline files, completion marker, minimum check count,
 arguments, timeout, display mode and quick/full classification. Expansion-specific scripts
-and shared model sweeps are explicitly assigned their asset set.
+and shared model sweeps are explicitly assigned their asset set. An entry with
+`focused` is also a case of `tools/check_regressions.py` under that short ID;
+an entry that lists `texts` takes the original localized archives
+(`--texts-en` / `--texts-ru` / `--texts-de`) as `{texts_xx}` arguments, and is
+reported as missing data when one is not supplied.
 
 `tools/parity/player_features.json` maps 35 player-facing feature groups and
 all 48 verbs in the campaign authority dispatchers to tests or explicit gaps.
@@ -179,8 +185,8 @@ player saves and preferences are neither copied nor changed.
 Process control (ending a program on its first runtime diagnostic or at its
 timeout, the summary-line contract and the 1280×800 rendered window) lives in
 [`tools/parity/process.py`](../tools/parity/process.py) and is shared with the
-focused runner, so the two cannot drift; `tools/raise_min_checks.py` raises
-`min_checks` from green reports and keeps shared registrations at one threshold.
+focused runner, which reads the same catalog, so the two cannot drift;
+`tools/raise_min_checks.py` raises `min_checks` from green reports of either runner.
 
 The bootstrap preserves the ordinary `--tool` scene layout so a separate
 simulation worker uses the same RPC paths as its frontend. Real-time programs

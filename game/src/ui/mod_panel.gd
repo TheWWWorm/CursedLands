@@ -30,6 +30,7 @@ var _download_status: Label
 
 func _ready() -> void:
 	build_shell("Mods and rules", Vector2(920, 660))
+	add_to_group("pad_panel")   # PadUI: pad_press takes the buttons over the menu below
 	_summary = _label("", dialog_body)
 	_summary.add_theme_color_override("font_color", MUTED)
 	_tabs = HFlowContainer.new()

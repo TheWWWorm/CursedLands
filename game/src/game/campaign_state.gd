@@ -754,6 +754,13 @@ func apply_hero(u: GameUnit) -> void:
 			u.restore_gait(entry_gait(u.world, int(h.get("gait", 2))))
 			if float(h.hp) > 0.0:
 				u.hp = minf(float(h.hp), u.max_hp)
+				# Both pools come from the record: the original keeps the unit's
+				# whole stats block in its party record while the party is away
+				# (58fd90 StoreParty → 553360 CopyStats) and the redeployed unit
+				# gets it back (5927c0 CreateObject → 477b00 ApplyTo). Spell
+				# effects are not in the record; they end with the zone left.
+				if h.has("mana"):
+					u.mana = minf(float(h.mana), u.max_mana)
 			u.set_meta("hero", h)
 			u.refresh_figure()
 			return

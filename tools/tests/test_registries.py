@@ -1,4 +1,4 @@
-"""Static checks on both test registries and the test scripts themselves.
+"""Static checks on the test registry and the test scripts themselves.
 
 These run without game data or an engine. They catch the registration
 mistakes that otherwise surface only after a long run: scripts that do not
@@ -50,54 +50,54 @@ def closure(script):
     return seen
 
 
-def focused_cases():
-    return json.loads((REPO / "tools/regressions.json").read_text(encoding="utf-8"))["cases"]
-
-
 def catalog_entries():
     return json.loads((REPO / "tools/parity/gameplay_catalog.json").read_text(encoding="utf-8"))["tests"]
 
 
 class RegistryTests(unittest.TestCase):
-    def test_focused_cases_name_existing_scripts_and_markers(self):
-        ids = [case["id"] for case in focused_cases()]
-        self.assertEqual(len(ids), len(set(ids)), "duplicate focused case IDs")
-        for case in focused_cases():
-            script = REPO / case["script"]
-            self.assertTrue(script.is_file(), case["id"])
-            self.assertGreaterEqual(case["min_checks"], 1, case["id"])
-            self.assertIn(case["mode"], ("headless", "rendered"), case["id"])
-            texts = [item.read_text(encoding="utf-8") for item in closure(script)]
-            self.assertTrue(any(case["summary"] in text for text in texts),
-                            f'{case["id"]}: no script in the closure prints {case["summary"]}')
-
     def test_catalog_entries_name_existing_scripts_and_markers(self):
         ids = [row["id"] for row in catalog_entries()]
         self.assertEqual(len(ids), len(set(ids)), "duplicate catalog IDs")
         for row in catalog_entries():
             script = REPO / row["script"]
             self.assertTrue(script.is_file(), row["id"])
+            self.assertGreaterEqual(row["min_checks"], 1, row["id"])
+            self.assertIn(row.get("display", "headless"), ("headless", "rendered"), row["id"])
             texts = [item.read_text(encoding="utf-8") for item in closure(script)]
             self.assertTrue(any(row["marker"] in text for text in texts),
                             f'{row["id"]}: no script in the closure prints {row["marker"]}')
 
+    def test_focused_ids_are_unique_short_names(self):
+        """tools/check_regressions.py selects and reports catalog entries by
+        their `focused` ID; it must name exactly one entry and never another
+        entry's own name."""
+        rows = catalog_entries()
+        aliases = [row["focused"] for row in rows if "focused" in row]
+        self.assertEqual(len(aliases), len(set(aliases)), "duplicate focused IDs")
+        names = {row["id"].split("/")[1]: row["id"] for row in rows}
+        for row in rows:
+            if "focused" in row:
+                self.assertRegex(row["focused"], r"^[a-z0-9_]+$", row["id"])
+                self.assertEqual(names.get(row["focused"], row["id"]), row["id"],
+                                 f'{row["id"]}: focused ID {row["focused"]} is another entry\'s name')
+        self.assertGreaterEqual(len(aliases), 370, "the folded focused manifest must stay registered")
 
-    def test_same_registration_keeps_one_threshold(self):
-        """A script registered in both registries with the same arguments,
-        campaign and display must demand the same minimum check count;
-        tools/raise_min_checks.py keeps them together."""
-        campaign = {"base": "cursed_lands", "astral": "lost_in_astral"}
-        catalog = {}
+    def test_same_registration_appears_once(self):
+        """One script with the same arguments, campaign, display and renderer
+        is one entry (and so one `min_checks`); the folded manifest must not
+        grow a second registration of a catalog test."""
+        seen = {}
         for row in catalog_entries():
-            key = (row["script"], tuple(row.get("args", [])), row["campaign"], row.get("display", "headless"))
-            catalog.setdefault(key, []).append(row)
-        drift = []
-        for case in focused_cases():
-            key = (case["script"], tuple(case.get("args", [])), campaign[case["data"]], case["mode"])
-            for row in catalog.get(key, []):
-                if row["min_checks"] != case["min_checks"]:
-                    drift.append(f'{case["id"]} min_checks {case["min_checks"]} vs {row["id"]} {row["min_checks"]}')
-        self.assertEqual(drift, [])
+            key = (row["script"], tuple(row.get("args", [])), row["campaign"], row.get("display", "headless"),
+                   row.get("rendering_method", "gl_compatibility"))
+            seen.setdefault(key, []).append(row["id"])
+        self.assertEqual([ids for ids in seen.values() if len(ids) > 1], [])
+
+    def test_localized_archives_are_declared(self):
+        """`{texts_xx}` arguments name archives the entry lists in `texts`."""
+        for row in catalog_entries():
+            used = {language for arg in row.get("args", []) for language in re.findall(r"\{texts_(\w+)\}", arg)}
+            self.assertEqual(used, set(row.get("texts", [])), row["id"])
 
 
 class ScriptSourceTests(unittest.TestCase):

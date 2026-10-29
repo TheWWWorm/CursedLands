@@ -25,12 +25,27 @@ from process import DIAGNOSTIC, rendered_arguments, run_program, parse_summary
 from run import HERE, REPO, PROFILE, command, file_hash, isolated_environment, stage_game, write_json
 
 
-def catalog(selection=None):
-    data = json.loads((selection or HERE / "gameplay_catalog.json").read_text())
+TEXTS = ("en", "ru", "de")
+
+
+def catalog(selection=None, path=None):
+    """The registered tests: the catalog (or `path`, a file of the same
+    schema), or a retained `selection.json`. An entry with `focused` is also
+    a case of tools/check_regressions.py under that short ID."""
+    data = json.loads((selection or path or HERE / "gameplay_catalog.json").read_text())
     rows = data if selection else data["tests"]
     if (not selection and data["schema"] != 1) or not rows or len({r["id"] for r in rows}) != len(rows):
         raise ValueError("Invalid/duplicate gameplay catalog")
+    aliases = [r["focused"] for r in rows if "focused" in r]
+    if len(set(aliases)) != len(aliases):
+        raise ValueError("Duplicate focused case IDs")
+    names = {r["id"].split("/")[1]: r["id"] for r in rows}
     for row in rows:
+        alias = row.get("focused")
+        if alias is not None and (not re.fullmatch(r"[a-z0-9_]+", str(alias)) or names.get(alias, row["id"]) != row["id"]):
+            raise ValueError("A focused ID is a short lowercase name that no other entry's name uses")
+        if any(language not in TEXTS for language in row.get("texts", [])):
+            raise ValueError("texts lists languages among " + ", ".join(TEXTS))
         path = Path(row["script"])
         if path.is_absolute() or ".." in path.parts or path.parts[:2] != ("tools", "tests"):
             raise ValueError("Test paths must stay inside tools/tests")
@@ -48,7 +63,8 @@ def catalog(selection=None):
             for name in files:
                 if Path(name).is_absolute() or ".." in Path(name).parts:
                     raise ValueError("Required assets must stay within the campaign folder")
-        argument_paths(row, {key: Path("/data") / key for key in required_assets(row)})
+        argument_paths(row, {**{key: Path("/data") / key for key in required_assets(row)},
+                             **{"texts_" + language: Path("/data/texts") / language for language in row.get("texts", [])}})
     return rows
 
 
@@ -60,12 +76,18 @@ def required_assets(spec):
 
 
 def argument_paths(spec, data_roots):
-    """Resolve explicitly declared companion installations as individual argv values."""
+    """Resolve explicitly declared companion installations, and the original
+    localized text archives an entry lists in `texts` (`{texts_en}` ...), as
+    individual argv values."""
     def replace(match):
-        campaign = match.group(1)
-        if campaign not in required_assets(spec) or campaign not in data_roots:
-            raise ValueError("Argument requires declared campaign data: " + campaign)
-        return str(data_roots[campaign])
+        name = match.group(1)
+        if name.startswith("texts_"):
+            if name[6:] not in spec.get("texts", []) or name not in data_roots:
+                raise ValueError("Argument requires a declared localized archive: " + name)
+            return str(data_roots[name])
+        if name not in required_assets(spec) or name not in data_roots:
+            raise ValueError("Argument requires declared campaign data: " + name)
+        return str(data_roots[name])
     return [re.sub(r"\{([a-z_]+)\}", replace, value) for value in spec["args"]]
 
 
@@ -151,8 +173,11 @@ class MemoryGate:
 
 
 def missing_assets(spec, data_roots):
-    return [f"{campaign}/{name}" for campaign, files in required_assets(spec).items()
-            for name in files if campaign not in data_roots or not (data_roots[campaign] / name).is_file()]
+    missing = [f"{campaign}/{name}" for campaign, files in required_assets(spec).items()
+               for name in files if campaign not in data_roots or not (data_roots[campaign] / name).is_file()]
+    missing += [f"texts_{language} (--texts-{language})" for language in spec.get("texts", [])
+                if f"texts_{language}" not in data_roots or not data_roots[f"texts_{language}"].is_file()]
+    return missing
 
 
 def engine_argv(godot, runtime, display="headless", rendering_method="gl_compatibility"):
@@ -291,6 +316,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-dir", type=Path)
     parser.add_argument("--astral-dir", type=Path, help="Owned Lost in Astral installation for expansion-specific tests")
+    for language in TEXTS:
+        parser.add_argument("--texts-" + language, type=Path,
+                            help=f"Original {language.upper()} texts.res for the entries that list `texts`")
     parser.add_argument("--game-source", type=Path, default=REPO / "game")
     parser.add_argument("--godot", default=shutil.which("godot-4") or shutil.which("godot"))
     parser.add_argument("--out", type=Path)
@@ -317,7 +345,8 @@ def main():
         raise ValueError("No gameplay programs selected")
     if args.list:
         for row in tests:
-            print(f"{row['id']} [{row['campaign']}]: {row['description']}")
+            alias = f" (focused: {row['focused']})" if "focused" in row else ""
+            print(f"{row['id']} [{row['campaign']}]{alias}: {row['description']}")
         return 0
     if not sys.platform.startswith("linux"):
         raise ValueError("Capture profile isolation is qualified only on Linux")
@@ -350,10 +379,16 @@ def main():
         data_roots = {"cursed_lands": data}
         if args.astral_dir:
             data_roots["lost_in_astral"] = args.astral_dir.resolve()
+        for language in TEXTS:
+            archive = getattr(args, "texts_" + language)
+            if archive:
+                data_roots["texts_" + language] = archive.resolve()
         report["campaign_data"] = {campaign: {
             "root":str(folder), "files": {name:file_hash(folder / name) for name in
             sorted({name for row in tests for name in required_assets(row).get(campaign, [])})
-            if (folder / name).is_file()}} for campaign, folder in data_roots.items()}
+            if (folder / name).is_file()}} for campaign, folder in data_roots.items() if not campaign.startswith("texts_")}
+        report["texts"] = {key: {"path": str(folder), "sha256": file_hash(folder)}
+                           for key, folder in data_roots.items() if key.startswith("texts_") and folder.is_file()}
         name = re.search(r'^config/name="([^"/\\]+)"', (runtime / "project.godot").read_text(), re.M)[1]
         engine = engine_argv(shutil.which(args.godot) or Path(args.godot).resolve(), runtime)
         report["engine"] = {"path": engine[0], "sha256": file_hash(engine[0])}
@@ -361,6 +396,9 @@ def main():
                      "--game-source", str(source), "--godot", engine[0], "--seed", str(args.seed),
                      "--replay-selection", str(output / "selection.json")]
         if args.astral_dir: reproduce += ["--astral-dir", str(args.astral_dir.resolve())]
+        for language in TEXTS:
+            if getattr(args, "texts_" + language):
+                reproduce += ["--texts-" + language, str(getattr(args, "texts_" + language).resolve())]
         if args.with_original: reproduce.append("--with-original")
         if args.timeout: reproduce += ["--timeout", str(args.timeout)]
         if args.render_display: reproduce += ["--render-display", args.render_display]

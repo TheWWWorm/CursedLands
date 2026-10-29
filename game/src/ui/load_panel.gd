@@ -109,6 +109,7 @@ var _renaming := false
 
 func _ready() -> void:
 	visible = false
+	add_to_group("pad_panel")   # remake: the gamepad (pad_keys), over the menu or signpost
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	tooltip_text = " "
@@ -561,6 +562,18 @@ func _process(frame_dt: float) -> void:
 	if n != 0:
 		top = clampi(top + n, 0, _max_top())
 		queue_redraw()
+
+
+## Remake, the gamepad (PadUI): the list and the buttons take the key bridge
+## (D-pad → arrows, A → Enter, B → Esc, LB / RB → PgUp / PgDn); X deletes and
+## Y renames. In the pad_panel group so that the main menu or the Escape
+## signpost underneath does not keep the D-pad while this screen is up.
+func pad_keys() -> Dictionary:
+	return {"context": KEY_DELETE, "pause": KEY_F2}
+
+
+func pad_targets() -> Array:
+	return []
 
 
 ##  (keys) and (characters, Save mode).

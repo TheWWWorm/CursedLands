@@ -24,7 +24,7 @@ point in time and are not updated afterwards.
 
 ## Testing
 
-- [Focused regression checks](regression-checks.md): `tools/check_regressions.py` and `tools/regressions.json`
+- [Focused regression checks](regression-checks.md): `tools/check_regressions.py` over the catalog's `focused` entries
 - [Gameplay regression suite](gameplay-testing.md): `tools/parity/gameplay.py` and its catalog
 - [Original-engine comparison suite](original-parity.md) with its families:
   [dialogue](original-parity-dialogue.md), [NPC AI](original-parity-npc-ai.md),
