@@ -270,6 +270,17 @@ caches. Most of the 1.74 s is those 67 builds and 92 compositions; the
 other ~320 records are cache hits. `height_scale` reparses nothing
 expensive: 413 calls take 44 ms headless (measured), so it needs no cache.
 
+Done in this pass (ninth): the atlas half of that split. `prewarm` now
+collects the missing body and surface atlases while it walks the records,
+`_compose_atlases` reads each distinct layer's bytes once on the main
+thread (`_layer_bytes`), decodes them on a wide group, blends the atlases
+on a second wide group (`_compose_image`, `_compose_surface_image`: pure,
+the layers are copied before a resize or blend) and creates the textures
+on the main thread (`_texture_of`). The per-model path composes through
+the same pure functions. The clip libraries stay serial per record (their
+decode is already wide inside `EIAnim.library`). Measurement in
+`local/validation/cpu-speed-20261029/prewarm-atlases/`.
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal

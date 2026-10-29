@@ -1921,6 +1921,7 @@ static func root_part_of(model: Dictionary, needed: Dictionary) -> String:
 ## replicas the zone message brings find them ready. Returns what it made.
 static func prewarm(records: Array) -> Dictionary:
 	var made := {"libraries": 0, "textures": 0, "records": 0}
+	var atlases := {}   # "mask|layers" -> [mask, layers, profiles]
 	var db := GameData.db
 	for record in records:
 		if not record is Dictionary:
@@ -1970,11 +1971,61 @@ static func prewarm(records: Array) -> Dictionary:
 				continue
 			if not asset_prefix.is_empty():
 				for i in names.size(): names[i] = asset_prefix + names[i]
-			var textures := _textures.size() + _surface_textures.size()
-			_compose(mask, names)
-			_compose_surface(mask, names, atlas[1])
-			made.textures += _textures.size() + _surface_textures.size() - textures
+			var key := mask + "|" + "|".join(names)
+			if not atlases.has(key) and (not _textures.has(key) or not _surface_textures.has(key + "|" + str(atlas[1]))):
+				atlases[key] = [mask, names, atlas[1]]
+	made.textures = _compose_atlases(atlases.values())
 	return made
+
+
+## The atlases of `jobs` ([mask, layers, profiles] each) into the caches:
+## the layers' bytes are read once per layer on this thread, decoded and
+## blended on worker lanes (pure image work), and the textures made here.
+## Returns the number of textures added.
+static func _compose_atlases(jobs: Array) -> int:
+	var layer_keys := {}   # "mask|layer" -> index into bytes / images
+	var bytes: Array[PackedByteArray] = []
+	for job: Array in jobs:
+		for layer: String in job[1]:
+			var k: String = job[0] + "|" + layer
+			if not layer_keys.has(k):
+				layer_keys[k] = bytes.size()
+				bytes.append(_layer_bytes(job[0], layer))
+	NetStatus.keep_alive()
+	var images: Array = []
+	images.resize(bytes.size())
+	Portability.group(func(i: int) -> void:
+		images[i] = EIMmp.decode(bytes[i]) if not bytes[i].is_empty() else null, bytes.size(), true)
+	var bodies: Array = []
+	var surfaces: Array = []
+	bodies.resize(jobs.size())
+	surfaces.resize(jobs.size())
+	Portability.group(func(j: int) -> void:
+		var job: Array = jobs[j]
+		var present: Array[Image] = []
+		var profiles: Array[Vector3] = []
+		var given: Array[Vector3] = job[2]
+		for i in job[1].size():
+			var img: Image = images[layer_keys[job[0] + "|" + job[1][i]]]
+			if img == null:
+				continue
+			present.append(img)
+			profiles.append(given[i] if i < given.size() else SurfaceResponse.DULL)
+		bodies[j] = _compose_image(present)
+		surfaces[j] = _compose_surface_image(present, profiles), jobs.size(), true)
+	NetStatus.keep_alive()
+	var added := 0
+	for j in jobs.size():
+		var job: Array = jobs[j]
+		var key: String = job[0] + "|" + "|".join(job[1])
+		if not _textures.has(key):
+			_textures[key] = _texture_of(bodies[j])
+			added += 1
+		var surface_key := key + "|" + str(job[2])
+		if not _surface_textures.has(surface_key):
+			_surface_textures[surface_key] = _texture_of(surfaces[j])
+			added += 1
+	return added
 
 
 static func _is_body_part(p: String, model: Dictionary) -> bool:
@@ -1986,24 +2037,39 @@ static func _compose(mask: String, layers: Array[String]) -> Texture2D:
 	var key := mask + "|" + "|".join(layers)
 	if _textures.has(key):
 		return _textures[key]
-	var images := _load_layers(mask, layers)
+	var tex := _texture_of(_compose_image(_load_layers(mask, layers)))
+	# Shipped wound shaders preserve this texture and never need its CPU
+	# pixels. Custom materials use UnitWounds' lazy, cached readback path.
+	_textures[key] = tex
+	return tex
+
+
+## The body atlas's pixels: the layers blended in order at the largest
+## layer's size, with mipmaps. Pure (the layers are copied before any
+## resize or blend), so prewarm runs it on worker lanes.
+static func _compose_image(images: Array[Image]) -> Image:
 	var size := _layer_size(images)
 	var base: Image = null
 	for img: Image in images:
 		if img.get_size() != size:
+			img = img.duplicate()
 			img.resize(size.x, size.y, Image.INTERPOLATE_BILINEAR)
 		if base == null:
-			base = img
+			base = img.duplicate()
 			continue
 		base.blend_rect(img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i.ZERO)
-	var tex: Texture2D = null
 	if base:
 		base.generate_mipmaps()
-		tex = ImageTexture.create_from_image(base)
-		RaytraceTextureSource.remember(tex as ImageTexture,base)
-		# Shipped wound shaders preserve this texture and never need its CPU
-		# pixels. Custom materials use UnitWounds' lazy, cached readback path.
-	_textures[key] = tex
+	return base
+
+
+## Main thread: the texture of a composed image, remembered for the ray
+## tracer's CPU copy (null for no image).
+static func _texture_of(base: Image) -> Texture2D:
+	if base == null:
+		return null
+	var tex := ImageTexture.create_from_image(base)
+	RaytraceTextureSource.remember(tex, base)
 	return tex
 
 
@@ -2027,15 +2093,22 @@ static func _layer_size(images: Array[Image]) -> Vector2i:
 
 
 static func _load_layer(mask: String, layer: String) -> Image:
+	var d := _layer_bytes(mask, layer)
+	return EIMmp.decode(d) if not d.is_empty() else null
+
+
+## The layer's .mmp bytes (the redress archive's masked variant first). The
+## archives share one file handle each: read on the main thread only.
+static func _layer_bytes(mask: String, layer: String) -> PackedByteArray:
 	if layer.begins_with(ArenaExpansion.PREFIX):
 		var name := layer.trim_prefix(ArenaExpansion.PREFIX)
 		var bytes := ArenaExpansion.asset("redress", ArenaExpansion.PREFIX + mask + name + ".mmp")
 		if bytes.is_empty(): bytes = ArenaExpansion.asset("textures", layer + ".mmp")
-		return EIMmp.decode(bytes) if not bytes.is_empty() else null
+		return bytes
 	var d := GameData.redress.read(mask + layer + ".mmp")
 	if d.is_empty():
 		d = GameData.textures.read(layer + ".mmp")
-	return EIMmp.decode(d) if not d.is_empty() else null
+	return d
 
 
 ## Independent texture ownership is intentional: UnitWounds changes albedo,
@@ -2045,24 +2118,31 @@ static func _compose_surface(mask: String, layers: Array[String], profiles: Arra
 	var key := mask + "|" + "|".join(layers) + "|" + str(profiles)
 	if _surface_textures.has(key):
 		return _surface_textures[key]
-	var base: Image = null
-	var size := Vector2i.ZERO
-	var loaded := []
+	var images: Array[Image] = []
+	var present: Array[Vector3] = []
 	for i in layers.size():
 		var layer := _load_layer(mask, layers[i])
 		if layer == null:
 			continue
-		loaded.append([layer, profiles[i] if i < profiles.size() else SurfaceResponse.DULL])
+		images.append(layer)
+		present.append(profiles[i] if i < profiles.size() else SurfaceResponse.DULL)
+	var texture := _texture_of(_compose_surface_image(images, present))
+	_surface_textures[key] = texture
+	return texture
+
+
+## The surface atlas's pixels: each present layer's response blended over
+## the skin's, with mipmaps. Pure, like _compose_image.
+static func _compose_surface_image(images: Array[Image], profiles: Array[Vector3]) -> Image:
+	var size := Vector2i.ZERO
+	for layer: Image in images:
 		size = size.max(layer.get_size())
-	for pair: Array in loaded:
+	var base: Image = null
+	for i in images.size():
 		if base == null:
 			base = Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
 			base.fill(Color(SurfaceResponse.SKIN.x, SurfaceResponse.SKIN.y, SurfaceResponse.SKIN.z))
-		SurfaceResponse.blend_layer(base, pair[0], pair[1])
-	var texture: Texture2D = null
+		SurfaceResponse.blend_layer(base, images[i], profiles[i])
 	if base:
 		base.generate_mipmaps()
-		texture = ImageTexture.create_from_image(base)
-		RaytraceTextureSource.remember(texture as ImageTexture,base)
-	_surface_textures[key] = texture
-	return texture
+	return base
