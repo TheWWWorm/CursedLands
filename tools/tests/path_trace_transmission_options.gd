@@ -10,12 +10,8 @@ func run() -> void:
 		RemakeText.lang=language
 		for key: String in ["PT refraction",GameData.REMAKE_OPTIONS.pt_refraction[1]]:
 			check(not RemakeText.t(key).is_empty() and (language=="en" or RemakeText.t(key)!=key),"refraction label/help/status translated: "+language+key.left(24))
-	# Let the deferred startup window placement finish before testing exact extents.
-	await frames(12);GameData._window_gen+=1
-	get_window().mode=Window.MODE_WINDOWED
 	for size: Vector2i in [Vector2i(1280,720),Vector2i(2560,1440),Vector2i(3840,2160)]:
-		get_window().borderless=true;get_window().size=size
-		await get_tree().create_timer(.3,true,false,true).timeout
+		await preload("res://tools/tests/capture_window.gd").resize(self,size)
 		for language: String in ["en","ru","de"]:
 			RemakeText.lang=language
 			check(get_window().size==size and Vector2i(get_viewport().get_visible_rect().size)==size,"actual refraction UI extent: "+language+str(size))

@@ -99,10 +99,18 @@ class CheckpointsTest(unittest.TestCase):
             source = root / 'game'
             source.mkdir()
             alias = root / 'source-alias'
-            alias.symlink_to(source, target_is_directory=True)
+            paths = [source / 'results']
+            with self.subTest(fixture='symlink alias'):
+                try:
+                    alias.symlink_to(source, target_is_directory=True)
+                    paths.append(alias / 'results')
+                except OSError as error:
+                    if getattr(error, 'winerror', None) == 1314:
+                        self.skipTest('Windows symlink fixture needs Developer Mode or the symlink privilege')
+                    raise
             selection = root / 'selection.json'
             selection.write_text(json.dumps({'control': self.cp()}))
-            for output in (source / 'results', alias / 'results'):
+            for output in paths:
                 args = SimpleNamespace(replay_selection=selection, name=None, godot='fake-godot',
                     repeat=1, work_dir=output, game_source=source)
                 with patch('run.stage_game') as stage:

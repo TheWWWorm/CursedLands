@@ -11,6 +11,7 @@ import math
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -73,7 +74,7 @@ def screen(clip):
 
 def sources(directory):
     patch = (REPO / "engine_patches/godot-4.7/restore-dlss.patch").read_text()
-    marker = "diff --git a/" + str(RELATIVE) + " b/" + str(RELATIVE)
+    marker = "diff --git a/" + RELATIVE.as_posix() + " b/" + RELATIVE.as_posix()
     section = patch.split(marker, 1)[1].split("\ndiff --git ", 1)[0]
     assert "new file mode" in section
     baseline = "".join(line[1:] for line in section.splitlines(True)
@@ -81,10 +82,10 @@ def sources(directory):
     baseline = baseline.rstrip("\n") + "\n"
     file = directory / RELATIVE
     file.parent.mkdir(parents=True)
-    file.write_text(baseline)
+    file.write_text(baseline, newline="\n")
     subprocess.run(["git", "apply", str(REPO / "engine_patches/godot-4.7/dlss-camera-contract.patch")],
                    cwd=directory, check=True, capture_output=True)
-    subprocess.run(["git", "apply", "--include=" + str(RELATIVE),
+    subprocess.run(["git", "apply", "--include=" + RELATIVE.as_posix(),
                     str(REPO / "engine_patches/godot-4.7/dlss-ray-reconstruction.patch")],
                    cwd=directory, check=True, capture_output=True)
     return baseline, file.read_text()
@@ -115,6 +116,7 @@ extern "C" void convert(const float *in,float *out) {
         data = (ctypes.c_float * 16)(*[matrix[i][j] for j in range(4) for i in range(4)])
         out = (ctypes.c_float * 16)();dll.convert(data,out)
         return [[float(out[i*4+j]) for j in range(4)] for i in range(4)]
+    upload.library = dll
     return upload
 
 
@@ -152,6 +154,7 @@ def audit(source, upload):
     return {"point_cases":len(errors),"max_pixel_error":max(errors),"failed_points":sum(e>.01 for e in errors),"depths":depths,"source_sha256":hashlib.sha256(source.encode()).hexdigest()}
 
 
+@unittest.skipUnless(shutil.which("g++"), "compiled camera audit requires g++ (MinGW-w64 on Windows)")
 class CameraContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -159,7 +162,15 @@ class CameraContract(unittest.TestCase):
         cls.temp=tempfile.TemporaryDirectory(prefix="dlss-camera-",dir=work)
         directory=Path(cls.temp.name)
         before,after=sources(directory)
-        cls.results={name:audit(source,converter(source,directory,name)) for name,source in [("baseline",before),("corrected",after)]}
+        cls.results = {}
+        for name, source in [("baseline", before), ("corrected", after)]:
+            upload = converter(source, directory, name)
+            try:
+                cls.results[name] = audit(source, upload)
+            finally:
+                if os.name == "nt":
+                    import _ctypes
+                    _ctypes.FreeLibrary(upload.library._handle)
         output=os.environ.get("CL_DLSS_AUDIT_OUTPUT")
         if output:Path(output).write_text(json.dumps(cls.results,indent=2)+"\n")
 

@@ -66,8 +66,9 @@ func run() -> void:
 	for unit: GameUnit in session.world.units.values():
 		unit.orders.clear();unit.order={};unit._perceive_next=INF;unit.ai_next=INF;unit.action="idle"
 	t=session.world.terrain;GameData.options.pt_mode=1;game._apply_options()
-	await frames(20);GameData._window_gen+=1;get_window().mode=Window.MODE_WINDOWED
-	get_window().borderless=true;get_window().size=output_size;RtxGraphics.apply_upscaling(get_window())
+	await frames(20)
+	await preload("res://tools/tests/capture_window.gd").resize(self,output_size)
+	RtxGraphics.apply_upscaling(get_window())
 	var rt: Node=game.get_node("SceneRaytrace");var stable:=0
 	for i in 1800:
 		await frames(1)

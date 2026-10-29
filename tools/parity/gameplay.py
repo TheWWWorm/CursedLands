@@ -348,8 +348,6 @@ def main():
             alias = f" (focused: {row['focused']})" if "focused" in row else ""
             print(f"{row['id']} [{row['campaign']}]{alias}: {row['description']}")
         return 0
-    if not sys.platform.startswith("linux"):
-        raise ValueError("Capture profile isolation is qualified only on Linux")
     if not args.game_dir or not args.out or not args.godot:
         parser.error("--game-dir, --godot and --out are required")
     if args.timeout is not None and args.timeout < 1:
@@ -358,6 +356,8 @@ def main():
     for input_tree in (source, (REPO / "tools/tests").resolve(), (REPO / "tools/benchmarks").resolve()):
         if output == input_tree or input_tree in output.parents:
             raise ValueError("Results must be outside the game and test source folders")
+    if not sys.platform.startswith("linux"):
+        raise ValueError("Capture profile isolation is qualified only on Linux")
     output.mkdir(parents=True, exist_ok=False)
     report = {"schema": 1, "tests": [], "selected": [r["id"] for r in tests], "complete": False,
               "seed": args.seed, "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

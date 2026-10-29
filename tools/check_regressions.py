@@ -200,6 +200,8 @@ def main():
                         help="cases to run at once (a number, or auto for CPU threads and free memory); "
                              "each keeps its own process and profile, and GPU Lab queues rendered cases")
     parser.add_argument("--list", action="store_true")
+    parser.add_argument("--native-render", action="store_true",
+                        help="Explicitly open rendered tests on this Windows desktop; Linux uses GPU Lab")
     args = parser.parse_args()
     cases = focused_cases(CATALOG)
     unknown = set(args.only) - {case["id"] for case in cases} - {case["catalog_id"] for case in cases}
@@ -232,8 +234,13 @@ def main():
                 parser.error(f'{case["id"]} requires {DATA_OPTIONS[key]}')
         if not (REPO / case["script"]).is_file():
             parser.error("Missing script: " + case["script"])
+    if args.native_render and sys.platform != "win32":
+        parser.error("--native-render is for Windows; use GPU Lab on Linux")
+    rendered_selected = any(case["mode"] == "rendered" for case in selected)
+    if rendered_selected and sys.platform == "win32" and not args.native_render:
+        parser.error("Rendered Windows cases need explicit --native-render")
     gpu_lab = shutil.which("gpu-lab")
-    if any(case["mode"] == "rendered" for case in selected) and not gpu_lab:
+    if rendered_selected and not args.native_render and not gpu_lab:
         parser.error("Rendered cases require GPU Lab")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -278,7 +285,7 @@ def main():
                     "--suite-campaign=" + expected["campaign"], "--suite-display=" + case["mode"]]
         command += [arg.format(**roots) for arg in case["args"]]
         timeout = case["timeout"]
-        rendered = case["mode"] == "rendered"
+        rendered = case["mode"] == "rendered" and not args.native_render
         if rendered:
             command = [gpu_lab, "run", "--gpu", "auto", "--cwd", str(REPO), "--timeout", str(timeout),
                        "--", "env"] + [f"{key}={value}" for key, value in isolated.items()] + command

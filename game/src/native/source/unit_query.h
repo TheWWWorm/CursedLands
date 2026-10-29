@@ -55,7 +55,7 @@ class UnitQueryKernel : public RefCounted {
     size_t notice_bytes = 0;
     static constexpr size_t notice_limit = 8 * 1024 * 1024;
     bool registered(const Variant &entry, const Dictionary &units) {
-        const uint64_t id = entry.get_type() == Variant::OBJECT ? static_cast<uint64_t>(static_cast<ObjectID>(entry)) : 0;
+        const uint64_t id = entry.get_type() == Variant::OBJECT ? static_cast<uint64_t>(entry.operator ObjectID()) : 0;
         if (batching) {
             const auto found = checked.find(id);
             if (found != checked.end()) return found->second;
@@ -260,7 +260,7 @@ public:
         const Array values = units.values();
         for (int64_t i = 0; i < values.size(); ++i) {
             const Variant entry = values[i];
-            if (registered(entry, units)) members.insert(static_cast<uint64_t>(static_cast<ObjectID>(entry)));
+            if (registered(entry, units)) members.insert(static_cast<uint64_t>(entry.operator ObjectID()));
         }
         complete_registry = true;
         if (members != last_members) { last_members.swap(members); ++membership_epoch; }

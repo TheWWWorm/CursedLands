@@ -285,16 +285,33 @@ class ConversionTest(unittest.TestCase):
                 self.put(self.source, "res/sfx.res", data)
                 self.assertIn("unreadable_archive", self.codes(self.converter().analyze()))
 
-    def test_links_and_case_colliding_input_files(self):
+    def test_links_are_rejected(self):
         self.sound()
         link = self.source / "external"
-        link.symlink_to(self.base, target_is_directory=True)
+        try:
+            link.symlink_to(self.base, target_is_directory=True)
+        except OSError as error:
+            if sys.platform == "win32" and getattr(error, "winerror", None) == 1314:
+                self.skipTest("Windows symlink fixture needs Developer Mode or the symlink privilege")
+            raise
         with self.assertRaisesRegex(ValueError, "link"):
             self.converter()
         link.unlink()
+
+    def test_case_colliding_input_files_are_rejected(self):
+        self.sound()
         self.put(self.source, "res/SFX.RES", b"duplicate")
-        with self.assertRaisesRegex(ValueError, "Case-colliding"):
-            self.converter()
+        root = self.source.resolve()
+        lower, upper = root / "res/sfx.res", root / "res/SFX.RES"
+        if lower.samefile(upper):
+            # NTFS normally folds these names into one file. Supply the two
+            # directory entries explicitly to exercise the same rejection.
+            with mock.patch.object(Path, "rglob", return_value=[lower, upper]):
+                with self.assertRaisesRegex(ValueError, "Case-colliding"):
+                    self.converter()
+        else:
+            with self.assertRaisesRegex(ValueError, "Case-colliding"):
+                self.converter()
 
     def test_maps_settings_and_new_assets_are_reported(self):
         self.sound()

@@ -48,7 +48,7 @@ class QualificationTests(unittest.TestCase):
             args = SimpleNamespace(inherit_display=True, display=None, xauthority=None)
             display, actual_authority, env = q.display_environment(args, inherited)
             self.assertEqual(display, ":98")
-            self.assertEqual(actual_authority, authority)
+            self.assertEqual(actual_authority, authority.resolve())
             self.assertEqual(env, inherited)
             self.assertIsNot(env, inherited)
             args.display = ":97"
@@ -103,6 +103,8 @@ class QualificationTests(unittest.TestCase):
         self.assertNotEqual(rows[0]["uuid"], rows[1]["uuid"])
 
     def supervise(self, script, timeout=2, monitor=telemetry):
+        if not sys.platform.startswith("linux"):
+            self.skipTest("Linux GPU Lab supervisor requires /proc and POSIX process groups")
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             return q.supervise([sys.executable, "-c", script], dict(os.environ), output, output,
@@ -324,6 +326,7 @@ class QualificationTests(unittest.TestCase):
                   "completed_cycles": 5, "saves": [{"pt_active_after_load": True}] * 5}
         self.assertEqual(len(q.validate_reports("sustained", report, runtime, "d3d12", True)), 3)
 
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux GPU Lab executable/process-group fixture")
     def test_end_to_end_isolation_manifest_and_fail_fast(self):
         # A harmless executable simulates the fixture protocol. This exercises
         # command construction, fresh profiles, report gates and manifest state.

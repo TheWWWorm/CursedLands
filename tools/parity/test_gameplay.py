@@ -209,7 +209,7 @@ class GameplayExecution(unittest.TestCase):
             self.assertEqual("--headless" in argv, mode == "headless")
             self.assertEqual(argv[argv.index("--audio-driver") + 1], "Dummy")
             if mode == "rendered":
-                self.assertEqual(argv[argv.index("--display-driver") + 1], "x11")
+                self.assertEqual(argv[argv.index("--display-driver") + 1], "windows" if sys.platform == "win32" else "x11")
                 self.assertEqual(argv[argv.index("--rendering-method") + 1], "gl_compatibility")
 
     def test_runtime_error_aborts_hung_program(self):

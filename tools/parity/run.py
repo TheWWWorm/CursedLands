@@ -71,6 +71,7 @@ def isolated_environment(directory, project_name, data):
     (profile / "settings.cfg").write_text(settings)
     return dict(os.environ, XDG_DATA_HOME=str(directory / "data"),
                 XDG_CONFIG_HOME=str(directory / "config"), XDG_CACHE_HOME=str(directory / "cache"),
+                APPDATA=str(directory / "data"), LOCALAPPDATA=str(directory / "local"),
                 EI_FIXED_FPS="60")
 
 
@@ -195,8 +196,6 @@ def main():
         return 0
     if not args.game_dir or not args.out or not args.godot:
         parser.error("--game-dir, --godot and --out are required")
-    if not sys.platform.startswith("linux"):
-        raise ValueError("Capture profile isolation is qualified only on Linux; --list remains available")
     source = args.game_source.resolve()
     output = args.out.resolve()
     if output == source or source in output.parents:
@@ -209,6 +208,8 @@ def main():
         binary = data / "game.exe"
         if file_hash(binary) != inputs["reference"]["executable_sha256"]:
             raise ValueError("Unsupported game.exe hash. This suite refuses to execute unverified addresses.")
+        if not sys.platform.startswith("linux"):
+            raise ValueError("Capture profile isolation is qualified only on Linux; --list remains available")
         # Check before importing/staging, and give actionable dependency errors.
         import unicorn
         if unicorn.__version__ != "2.1.4":

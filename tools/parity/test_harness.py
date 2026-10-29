@@ -165,7 +165,10 @@ class RunnerTests(unittest.TestCase):
             out = folder / "result"
             result = self.run_cli("--game-dir", game, "--out", out, "--godot", "must-never-launch")
             self.assertEqual(result.returncode, 2, result.stderr)
-            self.assertEqual(json.loads((out / "report.json").read_text())["status"], "error")
+            report = json.loads((out / "report.json").read_text())
+            self.assertEqual(report["status"], "error")
+            self.assertIn("Unsupported game.exe hash", report["error"])
+            self.assertEqual(report["commands"], [])
             self.assertFalse((out / "runtime").exists())
 
     def test_existing_results_are_immutable(self):

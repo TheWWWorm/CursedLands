@@ -12,7 +12,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.35.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.35.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It lets texture packs replace the menu signposts, adds a tool that exports the original textures as PNGs, keeps the Windows Direct3D 12 menu responsive after an update, and fixes several original-game bugs found by the Rebirth edition. See the [release notes](docs/releases/1.35.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.36.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.36.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It lets texture packs replace the menu signposts, adds a tool that exports the original textures as PNGs, keeps the Windows Direct3D 12 menu responsive after an update, and fixes several original-game bugs found by the Rebirth edition. See the [release notes](docs/releases/1.36.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 

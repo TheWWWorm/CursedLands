@@ -70,11 +70,33 @@ func reaches_exit(target: Vector2) -> bool:
 	return false
 
 func choose_goal(leg: int, avoid: Array = []) -> Vector2:
+	var observed:=hero.pos
+	var nav:=s.world.nav
+	if not nav.cell_open(observed,hero.move_class()):
+		# The frontend receives positions rounded to 1/64 m. A native cell
+		# boundary tie can put that replica on a wall even when the authority
+		# stands just inside the open cell. Probe only within that rounding
+		# interval, synchronously, and restore the replica before returning.
+		# This changes the query origin, never the actual input or player pose.
+		for offset: Vector2 in [Vector2(-1,0),Vector2(1,0),Vector2(0,-1),Vector2(0,1),Vector2(-1,-1),Vector2(-1,1),Vector2(1,-1),Vector2(1,1)]:
+			var origin:=observed+offset/256.0
+			if not nav.cell_open(origin,hero.move_class()):continue
+			hero.pos=origin
+			var goal:=_choose_goal(leg,avoid)
+			hero.pos=observed
+			route_diagnostics.back()["replica_position"]=str(observed)
+			if goal.is_finite():return goal
+	return _choose_goal(leg,avoid)
+
+func _choose_goal(leg: int, avoid: Array) -> Vector2:
 	var best := Vector2.INF
 	var score := -INF
 	var rejected := {"terrain":0,"exit":0,"actor":0}
 	var preferred := (s.world.terrain.size_ei()*0.5-hero.pos).angle() if leg==0 else heading+0.8
-	for length: float in [18.0,12.0,8.0,5.0,3.0]:
+	for length: float in [18.0,12.0,8.0,5.0,3.0,2.0,1.5]:
+		# Prefer the existing substantial legs. A confined open pocket can
+		# still supply real movement without relaxing terrain/body/exit checks.
+		if length<3.0 and best.is_finite():break
 		for angle in 32:
 			var direction := preferred+float(angle)*TAU/32
 			var refused:=false
@@ -255,20 +277,7 @@ func _ready() -> void:
 	hero=s.party_heroes()[0];g.selected.assign([hero]);g.rig.release();g.rig._window_focused=true
 	s.submit({"t":"console","line":"god on","request":1})
 	g.set_speed(1);heading=hero.facing;drive=true;tilt=-0.12
-	GameData._window_gen+=1
-	get_window().wrap_controls=false;get_window().min_size=Vector2i.ONE
-	var oversized:=route_resolution.x>DisplayServer.screen_get_size().x or route_resolution.y>DisplayServer.screen_get_size().y
-	if oversized:get_window().borderless=false
-	get_window().mode=Window.MODE_WINDOWED
-	if not oversized:get_window().borderless=true
-	# Avoid starting an oversized capture from a screen-covering window.
-	# Some Wine presentation paths still clamp it; verify the actual size below.
-	if oversized:
-		get_window().size=Vector2i(1920,1080);get_window().position=Vector2i(32,32)
-	for i in 8:await get_tree().process_frame
-	get_window().borderless=true
-	get_window().position=Vector2i(32,32) if oversized else Vector2i.ZERO
-	get_window().size=route_resolution
+	await preload("res://tools/tests/capture_window.gd").resize(self,route_resolution)
 	Engine.max_fps=0 if uncapped else 30
 	rt=g.get_node("SceneRaytrace")
 	check(await until(func():return rendering_ready() and g.direct.usable(),120),"renderer and first-person controls are ready")

@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import fcntl
 import hashlib
 import json
 import math
@@ -524,6 +523,7 @@ def main(argv=None) -> int:
     try:
         if sys.platform != "linux":
             raise ValueError("This runner requires a Linux host; Wine covers the Windows DX12 build")
+        import fcntl  # Linux execution only; report validation is portable.
         executable = args.executable.expanduser().resolve(strict=True)
         data = args.data_root.expanduser().resolve(strict=True)
         display, authority, env = display_environment(args, os.environ)

@@ -19,6 +19,10 @@ engine_patches/**/*.patch -whitespace
 
 # Windows launchers need native command-file line endings.
 *.cmd text eol=crlf
+dev.ps1 text eol=crlf
+tools/development.py text eol=lf
+manifests/development.json text eol=lf
+engine_patches/**/*.patch text eol=lf
 tools/windows/Prepare-PT-Diagnostics.ps1 text eol=crlf
 
 # Retain literal patch context and diagnostic logs as validation evidence.

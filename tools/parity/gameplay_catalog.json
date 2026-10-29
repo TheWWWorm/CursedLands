@@ -13122,6 +13122,26 @@
       "focused": "terrain_cliff_blends"
     },
     {
+      "id": "focused/path_trace_programs",
+      "category": "focused",
+      "script": "tools/tests/path_trace_programs.gd",
+      "marker": "PT_PROGRAMS",
+      "min_checks": 41,
+      "quick": false,
+      "description": "All opaque and transmission terrain hit shaders compile into native Vulkan/DXR pipelines and reuse their immutable shader and pipeline handles.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_programs"
+    },
+    {
       "id": "focused/path_trace_terrain",
       "category": "focused",
       "script": "tools/tests/path_trace_terrain.gd",
@@ -17824,6 +17844,64 @@
       "display": "rendered",
       "rendering_method": "forward_plus",
       "focused": "path_trace_global_cache"
+    },
+    {
+      "id": "focused/screen_topology",
+      "category": "focused",
+      "script": "tools/tests/screen_topology.gd",
+      "marker": "SCREEN_TOPOLOGY",
+      "min_checks": 7,
+      "quick": false,
+      "description": "Native resolution queries survive zero monitors, removal of the current monitor and display teardown without querying an invalid screen.",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "screen_topology"
+    },
+    {
+      "id": "focused/capture_window_extent",
+      "category": "focused",
+      "script": "tools/tests/capture_window_extent.gd",
+      "marker": "CAPTURE_WINDOW_EXTENT",
+      "min_checks": 21,
+      "quick": false,
+      "description": "Capture setup leaves a maximized window, retires deferred startup fits, and obtains matching native, Window and viewport extents from 720p through 4K and back.",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "capture_window_extent"
+    },
+    {
+      "id": "focused/path_trace_route_origin",
+      "category": "focused",
+      "script": "tools/tests/path_trace_route_origin.gd",
+      "marker": "PT_ROUTE_ORIGIN",
+      "min_checks": 15,
+      "quick": false,
+      "description": "The authored river traversal selects valid long and confined movement legs across replica position quantization, preserves terrain/body/exit checks and never moves the replica or escapes genuinely closed terrain.",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "path_trace_route_origin"
     }
   ]
 }

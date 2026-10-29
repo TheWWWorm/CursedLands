@@ -15,7 +15,23 @@ __pycache__/
 *.dmg
 *.app/
 release/
+!tools/release/
+!tools/release/**
 # Local Cloudflare deployment settings.
 .wrangler/
+.dev/
+.venv/
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+export_credentials.cfg
+*.blend1
+# Large original/reference inputs stay in the external private workspace.
+private_inputs/
 # The exported Web build is committed for static hosting.
 !public/**

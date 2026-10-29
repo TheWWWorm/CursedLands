@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import signal
 import subprocess
+import sys
 import time
 
 DIAGNOSTIC = re.compile(r"^\s*(ERROR:|SCRIPT ERROR:|Parse Error:)", re.M)
@@ -24,7 +25,7 @@ RENDERED_RESOLUTION = "1280x800"
 def rendered_arguments(rendering_method="gl_compatibility", resolution=RENDERED_RESOLUTION):
     """Engine flags for a real renderer on an explicitly selected private display.
     Pixel/UI checks must never silently fall back to the headless dummy renderer."""
-    return ["--display-driver", "x11", "--rendering-method", rendering_method,
+    return ["--display-driver", "windows" if sys.platform == "win32" else "x11", "--rendering-method", rendering_method,
             "--windowed", "--resolution", resolution, "--position", "0,0"]
 
 
@@ -47,9 +48,20 @@ def run_program(argv, log, env, timeout, stop=None, grace=0.0, mirror=None, tole
     start = time.monotonic()
     error = None
     log = Path(log)
-    with log.open("w") as stream, log.open(errors="replace") as reader:
+    with log.open("w", encoding="utf-8") as stream, log.open(encoding="utf-8", errors="replace") as reader:
         process = subprocess.Popen(argv, stdout=stream, stderr=subprocess.STDOUT, env=env,
-                                   start_new_session=True)
+                                   start_new_session=os.name == "posix",
+                                   creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0)
+        job = None
+        if os.name == "nt":
+            try:
+                from windows_job import WindowsJob
+                job = WindowsJob(process)
+            except BaseException:
+                subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+                process.wait()
+                raise
         pending = ""
         head = ""
         mirrored, mirrored_at = None, 0
@@ -77,9 +89,13 @@ def run_program(argv, log, env, timeout, stop=None, grace=0.0, mirror=None, tole
                     break
                 time.sleep(0.1)
         finally:
-            if process.poll() is None:
-                _end(process, grace)
-            process.wait()
+            try:
+                if process.poll() is None:
+                    _end(process, grace, job)
+                process.wait()
+            finally:
+                if job:
+                    job.close()
     return process.returncode, error
 
 
@@ -92,16 +108,22 @@ def diagnostic_in(text, tolerate=None):
     return None
 
 
-def _end(process, grace):
+def _end(process, grace, job=None):
     try:
         if grace > 0:
-            os.killpg(process.pid, signal.SIGINT)
+            if job:
+                process.send_signal(signal.CTRL_BREAK_EVENT)
+            else:
+                os.killpg(process.pid, signal.SIGINT)
             try:
                 process.wait(timeout=grace)
                 return
             except subprocess.TimeoutExpired:
                 pass
-        os.killpg(process.pid, signal.SIGKILL)
+        if job:
+            job.terminate()
+        else:
+            os.killpg(process.pid, signal.SIGKILL)
     except ProcessLookupError:
         pass
 

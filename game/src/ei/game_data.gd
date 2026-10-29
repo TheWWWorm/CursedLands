@@ -1326,9 +1326,17 @@ func resolutions() -> Array:
 
 
 func _screen_size() -> Vector2i:
-	if DisplayServer.get_name() == "headless":
+	return _screen_size_from(DisplayServer)
+
+
+## Keep display discovery behind one boundary so a disappearing monitor is
+## handled just like a display-less authority process.
+static func _screen_size_from(display: Object) -> Vector2i:
+	var count: int = display.get_screen_count()
+	if count <= 0:
 		return Vector2i(1920, 1080)
-	return DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var screen := clampi(display.window_get_current_screen(), 0, count - 1)
+	return display.screen_get_size(screen)
 
 
 static func _res_from_string(s: String) -> Vector2i:
@@ -1459,6 +1467,8 @@ var _window_gen := 0
 func _place_window(mode: int, size: Vector2i, native: bool) -> void:
 	_window_gen += 1
 	var gen := _window_gen
+	if DisplayServer.get_screen_count() <= 0:
+		return
 	var w := get_tree().root
 	if mode == 2 and OS.get_name() == "Windows":
 		# Godot's nonexclusive fullscreen mode expands the D3D12 surface by
@@ -1505,6 +1515,8 @@ func _place_window(mode: int, size: Vector2i, native: bool) -> void:
 ## The windowed size (clamped so the window and its frame fit the usable area,
 ## i.e. without the taskbar / panels), centred there.
 func _fit_windowed(size: Vector2i) -> void:
+	if DisplayServer.get_screen_count() <= 0:
+		return
 	var w := get_tree().root
 	var area := DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen())
 	var deco := (DisplayServer.window_get_size_with_decorations() - DisplayServer.window_get_size()).clamp(Vector2i.ZERO, area.size / 4)

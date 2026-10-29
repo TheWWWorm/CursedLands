@@ -1,59 +1,64 @@
-# Asset-free checks. Nothing here needs the original game files, a display or
-# the patched engine; the gameplay and rendering regressions stay on a
-# workstation with an owned copy of the game (see CONTRIBUTING.md).
+# Public asset-free Linux/Windows checks; owned game data and GPU acceptance stay local.
 name: checks
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 env:
-  GODOT_VERSION: 4.7-stable
+  PYTHONUTF8: "1"
 
 jobs:
-  python:
-    name: Python tools, registries and translations
-    runs-on: ubuntu-24.04
+  portable:
+    name: Development checks (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
-          # docs/validation holds 1.5 GB of captures; only the sources are needed.
+          # Historical captures and art masters are unnecessary for these tests.
           sparse-checkout: |
             game
             tools
             engine_patches
+            manifests
           filter: blob:none
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Tool and runner unit tests
-        run: python3 -B -m unittest discover -s tools/tests -p 'test_*.py'
-      - name: Parity tooling unit tests
-        run: python3 -B -m unittest discover -s tools/parity -p 'test_*.py'
+      - name: Download and verify the pinned official editor
+        run: python -B tools/development.py bootstrap
+      - name: Require the camera-audit compiler
+        run: g++ --version
+      - name: Tool regression tests
+        run: python -B -m unittest discover -s tools/tests -p 'test_*.py'
+      - name: Parity tooling regression tests
+        if: '!cancelled()'
+        run: python -B -m unittest discover -s tools/parity -p 'test_*.py'
       - name: Translation coverage
-        run: python3 tools/check_translations.py
+        if: '!cancelled()'
+        run: python -B tools/check_translations.py
       - name: Issue coverage
-        run: python3 tools/check_issue_coverage.py
-
-  scripts:
-    name: Test scripts load on Godot ${{ env.GODOT_VERSION }}
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            game
-            tools
-          filter: blob:none
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Download the stock headless-capable editor
-        run: |
-          curl -sSL -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip"
-          unzip -q godot.zip
-          chmod +x "Godot_v${GODOT_VERSION}_linux.x86_64"
-          "./Godot_v${GODOT_VERSION}_linux.x86_64" --version
-      - name: Parse every test and benchmark script
-        run: python3 tools/check_test_scripts.py --engine "$PWD/Godot_v${GODOT_VERSION}_linux.x86_64" --import-first --timeout 1500
+        if: '!cancelled()'
+        run: python -B tools/check_issue_coverage.py
+      - name: Godot test and benchmark script checks
+        if: '!cancelled()'
+        run: python -c "import sys; from tools import development as d; d.execute([sys.executable, '-B', 'tools/check_test_scripts.py', '--engine', d.godot(), '--import-first', '--timeout', '1500'])"
+      - name: Build the native navigation helper on Windows
+        if: runner.os == 'Windows' && !cancelled()
+        run: python -B tools/development.py native --component navigation --jobs 2
+      - name: Verify object identities in the freshly compiled helper
+        if: runner.os == 'Windows' && !cancelled()
+        run: python -B tools/check_native_identity.py
+      - name: Verify the complete Windows engine patch stack
+        if: runner.os == 'Windows' && !cancelled()
+        run: python -B tools/development.py engine-source --profile windows

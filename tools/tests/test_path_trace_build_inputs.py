@@ -2,6 +2,8 @@
 import hashlib
 import json
 from pathlib import Path
+import subprocess
+import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -13,6 +15,15 @@ def canonical_hash(path):
 
 
 class PortableManifestTests(unittest.TestCase):
+    def test_all_shared_shader_families_match_the_current_builder(self):
+        """A builder change must not leave other families unverifiable."""
+        builder = ROOT / "tools/build_water_rt_shaders.py"
+        for family in ("water_raytrace", "scene_raytrace", "path_trace", "path_trace_terrain_sun"):
+            with self.subTest(family=family):
+                result = subprocess.run([sys.executable, str(builder), "--shader", family, "--check"],
+                                        cwd=ROOT, text=True, capture_output=True)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_path_trace_inputs_survive_cross_platform_checkout(self):
         manifest = json.loads((SHADERS / "path_trace_build.json").read_text())
         self.assertEqual(manifest["source_sha256"], canonical_hash(SHADERS / "path_trace.hlsl"))

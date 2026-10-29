@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "godot": {
+    "url": "https://github.com/godotengine/godot.git",
+    "commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "version": "4.7-stable",
+    "editors": {
+      "windows": {
+        "archive": "Godot_v4.7-stable_win64.exe.zip",
+        "url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip",
+        "sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executable": "Godot_v4.7-stable_win64_console.exe"
+      },
+      "linux": {
+        "archive": "Godot_v4.7-stable_linux.x86_64.zip",
+        "url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip",
+        "sha512": "b639ca9c1ddea39bb3df89bd5283a51ca6047467abe6b25e9436566f2b2082ede633025073989ecf39c7d5d3c2493d80ea13e3af6dd5e261bbf89e462d6d2214",
+        "executable": "Godot_v4.7-stable_linux.x86_64"
+      }
+    }
+  },
+  "godot_cpp": {
+    "url": "https://github.com/godotengine/godot-cpp.git",
+    "commit": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5"
+  },
+  "engine_profiles": {
+    "windows": [
+      "render-thread-shutdown.patch",
+      "queued-image-snapshot.patch",
+      "unobserved-pose.patch",
+      "preserve-character-track-caches.patch",
+      "prepare-character-track-caches.patch",
+      "cache-unobserved-track-eligibility.patch",
+      "mobile-shader-recompile-lock.patch",
+      "forward-shader-recompile-lifetime.patch",
+      "far-dof-sharp-guard.patch",
+      "sky-subpass-alpha.patch",
+      "worker-thread-language-shutdown.patch",
+      "far-dof-reference.patch",
+      "forward-shadow-blend-guard.patch",
+      "cache-missing-animation-targets.patch",
+      "boot-window-title.patch",
+      "cancelled-tooltip-timers.patch",
+      "experimental-fsr.patch",
+      "water-raytracing-uniform-stages.patch",
+      "water-raytracing-d3d12.patch",
+      "d3d12-device-diagnostics.patch",
+      "restore-dlss.patch",
+      "dlss-camera-contract.patch",
+      "dlss-ray-reconstruction.patch",
+      "temporal-shader-preparation.patch"
+    ],
+    "linux": [
+      "render-thread-shutdown.patch",
+      "queued-image-snapshot.patch",
+      "unobserved-pose.patch",
+      "preserve-character-track-caches.patch",
+      "prepare-character-track-caches.patch",
+      "cache-unobserved-track-eligibility.patch",
+      "mobile-shader-recompile-lock.patch",
+      "forward-shader-recompile-lifetime.patch",
+      "far-dof-sharp-guard.patch",
+      "sky-subpass-alpha.patch",
+      "worker-thread-language-shutdown.patch",
+      "far-dof-reference.patch",
+      "forward-shadow-blend-guard.patch",
+      "cache-missing-animation-targets.patch",
+      "boot-window-title.patch",
+      "cancelled-tooltip-timers.patch",
+      "water-raytracing-uniform-stages.patch"
+    ]
+  },
+  "sdk_manifests": [
+    "engine_patches/godot-4.7/fsr-sdk.json",
+    "engine_patches/godot-4.7/streamline-sdk.json",
+    "engine_patches/rtxdi-sdk.json"
+  ]
+}

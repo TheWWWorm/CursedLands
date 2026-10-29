@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.36.0 — 2026-10-29
+
+- Bring combat and creature decisions closer to the original: preserve scripted Follow escorts and alarm behaviours, share hostility with nearby friends, respect staged taming and damaged aimed parts, cancel attacks whose targets leave reach or knowledge, handle high flyers and Feeblemind correctly, preserve attack timing through hit reactions, and propagate attack noise.
+- Add portable native Windows development commands, pinned toolchain setup, isolated test profiles, process-tree cleanup and Linux/Windows CI coverage.
+
+- Prevent NVIDIA Vulkan terrain-pipeline compilation crashes while retaining the four-entry cliff-colour cache, and rebuild all path-tracing shader variants with matching manifests.
+- Finish fast-travel scene gathering earlier so night ground retains its path-traced lighting when the camera stops; normal walking keeps its smaller work budget.
+- Handle missing or removed monitors without issuing invalid display queries. Rendered regression fixtures now acknowledge the native capture size, and traversal fixtures handle rounded boundary positions and confined clear routes without weakening movement or collision checks.
 
 - Build the world's navigation grid on a thread while the map's objects are placed: `EIMapScene.load_map(…, on_placing)` calls the world right before the placement, `NavGrid.build_start` works out the cells, the records' footprints (on lanes, the models' mesh ids assigned first so the placement writes nothing the thread reads), the floors, the native preparation and the walk layer on a thread of its own, and `build_finish` joins it and binds the placed nodes in the records' order (`map.stats.nav_ahead`; a mismatch falls back to the serial build). `NavGrid.build` is unchanged for the arena and the tests. Regression `tools/tests/nav_build_ahead.gd` (catalog `pathing/nav_build_ahead`).
 - Parse the map's .mob on a thread of its own while the terrain is built: `EIMapScene.load_map` reads the bytes, starts `EIMob.load_bytes` on a thread before `EITerrain.load_map` and joins it before the objects are placed (`map.stats.mob_thread`), taking the parse (0.2 s for the Portal's 3700 records) off both the worker's and the client's load path. Regression `tools/tests/mob_read_ahead.gd` (catalog `focused/mob_read_ahead`).

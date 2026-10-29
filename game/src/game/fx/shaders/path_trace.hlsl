@@ -1139,15 +1139,23 @@ float3 cliff_projected_tile(float code,float3 planes,CliffProjection x,CliffProj
 // One projected colour per tile code per hit. The edge blend evaluates the
 // own cell and up to three neighbours with the same world projection, and
 // uniform rock gives them the same code; a repeated code costs no new taps.
-static float cliff_memo_code[4];
-static float3 cliff_memo_colour[4];
+// Fixed slots avoid dynamically indexed private arrays, which crash the
+// NVIDIA Vulkan pipeline compiler (580.178.04) on the terrain hit programs.
+// Keep the same four-entry, per-hit cache and exact tile-code comparison.
+static float4 cliff_memo_0,cliff_memo_1,cliff_memo_2,cliff_memo_3;
 static uint cliff_memo_used=0u;
 float3 cliff_projected_tile_memo(float code,float3 planes,CliffProjection x,CliffProjection z) {
-    [unroll] for(uint k=0u;k<4u;k++) {
-        if(k<cliff_memo_used&&cliff_memo_code[k]==code)return cliff_memo_colour[k];
-    }
+    if(cliff_memo_used>0u&&cliff_memo_0.w==code)return cliff_memo_0.xyz;
+    if(cliff_memo_used>1u&&cliff_memo_1.w==code)return cliff_memo_1.xyz;
+    if(cliff_memo_used>2u&&cliff_memo_2.w==code)return cliff_memo_2.xyz;
+    if(cliff_memo_used>3u&&cliff_memo_3.w==code)return cliff_memo_3.xyz;
     float3 colour=cliff_projected_tile(code,planes,x,z);
-    if(cliff_memo_used<4u){cliff_memo_code[cliff_memo_used]=code;cliff_memo_colour[cliff_memo_used]=colour;cliff_memo_used++;}
+    float4 entry=float4(colour,code);
+    if(cliff_memo_used==0u)cliff_memo_0=entry;
+    else if(cliff_memo_used==1u)cliff_memo_1=entry;
+    else if(cliff_memo_used==2u)cliff_memo_2=entry;
+    else if(cliff_memo_used==3u)cliff_memo_3=entry;
+    cliff_memo_used=min(cliff_memo_used+1u,4u);
     return colour;
 }
 float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection x,CliffProjection z) {

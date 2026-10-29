@@ -18,6 +18,8 @@ const PATH_LIGHT_LIMIT := 64
 const GATHER_LIVE_US := 1500
 const GATHER_LOADING_US := 6000
 const GATHER_COVERED_US := 16000
+const GATHER_FAST_TRAVEL_US := 16000
+const GATHER_FAST_RR_TRAVEL_US := 20000
 const REASON := "Scene ray tracing needs a ray-tracing GPU and the qualified DX12 or Vulkan Forward+ renderer. Conventional lighting remains available."
 
 var game: Game
@@ -214,12 +216,14 @@ func _process(dt: float) -> void:
 	var lead := (motion*64.0).limit_length(Scene.RADIUS*2.0-32.0) if continuous else Vector3.ZERO
 	var drifting := device!=null and camera.global_position.distance_to(_center)>12.0
 	_travel_build_budget=6000 if drifting or lead.length()>4.0 else 1500
-	# Reserve an extra CPU slice only for very fast travel (>64 m prediction).
-	# RR also has full-input-resolution private targets to stage after the
-	# geometry, so its gather must finish earlier. Ordinary walking retains
-	# the smaller budget; this never increases the GPU builder's slice.
+	# A fast prediction has only about forty frames before the old region's
+	# receivers fall outside coverage. Leave room after gathering for staged
+	# resource creation, BLAS work and the first complete presentation; the
+	# former 9/15 ms slices could spend that entire window just gathering.
+	# RR additionally stages full-input-resolution private targets. Ordinary
+	# walking retains the smaller budget; GPU building stays independently bounded.
 	var fast_candidate := building!=null and _candidate_lead.length()>64.0
-	_travel_gather_budget=(15000 if _rr_active else 9000) if lead.length()>64.0 or fast_candidate else _travel_build_budget
+	_travel_gather_budget=(GATHER_FAST_RR_TRAVEL_US if _rr_active else GATHER_FAST_TRAVEL_US) if lead.length()>64.0 or fast_candidate else _travel_build_budget
 	var candidate_drift := camera.global_position.distance_to(building.center) if building!=null else 0.0
 	var obsolete := candidate_drift>32.0
 	if building!=null and not _candidate_lead.is_zero_approx():
