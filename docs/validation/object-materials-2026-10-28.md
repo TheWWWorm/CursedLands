@@ -582,7 +582,10 @@ did on the unchanged pack; and the Ray Reconstruction runtime is not part of
 the 1.34.0 engine folder, so `rr_live`, `rr_details`, `rr_unavailable`,
 `rtxdi_live`, `travel_rr`, `travel_rr_night`, the four `rr_traversal_*`
 routes and the four RR checks of `transmission_live` stop at the capability
-check. Those RR cases are rerun on the verified 1.35.0 package below.
+check. Those RR cases are rerun on the verified 1.35.0 package below. The same set
+ran again after the separate ReSTIR pass, the five-light threshold and the
+controller changes (`full3-*`): 61 pass and the same 16 environmental cases
+fail with the same checks.
 
 ## Cliff projection memo
 
@@ -734,6 +737,27 @@ arithmetic with no measurable occupancy gain. The change was reverted; the
 96-byte payload stays. The separate ReSTIR pass's gain therefore came from
 removing the resampling code and its live state from the path program, not
 from payload size as such.
+
+## Small controller and filter savings
+
+Three small changes from the per-frame audit: the direct-light filter skips
+the outer ring of its 12×12 shared tile for the three-by-three direct kernel
+(the plane fit reaches one pixel), the Ray Reconstruction reset decision
+reuses the gentle-lighting-change result already computed for the lighting
+caches, and the "Scene RT begin/end" budget timestamps are recorded only
+under a frame budget or `--ei-profile-rt`. NRD device (26), motion (42),
+directional (21), direct stability (14), light history (58), RR raw (15),
+bounce lights (17) and terrain sun budget (56) pass (`cpu2a-*`). The direct
+filter stage measures 0.093–0.096 ms against 0.089–0.102 ms (`bisect-*`,
+`cpu2-river-old*`), within noise; the tile fill is not where that filter's
+time goes.
+
+A fourth change, copying the ray frame block to the direct filter's frame
+buffer on the GPU instead of duplicating and uploading it, made the D3D12
+command list fail to close (E_INVALIDARG) and removed the device in the river
+benchmark on two runs (`cpu2-river-new*`), while the device-level fixtures
+had passed: the uniform buffers are not created as copy sources. It was
+dropped; the duplicate upload stays.
 
 ## Original comparison and limits
 

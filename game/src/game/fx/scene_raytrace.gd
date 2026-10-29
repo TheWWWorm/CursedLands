@@ -837,7 +837,8 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		# torch must not invalidate every distant pixel as it does our bounded
 		# lighting caches. Keep the stricter cache reset in data[82], but reset
 		# RR only for view discontinuities and abrupt global illumination.
-		_rr_reset=not (rr_history and same_projection and same_cloud_mode and (same_lighting \
+		# A gentle change that admits the local lights is also gentle without them.
+		_rr_reset=not (rr_history and same_projection and same_cloud_mode and (same_lighting or gentle_change \
 			or _small_lighting_change(bytes,_path_signature,outdoor_tolerance,false)))
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0

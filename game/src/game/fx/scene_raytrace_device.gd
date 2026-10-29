@@ -292,7 +292,7 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if not _history_valid: frame.encode_float(82*4,0.0)
 	if not _upload_frame(frame): _render_failed();return
 	if _profile_stages:at=_mark("upload",at)
-	_rd.capture_timestamp("Scene RT begin")
+	if _profile_stages or measure_budget:_rd.capture_timestamp("Scene RT begin")
 	if not trace_frame(frame): _render_failed();return
 	if _profile_stages: _rd.capture_timestamp("Scene RT rays");at=_mark("trace",at)
 	# Texture2DRD replacement invalidates every material sampling that RS
@@ -301,7 +301,7 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	# Presentation-only filtering must not feed its broader blur back into the
 	# temporal history. Retain the current surface guides and history first.
 	var copied := reconstruct(frame)
-	_rd.capture_timestamp("Scene RT end")
+	if _profile_stages or measure_budget:_rd.capture_timestamp("Scene RT end")
 	if _profile_stages:at=_mark("reconstruct",at)
 	if not copied: _render_failed();return
 	_publish_targets()
