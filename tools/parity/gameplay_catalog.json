@@ -1226,6 +1226,25 @@
       ]
     },
     {
+      "id": "stealth/perception_empty_scan",
+      "category": "stealth",
+      "script": "tools/tests/perception_empty_scan.gd",
+      "marker": "PERCEPTION_EMPTY_SCAN",
+      "min_checks": 9,
+      "quick": true,
+      "description": "A perception scan whose notice cells hold nobody calls no perception kernel, still drops retained units that left and remembers retained units that died, and a scan with a candidate calls the kernel once and notices the same units as the script path.",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "perception_empty_scan"
+    },
+    {
       "id": "stealth/notice_candidate_order",
       "category": "stealth",
       "script": "tools/tests/notice_candidate_order.gd",

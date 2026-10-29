@@ -725,6 +725,11 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 			corpses.erase(id)
 	var npc_scan := not force and u.controller < 0
 	var candidates := _notice_candidates(u, maxf(k[0] * k[1], k[4]) if not k.is_empty() else NAN)
+	# Most scans find nobody in the observer's notice cells (the Foothills'
+	# per-NPC sighting triggers poll about sixty such scans a tick). The two
+	# kernel calls and the loop below are identities on an empty list.
+	if candidates.is_empty():
+		return _store_noticed(u, keep, corpses)
 	if _unit_query:
 		candidates = _unit_query.notice_candidates(candidates, GameUnit, u, world, hostile_sides, npc_scan, GameUnit.notice_revision)
 	# Keep custom AI/world callbacks sequential; the standard query's ray and
@@ -759,6 +764,10 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 			keep[id] = o
 			if u.controller < 0 and world.zone.get("type", "") != "arena" and world.is_enemy(u, o):
 				call_for_help(u, o.pos, o)
+	return _store_noticed(u, keep, corpses)
+
+
+func _store_noticed(u: GameUnit, keep: Dictionary, corpses: Dictionary) -> Dictionary:
 	if keep.is_empty():
 		u.remove_meta("noticed")
 	else:
