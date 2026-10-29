@@ -1,0 +1,591 @@
+{
+  "version": "1.36.0",
+  "release_type": "stable",
+  "date": "2026-10-29",
+  "release_tag": "v1.36.0",
+  "acceptance_passed": true,
+  "source_commit": "573b29f077fc089b3546c5877009ef53646d4562",
+  "game_tree": "332cfc770d72285e977979de934fae44b37a1834",
+  "semver": "MINOR: expanded surface-material families and portable developer capabilities are backward-compatible features. Saves/settings remain compatible; campaign protocol 23 and Autochess protocol 5 are unchanged.",
+  "linux_regressions": {
+    "cases": 38,
+    "checks": 1382,
+    "failures": 0,
+    "pack_sha256": "f4e433ee6df527a9bbfd8157ab2ff60c7b940abde86e7c39e32f0db6837cbfe7",
+    "results": [
+      {
+        "id": "path_trace_travel_history",
+        "checks": 22,
+        "mode": "headless",
+        "passed": true
+      },
+      {
+        "id": "path_trace_travel_night",
+        "checks": 10,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_travel_coverage",
+        "checks": 9,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_light_history",
+        "checks": 58,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "water_reflection_levels",
+        "checks": 49,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_nrd_device",
+        "checks": 26,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_zone_traversal_river",
+        "checks": 50,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "raytrace_source_cache",
+        "checks": 12,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_programs",
+        "checks": 41,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_terrain",
+        "checks": 120,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_water_options",
+        "checks": 28,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rr_raw",
+        "checks": 15,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rr_options",
+        "checks": 50,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rtxdi",
+        "checks": 27,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rtxdi_sparse",
+        "checks": 37,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rtxdi_options",
+        "checks": 59,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_transmission_options",
+        "checks": 56,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rr_resources",
+        "checks": 19,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_rr_presentation",
+        "checks": 40,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "raytrace_retained_sources",
+        "checks": 19,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "raytrace_retained_textures",
+        "checks": 41,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_terrain_sun_radius",
+        "checks": 40,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "mod_messages_localized_ui",
+        "checks": 118,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "save_load_render_cache",
+        "checks": 27,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "save_load_render_cache_raster",
+        "checks": 18,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "terrain_color_reuse",
+        "checks": 20,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "terrain_color_reuse_compatibility",
+        "checks": 20,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "terrain_color_ahead",
+        "checks": 10,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "terrain_surface_push_constants",
+        "checks": 53,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_cpu_caches",
+        "checks": 15,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "ui_scale_high_res",
+        "checks": 144,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_emitters",
+        "checks": 42,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_transmission_occlusion",
+        "checks": 21,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_bounce_lights",
+        "checks": 17,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_global_cache",
+        "checks": 6,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "screen_topology",
+        "checks": 7,
+        "mode": "headless",
+        "passed": true
+      },
+      {
+        "id": "capture_window_extent",
+        "checks": 21,
+        "mode": "rendered",
+        "passed": true
+      },
+      {
+        "id": "path_trace_route_origin",
+        "checks": 15,
+        "mode": "headless",
+        "passed": true
+      }
+    ]
+  },
+  "changed_gameplay_programs": {
+    "programs": 60,
+    "checks": 12298,
+    "failures": 0,
+    "scope": "Every changed headless catalog program since v1.35.0, covering AI/combat, persistence, map loading, navigation, animation, UI/input and both material-family cases. Runs use an isolated source snapshot; final package headless checks are included above."
+  },
+  "portable_tooling": {
+    "linux_public_tests": 126,
+    "parity_tests": 175,
+    "linux_private_tests": 148,
+    "native_windows_ci": "passed",
+    "native_linux_ci": "passed",
+    "windows_scope": "Pinned editor bootstrap, registered Python suites, translation/issue coverage, script parsing, freshly built navigation helper with object-identity checks, and the complete 24-patch Windows engine source stack. Native GPU/D3D12 acceptance is separate.",
+    "script_parse": {
+      "loaded": 1252,
+      "unexpected_failures": 0,
+      "custom_engine_only": 1
+    },
+    "translations": {
+      "entries": 3696,
+      "errors": 0
+    },
+    "issue_coverage": {
+      "issues": 111,
+      "uncovered": 0
+    }
+  },
+  "windows_proton_regressions": [
+    {
+      "case": "capture_window_extent",
+      "summary": "CAPTURE_WINDOW_EXTENT 21 checks 0 failures",
+      "checks": 21,
+      "seconds": 13.44,
+      "fixture_sha256": "e9e5a160cf4fa955bd7139203d5d44c4755bd06b6b47e909ffda7e3c4dce088e",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_programs",
+      "summary": "PT_PROGRAMS 41 checks 0 failures",
+      "checks": 41,
+      "seconds": 10.83,
+      "fixture_sha256": "0a2e73d20995c5367c6d8cb407b8cbe75afa91ce578310a270b3f74e77f3b486",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_rr_raw",
+      "summary": "SCENE_RT_DEVICE 15 checks 0 failures",
+      "checks": 15,
+      "seconds": 20.35,
+      "fixture_sha256": "58d153986d3086e32e417801ca47406ebb7dcadb591b1918319f31ae7aa5396a",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_rr_resources",
+      "summary": "SCENE_RT_DEVICE 19 checks 0 failures",
+      "checks": 19,
+      "seconds": 15.74,
+      "fixture_sha256": "5cff4af9b4ba90b68d4ed807a46b0e8d65c9d94ab2fff772c33e0384d0da09ff",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_rr_presentation",
+      "summary": "SCENE_RT_DEVICE 40 checks 0 failures",
+      "checks": 40,
+      "seconds": 47.55,
+      "fixture_sha256": "1acfa99b70ede90103af5094d04d244ff011712582a6d71c87baaff3c3396a31",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_rr_live",
+      "summary": "PT_RR_LIVE 38 checks 0 failures",
+      "checks": 38,
+      "seconds": 122.82,
+      "fixture_sha256": "063cfa3aee4f6d5b2d6e534ab39249de8b2cc40f90fe940ef130291e31657faf",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_travel_rr",
+      "summary": "PT_TRAVEL_COVERAGE 14 checks 0 failures",
+      "checks": 14,
+      "seconds": 91.82,
+      "fixture_sha256": "8a3d7819979a2c7a9f6cd46914a42fdbded83edcb11f56ab3fff29af06e72895",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_travel_rr_night",
+      "summary": "PT_TRAVEL_COVERAGE 15 checks 0 failures",
+      "checks": 15,
+      "seconds": 91.47,
+      "fixture_sha256": "cb7a0d1402acf8f2b9f1062499c1e5d341d2a10532011b7cf0932445f269dc05",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_rtxdi_options",
+      "summary": "PT_RTXDI_OPTIONS 59 checks 0 failures",
+      "checks": 59,
+      "seconds": 18.09,
+      "fixture_sha256": "9141e0a502fdb6b352c011b0e34212d7b42c994477b91a9c62158f1107307eaa",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_transmission_options",
+      "summary": "PT_TRANSMISSION_OPTIONS 56 checks 0 failures",
+      "checks": 56,
+      "seconds": 17.89,
+      "fixture_sha256": "f5892ebd0ff2af1965bba6d19ec855d7cdb0ff4bd55981ded9e09f3afd78c17a",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": false,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "rtx_frame_generation",
+      "summary": "DLSS_FRAMEGEN 68 checks 0 failures",
+      "checks": 68,
+      "seconds": 87.12,
+      "fixture_sha256": "23817d3ab4de774a3c79d5f76e2153a990a3511e9377dd3e390b5532b92d5329",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": true,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    },
+    {
+      "case": "path_trace_rr_traversal_snow",
+      "summary": "PT_ZONE_TRAVERSAL 49 checks 0 failures",
+      "checks": 49,
+      "seconds": 185.77,
+      "fixture_sha256": "8399937f81961e49977f774c147da5e1c0211f2436733276eed97048c20e8097",
+      "adapter": {
+        "name": "NVIDIA GeForce RTX 3090",
+        "vendor": "10de",
+        "device": "2204",
+        "uuid": "dfdd7c2b427a348c222a1703cb8ae441",
+        "local_sm86_patch": true,
+        "patch_published": false
+      },
+      "production_executable_and_pack_match": true
+    }
+  ],
+  "local_frame_generation": {
+    "cases": 2,
+    "checks": 117,
+    "verified_generated_presentation": true,
+    "scope": "Production release executable and PCK tested on RTX 3090-class GPUs under GE-Proton 11-11 / VKD3D with an owner-authorized local compatibility setup. Includes toggle/resize checks and 4K snow traversal.",
+    "local_test_support_distributed": false
+  },
+  "five_platform_script_parity": {
+    "version": "1.36.0",
+    "compiled_scripts": 462,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 71,
+    "debuggable": false,
+    "apk_sha256": "955cd91a1ac4f2b69320124b08973d30dae451578656d11ae66ccc8af2970007",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "fd995a02c0fdb84f77316252af72390c43839132ac284362f9a1010da9b8d0c4"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.36.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "fresh": {
+      "version": "1.36.0",
+      "passed": true,
+      "engine_start_resolved": true,
+      "canvas_visible": true,
+      "isolated": true,
+      "original_game_data_imported": false,
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      }
+    },
+    "upgrade": {
+      "version": "1.36.0",
+      "previous_version": "1.35.0",
+      "cache_upgrade": {
+        "passed": true,
+        "old_cache": "cursed-engine-2-64cc262e5d7b778811eb",
+        "new_cache": "cursed-engine-2-54500b6b4340f4507243",
+        "indexeddb_preserved": true,
+        "database_names": [
+          "/userfs",
+          "cursed-lands-data-v1"
+        ],
+        "pck_sha256": "054f33927d7043ce25a26948cf414f8b98309689aedc18a81dfa845f24be8d6d",
+        "old_tab_wait_verified": true
+      },
+      "cache": {
+        "keys": [
+          "cursed-engine-2-54500b6b4340f4507243"
+        ],
+        "packs": {
+          "cursed-engine-2-54500b6b4340f4507243": "054f33927d7043ce25a26948cf414f8b98309689aedc18a81dfa845f24be8d6d"
+        },
+        "worker": "activated",
+        "waiting": null,
+        "isolated": true
+      }
+    },
+    "hosted_export_committed": true,
+    "wiki": "14,169 unchanged files verified; article and interface version remain 1.34.0."
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "38 packaged checks, 1382 assertions, GPU Lab for graphics; 60 changed source gameplay programs also pass."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "dlss_fg_tested": true,
+      "scope": "Ten standard packaged D3D12 cases under Proton, plus two actual FG cases with separate local-only compatibility support. Production EXE/PCK hashes match throughout."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Unsigned universal export; compiled-script parity, bundle version and icon verified. No macOS runtime available."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "ARM64 version code 71; unchanged signing certificate, non-debuggable manifest, production template and compiled-script parity verified. No Android device runtime available."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium start and upgrade from published 1.35.0 service-worker cache; IndexedDB retained. Live deployment is verified after public push."
+    }
+  },
+  "limits": [
+    "Native Windows GPU, macOS and Android device runs were not performed for this release.",
+    "Proton FG validation uses local-only compatibility support; that support is absent from all release assets.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "failure_followup": "pt-failure-fixes-2026-10-29.md",
+  "local_evidence": "local/validation/pt-release-20261029",
+  "initial_attempts": [
+    "The shader-compiler crash, capture-size race, zero-screen query and traversal fixture failures have retained red/green evidence.",
+    "Night travel colour delta was 0.148321 before the scheduling fix and 0.001996 afterward; the acceptance limit stays 0.04.",
+    "One diagnostic CPU-cache invocation used the unpatched editor; the corrected packaged test passes. No final package case has been waived."
+  ]
+}
