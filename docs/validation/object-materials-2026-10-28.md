@@ -318,6 +318,42 @@ buffer. NRD device (26), NRD motion (42), NRD directional (21), light history
 millisecond, within run-to-run noise. It is kept because it removes
 per-frame allocations without changing any dispatch.
 
+## Side-effect regressions
+
+The device and material changes also touch the water ray tracer, the shared
+ray-scene collector and the raster material shaders. On the committed pack:
+water RT rebuild (16) and live (15), ray-trace topology budget (13), dense
+scene (8), source cache (12), retained sources (19) and textures (41), gather
+budget (15) and retirement budget (9), chest surface live (9) and material
+(15), terrain surface maps (79) and live at 720p/1440p/4K (39 each), foliage
+feature combinations (67) and all-effects scene (10), and the two
+figure-material cases (42, 60) pass. `terrain_surface_help` passes its 37
+checks but logs the same no-screen errors as the option-panel cases above.
+
+## Qualification fixtures and the detached-geometry case
+
+Rendered qualification cases on the committed pack (1.34.0 engine, Windows
+D3D12): character live (8), camera routes (5), cave (12), daylight live (12),
+cloud weather (32) and authored ambient (7) pass; camera modes exits 0 without
+a parsed summary line. `path_trace_character_lighting` stops with the
+"Required object rp_child is null" window error and `path_trace_equipment_live`
+needs the `--pt-hit-reference` capture, both environmental on this
+workstation.
+
+`path_trace_detached_live` failed its "hidden detached geometry disappears
+from native primary rays" check twice on the unchanged pack and twice on the
+committed pack, so the failure predates this work. The fixture counted
+placement identities in the custom filter's identity auxiliary
+(`_filter_auxiliary[3]`), which the production path only refreshes when NRD
+is unavailable; under NRD it reported the geometry from the last filtered
+frame. The ray programs write the placement identity into the alpha half of
+the raw diffuse image every frame (`indirect_image[pixel].a = 0x3c00 +
+instance_id`), so the fixture now reads `ray_targets()[0]` instead. With that
+source it passes its 15 checks on both packs (`det2-base`, `det2-mine`), and
+the before-hide and after-reveal counts remain above twenty pixels, so the
+hidden-geometry check is exercised rather than vacuous. No renderer behaviour
+changed.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

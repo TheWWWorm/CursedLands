@@ -12,6 +12,7 @@
 - Weigh ReSTIR candidates and reused reservoirs with each flame's constant emission instead of sampling its texture per candidate; the chosen sample is still shaded with the exact textured emitter.
 - Under DLSS Ray Reconstruction, trace straight into the published path-tracing images instead of copying four full-resolution images every frame.
 - Keep the path-traced terrain sunlight cache until the sun has turned 0.1 degrees instead of retracing every terrain vertex each frame as the campaign clock advances.
+- Read placement identity for the detached-geometry path-tracing regression from the ray outputs, which are refreshed every frame, instead of the custom filter buffer that the NRD denoiser leaves stale.
 
 ## 1.35.0 — 2026-10-28
 
