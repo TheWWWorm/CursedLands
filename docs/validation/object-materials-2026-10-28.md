@@ -568,6 +568,39 @@ is per path; a moving view with two paths saves twice as much per pixel.
 pass; the Beer, Snell and energy checks are unchanged because the estimator
 is unbiased.
 
+## Registered set on the day's head
+
+All 77 registered rendered path-tracing cases except `path_trace_nrd_live`
+(which the 1.34.0 engine stalls on at cold start) ran on the 1.34.0 engine
+mirror with the pack built from the head after the refracted-vertex change
+(`full2-*`): 61 pass. The 16 failures are the classes recorded earlier on
+this workstation: the three option-panel cases report a 1280×720 UI extent
+on this screen (`rtxdi_options`, `transmission_options`, with `water_options`
+and `rr_options` passing their checks but logging the no-screen errors);
+`travel_night` catches the camera at frame 69 against a limit of 60 as it
+did on the unchanged pack; and the Ray Reconstruction runtime is not part of
+the 1.34.0 engine folder, so `rr_live`, `rr_details`, `rr_unavailable`,
+`rtxdi_live`, `travel_rr`, `travel_rr_night`, the four `rr_traversal_*`
+routes and the four RR checks of `transmission_live` stop at the capability
+check. Those RR cases are rerun on the verified 1.35.0 package below.
+
+## Cliff projection memo
+
+The cliff edge blend evaluates the hit cell and up to three neighbouring
+cells with the same world projection; on uniform rock they carry the same
+tile code and the projected colour was sampled again for each. The closest
+hit now keeps up to four projected colours per hit, keyed by tile code, so a
+repeated code costs no new atlas taps; the result is identical by
+construction. River, Low, terrain and cliffs on, `--pt-case=path-2-low`,
+ABBA (`cliff-river-*`): ray stage 0.590 / 0.664 / 0.616 / 0.617 ms before,
+0.631 / 0.583 / 0.547 / 0.536 ms after, two blocks per run. The ranges
+overlap and the mean moves from 0.62 to 0.57 ms, so the saving is at most a
+few hundredths of a millisecond on this view; it is kept for the cliff-heavy
+views where the edge blend covers more pixels. `path_trace_terrain` (120),
+`path_trace_terrain_terminator` (93), `path_trace_grazing_normals` (44),
+`path_trace_terrain_horizon` (25) and `path_trace_cover_receivers` (65) pass
+on the changed pack.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

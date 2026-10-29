@@ -1094,8 +1094,22 @@ float3 cliff_projected_tile(float code,float3 planes,CliffProjection x,CliffProj
     [branch] if(planes.z>0.0)colour+=cliff_sample(code,z)*planes.z;
     return colour;
 }
+// One projected colour per tile code per hit. The edge blend evaluates the
+// own cell and up to three neighbours with the same world projection, and
+// uniform rock gives them the same code; a repeated code costs no new taps.
+static float cliff_memo_code[4];
+static float3 cliff_memo_colour[4];
+static uint cliff_memo_used=0u;
+float3 cliff_projected_tile_memo(float code,float3 planes,CliffProjection x,CliffProjection z) {
+    [unroll] for(uint k=0u;k<4u;k++) {
+        if(k<cliff_memo_used&&cliff_memo_code[k]==code)return cliff_memo_colour[k];
+    }
+    float3 colour=cliff_projected_tile(code,planes,x,z);
+    if(cliff_memo_used<4u){cliff_memo_code[cliff_memo_used]=code;cliff_memo_colour[cliff_memo_used]=colour;cliff_memo_used++;}
+    return colour;
+}
 float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection x,CliffProjection z) {
-    [branch] if((land_tile(cell)&(1u<<25u))==0u)return cliff_projected_tile(tile_info(cell).r,planes,x,z);
+    [branch] if((land_tile(cell)&(1u<<25u))==0u)return cliff_projected_tile_memo(tile_info(cell).r,planes,x,z);
     // Corner donor codes follow the aligned vertex guard array. Only flagged
     // tiles read this payload; plain snapshots retain their original layout.
     uint offset=land_detail().z+((land_extra().x*land_extra().y+3u)&~3u);
@@ -1110,14 +1124,15 @@ float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection 
     if(row.y==row.z) { weights.y+=weights.z;weights.z=0.0; }
     if(row.y==row.w) { weights.y+=weights.w;weights.w=0.0; }
     if(row.z==row.w) { weights.z+=weights.w;weights.w=0.0; }
-    [branch] if(weights.x>0.0)colour+=cliff_projected_tile(row.x-1.0,planes,x,z)*weights.x;
-    [branch] if(weights.y>0.0)colour+=cliff_projected_tile(row.y-1.0,planes,x,z)*weights.y;
-    [branch] if(weights.z>0.0)colour+=cliff_projected_tile(row.z-1.0,planes,x,z)*weights.z;
-    [branch] if(weights.w>0.0)colour+=cliff_projected_tile(row.w-1.0,planes,x,z)*weights.w;
+    [branch] if(weights.x>0.0)colour+=cliff_projected_tile_memo(row.x-1.0,planes,x,z)*weights.x;
+    [branch] if(weights.y>0.0)colour+=cliff_projected_tile_memo(row.y-1.0,planes,x,z)*weights.y;
+    [branch] if(weights.z>0.0)colour+=cliff_projected_tile_memo(row.z-1.0,planes,x,z)*weights.z;
+    [branch] if(weights.w>0.0)colour+=cliff_projected_tile_memo(row.w-1.0,planes,x,z)*weights.w;
     return colour;
 }
 float3 cliff_albedo(float3 original,int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
     if(planes.y<=0.0)return original;
+    cliff_memo_used=0u;
     // Reuse the same world projection across all corner donors/neighbours.
     CliffProjection x=(CliffProjection)0,z=(CliffProjection)0;
     [branch] if(planes.x>0.0)x=cliff_project(float2(-world.z,world.y)*0.5,atlas_lod);

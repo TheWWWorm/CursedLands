@@ -13,6 +13,7 @@
 - Under DLSS Ray Reconstruction, trace straight into the published path-tracing images instead of copying four full-resolution images every frame.
 - Keep the path-traced terrain sunlight cache until the sun has turned 0.1 degrees instead of retracing every terrain vertex each frame as the campaign clock advances.
 - Read placement identity for the detached-geometry path-tracing regression from the ray outputs, which are refreshed every frame, instead of the custom filter buffer that the NRD denoiser leaves stale.
+- Keep each projected cliff tile colour once per path-traced terrain hit, so the edge blend between cells of the same rock type no longer samples the same projection up to four times; the colours are unchanged.
 - Let the first opaque surface of a refracted camera path draw one local light in proportion to its reach, like a bounce vertex, instead of tracing a shadow ray to every light in range; the expected lighting under water and behind glass is unchanged.
 - Read ReSTIR light records from storage-buffer copies of the frame constants and resample two spatial neighbours per frame instead of five, with eight still drawn after a disocclusion; constant-buffer gathers with divergent light indices and the extra neighbours made ReSTIR direct lighting cost more than twice the plain estimator at 1280×720.
 - Keep the NRD dispatch plans keyed by pass and resource list instead of one plan per pass slot, so the denoiser's alternating history pools reuse their descriptor sets every frame instead of rebuilding them; the recorded GPU work is unchanged.
