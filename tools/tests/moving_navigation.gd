@@ -8,8 +8,8 @@ const CALL := 1369841
 const DOOR := 1032949
 class ReferenceNav extends NavGrid:
 	var targets := {}
-	func _footprint(o: Node3D,t := -1.0) -> Dictionary:
-		return super._footprint(o,float(targets.get(int(o.get_meta("ei",{}).get("nid",0)),t)))
+	func _record_footprint(info: Dictionary,t := -1.0) -> Dictionary:
+		return super._record_footprint(info,float(targets.get(int(info.get("nid",0)),t)))
 class MeasuredNav extends NavGrid:
 	var labels := 0
 	var updates := 0

@@ -183,6 +183,13 @@ clock from the worker's "zone load" to the client's "zone ready"): 46–47 s
 before this pass, 34 s with the pruned libraries, 25 s with the build ahead
 (`local/validation/cpu-speed-20261029/zone-ahead/solo-load-wallclock.txt`).
 
+Done in this pass (third): the objects' navigation footprints are worked
+out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
+Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
+load on GPU Lab, warm caches: 15 → 14 s wall clock (worker build 7 → 6 s).
+The worker's critical path after its build is the static navigation
+preparation (1.4 s, already on the four-thread pool) before it publishes.
+
 Done in this pass (first): the first advance was AnimationMixer resolving all
 ~41 000 tracks of the template's library (117 clips × ~350 part paths, of
 which the figure holds ~20); `EIAnim.library(..., present)` now gives the
@@ -224,8 +231,49 @@ Remaining leads, in order of expected value:
    1 130 materials, 415 AnimationPlayers, the per-height/per-part-set
    library copies ~27 MB). `OS.get_static_memory_usage` deltas per phase,
    as in the zone-load logs, are the tool.
-5. `NavGrid.build` 1.5 s and `EIMapScene.load_map` 1.5 s on both processes:
-   native builder already; not profiled further.
+5. Partly done: **`NavGrid.build` and `EIMapScene.load_map` on both
+   processes.** Headless Portal, `local/validation/cpu-speed-20261029/nav-build/`
+   (`nav_build_micro.gd`): `NavGrid.build` 1.41–1.46 s = object footprints
+   1.13 s (`_footprint` → `_raster_box`, GDScript box sampling for 3261
+   objects) + registering them 0.11 s + walk layer 0.08–0.12 s + native
+   `base_cells`/`prepare` 0.07 s; six more standing-class layers 0.44–0.60 s
+   (native `build_layer`, ~90 ms each, serial). The footprints now run on
+   the worker threads (`_footprints`, one task per record): build 0.67–0.70 s.
+   The pool is bounded to four threads (`project.godot`
+   `worker_pool/max_threads` = 4, chosen so small per-frame jobs do not
+   contend), so loading-time groups get at most a 3–4× speed-up; a larger
+   pool during loading only, or a pool size measured against the per-frame
+   jobs' contention, is the next step for every `Portability.group` on the
+   load path (animation libraries, footprints). Not done: the class layers
+   (`nav.layer` per standing class, 0.45–0.7 s) could build in parallel if
+   the native builder's `_fixed_sets` sharing per class group is made
+   thread-safe; `EIMapScene._place_objects` 0.75–1.15 s headless (3261
+   `EIFigure.instantiate`: node trees, cached meshes 0.4 s when cold) and
+   2.2 s on the client (materials, `GroundContact`, scenery batches) is
+   scene-tree work and would need the meshes built ahead on the pool.
+6. **Presentation terrain build on the client** (`EITerrain.load_map(…, true)`,
+   GPU Lab 2880×1800, `local/validation/cpu-speed-20261029/terrain-build/`):
+   6.2–6.3 s with cold caches, 1.84 s warm. Phase sums over the sectors:
+
+   | phase | cold | warm | note |
+   | --- | --- | --- | --- |
+   | `apply_gfx` → `TerrainCliff.create` | 3.01 s | 0.24 s | disk cache `terrain_cliff_cache.gd` |
+   | `apply_gfx` tail after the shaders | ~2.0 s | ~0.28 s | detail atlases (`TexUpscale`), `WaterCurrent`, noise textures; not split further |
+   | `apply_gfx` land / water shader | 0.02 / 0.01 s | 0.07 / 0.03 s | compilation is asynchronous |
+   | `_mesh_arrays` (GDScript per-vertex loops) | 0.65 s | 0.62 s | per sector, pure: a `Portability.group` or native candidate |
+   | `_read_vertices` | 0.16 s | 0.16 s | also headless (worker) |
+   | water `_make_mesh` | 0.15 s | 0.15 s | `_mesh_arrays` again |
+   | liquids (`_vertex_materials`, `_liquid_xy`, `_underwater`) | 0.14 s | 0.14 s | |
+   | atlases | 0.06 s | 0.08 s | |
+   | `configure`, `_build_surface_data`, ground | 0.15 s | 0.15 s | |
+
+   The headless (worker) build of the same map is 0.29 s. The warm client
+   build is ~1.0 s of GDScript sector loops: moving `_read_vertices`,
+   `_mesh_arrays` and the liquid helpers to one task per sector (they read
+   the sector bytes and the material table and write per-sector arrays; the
+   shared `heights`/`land_xy`/`land_n` rows would be merged on the main
+   thread) is the remaining terrain lead. The cold cliff cache and the
+   `apply_gfx` tail are one-time costs per installation.
 
 ## 8. Operational notes
 

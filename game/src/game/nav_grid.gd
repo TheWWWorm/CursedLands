@@ -344,9 +344,11 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_hq = _hq0.duplicate()
 	_cost = _cost0.duplicate()
 	_depth = _depth0.duplicate()
-	# Object footprints, then the floors they lay.
-	for o: Node3D in objects:
-		_add_footprint(o, _footprint(o))
+	# Object footprints (worked out on the worker threads), then the floors
+	# they lay. Registering them keeps the objects' order.
+	var footprints := _footprints(objects)
+	for k in objects.size():
+		_add_footprint(objects[k], footprints[k])
 	for i: int in _floors:
 		_apply_floor(i)
 	var prepared: Dictionary = builder.prepare({"size":size,"hq":_hq,"cost":_cost,"depth":_depth,
@@ -718,12 +720,36 @@ func _in(c: Vector2i) -> bool:
 
 # ------------------------------------------------------------------ objects
 
-## An object's footprint with its complexion's first morph
+## The footprints of `objects`, one task per object. The tasks get the
+## objects' records (a node in the tree is read on the main thread only) and
+## read the grid's immutable cells and the figure model cache, filled here
+## first while nothing else runs; every task writes its own slot. The 3200
+## objects of a town took 1.1 s in one thread.
+func _footprints(objects: Array) -> Array:
+	var records := []
+	for o: Node3D in objects:
+		var info: Dictionary = o.get_meta("ei", {})
+		records.append(info)
+		var template := String(info.get("template", ""))
+		if String(info.get("kind", "")) != "UNIT" and not template.is_empty():
+			EIFigure.get_model(template)
+	var out := []
+	out.resize(objects.size())
+	Portability.group(func(i: int) -> void:
+		out[i] = _record_footprint(records[i]), objects.size())
+	return out
+
+
+## An object's footprint (_record_footprint of its record).
+func _footprint(o: Node3D, t := -1.0) -> Dictionary:
+	return _record_footprint(o.get_meta("ei", {}), t)
+
+
+## The footprint of an object's .mob record with its complexion's first morph
 ## axis at `t` (levers; < 0 = the record's): {"spans": {cell: [bottom, top,
 ## kind]}, "floors": {cell: top}} in height steps.
-func _footprint(o: Node3D, t := -1.0) -> Dictionary:
+func _record_footprint(info: Dictionary, t := -1.0) -> Dictionary:
 	var out := {"spans": {}, "floors": {}, "radius": 0.0, "faces": []}
-	var info: Dictionary = o.get_meta("ei", {})
 	if String(info.get("kind", "")) == "UNIT":
 		return out
 	var model := EIFigure.get_model(String(info.get("template", "")))

@@ -16829,6 +16829,28 @@
       "focused": "nav_preparation"
     },
     {
+      "id": "focused/nav_footprints_parallel",
+      "category": "focused",
+      "script": "tools/tests/nav_footprints_parallel.gd",
+      "marker": "NAV_FOOTPRINTS_PARALLEL",
+      "min_checks": 12,
+      "quick": true,
+      "description": "The navigation build works out the placed objects' footprints on the worker threads; every footprint equals its sequential result and makes the same grid of spans, floors and faces, and objects added later keep the sequential path.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "nav_footprints_parallel"
+    },
+    {
       "id": "focused/net_smooth_native",
       "category": "focused",
       "script": "tools/tests/net_smooth_native.gd",
