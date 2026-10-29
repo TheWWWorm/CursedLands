@@ -329,3 +329,14 @@ activate ReSTIR from five local lights, where the exact estimator would draw
 four stratified proposals per frame, instead of from eight. Measurements are
 in the validation record.
 
+## Tried and reverted: compact ray payload
+
+A 56-byte packed payload in place of the 96-byte Surface (material still
+evaluated in closest-hit, packed there and unpacked in the ray programs)
+passed nineteen fixtures but measured 2–4% slower on the river and the
+many-light benchmark; see the validation record. The remaining structural
+option from the vendor material is the full hit-record payload with material
+evaluation in the ray program, which would need per-instance transforms in a
+buffer and runtime selection of the terrain material variants, and whose
+payoff this experiment does not predict.
+

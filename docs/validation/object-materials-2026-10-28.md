@@ -714,6 +714,27 @@ the activation at the fifth light and the return to four (37 checks);
 `path_trace_bounce_lights` (17) and `path_trace_light_history` (58) pass on
 the same pack (`thresh1-*`).
 
+## Compact ray payload (tried, reverted)
+
+Following the vendor guidance that payload bytes are live registers at every
+TraceRay, the 96-byte `Surface` payload was replaced by a 56-byte packed
+record (octahedral normals, half-precision colours and roughness, 8-bit
+metalness, specular and leaf transmission, a miss flag), packed at the end of
+the closest-hit program and unpacked in the ray programs, with the material
+evaluation left in closest-hit. Nineteen fixtures passed on that pack
+(`payload1-*`: terrain 120, terminator 93, grazing 44, horizon 25, contacts
+59, cover 65, surface maps 16, material receivers 7, bounce lights 17, light
+history 58, transmission 33 and occlusion 21, RTXDI 27 and sparse 37, emitter
+live 14, emitter SHaRC 14, emitter deep SHaRC RTXDI 15, NRD device 26,
+terrain sun radius 40), so the encoding is sound, but it did not pay: the
+river ray stage measured 0.56–0.74 ms against 0.59–0.66 ms and the many-light
+benchmark 1.54–1.55 ms against 1.48–1.52 ms at seven lights
+(`payload-river-*`, `payload-lights-*`), a 2–4% loss from the pack and unpack
+arithmetic with no measurable occupancy gain. The change was reverted; the
+96-byte payload stays. The separate ReSTIR pass's gain therefore came from
+removing the resampling code and its live state from the path program, not
+from payload size as such.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
