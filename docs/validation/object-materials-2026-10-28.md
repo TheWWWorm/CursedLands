@@ -544,6 +544,30 @@ fixtures were. `path_trace_rtxdi_live` stops at "native SDK reports real RR
 capability" on both packs, which needs the Ray Reconstruction runtime this
 engine folder lacks.
 
+## Refracted vertex light sampling
+
+The first opaque surface of a refracted camera path evaluated every local
+light in range exactly (up to four shadow rays, four stratified draws above
+that) although it is reached through an interface like a reflected bounce.
+It now uses the bounce estimator: one local light drawn in proportion to its
+reach, plus the sun, with the same expected energy. Only the two transmission
+ray programs change; the other 42 binaries are byte-identical. Many-light
+river benchmark with `pt_refraction=1` under `--ei-pt-tuning` (RT GPU
+medians, ABBA `refr-lights-*`):
+
+| Lights | Previous | Refracted vertex draws one light |
+| --- | ---: | ---: |
+| 7 | 1.83–1.86 ms | 1.74–1.76 ms |
+| 16 | 2.00–2.03 ms | 1.88–1.89 ms |
+| 64, still | 2.56–2.65 ms | 2.38–2.46 ms |
+| 64, one moving | 2.74–2.83 ms | 2.50–2.57 ms |
+
+The still view already traces one refracted path per pixel, so the saving
+is per path; a moving view with two paths saves twice as much per pixel.
+`path_trace_transmission` (33) and `path_trace_transmission_occlusion` (21)
+pass; the Beer, Snell and energy checks are unchanged because the estimator
+is unbiased.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

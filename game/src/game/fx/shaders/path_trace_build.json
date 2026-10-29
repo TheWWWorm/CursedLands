@@ -2,9 +2,9 @@
   "compiler": "dxcompiler.dll: 1.9(5512-01b62ad4)(1.9.2609.5) - 1.9.2609.5 (01b62ad47)",
   "compiler_sha256": "aa7965b3763d9c710baaa5a28cedcc633449962a75d1391d161a85304a41b3e2",
   "builder_sha256": "a8339f898356ab74fac28d4d27201e4e8b94da8951daae5efacf11c559385d32",
-  "source_sha256": "369e21f73d2c2ee62025d4d21566ac910cb0ce0faf2fa66f927c495fe9eac4ba",
+  "source_sha256": "c99d90ab0f57759cb5b625d42940f66d232a3cf2693311a661ff0310e5ea8ba8",
   "includes": {
-    "path_trace_transmission.hlsli": "48d7ac193748d55fddc66c0b97c5d0fb256827b2bed10d2c5677443e2ab14875"
+    "path_trace_transmission.hlsli": "dec2a6c77464c6436f0be8b5117a13a270a3a375e6c34d98dfd14cad5668d99a"
   },
   "files": {
     "path_trace_raygen.dxil": "00f0523f44f777e9b8bf22ce95416d79bf882efbbf41ebc80998d3c4b3bef507",
@@ -37,10 +37,10 @@
     "path_trace_raygen_water_deep.spv": "ea41489dacf00fa010730b009423813e6c5200687bee1158a6ed2c44d979568d",
     "path_trace_raygen_water_deep_no_emitters.dxil": "58ab5000cde851f86dc96d8254a7be8a5180b935293c5d60205d002e5545d322",
     "path_trace_raygen_water_deep_no_emitters.spv": "efc6f2a86c061ae07c4ea0f26ac31ce3081ebe73b5745773274b35e3aa5d9dbd",
-    "path_trace_raygen_transmission.dxil": "78dfc8b4e41e03f094d6c3049819260c748df92a34e80efe8bfbd3bf2729851f",
-    "path_trace_raygen_transmission.spv": "c0417ce937e5a9b921d493c44cf873fb7a99f9f1cf827f9df3a5bd494f740b22",
-    "path_trace_raygen_transmission_no_emitters.dxil": "e7d9daa2189a379f4aae5983410a13ed536b0023e2d47ed6728905f3e91563df",
-    "path_trace_raygen_transmission_no_emitters.spv": "b88f00bb51c80e5ff536135ce49f71d78af4b3c494ae176c436493868a494d31",
+    "path_trace_raygen_transmission.dxil": "a43dc80953723a82228b9b0e69f27a59257a73fac084e0a06651d79f64123434",
+    "path_trace_raygen_transmission.spv": "d9d226fd2adec96f2ebd4f6dd242dae44764e2eb7635dc6b4c198ab95e2604de",
+    "path_trace_raygen_transmission_no_emitters.dxil": "72ea6f625ff3e7d1d7a3bfb79e3c18d2c7e96b53e79d0eb5f1b0d4fbd6aee4e4",
+    "path_trace_raygen_transmission_no_emitters.spv": "7cca90772594aefab2452f4258dfbd56b173d5ed10bcaa1f905c92c5dcda6c3c",
     "path_trace_closest_hit_transmission.dxil": "82f4f7151356617cb90b39fc16cabd6b408809fd947d57449b00d251232ad579",
     "path_trace_closest_hit_transmission.spv": "951663c6baf3e5796ade7565c3f6f80ec10e31d59f7ce86d72beba40a6e307de",
     "path_trace_closest_hit_terrain_transmission.dxil": "7ab02c64da9bcf81bcf1c9c82123830b6f8014fb993a558299c74b7d2f4f58d6",

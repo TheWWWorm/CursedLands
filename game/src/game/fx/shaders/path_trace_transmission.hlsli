@@ -18,7 +18,9 @@ float fresnel_dielectric(float cosine,float eta) {
 }
 float3 opaque_radiance(Surface s,float3 direction,PathSampler sampler) {
     float3 d,sp,ds,sun;float2 distance;float4 dm,sm;
+    refracted_vertex=true;
     path_sample(s,-direction,sampler,d,sp,distance,ds,sun,dm,sm);
+    refracted_vertex=false;
     float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
     return max(d,ambient*(1.0-s.metalness)*(1.0-f0(s)))*s.albedo+sp+s.emission;
 }

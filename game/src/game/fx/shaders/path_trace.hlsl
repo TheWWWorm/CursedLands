@@ -495,10 +495,20 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
 #ifdef PATH_RTXDI
 #include "path_trace_rtxdi.hlsli"
 #endif
+// A refracted camera path reaches its first opaque surface through an
+// interface, like a reflected continuation does. That vertex then draws one
+// local light in proportion to its reach instead of summing every source,
+// matching the budget of the bounce vertices; the expected energy is the same.
+#ifdef PATH_TRANSMISSION
+static bool refracted_vertex=false;
+#endif
 void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular,out float3 sunlight,out float4 diffuse_moment,out float4 specular_moment) {
     shadow_cone=0.0;
 #ifdef PATH_RTXDI
     direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment,false);
+#elif defined(PATH_TRANSMISSION)
+    if(refracted_vertex){direct_light_bounce(primary,view,sampler,diffuse,specular);sunlight=0.0;diffuse_moment=0.0;}
+    else direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment);
 #else
     direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment);
 #endif

@@ -293,6 +293,12 @@ as before, and is unchanged within noise.
   through the frame's history flag, which the controller clears exactly when
   its own lighting caches reset.
 
+- **Refracted vertex light sampling.** The first opaque surface of a
+  refracted path now draws one local light in proportion to its reach (the
+  bounce estimator) instead of the exact visible-surface loop; with
+  refraction on, the many-light river measures 1.83–1.86 → 1.74–1.76 ms at
+  seven lights and 2.74–2.83 → 2.50–2.57 ms at sixty-four with one moving.
+
 `path_trace_transmission_occlusion` (new, registered) builds water behind a
 half-width opaque wall and checks the occlusion classification, the reuse of
 still frames, the 63-frame limit, that sun, sky and local-light changes keep
