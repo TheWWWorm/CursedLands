@@ -522,7 +522,9 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
     float roulette_floor=lerp(0.25,0.75,primary.metalness*(1.0-primary.roughness));
 #endif
     float3 v=view,weight_d=1.0,weight_s=1.0,first_direction=0.0;
-    uint bounces=clamp(uint(frame.path.x),1u,4u);
+    // Zero continuation bounces is a diagnostic setting (--ei-pt-bounces=0)
+    // that leaves only the visible surface's direct light, for attribution.
+    uint bounces=min(uint(frame.path.x),4u);
     for(uint depth=0;depth<bounces;depth++) {
         sampler.vertex=depth;
 #ifndef PATH_NO_EMITTERS
@@ -1487,14 +1489,16 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
 #else
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
 #endif
-    float3 planes=cliff_weights(cell,saturate(local),s.geometric_normal,distance);
-    float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
-    // Continuation hits keep the tile colour, cliff projection and material
-    // response, but not the detail, painted and cliff relief normals: their
-    // per-pixel footprint belongs to the visible surface, and the integrator
-    // averages bounce shading over the cone anyway. Each saved normal costs
-    // up to ten atlas taps per terrain hit.
+    // Continuation hits keep the tile colour and material response, but not
+    // the cliff projection or the detail, painted and cliff relief normals:
+    // their per-pixel footprint belongs to the visible surface, and the
+    // integrator averages bounce shading over the cone anyway. The projected
+    // rock pattern on a bounce hit costs two to four atlas taps plus the
+    // projection noise and changes only the texture of the bounced colour,
+    // not the tile it comes from. Each saved normal costs up to ten taps.
     bool continuation=s.cone>0.0;
+    float3 planes=continuation?0.0:cliff_weights(cell,saturate(local),s.geometric_normal,distance);
+    float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
     float fade=continuation?0.0:1.0-smoothstep(25.0,70.0,distance);
     float3 n=s.normal;
     // Preserve the established bounded painted relief on ordinary terrain.

@@ -201,6 +201,9 @@ Measurements for these three changes are recorded in
 
 ## Implemented now: terrain colour shortcut and lighter visible-surface loop
 
+- Continuation hits on terrain also skip the cliff rock projection (added
+  after a zero-bounce attribution showed the whole detailed-terrain cost at
+  the bounce hits): the river ray stage fell from 0.55–0.62 to 0.45–0.51 ms.
 - Continuation hits on terrain keep each cell's authored owner tile and skip
   the edge, corner, transition, junction and cliff-neighbour colour blends
   (`continuation_hit` in the closest-hit program). Those blends hide seams at

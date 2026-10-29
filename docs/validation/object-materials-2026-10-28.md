@@ -759,6 +759,35 @@ benchmark on two runs (`cpu2-river-new*`), while the device-level fixtures
 had passed: the uniform buffers are not created as copy sources. It was
 dropped; the duplicate upload stays.
 
+## Where the Balanced ray stage goes, by bounce
+
+`--ei-pt-bounces=N` now accepts zero, which leaves only the visible surface
+with its direct light. River, Low, all detail features, 1280×720
+(`bounce0-*`, ray-stage medians, two blocks per run): zero bounces
+0.12–0.18 ms, one bounce 0.40–0.62 ms, two bounces 0.55 ms (one run of the
+two-bounce case measured 0.92–0.97 ms and is treated as a clock outlier). With
+the simple terrain the zero-bounce case is also 0.11–0.18 ms, so the whole
+detailed-terrain cost measured earlier (about 0.17 ms) is paid at the bounce
+hits, not at the visible surface. The first bounce, with its incoherent
+continuation ray, the material evaluation at its hit and its two shadow
+rays, is the largest single part of the Balanced ray stage.
+
+## Cliff projection left to the visible surface
+
+Since the detailed-terrain cost sits at the bounce hits, continuation hits
+on terrain now keep the owner tile texture without the cliff rock projection
+(the relief and detail normals were already skipped there); the visible
+surface is unchanged. River, Low, all detail features, ABBA
+(`bcliff-river-*`, two blocks per run): ray stage 0.446–0.511 ms against
+0.550–0.620 ms, a 15–18% saving on this view. `path_trace_terrain` (120),
+`path_trace_terrain_terminator` (93), `path_trace_grazing_normals` (44),
+`path_trace_terrain_horizon` (25), `path_trace_cover_receivers` (65),
+`path_trace_contacts` (59), `path_trace_bounce_lights` (17),
+`path_trace_light_history` (58) and `path_trace_surface_maps` (16) pass
+(`bcliff1-*`). Bounce light from cliff faces keeps the tile's colour rather
+than the projected rock texture; the cliff memo therefore only serves the
+visible surface now.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
