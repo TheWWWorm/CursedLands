@@ -356,7 +356,11 @@ const REFLECTION_LAYER := 1 << 15
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
 ## prototype/complexion/armors/weapons).
-static func create(unit: Dictionary, ui_preview := false, initial_action := true, random: RandomNumberGenerator = null) -> EIUnitModel:
+## `textures` false (a headless authority's units, GameUnit.setup) leaves
+## the materials without their composed atlases: nothing draws them, and
+## composing them took a third of the simulation worker's spawn time.
+static func create(unit: Dictionary, ui_preview := false, initial_action := true, random: RandomNumberGenerator = null,
+		textures := true) -> EIUnitModel:
 	unit = CampaignState.map_unit_record(unit)
 	var db := GameData.db
 	var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
@@ -375,7 +379,7 @@ static func create(unit: Dictionary, ui_preview := false, initial_action := true
 	m._asset_template = asset_template
 	m.name = tmpl
 	m.set_meta("peaceful_gear", bool(unit.get("peaceful_gear", false)) and not ui_preview)
-	m._build(model, unit, proto, race, ui_preview, initial_action)
+	m._build(model, unit, proto, race, ui_preview, initial_action, textures)
 	if unit.has("arena_figure_scale"): m.fit_arena(float(unit.arena_figure_scale))
 	return m
 
@@ -871,7 +875,8 @@ func anim_names() -> PackedStringArray:
 	return out
 
 
-func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false, initial_action := true) -> void:
+func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false, initial_action := true,
+		textures := true) -> void:
 	_preview_model = ui_preview
 	_mouth_spec = Mouth.specification(proto, race)
 	var db := GameData.db
@@ -904,9 +909,10 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	if not asset_prefix.is_empty():
 		for i in layers.size(): layers[i] = asset_prefix + layers[i]
 	var mat = _material(ui_preview, mask == "unmowi")
-	mat.albedo_texture = _compose(mask, layers)
-	if mat is LitMaterial:
-		mat.set_shader_parameter("surface_tex", _compose_surface(mask, layers, surfaces))
+	if textures:
+		mat.albedo_texture = _compose(mask, layers)
+		if mat is LitMaterial:
+			mat.set_shader_parameter("surface_tex", _compose_surface(mask, layers, surfaces))
 	set_meta("layers", [mask, layers])
 	var secondary: Array[String] = []
 	var secondary_surfaces: Array[Vector3] = []
@@ -922,9 +928,10 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		if not asset_prefix.is_empty():
 			for i in secondary.size(): secondary[i] = asset_prefix + secondary[i]
 		wmat = mat.duplicate()
-		wmat.albedo_texture = _compose(mask, secondary)
-		if wmat is LitMaterial:
-			wmat.set_shader_parameter("surface_tex", _compose_surface(mask, secondary, secondary_surfaces))
+		if textures:
+			wmat.albedo_texture = _compose(mask, secondary)
+			if wmat is LitMaterial:
+				wmat.set_shader_parameter("surface_tex", _compose_surface(mask, secondary, secondary_surfaces))
 		hmat = wmat.duplicate()
 
 	# --- node hierarchy (base parts + extras that have meshes)

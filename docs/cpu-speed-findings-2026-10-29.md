@@ -199,6 +199,18 @@ before the worker published). Remaining there: the part nodes and meshes
 (native jobs; it needs the camera's position, which `village_start_view`
 sets after the spawn), and the warm-up tail.
 
+Done in this pass (fifth): the headless authority spawns its units without
+their atlases (`GameWorld.presentation` off → `EIUnitModel.create(…,
+textures)` false; lead 2 below). Its Portal build 5.9 → 5.1 s by its own
+uptime deltas (`local/validation/cpu-speed-20261029/authority-textures/solo-load-wallclock.txt`).
+The end-to-end wall clock stays 11 s: the client's build ahead (6 s from the
+worker's "zone load") and its navigation preparation (1.4 s) now end
+together with the worker's publication, so the client's own path is the
+critical one. The next second therefore comes from the client's build ahead
+(terrain presentation build 1.8 s warm, object placement 2.2 s, navigation
+build 0.7 s, preparation 1.4 s) or from the client's part after the message
+(3 s), not from the worker.
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
@@ -228,15 +240,16 @@ Remaining leads, in order of expected value:
    `spawn_unit` calls (client ~6 s after the pruned libraries) still follow
    the message; a client could pre-create models per prototype while it
    waits, if the records' gear is known (it is not, before the message).
-2. **`EIUnitModel._build` for a headless authority** (6.7 ms per unit:
-   base `.anm` decode ~1.1 s total, texture/material composition 0.85 s
-   (`_compose`, `_compose_surface`, `_material` per unit — unused headless),
-   part nodes 0.28 s, `template_paths` 0.18 s (now cached per template),
-   meshes 0.15 s). A headless worker needs the part hierarchy, the figure
-   geometry (`_measure_figure`) and the animation player, not meshes or
-   textures; `_build` has no headless switch today. Picking, severed limbs
-   (`weld_mesh` meta) and wounds read the meshes on the client only — verify
-   before skipping them headless.
+2. Partly done: **`EIUnitModel._build` for a headless authority** (6.7 ms
+   per unit: base `.anm` decode ~1.1 s total, texture/material composition
+   0.85 s, part nodes 0.28 s, `template_paths` 0.18 s (now cached per
+   template), meshes 0.15 s). Done: a world with `presentation` off spawns
+   its units with `textures` false (`EIUnitModel.create`), so `_compose` /
+   `_compose_surface` are skipped there; the detailed heads keep their
+   authored face texture (cached per face, cheap). Not done: the meshes
+   (0.15 s; `_eye_offset` and the welded joints read them, verify on the
+   authority before skipping), the detailed heads and the per-part material
+   variants (`FigureMaterial.part_material`), all presentation-only.
 3. **Shader warm-up on the client (11 s cold).** `ShaderWarmup` runs after
    the client world is built; whether it can overlap the worker load or the
    replica spawning is a rendering-side question (out of this pass's scope

@@ -6470,6 +6470,27 @@
       "focused": "authority_presentation_sleep"
     },
     {
+      "id": "animation/authority_unit_textures",
+      "category": "animation",
+      "script": "tools/tests/authority_unit_textures.gd",
+      "marker": "AUTHORITY_UNIT_TEXTURES",
+      "min_checks": 11,
+      "quick": true,
+      "description": "Units of a world that presents nothing (the solo campaign's simulation worker) get their figures, parts, geometry and clip libraries but no composed atlases; a presenting world's units and models made directly still compose them, and the wound overlay skips the atlas-less materials.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "authority_unit_textures"
+    },
+    {
       "id": "animation/animation_library_pruned",
       "category": "animation",
       "script": "tools/tests/animation_library_pruned.gd",

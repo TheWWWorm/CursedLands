@@ -519,7 +519,8 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	if world.zone.get("type") == "arena":
 		animation_random=RandomNumberGenerator.new()
 		animation_random.seed=hash([String(record.get("prototype","")),uid])
-	model = EIUnitModel.create(record,false,true,animation_random)
+	# A world that presents nothing (the simulation worker) needs no atlases.
+	model = EIUnitModel.create(record,false,true,animation_random,world.presentation)
 	if model == null:
 		return false
 	add_child(model)
