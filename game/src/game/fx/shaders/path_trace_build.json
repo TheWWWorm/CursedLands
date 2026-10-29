@@ -1,7 +1,7 @@
 {
   "compiler": "dxcompiler.dll: 1.9(5512-01b62ad4)(1.9.2609.5) - 1.9.2609.5 (01b62ad47)",
   "compiler_sha256": "aa7965b3763d9c710baaa5a28cedcc633449962a75d1391d161a85304a41b3e2",
-  "builder_sha256": "a8339f898356ab74fac28d4d27201e4e8b94da8951daae5efacf11c559385d32",
+  "builder_sha256": "7250ffcdd975dd065024049928a10d080b1b986d474ac19f5810bb82fedb3957",
   "source_sha256": "0330a8d9f0bc3108f8a657071252f4f4bd0567063c92a9613d49744318c8cfb3",
   "includes": {
     "path_trace_transmission.hlsli": "dec2a6c77464c6436f0be8b5117a13a270a3a375e6c34d98dfd14cad5668d99a"
@@ -41,6 +41,10 @@
     "path_trace_raygen_transmission.spv": "58d61117c9c65a9f539170dcec9b1f1c084adca6705f1f3528b70957061ffaae",
     "path_trace_raygen_transmission_no_emitters.dxil": "ce77f7b4c0d4b2ba333e6af4e4a501a1b42ac3deef5c61164dd060dc42f3156f",
     "path_trace_raygen_transmission_no_emitters.spv": "2c42d8f6c6f9247ac282dc83784dbaf5be983c18dfdb1315fd79f89423e7db28",
+    "path_trace_raygen_transmission_deep.dxil": "d234d891d0b372195f0836ce452338fcf7c2c8155c51f093dbba6e03bb76badf",
+    "path_trace_raygen_transmission_deep.spv": "7304c1ecbf43ecd9e490e27aac44e7171d3d4312164b8a6ebf5e10bae60c5bf5",
+    "path_trace_raygen_transmission_deep_no_emitters.dxil": "706afedd4de39122aa249ebd9d5fe33ce965c0036191507ca4e484ef8e3ebad9",
+    "path_trace_raygen_transmission_deep_no_emitters.spv": "010b50c5b792178feae3f9d6c4d03b1c2f437a9ef96e63d7b6b5e330ab8ce275",
     "path_trace_closest_hit_transmission.dxil": "2c11980fbbb39ccf5e5c8920bad668cea3175b8c0abaa913053d84b208f6c0f0",
     "path_trace_closest_hit_transmission.spv": "4013db8cf3eae94c59eecfa4097e2095d2540a87b779ac1cfd56cca36593c8d3",
     "path_trace_closest_hit_terrain_transmission.dxil": "be1dfdb11913854e5e93436c1fa91184db966d57c8ae3e1ea5b8066205f200df",

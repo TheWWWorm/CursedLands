@@ -819,6 +819,22 @@ within noise and if anything slower. The maps cost one tap each on the few
 object bounce hits of this view, so the change was reverted and bounce hits
 keep the same material response as the visible surface.
 
+## Refraction program with the roulette tail
+
+The refraction program was built without the roulette variant, so in
+four-bounce play every refracted path traced all four bounces while the
+main integrator applied its compensated roulette from the second bounce. Two
+`raygen_transmission_deep` programs now exist and the device selects them
+with the main integrator's depth variant. River refraction benchmark with
+`--ei-pt-bounces=4` (`tdeep-*`, ray-stage medians, ABBA): the turning view
+with refraction falls from 1.185–1.227 ms to 1.105–1.125 ms; the still view
+(one path per pixel, mostly reused) measures 0.73–0.88 ms on both packs,
+within noise; refraction off is unchanged (0.54–0.57 ms, one first block at
+0.74 ms is a clock outlier). `path_trace_transmission` (33),
+`path_trace_transmission_occlusion` (21) and `path_trace_bounce_lights` (17)
+pass (`tdeep1-*`). The estimator stays unbiased; only the depth tail is
+shared with the main integrator.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

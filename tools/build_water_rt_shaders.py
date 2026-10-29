@@ -45,8 +45,12 @@ def main():
                 definitions = ['PATH_WATER_REFLECTION'] + (['PATH_ROULETTE'] if deep else []) + (['PATH_NO_EMITTERS'] if no_emitters else [])
                 stages.append((name, 'raygen', definitions))
     if args.shader == 'path_trace':
-        for no_emitters in (False, True):
-            stages.append(('raygen_transmission'+('_no_emitters' if no_emitters else ''), 'raygen', ['PATH_TRANSMISSION']+(['PATH_NO_EMITTERS'] if no_emitters else [])))
+        # The refraction program follows the main integrator's depth variants:
+        # four-bounce play uses the compensated roulette tail there too.
+        for deep in (False, True):
+            for no_emitters in (False, True):
+                stages.append(('raygen_transmission'+('_deep' if deep else '')+('_no_emitters' if no_emitters else ''), 'raygen',
+                               ['PATH_TRANSMISSION']+(['PATH_ROULETTE'] if deep else [])+(['PATH_NO_EMITTERS'] if no_emitters else [])))
         for name, definitions in [('closest_hit', []), ('closest_hit_terrain', ['PATH_TERRAIN_MATERIALS']), ('closest_hit_transitions', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS']),
                                   ('closest_hit_terrain_maps', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_SURFACE_MAPS']),
                                   ('closest_hit_transitions_maps', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS', 'PATH_TERRAIN_SURFACE_MAPS'])]:

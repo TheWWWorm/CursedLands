@@ -296,6 +296,10 @@ as before, and is unchanged within noise.
   through the frame's history flag, which the controller clears exactly when
   its own lighting caches reset.
 
+- **Refraction roulette tail.** In four-bounce play the refraction program
+  now uses the same compensated roulette variant as the main integrator
+  instead of tracing every refracted bounce; the moving-view refraction on
+  the river measures 1.19–1.23 → 1.11–1.13 ms at four bounces.
 - **Refracted vertex light sampling.** The first opaque surface of a
   refracted path now draws one local light in proportion to its reach (the
   bounce estimator) instead of the exact visible-surface loop; with

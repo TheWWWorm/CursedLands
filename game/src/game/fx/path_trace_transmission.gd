@@ -49,7 +49,10 @@ func _program(owner: RefCounted) -> bool:
 	var paths: Dictionary={}
 	for stage in [RenderingDevice.SHADER_STAGE_RAYGEN,RenderingDevice.SHADER_STAGE_MISS,RenderingDevice.SHADER_STAGE_CLOSEST_HIT,RenderingDevice.SHADER_STAGE_ANY_HIT]:
 		paths[stage]=owner.shader_stage_path(stage)
-	paths[RenderingDevice.SHADER_STAGE_RAYGEN]=owner.shader_prefix()+"raygen_transmission"+("_no_emitters" if not owner._uses_emitters else "")
+	# Four-bounce play selects the roulette variant, as the main integrator does;
+	# refracted paths then share its compensated tail instead of tracing every
+	# bounce to the end.
+	paths[RenderingDevice.SHADER_STAGE_RAYGEN]=owner.shader_prefix()+"raygen_transmission"+("_deep" if owner._deep_paths else "")+("_no_emitters" if not owner._uses_emitters else "")
 	paths[RenderingDevice.SHADER_STAGE_CLOSEST_HIT]+="_transmission"
 	var directx:=RenderingServer.get_current_rendering_driver_name()=="d3d12"
 	var shader: RID=_programs.program(_rd,paths,directx)
