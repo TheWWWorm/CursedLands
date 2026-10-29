@@ -1,8 +1,8 @@
 # CPU speed findings, 2026-10-29
 
 Measurements and leads from the CPU-speed pass on branch
-`perf/cpu-speed-20261029` (base `e380c4c6`). Everything here was measured but
-not changed; each entry names the code to pick it up from. The path tracer
+`perf/cpu-speed-20261029` (base `e380c4c6`). Completed changes and remaining
+leads are distinguished below; each lead names the code to pick it up from. The path tracer
 and ray tracing are out of scope by request. Evidence (profiles, logs) lives
 in `local/validation/cpu-speed-20261029/` on the workstation.
 
@@ -379,8 +379,8 @@ its own while the objects are placed (`NavGrid.build_start` from the map's
 the client's 0.68 s and the worker's 0.6 s nav build overlap the object
 placement (1.15 s on the client, 0.33 s on the worker). The original
 builds its AI map serially after the objects; the comparison is not
-applicable. Not measured yet on GPU Lab (see the handoff in
-`local/maintenance/cpu-speed-20261029-handoff.md`).
+applicable. Measured together with the preceding three changes on GPU Lab; see section 9
+for the paired results and their background-load limitation.
 
 Done in this pass (fifteenth): the .mob is parsed on a thread of its own
 while the terrain is built (`EIMapScene.load_map`; the parser is pure over
@@ -549,3 +549,71 @@ Remaining leads, in order of expected value:
   session scratchpad under `/tmp` is "File not found" inside the job. Keep
   probes and outputs under the project tree (`local/validation/...`,
   `local/scratchpad/...`).
+
+## 9. Handoff completion: four pending loading changes
+
+The four game changes from `f2cd7806` through `055856b5` have completed
+validation: authority clip prewarm, parallel standing-class navigation,
+background .mob parsing, and navigation built during object placement.
+`26b23c4a` adds the missing arena-scenery test registration and fixes the
+catalog's validation of the already-merged focused cases and their inherited
+summary printers. It makes no game behavior change.
+
+Paired GPU Lab job `1cc6f211fa66ec6b`, automatically assigned RTX 3090 Ti,
+2880×1800 Forward+, stock Godot 4.7, warm LiA Portal save with 415 units:
+one excluded warm-up per revision, then three measurements per revision in
+ABBAAB order, one reserved GPU and the same isolated muted cache/profile.
+The source comparison is `f2cd7806` versus `055856b5`.
+
+| phase | baseline median (range), seconds | completed changes median (range), seconds |
+| --- | --- | --- |
+| client load request → usable world | 8.67 (7.70–8.68) | 7.28 (7.08–7.85) |
+| worker zone load → zone ready | 4.63 (4.06–4.71) | 3.32 (3.21–3.45) |
+| client build ahead | 4.53 (4.07–4.54) | 3.57 (3.54–3.78) |
+| client build-ahead completion → zone message | 0.28 (0.27–0.33) | 0.25 (0.24–0.26) |
+| client zone message → zone ready | 3.11 (2.75–3.17) | 2.88 (2.66–3.14) |
+
+Other chats ran CPU tests during the session and later also graphical tests
+on the other GPU. The measured median request time is 16% lower, but that
+is **not an established idle-machine speedup**. The three baseline/fixed
+pairs saved 0.43, 1.60 and 0.83 seconds. The first pair, before the rise in
+background load, was 7.70 → 7.28 seconds. Both the worker and client
+build-ahead phases are shorter in every fixed run than in every baseline
+run. The worker finishes first; client build-ahead plus the post-message
+work is now the limiting path. The handoff's expected 2-second worker
+build was not observed.
+
+The request-to-ready measurement uses one client monotonic clock. Worker
+and client trace uptimes have different origins and cannot be subtracted.
+The earlier 14.78-second subtraction in the local prewarm-background timing
+note mixed these clocks; its whole-second 8-second wall-clock observation
+and individual process phase deltas are separate historical measurements.
+The new logs, probe, driver, load metadata and JSON summary are in
+`local/validation/cpu-speed-20261029/completion/` on the workstation.
+
+Regression completion:
+
+- All four new loading tests pass again, together with moving Portal lift
+  (95 checks), Catacombs door (177), parallel footprints (13), Catacombs
+  floor/camera/mechanisms (15), capacity (45), and network capacity (36).
+- `pathing/arena_scenery_clearance` is now registered and passes 41 checks.
+  Its assertions are unchanged; its completion summary now follows the
+  shared runner's format. The handoff's `catacomb_lift_floors` name does not
+  exist; `quests/catacomb_mechanisms` covers those floors.
+- Expanded selection: 38 of 42 configurations pass, plus the arena-clearance
+  case above. Four arena failures reproduce identically on `f2cd7806`:
+  `arena_economy` (missing mock fields `name` / `to_hit`),
+  `arena_elimination_places` (2/12), `arena_live_shop` (16/153),
+  `arena_result_health` (8/11). These are pre-existing and remain unresolved.
+  Exact failure comparisons are retained; assertions were not relaxed.
+- Python checks: 175 parity/registry tests (10 existing skips) and 115
+  tooling tests pass. Issue coverage and translations pass. All 1241 Godot
+  test/benchmark scripts parse except the one declared custom-engine-only
+  DLSS case, which stock Godot cannot load.
+
+The original game has neither this remake's two-process loading path nor
+these preparation jobs, so a direct original/Wine timing comparison is
+inapplicable. The existing negative controls, cell-for-cell navigation and
+clip-content comparisons, and moving-geometry/network tests are the
+behavior-preservation evidence. Remaining optimization leads in sections
+1–7 are research backlog, not unverified parts of these four changes.
