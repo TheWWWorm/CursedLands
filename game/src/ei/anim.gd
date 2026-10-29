@@ -19,51 +19,96 @@ static var invert_keys := false
 
 
 ## `paths` maps part name -> NodePath (relative to the animated root).
+## `present` names the parts the figure actually holds (EIUnitModel._build
+## makes the nodes of the record's body parts and gear only). A unit then
+## gets the clips without the other parts' tracks: AnimationMixer resolves
+## every track of every clip in its library each time it rebuilds its track
+## cache (the first advance, and on the stock engine whenever a non-looping
+## clip finishes); a humanoid's ~117 clips x ~350 part tracks took ~10 ms per
+## rebuild while its figure resolved about 20 of those parts.
 static func library(template: String, paths: Dictionary, root_part: String, root_scale := 1.0,
-		native_keys := false) -> AnimationLibrary:
-	var key := "%s@%.3f:%s:%s:%s:%s" % [template, root_scale, native_keys, parent_first, absolute, invert_keys]
+		native_keys := false, present := PackedStringArray()) -> AnimationLibrary:
+	var flags := "%s:%s:%s:%s" % [native_keys, parent_first, absolute, invert_keys]
+	var key := "%s@%.3f:%s" % [template, root_scale, flags]
+	var kept := {}
+	if not present.is_empty():
+		var names := present.duplicate()
+		names.sort()
+		for part: String in names:
+			if paths.has(part):
+				kept[String(paths[part])] = true
+		if kept.size() < paths.size():
+			key += "#" + ",".join(names)
+		else:
+			kept.clear()
 	if _libraries.has(key):
 		return _libraries[key]
 	# Units of one template differ only in the root's translation scale (their
 	# height): the clips are decoded once (at scale 1) and copied with the root
 	# position keys scaled, the same values _build makes (vec * root_scale).
-	var base_key := "%s@base:%s:%s:%s:%s" % [template, native_keys, parent_first, absolute, invert_keys]
+	var base_key := "%s@base:%s" % [template, flags]
 	if not _libraries.has(base_key):
 		_libraries[base_key] = _build_library(template, paths, root_part, 1.0, native_keys)
-	var base: AnimationLibrary = _libraries[base_key]
-	var lib := base
+	var source: AnimationLibrary = _libraries[base_key]
+	if not kept.is_empty():
+		# The clips without the other parts' tracks, once per set of parts
+		# (every clip is copied); the heights below copy only the clips that
+		# move the root.
+		var pruned_key := "%s@pruned:%s#%s" % [template, flags, key.get_slice("#", 1)]
+		if not _libraries.has(pruned_key):
+			_libraries[pruned_key] = _copied(source, 1.0, kept)
+		source = _libraries[pruned_key]
+	var lib := source
 	if root_scale != 1.0:
-		lib = AnimationLibrary.new()
-		var names := base.get_animation_list()
-		var out := []
-		out.resize(names.size())
-		# The clips are copied on the worker threads (each task writes its own
-		# slot; the base clips are only read).
-		Portability.group(func(i: int) -> void:
-			out[i] = _scaled(base.get_animation(names[i]), root_scale), names.size())
-		for i in names.size():
-			lib.add_animation(names[i], out[i])
+		lib = _copied(source, root_scale, {})
 	_libraries[key] = lib
+	return lib
+
+
+## `source` with every clip through _derived (on the worker threads: each
+## task writes its own slot; the source clips and `kept` are only read).
+static func _copied(source: AnimationLibrary, k: float, kept: Dictionary) -> AnimationLibrary:
+	var lib := AnimationLibrary.new()
+	var names := source.get_animation_list()
+	var out := []
+	out.resize(names.size())
+	Portability.group(func(i: int) -> void:
+		out[i] = _derived(source.get_animation(names[i]), k, kept), names.size())
+	for i in names.size():
+		lib.add_animation(names[i], out[i])
 	return lib
 
 
 ## `src` with its position keys times `k`: a copy (track by track, much
 ## faster than duplicate()), or `src` itself when it has no position track.
 static func _scaled(src: Animation, k: float) -> Animation:
+	return _derived(src, k, {})
+
+
+## `src` scaled by `k` and, when `kept` names node paths, without the tracks
+## of other nodes. `src` itself when nothing changes.
+static func _derived(src: Animation, k: float, kept: Dictionary) -> Animation:
 	var has_pos := false
+	var dropped := {}
 	for t in src.get_track_count():
-		has_pos = has_pos or src.track_get_type(t) == Animation.TYPE_POSITION_3D
-	if not has_pos:
+		if not kept.is_empty() and not kept.has(String(src.track_get_path(t).get_concatenated_names())):
+			dropped[t] = true
+		elif src.track_get_type(t) == Animation.TYPE_POSITION_3D:
+			has_pos = true
+	if dropped.is_empty() and (k == 1.0 or not has_pos):
 		return src
 	var a := Animation.new()
 	a.length = src.length
 	a.loop_mode = src.loop_mode
 	a.step = src.step
 	for t in src.get_track_count():
+		if dropped.has(t):
+			continue
 		src.copy_track(t, a)
-		if a.track_get_type(t) == Animation.TYPE_POSITION_3D:
-			for key in a.track_get_key_count(t):
-				a.track_set_key_value(t, key, (a.track_get_key_value(t, key) as Vector3) * k)
+		var c := a.get_track_count() - 1
+		if k != 1.0 and a.track_get_type(c) == Animation.TYPE_POSITION_3D:
+			for key in a.track_get_key_count(c):
+				a.track_set_key_value(c, key, (a.track_get_key_value(c, key) as Vector3) * k)
 	return a
 
 

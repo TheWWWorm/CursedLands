@@ -1240,7 +1240,31 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	player.root_node = NodePath("..")
 	if not _morph_parts.is_empty():
 		player.mixer_applied.connect(_apply_morphs)
-	# Track paths follow the full part hierarchy so one library fits every unit of this template.
+	# Track paths follow the full part hierarchy so one decoded library fits
+	# every unit of this template; this figure's clips keep its parts' tracks.
+	if not _template_paths.has(_asset_template):
+		_template_paths[_asset_template] = template_paths(model)
+	paths = _template_paths[_asset_template]
+	adb = load_adb(_asset_template)
+	height_k = height_scale(_asset_template, complexion.z)
+	player.add_animation_library("ei", EIAnim.library(_asset_template, paths, root_part, height_k, true,
+			PackedStringArray(nodes.keys())))
+	neutral = _has_neutral()
+	movement_starts = int(race.get("type_id", 0)) == 0x32
+	pose_state = ST_NEUTRAL if neutral else ST_ATTACK
+	if initial_action:
+		act("idle", 1, 0.0)
+
+
+static var _template_paths := {}   # asset template -> template_paths(model)
+## Part name -> animation track path of every part of a figure template
+## (EIFigure.get_model): the part hierarchy with the original names' dots
+## sanitized (rh3.sword00 -> rh3_sword00).
+static func template_paths(model: Dictionary) -> Dictionary:
+	var parent_of := {}
+	for link: Array in model.links:
+		parent_of[link[0]] = link[1]
+	var paths := {}
 	for p: String in parent_of:
 		var chain := PackedStringArray([p.replace(".", "_")])
 		var q: String = parent_of[p]
@@ -1248,14 +1272,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			chain.insert(0, q.replace(".", "_"))
 			q = parent_of[q]
 		paths[p] = NodePath("/".join(chain))
-	adb = load_adb(_asset_template)
-	height_k = height_scale(_asset_template, complexion.z)
-	player.add_animation_library("ei", EIAnim.library(_asset_template, paths, root_part, height_k, true))
-	neutral = _has_neutral()
-	movement_starts = int(race.get("type_id", 0)) == 0x32
-	pose_state = ST_NEUTRAL if neutral else ST_ATTACK
-	if initial_action:
-		act("idle", 1, 0.0)
+	return paths
 
 
 ## clip -> [first blend shape, frame count] of a morph mesh's shapes

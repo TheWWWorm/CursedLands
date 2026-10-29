@@ -22,6 +22,11 @@ Portal, worker at 1x and 30 fps, three runs each: CPU core share 0.46 → 0.38,
 process time per frame 40.5 → 30.8 ms (summed `TIME_PROCESS` monitor), tick
 rate unchanged. Regression `animation/authority_presentation_sleep`.
 
+`UnitAI.player_perceive` skips the perception kernels when the observer's
+notice cells hold nobody (`stealth/perception_empty_scan`), and a unit's
+animation player holds only the tracks of its figure's parts
+(`animation/animation_library_pruned`, item 7).
+
 ## 1. Script-driven perception dominates the Foothills tick
 
 Foothills, 600 ticks, `profile_simulation` on (ms per tick; the profiler
@@ -54,13 +59,11 @@ candidates**, so the two native calls are pure call overhead there.
 
 Leads, in order of expected value:
 
-1. Early out in `UnitAI.player_perceive` (`ai.gd:690-770`) when the drop
-   pass kept nothing to recheck and `_notice_candidates` returned an empty
-   list: skip `notice_candidates` and `new_visible` (both are identity on an
-   empty list). Semantics unchanged; ~10 µs × 58 ≈ 0.6 ms per Foothills tick
-   (~7%). Cover with the perception parity harness (`--ei-script-perception`
-   switches the native kernel off; the parity tests under
-   `tools/tests/*perception*` record each evaluation).
+1. Done (`c94644d0`): `UnitAI.player_perceive` returns after the drop pass
+   when `_notice_candidates` is empty. Measured without the profiler the two
+   skipped kernel calls were only ~1.2 µs of a 4.5 µs cached empty scan
+   (~0.1 ms per Foothills tick); the profiled figures above overstate small
+   scopes (item 5). The remaining per-scan cost is the candidate refresh.
 2. `_notice_candidates` (`ai.gd:1146-1160`) refreshes each unit's cell list
    every 8–11 ticks through `GameWorld.notice_units_near` (`world.gd:641`),
    about 7 refreshes per tick at ~90 µs each — most of the 0.74 ms. The
@@ -109,18 +112,21 @@ split further; the probe variants `off:EIUnitModel`, `off:GameUnit` and
 (`snap_ms_per_s` 22–25 ms per second in the probe) is the other fixed
 per-frame cost of the worker (`Session`/`LocalHost` snapshot path).
 
-## 4. Client-side frame cost not yet measured
+## 4. Client-side frame cost
 
-The player feels the client process (presentation + rendering) rather than
-the worker. No per-class frame profile of the client exists for Portal
-(415 units) or Foothills. Plan: a rendered GPU Lab run of the real
-client + worker (`Session.local_host.start`, as `tools/tests/speed_scaling_matrix.gd`
-does), sampling `Performance.TIME_PROCESS`/`TIME_PHYSICS_PROCESS` per frame
-with the same `off:<Class>` subtraction variants, at 1280×800 and 2560×1440.
-Candidates known from the code: `GameUnit._process` → `_present_frame` for
-on-screen replicas, `EIUnitModel` animation, `NetSmooth` placement
-(`world.gd:804`, native batch per frame), `UnitWounds`, and the camera/UI
-scripts. The replica sleeping framework already covers off-screen actors.
+Measured with `client_frame_profile.gd` (real client + solo worker on GPU
+Lab, Portal save, 2880×1800, Forward+, 10 s window): the client runs at
+~111 fps with 5 actors on screen and ~9 ms process time per frame; it is
+not presentation-bound in that view. The `off:GameUnit` subtraction variant
+is invalid (fps fell to 66 and CPU rose: units without `_process` lose their
+sleeping) — do not use it for attribution. What the player waits for in the
+Portal is the zone load (item 7), not the frame.
+
+Candidates for a denser view (a battle with 30+ actors on screen) remain
+`GameUnit._process` → `_present_frame`, `EIUnitModel` animation, `NetSmooth`
+placement (`world.gd:804`, native batch per frame), `UnitWounds`, and the
+camera/UI scripts. The replica sleeping framework already covers off-screen
+actors.
 
 ## 5. Profiler overhead
 
@@ -149,7 +155,70 @@ own sections) would make the small per-unit scopes trustworthy.
 - `spell_callback` spikes in the Portal profile (0.24 ms per tick average,
   single calls over 5 ms in `profile_slow`): not investigated.
 
-## 7. Operational notes
+## 7. Zone loading (the Portal, 415 units)
+
+The solo campaign loads a zone twice in sequence: the worker builds the
+authority world, then the client builds its own after `_rpc_zone`. Measured
+with temporary `GameData.trace` timers (not committed; logs in
+`local/validation/cpu-speed-20261029/zone-load/`):
+
+| phase | worker (headless) | client (2880×1800, cold caches) |
+| --- | --- | --- |
+| `Session._build_world` | 10.4–10.9 s | 13.3 s |
+| ├ `EIMapScene.load_map` (terrain, 3171 objects) | 1.5 s, +139 MB | — |
+| ├ `NavGrid.build` | 1.5 s, +215 MB | — |
+| ├ `spawn_unit` × 413 | 6.2 s, +585 MB | 9.9 s (`_rpc_zone` spawn) |
+| ├ `nav.layer` per standing class | 0.7 s, +470 MB | — |
+| `_deploy_parties`, vm, rest | 0.25 s | 0.3 s |
+| shader warm-up | — | 11.0 s |
+| total after the save is read | 12.0–12.4 s | ~31–34 s after the worker |
+
+`GameUnit.setup` per unit (worker, 413 units): `EIUnitModel.create` 6.8 ms
+and the first `player.advance(0.0)` 7.6 ms, everything else 0.3 ms.
+
+Done in this pass: the first advance was AnimationMixer resolving all
+~41 000 tracks of the template's library (117 clips × ~350 part paths, of
+which the figure holds ~20); `EIAnim.library(..., present)` now gives the
+unit the clips without the other parts' tracks (2100 tracks). First advance
+9.3 → 0.5 ms, worker load 12.0–12.4 → 8.5–9.6 s. The same rebuild happened
+at run time on the stock engine after every finished non-looping clip
+(11.0 → 0.3 ms per unit; the patched engine's
+`set_preserve_track_caches_on_finish` avoided it already).
+
+Remaining leads, in order of expected value:
+
+1. **Client world pre-build overlapping the worker.** `_build_world(z, false)`
+   depends only on the zone record and the map files, not on the worker's
+   state, yet the client starts it after the worker's 9–12 s. Building the
+   client world while the worker loads (and spawning the 415 replicas as
+   soon as the records arrive) would hide most of the worker's time:
+   `Session._rpc_zone`, `LocalHost` load request path. Care: `_rpc_zone` must
+   still apply the worker's records (unit ids, state) to the pre-built
+   world, and a worker failure must discard the pre-built world.
+2. **`EIUnitModel._build` for a headless authority** (6.7 ms per unit:
+   base `.anm` decode ~1.1 s total, texture/material composition 0.85 s
+   (`_compose`, `_compose_surface`, `_material` per unit — unused headless),
+   part nodes 0.28 s, `template_paths` 0.18 s (now cached per template),
+   meshes 0.15 s). A headless worker needs the part hierarchy, the figure
+   geometry (`_measure_figure`) and the animation player, not meshes or
+   textures; `_build` has no headless switch today. Picking, severed limbs
+   (`weld_mesh` meta) and wounds read the meshes on the client only — verify
+   before skipping them headless.
+3. **Shader warm-up on the client (11 s cold).** `ShaderWarmup` runs after
+   the client world is built; whether it can overlap the worker load or the
+   replica spawning is a rendering-side question (out of this pass's scope
+   where it touches the path tracer).
+4. **Memory**: the worker's static memory grows 457 → 2210 MB for the Portal
+   (RSS 802 → 2510 MB) while mesh arrays are 13 MB and texture images 80 MB.
+   `nav.layer` adds 470 MB (one grid per standing class) and `NavGrid.build`
+   215 MB; the 585 MB of unit spawning is unexplained (14 413 MeshInstance3D,
+   1 130 materials, 415 AnimationPlayers, the per-height/per-part-set
+   library copies ~27 MB). `OS.get_static_memory_usage` deltas per phase,
+   as in the zone-load logs, are the tool.
+5. `NavGrid.build` 1.5 s and `EIMapScene.load_map` 1.5 s on both processes:
+   native builder already; not profiled further.
+
+## 8. Operational notes
 
 - A worktree of this repository needs `godot-4 --headless --path game --import`
   then `git checkout -- game/assets` before headless tests load
@@ -157,3 +226,7 @@ own sections) would make the small per-unit scopes trustworthy.
 - The focused runner's 840 s case timeout includes GPU Lab queue time; with
   the lab busy, rendered negative controls must be started when a slot is
   free (`/usr/local/bin/gpu-lab status`), not queued blindly.
+- GPU Lab jobs have their own `/tmp`: a probe script or save kept in a
+  session scratchpad under `/tmp` is "File not found" inside the job. Keep
+  probes and outputs under the project tree (`local/validation/...`,
+  `local/scratchpad/...`).

@@ -6426,6 +6426,26 @@
       "focused": "authority_presentation_sleep"
     },
     {
+      "id": "animation/animation_library_pruned",
+      "category": "animation",
+      "script": "tools/tests/animation_library_pruned.gd",
+      "marker": "ANIMATION_LIBRARY_PRUNED",
+      "min_checks": 40,
+      "quick": true,
+      "description": "A unit's animation library holds only the tracks of the parts its figure has: every track resolves to a part, the pruned clips equal the full clips restricted to those parts in order and pose the figure identically, and a figure without the template's other parts has fewer tracks (AnimationMixer resolves every track of every clip whenever it rebuilds its cache).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "focused": "animation_library_pruned"
+    },
+    {
       "id": "animation/network_render_clock",
       "category": "animation",
       "script": "tools/tests/network_render_clock.gd",
