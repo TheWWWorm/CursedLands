@@ -601,6 +601,15 @@ views where the edge blend covers more pixels. `path_trace_terrain` (120),
 `path_trace_terrain_horizon` (25) and `path_trace_cover_receivers` (65) pass
 on the changed pack.
 
+The Ray Reconstruction cases were rerun on the verified 1.35.0 package with
+the head pack (`rr135-*`): `path_trace_nrd_live` passes (12), but the RR
+cases stopped at the same capability check because that run did not select
+`rtx_upscaling=4` in the launch settings, which the DLSS runtime needs to be
+active (as the earlier `rr2-*` and `rrc135rr` runs required). Those cases
+remain to be rerun with upscaling selected; the RR fixtures that do not need
+the runtime (`rr_raw`, `rr_resources`, `rr_presentation`, `rr_staging`,
+`rr_handoff`) passed in the full set above.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
