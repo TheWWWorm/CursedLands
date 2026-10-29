@@ -562,10 +562,18 @@ static func mesh_faces(mesh: Mesh) -> PackedVector3Array:
 	return faces
 
 
-static func build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
+## The mesh cache id of a part's figure, assigned on first use (the one
+## write into a figure dictionary after its parse; a thread that reads the
+## models while meshes are built has the ids assigned first).
+static func mesh_id(f: Dictionary) -> int:
 	if not f.has("id"):
 		_fig_ids += 1
 		f.id = _fig_ids
+	return f.id
+
+
+static func build_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
+	mesh_id(f)
 	var key := "%d|%s|%s|%s" % [f.id, c.x, c.y, c.z]
 	var cached: ArrayMesh = _meshes.get(key)
 	if cached:

@@ -373,6 +373,15 @@ needs only the geometry meta), the first action 0.17 s (`act("idle")` on an
 authority that advances manually), the mob read 0.2 s (done, fifteenth
 change: parsed on a thread during the terrain build).
 
+Done in this pass (sixteenth): the navigation grid is built on a thread of
+its own while the objects are placed (`NavGrid.build_start` from the map's
+`on_placing` hook, `build_finish` after the placement binds the nodes):
+the client's 0.68 s and the worker's 0.6 s nav build overlap the object
+placement (1.15 s on the client, 0.33 s on the worker). The original
+builds its AI map serially after the objects; the comparison is not
+applicable. Not measured yet on GPU Lab (see the handoff in
+`local/maintenance/cpu-speed-20261029-handoff.md`).
+
 Done in this pass (fifteenth): the .mob is parsed on a thread of its own
 while the terrain is built (`EIMapScene.load_map`; the parser is pure over
 the bytes read on the main thread) and joined before the objects are

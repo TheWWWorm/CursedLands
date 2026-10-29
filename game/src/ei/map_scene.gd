@@ -24,9 +24,12 @@ func _ready() -> void:
 ## `on_mob`, when valid, is called with the unit records the map leaves to
 ## the world (unit_records) once the .mob is read and before the objects are
 ## placed: a client starts preparing the units' assets on a thread meanwhile
-## (EIUnitModel.prewarm_start).
+## (EIUnitModel.prewarm_start). `on_placing` is called with the map itself
+## (terrain and .mob read, nothing placed yet) right before the objects are
+## placed: the world starts its navigation build on a thread there
+## (NavGrid.build_start).
 static func load_map(map_name: String, mob_name := "", spawn_units := true, presentation := true,
-		on_mob := Callable()) -> EIMapScene:
+		on_mob := Callable(), on_placing := Callable()) -> EIMapScene:
 	var t0 := Time.get_ticks_msec()
 	var s := EIMapScene.new()
 	s.name = map_name
@@ -60,6 +63,8 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 		s._relocated_objects = CatacombLift.apply(map_name,mob_name,s.mob,s.terrain)
 		if on_mob.is_valid():
 			on_mob.call(s._left_unit_records())
+		if on_placing.is_valid():
+			on_placing.call(s)
 		s._place_objects()
 		# The seam trimming only clips duplicate rendering triangles; a map
 		# that presents nothing (the simulation worker) keeps the authored

@@ -379,11 +379,17 @@ func load_map(mpr: String, mob_name := "", with_units := true, on_mob := Callabl
 	# before the first unit is made (EIUnitModel.prewarm_start/finish). A
 	# caller's own on_mob (the client's build ahead, Session) does the same
 	# in its own time.
-	var ahead := {"prewarm": {}}
+	var ahead := {"prewarm": {}, "nav": {}}
 	if with_units and not on_mob.is_valid():
 		on_mob = func(records: Array) -> void:
 			ahead.prewarm = EIUnitModel.prewarm_start(records, presentation)
-	map = EIMapScene.load_map(mpr, mob_name, false, presentation, on_mob)
+	# The navigation grid is built on a thread of its own while the objects
+	# are placed (NavGrid.build_start: the cells, the records' footprints,
+	# the floors, the preparation and the walk layer) and the placed nodes
+	# are bound to their footprints afterwards (build_finish).
+	var on_placing := func(scene: EIMapScene) -> void:
+		ahead.nav = nav.build_start(scene.terrain, scene.terrain.water_base, scene.mob.objects)
+	map = EIMapScene.load_map(mpr, mob_name, false, presentation, on_mob, on_placing)
 	if map == null:
 		return false
 	add_child(map)
@@ -403,7 +409,11 @@ func load_map(mpr: String, mob_name := "", with_units := true, on_mob := Callabl
 	NetStatus.keep_alive()
 	# The original's AI map takes the water from the.sec files and is
 	# not rebuilt by SetWaterLevel.
-	nav.build(terrain, terrain.water_base, map.object_nodes)
+	if ahead.nav.is_empty():
+		nav.build(terrain, terrain.water_base, map.object_nodes)
+	else:
+		nav.build_finish(ahead.nav, map.object_nodes)
+	map.stats.nav_ahead = nav.built_ahead
 	NetStatus.keep_alive()
 	lever_sys = LeverSystem.new(self)
 	if with_units:

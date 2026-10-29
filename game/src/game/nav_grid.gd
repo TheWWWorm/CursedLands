@@ -255,6 +255,106 @@ func _native_builder() -> RefCounted:
 
 
 func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> void:
+	_build_cells(t, water_levels)
+	# Object footprints (worked out on the worker threads), then the floors
+	# they lay. Registering them keeps the objects' order.
+	var footprints := _footprints(objects)
+	for k in objects.size():
+		_add_footprint(objects[k], footprints[k])
+	_build_rest()
+
+
+## Loading, `build` in two halves (GameWorld.load_map): `build_start` works
+## out the cells, the footprints of the map's `records` (the objects the map
+## places: no units, a template with a model), the floors, the preparation
+## and the walk layer on a thread of its own while the caller places the
+## objects, and `build_finish` joins it and binds the placed nodes, in the
+## records' order, as `build` binds them. The thread reads the terrain's
+## arrays, the records and their models (their parts' mesh ids assigned
+## here first, the one thing the placement writes into them) and nothing
+## else that the placement touches. Returns the job, empty when the build
+## stays serial (no threads); `build_finish` builds serially when the placed
+## nodes do not match the records (none expected).
+func build_start(t: EITerrain, water_levels: PackedFloat32Array, records: Array) -> Dictionary:
+	if not Portability.threads():
+		return {}
+	var entries := []   # [record, key] per object the map places
+	var models := {}
+	var keys := {}
+	for o in records:
+		if not o is Dictionary or String(o.get("kind", "")) == "UNIT":
+			continue
+		var template := String(o.get("template", ""))
+		if template.is_empty():
+			continue
+		if not models.has(template):
+			var model := EIFigure.get_model(template)
+			for part: String in model.get("parts", {}):
+				EIFigure.mesh_id(model.parts[part])
+			models[template] = model
+		if models[template].is_empty():
+			continue
+		var key := int(o.get("nid", 0))
+		if key == 0 or keys.has(key):
+			key = _next_key
+			_next_key -= 1
+		keys[key] = true
+		entries.append([o, key])
+	var thread := Thread.new()
+	thread.start(_build_ahead.bind(t, water_levels, entries, models))
+	return {"thread": thread, "entries": entries, "terrain": t, "water": water_levels}
+
+
+## The thread's half of build_start.
+func _build_ahead(t: EITerrain, water_levels: PackedFloat32Array, entries: Array, models: Dictionary) -> void:
+	_build_cells(t, water_levels)
+	var footprints := []
+	footprints.resize(entries.size())
+	Portability.group(func(i: int) -> void:
+		footprints[i] = _footprint_of(entries[i][0], -1.0, models), entries.size(), true)
+	for k in entries.size():
+		var key: int = entries[k][1]
+		_fp[key] = footprints[k]
+		_put(key, footprints[k])
+	_build_rest()
+
+
+## The main thread's half of build_start: joins the thread (the network peer
+## is serviced meanwhile) and binds the placed `objects` to their footprints.
+func build_finish(job: Dictionary, objects: Array) -> void:
+	var thread: Thread = job.get("thread")
+	if thread == null:
+		build(job.terrain, job.water, objects)
+		return
+	while thread.is_alive():
+		NetStatus.keep_alive()
+		OS.delay_msec(Portability.PUMP_MS)
+	thread.wait_to_finish()
+	var entries: Array = job.entries
+	var matched := objects.size() == entries.size()
+	for k in objects.size():
+		if not matched:
+			break
+		var o: Node3D = objects[k]
+		var info: Dictionary = o.get_meta("ei", {}) if is_instance_valid(o) else {}
+		matched = not info.is_empty() and info.get("nid", 0) == entries[k][0].get("nid", 0) \
+			and String(info.get("template", "")) == String(entries[k][0].get("template", ""))
+	if not matched:
+		push_warning("NavGrid.build_finish: the placed objects differ from the records; building serially")
+		build(job.terrain, job.water, objects)
+		return
+	for k in objects.size():
+		_bind_footprint(entries[k][1], objects[k])
+	built_ahead = true
+
+
+## True after a build_start / build_finish pair bound the objects (a build
+## rebuilt serially clears it).
+var built_ahead := false
+
+
+func _build_cells(t: EITerrain, water_levels: PackedFloat32Array) -> void:
+	built_ahead = false
 	terrain = t
 	map_rev += 1
 	_layers = {}
@@ -344,11 +444,12 @@ func build(t: EITerrain, water_levels: PackedFloat32Array, objects: Array) -> vo
 	_hq = _hq0.duplicate()
 	_cost = _cost0.duplicate()
 	_depth = _depth0.duplicate()
-	# Object footprints (worked out on the worker threads), then the floors
-	# they lay. Registering them keeps the objects' order.
-	var footprints := _footprints(objects)
-	for k in objects.size():
-		_add_footprint(objects[k], footprints[k])
+
+
+## The floors the footprints lay, the native preparation and the walk layer.
+func _build_rest() -> void:
+	var builder := _native_builder()
+	var n := size.x * size.y
 	for i: int in _floors:
 		_apply_floor(i)
 	var prepared: Dictionary = builder.prepare({"size":size,"hq":_hq,"cost":_cost,"depth":_depth,
@@ -800,10 +901,17 @@ func _footprint(o: Node3D, t := -1.0) -> Dictionary:
 ## axis at `t` (levers; < 0 = the record's): {"spans": {cell: [bottom, top,
 ## kind]}, "floors": {cell: top}} in height steps.
 func _record_footprint(info: Dictionary, t := -1.0) -> Dictionary:
+	return _footprint_of(info, t, {})
+
+
+## _record_footprint with `models` (template -> model) standing in for the
+## figure cache: a thread's own view of the models (build_start).
+func _footprint_of(info: Dictionary, t: float, models: Dictionary) -> Dictionary:
 	var out := {"spans": {}, "floors": {}, "radius": 0.0, "faces": []}
 	if String(info.get("kind", "")) == "UNIT":
 		return out
-	var model := EIFigure.get_model(String(info.get("template", "")))
+	var template := String(info.get("template", ""))
+	var model: Dictionary = models.get(template, {}) if models.has(template) else EIFigure.get_model(template)
 	if model.is_empty():
 		return out
 	var c: Vector3 = info.get("complexion", Vector3.ZERO)
@@ -1019,12 +1127,18 @@ func _add_footprint(o: Node3D, fp: Dictionary) -> int:
 		key = _next_key
 		_next_key -= 1
 	_fp[key] = fp
-	_fp_nodes[key] = o
-	if not fp.get("faces", []).is_empty():
-		for mesh: MeshInstance3D in o.find_children("*", "MeshInstance3D", true, false):
-			mesh.layers |= EITerrain.DECAL_LAYER
+	_bind_footprint(key, o)
 	_put(key, fp)
 	return key
+
+
+## The node of the footprint `key` (registered already): its meshes take the
+## decal layer when the footprint lays floors.
+func _bind_footprint(key: int, o: Node3D) -> void:
+	_fp_nodes[key] = o
+	if not _fp[key].get("faces", []).is_empty():
+		for mesh: MeshInstance3D in o.find_children("*", "MeshInstance3D", true, false):
+			mesh.layers |= EITerrain.DECAL_LAYER
 
 
 func _put(key: int, fp: Dictionary) -> void:

@@ -2574,6 +2574,28 @@
       "focused": "nav_layers_lanes"
     },
     {
+      "id": "pathing/nav_build_ahead",
+      "category": "pathing",
+      "script": "tools/tests/nav_build_ahead.gd",
+      "marker": "NAV_BUILD_AHEAD",
+      "min_checks": 12,
+      "quick": true,
+      "description": "The world's navigation grid is built on a thread while the map's objects are placed (NavGrid.build_start / build_finish): the grid equals a serial build from the placed objects cell for cell, footprints, nodes, floors, face buckets and the walk layer included, the floor objects' meshes carry the decal layer, a serial rebuild is identical, and a world with units occupies the grid.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "nav_build_ahead"
+    },
+    {
       "id": "quests/catacomb_mechanisms",
       "category": "quests",
       "script": "tools/tests/catacomb_mechanisms.gd",
