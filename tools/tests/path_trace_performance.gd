@@ -26,9 +26,17 @@ func run() -> void:
 		check(ProjectSettings.load_resource_pack(audit_pack),"load explicitly requested diagnostic shader pack")
 		if not failures.is_empty():get_tree().quit(1);return
 	var context:=await setup();var game: Game=context[1]
-	var detailed:=OS.get_cmdline_user_args().has("--pt-detail")
-	if detailed:
-		GameData.options.gfx_terrain=1;GameData.options.gfx_materials=1;GameData.options.gfx_foliage_light=1;GameData.options.gfx_terrain_cliffs=1
+	# --pt-detail enables every detail feature; --pt-detail=terrain,cliffs,
+	# materials,foliage enables only the listed ones for attribution runs.
+	var detail_features: PackedStringArray=[]
+	for arg in OS.get_cmdline_user_args():
+		if arg=="--pt-detail":detail_features=PackedStringArray(["terrain","cliffs","materials","foliage"])
+		elif arg.begins_with("--pt-detail="):detail_features=arg.trim_prefix("--pt-detail=").split(",",false)
+	var detailed:=not detail_features.is_empty()
+	if detail_features.has("terrain"):GameData.options.gfx_terrain=1
+	if detail_features.has("cliffs"):GameData.options.gfx_terrain_cliffs=1
+	if detail_features.has("materials"):GameData.options.gfx_materials=1
+	if detail_features.has("foliage"):GameData.options.gfx_foliage_light=1
 	GameData.options.gfx_water_reflections=0;t.apply_gfx()
 	await get_tree().create_timer(0.3,true,false,true).timeout
 	get_window().borderless=true;get_window().size=Vector2i(1280,720)
@@ -56,19 +64,19 @@ func run() -> void:
 				check(ready,"benchmark prepares "+str(choice[0]))
 				if not ready:get_tree().quit(1);return
 			await frames(40)
-			gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();sampling=true
+			phase_source=rt;gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();phase_samples.clear();sampling=true
 			var wall:=[];var main_gpu:=[];var previous:=Time.get_ticks_usec()
 			for i in 90:
 				await frames(1);var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
 				main_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
 			sampling=false
 			var row:={"case":choice[0],"round":round_index,"frame_ms":summary(wall),"main_gpu_ms":summary(main_gpu),
-				"rt_gpu_ms":summary(gpu_samples.duplicate()),"gpu_stages_ms":stage_summary(),"controller_cpu_ms":summary(cpu_samples.duplicate()),"stats":rt.stats.duplicate()}
+				"rt_gpu_ms":summary(gpu_samples.duplicate()),"gpu_stages_ms":stage_summary(),"controller_cpu_ms":summary(cpu_samples.duplicate()),"controller_phases_ms":phase_summary(),"stats":rt.stats.duplicate()}
 			runs.append(row);print("PATH_TRACE_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("path-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"runs":runs,
 				"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),"viewport":[1280,720],
 				"audit_shader_pack_sha256":FileAccess.get_sha256(audit_pack) if not audit_pack.is_empty() else "",
-				"detailed_materials":detailed,"terrain_cliffs":GameData.option("gfx_terrain_cliffs")>0,"leaf_backlighting":GameData.option("gfx_foliage_light")>0,
+				"detailed_materials":detailed,"detail_features":detail_features,"terrain_cliffs":GameData.option("gfx_terrain_cliffs")>0,"leaf_backlighting":GameData.option("gfx_foliage_light")>0,
 				"note":"Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch."},"\t"))
 	set_process(false);before.queue_free()
 	context[1].queue_free();context[0].queue_free();await frames(16);TexUpscale.shutdown()

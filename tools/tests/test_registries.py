@@ -82,6 +82,25 @@ class RegistryTests(unittest.TestCase):
                                  f'{row["id"]}: focused ID {row["focused"]} is another entry\'s name')
         self.assertGreaterEqual(len(aliases), 370, "the folded focused manifest must stay registered")
 
+    def test_path_tracing_material_and_cache_regressions_remain_registered(self):
+        """The PT additions made alongside the catalog migration must run in both runners."""
+        rows = {row.get("focused"): row for row in catalog_entries() if row.get("focused")}
+        expected = {
+            "figure_material_surface": ("cursed_lands", "headless", 40),
+            "figure_material_surface_astral": ("lost_in_astral", "headless", 55),
+            "path_trace_bounce_lights": ("cursed_lands", "rendered", 16),
+            "path_trace_emitters": ("cursed_lands", "rendered", 42),
+            "path_trace_global_cache": ("cursed_lands", "rendered", 6),
+            "path_trace_transmission_occlusion": ("cursed_lands", "rendered", 21),
+        }
+        for name, (campaign, display, minimum) in expected.items():
+            with self.subTest(case=name):
+                self.assertIn(name, rows)
+                row = rows[name]
+                self.assertEqual(row["campaign"], campaign)
+                self.assertEqual(row["display"], display)
+                self.assertGreaterEqual(row["min_checks"], minimum)
+
     def test_same_registration_appears_once(self):
         """One script with the same arguments, campaign, display and renderer
         is one entry (and so one `min_checks`); the folded manifest must not

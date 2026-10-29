@@ -3,23 +3,43 @@
 #include <Rtxdi/DI/ReSTIRDIParameters.h>
 #include <Rtxdi/DI/Reservoir.hlsli>
 #include <Rtxdi/Utils/RandomSamplerState.hlsli>
-struct DIStoredSurface { float3 position; float depth; uint normal; uint geometric; uint albedo; uint material; };
+// 48 bytes per pixel. The 8-bit albedo/material words serve the previous
+// frame's neighbour tests; the current pixel's own shading in the separate
+// direct-light pass uses the half-precision material and the exact offset.
+struct DIStoredSurface { float3 position; float depth; uint normal; uint geometric; uint albedo; uint material;
+    uint instance; float offset; uint rough_metal; uint spec_visible; };
 struct DIControl {
     column_major float4x4 previous_view_projection;
     column_major float4x4 previous_view;
     uint4 layout; // width, height, previous array, current array
     uint4 state; // history valid, initial samples, RR, frame sequence
+    uint4 tuning; // spatial samples, disocclusion boost samples, permutation sampling, bias correction mode
 };
 [[vk::binding(33,0)]] RWStructuredBuffer<RTXDI_PackedDIReservoir> di_reservoirs : register(u3300000);
 [[vk::binding(34,0)]] RWStructuredBuffer<DIStoredSurface> di_surfaces : register(u3400000);
 [[vk::binding(35,0)]] StructuredBuffer<float2> di_neighbors : register(t3500000);
 [[vk::binding(36,0)]] ConstantBuffer<DIControl> di_control : register(b3600000);
-[[vk::binding(37,0)]] ConstantBuffer<Frame> di_previous_frame : register(b3700000);
+// The previous and current frame blocks as storage buffers. Light records are
+// read with per-lane indices; a constant buffer serialises divergent indices
+// across the wave, a storage gather does not.
+[[vk::binding(37,0)]] ByteAddressBuffer di_previous_frame : register(t3700000);
+[[vk::binding(44,0)]] ByteAddressBuffer di_current_frame : register(t4400000);
+float4 di_frame4(bool previous,uint index) {
+    return asfloat(previous?di_previous_frame.Load4(index*16u):di_current_frame.Load4(index*16u));
+}
+// camera_world is the second column-major matrix: rows 4..7 of the float4
+// block; its third column is the view axis and its fourth the eye.
+float3 di_previous_eye() {return asfloat(di_previous_frame.Load3(7u*16u));}
+float3 di_previous_forward() {return -asfloat(di_previous_frame.Load3(6u*16u));}
+bool di_previous_orthographic() {return asfloat(di_previous_frame.Load(20u*16u))>.5;}
 [[vk::binding(38,0)]] ByteAddressBuffer di_motion : register(t3800000);
 #define RTXDI_LIGHT_RESERVOIR_BUFFER di_reservoirs
 #define RTXDI_NEIGHBOR_OFFSETS_BUFFER di_neighbors
 // Keep candidate densities independent of visibility; shade with a fresh ray.
-// BASIC has the SDK's documented visibility-related bias, not an unbiased claim.
+// BASIC has the SDK's documented visibility-related bias, not an unbiased
+// claim. Pairwise MIS was measured 0.8 ms slower per frame at 1280x720 with
+// two neighbours (its extra target evaluations outweigh the second neighbour
+// walk of the basic mode), so only the basic path is compiled.
 #define RTXDI_ALLOWED_BIAS_CORRECTION RTXDI_BIAS_CORRECTION_BASIC
 struct RAB_Surface { Surface hit; float3 view; float depth; };
 struct RAB_LightInfo { uint index; bool previous; };
@@ -50,7 +70,23 @@ void di_store_surface(uint2 pixel,RAB_Surface s) {
     p.normal=di_pack_normal(s.hit.normal);p.geometric=di_pack_normal(s.hit.geometric_normal);
     p.albedo=di_pack4(float4(s.hit.albedo,0));
     p.material=di_pack4(float4(s.hit.roughness,s.hit.metalness,s.hit.specular,s.hit.visible));
+    p.instance=s.hit.instance_id;p.offset=s.hit.offset;
+    p.rough_metal=f32tof16(s.hit.roughness)|(f32tof16(s.hit.metalness)<<16u);
+    p.spec_visible=f32tof16(s.hit.specular)|(f32tof16(s.hit.visible)<<16u);
     di_surfaces[di_surface_address(pixel,di_control.layout.w)]=p;
+}
+// The current pixel's surface as the primary pass stored it, for the
+// separate direct-light pass. Depth zero marks a miss.
+bool di_load_surface(uint2 pixel,out Surface s,out float depth) {
+    DIStoredSurface p=di_surfaces[di_surface_address(pixel,di_control.layout.w)];
+    s=(Surface)0;depth=p.depth;
+    if(p.depth<=0.0)return false;
+    s.position=p.position;s.hit=1.0;s.offset=p.offset;s.instance_id=p.instance;
+    s.normal=di_unpack_normal(p.normal);s.geometric_normal=di_unpack_normal(p.geometric);
+    s.albedo=di_unpack4(p.albedo).rgb;
+    s.roughness=f16tof32(p.rough_metal&65535u);s.metalness=f16tof32(p.rough_metal>>16u);
+    s.specular=f16tof32(p.spec_visible&65535u);s.visible=f16tof32(p.spec_visible>>16u);
+    return true;
 }
 RAB_Surface RAB_EmptySurface() {return (RAB_Surface)0;}
 bool RAB_IsSurfaceValid(RAB_Surface s) {return s.depth>0.0;}
@@ -71,22 +107,19 @@ RAB_Surface RAB_GetGBufferSurface(int2 pixel,bool previous) {
     s.hit.normal=di_unpack_normal(p.normal);s.hit.geometric_normal=di_unpack_normal(p.geometric);
     s.hit.albedo=di_unpack4(p.albedo).rgb;float4 m=di_unpack4(p.material);
     s.hit.roughness=max(m.x,.02);s.hit.metalness=m.y;s.hit.specular=m.z;s.hit.visible=m.w;
-    float3 eye=mul(di_previous_frame.camera_world,float4(0,0,0,1)).xyz;
-    s.view=di_previous_frame.camera.x>.5?mul(di_previous_frame.camera_world,float4(0,0,1,0)).xyz:normalize(eye-p.position);
+    s.view=di_previous_orthographic()?-di_previous_forward():normalize(di_previous_eye()-p.position);
     return s;
 }
 uint di_local_count(bool previous) {
-    return previous?(di_previous_frame.local_state.w>.5?min(uint(di_previous_frame.local_state.x),64u):7u):
-        (frame.local_state.w>.5?min(uint(frame.local_state.x),64u):7u);
+    float4 state=di_frame4(previous,47u); // local_state
+    return state.w>.5?min(uint(state.x),64u):7u;
 }
 void di_local(uint i,bool previous,out float4 position,out float4 colour) {
-    if(previous) {
-        position=di_previous_frame.local_state.w>.5?di_previous_frame.local_position[i]:di_previous_frame.point_position[min(i,6u)];
-        colour=di_previous_frame.local_state.w>.5?di_previous_frame.local_colour[i]:di_previous_frame.point_colour[min(i,6u)];
-    } else {
-        position=frame.local_state.w>.5?frame.local_position[i]:frame.point_position[min(i,6u)];
-        colour=frame.local_state.w>.5?frame.local_colour[i]:frame.point_colour[min(i,6u)];
-    }
+    // Frame layout in float4 rows: point_position 22.., point_colour 29..,
+    // local_state 47, local_position 48.., local_colour 112...
+    bool extended=di_frame4(previous,47u).w>.5;
+    position=extended?di_frame4(previous,48u+i):di_frame4(previous,22u+min(i,6u));
+    colour=extended?di_frame4(previous,112u+i):di_frame4(previous,29u+min(i,6u));
 }
 RAB_LightInfo RAB_EmptyLightInfo() {return (RAB_LightInfo)0;}
 RAB_LightSample RAB_EmptyLightSample() {return (RAB_LightSample)0;}
@@ -101,6 +134,9 @@ int RAB_TranslateLightIndex(uint index,bool previous) {
     return -1;
 #endif
 }
+// Exact textured emitter evaluation is reserved for the final shading of
+// the selected sample; every resampling stage uses the same cheap target.
+static bool di_exact=false;
 RAB_LightSample RAB_SamplePolymorphicLight(RAB_LightInfo light,RAB_Surface receiver,float2 uv) {
     RAB_LightSample sample=RAB_EmptyLightSample();Surface s=receiver.hit;
     float3 incoming=0.0;float pdf;
@@ -128,14 +164,25 @@ RAB_LightSample RAB_SamplePolymorphicLight(RAB_LightInfo light,RAB_Surface recei
         sample.direction=delta/distance;sample.distance=distance;sample.kind=2u;
         bsdf(s,receiver.view,sample.direction,sample.diffuse,sample.specular,pdf);
         uint4 material=geometry.Load4(source.z*16u);uint i=material.x+source.y*3u;
-        Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
-        float3 tex=float3(hit_uv(a,b,c,w),a.emission_layer.w);
-        if(source.w==0u&&colours.SampleLevel(colour_sampler,tex,0).a*a.diffuse.a<asfloat(material.z))return RAB_EmptyLightSample();
-        float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(pb-pa.xyz),.001),
-                          length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(pc-pa.xyz),.001));
-        uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
-        float lod=max(log2(max(max(.002,s.roughness*.02)*distance*density*float(width),1.0)),0.0);
-        float3 emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,tex,lod).rgb*a.emission_layer.rgb);
+        float3 emission;
+        if(!di_exact) {
+            // Candidate and reuse weights only need a consistent target
+            // function. The material's constant emission, without its texture
+            // or cutout, costs two loads instead of three vertices and two
+            // taps; final shading below evaluates the exact sample, so the
+            // resampled estimate stays unbiased.
+            float3 constant=asfloat(vertices.Load3(i*64+48));
+            emission=(material.y&1u)!=0u?constant:linear_colour(constant);
+        } else {
+            Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
+            float3 tex=float3(hit_uv(a,b,c,w),a.emission_layer.w);
+            if(source.w==0u&&colours.SampleLevel(colour_sampler,tex,0).a*a.diffuse.a<asfloat(material.z))return RAB_EmptyLightSample();
+            float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(pb-pa.xyz),.001),
+                              length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(pc-pa.xyz),.001));
+            uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
+            float lod=max(log2(max(max(.002,s.roughness*.02)*distance*density*float(width),1.0)),0.0);
+            emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,tex,lod).rgb*a.emission_layer.rgb);
+        }
         // Density is over the shared light/UV domain, including the area's
         // solid-angle Jacobian. Reconnection reevaluates it at every receiver.
         float cosine=abs(dot(normalize(cross(pb-pa.xyz,pc-pa.xyz)),sample.direction));
@@ -155,7 +202,6 @@ void di_clear(uint2 pixel) {
 }
 void di_lighting(Surface primary,float3 view,uint2 pixel,float depth,out float3 diffuse,out float3 specular,out float3 direct_specular,out float4 dm,out float4 sm) {
     RAB_Surface surface;surface.hit=primary;surface.view=view;surface.depth=depth;
-    di_store_surface(pixel,surface);
     RTXDI_RandomSamplerState rng=RTXDI_InitRandomSampler(pixel,di_control.state.w,7u);
     RTXDI_DIReservoir initial=RTXDI_EmptyDIReservoir();
     uint locals=di_local_count(false),triangles=0;
@@ -193,9 +239,9 @@ void di_lighting(Surface primary,float3 view,uint2 pixel,float depth,out float3 
         float previous_depth=-mul(di_control.previous_view,float4(previous_position,1)).z;
         RTXDI_RuntimeParameters runtime=(RTXDI_RuntimeParameters)0;runtime.neighborOffsetMask=255u;runtime.frameIndex=di_control.state.w;
         RTXDI_DISpatioTemporalResamplingParameters settings=(RTXDI_DISpatioTemporalResamplingParameters)0;
-        settings.depthThreshold=.01;settings.normalThreshold=.95;settings.biasCorrectionMode=RTXDI_BIAS_CORRECTION_BASIC;
-        settings.maxHistoryLength=di_control.state.z!=0u?4u:8u;settings.enablePermutationSampling=1u;
-        settings.uniformRandomNumber=sample_hash(di_control.state.w);settings.numSamples=5u;settings.numDisocclusionBoostSamples=8u;
+        settings.depthThreshold=.01;settings.normalThreshold=.95;settings.biasCorrectionMode=min(di_control.tuning.w,uint(RTXDI_ALLOWED_BIAS_CORRECTION));
+        settings.maxHistoryLength=di_control.state.z!=0u?4u:8u;settings.enablePermutationSampling=di_control.tuning.z;
+        settings.uniformRandomNumber=sample_hash(di_control.state.w);settings.numSamples=di_control.tuning.x;settings.numDisocclusionBoostSamples=di_control.tuning.y;
         // A bounded 8-pixel neighborhood avoids noisy MIS normalization when
         // nearby surfaces see substantially different local-light distributions.
         settings.samplingRadius=8.0;settings.enableMaterialSimilarityTest=1u;
@@ -209,7 +255,9 @@ void di_lighting(Surface primary,float3 view,uint2 pixel,float depth,out float3 
     if(di_control.state.z!=0u&&RTXDI_GetNextRandom(rng)<.25)reservoir=initial;
     diffuse=0.0;specular=0.0;direct_specular=0.0;dm=0.0;sm=0.0;
     if(!RTXDI_IsValidDIReservoir(reservoir))return;
+    di_exact=true;
     RAB_LightSample sample=RAB_SamplePolymorphicLight(RAB_LoadLightInfo(RTXDI_GetDIReservoirLightIndex(reservoir),false),surface,RTXDI_GetDIReservoirSampleUV(reservoir));
+    di_exact=false;
     float visible=0.0;
     if(sample.kind==1u)visible=visibility(primary,sample.direction,sample.distance,false);
     else if(sample.kind==2u) {

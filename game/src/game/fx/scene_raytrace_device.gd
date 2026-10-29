@@ -5,6 +5,11 @@ const FILTER = preload("res://src/game/fx/shaders/scene_raytrace_filter.glsl")
 # Extra timestamp boundaries are diagnostic only; normal frames retain the
 # existing whole-pass bracket without intermediate query overhead.
 var _profile_stages := OS.get_cmdline_user_args().has("--ei-profile-rt")
+## Main-thread milliseconds of the last render's phases (--ei-profile-rt).
+var profile_render := {}
+
+func _mark(key: String,since: int) -> int:
+	var now := Time.get_ticks_usec();profile_render[key]=(now-since)/1000.0;return now
 var measure_budget := false
 var gpu_frame := -1
 var gpu_ms := 0.0
@@ -94,6 +99,11 @@ func _release_targets() -> void:
 func _target_set(bindings: Array[RDUniform],shader: RID) -> RID:
 	return _rd.uniform_set_create(bindings,shader,0)
 
+## The images the ray programs write. The base reconstruction traces into the
+## raw images and filters into the published ones; a derived device may trace
+## straight into the published images when nothing filters in between.
+func _ray_targets(raw: Array[RID],_history_targets: Array[RID]) -> Array[RID]: return raw
+
 func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
 	var bindings: Array[RDUniform] = [
 		_uniform(RenderingDevice.UNIFORM_TYPE_ACCELERATION_STRUCTURE,0,[_tlas]),
@@ -161,6 +171,9 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		var pair:=_compute_program(filter_spirv(),"Scene RT reconstruction")
 		_filter_shader=pair[0];_filter_pipeline=pair[1]
 		if not _filter_shader.is_valid() or not _filter_pipeline.is_valid():return false
+	# A same-size switch between the filtered and direct modes changes which
+	# images the ray programs write, so their descriptor set is rebuilt too.
+	var rebind := false
 	if size != _size:
 		# Stage the entire replacement. A failed image or descriptor allocation
 		# must leave the previous complete output and its resource indices intact.
@@ -179,7 +192,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		var filter_set := _filter_target_set(raw,history,auxiliary) if filtered else RID()
 		if filtered and not filter_set.is_valid():
 			_free_targets(raw+history+auxiliary);return false
-		var ray_set := _target_set(_ray_bindings(raw,sampler),_shader)
+		var ray_set := _target_set(_ray_bindings(_ray_targets(raw,history),sampler),_shader)
 		if not ray_set.is_valid():
 			if filter_set.is_valid(): _rd.free_rid(filter_set)
 			_free_targets(raw+history+auxiliary);return false
@@ -209,13 +222,13 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		var filter_set := _filter_target_set(_raw,_history+extra,auxiliary)
 		if not filter_set.is_valid(): _free_targets(extra+auxiliary);return false
 		_history.append_array(extra);_filter_auxiliary=auxiliary;_filter_sets=[filter_set]
-		_history_valid=false
+		_history_valid=false;rebind=true
 	elif not filtered and _history.size()>4:
 		_free_targets(_filter_sets+_history.slice(4)+_filter_auxiliary)
 		_filter_sets.clear();_filter_auxiliary.clear();_history.resize(4)
-		_history_valid=false
-	if not _set.is_valid() or sampler != _sampler:
-		var ray_set := _target_set(_ray_bindings(_raw,sampler),_shader)
+		_history_valid=false;rebind=true
+	if not _set.is_valid() or sampler != _sampler or rebind:
+		var ray_set := _target_set(_ray_bindings(_ray_targets(_raw,_history),sampler),_shader)
 		if not ray_set.is_valid(): return false
 		if _set.is_valid(): _rd.free_rid(_set)
 		_set=ray_set;_sampler=sampler
@@ -270,26 +283,29 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
 	if _profile_stages:_rd.capture_timestamp("PT submit %d:%d"%[get_instance_id(),completed_renders])
 	if measure_budget:_measure_budget()
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if not update_scene(changes): _history_valid=false;_published_valid=false;return
-	if _profile_stages:_rd.capture_timestamp("PT scene updated")
+	if _profile_stages:_rd.capture_timestamp("PT scene updated");at=_mark("update",at)
 	if not _targets(size,_samplers[clampi(texture_filter,0,_samplers.size()-1)]):
 		_render_failed();return
-	if _profile_stages:_rd.capture_timestamp("PT targets ready")
+	if _profile_stages:_rd.capture_timestamp("PT targets ready");at=_mark("targets",at)
 	if not _history_valid: frame.encode_float(82*4,0.0)
 	if not _upload_frame(frame): _render_failed();return
-	_rd.capture_timestamp("Scene RT begin")
+	if _profile_stages:at=_mark("upload",at)
+	if _profile_stages or measure_budget:_rd.capture_timestamp("Scene RT begin")
 	if not trace_frame(frame): _render_failed();return
-	if _profile_stages: _rd.capture_timestamp("Scene RT rays")
+	if _profile_stages: _rd.capture_timestamp("Scene RT rays");at=_mark("trace",at)
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;
 	# a small GPU copy supplies next frame's history without descriptor churn.
 	# Presentation-only filtering must not feed its broader blur back into the
 	# temporal history. Retain the current surface guides and history first.
 	var copied := reconstruct(frame)
-	_rd.capture_timestamp("Scene RT end")
+	if _profile_stages or measure_budget:_rd.capture_timestamp("Scene RT end")
+	if _profile_stages:at=_mark("reconstruct",at)
 	if not copied: _render_failed();return
 	_publish_targets()
-	if _profile_stages:_rd.capture_timestamp("PT published %d:%d"%[get_instance_id(),completed_renders])
+	if _profile_stages:_rd.capture_timestamp("PT published %d:%d"%[get_instance_id(),completed_renders]);at=_mark("publish",at)
 	_history_valid = true
 	_published_valid = true
 	completed_renders += 1

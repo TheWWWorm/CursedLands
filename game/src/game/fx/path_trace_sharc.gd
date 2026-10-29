@@ -96,7 +96,7 @@ func prepare(frame: PackedByteArray,size: Vector2i) -> bool:
 func update_set(host: RefCounted,shader: RID) -> RID:
 	if _source_set!=host.get("_set") or _update_shader!=shader or not _rd.uniform_set_is_valid(_update_set):
 		release_update_set()
-		_update_set=_rd.uniform_set_create(host._ray_bindings(host._raw,host._sampler),shader,0)
+		_update_set=_rd.uniform_set_create(host._ray_bindings(host.ray_targets() if host.has_method("ray_targets") else host._raw,host._sampler),shader,0)
 		_source_set=host.get("_set");_update_shader=shader
 	return _update_set
 

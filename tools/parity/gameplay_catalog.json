@@ -11613,7 +11613,7 @@
       "category": "focused",
       "script": "tools/tests/path_trace_light_history.gd",
       "marker": "SCENE_RT_DEVICE",
-      "min_checks": 52,
+      "min_checks": 58,
       "quick": false,
       "description": "Strict diffuse/specular caches preserve responsive torch and gradual daylight/rain history while rejecting source changes, camera cuts and progressive-motion mismatches.",
       "kind": "remake_regression",
@@ -13412,7 +13412,7 @@
       "category": "focused",
       "script": "tools/tests/path_trace_rr_raw.gd",
       "marker": "SCENE_RT_DEVICE",
-      "min_checks": 14,
+      "min_checks": 15,
       "quick": false,
       "description": "RR raw-light bypass: byte-exact current samples, sun, moving/missing surfaces, resize, NRD restoration and teardown.",
       "kind": "remake_regression",
@@ -13522,7 +13522,7 @@
       "marker": "SCENE_RT_DEVICE",
       "min_checks": 37,
       "quick": false,
-      "description": "Managed four-bounce PT uses the exact local-light estimator without reservoirs for up to seven lights, preserves raw RGB and occlusion, and reactivates prewarmed RTXDI for many lights or emissive geometry.",
+      "description": "Managed four-bounce PT uses the exact local-light estimator without reservoirs for up to four lights, preserves raw RGB and occlusion, and reactivates prewarmed RTXDI for five or more lights or emissive geometry.",
       "kind": "remake_regression",
       "timeout": 420,
       "args": [],
@@ -15574,7 +15574,7 @@
       "category": "focused",
       "script": "tools/tests/path_trace_terrain_sun_radius.gd",
       "marker": "SCENE_RT_DEVICE",
-      "min_checks": 37,
+      "min_checks": 40,
       "quick": false,
       "description": "Native PT self-terrain penumbrae respond to sun angular radius and agree with independent disk integration while exact object shadows, thin contacts, diffuse BRDF sampling and stable cache resources remain correct.",
       "kind": "remake_regression",
@@ -17704,6 +17704,126 @@
       ],
       "display": "headless",
       "focused": "ui_pad_panels"
+    },
+    {
+      "id": "focused/path_trace_emitters",
+      "category": "focused",
+      "script": "tools/tests/path_trace_emitters.gd",
+      "marker": "SCENE_RT_DEVICE",
+      "min_checks": 42,
+      "quick": false,
+      "description": "Emitter sampling preserves independent area-integral energy, opaque constant and textured materials, alpha cutouts, glossy MIS, dynamic placements and bounded-proposal fallback.",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [
+        "--ei-profile-rt"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_emitters"
+    },
+    {
+      "id": "focused/path_trace_transmission_occlusion",
+      "category": "focused",
+      "script": "tools/tests/path_trace_transmission_occlusion.gd",
+      "marker": "SCENE_RT_DEVICE",
+      "min_checks": 21,
+      "quick": false,
+      "description": "Dielectric-only camera rays with a separate opaque occlusion test, reused still frames skipping pixels without a dielectric and tracing one path each up to a 63-frame history, lighting changes blending without a reset, and full retracing after scene, camera or history-flag changes",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_transmission_occlusion"
+    },
+    {
+      "id": "focused/figure_material_surface",
+      "category": "focused",
+      "script": "tools/tests/figure_material_surface.gd",
+      "marker": "FIGURE_MATERIAL_SURFACE",
+      "min_checks": 40,
+      "quick": false,
+      "description": "Object surface families and figure material records give placed base-game masonry, timber, iron, cloth, clay and bone props the same roughness, metalness and relief in the raster material and the path-traced scene; verified stone/plank atlases and the chest mask are unchanged; Surface materials off restores rough dielectrics in PT.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "figure_material_surface"
+    },
+    {
+      "id": "focused/figure_material_surface_astral",
+      "category": "focused",
+      "script": "tools/tests/figure_material_surface.gd",
+      "marker": "FIGURE_MATERIAL_SURFACE",
+      "min_checks": 55,
+      "quick": false,
+      "description": "Lost in Astral's Jigran stonework, gold and expansion-only props resolve through the same family table, every listed name is an installed atlas, and the autumn tree recolours receive leaf/bark masks that follow the green tree02 original.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "figure_material_surface_astral"
+    },
+    {
+      "id": "focused/path_trace_bounce_lights",
+      "category": "focused",
+      "script": "tools/tests/path_trace_bounce_lights.gd",
+      "marker": "SCENE_RT_DEVICE",
+      "min_checks": 16,
+      "quick": false,
+      "description": "Native PT continuation vertices draw one local light per bounce in proportion to its reach: a wall lit only through the floor keeps the summed bounce energy of two, seven and sixteen sources within tolerance of single-light renders.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_bounce_lights"
+    },
+    {
+      "id": "focused/path_trace_global_cache",
+      "category": "focused",
+      "script": "tools/tests/path_trace_global_cache.gd",
+      "marker": "PT_GLOBAL_CACHE",
+      "min_checks": 6,
+      "quick": false,
+      "description": "Cached scalar and vector PT shader globals recover after another controller writes or retires, and after the active controller releases and republishes.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_global_cache"
     }
   ]
 }

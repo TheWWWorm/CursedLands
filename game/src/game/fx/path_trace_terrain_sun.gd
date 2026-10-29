@@ -374,6 +374,21 @@ func _frame_control(frame: PackedByteArray) -> PackedByteArray:
 	control.append_array(PackedFloat32Array([0,0,0]).to_byte_array())
 	return control
 
+## The campaign clock turns the sun about 0.005 degrees per frame. Retracing
+## every terrain vertex for that drift costs a full dispatch each frame and
+## moves a 50 m terminator by millimetres. Keep the cached visibility until
+## the direction has turned this far; reach and angular radius stay exact.
+const SUN_DIRECTION_TOLERANCE := 0.00175   # radians, 0.1 degrees
+
+static func _same_sun(control: PackedByteArray,cached: PackedByteArray) -> bool:
+	if cached.size()!=control.size():return false
+	if control.slice(12)!=cached.slice(12):return false
+	var now:=Vector3(control.decode_float(0),control.decode_float(4),control.decode_float(8))
+	var before:=Vector3(cached.decode_float(0),cached.decode_float(4),cached.decode_float(8))
+	if now==before:return true
+	if not now.is_finite() or not before.is_finite() or now.is_zero_approx() or before.is_zero_approx():return false
+	return now.normalized().dot(before.normalized())>=cos(SUN_DIRECTION_TOLERANCE)
+
 func render(frame: PackedByteArray) -> bool:
 	if _topology_failed:return false
 	if _topology_dirty and not _plan_topology():return false
@@ -382,7 +397,7 @@ func render(frame: PackedByteArray) -> bool:
 	# Include angular radius: terrain integrates a deterministic seven-tap
 	# disk; point-sun scenes retain one ray. Main BRDF/object samples stay intact.
 	var control:=_frame_control(frame)
-	if _valid and _signature==control:return true
+	if _valid and _same_sun(control,_signature):return true
 	if not _program() or _rd.buffer_update(_control,0,control.size(),control)!=OK:return false
 	var list:=_rd.raytracing_list_begin()
 	_rd.raytracing_list_bind_raytracing_pipeline(list,_pipeline)

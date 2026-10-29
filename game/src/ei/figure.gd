@@ -181,7 +181,7 @@ static func world_material_for(texture: String, material_id := 0) -> Material:
 	m.shader = _oshader_a2c if a2c else _oshader
 	m.set_meta("ground_contact_source", OBJECT_A2C_SHADER if a2c else OBJECT_SHADER)
 	m.set_shader_parameter("albedo_tex", tex)
-	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture))
+	m.set_shader_parameter("surface_profile", SurfaceResponse.object_profile(texture, material_id))
 	var surface := SurfaceResponse.object_surface(texture)
 	m.set_shader_parameter("surface_tex", surface)
 	m.set_shader_parameter("surface_enabled", surface != null)

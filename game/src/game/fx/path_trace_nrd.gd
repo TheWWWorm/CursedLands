@@ -21,6 +21,11 @@ var _programs := {}
 # Borrow immutable programs only; temporal pools and descriptors stay private.
 var program_cache: RefCounted
 var _sets := {}
+## Dispatch plans keyed by pipeline and resource list. NRD alternates its
+## history pools between frames, so a plan per pass slot would miss every
+## frame; keyed plans are found again two frames later.
+var _plans := {}
+const PLAN_LIMIT := 64
 var _owned: Array[RID] = []
 var _textures: Array[RID] = []
 var _buffers: Array[RID] = []
@@ -33,6 +38,9 @@ var _resolve := RID()
 var _last_time := 0
 var _restart := true
 var _input_frame := RID()
+## Main-thread milliseconds of the last render's phases (--ei-profile-rt).
+var profile := {}
+var _profile := OS.get_cmdline_user_args().has("--ei-profile-rt")
 
 func _init() -> void:
 	# Device construction is on the main thread; load once before render-thread
@@ -167,18 +175,21 @@ func rebind(raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
 	if not _pack.is_valid() or not _resolve.is_valid():return false
 	_input_frame=frame;return true
 
-func _matrix(data: PackedByteArray,start: int) -> Projection:
+## The four frame matrices decoded once as floats: one conversion instead of
+## sixty-four per-float reads on the main thread every frame.
+func _matrix(values: PackedFloat32Array,start: int) -> Projection:
 	var result := Projection()
 	for column in 4:
-		var offset := (start+column*4)*4
-		result[column]=Vector4(data.decode_float(offset),data.decode_float(offset+4),data.decode_float(offset+8),data.decode_float(offset+12))
+		var offset := start+column*4
+		result[column]=Vector4(values[offset],values[offset+1],values[offset+2],values[offset+3])
 	return result
 
 func _matrices(frame: PackedByteArray) -> PackedFloat32Array:
-	var projection := _matrix(frame,0).inverse()
-	var view := _matrix(frame,16).inverse()
-	var previous_view := _matrix(frame,48)
-	var previous_projection := _matrix(frame,32)*previous_view.inverse()
+	var values := frame.slice(0,64*4).to_float32_array()
+	var projection := _matrix(values,0).inverse()
+	var view := _matrix(values,16).inverse()
+	var previous_view := _matrix(values,48)
+	var previous_projection := _matrix(values,32)*previous_view.inverse()
 	if frame.decode_float(82*4)<0.5:
 		previous_projection=projection;previous_view=view
 	# Godot Camera3D matrices use -1..1 clip depth. NRD expects D3D 0..1,
@@ -186,10 +197,11 @@ func _matrices(frame: PackedByteArray) -> PackedFloat32Array:
 	for column in 4:
 		projection[column].z=(projection[column].z+projection[column].w)*0.5
 		previous_projection[column].z=(previous_projection[column].z+previous_projection[column].w)*0.5
-	var result := PackedFloat32Array()
+	var result := PackedFloat32Array();result.resize(64)
+	var at := 0
 	for matrix: Projection in [projection,previous_projection,view,previous_view]:
 		for column in 4:
-			var v: Vector4=matrix[column];result.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
+			var v: Vector4=matrix[column];result[at]=v.x;result[at+1]=v.y;result[at+2]=v.z;result[at+3]=v.w;at+=4
 	return result
 
 func _dispatch(program: Dictionary,sets: Array[RID],grid: Vector2i) -> void:
@@ -208,18 +220,34 @@ func render(frame: PackedByteArray) -> bool:
 	var dispatches: Array=_native.dispatches(_matrices(frame),_size,rendered_frames,
 		_restart or frame.decode_float(82*4)<0.5,elapsed,frame.decode_float(145*4))
 	if dispatches.is_empty():return false
+	var at := Time.get_ticks_usec() if _profile else 0
+	if _profile:profile["native"]=(at-now)/1000.0
 	# Prepare all pipelines/descriptors before recording anything. Any setup
 	# failure leaves the custom fallback a complete set of unfiltered inputs.
 	var jobs: Array=[]
 	var types: Dictionary=_description.resources
 	for i in dispatches.size():
 		var dispatch: Dictionary=dispatches[i]
+		# The denoiser's pass list and its pool/external resource references
+		# repeat across frames. Find the plan by the pipeline and the native
+		# resource list's content hash, confirm the list, and update only the
+		# constants buffer; the descriptor sets it owns stay valid until
+		# release_targets clears every plan.
+		var resource_list: Array=dispatch.resources
+		var key := [int(dispatch.pipeline),resource_list.hash()]
+		var plan: Dictionary=_plans.get(key,{})
+		if not plan.is_empty() and plan.resources==resource_list:
+			if plan.buffer.is_valid():
+				var data: PackedByteArray=dispatch.constants
+				if not data.is_empty() and _rd.buffer_update(plan.buffer,0,data.size(),data)!=OK:return false
+			jobs.append([plan,dispatch.grid])
+			continue
 		var pipeline: Dictionary=_description.pipelines[dispatch.pipeline]
 		var program := _program(String(pipeline.shader).sha256_text())
 		if program.is_empty():return false
 		var uniforms: Array[RDUniform]=[]
 		var sampled := 20;var storage := 3
-		for resource: Dictionary in dispatch.resources:
+		for resource: Dictionary in resource_list:
 			var rid: RID
 			if resource.type==types.permanent:rid=_permanent[resource.pool]
 			elif resource.type==types.transient:rid=_transient[resource.pool]
@@ -231,23 +259,29 @@ func render(frame: PackedByteArray) -> bool:
 			else:sampled+=1
 		var resources := _descriptor(program,0,uniforms)
 		if not resources.is_valid():return false
-		var constants := RID()
+		var constants := RID();var buffer := RID()
 		if program.layout.has("1"):
-			while _buffers.size()<=i:_buffers.append(_rd.uniform_buffer_create(_description.constant_bytes))
-			if not _buffers[i].is_valid():return false
+			buffer=_rd.uniform_buffer_create(_description.constant_bytes)
+			if not buffer.is_valid():return false
+			_buffers.append(buffer)
 			var data: PackedByteArray=dispatch.constants
-			if not data.is_empty() and _rd.buffer_update(_buffers[i],0,data.size(),data)!=OK:return false
+			if not data.is_empty() and _rd.buffer_update(buffer,0,data.size(),data)!=OK:return false
 			constants=_descriptor(program,1,[_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,0,_samplers[0]),
 				_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,1,_samplers[1]),
-				_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,2,_buffers[i])])
+				_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,2,buffer)])
 			if not constants.is_valid():return false
-		jobs.append({"program":program,"sets":[resources,constants],"grid":dispatch.grid})
+		if _plans.size()>=PLAN_LIMIT:_plans.clear()
+		var sets: Array[RID]=[resources,constants]
+		plan={"resources":resource_list,"program":program,"sets":sets,"buffer":buffer}
+		_plans[key]=plan
+		jobs.append([plan,dispatch.grid])
+	if _profile:var planned := Time.get_ticks_usec();profile["plan"]=(planned-at)/1000.0;at=planned
 	var grid := Vector2i(ceili(_size.x/8.0),ceili(_size.y/8.0))
 	_dispatch(_programs["pack"+_mode],[_pack],grid)
-	for job: Dictionary in jobs:
-		var sets: Array[RID]=[];sets.assign(job.sets)
-		_dispatch(job.program,sets,job.grid)
+	for job: Array in jobs:
+		_dispatch(job[0].program,job[0].sets,job[1])
 	_dispatch(_programs["resolve"+_mode],[_resolve],grid)
+	if _profile:profile["record"]=(Time.get_ticks_usec()-at)/1000.0;profile["dispatches"]=jobs.size()+2
 	_restart=false;rendered_frames+=1;last_dispatch_count=jobs.size()
 	return true
 
@@ -265,7 +299,7 @@ func release_targets(release: Callable=Callable()) -> void:
 		if rid.is_valid():
 			if release.is_valid():release.call(rid)
 			else:_rd.free_rid(rid)
-	_textures.clear();_buffers.clear();_external.clear();_permanent.clear();_transient.clear()
+	_textures.clear();_buffers.clear();_external.clear();_permanent.clear();_transient.clear();_plans.clear()
 	_native=null;_size=Vector2i.ZERO;_pack=RID();_resolve=RID();_input_frame=RID();_restart=true;_last_time=0
 
 func dispose(release: Callable=Callable()) -> void:

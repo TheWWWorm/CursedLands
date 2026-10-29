@@ -106,6 +106,12 @@ SharcHitData sharc_hit(Surface s) {
 }
 #endif
 static const float PI=3.14159265359;
+// Footprint carried by visibility rays. Shadow and emitter rays from the
+// visible surface test cutouts at mip zero like the raster scissor; rays
+// leaving a continuation vertex use the bounce footprint, so canopies that
+// only shade bounce light are tested at the averaged coverage of a coarse mip
+// with resident texels instead of per-sample alias noise.
+static float shadow_cone=0.0;
 void add_direction(float3 radiance,float3 direction,inout float4 moment) {
     // NRD SH stores the first-order moment of YCoCg luminance. Preserve its
     // magnitude when combining samples: normalizing would turn broad or
@@ -185,7 +191,7 @@ float3 surface_origin(Surface s,float3 direction) {
     return origin;
 }
 float visibility(Surface s,float3 direction,float reach,bool directional,uint mask=2u) {
-    Surface result=(Surface)0;
+    Surface result=(Surface)0;result.cone=shadow_cone;
     float3 origin=surface_origin(s,direction);
     // Reconnect to the sampled light from the displaced origin. A fixed
     // endpoint gap misses blockers near a lamp; extending it shadows objects
@@ -234,6 +240,15 @@ float specular_chance(Surface s,float nv) {
     float3 reflectance=f0(s);
     float f=max(reflectance.x,max(reflectance.y,reflectance.z));
     return clamp(f+(1.0-f)*pow(1.0-saturate(nv),5.0),0.05,0.95);
+}
+// Texture footprint of a continuation ray. A diffuse lobe integrates a wide
+// solid angle, so its hit samples the mip the integrator would otherwise
+// average over many samples; that halves bounce texture bandwidth and the
+// colour noise of indirect light. Glossy and metal lobes keep the narrow
+// cone that preserves sharp reflections of texture detail.
+float bounce_cone(Surface s,float3 v) {
+    float narrow=max(0.002,s.roughness*0.02);
+    return lerp(0.15,narrow,specular_chance(s,dot(s.normal,v)));
 }
 void bsdf(Surface s,float3 v,float3 l,out float3 diffuse,out float3 specular,out float pdf) {
     diffuse=0.0;specular=0.0;pdf=0.0;
@@ -304,11 +319,16 @@ float cloud_visibility(float3 position) {
     float density=smoothstep(frame.cloud_state.x-0.14,frame.cloud_state.x+0.14,coarse*0.75+detail*0.25);
     return 1.0-density*frame.cloud_state.y;
 }
+// The compact seven-light table and the extended table share one accessor
+// so continuation vertices can sample either with the same selection.
+uint lamp_count() {return frame.local_state.w<0.5?7u:min(uint(frame.local_state.x),64u);}
+float4 lamp_position(uint i) {return frame.local_state.w<0.5?frame.point_position[i]:frame.local_position[i];}
+float4 lamp_colour(uint i) {return frame.local_state.w<0.5?frame.point_colour[i]:frame.local_colour[i];}
 float local_weight(Surface s,uint i) {
-    float4 lamp=frame.local_position[i];
+    float4 lamp=lamp_position(i);
     float distance2=dot(lamp.xyz-s.position,lamp.xyz-s.position);
     if(lamp.w<=0.0||distance2<0.000025)return 0.0;
-    return dot(frame.local_colour[i].rgb,float3(0.2126,0.7152,0.0722))*max(1.0-distance2/(lamp.w*lamp.w),0.0);
+    return dot(lamp_colour(i).rgb,float3(0.2126,0.7152,0.0722))*max(1.0-distance2/(lamp.w*lamp.w),0.0);
 }
 void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float weight,inout float3 diffuse,inout float3 specular,inout float4 diffuse_moment) {
     float3 delta=lamp.xyz-s.position;float distance=length(delta);
@@ -322,32 +342,58 @@ void point_light(Surface s,float3 v,float4 lamp,float4 colour,float2 u,float wei
     diffuse+=d*incoming;specular+=sp*incoming;
     add_direction(d*incoming,direction,diffuse_moment);
 }
-void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight,out float4 diffuse_moment,bool sample_local) {
-    diffuse=0.0;specular=0.0;sunlight=0.0;
-    diffuse_moment=0.0;
-    if(any(frame.sun.rgb>0.0)) {
-        float3 direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,0u));
-        Surface sunlight_surface=s;
-        if(s.cone>0.0)sunlight_surface.geometric_normal=s.normal;
-        float3 d,sp;float pdf;bsdf(sunlight_surface,v,direction,d,sp,pdf);
-        if(any(d+sp>0.0)) {
-            float3 incoming=frame.sun.rgb*(PI*abs(dot(s.normal,direction))*cloud_visibility(s.position)*terrain_sun_visibility(s,direction));
-            diffuse=d*incoming;specular=sp*incoming;sunlight=diffuse;
+void sun_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
+    diffuse=0.0;specular=0.0;
+    if(!any(frame.sun.rgb>0.0))return;
+    float3 direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,0u));
+    Surface sunlight_surface=s;
+    if(s.cone>0.0)sunlight_surface.geometric_normal=s.normal;
+    float3 d,sp;float pdf;bsdf(sunlight_surface,v,direction,d,sp,pdf);
+    if(!any(d+sp>0.0))return;
+    float3 incoming=frame.sun.rgb*(PI*abs(dot(s.normal,direction))*cloud_visibility(s.position)*terrain_sun_visibility(s,direction));
+    diffuse=d*incoming;specular=sp*incoming;
+}
+// Continuation vertices trace one local shadow ray. The light is drawn in
+// proportion to its unshadowed reach at the vertex and divided by that
+// probability, so every source keeps its full expected energy while a path
+// no longer pays one visibility ray per in-range light at every bounce. The
+// primary vertex keeps the exact sum, which the reconstruction sees directly.
+void direct_light_bounce(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
+    sun_light(s,v,sampler,diffuse,specular);
+    float4 unused_moment=0.0;
+    uint count=lamp_count();
+    float total=0.0;
+    for(uint i=0;i<count;i++)total+=local_weight(s,i);
+    if(total<=0.0)return;
+    float threshold=path_random(sampler,13u).x*total;
+    float cumulative=0.0;
+    for(uint i=0;i<count;i++) {
+        float weight=local_weight(s,i);cumulative+=weight;
+        if(weight>0.0&&threshold<cumulative) {
+            point_light(s,v,lamp_position(i),lamp_colour(i),path_random(sampler,1u),total/weight,diffuse,specular,unused_moment);
+            return;
         }
     }
+}
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight,out float4 diffuse_moment,bool sample_local) {
+    diffuse_moment=0.0;
+    sun_light(s,v,sampler,diffuse,specular);
+    sunlight=diffuse;
     if(!sample_local)return;
     if(frame.local_state.w<0.5) {
         for(uint i=0;i<7;i++)point_light(s,v,frame.point_position[i],frame.point_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular,diffuse_moment);
         return;
     }
     uint count=min(uint(frame.local_state.x),64u);
-    if(count<=7u) {
+    if(count<=4u) {
         for(uint i=0;i<count;i++)point_light(s,v,frame.local_position[i],frame.local_colour[i],path_random(sampler,i+1u),1.0,diffuse,specular,diffuse_moment);
         return;
     }
-    // Four stratified importance samples keep crowded fire/spell scenes at a
-    // fixed shadow-ray budget. Divide by the selection probability so every
-    // admitted source contributes its full energy, including late spell lights.
+    // Four stratified importance samples keep lit scenes at a fixed shadow-ray
+    // budget at the visible surface: five to seven sources now share the
+    // estimator that crowded fire/spell scenes already used above seven.
+    // Divide by the selection probability so every admitted source
+    // contributes its full energy, including late spell lights.
     // https://pbr-book.org/4ed/Light_Sources/Light_Sampling
     float total=0.0;
     for(uint i=0;i<count;i++)total+=local_weight(s,i);
@@ -402,6 +448,10 @@ float emitter_hit_pdf(Surface hit,float3 origin) {
 void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 light_direction) {
     diffuse=0.0;specular=0.0;
     light_direction=0.0;
+    // Diagnostic (--ei-pt-no-emitter-nee): the controller adds 256 to the
+    // unused shadow-ray count so attribution runs can drop the emitter
+    // next-event rays while keeping the emitter programs.
+    if(frame.settings.z>=256.0)return;
     uint count=emitters.Load(0);if(count==0u)return;
     float choice=path_random(sampler,8u).x;uint low=0u,high=count;
     while(low<high) {
@@ -432,7 +482,7 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     float lod=max(log2(max(max(0.002,s.roughness*0.02)*distance*density*float(width),1.0)),0.0);
     float3 emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,uv,lod).rgb*a.emission_layer.rgb);
     if(!any(emission>0.0))return;
-    Surface visible=(Surface)0;
+    Surface visible=(Surface)0;visible.cone=shadow_cone;
     // Emissive target exclusion still uses the existing endpoint margin;
     // the receiver no longer discards nearby blockers through a fixed TMin.
     RayDesc ray={origin,0.0,direction,distance-0.002};
@@ -449,9 +499,20 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
 #ifdef PATH_RTXDI
 #include "path_trace_rtxdi.hlsli"
 #endif
+// A refracted camera path reaches its first opaque surface through an
+// interface, like a reflected continuation does. That vertex then draws one
+// local light in proportion to its reach instead of summing every source,
+// matching the budget of the bounce vertices; the expected energy is the same.
+#ifdef PATH_TRANSMISSION
+static bool refracted_vertex=false;
+#endif
 void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular,out float3 sunlight,out float4 diffuse_moment,out float4 specular_moment) {
+    shadow_cone=0.0;
 #ifdef PATH_RTXDI
     direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment,false);
+#elif defined(PATH_TRANSMISSION)
+    if(refracted_vertex){direct_light_bounce(primary,view,sampler,diffuse,specular);sunlight=0.0;diffuse_moment=0.0;}
+    else direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment);
 #else
     direct_light(primary,view,sampler,diffuse,specular,sunlight,diffuse_moment);
 #endif
@@ -465,7 +526,9 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
     float roulette_floor=lerp(0.25,0.75,primary.metalness*(1.0-primary.roughness));
 #endif
     float3 v=view,weight_d=1.0,weight_s=1.0,first_direction=0.0;
-    uint bounces=clamp(uint(frame.path.x),1u,4u);
+    // Zero continuation bounces is a diagnostic setting (--ei-pt-bounces=0)
+    // that leaves only the visible surface's direct light, for attribution.
+    uint bounces=min(uint(frame.path.x),4u);
     for(uint depth=0;depth<bounces;depth++) {
         sampler.vertex=depth;
 #ifndef PATH_NO_EMITTERS
@@ -508,7 +571,7 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
             weight_d/=survival;weight_s/=survival;
         }
 #endif
-        Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
+        Surface hit=(Surface)0;hit.cone=bounce_cone(current,v);
         RayDesc ray={surface_origin(current,direction),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         float segment=hit.hit>0.5?length(hit.position-current.position):60000.0;
@@ -551,9 +614,10 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         }
         sharc_count(3u);
 #endif
-        float3 direct_d,direct_s,unused_sun;
+        float3 direct_d,direct_s;
         sampler.vertex=depth+1u;
-        direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
+        shadow_cone=0.15;
+        direct_light_bounce(hit,-direction,sampler,direct_d,direct_s);
         float3 incoming=hit.emission*emission_weight+hit.albedo*direct_d+direct_s;
         diffuse+=weight_d*incoming;specular+=weight_s*incoming;
         add_direction(weight_d*incoming,first_direction,diffuse_moment);add_direction(weight_s*incoming,first_direction,specular_moment);
@@ -582,9 +646,12 @@ void main() {
     PathSampler sampler=path_sampler(sharc_frame.dimensions.y,pixel.x+pixel.y*size.x);
     float3 view=-direction;float emission_weight=1.0;
     sharc_count(0u);
+    shadow_cone=0.0;
     for(uint depth=0;depth<8u;depth++) {
         sampler.vertex=depth;
-        float3 d,sp,sunlight;direct_light(current,view,sampler,d,sp,sunlight);
+        float3 d,sp,sunlight;
+        if(depth==0u)direct_light(current,view,sampler,d,sp,sunlight);
+        else {shadow_cone=0.15;direct_light_bounce(current,view,sampler,d,sp);}
 #ifndef PATH_NO_EMITTERS
         float3 ed,es;emissive_light(current,view,sampler,ed,es);d+=ed;sp+=es;
 #endif
@@ -595,7 +662,7 @@ void main() {
         float cosine=abs(dot(current.normal,direction));if(pdf<=1e-8||cosine<=0.0)break;
         SharcSetThroughput(state,(d*current.albedo+sp)*(cosine/pdf));
         ray.Origin=surface_origin(current,direction);ray.Direction=direction;ray.TMin=0;ray.TMax=frame.camera.w;
-        Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
+        Surface hit=(Surface)0;hit.cone=bounce_cone(current,view);
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         if(hit.hit<0.5){SharcUpdateMiss(cache,state,sky_radiance(direction));break;}
         emission_weight=1.0;
@@ -604,6 +671,33 @@ void main() {
 #endif
         current=hit;view=-direction;
     }
+}
+#elif defined(PATH_DI_PASS)
+// Separate ReSTIR direct-light pass. The path integrator stored the visible
+// surface and its unfloored path terms; this thin program resamples the
+// local lights and emitters, traces one visibility ray, adds the light,
+// applies the ambient floor and encodes the direction moments. Keeping the
+// resampling out of the path raygen keeps that program's live state small.
+[shader("raygeneration")]
+void main() {
+    uint2 pixel=DispatchRaysIndex().xy;
+    Surface primary;float depth;
+    if(!di_load_surface(pixel,primary,depth))return;
+    float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+    float3 view=frame.camera.x>0.5?mul(frame.camera_world,float4(0,0,1,0)).xyz:normalize(eye-primary.position);
+    float3 di_d,di_s,di_direct;float4 di_dm,di_sm;
+    di_lighting(primary,view,pixel,depth,di_d,di_s,di_direct,di_dm,di_sm);
+    float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+    float4 current=indirect_image[pixel];
+    float3 diffuse=max(current.rgb+di_d,ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
+    indirect_image[pixel]=float4(diffuse,current.a);
+    float4 glossy=shadow_image0[pixel];float3 specular=glossy.rgb+di_s;
+    shadow_image0[pixel]=float4(specular,glossy.a);
+    float4 direct=path_direct_specular[pixel];float3 direct_specular=direct.rgb+di_direct;
+    path_direct_specular[pixel]=float4(direct_specular,direct.a);
+    float3 sunlight=path_direct_sun[pixel].rgb;
+    path_diffuse_direction[pixel]=mean_direction(path_diffuse_direction[pixel]+di_dm,max(diffuse-sunlight,0.0));
+    path_specular_direction[pixel]=mean_direction(path_specular_direction[pixel]+di_sm,max(specular-direct_specular,0.0));
 }
 #elif defined(PATH_TRANSMISSION)
 #include "path_trace_transmission.hlsli"
@@ -725,12 +819,6 @@ void main() {
         // across samples. The primary camera hit must never enter this value.
         if(distance.y>0.0)specular_distance=min(specular_distance,distance.y);
     }
-#ifdef PATH_RTXDI
-    float3 di_d,di_s,di_direct;float4 di_dm,di_sm;
-    di_lighting(primary,-direction,pixel,guide_image[pixel].w,di_d,di_s,di_direct,di_dm,di_sm);
-    diffuse+=di_d*float(samples);specular+=di_s*float(samples);direct_specular+=di_direct*float(samples);
-    diffuse_moment+=di_dm*float(samples);specular_moment+=di_sm*float(samples);
-#endif
     // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
     // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
     // storing integers above 2048 directly. The filter carries identity onward.
@@ -739,6 +827,20 @@ void main() {
     // outdoor sky or adding the full ambient term on top of traced light.
     // It is applied once at the receiver, never recursively at each bounce.
     float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
+#ifdef PATH_RTXDI
+    // The resampled local light arrives from the separate direct-light pass,
+    // which keeps the ReSTIR code out of this path integrator. Store the
+    // receiver, publish the path terms unfloored with their raw moments, and
+    // let that pass add its light, apply the ambient floor and encode the
+    // moments.
+    { RAB_Surface stored;stored.hit=primary;stored.view=-direction;stored.depth=guide_image[pixel].w;di_store_surface(pixel,stored); }
+    indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
+    shadow_image0[pixel]=float4(specular/float(samples),1.0);
+    path_direct_specular[pixel]=float4(direct_specular/float(samples),primary.specular);
+    path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
+    path_diffuse_direction[pixel]=diffuse_moment/float(samples);
+    path_specular_direction[pixel]=specular_moment/float(samples);
+#else
     diffuse=max(diffuse/float(samples),ambient*(1.0-primary.metalness)*(1.0-f0(primary)));
     indirect_image[pixel]=float4(diffuse,f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
@@ -746,6 +848,7 @@ void main() {
     path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
     path_diffuse_direction[pixel]=mean_direction(diffuse_moment/float(samples),max(diffuse-sunlight/float(samples),0.0));
     path_specular_direction[pixel]=mean_direction(specular_moment/float(samples),max((specular-direct_specular)/float(samples),0.0));
+#endif
     // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
     // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).
     uint surface=uint(round(saturate(primary.roughness)*63.0))|
@@ -768,11 +871,32 @@ void main(inout Surface result,Attributes attributes) {
     }
     Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
     float3 w=float3(1.0-attributes.bary.x-attributes.bary.y,attributes.bary);
-    if(colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),0.0).a*a.diffuse.a<asfloat(material.z))IgnoreHit();
+    // Camera and shadow rays test the exact cutout at mip zero, matching the
+    // raster scissor. Continuation rays carry a footprint: testing the
+    // averaged coverage at that mip removes the per-sample alias noise of
+    // distant leaves in bounce light and keeps their texels cache resident.
+    float lod=0.0;
+    if(result.cone>0.0) {
+        float3x4 to_world=ObjectToWorld3x4();
+        float3 edge1=mul((float3x3)to_world,b.position_u.xyz-a.position_u.xyz);
+        float3 edge2=mul((float3x3)to_world,c.position_u.xyz-a.position_u.xyz);
+        float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(edge1),0.001),
+                          length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(edge2),0.001));
+        float3 facet=normalize(cross(edge1,edge2));
+        float grazing=max(abs(dot(facet,WorldRayDirection())),0.1);
+        uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
+        lod=log2(max(result.cone*RayTCurrent()*density*float(width)/grazing,1.0));
+    }
+    if(colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),lod).a*a.diffuse.a<asfloat(material.z))IgnoreHit();
 }
 #elif defined(PATH_CLOSEST_HIT)
 // Static terrain material evaluation mirrors GroundSurfaceShader and
 // TerrainCliffShader. The padded sRGB atlas is shared with raster rendering.
+// Continuation hits (incoming cone above zero) keep the authored owner tile
+// of each cell and skip the edge, transition, junction and cliff-neighbour
+// blends that hide seams at the visible surface. Bounce lighting averages
+// those seams over its cone, and each skipped blend saves two to six taps.
+static bool continuation_hit=false;
 uint4 land_layout() { return terrain_data.Load4(0); }
 float4 land_sampling() { return asfloat(terrain_data.Load4(16)); }
 uint4 land_detail() { return terrain_data.Load4(32); }
@@ -866,7 +990,7 @@ float3 transition_original_sample(int2 cell,float2 p,float atlas_lod,out float4 
     int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
     float4 info=tile_info(cell);float3 colour=tile_sample(info.r,p,atlas_lod);traits=tile_traits(info.g);
 #endif
-    if(land_sampling().w<0.5)return colour;
+    if(land_sampling().w<0.5||continuation_hit)return colour;
     float2 weight=0.5*(1.0-smoothstep(0.0,0.12,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
     if(weight.x>0.0) {
@@ -1012,8 +1136,22 @@ float3 cliff_projected_tile(float code,float3 planes,CliffProjection x,CliffProj
     [branch] if(planes.z>0.0)colour+=cliff_sample(code,z)*planes.z;
     return colour;
 }
+// One projected colour per tile code per hit. The edge blend evaluates the
+// own cell and up to three neighbours with the same world projection, and
+// uniform rock gives them the same code; a repeated code costs no new taps.
+static float cliff_memo_code[4];
+static float3 cliff_memo_colour[4];
+static uint cliff_memo_used=0u;
+float3 cliff_projected_tile_memo(float code,float3 planes,CliffProjection x,CliffProjection z) {
+    [unroll] for(uint k=0u;k<4u;k++) {
+        if(k<cliff_memo_used&&cliff_memo_code[k]==code)return cliff_memo_colour[k];
+    }
+    float3 colour=cliff_projected_tile(code,planes,x,z);
+    if(cliff_memo_used<4u){cliff_memo_code[cliff_memo_used]=code;cliff_memo_colour[cliff_memo_used]=colour;cliff_memo_used++;}
+    return colour;
+}
 float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection x,CliffProjection z) {
-    [branch] if((land_tile(cell)&(1u<<25u))==0u)return cliff_projected_tile(tile_info(cell).r,planes,x,z);
+    [branch] if((land_tile(cell)&(1u<<25u))==0u)return cliff_projected_tile_memo(tile_info(cell).r,planes,x,z);
     // Corner donor codes follow the aligned vertex guard array. Only flagged
     // tiles read this payload; plain snapshots retain their original layout.
     uint offset=land_detail().z+((land_extra().x*land_extra().y+3u)&~3u);
@@ -1028,19 +1166,21 @@ float3 cliff_projected_surface(int2 cell,float2 p,float3 planes,CliffProjection 
     if(row.y==row.z) { weights.y+=weights.z;weights.z=0.0; }
     if(row.y==row.w) { weights.y+=weights.w;weights.w=0.0; }
     if(row.z==row.w) { weights.z+=weights.w;weights.w=0.0; }
-    [branch] if(weights.x>0.0)colour+=cliff_projected_tile(row.x-1.0,planes,x,z)*weights.x;
-    [branch] if(weights.y>0.0)colour+=cliff_projected_tile(row.y-1.0,planes,x,z)*weights.y;
-    [branch] if(weights.z>0.0)colour+=cliff_projected_tile(row.z-1.0,planes,x,z)*weights.z;
-    [branch] if(weights.w>0.0)colour+=cliff_projected_tile(row.w-1.0,planes,x,z)*weights.w;
+    [branch] if(weights.x>0.0)colour+=cliff_projected_tile_memo(row.x-1.0,planes,x,z)*weights.x;
+    [branch] if(weights.y>0.0)colour+=cliff_projected_tile_memo(row.y-1.0,planes,x,z)*weights.y;
+    [branch] if(weights.z>0.0)colour+=cliff_projected_tile_memo(row.z-1.0,planes,x,z)*weights.z;
+    [branch] if(weights.w>0.0)colour+=cliff_projected_tile_memo(row.w-1.0,planes,x,z)*weights.w;
     return colour;
 }
 float3 cliff_albedo(float3 original,int2 cell,float2 p,float3 world,float3 planes,float atlas_lod) {
     if(planes.y<=0.0)return original;
+    cliff_memo_used=0u;
     // Reuse the same world projection across all corner donors/neighbours.
     CliffProjection x=(CliffProjection)0,z=(CliffProjection)0;
     [branch] if(planes.x>0.0)x=cliff_project(float2(-world.z,world.y)*0.5,atlas_lod);
     [branch] if(planes.z>0.0)z=cliff_project(world.xy*0.5,atlas_lod);
     float3 own=cliff_projected_surface(cell,p,planes,x,z),colour=own;
+    if(continuation_hit)return original*(1.0-planes.y)+own;
     float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
     int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
     if(weight.x>0.0&&cliff_eligible(cell+int2(step_cell.x,0))>0.5)colour=lerp(colour,cliff_projected_surface(cell+int2(step_cell.x,0),p-float2(int2(step_cell.x,0)),planes,x,z),weight.x);
@@ -1240,6 +1380,11 @@ float3 ground_sample_from(int2 cell,float2 p,float atlas_lod,float3 original,flo
 #else
 float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
 #endif
+#if defined(PATH_TERRAIN_SURFACE_MAPS)
+	if(continuation_hit){traits=original_traits;return original;}
+#else
+	if(continuation_hit)return transition_original_sample(cell,p,atlas_lod,traits);
+#endif
 	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
 	float4 row=transition_row(cell);
 	// All pure tiles remain authored, even inside the junction halo.
@@ -1348,9 +1493,17 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
 #else
     float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),ground_lod,traits);
 #endif
-    float3 planes=cliff_weights(cell,saturate(local),s.geometric_normal,distance);
+    // Continuation hits keep the tile colour and material response, but not
+    // the cliff projection or the detail, painted and cliff relief normals:
+    // their per-pixel footprint belongs to the visible surface, and the
+    // integrator averages bounce shading over the cone anyway. The projected
+    // rock pattern on a bounce hit costs two to four atlas taps plus the
+    // projection noise and changes only the texture of the bounced colour,
+    // not the tile it comes from. Each saved normal costs up to ten taps.
+    bool continuation=s.cone>0.0;
+    float3 planes=continuation?0.0:cliff_weights(cell,saturate(local),s.geometric_normal,distance);
     float cliff_lod=planes.y>0.0?tile_lod(footprint/grazing*0.5):0.0;
-    float fade=1.0-smoothstep(25.0,70.0,distance);
+    float fade=continuation?0.0:1.0-smoothstep(25.0,70.0,distance);
     float3 n=s.normal;
     // Preserve the established bounded painted relief on ordinary terrain.
     // Its four compact atlas taps run below, once, instead of evaluating the
@@ -1366,7 +1519,11 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
             uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
             float lod=max(log2(max(footprint*0.45*float(width)/grazing,1.0)),0.0);
             float fine_lod=max(log2(max(footprint*1.7*float(width)/grazing,1.0)),0.0);
-            float3 weights=n*n;weights*=weights;weights/=max(dot(weights,float3(1,1,1)),1e-8);
+            float3 weights=n*n;weights*=weights;
+            // n^4 weights are rarely exactly zero: a 2% floor skips the two
+            // near-vertical planes on ordinary ground without a visible step.
+            weights=select(weights>0.02*dot(weights,float3(1,1,1)),weights,float3(0,0,0));
+            weights/=max(dot(weights,float3(1,1,1)),1e-8);
             float2 x=0.0,y=0.0,z=0.0,fine=0.0;
             [branch] if(weights.x>0.0)x=colours.SampleLevel(colour_sampler,float3(s.position.zy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
             [branch] if(weights.y>0.0) {
@@ -1390,7 +1547,8 @@ bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,flo
         }
     }
     // Match the visible wall relief without four full donor-field samples.
-    n=cliff_relief_normal(s.position,n,s.geometric_normal,-WorldRayDirection(),planes,distance,footprint/grazing);
+    if(!continuation)n=cliff_relief_normal(s.position,n,s.geometric_normal,-WorldRayDirection(),planes,distance,footprint/grazing);
+    else painted_scale=0.0;
     colour=cliff_albedo(colour,cell,saturate(local),s.position,planes,cliff_lod);
     uint macro_layer=land_detail().y;
     [branch] if(macro_layer>0u) {
@@ -1601,7 +1759,7 @@ void main(inout Surface result,Attributes attributes) {
         float visible_detail=(1.0-smoothstep(2.0,8.0,texels))*(1.0-smoothstep(24.0,60.0,distance));
         result.roughness=clamp(lerp(max(detail.b,0.65),detail.b,visible_detail),0.08,1.0);
         result.metalness=saturate(detail.a);
-        result.normal=surface_detail_normal(detail.rg,result.normal,result.geometric_normal,-WorldRayDirection(),
+        if(result.cone<=0.0)result.normal=surface_detail_normal(detail.rg,result.normal,result.geometric_normal,-WorldRayDirection(),
             mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
             float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
             float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),visible_detail);
@@ -1614,6 +1772,7 @@ void main(inout Surface result,Attributes attributes) {
 #else
     float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;
 #endif
+    continuation_hit=result.cone>0.0;
     #if defined(PATH_TERRAIN_MATERIALS)
     [branch] if(terrain&&land_layout().x>0u) {
         float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
@@ -1629,6 +1788,8 @@ void main(inout Surface result,Attributes attributes) {
         strength*=painted_scale;
     }
     #endif
+    // Painted relief is a visible-surface detail; see terrain_material.
+    if(result.cone>0.0)strength=0.0;
     [branch] if(strength>0.0) {
         float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
         float distance=length(position-eye);

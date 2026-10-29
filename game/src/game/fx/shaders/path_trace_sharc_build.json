@@ -8,27 +8,27 @@
     "License.md": "5575ad921bfe6027dc830887ff51ceb4097e31c2d538b6932cd4bbdf5c1899a9"
   },
   "sources": {
-    "path_trace.hlsl": "3ada932c0a545ecb05f13ea2991e304e7d15d746f97a07167d567ee0bfb1d159",
+    "path_trace.hlsl": "7e18ae1f63fd0c0e91014c8890b2a8bc22d71b2d1606c7a8dfccffb2deb3ef46",
     "path_trace_sharc.hlsli": "fa94304018bc62ff33e74b0a70da8f0cca49250aef595eec5ef4a71261bccec9",
     "path_trace_sharc_resolve.hlsl": "a022bedb389a4bce8c4d53b77ffa88ca82ea50445ead8dc3f15b06a8173f533d",
     "builder": "76ab4c9f2036ce30b939387567da660da6762f4791f753ebc1e6ec0865f42c72"
   },
   "files": {
-    "path_trace_raygen_sharc.dxil": "7694ffabdb492d8edbecc5c741a163daa91a429f530f673ea661d0dd8da1f0ee",
-    "path_trace_raygen_sharc.spv": "86858c4019129c6a8f26dfab1f33c12ebc6f9e3836c22a6315981156e4aff49b",
-    "path_trace_raygen_sharc_no_emitters.dxil": "ec4bda7fbf899363259c5bc57a98796bf611cc1463500204e7a4a1dd647bb339",
-    "path_trace_raygen_sharc_no_emitters.spv": "0bee859a1cdc68cb97867ba17e44c1c186ca92cb0df38968a2fa44f792e1f160",
-    "path_trace_raygen_sharc_deep.dxil": "df636cff892efe296534d6113b01fa4c54e138624ae569afd98e96b0c2b07f0d",
-    "path_trace_raygen_sharc_deep.spv": "99235ad342180b5ed2caea71e2c698c30672c36204b19c6150545a95d2a86125",
-    "path_trace_raygen_sharc_deep_no_emitters.dxil": "7909fda8a54893e8ccc188ff348513f4be3045eff97e605378257af8f061f7f1",
-    "path_trace_raygen_sharc_deep_no_emitters.spv": "32632698d3eebcf465d9eb42d14c574b4986a1442786a3efd98c0cc42f838bc7",
-    "path_trace_raygen_sharc_update.dxil": "503856b65e157c5ba28879eb1384892d4816c01fbd9c54cb897a96269fcd5f05",
-    "path_trace_raygen_sharc_update.spv": "4fc4af9cc44dfbc25f2911085b2545545f9b77cb55323e959efcb4953086ab38",
-    "path_trace_raygen_sharc_update_no_emitters.dxil": "0d33a19496259a50c916212679d95327abb913fe4719c39f987a4eb781ec263a",
-    "path_trace_raygen_sharc_update_no_emitters.spv": "fde83c9b4c292572cbf3580f5545e1c23525e82eecd9be13621933080a1e7ed5",
+    "path_trace_raygen_sharc.dxil": "b19ddbfd1fa4cd9f0b9b2c89efab45e8cf39669b258a56f97e567f28596fa9e5",
+    "path_trace_raygen_sharc.spv": "086f627ad6462a594ffc4a6ee13a33e5f7f935531a7f67a71d84544500d28b1a",
+    "path_trace_raygen_sharc_no_emitters.dxil": "c6b3886f44131835487c2040bf34682cfc4f57306580ce3786a4d1910329ec31",
+    "path_trace_raygen_sharc_no_emitters.spv": "202500f20be0b1e8aff77685ab782248690ccdbc6beef1b194def5d815f8bfc8",
+    "path_trace_raygen_sharc_deep.dxil": "075d282f1a597f0cddeb87595f14fc7890c228b3cc6fe160ea883725cee77efe",
+    "path_trace_raygen_sharc_deep.spv": "52c11086e04ce113965e0a8ef2314730cd3ff36e88894d2c274a1772626909b2",
+    "path_trace_raygen_sharc_deep_no_emitters.dxil": "ebc5c55f578fd3025c75a4da2222819a3b56cf698fd79d95140863343f945a1d",
+    "path_trace_raygen_sharc_deep_no_emitters.spv": "01a509391728974aaa40344a34c4588704c6ded2fb81733e09dba1a0640268ce",
+    "path_trace_raygen_sharc_update.dxil": "cc4da8ec11df43c4cfbb9a917b48a73146f93dc1a6cf9af4f553aa99883d80e6",
+    "path_trace_raygen_sharc_update.spv": "87d5dc2783f341393b906b88ecd999882f68dfadd24cf7b06b7090fffad05ad0",
+    "path_trace_raygen_sharc_update_no_emitters.dxil": "d08b062559d0598b0be0f2c3dda45c3703aa3de2ff630decfcdc99f93cd43493",
+    "path_trace_raygen_sharc_update_no_emitters.spv": "f53bde3b06c175102cec3d51d749db6bf26bb6d245c1b51d2c5ec804ac34354d",
     "path_trace_sharc_resolve.spv": "85d08f9074bcad5f85b9104e78901bffca1e01ed583edb8dca516c82e6d410ff"
   },
   "notice_sha256": "f432a930684eeab486fa6b062f6ef9ad77e24fff605c6118aa70ba5af99e3869",
-  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)"
+  "compiler_sha256": "aa7965b3763d9c710baaa5a28cedcc633449962a75d1391d161a85304a41b3e2",
+  "compiler": "dxcompiler.dll: 1.9(5512-01b62ad4)(1.9.2609.5) - 1.9.2609.5 (01b62ad47)"
 }

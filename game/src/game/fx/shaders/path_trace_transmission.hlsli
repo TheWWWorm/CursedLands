@@ -18,7 +18,9 @@ float fresnel_dielectric(float cosine,float eta) {
 }
 float3 opaque_radiance(Surface s,float3 direction,PathSampler sampler) {
     float3 d,sp,ds,sun;float2 distance;float4 dm,sm;
+    refracted_vertex=true;
     path_sample(s,-direction,sampler,d,sp,distance,ds,sun,dm,sm);
+    refracted_vertex=false;
     float3 ambient=float3(frame.sky_zenith.w,frame.sky_horizon.w,frame.sky_ground.w);
     return max(d,ambient*(1.0-s.metalness)*(1.0-f0(s)))*s.albedo+sp+s.emission;
 }
@@ -95,19 +97,36 @@ void main() {
     float3 forward=-mul(frame.camera_world,float4(0,0,1,0)).xyz;
     float3 origin=eye,direction=normalize(mul(frame.camera_world,float4(p.xyz,0)).xyz);
     if(frame.camera.x>.5){origin=mul(frame.camera_world,float4(p.xyz,1)).xyz;direction=forward;}
+    float previous=transmission_control.state.x;
+    // A reused frame has an unchanged view and scene, so a pixel that saw no
+    // dielectric last frame sees none now and its outputs already hold zeros.
+    // Dielectric pixels keep their terminal kind and are traced again.
+    if(previous>0.0&&shadow_image0[pixel].w==0.0)return;
     Surface first=(Surface)0;
     RayDesc ray={origin,frame.camera.x>.5?.001:frame.settings.w/max(dot(direction,forward),.001),direction,frame.camera.y};
-    TraceRay(scene,RAY_FLAG_NONE,9,0,0,0,ray,first);
+    // Dielectrics occupy their own instance mask. Find the nearest one on its
+    // own, then test whether opaque geometry stands in front of it: the many
+    // pixels without a dielectric never traverse the opaque placements.
+    TraceRay(scene,RAY_FLAG_NONE,8,0,0,0,ray,first);
     if(first.hit<.5||optical(first).kind==0u) {indirect_image[pixel]=0;guide_image[pixel]=0;shadow_image0[pixel]=0;return;}
+    Surface blocker=(Surface)0;
+    RayDesc front={origin,ray.TMin,direction,max(length(first.position-origin)-.002,ray.TMin)};
+    TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,1,0,0,0,front,blocker);
+    if(blocker.visible<.5) {indirect_image[pixel]=0;guide_image[pixel]=0;shadow_image0[pixel]=0;return;}
+    // A reused still view accumulates across frames and remembers twice as
+    // many of them, so one refracted path per frame keeps the same noise at
+    // half the cost; a fresh view without history traces two.
+    uint samples=previous>0.0?1u:2u;
     float3 sum=0,terminal=0;bool all_valid=true;
-    for(uint i=0u;i<2u;i++) {
+    for(uint i=0u;i<samples;i++) {
         PathSampler sampler=path_sampler(uint(frame.settings.x)*2u+i,pixel.x+pixel.y*uint(size.x));
         bool valid;float3 endpoint;
-        sum+=dielectric_path(first,direction,eye,sampler,endpoint,valid)*.5;
-        terminal+=endpoint*.5;all_valid=all_valid&&valid;
+        sum+=dielectric_path(first,direction,eye,sampler,endpoint,valid)/float(samples);
+        terminal+=endpoint/float(samples);all_valid=all_valid&&valid;
     }
-    if(!all_valid){indirect_image[pixel]=0;guide_image[pixel]=0;shadow_image0[pixel]=0;return;}
-    float previous=transmission_control.state.x;
+    // An invalid bounded path keeps the dielectric kind in the terminal image
+    // so a reused frame traces the pixel again instead of freezing it black.
+    if(!all_valid){indirect_image[pixel]=0;guide_image[pixel]=0;shadow_image0[pixel]=float4(0,0,0,optical(first).kind);return;}
     if(previous>0.0)sum=lerp(sum,indirect_image[pixel].rgb,previous/(previous+1.0));
     indirect_image[pixel]=float4(min(max(sum,0.0),60000.0),optical(first).kind==1u?1.0:2.0);
     guide_image[pixel]=float4(first.normal,dot(first.position-eye,forward));

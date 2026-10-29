@@ -28,6 +28,14 @@ var sharc_failed := false
 var _sharc_requested := false
 var _sharc_mode := 0 # 0 reference, 1 query, 2 update
 var _sharc_sbts := {}
+## Separate ReSTIR direct-light pass (see PATH_DI_PASS): its raygen variant,
+## shader-binding tables per pipeline and the descriptor set it shares with
+## the path pass's bindings.
+var _di_pass := false
+var _di_sbts := {}
+var _di_set := RID()
+var _di_set_source := RID()
+var _di_set_shader := RID()
 var nrd := Nrd.new()
 var nrd_active := false
 var ray_reconstruction := false
@@ -99,6 +107,7 @@ func shader_stage_path(stage: int) -> String:
 		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain") \
 			+("_maps" if (terrain.data.decode_u32(44)&2)!=0 else "")
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
+		if _di_pass:return shader_prefix()+"raygen_di"+("_no_emitters" if not _uses_emitters else "")
 		return shader_prefix()+"raygen"+("_rtxdi" if _rtxdi_mode else "")+("_sharc" if _sharc_mode>0 else "")+("_update" if _sharc_mode==2 else "")+("_deep" if _deep_paths and _sharc_mode!=2 else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 2816
@@ -117,6 +126,17 @@ func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,20,[raw[6]]))
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,28,[raw[7]]))
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,29,[raw[8]]));return bindings
+## Ray Reconstruction consumes the raw signals as they are, so the ray
+## programs write the four published images directly instead of tracing into
+## private copies that every frame then copied over. The published RIDs stay
+## stable; the raw slots 4 to 8 (distances, direct specular, sun, moments)
+## remain private inputs of the RR pass and the ground helper.
+func _ray_targets(raw: Array[RID],history: Array[RID]) -> Array[RID]:
+	if not ray_reconstruction or history.size()<4 or raw.size()<9:return raw
+	var targets := raw.duplicate()
+	for i in 4:targets[i]=history[i]
+	return targets
+func ray_targets() -> Array[RID]: return _ray_targets(_raw,_history)
 func published_targets() -> Array[RID]:
 	var result := super.published_targets();result.append(direct_sun.texture_rd_rid);return result
 func _publish_targets() -> void:
@@ -139,7 +159,8 @@ func adopt_presentation(previous: RefCounted) -> bool:
 		or not transmission.presentation_compatible(previous.transmission):return false
 	if published_targets()!=_history+[_raw[6]] or previous.published_targets()!=previous._history+[previous._raw[6]]:return false
 	var raw: Array[RID]=_raw.duplicate();raw[6]=previous._raw[6]
-	var replacement_set:=_target_set(_ray_bindings(raw,_sampler),_shader)
+	# The adopted published images become this device's ray outputs.
+	var replacement_set:=_target_set(_ray_bindings(_ray_targets(raw,previous._history),_sampler),_shader)
 	if not replacement_set.is_valid():return false
 	var transmission_set:=RID()
 	if transmission.active:
@@ -275,14 +296,14 @@ func _build_emitters(data: PackedByteArray,placements: Array) -> bool:
 		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths,_sharc_mode)
 
 ## Every variant shares hit stages, TLAS, SBT ranges and stable output images.
-func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int,di := false) -> Dictionary:
-	var key := int(enabled)|(int(deep)<<1)|(sharc_mode<<2)|(int(di)<<4)
+func _pipeline_variant(enabled: bool,deep: bool,sharc_mode: int,di := false,di_pass := false) -> Dictionary:
+	var key := int(enabled)|(int(deep)<<1)|(sharc_mode<<2)|(int(di)<<4)|(int(di_pass)<<5)
 	if not _variants.has(key):
 		var old_enabled := _uses_emitters;var old_deep := _deep_paths;var old_shader := _shader;var old_sharc := _sharc_mode
-		var old_di:=_rtxdi_mode
-		_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode;_rtxdi_mode=di
+		var old_di:=_rtxdi_mode;var old_pass:=_di_pass
+		_uses_emitters=enabled;_deep_paths=deep;_sharc_mode=sharc_mode;_rtxdi_mode=di;_di_pass=di_pass
 		var program := _compile();var shader := _shader
-		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader;_sharc_mode=old_sharc;_rtxdi_mode=old_di
+		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader;_sharc_mode=old_sharc;_rtxdi_mode=old_di;_di_pass=old_pass
 		if program==null:return {}
 		var pipeline := _create_pipeline(program)
 		if not pipeline.is_valid():return {}
@@ -300,6 +321,7 @@ func _prepare_live_variants(deep: bool,cached: bool,di := false) -> bool:
 	for emission in [false,true]:
 		# SHaRC can fall back to ordinary PT without opening another cover.
 		if _pipeline_variant(emission,deep,0,di).is_empty():return false
+		if di and _pipeline_variant(emission,false,0,true,true).is_empty():return false
 		if cached and (_pipeline_variant(emission,deep,1,di).is_empty() \
 			or _pipeline_variant(emission,false,2).is_empty()):return false
 	_prepared_path_modes[key]=true
@@ -338,6 +360,43 @@ func _release_ray_set() -> void:
 	sharc.release_update_set(_release_rid if _defer_retirement_release else Callable())
 	if _set.is_valid() and _rd.uniform_set_is_valid(_set):_release_rid(_set)
 	_set=RID()
+	_release_di_set()
+
+func _release_di_set() -> void:
+	if _di_set.is_valid() and _rd.uniform_set_is_valid(_di_set):_release_rid(_di_set)
+	_di_set=RID();_di_set_source=RID();_di_set_shader=RID()
+
+## The direct-light program is compiled from the same translation unit as the
+## path programs, so its descriptor set covers the same declared bindings;
+## only the SHaRC bindings are absent, since that program never includes them.
+func _di_bindings() -> Array[RDUniform]:
+	var sharc_mode := _sharc_mode;_sharc_mode=0
+	var bindings := _ray_bindings(ray_targets(),_sampler)
+	_sharc_mode=sharc_mode
+	return bindings
+
+## The separate direct-light pass runs after the path pass with the same
+## bindings (images, frame, lights, reservoirs) through its own program.
+func _trace_di(frame: PackedByteArray) -> bool:
+	var variant := _pipeline_variant(_uses_emitters,false,0,true,true)
+	if variant.is_empty():return false
+	var key: int=variant.pipeline.get_id()
+	if not _di_sbts.has(key):
+		var sbt := _own(_rd.hit_sbt_create(variant.pipeline,1))
+		if not sbt.is_valid():return false
+		var hit_range := _rd.hit_sbt_range_alloc(sbt,1)
+		_rd.hit_sbt_range_update(sbt,hit_range,0,[0]);_di_sbts[key]=sbt
+	if _di_set_source!=_set or _di_set_shader!=variant.shader or not _di_set.is_valid() or not _rd.uniform_set_is_valid(_di_set):
+		_release_di_set()
+		_di_set=_rd.uniform_set_create(_di_bindings(),variant.shader,0)
+		if not _di_set.is_valid():return false
+		_di_set_source=_set;_di_set_shader=variant.shader
+	var rays := _rd.raytracing_list_begin()
+	_rd.raytracing_list_bind_raytracing_pipeline(rays,variant.pipeline)
+	_rd.raytracing_list_bind_uniform_set(rays,_di_set,0)
+	_rd.raytracing_list_trace_rays(rays,0,_di_sbts[key],_size.x,_size.y,1)
+	_rd.raytracing_list_end()
+	return true
 
 func extra_ray_uniforms() -> Array[RDUniform]:
 	var uniforms: Array[RDUniform] = [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,10,[_instance_geometry]),
@@ -527,6 +586,7 @@ func render_candidate(size: Vector2i,frame: PackedByteArray,changes: Dictionary 
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if _profile_stages:_rd.capture_timestamp("PT preflight %d:%d"%[get_instance_id(),completed_renders])
 	if changes.has("transmission") and transmission_enabled!=bool(changes.transmission):
 		transmission_enabled=changes.transmission;transmission_failed=false;_transmission_dirty=true
@@ -534,11 +594,14 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if changes.has("rtxdi") and rtxdi_enabled!=bool(changes.rtxdi):
 		rtxdi_enabled=changes.rtxdi;rtxdi_failed=false;rtxdi.invalidate()
 	var di_requested:=rtxdi_enabled and frame.decode_float(145*4)<=8.0 and not rtxdi_failed
-	# direct_light sums every source through seven lights; above that it uses
-	# four proposals. Keep RTXDI for larger sets and registered emitters, but
-	# avoid full-resolution reservoirs and resampling for an exact small sum.
-	var local_count:=mini(int(frame.decode_float(188*4)),64) if frame.decode_float(191*4)>0.5 else 7
-	var di:=di_requested and (_rtxdi_force or emitters.count>0 or local_count>7)
+	# direct_light sums every source exactly through four lights; above that
+	# it already draws four stratified proposals per frame, and the separate
+	# ReSTIR pass with one shadow ray and temporal reuse costs less than those
+	# four rays, so it takes over there and for registered emitters. Up to four
+	# lights keep the exact sum without reservoir allocation; the legacy
+	# seven-slot table carries no count and stays on the exact path.
+	var local_count:=mini(int(frame.decode_float(188*4)),64) if frame.decode_float(191*4)>0.5 else 0
+	var di:=di_requested and (_rtxdi_force or emitters.count>0 or local_count>4)
 	var enabled := frame.decode_float(190*4)>0.5 if frame.decode_float(191*4)>0.5 else sharc_enabled
 	if enabled!=_sharc_requested:sharc_failed=false;_sharc_requested=enabled
 	var requested := enabled and frame.decode_float(145*4)<=8.0 and not sharc_failed
@@ -559,10 +622,13 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 		sharc_failed=true;requested=false
 	if not di and rtxdi.active:_release_ray_set();rtxdi.dispose()
 	if not requested and sharc.active:sharc.dispose()
+	if _profile_stages:_mark("preflight",at)
 	super.render(size,frame,changes,texture_filter)
 
 func trace_frame(frame: PackedByteArray) -> bool:
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if not terrain_sun.render(frame):return false
+	if _profile_stages:at=_mark("terrain_sun",at)
 	if _sharc_mode==1:
 		if not _trace_sharc(frame):
 			# A failed optional pass must leave a usable ordinary PT frame.
@@ -579,12 +645,27 @@ func trace_frame(frame: PackedByteArray) -> bool:
 		if not _targets(_size,_sampler):return false
 		frame.encode_float(82*4,0)
 		if not _upload_frame(frame):return false
+	if _profile_stages:at=_mark("sharc_rtxdi",at)
 	var ok:=super.trace_frame(frame)
-	if ok and _rtxdi_mode:rtxdi.finish(frame)
+	if _profile_stages:at=_mark("rays",at)
+	if ok and _rtxdi_mode:
+		if _trace_di(frame):rtxdi.finish(frame)
+		else:
+			# The direct-light pass could not run: leave ReSTIR off and trace
+			# this frame again with the exact estimator, as a failed prepare does.
+			rtxdi_failed=true
+			if not _select_pipeline(_uses_emitters,_deep_paths,_sharc_mode,false):return false
+			rtxdi.dispose()
+			if not _targets(_size,_sampler):return false
+			frame.encode_float(82*4,0)
+			if not _upload_frame(frame):return false
+			ok=super.trace_frame(frame)
+		if _profile_stages:at=_mark("di",at)
 	if ok and transmission_enabled and not transmission_failed:
 		if not transmission.render(self,frame,_transmission_dirty):
 			transmission_failed=true;transmission.dispose()
 		_transmission_dirty=false
+	if _profile_stages:_mark("transmission",at)
 	return ok
 
 func _trace_sharc(frame: PackedByteArray) -> bool:
@@ -692,13 +773,13 @@ func _composite_direct() -> bool:
 
 func reconstruct(frame: PackedByteArray) -> bool:
 	if ray_reconstruction:
+		# The ray programs already wrote the published images (_ray_targets).
 		nrd_active=false;_direct_valid=false
-		var extent:=Vector3(_size.x,_size.y,1)
-		for i in 4:
-			if _rd.texture_copy(_raw[i],_history[i],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK:return false
 		raw_reconstruction_frames+=1
 		return true
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if not _reconstruct_direct(frame):return false
+	if _profile_stages:_rd.capture_timestamp("PT direct filter");at=_mark("direct",at)
 	var previous := nrd_active
 	var failed_now := false
 	nrd_active=false
@@ -706,8 +787,12 @@ func reconstruct(frame: PackedByteArray) -> bool:
 		if not previous:nrd.reset()
 		if nrd.configure(_rd,_size,_raw,_history,_frame,_motion) and nrd.render(frame):
 			nrd_active=true
-			if _profile_stages:_rd.capture_timestamp("Scene RT reconstruct")
-			return _composite_direct()
+			if _profile_stages:
+				_rd.capture_timestamp("Scene RT reconstruct");at=_mark("nrd",at)
+				for key in nrd.profile:profile_render["nrd_"+key]=nrd.profile[key]
+			var composed := _composite_direct()
+			if _profile_stages:_mark("composite",at)
+			return composed
 		# Disable only this device's NRD session. Reset the custom history before
 		# using its output; never interpret NRD's private history as custom history.
 		_nrd_failed=true;failed_now=true;nrd.dispose()
@@ -769,6 +854,7 @@ func dispose() -> void:
 	emitters = Emitters.new()
 	terrain = Terrain.new();_terrain_atlas=RID();_terrain_surface=RID()
 	_cloud_texture=null;_cloud_image=RID();_clear_cloud=RID();_cloud_sampler=RID()
-	_variants.clear();_prepared_path_modes.clear();_sharc_sbts.clear()
+	_variants.clear();_prepared_path_modes.clear();_sharc_sbts.clear();_di_sbts.clear()
+	_di_set=RID();_di_set_source=RID();_di_set_shader=RID();_di_pass=false
 	_motion=RID();_motion_data.clear();_motion_pending.clear();_geometry_placements.clear()
 	_lighting_offsets=RID();_lighting_offset_data.clear();_lighting_offset_values.clear()

@@ -14,7 +14,10 @@ func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 	return data
 
 func inspect(read_reservoirs:=false) -> void:
-	raw_image=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,device._rd.texture_get_data(device._raw[0],0))
+	# Under Ray Reconstruction the ray programs write the published images
+	# directly; ray_targets() names the image that holds this frame's output.
+	var source: RID=device.ray_targets()[0] if device.has_method("ray_targets") else device._raw[0]
+	raw_image=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,device._rd.texture_get_data(source,0))
 	if read_reservoirs and device.rtxdi.active:
 		packed=device._rd.buffer_get_data(device.rtxdi._reservoirs)
 		control_data=device._rd.buffer_get_data(device.rtxdi._control)

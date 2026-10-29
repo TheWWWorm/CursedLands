@@ -52,6 +52,11 @@ recipes are not the current workflow. Prefixes marked `RETIRED-BY-CLEANUP.md`
 are retained evidence, not runnable templates. Follow the guide's restoration
 instructions if an old prefix is deliberately needed again.
 
+On the Windows workstation, the public integration checkout has been at
+`C:/web/CursedLands`, with `C:/web` as its workspace. Verify its current
+main worktree and remotes before using it; ordinary development follows the
+private-repository workflow below.
+
 <!-- repository-workflow:start -->
 # Repository roles and synchronization
 

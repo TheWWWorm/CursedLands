@@ -119,8 +119,10 @@ lifecycle regression drops the final main-thread owner while the render queue
 is blocked, then verifies resource disposal and final release after delivery.
 
 `path_trace.hlsl` uses a camera visibility ray followed by up to two or four
-continuation segments. At every hit, direct lighting is evaluated from the
-sun and up to seven nearby point lights with traced visibility. A continuation
+continuation segments. At the visible surface, direct lighting is evaluated
+from the sun and every nearby point light with traced visibility; at each
+continuation hit the sun is traced and one point light is drawn in proportion
+to its reach and divided by that probability (28 October). A continuation
 hit contributes emission and direct illumination; a miss contributes outdoor
 sky radiance, or zero sky radiance in caves. Diffuse and GGX glossy lobes are
 sampled with a shared mixture PDF. Glossy continuations use
@@ -402,8 +404,9 @@ invalidate history in both modes. Geometry updates reset Still scene; Responsive
 changed surfaces through the guides and neighbourhood clamp.
 
 Gentle local-light flutter and gradual daylight changes retain a short responsive
-history instead of resetting every frame. The local-light list, positions,
-ranges, source sizes and hues must remain unchanged; each changed local light's
+history instead of resetting every frame. The local-light list, ranges,
+source sizes and hues must remain unchanged; a local light may move up to a
+tenth of its range per frame (28 October), and each changed local light's
 linear peak intensity must stay within 10% of its previous value. Sun and sky
 channels may change by at most 0.2% per frame, and the sun direction by at most
 0.001 radians (approximately 0.057 degrees). Illumination switching on or off

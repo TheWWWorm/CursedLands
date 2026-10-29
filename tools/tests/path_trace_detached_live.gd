@@ -5,9 +5,14 @@ signal identity_ready
 var identity_counts := {}
 
 func _read_identity(device: RefCounted) -> void:
+	# Read the placement identity the ray programs write every frame (the
+	# alpha half of the raw diffuse image). The custom filter's identity
+	# auxiliary is only refreshed when NRD is unavailable, so it would report
+	# stale geometry under the production denoiser.
 	identity_counts.clear()
-	var bytes: PackedByteArray=device._rd.texture_get_data(device._filter_auxiliary[3],0)
-	for offset in range(0,bytes.size(),2):
+	var source: RID=device.ray_targets()[0] if device.has_method("ray_targets") else device._raw[0]
+	var bytes: PackedByteArray=device._rd.texture_get_data(source,0)
+	for offset in range(6,bytes.size(),8):
 		var bits:=bytes.decode_u16(offset)
 		if bits>=0x3c00 and bits<0x3c00+4096:
 			var index:=bits-0x3c00

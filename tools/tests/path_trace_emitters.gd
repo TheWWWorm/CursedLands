@@ -9,6 +9,7 @@ var spp := 1
 var light_transform := Transform3D.IDENTITY
 var light_emission := Vector3(100,0,0)
 var light_standard := true
+var light_opaque := false
 var light_texture := Color.WHITE
 var cutout_half := false
 var timing := false
@@ -97,7 +98,7 @@ func fixture(metal:=false,blocker:=false) -> bool:
 		mesh_data[(6+i)*16+3]=uv[i].x;mesh_data[(6+i)*16+7]=uv[i].y;mesh_data[(6+i)*16+15]=1.0
 	quad(mesh_data,[Vector3(-5,1,-5),Vector3(5,1,-5),Vector3(5,1,5),Vector3(-5,1,5)],Vector3.UP,Vector3.ZERO)
 	geometries=[{"offset":0,"count":6,"standard":true,"opaque":true,"surface":Vector3(0.25,1,0.5) if metal else Vector3(1,0,0)},
-		{"offset":6,"count":6,"standard":light_standard,"opaque":false,"cutoff":0.5,"surface":Vector3(1,0,0)},
+		{"offset":6,"count":6,"standard":light_standard,"opaque":light_opaque,"cutoff":0.5,"surface":Vector3(1,0,0)},
 		{"offset":12,"count":6,"standard":true,"opaque":true,"surface":Vector3(1,0,0)}]
 	# Duplicate geometry has different stable placement IDs. The fourth
 	# placement blocks indirect rays without casting conventional shadows.
@@ -224,6 +225,18 @@ func run() -> void:
 		check(await fixture(),"build texture-modulated shader emission")
 		var textured:=await capture("textured-emitter");var energy:=reference()
 		check(absf(textured.mean[0]/energy-1.0)<0.025 and absf(textured.mean[1]/energy-1.0)<0.025 and absf(textured.mean[2]/energy-0.21404)<0.01,"shader emission keeps the existing texture modulation and linear conversion")
+		# Opaque constant emission keeps linear colour independently of the
+		# diffuse texture; opaque textured emitters retain modulation.
+		light_opaque=true;light_standard=true;light_emission=Vector3(2,1,0.5)
+		light_texture=Color(0.1,0.2,0.3)
+		check(await fixture(),"build opaque constant emitter with a dark diffuse texture")
+		var constant:=await capture("opaque-constant-emitter")
+		check(absf(constant.mean[0]/energy-2.0)<0.05 and absf(constant.mean[1]/energy-1.0)<0.025 and absf(constant.mean[2]/energy-0.5)<0.015,"opaque constant emission stays linear and independent of diffuse texture")
+		light_standard=false;light_texture=Color(0.5,1,1)
+		check(await fixture(),"build opaque textured emitter")
+		var opaque_textured:=await capture("opaque-textured-emitter")
+		check(absf(opaque_textured.mean[0]/energy-1.0)<0.025 and absf(opaque_textured.mean[1]/energy-1.0)<0.025 and absf(opaque_textured.mean[2]/energy-0.21404)<0.01,"opaque shader emission retains texture modulation and linear conversion")
+		light_opaque=false
 		bounded_table()
 	# A narrow glossy lobe should retain energy when BSDF sampling is better
 	# than the area proposal; compare both binaries against each other as well.

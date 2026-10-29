@@ -113,7 +113,11 @@ void main() {
     if(!progressive) {
         ivec2 origin=ivec2(gl_WorkGroupID.xy)*8-2;
         for(uint i=gl_LocalInvocationIndex;i<144u;i+=64u) {
-            ivec2 q=origin+ivec2(i%12u,i/12u);
+            uvec2 t=uvec2(i%12u,i/12u);
+            // The direct kernel is 3x3 and its plane fit reaches one pixel,
+            // so the outer ring of the 12x12 tile is never read for it.
+            if(direct_aov&&(t.x==0u||t.x==11u||t.y==0u||t.y==11u))continue;
+            ivec2 q=origin+ivec2(t);
             vec4 g=vec4(0),m=vec4(0);vec3 d=vec3(0),s=vec3(0),w=vec3(0);
             if(all(greaterThanEqual(q,ivec2(0)))&&all(lessThan(q,size))) {
                 g=imageLoad(raw_guide,q);m=imageLoad(raw_material,q);

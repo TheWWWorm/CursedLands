@@ -82,6 +82,32 @@ var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-h
 # Diagnostic comparison against the old display-resolution PT workload.
 var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
 var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var _nrd_radiance := OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+## Diagnostic bits carried in the shadow-ray count the path tracer never
+## reads: 256 drops the emitter next-event rays (--ei-pt-no-emitter-nee).
+var _diagnostic_flags := 256 if OS.get_cmdline_user_args().has("--ei-pt-no-emitter-nee") else 0
+## Rarely changing global shader parameters are written only when their value
+## changes; the camera matrices still go every frame. The cache is shared like
+## RenderingServer's globals, so another controller's writes or release cannot
+## leave this controller skipping a value that is no longer published.
+const POINT_GLOBALS: Array[StringName] = [&"ei_rt_point0",&"ei_rt_point1",&"ei_rt_point2",&"ei_rt_point3",&"ei_rt_point4",&"ei_rt_point5",&"ei_rt_point6"]
+static var _global_values := {}
+var _light_ids := PackedInt64Array()
+
+func _set_global(name: StringName,value: Variant) -> void:
+	if _global_values.has(name) and _global_values[name]==value:return
+	_global_values[name]=value
+	RenderingServer.global_shader_parameter_set(name,value)
+## Diagnostic continuation-bounce override (--ei-pt-bounces=N) for cost attribution runs.
+var _bounce_override := _bounce_override_arg()
+
+static func _bounce_override_arg() -> int:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--ei-pt-bounces="):return clampi(int(arg.trim_prefix("--ei-pt-bounces=")),0,4)
+	return -1
+
+func _path_bounces() -> int:
+	return _bounce_override if _bounce_override>=0 else GameData.option("pt_mode")*2
 var _profile_prepare := {}
 var _ground_cache := Scene.Ground.new()
 var _source_cache := Scene.SourceCache.new()
@@ -287,8 +313,14 @@ func _process(dt: float) -> void:
 		var changes := _scene.updates(_handoff_updates)
 		_handoff_updates=false
 		stats["cpu_update_ms"]=(Time.get_ticks_usec()-update_started)/1000.0
+		if _profile_cpu:cpu_timings["update_detail"]=_scene.profile_update.duplicate(true)
+		var frame_started := Time.get_ticks_usec() if _profile_cpu else 0
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
+		if _profile_cpu:cpu_timings["cpu_frame_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0;frame_started=Time.get_ticks_usec()
 		_render(device,size,frame,changes)
+		if _profile_cpu:
+			cpu_timings["cpu_render_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0
+			cpu_timings["render_detail"]=device.profile_render.duplicate()
 		if device.output_ready():
 			_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
 			_bind_outputs()
@@ -297,10 +329,10 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
 			RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
 			RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
-			RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,Scene.RADIUS))
-			RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
-			RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
-			RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
+			_set_global(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,Scene.RADIUS))
+			_set_global(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
+			_set_global(&"ei_pt_active",float(_path_mode))
+			_set_global(&"ei_pt_trans_active",float(_transmission_mode and device is PathDevice and device.transmission.active))
 			stats["active"]=true
 		stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
 	if _profile_cpu:
@@ -344,7 +376,7 @@ func _process(dt: float) -> void:
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size()
-	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
+	stats["path_tracing"]=_path_mode;stats["path_bounces"]=_path_bounces() if _path_mode else 0
 	stats["path_samples"]=1 if _rr_active else (GI_SAMPLES[quality] if _path_mode else 0)
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 	stats["program_compilations"]=_programs.compilations
@@ -403,7 +435,7 @@ func _end_preparation() -> void:
 	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
 
 func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
-	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+	if target is PathDevice:changes["nrd_directional"]=GameData.option("pt_denoiser")>0 and not _nrd_radiance
 	if target is PathDevice:
 		# Private replacements need the same raw-input contract as the visible
 		# RR view. Denoising their first frame allocates a second full-size NRD
@@ -729,32 +761,37 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 	# separately in PathSky's reserved channels, alongside local illumination.
 	var sky := Color.BLACK if game._sky_cave else Gfx.ambient.srgb_to_linear()
 	data.append_array(PackedFloat32Array([sun.r,sun.g,sun.b,GameData.option("rt_shadows"),direction.x,direction.y,direction.z,0.00465,
-		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality],camera.near,
+		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality]+_diagnostic_flags,camera.near,
 		float(camera.projection==Camera3D.PROJECTION_ORTHOGONAL),camera.far,float(history),Scene.RADIUS*2.0,
 		_center.x,_center.y,_center.z,Scene.RADIUS]))
-	var colours := PackedFloat32Array()
-	var local_positions := PackedFloat32Array()
-	var local_colours := PackedFloat32Array()
-	var extra_signature := PackedFloat32Array()
-	for i in (PATH_LIGHT_LIMIT if _path_mode else 7):
-		var light: OmniLight3D = _lights[i].get_ref() if i<_lights.size() else null
-		var position := Vector4.ZERO; var colour := Color(0,0,0,0)
-		if light != null and light.is_visible_in_tree() and light.light_energy>0.0:
-			var p := light.global_position; position = Vector4(p.x,p.y,p.z,light.omni_range)
-			colour = light.light_color.srgb_to_linear()*light.light_energy
-			colour.a = maxf(light.light_size,0.04)
-			if _path_mode:
-				colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
-				# Readability lights explicitly disable glossy highlights.
-				if light.light_specular<=0.0:colour.a=-colour.a
-		var pos := PackedFloat32Array([position.x,position.y,position.z,position.w])
-		var rgb := PackedFloat32Array([colour.r,colour.g,colour.b,colour.a])
-		local_positions.append_array(pos);local_colours.append_array(rgb)
-		if i<7:
-			data.append_array(pos);colours.append_array(rgb)
-			if publish_points:RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
-		else:extra_signature.append_array(pos);extra_signature.append_array(rgb)
-	data.append_array(colours)
+	# Full-size tables stay zero for absent entries; only the present lights
+	# are read and written, instead of allocating four arrays per slot of the
+	# 64-entry table every frame.
+	var table := PATH_LIGHT_LIMIT if _path_mode else 7
+	var local_positions := PackedFloat32Array();local_positions.resize(table*4)
+	var local_colours := PackedFloat32Array();local_colours.resize(table*4)
+	for i in mini(_lights.size(),table):
+		var light: OmniLight3D = _lights[i].get_ref()
+		if light == null or not light.is_visible_in_tree() or light.light_energy<=0.0: continue
+		var p := light.global_position
+		local_positions[i*4]=p.x;local_positions[i*4+1]=p.y;local_positions[i*4+2]=p.z;local_positions[i*4+3]=light.omni_range
+		var colour := light.light_color.srgb_to_linear()*light.light_energy
+		colour.a = maxf(light.light_size,0.04)
+		if _path_mode:
+			colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
+			# Readability lights explicitly disable glossy highlights.
+			if light.light_specular<=0.0:colour.a=-colour.a
+		local_colours[i*4]=colour.r;local_colours[i*4+1]=colour.g;local_colours[i*4+2]=colour.b;local_colours[i*4+3]=colour.a
+	if publish_points:
+		for i in 7:_set_global(POINT_GLOBALS[i],Vector4(local_positions[i*4],local_positions[i*4+1],local_positions[i*4+2],local_positions[i*4+3]))
+	data.append_array(local_positions.slice(0,28));data.append_array(local_colours.slice(0,28))
+	# Extended entries interleave position and colour per light (see
+	# _small_lighting_change); absent entries stay zero.
+	var extra_signature := PackedFloat32Array();extra_signature.resize(maxi(table-7,0)*8)
+	for i in range(7,mini(_lights.size(),table)):
+		var at := (i-7)*8
+		for c in 4:
+			extra_signature[at+c]=local_positions[i*4+c];extra_signature[at+4+c]=local_colours[i*4+c]
 	if _path_mode:
 		# Cloud attenuation changes illumination, not the authored time of day.
 		var daylight := Gfx.sun_day(Gfx.sun)
@@ -798,14 +835,15 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			# Daylight drift alone is tiny (bounded to 0.2% per channel).
 			# It must not give the whole outdoor image the torch's short history
 			# every frame. A changing local light still uses the fast response.
-			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4) or bytes.slice(116*4)!=_path_signature.slice(116*4)
+			var local_changed := bytes.slice(48*4,104*4)!=_path_signature.slice(48*4,104*4) or bytes.slice(116*4)!=_path_signature.slice(116*4)
 			if local_changed or weather_fading:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
 		var reuse := history and same_projection and same_cloud_mode and (stationary if progressive else same_lighting or gentle_change)
 		# RR reconstructs current radiance using raster motion/depth. A moving
 		# torch must not invalidate every distant pixel as it does our bounded
 		# lighting caches. Keep the stricter cache reset in data[82], but reset
 		# RR only for view discontinuities and abrupt global illumination.
-		_rr_reset=not (rr_history and same_projection and same_cloud_mode and (same_lighting \
+		# A gentle change that admits the local lights is also gentle without them.
+		_rr_reset=not (rr_history and same_projection and same_cloud_mode and (same_lighting or gentle_change \
 			or _small_lighting_change(bytes,_path_signature,outdoor_tolerance,false)))
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
@@ -813,7 +851,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		stats["light_history_limited"]=gentle_change and reuse and limit<8.0
 		_path_signature=bytes
 		_path_cloud_signature=cloud_bytes
-		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
+		data.append_array(PackedFloat32Array([_path_bounces(),limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
 		for axis in 4:
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
@@ -838,6 +876,23 @@ func _weather_fading() -> bool:
 	return not game._sky_cave and is_instance_valid(game.sound) and game.sound.weather!=null \
 		and game.sound.weather.world==game.world and game.sound.weather._fade>0.0
 
+## A carried torch or a drifting spell light moves a small fraction of its
+## range each frame. Its receivers keep the same short local history as
+## flame flutter: the NRD pack lowers confidence where current local lights
+## reach, so the shadow follows within two or three frames instead of
+## restarting every receiver in the frame. A jump beyond this fraction, a
+## changed range or a new source still resets immediately.
+const LOCAL_LIGHT_MOTION_FRACTION := 0.1
+
+static func _small_light_motion(current: PackedByteArray, previous: PackedByteArray, offset: int) -> bool:
+	if current.slice(offset,offset+16)==previous.slice(offset,offset+16): return true
+	var range_now := current.decode_float(offset+12)
+	if range_now!=previous.decode_float(offset+12) or range_now<=0.0: return false
+	var old := Vector3(previous.decode_float(offset),previous.decode_float(offset+4),previous.decode_float(offset+8))
+	var now := Vector3(current.decode_float(offset),current.decode_float(offset+4),current.decode_float(offset+8))
+	if not old.is_finite() or not now.is_finite(): return false
+	return old.distance_to(now)<=LOCAL_LIGHT_MOTION_FRACTION*range_now
+
 static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray, outdoor_tolerance := 0.002, include_local := true) -> bool:
 	# Signature floats 76..103 are the seven linear RGB/source-size records.
 	# Projection is checked by the caller; ordinary camera motion reprojects.
@@ -845,7 +900,11 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	# advances sunlight and sky every frame, even with a stationary camera.
 	if current.size()!=previous.size() or current.size()<116*4 or (current.size()-116*4)%32!=0: return false
 	if current.slice(44*4,48*4)!=previous.slice(44*4,48*4): return false
-	if include_local and current.slice(48*4,76*4)!=previous.slice(48*4,76*4): return false
+	# Unchanged light tables pass every per-light test below; skip the loops.
+	var compact_same := current.slice(48*4,104*4)==previous.slice(48*4,104*4)
+	if include_local and not compact_same:
+		for i in 7:
+			if not _small_light_motion(current,previous,(48+i*4)*4): return false
 	for offset in [32,40,104,108,112]:
 		if current.decode_float((offset+3)*4)!=previous.decode_float((offset+3)*4): return false
 		var old := Vector3(previous.decode_float(offset*4),previous.decode_float((offset+1)*4),previous.decode_float((offset+2)*4))
@@ -866,10 +925,12 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	if not direction.is_finite() or not old_direction.is_finite() or direction.distance_squared_to(old_direction)>0.000001: return false
 	if not include_local:return true
 	var colour_offsets: Array[int]=[]
-	for i in 7:colour_offsets.append((76+i*4)*4)
-	for offset in range(116*4,current.size(),32):
-		if current.slice(offset,offset+16)!=previous.slice(offset,offset+16):return false
-		colour_offsets.append(offset+16)
+	if not compact_same:
+		for i in 7:colour_offsets.append((76+i*4)*4)
+	if current.slice(116*4)!=previous.slice(116*4):
+		for offset in range(116*4,current.size(),32):
+			if not _small_light_motion(current,previous,offset):return false
+			colour_offsets.append(offset+16)
 	for offset: int in colour_offsets:
 		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
 		if current.decode_float(offset+12)!=previous.decode_float(offset+12): return false
@@ -902,12 +963,17 @@ func _collect_lights(focus: Vector3) -> void:
 		found.sort_custom(func(a: Array,b: Array) -> bool:return a[1].get_instance_id()<b[1].get_instance_id())
 	else:found.sort_custom(func(a: Array,b: Array) -> bool:
 		return a[1].get_instance_id()<b[1].get_instance_id() if is_equal_approx(a[0],b[0]) else a[0]<b[0])
-	var previous := _lights.map(func(w: WeakRef): return w.get_ref())
-	_lights.clear()
-	for i in mini(found.size(),PATH_LIGHT_LIMIT if _path_mode else 7): _lights.append(weakref(found[i][1]))
+	var count := mini(found.size(),PATH_LIGHT_LIMIT if _path_mode else 7)
+	var ids := PackedInt64Array();ids.resize(count)
+	for i in count:ids[i]=found[i][1].get_instance_id()
+	# The same ordered set keeps its weak references; the history key resets
+	# only when membership or order actually changes.
+	if ids!=_light_ids:
+		_lights.clear()
+		for i in count:_lights.append(weakref(found[i][1]))
+		_light_ids=ids;_history_key=""
 	stats["lights"]=_lights.size()
-	stats["local_light_shadow_samples"]=4 if _path_mode and _lights.size()>7 else _lights.size()
-	if previous!=_lights.map(func(w: WeakRef): return w.get_ref()): _history_key=""
+	stats["local_light_shadow_samples"]=4 if _path_mode and _lights.size()>4 else _lights.size()
 
 static func _light_priority(light: OmniLight3D,focus: Vector3) -> float:
 	var c:=light.light_color.srgb_to_linear()*light.light_energy
@@ -934,6 +1000,7 @@ func _release(release_programs := true) -> void:
 	_flush_retirement()
 	_set_ray_reconstruction(null,false)
 	_set_gi_active(false)
+	_global_values.clear()
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",0.0)
@@ -942,7 +1009,7 @@ func _release(release_programs := true) -> void:
 	stats["active"]=false;stats["rebuilding"]=false
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key="";_rr_view_key=""
 	_cancel_candidate();_clear_failure()
-	_scene=null;_lights.clear();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
+	_scene=null;_lights.clear();_light_ids=PackedInt64Array();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
 	_ground_cache=Scene.Ground.new()
 	_source_cache.clear();_source_cache=Scene.SourceCache.new()
 	_topology_pending=false

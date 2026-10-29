@@ -35,9 +35,19 @@ func classify() -> void:
 		var expected:=3.0 if rate==120 else (1.8 if rate==30 else 27.0/19.0)
 		check(data.decode_float(82*4)==1 and absf(data.decode_float(145*4)-expected)<0.0001,"history time remains bounded at "+str(rate)+" Hz")
 	for row: Array in [["light_energy",1.25],["light_energy",0.0],["light_color",Color(1,0.71,0.42)],
-		["position",Vector3(0.001,1,2)],["omni_range",6.001],["light_size",0.101],["visible",false]]:
+		["position",Vector3(0.7,1,2)],["omni_range",6.001],["light_size",0.101],["visible",false]]:
 		prime();lamp.set(row[0],row[1]);data=next_frame()
 		check(data.decode_float(82*4)==0,"immediate reset for "+str(row))
+	# A carried torch moves a small fraction of its range per frame: its
+	# receivers keep the short flutter history, a jump beyond that resets.
+	prime();lamp.position=Vector3(0.001,1,2);data=next_frame()
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"small source motion keeps the short local history")
+	prime();lamp.position=Vector3(0.55,1,2);data=next_frame()
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"motion up to a tenth of the range keeps the short local history")
+	prime();lamp.position=Vector3(0.65,1,2);data=next_frame()
+	check(data.decode_float(82*4)==0,"motion beyond a tenth of the range resets immediately")
+	prime();lamp.position=Vector3(0.3,1,2);lamp.omni_range=6.001;data=next_frame()
+	check(data.decode_float(82*4)==0,"a moving source with a changed range resets immediately")
 	prime();lamp.light_energy=0.0;next_frame();lamp.light_energy=0.01;data=next_frame()
 	check(data.decode_float(82*4)==0,"newly lit sources cannot reuse dark history")
 	prime();Gfx.sun=Color(0.01,0.01,0.01);data=next_frame()
@@ -74,7 +84,9 @@ func classify() -> void:
 	extra[1].light_energy=0.98;extra[4].light_energy=1.02;data=next_frame()
 	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"several independent gentle intensity changes share the bounded history")
 	extra[2].position.x+=0.001;data=next_frame()
-	check(data.decode_float(82*4)==0,"one moving source invalidates a multi-light flutter frame")
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"one drifting source shares the multi-light flutter history")
+	extra[2].position.x+=2.0;data=next_frame()
+	check(data.decode_float(82*4)==0,"one jumping source invalidates a multi-light flutter frame")
 	for light in extra:light.queue_free()
 	daylight_history()
 
@@ -108,7 +120,9 @@ func daylight_history() -> void:
 	prime_daylight();Gfx.sun=Color.BLACK;data=next_frame()
 	check(data.decode_float(82*4)==0,"extinguished sunlight cannot retain its previous radiance")
 	prime_daylight();lamp.position.x+=0.001;Gfx.sun.b+=0.00005;data=next_frame()
-	check(data.decode_float(82*4)==0,"gradual daylight does not hide a moving local source")
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"gradual daylight with a drifting local source keeps the short history")
+	prime_daylight();lamp.position.x+=1.0;Gfx.sun.b+=0.00005;data=next_frame()
+	check(data.decode_float(82*4)==0,"gradual daylight does not hide a jumping local source")
 	prime_daylight();camera.size+=0.01;Gfx.sun.b+=0.00005;data=next_frame()
 	check(data.decode_float(82*4)==0,"gradual daylight does not hide a projection change")
 	prime_daylight(true);Gfx.sun.b+=0.00005;data=next_frame()

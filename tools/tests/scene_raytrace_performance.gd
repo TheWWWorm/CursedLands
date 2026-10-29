@@ -12,11 +12,29 @@ var gpu_samples := []
 var gpu_stage_samples := {}
 var last_gpu_frame := -1
 var runs := []
+## Controller phase timings (--ei-profile-rt), sampled per frame from the
+## merged statistics of the node named by phase_source.
+var phase_source: Node
+var phase_samples := {}
 
 func _process(_dt: float) -> void:
 	if not sampling: return
 	cpu_samples.append((Time.get_ticks_usec()-cpu_begin)/1000.0)
+	if phase_source!=null:
+		for key in ["cpu_total_ms","cpu_update_ms","cpu_frame_ms","cpu_render_ms","cpu_active_render_ms"]:
+			if phase_source.stats.has(key):
+				if not phase_samples.has(key):phase_samples[key]=[]
+				phase_samples[key].append(phase_source.stats[key])
+		var detail: Dictionary=phase_source.stats.get("render_detail",{})
+		for key in detail:
+			if not phase_samples.has("render_"+key):phase_samples["render_"+key]=[]
+			phase_samples["render_"+key].append(detail[key])
 	RenderingServer.call_on_render_thread(_gpu)
+
+func phase_summary() -> Dictionary:
+	var result:={}
+	for key in phase_samples:result[key]=summary(phase_samples[key].duplicate())
+	return result
 
 func _gpu() -> void:
 	var rd:=RenderingServer.get_rendering_device()
@@ -30,8 +48,8 @@ func _gpu() -> void:
 		var label:=rd.get_captured_timestamp_name(i)
 		var at:=rd.get_captured_timestamp_gpu_time(i)
 		if label=="Scene RT begin":start=at;previous=at
-		elif label in ["Scene RT rays","Scene RT reconstruct"] and previous>=0:
-			stages["rays" if label=="Scene RT rays" else "reconstruction"]=(at-previous)/1000000.0
+		elif label in ["Scene RT rays","PT direct filter","Scene RT reconstruct"] and previous>=0:
+			stages[{"Scene RT rays":"rays","PT direct filter":"direct_filter","Scene RT reconstruct":"reconstruction"}[label]]=(at-previous)/1000000.0
 			previous=at
 		elif label=="Scene RT end" and start>=0:
 			if stages.has("reconstruction"):stages["copies"]=(at-previous)/1000000.0

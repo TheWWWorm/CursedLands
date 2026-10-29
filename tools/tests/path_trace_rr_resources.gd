@@ -31,7 +31,7 @@ func inspect_resources(label: String) -> void:
 		"direct_targets":device._direct_images.size(),"public_valid":true,"raw_equal":true}
 	for i in 4:
 		resource_state.public_valid=resource_state.public_valid and device._rd.texture_is_valid(device._history[i])
-		resource_state.raw_equal=resource_state.raw_equal and device._rd.texture_get_data(device._raw[i],0)==device._rd.texture_get_data(device._history[i],0)
+		resource_state.raw_equal=resource_state.raw_equal and device.ray_targets()[i]==device._history[i]
 	resource_rows.append(resource_state.duplicate())
 	resources_inspected.emit.call_deferred()
 
