@@ -42,7 +42,7 @@ exclusive lock files. Do not allocate a new permanent prefix for each task.
 | `toolchains/proton-ge-11-11` | Existing GE-Proton11-11 distribution for the established remake DX12 workflow |
 | `toolchains/wine-dx12-support` | Existing support libraries used by the Windows renderer harnesses |
 | `templates/original-base` | Retained base-game Wine seed; do not run it directly |
-| `templates/original-lia-1.02` | Retained patched-LiA seed; do not run it directly |
+| `templates/original-lia-1.02` | Retained patched-LiA seed; do not run it directly. A session copy needs Wine system files and the LiA Add-on keys first: see `lia-wormface-riddle-2026-10-28.md` |
 | `templates/remake-dx12` | Retained Wine/DX12 seed |
 | `templates/remake-proton` | Retained seed used with the Proton renderer harness |
 | `reference/base` | Original extracted base-game assets and executable |
