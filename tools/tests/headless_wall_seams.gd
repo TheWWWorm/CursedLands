@@ -32,11 +32,14 @@ func _ready()->void:
 		var object:Node3D=plain_walls[nid];var info:Dictionary=object.get_meta("ei")
 		var original:=EIFigure.instantiate(info.template,info.texture,info.complexion,info.parts,false,true)
 		original.transform=object.transform
-		if wall_faces(original)==wall_faces(object):authored_kept+=1
+		# A map that presents nothing places no mesh instances at all (its
+		# walls have no rendering triangles to trim); the authored geometry
+		# below is what collision and scripts use either way.
+		if wall_faces(object).is_empty():authored_kept+=1
 		if wall_faces(shown_walls[nid])!=wall_faces(original):trimmed+=1
 		if EIFigureGeometry.of(original)==EIFigureGeometry.of(object) and EIFigureGeometry.of(original)==EIFigureGeometry.of(shown_walls[nid]):geometry_same+=1
 		original.free()
-	check(authored_kept==plain_walls.size(),"the headless walls keep their authored meshes (%d of %d)"%[authored_kept,plain_walls.size()])
+	check(authored_kept==plain_walls.size(),"the headless walls carry no rendering triangles to trim (%d of %d)"%[authored_kept,plain_walls.size()])
 	check(trimmed>10,"the presenting walls are trimmed (%d)"%trimmed)
 	check(geometry_same==plain_walls.size(),"authored collision geometry preserved either way (%d)"%geometry_same)
 	# A world that presents nothing loads its map the same way.

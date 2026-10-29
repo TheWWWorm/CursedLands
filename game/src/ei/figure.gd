@@ -198,9 +198,13 @@ static func world_material_for(texture: String, material_id := 0) -> Material:
 ## with it each mesh gets that axis as blend shape 0 and each
 ## part node the metas "p0" / "p1" (its position at c.x = 0 / 1). The blend
 ## is linear along one axis, so the blend shape is exact.
+## `meshes` false (a map loaded for a world that presents nothing) builds
+## the part nodes and their authored geometry without mesh instances or
+## materials: collision, scripts, levers and navigation read the nodes and
+## the figure records, not the meshes.
 static func instantiate(template: String, texture: String, complexion: Vector3,
 		visible_parts: PackedStringArray = PackedStringArray(), morph := false, lit := false,
-		obj_name := "") -> Node3D:
+		obj_name := "", meshes := true) -> Node3D:
 	var model := get_model(template)
 	if model.is_empty():
 		return null
@@ -233,7 +237,7 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 		# FakeBox is an invisible map blocker. Its tiny corner triangles
 		# are editor geometry; some maps give it a visible podium texture.
 		# Keep its authored bounds and part nodes for collision and scripts.
-		if template == "stst151":
+		if template == "stst151" or not meshes:
 			continue
 		var mi := MeshInstance3D.new()
 		mi.mesh = build_morph_mesh(fig, complexion) if morph else build_mesh(fig, complexion)

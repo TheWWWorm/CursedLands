@@ -241,6 +241,15 @@ materials' warm-up 0.35 s and the first picture 0.39 s. Remaining in the
 build ahead: `EIUnitModel.prewarm` 1.74 s is serial per record, object
 instantiation 0.67 s, the mob read 0.20 s.
 
+Done in this pass (eighth): a map loaded for a world that presents nothing
+places its objects without mesh instances (`EIFigure.instantiate(…,
+meshes)` false; the part nodes, `EIFigureGeometry`, lever morph metas and
+the record footprints stay). Nothing on the authority read the object
+meshes except the navigation decal layer (presentation), the lever blend
+shapes (presentation) and a radius fallback for objects without authored
+geometry (`GameWorld` radius helper; `EITerrain.add_surface` has no
+callers). Measurement in `local/validation/cpu-speed-20261029/object-meshes/`.
+
 `prewarm` cannot simply run its record loop as a wide group (reviewed,
 not changed): the loop writes seven shared caches after their heavy work
 (`EIFigure._models`, `Items._cache`, `_template_paths`, `EIAnim._libraries`,

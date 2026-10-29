@@ -9,6 +9,7 @@ var stats := {}
 var unit_records: Array[Dictionary] = []
 var object_nodes: Array[Node3D] = []
 var _spawn_units := true
+var _presentation := true
 const WallSeams := preload("res://src/ei/wall_seams.gd")
 const CatacombLift := preload("res://src/ei/catacomb_lift.gd")
 var _relocated_objects := {}
@@ -25,6 +26,7 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 	var s := EIMapScene.new()
 	s.name = map_name
 	s._spawn_units = spawn_units
+	s._presentation = presentation
 	if mob_name.is_empty():
 		mob_name = map_name
 	s.terrain = EITerrain.load_map(map_name, presentation)
@@ -59,7 +61,7 @@ func place_object(o: Dictionary, parent: Node3D) -> Node3D:
 		node = EIUnitModel.create(o)
 	else:
 		node = EIFigure.instantiate(template, o.texture, o.complexion, o.parts, o.kind == "LEVER", true,
-				String(o.get("name", "")))
+				String(o.get("name", "")), _presentation)
 	if node == null:
 		return null
 	var p: Vector3 = o.position

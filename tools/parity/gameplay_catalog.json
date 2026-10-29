@@ -10208,6 +10208,28 @@
       "focused": "headless_wall_seams"
     },
     {
+      "id": "effects/headless_object_meshes",
+      "category": "effects",
+      "script": "tools/tests/headless_object_meshes.gd",
+      "marker": "HEADLESS_OBJECT_MESHES",
+      "min_checks": 10,
+      "quick": true,
+      "description": "A map loaded for a world that presents nothing (the simulation worker) places its objects as part nodes with their authored geometry but without mesh instances; a presenting map keeps them, and both give the same collision geometry, part hierarchy, lever morph nodes and navigation footprints.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "display": "headless",
+      "focused": "headless_object_meshes"
+    },
+    {
       "id": "arena/arena_menu_io",
       "category": "arena",
       "script": "tools/tests/arena_menu_io.gd",
