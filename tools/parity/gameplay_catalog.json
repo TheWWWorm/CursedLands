@@ -16302,6 +16302,26 @@
       "focused": "tex_upscale_push_constants"
     },
     {
+      "id": "focused/terrain_surface_push_constants",
+      "category": "focused",
+      "script": "tools/tests/terrain_surface_push_constants.gd",
+      "marker": "TERRAIN_SURFACE_PUSH_CONSTANTS",
+      "min_checks": 40,
+      "quick": false,
+      "description": "Derived terrain surface maps on Forward+ record no push constants for the constant-free mip pipeline (no compute_list_set_push_constant errors) for two-, three- and eight-layer atlases; every layer still carries relief, its mip chain equals the CPU average of its base level, and a layer does not depend on the other layers of its job.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "terrain_surface_push_constants"
+    },
+    {
       "id": "focused/mod_texture_png",
       "category": "focused",
       "script": "tools/tests/mod_texture_png.gd",

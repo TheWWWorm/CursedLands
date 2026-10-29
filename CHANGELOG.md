@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Stop the derived terrain surface maps (Ground relief maps, Forward+) from pushing their 32-byte constants to the constant-free mip pipeline: `RenderingDevice.compute_list_add_barrier` replays the last push constant after rebinding, which reported `requires (0) bytes of push constant data` once per atlas layer on the stock engine (sixteen times on a Lost in Astral weather zone, failing `lia_weather_load_raster`) and is an out-of-range push on release builds. The maps now record one compute list per dispatch, as the HD upscaler does, with identical output; `terrain_surface_push_constants` covers it.
 - Carry a party unit's mana into the next zone as its health already was: the original's party record holds both pools, so a drained caster no longer arrives with a full pool after crossing a zone edge or using the console `travel` command (spell effects still end with the zone left, as in the original); `zone_change_pools` covers it.
 - Let the load/save screen and the mod panel take the gamepad over the main menu or Escape signpost beneath them (the D-pad moved the menu underneath); on the load screen X deletes and Y renames a save; `ui_pad_panels` covers it.
 - Fold the focused regression manifest into the gameplay catalog: one registry serves both runners, a catalog entry's `focused` ID selects it in `tools/check_regressions.py`, entries list their original localized archives in `texts`, and `tools/raise_min_checks.py`, the issue-coverage gate and the registry lints read the one file.

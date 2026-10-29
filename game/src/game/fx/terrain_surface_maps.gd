@@ -195,26 +195,30 @@ static func _create(job: Dictionary) -> Texture:
 		_free(rd,buffer,slices,sets)
 		rd.free_rid(output)
 		return null
-	var commands := rd.compute_list_begin()
+	# One compute list per dispatch; the render graph orders the slices between
+	# lists. compute_list_add_barrier (an end + begin) replays the last push
+	# constant after rebinding, which pushed these 32 bytes to the constant-free
+	# mip pipeline once per layer (tex_upscale_texture.gd has the same note).
 	for layer in fmt.array_layers:
 		var constants := PackedByteArray(); constants.resize(32)
 		constants.encode_s32(0,layer); constants.encode_s32(4,job.per_row)
 		constants.encode_float(8,job.stride); constants.encode_float(12,job.texel)
 		constants.encode_s32(16,types.size()); constants.encode_float(20,SLOPE_RANGE)
 		constants.encode_float(24,BROAD_TEXELS)
-		if layer > 0: rd.compute_list_add_barrier(commands)
+		var commands := rd.compute_list_begin()
 		rd.compute_list_bind_compute_pipeline(commands,_pipeline)
 		rd.compute_list_bind_uniform_set(commands,sets[layer*fmt.mipmaps],0)
 		rd.compute_list_set_push_constant(commands,constants,constants.size())
 		rd.compute_list_dispatch(commands,ceili(fmt.width/8.0),ceili(fmt.height/8.0),1)
+		rd.compute_list_end()
 		var w: int = fmt.width; var h: int = fmt.height
 		for level in range(1,fmt.mipmaps):
-			rd.compute_list_add_barrier(commands)
+			commands = rd.compute_list_begin()
 			rd.compute_list_bind_compute_pipeline(commands,_mip_pipeline)
 			rd.compute_list_bind_uniform_set(commands,sets[layer*fmt.mipmaps+level],0)
 			w = maxi(1,w>>1); h = maxi(1,h>>1)
 			rd.compute_list_dispatch(commands,ceili(w/8.0),ceili(h/8.0),1)
-	rd.compute_list_end()
+			rd.compute_list_end()
 	_free(rd,buffer,slices,sets)
 	var layered := TexUpscaleTexture.OwnedArray.new(); layered.backing = output; layered.texture_rd_rid = output
 	# Shared ownership registry: TexUpscaleTexture.shutdown releases it too.
