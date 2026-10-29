@@ -73,7 +73,7 @@ static func _copied(source: AnimationLibrary, k: float, kept: Dictionary) -> Ani
 	var out := []
 	out.resize(names.size())
 	Portability.group(func(i: int) -> void:
-		out[i] = _derived(source.get_animation(names[i]), k, kept), names.size())
+		out[i] = _derived(source.get_animation(names[i]), k, kept), names.size(), true)
 	for i in names.size():
 		lib.add_animation(names[i], out[i])
 	return lib
@@ -128,7 +128,7 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 		var build := func(i: int) -> void:
 			built[i] = _build(EIResArchive.from_bytes(data[i]), paths, root_part, root_scale, native_keys,
 				names[i], options)
-		if parallel: Portability.group(build,names.size())
+		if parallel: Portability.group(build,names.size(),true)
 		else:
 			for i in names.size(): build.call(i)
 		for i in names.size():

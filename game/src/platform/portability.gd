@@ -21,17 +21,81 @@ static func held_sun() -> bool:
 static func threads() -> bool:
 	return not OS.has_feature("web") or OS.has_feature("threads")
 
-static func group(job: Callable, count: int) -> void:
+## The pool's size on the desktop (project.godot, worker_pool/max_threads):
+## small enough for the per-frame jobs not to contend.
+const POOL_THREADS := 4
+
+## `job(i)` for every i below `count`; the caller blocks until all are done.
+## A load-time group (`wide`: a zone's footprints, animation decoding,
+## navigation preparation) with enough work for more than the pool runs on
+## its own threads, one per processor, as the pool's bound is meant for the
+## per-frame jobs; the browser and handhelds keep the pool.
+static func group(job: Callable, count: int, wide := false) -> void:
 	if count <= 0:
 		return
-	if threads():
+	if not threads():
+		for i in count:
+			job.call(i)
+		return
+	var lanes := wide_lanes(count) if wide else 0
+	if lanes <= POOL_THREADS:
 		# High priority: the caller blocks on it. A group queued behind
 		# background work held a quest's messenger bird ~1.5 s when that
 		# work shared a single pool thread.
 		var task := WorkerThreadPool.add_group_task(job, count, -1, true, "Portability.group")
 		WorkerThreadPool.wait_for_group_task_completion(task)
-	else:
-		for i in count:
+		return
+	var shared := _Lanes.new()
+	shared.job = job
+	shared.count = count
+	var workers: Array[Thread] = []
+	for lane in lanes:
+		var t := Thread.new()
+		t.start(shared.run)
+		workers.append(t)
+	for t: Thread in workers:
+		t.wait_to_finish()
+
+
+## The threads a wide group of `count` jobs gets: one per processor, at
+## most one per two jobs (a small group is not worth the threads), none
+## beyond the pool on constrained devices.
+static func wide_lanes(count: int) -> int:
+	if constrained() or not threads():
+		return 0
+	return clampi(mini(_wide_lanes_limit(), count / 2), 0, 64)
+
+
+## At most WIDE_LANES lanes: GDScript jobs stop gaining beyond about eight
+## threads (a town's footprints on a 32-thread machine: 4 lanes 330 ms,
+## 8 lanes 260 ms, 16 lanes 215 ms, 32 lanes 640 ms; unit model creation
+## 6.1 → 5.6 ms at 8, 8.0 ms at 32). `--ei-wide-lanes=N` (measurements)
+## overrides.
+const WIDE_LANES := 8
+
+static func _wide_lanes_limit() -> int:
+	for a: String in OS.get_cmdline_user_args():
+		if a.begins_with("--ei-wide-lanes="):
+			return maxi(int(a.get_slice("=", 1)), 0)
+	return mini(OS.get_processor_count(), WIDE_LANES)
+
+
+## The lanes of a wide group take the next job each until none is left, so
+## uneven jobs balance; every job runs exactly once.
+class _Lanes extends RefCounted:
+	var job: Callable
+	var count := 0
+	var _next := 0
+	var _lock := Mutex.new()
+
+	func run() -> void:
+		while true:
+			_lock.lock()
+			var i := _next
+			_next += 1
+			_lock.unlock()
+			if i >= count:
+				return
 			job.call(i)
 
 static func defaults() -> Dictionary:

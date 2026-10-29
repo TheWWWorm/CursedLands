@@ -736,7 +736,7 @@ func _footprints(objects: Array) -> Array:
 	var out := []
 	out.resize(objects.size())
 	Portability.group(func(i: int) -> void:
-		out[i] = _record_footprint(records[i]), objects.size())
+		out[i] = _record_footprint(records[i]), objects.size(), true)
 	return out
 
 
@@ -2136,17 +2136,11 @@ func prepare_static_navigation(rows: Array) -> void:
 		prepared_graphs.append(graph)
 	if jobs.is_empty(): return
 	var started := Time.get_ticks_msec()
-	var tasks := PackedInt64Array()
-	for job: Callable in jobs:
-		if Portability.threads():
-			# Loading owns every graph and joins the batch. Use the available
-			# workers instead of the pool's small background-task allowance.
-			tasks.append(WorkerThreadPool.add_task(job, true, "navigation preparation"))
-		else:
-			job.call()
-	# Do not poll network callbacks here: they could replace a door/graph while
-	# a worker owns it. The loading caller keeps the world paused until joined.
-	for task: int in tasks: WorkerThreadPool.wait_for_task_completion(task)
+	# Loading owns every graph and joins the batch: one thread per class
+	# (Portability.group, wide) rather than the pool's four. Do not poll
+	# network callbacks here: they could replace a door/graph while a worker
+	# owns it. The loading caller keeps the world paused until joined.
+	Portability.group(func(i: int) -> void: jobs[i].call(), jobs.size(), true)
 	for graph in prepared_graphs: graph.components_prepared = true
 	GameData.trace("navigation prepared %d classes in %d ms" % [jobs.size(), Time.get_ticks_msec() - started])
 

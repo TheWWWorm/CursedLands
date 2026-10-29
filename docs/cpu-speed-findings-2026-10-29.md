@@ -186,7 +186,8 @@ before this pass, 34 s with the pruned libraries, 25 s with the build ahead
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
-load on GPU Lab, warm caches: 15 → 14 s wall clock (worker build 7 → 6 s).
+load on GPU Lab, warm caches: 15 → 14 s wall clock (worker build 7 → 6 s),
+13 s with the load-time groups on eight threads (worker build 5 s).
 The worker's critical path after its build is the static navigation
 preparation (1.4 s, already on the four-thread pool) before it publishes.
 
@@ -241,10 +242,19 @@ Remaining leads, in order of expected value:
    the worker threads (`_footprints`, one task per record): build 0.67–0.70 s.
    The pool is bounded to four threads (`project.godot`
    `worker_pool/max_threads` = 4, chosen so small per-frame jobs do not
-   contend), so loading-time groups get at most a 3–4× speed-up; a larger
-   pool during loading only, or a pool size measured against the per-frame
-   jobs' contention, is the next step for every `Portability.group` on the
-   load path (animation libraries, footprints). Not done: the class layers
+   contend). Done next: load-time groups run on their own threads
+   (`Portability.group(…, wide)`, `local/validation/cpu-speed-20261029/wide-groups/`),
+   and the sweep showed GDScript jobs scale poorly: footprints 4 lanes
+   330 ms, 8 lanes 260 ms, 16 lanes 215 ms, 32 lanes 640 ms; unit model
+   creation (clip decoding) 6.1 → 5.6 ms per unit at 8 lanes, 8.0 ms at 32.
+   The limit is eight lanes (`WIDE_LANES`). The static navigation
+   preparation (7 native jobs, 1.39 s on the worker's critical path before
+   it publishes) did not change with 8 lanes against the pool's 4: one
+   class's job dominates, so the next gain there is inside the native
+   kernel (`prepare_routes` per class), not more lanes. Where the GDScript
+   contention comes from (ObjectDB and refcount traffic on shared records
+   and models, allocation) was not profiled; a native footprint rasterizer
+   (`_raster_box`) would remove it. Not done: the class layers
    (`nav.layer` per standing class, 0.45–0.7 s) could build in parallel if
    the native builder's `_fixed_sets` sharing per class group is made
    thread-safe; `EIMapScene._place_objects` 0.75–1.15 s headless (3261

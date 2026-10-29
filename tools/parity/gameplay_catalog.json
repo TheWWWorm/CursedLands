@@ -16851,6 +16851,25 @@
       "focused": "nav_footprints_parallel"
     },
     {
+      "id": "focused/portability_group_wide",
+      "category": "focused",
+      "script": "tools/tests/portability_group_wide.gd",
+      "marker": "PORTABILITY_GROUP_WIDE",
+      "min_checks": 12,
+      "quick": true,
+      "description": "Portability.group runs a load-time (wide) group on its own threads, one per processor, instead of the four-thread pool: every job once, more threads than the pool where the machine has them, uneven jobs balanced across the lanes, pool groups inside a wide job completing, small and empty groups and the pool path unchanged.",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "portability_group_wide"
+    },
+    {
       "id": "focused/net_smooth_native",
       "category": "focused",
       "script": "tools/tests/net_smooth_native.gd",
