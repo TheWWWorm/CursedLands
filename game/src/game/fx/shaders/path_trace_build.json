@@ -4,7 +4,7 @@
   "builder_sha256": "a8339f898356ab74fac28d4d27201e4e8b94da8951daae5efacf11c559385d32",
   "source_sha256": "369e21f73d2c2ee62025d4d21566ac910cb0ce0faf2fa66f927c495fe9eac4ba",
   "includes": {
-    "path_trace_transmission.hlsli": "2411f711a10f6de90d93e037b26579d2b047c92bfe51b46a0c42b80a7eb9902f"
+    "path_trace_transmission.hlsli": "48d7ac193748d55fddc66c0b97c5d0fb256827b2bed10d2c5677443e2ab14875"
   },
   "files": {
     "path_trace_raygen.dxil": "00f0523f44f777e9b8bf22ce95416d79bf882efbbf41ebc80998d3c4b3bef507",
@@ -37,10 +37,10 @@
     "path_trace_raygen_water_deep.spv": "ea41489dacf00fa010730b009423813e6c5200687bee1158a6ed2c44d979568d",
     "path_trace_raygen_water_deep_no_emitters.dxil": "58ab5000cde851f86dc96d8254a7be8a5180b935293c5d60205d002e5545d322",
     "path_trace_raygen_water_deep_no_emitters.spv": "efc6f2a86c061ae07c4ea0f26ac31ce3081ebe73b5745773274b35e3aa5d9dbd",
-    "path_trace_raygen_transmission.dxil": "234167d1277db8547177cf367afaba7a25a9eba7c90e2ad269d769451b259a3a",
-    "path_trace_raygen_transmission.spv": "051662e19c2f4e7c26d20264483836766db010df1c1eeeb6b5ba0a9556846daa",
-    "path_trace_raygen_transmission_no_emitters.dxil": "edcac511fd3eb18cac8517c8753f48f0606c7844d370fd5ae06b837dd446b58c",
-    "path_trace_raygen_transmission_no_emitters.spv": "9905f3751352d0e157bc0ce29605ab1de424cb27a3efc9a3b1173ea5a23db8fb",
+    "path_trace_raygen_transmission.dxil": "78dfc8b4e41e03f094d6c3049819260c748df92a34e80efe8bfbd3bf2729851f",
+    "path_trace_raygen_transmission.spv": "c0417ce937e5a9b921d493c44cf873fb7a99f9f1cf827f9df3a5bd494f740b22",
+    "path_trace_raygen_transmission_no_emitters.dxil": "e7d9daa2189a379f4aae5983410a13ed536b0023e2d47ed6728905f3e91563df",
+    "path_trace_raygen_transmission_no_emitters.spv": "b88f00bb51c80e5ff536135ce49f71d78af4b3c494ae176c436493868a494d31",
     "path_trace_closest_hit_transmission.dxil": "82f4f7151356617cb90b39fc16cabd6b408809fd947d57449b00d251232ad579",
     "path_trace_closest_hit_transmission.spv": "951663c6baf3e5796ade7565c3f6f80ec10e31d59f7ce86d72beba40a6e307de",
     "path_trace_closest_hit_terrain_transmission.dxil": "7ab02c64da9bcf81bcf1c9c82123830b6f8014fb993a558299c74b7d2f4f58d6",

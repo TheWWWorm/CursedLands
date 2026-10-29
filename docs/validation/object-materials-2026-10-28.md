@@ -354,6 +354,49 @@ the before-hide and after-reveal counts remain above twenty pixels, so the
 hidden-geometry check is exercised rather than vacuous. No renderer behaviour
 changed.
 
+## Refraction pass
+
+Measured with the new `path_trace_transmission_performance.gd` (original
+river, PT Low, two bounces, 1280×720, `--ei-pt-tuning`; refraction off, on
+with a still view, and on while the camera turns 0.0004 rad per frame; 90
+frames per block, cases in ABBA order; 1.34.0 engine, Direct3D 12). Ray-stage
+medians, four runs of the previous pack (`trans-bench-old1/2/3/5`) and four of
+the final pack (`trans-bench-new3/4` with the one-path reuse, `new5/6` with
+the lighting signature as well), two blocks per case and run:
+
+| Case | Previous shaders | Refraction changes |
+| --- | ---: | ---: |
+| Refraction off | 0.597–0.791 ms | 0.600–0.820 ms |
+| Still view | 1.057–1.143 ms | 0.753–0.887 ms |
+| Turning view | 1.081–1.127 ms | 1.078–1.118 ms |
+
+The first new pack (`trans-bench-new1/new2`, dielectric-only camera ray and
+pixel skip only) measured 1.063–1.092 ms still and 1.109–1.147 ms turning:
+the mask change alone did not register on the river, where most pixels are
+water. The one-path reuse carries the still-view saving. The turning view
+resets its history every frame (the fixture confirms the reset count) and
+traces two paths as before.
+
+Regressions on the final pack: `path_trace_transmission` 33 checks,
+`path_trace_transmission_occlusion` (new) 21 checks, 0 failures (on the
+previous pack it fails the 63-frame limit, the lighting-change and the
+history-flag checks, as intended), and
+`path_trace_transmission_live` runs 21 of its 25 registered checks with no
+failures on the changed and unchanged packs alike (the Ray Reconstruction
+checks need the RR runtime, which this workstation lacks).
+
+The lighting-signature finding: before the change, the transmission pass
+compared the entire frame block minus the previous-frame matrices and the
+frame counter, so the advancing campaign sun (every frame in daylight), a
+fluttering torch colour or a moving cloud phase reset its history every
+frame; the still-frame accumulation only engaged in frozen scenes such as
+this benchmark. This is inferred from the signature code, the frame layout
+and the controller's own notes that the campaign clock advances sunlight and
+sky every frame and that fire flutter changes every frame; the benchmark
+freezes the simulation and `path_trace_transmission_live` disables the
+daylight update (2 resets in 15 frames on both packs), so the live reset rate
+under an advancing clock was not reproduced here.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

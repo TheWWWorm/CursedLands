@@ -2031,6 +2031,18 @@
       "rendering_method": "forward_plus"
     },
     {
+      "id": "path_trace_transmission_occlusion",
+      "script": "tools/tests/path_trace_transmission_occlusion.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Dielectric-only camera rays with a separate opaque occlusion test, reused still frames skipping pixels without a dielectric and tracing one path each up to a 63-frame history, lighting changes blending without a reset, and full retracing after scene, camera or history-flag changes",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "args": [],
+      "min_checks": 21,
+      "rendering_method": "forward_plus"
+    },
+    {
       "id": "path_trace_transmission_options",
       "script": "tools/tests/path_trace_transmission_options.gd",
       "summary": "PT_TRANSMISSION_OPTIONS",

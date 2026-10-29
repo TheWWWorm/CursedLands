@@ -9,6 +9,9 @@ var frames := 0
 var resets := 0
 var bytes := 0
 var history := 0
+## Reused still frames trace one path each; this cap keeps their accumulated
+## noise equal to two paths per frame at the former 31-frame cap.
+const HISTORY_LIMIT := 63
 var _rd: RenderingDevice
 var _programs: RefCounted
 var _own_programs := false
@@ -149,12 +152,16 @@ func render(owner: RefCounted,frame: PackedByteArray,dirty: bool) -> bool:
 		_set=_rd.uniform_set_create(bindings,_shader,0)
 	if not _set.is_valid():return false
 	# Refraction does not have an ordinary primary-surface motion vector.
-	# Reuse only a truly stationary, unchanged view. No opaque history guesses
-	# through moving glass, camera cuts, animated actors, lighting or RR jitter.
-	var signature:=frame.slice(0,2816)
-	for index in range(32,64):signature.encode_float(index*4,0)
-	for index in range(148,164):signature.encode_float(index*4,0)
-	for index in [76,82,145,146]:signature.encode_float(index*4,0)
+	# Reuse only a truly stationary, unchanged view: camera, projection, trace
+	# settings and the scene (dirty). No opaque history guesses through moving
+	# glass, camera cuts, animated actors or RR jitter. Lighting constants are
+	# not part of the signature: daylight drift, flame flutter and cloud motion
+	# change radiance, not visibility, and the running mean absorbs them.
+	# Abrupt lighting changes arrive through the frame's history flag, which
+	# the controller clears exactly when its own lighting caches reset.
+	var signature:=frame.slice(0,32*4)
+	signature.append_array(frame.slice(77*4,82*4));signature.append_array(frame.slice(83*4,88*4))
+	signature.append_array(frame.slice(144*4,145*4))
 	if dirty or signature!=_signature or frame.decode_float(82*4)<.5:
 		history=0;resets+=1
 	_signature=signature
@@ -170,7 +177,9 @@ func render(owner: RefCounted,frame: PackedByteArray,dirty: bool) -> bool:
 	# publish only on allocation (queue_frame prepares resizes before the view).
 	if colour.texture_rd_rid!=_images[0]:colour.texture_rd_rid=_images[0]
 	if guide.texture_rd_rid!=_images[1]:guide.texture_rd_rid=_images[1]
-	active=true;frames+=1;history=mini(history+1,31)
+	# One sample per reused frame with a 63-frame limit matches the noise of the
+	# two-sample first frame with the former 31-frame limit (see HISTORY_LIMIT).
+	active=true;frames+=1;history=mini(history+1,HISTORY_LIMIT)
 	return true
 
 func dispose(release: Callable=Callable()) -> void:

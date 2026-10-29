@@ -83,9 +83,14 @@ eight to one at four bounces.
 4. **Bounce texture footprint.** Implemented as `bounce_cone` (below). The
    remaining part of the proposal, accumulating the width along the path and
    bounding the detail fade by path length, is open.
-5. **Transmission primary pass.** The Quality refraction raygen traces one
-   primary ray for every pixel before exiting on non-glass. Skip pixels whose
-   main primary hit is not a dielectric.
+5. **Transmission primary pass.** Implemented in three parts (below): the
+   pass traces its camera ray against the dielectric mask alone and tests
+   opaque occlusion with a bounded visibility ray; a reused still frame skips
+   pixels that saw no dielectric and traces one refracted path instead of two
+   for the others, with the history limit doubled to 63 frames so the
+   accumulated noise is unchanged; and lighting constants left the pass's
+   reuse signature, so daylight drift and flame flutter no longer reset the
+   refraction every frame.
 6. **Roulette in the two-bounce variant.** Balanced has no roulette; starting
    luminance-based roulette at depth 1 removes the second continuation ray and
    its 1 + N + 1 shadow rays for weak paths.
@@ -233,3 +238,54 @@ changed. The cache dispatch is below the benchmark's resolution on this GPU;
 the frame difference overlaps with ordering noise and is not claimed as a
 gain. The change is retained because it removes a per-frame dispatch whose
 cost scales with terrain sample count, not because of this measurement.
+
+## Implemented now: refraction pass
+
+The Quality preset enables `pt_refraction`, and any scene with water or glass
+then runs the transmission raygen over the whole trace lattice every frame.
+Three changes, measured with the new `path_trace_transmission_performance.gd`
+(original river, Low, two bounces, 1280×720, `--ei-pt-tuning`, 90-frame
+blocks in ABBA order on the RTX 4090 Laptop through Direct3D 12):
+
+| Case | Previous shaders | Refraction changes |
+| --- | ---: | ---: |
+| Refraction off (control) | 0.60–0.79 ms | 0.60–0.82 ms |
+| Refraction on, still view | 1.06–1.14 ms | 0.75–0.89 ms |
+| Refraction on, camera turning every frame | 1.08–1.13 ms | 1.08–1.12 ms |
+
+Ray-stage medians over four runs per pack. The still-view saving is the
+one-path reuse: the refraction cost over the opaque pass drops from about
+0.45 ms to 0.15–0.25 ms. The turning view traces two paths with no history,
+as before, and is unchanged within noise.
+
+- **Dielectric-only camera ray.** Dielectric placements already live on
+  instance mask 8 alone. The pass now traces its camera ray with that mask
+  and, only when it finds a dielectric, asks a bounded accept-first
+  visibility ray on the opaque mask whether anything stands in front. Pixels
+  without water or glass no longer traverse the opaque placements. The river
+  view is mostly water, so this part did not register there; it bounds the
+  cost of the pass in views with a single pane of glass.
+- **Reused still frames.** The pass already keeps a per-pixel running mean
+  while the view and scene are unchanged. Such a frame now skips every pixel
+  whose terminal kind was zero last frame (its outputs already hold zeros)
+  and traces one refracted path instead of two for the rest. The history
+  limit rose from 31 to 63 frames: a 1/64 running mean of one path has the
+  same steady-state variance as a 1/32 mean of two, so still water keeps its
+  noise level. A fresh view still traces two paths. Invalid bounded paths
+  keep their dielectric kind in the terminal image so they are traced again
+  rather than frozen black.
+- **Lighting outside the reuse signature.** The signature covered the whole
+  frame block except the previous-frame matrices and counters, so the
+  advancing campaign sun, a fluttering torch colour or a moving cloud phase
+  reset the refraction history every frame in ordinary daylight play; the
+  accumulation only ever engaged in frozen scenes. The signature is now the
+  camera and projection, the trace settings, the region and the bounce count;
+  lighting changes blend into the running mean, and abrupt changes arrive
+  through the frame's history flag, which the controller clears exactly when
+  its own lighting caches reset.
+
+`path_trace_transmission_occlusion` (new, registered) builds water behind a
+half-width opaque wall and checks the occlusion classification, the reuse of
+still frames, the 63-frame limit, that sun, sky and local-light changes keep
+the history while the cleared flag resets it, and that hiding or moving the
+wall or moving the camera retraces every pixel in the same frame.
