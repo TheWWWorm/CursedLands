@@ -120,8 +120,12 @@ eight to one at four bounces.
    phase builds the light tables from the present lights only and skips the
    per-light history comparison for unchanged tables (0.12–0.23 ms down to
    0.08–0.20 ms per frame depending on the light count; measurements in the
-   validation record). Scene update and render submission, about 0.45 ms
-   each, are the remaining controller phases.
+   validation record). Second step: the render-submission phase was almost
+   entirely the NRD step, and most of that was a plan cache that missed every
+   frame because REBLUR alternates its history pools; plans keyed by pipeline
+   and resource list bring render submission from 0.48 to 0.34 ms. Scene
+   update (about 0.45 ms, mostly the native tracker) and the native dispatch
+   description (0.1 ms) are the remaining controller costs.
 
 Not worth changing: visibility ray flags, sky and cloud evaluation, light
 array indexing and the multi-sample loop (the presets use one sample).

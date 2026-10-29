@@ -455,6 +455,35 @@ The scene-update (0.39–0.52 ms) and render-submission (0.41–0.51 ms) phases
 are unchanged and remain the larger controller costs; the GPU ray stage is
 identical within noise, as expected for identical frames.
 
+## Controller render submission
+
+The render-submission phase (0.45–0.49 ms per frame on the river) is timed
+per step under `--ei-profile-rt` (`render_detail` in the statistics; the
+benchmarks report medians). On the river at Low: scene update 0.02 ms,
+targets 0.008, frame upload 0.004, ray dispatch 0.017 (terrain sun 0.007),
+direct filter 0.011, composite 0.003, publish 0.006, and the NRD step
+0.35–0.37 ms, of which the native dispatch description took 0.09–0.11 ms,
+planning the nine dispatches 0.22 ms and recording them 0.024 ms.
+
+The planning cost came from the cache: the plan was stored per pass slot and
+keyed by the pass's resource list, but REBLUR alternates its history pools
+between frames, so every slot missed every frame and rebuilt its uniforms,
+descriptor keys and constants descriptor. Plans are now keyed by pipeline
+and resource list content, confirmed by comparing the native list, and own
+their constants buffer; the recorded GPU work is unchanged. ABBA on the
+river (`nrdplan-river-*`, two blocks per run):
+
+| Phase | Previous | Keyed plans |
+| --- | ---: | ---: |
+| NRD planning | 0.217–0.227 ms | 0.072–0.075 ms |
+| NRD step | 0.362–0.374 ms | 0.222–0.235 ms |
+| Render submission | 0.475–0.492 ms | 0.333–0.351 ms |
+| Controller total | 1.201–1.278 ms | 1.121–1.187 ms |
+
+`path_trace_nrd_device` (26), `path_trace_nrd_motion` (42),
+`path_trace_nrd_directional` (21) and `path_trace_light_history` (58) pass on
+the changed pack; the ray stage is unchanged within noise.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

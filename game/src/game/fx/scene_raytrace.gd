@@ -292,7 +292,9 @@ func _process(dt: float) -> void:
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
 		if _profile_cpu:cpu_timings["cpu_frame_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0;frame_started=Time.get_ticks_usec()
 		_render(device,size,frame,changes)
-		if _profile_cpu:cpu_timings["cpu_render_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0
+		if _profile_cpu:
+			cpu_timings["cpu_render_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0
+			cpu_timings["render_detail"]=device.profile_render.duplicate()
 		if device.output_ready():
 			_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
 			_bind_outputs()

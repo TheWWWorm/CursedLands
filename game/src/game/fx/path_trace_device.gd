@@ -539,6 +539,7 @@ func render_candidate(size: Vector2i,frame: PackedByteArray,changes: Dictionary 
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if _profile_stages:_rd.capture_timestamp("PT preflight %d:%d"%[get_instance_id(),completed_renders])
 	if changes.has("transmission") and transmission_enabled!=bool(changes.transmission):
 		transmission_enabled=changes.transmission;transmission_failed=false;_transmission_dirty=true
@@ -571,10 +572,13 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 		sharc_failed=true;requested=false
 	if not di and rtxdi.active:_release_ray_set();rtxdi.dispose()
 	if not requested and sharc.active:sharc.dispose()
+	if _profile_stages:_mark("preflight",at)
 	super.render(size,frame,changes,texture_filter)
 
 func trace_frame(frame: PackedByteArray) -> bool:
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if not terrain_sun.render(frame):return false
+	if _profile_stages:at=_mark("terrain_sun",at)
 	if _sharc_mode==1:
 		if not _trace_sharc(frame):
 			# A failed optional pass must leave a usable ordinary PT frame.
@@ -591,12 +595,15 @@ func trace_frame(frame: PackedByteArray) -> bool:
 		if not _targets(_size,_sampler):return false
 		frame.encode_float(82*4,0)
 		if not _upload_frame(frame):return false
+	if _profile_stages:at=_mark("sharc_rtxdi",at)
 	var ok:=super.trace_frame(frame)
+	if _profile_stages:at=_mark("rays",at)
 	if ok and _rtxdi_mode:rtxdi.finish(frame)
 	if ok and transmission_enabled and not transmission_failed:
 		if not transmission.render(self,frame,_transmission_dirty):
 			transmission_failed=true;transmission.dispose()
 		_transmission_dirty=false
+	if _profile_stages:_mark("transmission",at)
 	return ok
 
 func _trace_sharc(frame: PackedByteArray) -> bool:
@@ -708,8 +715,9 @@ func reconstruct(frame: PackedByteArray) -> bool:
 		nrd_active=false;_direct_valid=false
 		raw_reconstruction_frames+=1
 		return true
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if not _reconstruct_direct(frame):return false
-	if _profile_stages:_rd.capture_timestamp("PT direct filter")
+	if _profile_stages:_rd.capture_timestamp("PT direct filter");at=_mark("direct",at)
 	var previous := nrd_active
 	var failed_now := false
 	nrd_active=false
@@ -717,8 +725,12 @@ func reconstruct(frame: PackedByteArray) -> bool:
 		if not previous:nrd.reset()
 		if nrd.configure(_rd,_size,_raw,_history,_frame,_motion) and nrd.render(frame):
 			nrd_active=true
-			if _profile_stages:_rd.capture_timestamp("Scene RT reconstruct")
-			return _composite_direct()
+			if _profile_stages:
+				_rd.capture_timestamp("Scene RT reconstruct");at=_mark("nrd",at)
+				for key in nrd.profile:profile_render["nrd_"+key]=nrd.profile[key]
+			var composed := _composite_direct()
+			if _profile_stages:_mark("composite",at)
+			return composed
 		# Disable only this device's NRD session. Reset the custom history before
 		# using its output; never interpret NRD's private history as custom history.
 		_nrd_failed=true;failed_now=true;nrd.dispose()

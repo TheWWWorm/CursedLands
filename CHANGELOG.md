@@ -13,6 +13,7 @@
 - Under DLSS Ray Reconstruction, trace straight into the published path-tracing images instead of copying four full-resolution images every frame.
 - Keep the path-traced terrain sunlight cache until the sun has turned 0.1 degrees instead of retracing every terrain vertex each frame as the campaign clock advances.
 - Read placement identity for the detached-geometry path-tracing regression from the ray outputs, which are refreshed every frame, instead of the custom filter buffer that the NRD denoiser leaves stale.
+- Keep the NRD dispatch plans keyed by pass and resource list instead of one plan per pass slot, so the denoiser's alternating history pools reuse their descriptor sets every frame instead of rebuilding them; the recorded GPU work is unchanged.
 - Build the path-tracing light tables from the present lights only and skip the per-light history comparison when a light table is unchanged, reducing the controller's main-thread time per frame; the uploaded frame constants are identical.
 - Trace the refraction pass against water and glass placements alone and test opaque occlusion with a bounded visibility ray, so pixels without a dielectric no longer traverse the whole scene. While the view and scene are unchanged those pixels are skipped, water and glass pixels trace one refracted path per frame instead of two, and the refraction history remembers 63 frames instead of 31, so a still view keeps its noise level at about half the refraction cost.
 

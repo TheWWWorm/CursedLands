@@ -5,6 +5,11 @@ const FILTER = preload("res://src/game/fx/shaders/scene_raytrace_filter.glsl")
 # Extra timestamp boundaries are diagnostic only; normal frames retain the
 # existing whole-pass bracket without intermediate query overhead.
 var _profile_stages := OS.get_cmdline_user_args().has("--ei-profile-rt")
+## Main-thread milliseconds of the last render's phases (--ei-profile-rt).
+var profile_render := {}
+
+func _mark(key: String,since: int) -> int:
+	var now := Time.get_ticks_usec();profile_render[key]=(now-since)/1000.0;return now
 var measure_budget := false
 var gpu_frame := -1
 var gpu_ms := 0.0
@@ -278,16 +283,18 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
 	if _profile_stages:_rd.capture_timestamp("PT submit %d:%d"%[get_instance_id(),completed_renders])
 	if measure_budget:_measure_budget()
+	var at := Time.get_ticks_usec() if _profile_stages else 0
 	if not update_scene(changes): _history_valid=false;_published_valid=false;return
-	if _profile_stages:_rd.capture_timestamp("PT scene updated")
+	if _profile_stages:_rd.capture_timestamp("PT scene updated");at=_mark("update",at)
 	if not _targets(size,_samplers[clampi(texture_filter,0,_samplers.size()-1)]):
 		_render_failed();return
-	if _profile_stages:_rd.capture_timestamp("PT targets ready")
+	if _profile_stages:_rd.capture_timestamp("PT targets ready");at=_mark("targets",at)
 	if not _history_valid: frame.encode_float(82*4,0.0)
 	if not _upload_frame(frame): _render_failed();return
+	if _profile_stages:at=_mark("upload",at)
 	_rd.capture_timestamp("Scene RT begin")
 	if not trace_frame(frame): _render_failed();return
-	if _profile_stages: _rd.capture_timestamp("Scene RT rays")
+	if _profile_stages: _rd.capture_timestamp("Scene RT rays");at=_mark("trace",at)
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;
 	# a small GPU copy supplies next frame's history without descriptor churn.
@@ -295,9 +302,10 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	# temporal history. Retain the current surface guides and history first.
 	var copied := reconstruct(frame)
 	_rd.capture_timestamp("Scene RT end")
+	if _profile_stages:at=_mark("reconstruct",at)
 	if not copied: _render_failed();return
 	_publish_targets()
-	if _profile_stages:_rd.capture_timestamp("PT published %d:%d"%[get_instance_id(),completed_renders])
+	if _profile_stages:_rd.capture_timestamp("PT published %d:%d"%[get_instance_id(),completed_renders]);at=_mark("publish",at)
 	_history_valid = true
 	_published_valid = true
 	completed_renders += 1

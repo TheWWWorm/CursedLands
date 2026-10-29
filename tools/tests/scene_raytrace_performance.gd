@@ -25,6 +25,10 @@ func _process(_dt: float) -> void:
 			if phase_source.stats.has(key):
 				if not phase_samples.has(key):phase_samples[key]=[]
 				phase_samples[key].append(phase_source.stats[key])
+		var detail: Dictionary=phase_source.stats.get("render_detail",{})
+		for key in detail:
+			if not phase_samples.has("render_"+key):phase_samples["render_"+key]=[]
+			phase_samples["render_"+key].append(detail[key])
 	RenderingServer.call_on_render_thread(_gpu)
 
 func phase_summary() -> Dictionary:
