@@ -484,6 +484,66 @@ river (`nrdplan-river-*`, two blocks per run):
 `path_trace_nrd_directional` (21) and `path_trace_light_history` (58) pass on
 the changed pack; the ray stage is unchanged within noise.
 
+## ReSTIR direct lighting cost
+
+`path_trace_light_performance.gd` with `--ei-pt-tuning` forces RTXDI on
+(`pt_restir=1` in the launch settings), so the many-light river benchmark
+can compare the ReSTIR estimator with the plain one at every light count.
+RT GPU medians at 1280×720, Low, two bounces (first round / second round):
+
+| Configuration | 7 lights | 16 lights | 64 lights | 64, one moving |
+| --- | ---: | ---: | ---: | ---: |
+| Plain estimator (RTXDI off) | 1.49 / 1.51 ms | 1.61 / 1.63 | 2.06 / 2.15 | 2.11 / 2.17 |
+| RTXDI, 16 candidates, 5 neighbours (previous) | 3.81–4.42 / 3.60–3.95 | 3.88–4.48 / 3.94–4.02 | 4.23–4.80 / 4.26–4.37 | 4.48–4.85 / 4.50–4.83 |
+| RTXDI, 4 candidates | 3.80 / 3.50 | 3.84 / 3.55 | 4.09 / 3.91 | 4.12 / 4.14 |
+| RTXDI, 1 candidate | 3.51 / 3.18 | 3.56 / 3.24 | 3.83 / 3.68 | 3.89 / 3.90 |
+| RTXDI, 16 candidates, no reuse | 2.55 / 2.27 | 2.57 / 2.33 | 2.71 / 2.66 | 2.83 / 2.83 |
+| RTXDI, 1 candidate, no reuse | 1.94 / 1.80 | 1.96 / 1.83 | 2.10 / 2.03 | 2.22 / 2.15 |
+| RTXDI, 1 neighbour | 3.25 / 2.93 | 3.29 / 2.98 | 3.55 / 3.39 | 3.63 / 3.64 |
+| RTXDI, 5 neighbours, no permutation | 4.28 / 3.57 | 4.34 / 4.44 | 4.65 / 4.71 | 4.69 / 4.68 |
+| RTXDI, 5 neighbours, bias correction off | 3.94 / 3.14 | 3.95 / 3.16 | 4.26 / 3.59 | 4.32 / 4.32 |
+| RTXDI, 2 neighbours, 2 boost, no permutation | 3.64 / 3.30 | 3.70 / 3.59 | 4.00 / 4.04 | 4.08 / 4.06 |
+| RTXDI, uniform light index (timing experiment) | 3.88 / 3.36 | 3.93 / 3.42 | 4.15 / 3.77 | 4.21 / 4.23 |
+| RTXDI, storage-buffer tables, 5 neighbours | 4.37 / 4.05, 4.30 / 4.10 | 4.42 / 4.13, 4.33 / 4.22 | 4.70 / 4.56, 4.68 / 4.69 | 4.73 / 4.73, 4.72 / 4.72 |
+| RTXDI, storage-buffer tables, 2 neighbours (final) | 3.56 / 3.61, 3.66 / 3.46 | 3.61 / 3.61, 3.70 / 3.69 | 3.83 / 3.89, 4.05 / 4.06 | 3.92 / 3.93, 4.09 / 4.09 |
+
+Runs: `restir-lights`, `plain-lights`, `cand-*`, `noreuse-*`, `tune-*`,
+`uni-*`, `di-lights-*`. Later cases within a process run up to 20% slower
+than the first (the laptop GPU warms), so the ABBA pairs `di-lights-old-5`,
+`old-5b`, `new-5`, `new-5b`, `new-default`, `new-defaultb` are the
+comparison for the final change.
+
+Reading: with the previous configuration ReSTIR cost 2.3–2.8 ms more than
+the plain estimator on this 640×360 lattice. Removing the spatiotemporal
+reuse removes 1.3–1.6 ms of that, the sixteen candidates about 0.5 ms, and
+the fused pass itself about 0.3–0.4 ms. Within the reuse, the cost scales
+with the spatial neighbour count (five neighbours cost 1.0 ms more than
+one), bias correction accounts for 0.4–0.7 ms of the five-neighbour cost and
+permutation sampling for none. Reading the light records with a uniform
+index (a timing-only experiment that always evaluates light 0) saved
+0.3–0.6 ms, which suggested that divergent constant-buffer indexing was part
+of the reuse cost; moving the light records to storage-buffer copies of the
+frame block did not reproduce that saving (storage tables with five
+neighbours measured within noise of the constant-buffer version), so the
+experiment's gain came from the single light's cheaper evaluation rather
+than from the addressing. The storage-buffer tables are kept because the
+reads are at least as fast and the addressing no longer depends on a
+constant-bank pattern, and the default spatial neighbour count drops from
+five to two (eight after a disocclusion), which brings ReSTIR at seven lights
+from 3.8–4.4 ms to 3.5–3.7 ms. ReSTIR still costs about twice the plain
+estimator at these light counts; the remaining cost is the fused pass with
+its temporal reservoir, two neighbours and bias correction, and the
+candidate loop.
+
+`path_trace_rtxdi_sparse` fails five checks on both the previous and the
+changed pack on this engine: the fixture reads the raw diffuse image, which
+under Ray Reconstruction is no longer written since the ray programs trace
+straight into the published images (`ray_targets()`), so its energy checks
+see stale data. The fixture is updated to read the ray targets, like the RR
+fixtures were. `path_trace_rtxdi_live` stops at "native SDK reports real RR
+capability" on both packs, which needs the Ray Reconstruction runtime this
+engine folder lacks.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

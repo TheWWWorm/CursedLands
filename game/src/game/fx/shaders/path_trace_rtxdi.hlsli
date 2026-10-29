@@ -9,12 +9,25 @@ struct DIControl {
     column_major float4x4 previous_view;
     uint4 layout; // width, height, previous array, current array
     uint4 state; // history valid, initial samples, RR, frame sequence
+    uint4 tuning; // spatial samples, disocclusion boost samples, permutation sampling, bias correction mode
 };
 [[vk::binding(33,0)]] RWStructuredBuffer<RTXDI_PackedDIReservoir> di_reservoirs : register(u3300000);
 [[vk::binding(34,0)]] RWStructuredBuffer<DIStoredSurface> di_surfaces : register(u3400000);
 [[vk::binding(35,0)]] StructuredBuffer<float2> di_neighbors : register(t3500000);
 [[vk::binding(36,0)]] ConstantBuffer<DIControl> di_control : register(b3600000);
-[[vk::binding(37,0)]] ConstantBuffer<Frame> di_previous_frame : register(b3700000);
+// The previous and current frame blocks as storage buffers. Light records are
+// read with per-lane indices; a constant buffer serialises divergent indices
+// across the wave, a storage gather does not.
+[[vk::binding(37,0)]] ByteAddressBuffer di_previous_frame : register(t3700000);
+[[vk::binding(44,0)]] ByteAddressBuffer di_current_frame : register(t4400000);
+float4 di_frame4(bool previous,uint index) {
+    return asfloat(previous?di_previous_frame.Load4(index*16u):di_current_frame.Load4(index*16u));
+}
+// camera_world is the second column-major matrix: rows 4..7 of the float4
+// block; its third column is the view axis and its fourth the eye.
+float3 di_previous_eye() {return asfloat(di_previous_frame.Load3(7u*16u));}
+float3 di_previous_forward() {return -asfloat(di_previous_frame.Load3(6u*16u));}
+bool di_previous_orthographic() {return asfloat(di_previous_frame.Load(20u*16u))>.5;}
 [[vk::binding(38,0)]] ByteAddressBuffer di_motion : register(t3800000);
 #define RTXDI_LIGHT_RESERVOIR_BUFFER di_reservoirs
 #define RTXDI_NEIGHBOR_OFFSETS_BUFFER di_neighbors
@@ -71,22 +84,19 @@ RAB_Surface RAB_GetGBufferSurface(int2 pixel,bool previous) {
     s.hit.normal=di_unpack_normal(p.normal);s.hit.geometric_normal=di_unpack_normal(p.geometric);
     s.hit.albedo=di_unpack4(p.albedo).rgb;float4 m=di_unpack4(p.material);
     s.hit.roughness=max(m.x,.02);s.hit.metalness=m.y;s.hit.specular=m.z;s.hit.visible=m.w;
-    float3 eye=mul(di_previous_frame.camera_world,float4(0,0,0,1)).xyz;
-    s.view=di_previous_frame.camera.x>.5?mul(di_previous_frame.camera_world,float4(0,0,1,0)).xyz:normalize(eye-p.position);
+    s.view=di_previous_orthographic()?-di_previous_forward():normalize(di_previous_eye()-p.position);
     return s;
 }
 uint di_local_count(bool previous) {
-    return previous?(di_previous_frame.local_state.w>.5?min(uint(di_previous_frame.local_state.x),64u):7u):
-        (frame.local_state.w>.5?min(uint(frame.local_state.x),64u):7u);
+    float4 state=di_frame4(previous,47u); // local_state
+    return state.w>.5?min(uint(state.x),64u):7u;
 }
 void di_local(uint i,bool previous,out float4 position,out float4 colour) {
-    if(previous) {
-        position=di_previous_frame.local_state.w>.5?di_previous_frame.local_position[i]:di_previous_frame.point_position[min(i,6u)];
-        colour=di_previous_frame.local_state.w>.5?di_previous_frame.local_colour[i]:di_previous_frame.point_colour[min(i,6u)];
-    } else {
-        position=frame.local_state.w>.5?frame.local_position[i]:frame.point_position[min(i,6u)];
-        colour=frame.local_state.w>.5?frame.local_colour[i]:frame.point_colour[min(i,6u)];
-    }
+    // Frame layout in float4 rows: point_position 22.., point_colour 29..,
+    // local_state 47, local_position 48.., local_colour 112...
+    bool extended=di_frame4(previous,47u).w>.5;
+    position=extended?di_frame4(previous,48u+i):di_frame4(previous,22u+min(i,6u));
+    colour=extended?di_frame4(previous,112u+i):di_frame4(previous,29u+min(i,6u));
 }
 RAB_LightInfo RAB_EmptyLightInfo() {return (RAB_LightInfo)0;}
 RAB_LightSample RAB_EmptyLightSample() {return (RAB_LightSample)0;}
@@ -207,9 +217,9 @@ void di_lighting(Surface primary,float3 view,uint2 pixel,float depth,out float3 
         float previous_depth=-mul(di_control.previous_view,float4(previous_position,1)).z;
         RTXDI_RuntimeParameters runtime=(RTXDI_RuntimeParameters)0;runtime.neighborOffsetMask=255u;runtime.frameIndex=di_control.state.w;
         RTXDI_DISpatioTemporalResamplingParameters settings=(RTXDI_DISpatioTemporalResamplingParameters)0;
-        settings.depthThreshold=.01;settings.normalThreshold=.95;settings.biasCorrectionMode=RTXDI_BIAS_CORRECTION_BASIC;
-        settings.maxHistoryLength=di_control.state.z!=0u?4u:8u;settings.enablePermutationSampling=1u;
-        settings.uniformRandomNumber=sample_hash(di_control.state.w);settings.numSamples=5u;settings.numDisocclusionBoostSamples=8u;
+        settings.depthThreshold=.01;settings.normalThreshold=.95;settings.biasCorrectionMode=min(di_control.tuning.w,uint(RTXDI_ALLOWED_BIAS_CORRECTION));
+        settings.maxHistoryLength=di_control.state.z!=0u?4u:8u;settings.enablePermutationSampling=di_control.tuning.z;
+        settings.uniformRandomNumber=sample_hash(di_control.state.w);settings.numSamples=di_control.tuning.x;settings.numDisocclusionBoostSamples=di_control.tuning.y;
         // A bounded 8-pixel neighborhood avoids noisy MIS normalization when
         // nearby surfaces see substantially different local-light distributions.
         settings.samplingRadius=8.0;settings.enableMaterialSimilarityTest=1u;

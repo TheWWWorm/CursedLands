@@ -38,7 +38,15 @@ the current dispatch. The SDK's BASIC correction reevaluates sample targets
 at neighboring surfaces. This mode is approximate; it is not advertised as an
 unbiased reference renderer. Depth, normal and material checks reject unrelated
 surfaces. Permuted temporal sampling and an eight-pixel spatial neighborhood reduce
-correlation. History is limited to eight candidate batches per reused reservoir,
+correlation. Each frame resamples two spatial neighbours (eight after a
+disocclusion); the temporal reservoir carries most of the effective sample
+count, and on the river each further neighbour cost about a quarter of a
+millisecond at 1280×720. The diagnostic `--ei-pt-di-tuning=spatial,boost,
+permutation,bias` and `--ei-pt-di-candidates=N` overrides exist for
+measurements. Light records are read from storage-buffer copies of the
+current and previous frame blocks: the resampling gathers them with per-lane
+indices, which a constant buffer would serialise across the wave. History is
+limited to eight candidate batches per reused reservoir,
 or four with RR. Final RR shading mixes in the fresh estimate with probability
 one quarter; this is a simple estimator mixture, not NVIDIA's separate path
 stagnancy algorithm.

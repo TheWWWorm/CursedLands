@@ -298,3 +298,23 @@ half-width opaque wall and checks the occlusion classification, the reuse of
 still frames, the 63-frame limit, that sun, sky and local-light changes keep
 the history while the cleared flag resets it, and that hiding or moving the
 wall or moving the camera retraces every pixel in the same frame.
+
+## Implemented now: ReSTIR reuse cost
+
+The many-light benchmark run with `--ei-pt-tuning`, which forces RTXDI on,
+showed ReSTIR direct lighting costing 2.3–2.8 ms more than the plain
+estimator on the river's 640×360 lattice (3.8–4.4 ms against 1.5–2.1 ms).
+Diagnostic overrides (`--ei-pt-di-candidates`, `--ei-pt-di-tuning`,
+`--ei-pt-di-no-reuse`) attribute 1.3–1.6 ms to the spatiotemporal reuse,
+about 0.25 ms per spatial neighbour, 0.5 ms to the sixteen candidates and
+0.3–0.4 ms to the fused pass itself. The default spatial neighbour count
+drops from five to two (eight after a disocclusion, as before), which saves
+0.4–0.8 ms; the light records are read from storage-buffer copies of the
+current and previous frame blocks (binding 44 joins the RTXDI set), which
+measured within noise of the constant-buffer version and is kept for the
+addressing. The remaining ReSTIR cost is the temporal reservoir, the two
+neighbours with basic bias correction, and the candidate loop; a separate
+compute pass for the resampling (keeping the SDK code out of the path-loop
+raygen) is the next structural option. Measurements are in the validation
+record.
+
