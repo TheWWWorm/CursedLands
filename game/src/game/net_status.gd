@@ -515,6 +515,15 @@ static func keep_alive() -> void:
 	if now - _alive_ms < KEEP_ALIVE_MS:
 		return
 	_alive_ms = now
+	service()
+
+
+## The ENet peer's poll now, unconditionally: acknowledgements, resends and
+## the next fragment windows of a large reliable message (the zone message)
+## go out, what arrives only queues up (the RPCs are run by SceneMultiplayer's
+## own poll, not here). For a thread that blocks for long: the pump of the
+## host's static navigation preparation.
+static func service() -> void:
 	var tree := Engine.get_main_loop() as SceneTree
 	var mp := tree.get_multiplayer() if tree else null
 	# ENet (or NetSim around it) only: WebSocket peers have no such timeout.

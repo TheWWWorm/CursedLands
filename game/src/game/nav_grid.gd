@@ -2137,10 +2137,13 @@ func prepare_static_navigation(rows: Array) -> void:
 	if jobs.is_empty(): return
 	var started := Time.get_ticks_msec()
 	# Loading owns every graph and joins the batch: one thread per class
-	# (Portability.group, wide) rather than the pool's four. Do not poll
+	# (Portability.group, wide) rather than the pool's four. Do not run
 	# network callbacks here: they could replace a door/graph while a worker
-	# owns it. The loading caller keeps the world paused until joined.
-	Portability.group(func(i: int) -> void: jobs[i].call(), jobs.size(), true)
+	# owns it. The loading caller keeps the world paused until joined. The
+	# ENet peer is serviced meanwhile (NetStatus.service: the zone message
+	# sent just before this keeps flowing to the clients; its RPCs are not
+	# dispatched here).
+	Portability.group(func(i: int) -> void: jobs[i].call(), jobs.size(), true, NetStatus.service)
 	for graph in prepared_graphs: graph.components_prepared = true
 	GameData.trace("navigation prepared %d classes in %d ms" % [jobs.size(), Time.get_ticks_msec() - started])
 

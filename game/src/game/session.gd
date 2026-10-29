@@ -1045,17 +1045,22 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 
 ## Save loads publish only after the saved party positions / body state
 ## have been restored, so reliable load-end never uncovers entrance poses.
+## The zone message leaves before the static navigation preparation (which
+## blocks this thread for the Portal's second): the clients spawn their
+## replicas meanwhile. The preparation services the ENet peer while it waits,
+## so the message's fragments keep flowing; it still precedes this world's
+## first tick (a worker's world stays disabled until the owner's zone_loaded,
+## handled after it; the clients' acknowledgements queue up meanwhile).
 func _publish_zone() -> void:
-	if world and world.authority:
-		world.nav.prepare_static_navigation(world.unit_rows())
 	local_host.publishing_zone()
-	if online and is_host:
-		if lmp_travel:
-			lmp_travel.publish()
-			return
+	if online and is_host and lmp_travel == null:
 		_rpc_zone.rpc(zone_id, _unit_records(), world.diplomacy, _extra_mobs(),
 			String(world.zone.get("mpr", "")), _lever_states(), _load_serial)
 		_send_world_state(0)
+	if world and world.authority:
+		world.nav.prepare_static_navigation(world.unit_rows())
+	if online and is_host and lmp_travel:
+		lmp_travel.publish()
 
 
 ## the original (party deployment) builds a WorldScript for the

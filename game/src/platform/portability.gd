@@ -29,8 +29,10 @@ const POOL_THREADS := 4
 ## A load-time group (`wide`: a zone's footprints, animation decoding,
 ## navigation preparation) with enough work for more than the pool runs on
 ## its own threads, one per processor, as the pool's bound is meant for the
-## per-frame jobs; the browser and handhelds keep the pool.
-static func group(job: Callable, count: int, wide := false) -> void:
+## per-frame jobs; the browser and handhelds keep the pool. A valid `pump`
+## is called on the caller's thread every few milliseconds while it waits
+## (a host servicing its network peer during a second-long preparation).
+static func group(job: Callable, count: int, wide := false, pump := Callable()) -> void:
 	if count <= 0:
 		return
 	if not threads():
@@ -43,6 +45,10 @@ static func group(job: Callable, count: int, wide := false) -> void:
 		# background work held a quest's messenger bird ~1.5 s when that
 		# work shared a single pool thread.
 		var task := WorkerThreadPool.add_group_task(job, count, -1, true, "Portability.group")
+		if pump.is_valid():
+			while not WorkerThreadPool.is_group_task_completed(task):
+				pump.call()
+				OS.delay_msec(PUMP_MS)
 		WorkerThreadPool.wait_for_group_task_completion(task)
 		return
 	var shared := _Lanes.new()
@@ -53,8 +59,17 @@ static func group(job: Callable, count: int, wide := false) -> void:
 		var t := Thread.new()
 		t.start(shared.run)
 		workers.append(t)
+	if pump.is_valid():
+		while workers.any(func(t: Thread) -> bool: return t.is_alive()):
+			pump.call()
+			OS.delay_msec(PUMP_MS)
 	for t: Thread in workers:
 		t.wait_to_finish()
+
+
+## The pumped wait's interval: often enough for a reliable message's
+## fragment windows to keep flowing, rare enough to cost nothing.
+const PUMP_MS := 2
 
 
 ## The threads a wide group of `count` jobs gets: one per processor, at

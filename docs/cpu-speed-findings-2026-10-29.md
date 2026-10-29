@@ -301,6 +301,28 @@ before the host's zone message, so the critical path is the simulation
 worker's authority build (~4 s) followed by the spawn, attach and first
 picture (~2.8 s) again; the next leads are there (below).
 
+Done in this pass (eleventh): the host's static navigation preparation
+(`NavGrid.prepare_static_navigation`, 1.36–1.44 s for the Portal: native
+`prepare_routes` per class on lanes, one class dominating) sat between the
+authority build and the zone message, and a save load publishes after the
+restore, so the message left after it. `_publish_zone` now sends `_rpc_zone`
+and the first world state first and prepares afterwards. The first attempt
+sent and then blocked: the client still got the whole message only when the
+host polled again (a reliable ENet message of 413 records is fragmented;
+the sender has to service the peer for the next windows and the
+acknowledgements), so the preparation's wait now pumps `NetStatus.service`
+(the peer's poll, no RPC dispatch) every 2 ms (`Portability.group(…,
+pump)`). The preparation itself (`prepare_routes`: label the components
+holding live actors, then weighted edges for every block of those
+components) is independent of where the party is restored to as long as it
+stands in an already labelled component; it stays where it was, after the
+restore. Warm solo Portal load (`local/validation/cpu-speed-20261029/
+publish-order/solo-load-wallclock.txt`): zone load to zone ready 9 s → 8 s;
+the client gets the message 0.23 s after its build ahead ends (was 1.5 s),
+while the worker still prepares. The client's own path is the critical
+path now: build ahead 4.5 s (terrain, objects 1.4 s, nav 0.7 s, prewarm),
+then spawn 1.3 s, colour cache, attach and first picture 2.75 s.
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
