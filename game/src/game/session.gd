@@ -811,6 +811,7 @@ func players_same_zone(a: int, b: int) -> bool:
 ## Leaving the multiplayer game (back to the menu): the campaign database again.
 func _exit_tree() -> void:
 	ModStore.detach(self)
+	_discard_ahead_world()
 	if lmp_travel:
 		lmp_travel.session = null
 		lmp_travel = null
@@ -989,6 +990,10 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 	# A zone already in the campaign state loads like a save (
 	# LoadSave): its loading screen also shows frames 1 and 5.
 	LoadingScreen.begin(get_tree(), z, LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
+	if online and is_host:
+		# The clients build their presentation worlds now, while this one
+		# builds and restores the authority world (_rpc_zone_ahead).
+		_rpc_zone_ahead.rpc(id, String(z.get("mpr", "")))
 	_build_world(z, true)
 	if not _restoring:
 		_simulate_absence(id, z, entrance)
@@ -1095,6 +1100,26 @@ func _simulate_absence(id: String, z: Dictionary, entrance: int) -> void:
 
 
 func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
+	var w := _take_ahead_world(z) if not authority else null
+	if w == null:
+		w = _construct_world(z, authority)
+	EIAcks.prepare()
+	world = w
+	if attach:
+		game.attach_world(w)
+	else:
+		w.visible = false
+		w.process_mode = Node.PROCESS_MODE_PAUSABLE
+		game.add_child(w)
+	LoadingScreen.step(7)
+	if w.presentation and w.terrain and w.terrain.details:
+		w.terrain.details.prepare_grass()
+	w.prepare_animation_bindings()
+
+
+## The zone's world from its map files and, for an authority, the campaign
+## state: everything that needs no message from the host (_rpc_zone_ahead).
+func _construct_world(z: Dictionary, authority: bool) -> GameWorld:
 	var w := GameWorld.new()
 	w.name = "World"
 	w.zone = z
@@ -1117,23 +1142,70 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 		state.restore_zone(zone_id, w)
 		w.item_worn.connect(_on_item_worn)
 	LoadingScreen.step(6)
-	EIAcks.prepare()
-	world = w
-	if attach:
-		game.attach_world(w)
-	else:
-		w.visible = false
-		w.process_mode = Node.PROCESS_MODE_PAUSABLE
-		game.add_child(w)
-	LoadingScreen.step(7)
-	if w.presentation and w.terrain and w.terrain.details:
-		w.terrain.details.prepare_grass()
-	w.prepare_animation_bindings()
 	_building = false
+	return w
 
 
-## True while _build_world runs (NetStatus.keep_alive).
+## True while _construct_world runs (NetStatus.keep_alive).
 var _building := false
+
+## Client: the presentation world built ahead of the host's zone message
+## (_rpc_zone_ahead) and the [id, mpr] it was built for.
+var _ahead_world: GameWorld
+var _ahead_zone: Array = []
+
+
+## Host, at the start of a zone load: the clients build their presentation
+## worlds from the map files now, while this one builds and restores the
+## authority world, instead of after _rpc_zone (the solo worker's ~8 s and
+## the client's ~10 s build then overlap). A client whose world is built
+## ahead takes it in _rpc_zone when the zone and map agree; anything else
+## discards it. Deferred loading screens (web / mobile) keep the old order:
+## their messages wait for the screen (_zone_holding).
+@rpc("authority", "call_remote", "reliable")
+func _rpc_zone_ahead(id: String, mpr := "") -> void:
+	_discard_ahead_world()
+	if _zone_holding or LoadingScreen.deferred() or local_host.worker:
+		return
+	var z := campaign.zone(id)
+	if z.is_empty() or not z.has("mpr"):
+		return
+	if mpr != "":
+		z = z.duplicate()
+		z.mpr = mpr
+	if not GameFiles.exists(GameData.root.path_join("maps/%s.mpr" % String(z.mpr))):
+		return
+	GameData.trace("zone build ahead %s" % id)
+	# The screen _rpc_zone would open (over the menu when no game exists yet);
+	# the zone message's own prepare / begin then keep it.
+	LoadingScreen.prepare(get_tree(), z, LoadingScreen.CLIENT)
+	_ahead_world = _construct_world(z, false)
+	_ahead_zone = [id, String(z.mpr)]
+
+
+## The world built ahead for zone `z`, or null (any other is discarded).
+func _take_ahead_world(z: Dictionary) -> GameWorld:
+	var w := _ahead_world
+	if w == null:
+		return null
+	_ahead_world = null
+	var wanted := [String(z.get("id", "")), String(z.get("mpr", ""))]
+	if not is_instance_valid(w) or _ahead_zone != wanted or w.presentation != (not local_host.worker):
+		_ahead_zone = []
+		if is_instance_valid(w):
+			w.free()
+		return null
+	_ahead_zone = []
+	w.zone = z
+	return w
+
+
+func _discard_ahead_world() -> void:
+	if _ahead_world != null and is_instance_valid(_ahead_world):
+		GameData.trace("zone built ahead discarded %s" % (String(_ahead_zone[0]) if not _ahead_zone.is_empty() else ""))
+		_ahead_world.free()
+	_ahead_world = null
+	_ahead_zone = []
 
 const ENDING_ZONE := "gz20g"
 const ENDING_UNIT := 666666
@@ -1311,7 +1383,8 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		z = z.duplicate()
 		z.mpr = mpr
 	GameData.trace("zone load %s (from host)" % id)
-	LoadingScreen.begin(get_tree(), z, LoadingScreen.CLIENT)
+	if _ahead_world == null or _ahead_zone != [id, String(z.mpr)]:
+		LoadingScreen.begin(get_tree(), z, LoadingScreen.CLIENT)
 	_build_world(z, false)
 	LoadingScreen.step(9)
 	world.diplomacy = diplo
@@ -5585,6 +5658,7 @@ func _rpc_load_end(serial: int) -> void:
 
 
 func _cancel_remote_load() -> void:
+	_discard_ahead_world()
 	if not _remote_loading:
 		return
 	_remote_loading = false

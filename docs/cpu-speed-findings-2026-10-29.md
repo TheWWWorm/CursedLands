@@ -176,7 +176,14 @@ with temporary `GameData.trace` timers (not committed; logs in
 `GameUnit.setup` per unit (worker, 413 units): `EIUnitModel.create` 6.8 ms
 and the first `player.advance(0.0)` 7.6 ms, everything else 0.3 ms.
 
-Done in this pass: the first advance was AnimationMixer resolving all
+Done in this pass (second): the client's `_rpc_zone` build now starts
+when the host announces the zone, not when its records arrive (lead 1
+below). Measured on GPU Lab (2880×1800, Portal save, idle machine, wall
+clock from the worker's "zone load" to the client's "zone ready"): 46–47 s
+before this pass, 34 s with the pruned libraries, 25 s with the build ahead
+(`local/validation/cpu-speed-20261029/zone-ahead/solo-load-wallclock.txt`).
+
+Done in this pass (first): the first advance was AnimationMixer resolving all
 ~41 000 tracks of the template's library (117 clips × ~350 part paths, of
 which the figure holds ~20); `EIAnim.library(..., present)` now gives the
 unit the clips without the other parts' tracks (2100 tracks). First advance
@@ -187,14 +194,16 @@ at run time on the stock engine after every finished non-looping clip
 
 Remaining leads, in order of expected value:
 
-1. **Client world pre-build overlapping the worker.** `_build_world(z, false)`
-   depends only on the zone record and the map files, not on the worker's
-   state, yet the client starts it after the worker's 9–12 s. Building the
-   client world while the worker loads (and spawning the 415 replicas as
-   soon as the records arrive) would hide most of the worker's time:
-   `Session._rpc_zone`, `LocalHost` load request path. Care: `_rpc_zone` must
-   still apply the worker's records (unit ids, state) to the pre-built
-   world, and a worker failure must discard the pre-built world.
+1. Done: **client world built ahead of the zone message.** The host
+   announces the zone (and map variant) at the start of `_enter_zone`
+   (`_rpc_zone_ahead`); the client runs `_construct_world(z, false)` at
+   once and `_rpc_zone` takes that world (`_take_ahead_world`) and only
+   spawns the records. Worker and client builds overlap; mismatches,
+   replacements and the session's teardown free the world built ahead.
+   Not done: spawning the replicas needs the host's records, so the 415
+   `spawn_unit` calls (client ~6 s after the pruned libraries) still follow
+   the message; a client could pre-create models per prototype while it
+   waits, if the records' gear is known (it is not, before the message).
 2. **`EIUnitModel._build` for a headless authority** (6.7 ms per unit:
    base `.anm` decode ~1.1 s total, texture/material composition 0.85 s
    (`_compose`, `_compose_surface`, `_material` per unit — unused headless),

@@ -2376,6 +2376,28 @@
       ]
     },
     {
+      "id": "network/zone_build_ahead",
+      "category": "network",
+      "script": "tools/tests/zone_build_ahead.gd",
+      "marker": "ZONE_BUILD_AHEAD",
+      "min_checks": 25,
+      "quick": true,
+      "description": "A client builds its presentation world when the host announces the zone it is about to build and the zone message takes that world instead of building a second one; a world built for another zone or map, a replaced one and the session's teardown free it; held messages, the worker and unknown zones build nothing ahead.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone2.mpr"
+      ],
+      "display": "headless",
+      "focused": "zone_build_ahead"
+    },
+    {
       "id": "quests/catacomb_mechanisms",
       "category": "quests",
       "script": "tools/tests/catacomb_mechanisms.gd",
