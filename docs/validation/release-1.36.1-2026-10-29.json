@@ -1,0 +1,77 @@
+{
+  "version": "1.36.1",
+  "release_type": "stable",
+  "date": "2026-10-29",
+  "release_tag": "v1.36.1",
+  "acceptance_passed": true,
+  "source_commit": "1a6f5ddda1d0fa6a0856eb374e44606cfeaefae6",
+  "game_tree": "6bc7286949bf19a4ff93ce16747d9126dcb33fca",
+  "semver": "PATCH: one backward-compatible gameplay fix (party attack orders on units the player is shown but the party has not noticed). Saves/settings remain compatible; campaign protocol 23 and Autochess protocol 5 are unchanged.",
+  "release_scope": "Expedited owner-requested patch on top of v1.36.0. The only game-code change is GameUnit.party_knows / UnitFog.shown_to and its regression test; engines, templates and graphics runtimes are reused unchanged from 1.36.0.",
+  "targeted_regressions": {
+    "cases": 5,
+    "checks": 625,
+    "failures": 0,
+    "source": "integrated public source 1a6f5ddd, headless",
+    "results": [
+      {
+        "id": "combat/party_attack_drawn_target",
+        "checks": 9,
+        "passed": true,
+        "new": true,
+        "fails_on_v1.36.0": true,
+          "unfixed_failures": 3
+      },
+      {
+        "id": "combat/party_target_lost",
+        "checks": 7,
+        "passed": true
+      },
+      {
+        "id": "creatures/scripted_follow_engage",
+        "checks": 10,
+        "passed": true
+      },
+      {
+        "id": "stealth/stealth_effects_net",
+        "checks": 15,
+        "passed": true
+      },
+      {
+        "id": "combat/archer_range",
+        "checks": 584,
+        "passed": true
+      }
+    ]
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": false,
+      "scope": "Package built, exported and script-audited; the changed behaviour was tested headlessly from the release source, not in the packaged executable. Engine template unchanged from 1.36.0."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": false,
+      "scope": "Package built and script-audited only; engine and graphics runtimes unchanged from the 1.36.0 accepted package."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Package built and script-audited only; engine unchanged from 1.36.0."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "APK built, signed with the public certificate and audited; no device run."
+    },
+    "web": {
+      "target_os_tested": false,
+      "scope": "Browser package built and audited; hosted browser build is updated separately."
+    }
+  },
+  "limits": [
+    "The full packaged regression suite was not rerun for this patch at the owner's request; 1.36.0 package acceptance covers the unchanged engines and runtimes.",
+    "No target-OS runtime runs were performed for 1.36.1.",
+    "Original-game comparison is from the decompiled attack-order logic; it was not reproduced under Wine for this patch.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "previous_acceptance": "release-1.36.0-2026-10-29.json"
+}
