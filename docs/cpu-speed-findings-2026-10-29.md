@@ -346,6 +346,43 @@ and vice versa, so overlapping them is the next structural lead: the
 prewarm's libraries decoded on a background thread while the objects are
 placed (below).
 
+Attribution of the worker's authority build (Portal save load, warm
+caches, GPU Lab 2880×1800, `local/validation/cpu-speed-20261029/zone-load/
+run-pass17-worker-phases-f2cd7806.log`, `run-pass17b-worker-build-f2cd7806.log`,
+instrumentation `worker-phase-timers.patch`, not committed): `_enter_zone`
+is 4.13 s, of which `_build_world` 3.96–4.13 s and everything after it
+(deploy 0.03, `ScriptVM.create` 0.08–0.09, dialog camera and warm-up 0.02)
+0.15 s. Inside `GameWorld.load_map` (presentation off):
+
+| worker phase | time | inside |
+| --- | --- | --- |
+| map scene | 0.62–0.64 s | terrain 0.30, mob read and objects 0.32–0.34 |
+| nav build | 0.60–0.64 s | footprints on lanes |
+| spawn 413 units | 1.87–1.94 s | model creation 1.57–1.61: libraries 0.82 (serial, main thread), parts 0.58 (meshes 0.16, geometry 0.10, nodes 0.07, mesh instances 0.06, materials 0.02), player and adb 0.07, plans 0.06; first action 0.16–0.18; measure and LOD 0.04 |
+| class layers | 0.59–0.63 s | 7 `nav.layer` calls, 92–111 ms each, serial native `build_layer` |
+| rest of the zone entry | ~0.4 s | restore, registration, levers |
+
+The library decode is the client's prewarm again, on the worker's main
+thread: a `GameWorld` that spawns its own units now starts the same
+background job from `on_mob` and joins it before the spawn loop (below).
+The next worker cuts in order: the class layers in parallel (0.6 s, native
+`_fixed_sets` sharing to check), the authority's meshes and mesh instances
+(0.22 s; `_eye_offset`, `_view_neck`, `weld_mesh` and the severed-limb,
+enemy-bar and ground-mark readers are presentation-only, `EIFigureGeometry`
+needs only the geometry meta), the first action 0.17 s (`act("idle")` on an
+authority that advances manually), the mob read 0.2 s.
+
+Done in this pass (thirteenth): `GameWorld.load_map` with units and no
+caller's `on_mob` (the simulation worker, a co-op host) starts
+`EIUnitModel.prewarm_start(records, presentation)` from the map's `on_mob`
+and joins it with `prewarm_finish` before the first `spawn_unit`, so the
+413 units' libraries are decoded on a thread while the objects are placed
+and the navigation grid is built (about 1 s of main-thread work to hide
+0.8 s of decoding behind); `textures` false leaves the atlases out of a
+non-presenting world's preparation, and a presenting authority gets the
+lane-composed atlases as the client does. The original game has no such
+preparation; the comparison is not applicable.
+
 Done in this pass (twelfth): `EIMapScene.load_map(…, on_mob)` hands the
 unit records the map leaves to the world to the caller as soon as the .mob
 is read; the client's build ahead starts `EIUnitModel.prewarm_start` there
@@ -402,10 +439,13 @@ Remaining leads, in order of expected value:
    template), meshes 0.15 s). Done: a world with `presentation` off spawns
    its units with `textures` false (`EIUnitModel.create`), so `_compose` /
    `_compose_surface` are skipped there; the detailed heads keep their
-   authored face texture (cached per face, cheap). Not done: the meshes
-   (0.15 s; `_eye_offset` and the welded joints read them, verify on the
-   authority before skipping), the detailed heads and the per-part material
-   variants (`FigureMaterial.part_material`), all presentation-only.
+   authored face texture (cached per face, cheap). Done (thirteenth
+   change): the clip libraries decoded on a thread during object placement
+   and the navigation build. Not done: the meshes (0.16 s plus mesh
+   instances 0.06 s on the Portal; `_eye_offset` and the welded joints read
+   them, verify on the authority before skipping), the detailed heads and
+   the per-part material variants (`FigureMaterial.part_material`), all
+   presentation-only.
 3. **Shader warm-up on the client (11 s cold).** `ShaderWarmup` runs after
    the client world is built; whether it can overlap the worker load or the
    replica spawning is a rendering-side question (out of this pass's scope

@@ -2508,6 +2508,28 @@
       "focused": "unit_prewarm_background"
     },
     {
+      "id": "animation/world_prewarm_authority",
+      "category": "animation",
+      "script": "tools/tests/world_prewarm_authority.gd",
+      "marker": "WORLD_PREWARM_AUTHORITY",
+      "min_checks": 24,
+      "quick": true,
+      "description": "A world that spawns the map's units itself (the simulation worker, a co-op host) decodes their clip libraries on a thread from the moment the .mob is read and joins it before the first unit: every library comes from the preparation and the units' players share it, the libraries equal the serial preparation's clip for clip, a world that presents nothing prepares no atlas while a presenting one prepares them all, a caller's own on_mob and a world without units prepare nothing, and a warm load starts no thread.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "world_prewarm_authority"
+    },
+    {
       "id": "quests/catacomb_mechanisms",
       "category": "quests",
       "script": "tools/tests/catacomb_mechanisms.gd",

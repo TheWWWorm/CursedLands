@@ -1918,9 +1918,12 @@ static func root_part_of(model: Dictionary, needed: Dictionary) -> String:
 ## clip libraries (the base, the set of parts, the height) and their composed
 ## body and secondary atlases. A client runs it for the zone's own unit
 ## records while the host still builds (Session._rpc_zone_ahead), so the
-## replicas the zone message brings find them ready. Returns what it made.
-static func prewarm(records: Array) -> Dictionary:
-	return prewarm_finish(prewarm_start(records))
+## replicas the zone message brings find them ready; the authority world
+## runs it for the units it spawns itself (GameWorld.load_map). Returns what
+## it made. `textures` false (a world that presents nothing) leaves the
+## atlases out.
+static func prewarm(records: Array, textures := true) -> Dictionary:
+	return prewarm_finish(prewarm_start(records, textures))
 
 
 ## The first half of `prewarm`, which returns at once: the records' gear
@@ -1931,8 +1934,8 @@ static func prewarm(records: Array) -> Dictionary:
 ## (EIMapScene.load_map's on_mob). prewarm_finish joins it. The shared caches
 ## are written on the main thread only, so models made meanwhile build what
 ## they need themselves, as before; the finish keeps theirs.
-static func prewarm_start(records: Array) -> Dictionary:
-	var made := {"libraries": 0, "textures": 0, "records": 0}
+static func prewarm_start(records: Array, textures := true) -> Dictionary:
+	var made := {"libraries": 0, "textures": 0, "records": 0, "threaded": false}
 	var atlases := {}   # "mask|layers" -> [mask, layers, profiles]
 	var requests := []   # EIAnim.build_offline requests, one per missing library key
 	var requested := {}
@@ -1979,6 +1982,8 @@ static func prewarm_start(records: Array) -> Dictionary:
 					store[k] = EIAnim._libraries[k]
 			if not EIAnim._libraries.has(keys[1]) and not bytes.has(asset_template):
 				bytes[asset_template] = GameData.read_figure(asset_template + ".anm")
+		if not textures:
+			continue
 		var mask: String = plan.mask
 		var layers: Array[String] = plan.layers
 		var surfaces: Array[Vector3] = plan.surfaces
@@ -2006,6 +2011,7 @@ static func prewarm_start(records: Array) -> Dictionary:
 		var t := Thread.new()
 		t.start(EIAnim.build_offline.bind(store, requests, bytes))
 		job.thread = t
+		made.threaded = true
 	else:
 		EIAnim.build_offline(store, requests, bytes)
 	return job

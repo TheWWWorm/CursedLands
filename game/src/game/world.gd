@@ -372,6 +372,17 @@ func _trap_marker(o: Dictionary, parent: Node3D) -> Node3D:
 
 ## Loads a zone by map name; `mob_name` defaults to the same name.
 func load_map(mpr: String, mob_name := "", with_units := true, on_mob := Callable()) -> bool:
+	# A world that spawns the map's units itself (the authority) decodes
+	# their templates' clip libraries, and a presenting one composes their
+	# atlases, on a thread from the moment the .mob is read, while the
+	# objects are placed and the navigation grid is built, and joins it
+	# before the first unit is made (EIUnitModel.prewarm_start/finish). A
+	# caller's own on_mob (the client's build ahead, Session) does the same
+	# in its own time.
+	var ahead := {"prewarm": {}}
+	if with_units and not on_mob.is_valid():
+		on_mob = func(records: Array) -> void:
+			ahead.prewarm = EIUnitModel.prewarm_start(records, presentation)
 	map = EIMapScene.load_map(mpr, mob_name, false, presentation, on_mob)
 	if map == null:
 		return false
@@ -396,6 +407,8 @@ func load_map(mpr: String, mob_name := "", with_units := true, on_mob := Callabl
 	NetStatus.keep_alive()
 	lever_sys = LeverSystem.new(self)
 	if with_units:
+		if not ahead.prewarm.is_empty():
+			map.stats.prewarm = EIUnitModel.prewarm_finish(ahead.prewarm)
 		for r in map.unit_records:
 			NetStatus.keep_alive()
 			spawn_unit(r)
