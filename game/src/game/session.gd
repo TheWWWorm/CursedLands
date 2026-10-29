@@ -1124,7 +1124,7 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 
 ## The zone's world from its map files and, for an authority, the campaign
 ## state: everything that needs no message from the host (_rpc_zone_ahead).
-func _construct_world(z: Dictionary, authority: bool) -> GameWorld:
+func _construct_world(z: Dictionary, authority: bool, on_mob := Callable()) -> GameWorld:
 	var w := GameWorld.new()
 	w.name = "World"
 	w.zone = z
@@ -1133,7 +1133,7 @@ func _construct_world(z: Dictionary, authority: bool) -> GameWorld:
 	w.presentation = not local_host.worker
 	w.retain_logic_debt = local_host.worker
 	_building = true   # NetStatus.keep_alive polls the network meanwhile
-	w.load_map(z.mpr, z.get("mob", z.mpr), authority)
+	w.load_map(z.mpr, z.get("mob", z.mpr), authority, on_mob)
 	if w.presentation and w.terrain and not is_instance_valid(w.terrain.color_cache) and TerrainColorCache.available(w.terrain):
 		# Its atlas digest and baked shader now, out of the tree, rather
 		# than in the shader warm-up after the zone message.
@@ -1188,12 +1188,17 @@ func _rpc_zone_ahead(id: String, mpr := "") -> void:
 	# The screen _rpc_zone would open (over the menu when no game exists yet);
 	# the zone message's own prepare / begin then keep it.
 	LoadingScreen.prepare(get_tree(), z, LoadingScreen.CLIENT)
-	_ahead_world = _construct_world(z, false)
-	_ahead_zone = [id, String(z.mpr)]
 	# The replicas come with the zone message; the map's own unit records
 	# name the same templates and gear, so their clip libraries and atlases
-	# are composed now, while the host still builds.
-	var made := EIUnitModel.prewarm(_ahead_world.map.unit_records if _ahead_world.map else [])
+	# are prepared now, while the host still builds: the libraries on a
+	# thread of their own from the moment the .mob is read, while this
+	# thread places the map's objects (a reference the lambda can write).
+	var ahead := {"prewarm": {}}
+	_ahead_world = _construct_world(z, false, func(records: Array) -> void:
+		ahead.prewarm = EIUnitModel.prewarm_start(records))
+	_ahead_zone = [id, String(z.mpr)]
+	var made: Dictionary = EIUnitModel.prewarm_finish(ahead.prewarm) if not ahead.prewarm.is_empty() \
+			else EIUnitModel.prewarm(_ahead_world.map.unit_records if _ahead_world.map else [])
 	GameData.trace("zone build ahead %s: %d records, %d libraries, %d textures prepared" % [
 		id, made.records, made.libraries, made.textures])
 

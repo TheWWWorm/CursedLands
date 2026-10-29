@@ -28,6 +28,14 @@ static var invert_keys := false
 ## rebuild while its figure resolved about 20 of those parts.
 static func library(template: String, paths: Dictionary, root_part: String, root_scale := 1.0,
 		native_keys := false, present := PackedStringArray()) -> AnimationLibrary:
+	return _library_in(_libraries, template, paths, root_part, root_scale, native_keys, present, PackedByteArray())
+
+
+## The cache keys `library` uses for this request: [key, base_key, pruned_key
+## or "", kept] (kept: the track paths of `present`, empty when every part is
+## present).
+static func library_keys(template: String, paths: Dictionary, root_scale: float, native_keys: bool,
+		present: PackedStringArray) -> Array:
 	var flags := "%s:%s:%s:%s" % [native_keys, parent_first, absolute, invert_keys]
 	var key := "%s@%.3f:%s" % [template, root_scale, flags]
 	var kept := {}
@@ -41,28 +49,56 @@ static func library(template: String, paths: Dictionary, root_part: String, root
 			key += "#" + ",".join(names)
 		else:
 			kept.clear()
-	if _libraries.has(key):
-		return _libraries[key]
+	var base_key := "%s@base:%s" % [template, flags]
+	var pruned_key := "%s@pruned:%s#%s" % [template, flags, key.get_slice("#", 1)] if not kept.is_empty() else ""
+	return [key, base_key, pruned_key, kept]
+
+
+## `library` over `store` instead of the shared cache (_libraries for the
+## main thread; a loading thread's own dictionary in build_offline). The base
+## library is decoded from `base_bytes` when given (read beforehand on the
+## main thread, which owns the archives), else from the figure archive.
+static func _library_in(store: Dictionary, template: String, paths: Dictionary, root_part: String,
+		root_scale: float, native_keys: bool, present: PackedStringArray, base_bytes: PackedByteArray) -> AnimationLibrary:
+	var keys := library_keys(template, paths, root_scale, native_keys, present)
+	var key: String = keys[0]
+	if store.has(key):
+		return store[key]
 	# Units of one template differ only in the root's translation scale (their
 	# height): the clips are decoded once (at scale 1) and copied with the root
 	# position keys scaled, the same values _build makes (vec * root_scale).
-	var base_key := "%s@base:%s" % [template, flags]
-	if not _libraries.has(base_key):
-		_libraries[base_key] = _build_library(template, paths, root_part, 1.0, native_keys)
-	var source: AnimationLibrary = _libraries[base_key]
+	var base_key: String = keys[1]
+	if not store.has(base_key):
+		store[base_key] = _build_library(template, paths, root_part, 1.0, native_keys, base_bytes)
+	var source: AnimationLibrary = store[base_key]
+	var kept: Dictionary = keys[3]
 	if not kept.is_empty():
 		# The clips without the other parts' tracks, once per set of parts
 		# (every clip is copied); the heights below copy only the clips that
 		# move the root.
-		var pruned_key := "%s@pruned:%s#%s" % [template, flags, key.get_slice("#", 1)]
-		if not _libraries.has(pruned_key):
-			_libraries[pruned_key] = _copied(source, 1.0, kept)
-		source = _libraries[pruned_key]
+		var pruned_key: String = keys[2]
+		if not store.has(pruned_key):
+			store[pruned_key] = _copied(source, 1.0, kept)
+		source = store[pruned_key]
 	var lib := source
 	if root_scale != 1.0:
 		lib = _copied(source, root_scale, {})
-	_libraries[key] = lib
+	store[key] = lib
 	return lib
+
+
+## Loading, on a thread of its own (EIUnitModel.prewarm_start): the libraries
+## of `requests` ([template, paths, root_part, root_scale, native_keys,
+## present] each) into and out of `store`, seeded with the libraries the
+## shared cache already holds for these templates and never touching the
+## shared cache itself (the caller merges what is new on the main thread).
+## `bytes`: template -> its .anm archive bytes, read by the caller. Pure over
+## its arguments: the clips are decoded from the bytes, the copies read the
+## store's own libraries, and nothing here reads the figure archives.
+static func build_offline(store: Dictionary, requests: Array, bytes: Dictionary) -> Dictionary:
+	for r: Array in requests:
+		_library_in(store, r[0], r[1], r[2], r[3], r[4], r[5], bytes.get(r[0], PackedByteArray()))
+	return store
 
 
 ## `source` with every clip through _derived (on the worker threads: each

@@ -2486,6 +2486,28 @@
       "focused": "unit_prewarm_atlases"
     },
     {
+      "id": "animation/unit_prewarm_background",
+      "category": "animation",
+      "script": "tools/tests/unit_prewarm_background.gd",
+      "marker": "UNIT_PREWARM_BACKGROUND",
+      "min_checks": 17,
+      "quick": true,
+      "description": "The build ahead's clip libraries are decoded on a thread of their own from the moment the map's .mob is read (on_mob, prewarm_start) and joined afterwards: on_mob gets the records before any object is placed, the libraries equal the serial preparation's clip for clip, a model made meanwhile on the main thread keeps its own, the caches end with the same keys, and a warm preparation starts no thread and makes nothing.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "unit_prewarm_background"
+    },
+    {
       "id": "quests/catacomb_mechanisms",
       "category": "quests",
       "script": "tools/tests/catacomb_mechanisms.gd",

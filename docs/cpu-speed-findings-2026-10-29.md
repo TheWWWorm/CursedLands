@@ -346,6 +346,27 @@ and vice versa, so overlapping them is the next structural lead: the
 prewarm's libraries decoded on a background thread while the objects are
 placed (below).
 
+Done in this pass (twelfth): `EIMapScene.load_map(…, on_mob)` hands the
+unit records the map leaves to the world to the caller as soon as the .mob
+is read; the client's build ahead starts `EIUnitModel.prewarm_start` there
+(the records' gear plans, the library keys still missing and the atlases
+still to compose on the main thread, the .anm archive bytes read there too)
+and a thread of its own runs `EIAnim.build_offline`: the base libraries
+decoded from the bytes and the pruned / height copies made into the
+thread's own store (seeded with the shared cache's existing libraries for
+those templates, never writing the shared cache) while the main thread
+places the objects. `prewarm_finish` after `_construct_world` joins it
+(servicing the network peer), keeps what the shared cache still lacks (a
+model made meanwhile on the main thread built its own, as before) and
+composes the atlases. `prewarm` is both halves in a row. Warm solo Portal
+load (`local/validation/cpu-speed-20261029/prewarm-background/
+solo-load-wallclock.txt`): the client's build ahead 4.48 → 4.08 s; the
+end-to-end load unchanged (8 s), because the build ahead now ends as the
+worker's build does (4.07 s) and the client waits for the zone message:
+the critical path is the worker's authority build plus the client's 2.9 s
+after the message. The next cut is on the worker (its map 0.64 s, nav
+build 0.6 s and ~2.8 s of unit spawning, zone restore and class layers).
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal

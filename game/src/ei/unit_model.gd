@@ -1920,8 +1920,24 @@ static func root_part_of(model: Dictionary, needed: Dictionary) -> String:
 ## records while the host still builds (Session._rpc_zone_ahead), so the
 ## replicas the zone message brings find them ready. Returns what it made.
 static func prewarm(records: Array) -> Dictionary:
+	return prewarm_finish(prewarm_start(records))
+
+
+## The first half of `prewarm`, which returns at once: the records' gear
+## plans, the atlases still to compose and the clip libraries still to decode
+## are worked out here on the main thread (the archives are read here), and
+## the libraries are then decoded and copied on a thread of their own
+## (EIAnim.build_offline) while the caller goes on, placing the map's objects
+## (EIMapScene.load_map's on_mob). prewarm_finish joins it. The shared caches
+## are written on the main thread only, so models made meanwhile build what
+## they need themselves, as before; the finish keeps theirs.
+static func prewarm_start(records: Array) -> Dictionary:
 	var made := {"libraries": 0, "textures": 0, "records": 0}
 	var atlases := {}   # "mask|layers" -> [mask, layers, profiles]
+	var requests := []   # EIAnim.build_offline requests, one per missing library key
+	var requested := {}
+	var store := {}      # the offline builder's own cache, seeded with what exists
+	var bytes := {}      # template -> .anm bytes for the base libraries to decode
 	var db := GameData.db
 	for record in records:
 		if not record is Dictionary:
@@ -1950,10 +1966,19 @@ static func prewarm(records: Array) -> Dictionary:
 				present.append(link[0])
 		if not _template_paths.has(asset_template):
 			_template_paths[asset_template] = template_paths(model)
-		var before := EIAnim._libraries.size()
-		EIAnim.library(asset_template, _template_paths[asset_template], root_part_of(model, needed),
-				height_scale(asset_template, complexion.z), true, present)
-		made.libraries += EIAnim._libraries.size() - before
+		var paths: Dictionary = _template_paths[asset_template]
+		var scale := height_scale(asset_template, complexion.z)
+		var keys := EIAnim.library_keys(asset_template, paths, scale, true, present)
+		if not EIAnim._libraries.has(keys[0]) and not requested.has(keys[0]):
+			requested[keys[0]] = true
+			# The builder's own copies: the shared dictionaries stay the
+			# main thread's.
+			requests.append([asset_template, paths.duplicate(), root_part_of(model, needed), scale, true, present.duplicate()])
+			for k: String in [keys[1], keys[2]]:
+				if not k.is_empty() and EIAnim._libraries.has(k) and not store.has(k):
+					store[k] = EIAnim._libraries[k]
+			if not EIAnim._libraries.has(keys[1]) and not bytes.has(asset_template):
+				bytes[asset_template] = GameData.read_figure(asset_template + ".anm")
 		var mask: String = plan.mask
 		var layers: Array[String] = plan.layers
 		var surfaces: Array[Vector3] = plan.surfaces
@@ -1974,7 +1999,35 @@ static func prewarm(records: Array) -> Dictionary:
 			var key := mask + "|" + "|".join(names)
 			if not atlases.has(key) and (not _textures.has(key) or not _surface_textures.has(key + "|" + str(atlas[1]))):
 				atlases[key] = [mask, names, atlas[1]]
-	made.textures = _compose_atlases(atlases.values())
+	var job := {"made": made, "atlases": atlases.values(), "store": store, "thread": null}
+	if requests.is_empty():
+		return job
+	if Portability.threads():
+		var t := Thread.new()
+		t.start(EIAnim.build_offline.bind(store, requests, bytes))
+		job.thread = t
+	else:
+		EIAnim.build_offline(store, requests, bytes)
+	return job
+
+
+## The second half of `prewarm`: joins the libraries' thread (the network
+## peer is serviced meanwhile), keeps the libraries the shared cache still
+## lacks, then composes the atlases (lanes, main-thread texture creation).
+static func prewarm_finish(job: Dictionary) -> Dictionary:
+	var made: Dictionary = job.get("made", {"libraries": 0, "textures": 0, "records": 0})
+	var t: Thread = job.get("thread")
+	if t:
+		while t.is_alive():
+			NetStatus.keep_alive()
+			OS.delay_msec(Portability.PUMP_MS)
+		t.wait_to_finish()
+	var store: Dictionary = job.get("store", {})
+	for key: String in store:
+		if not EIAnim._libraries.has(key):
+			EIAnim._libraries[key] = store[key]
+			made.libraries += 1
+	made.textures = _compose_atlases(job.get("atlases", []))
 	return made
 
 

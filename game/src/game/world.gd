@@ -371,8 +371,8 @@ func _trap_marker(o: Dictionary, parent: Node3D) -> Node3D:
 
 
 ## Loads a zone by map name; `mob_name` defaults to the same name.
-func load_map(mpr: String, mob_name := "", with_units := true) -> bool:
-	map = EIMapScene.load_map(mpr, mob_name, false, presentation)
+func load_map(mpr: String, mob_name := "", with_units := true, on_mob := Callable()) -> bool:
+	map = EIMapScene.load_map(mpr, mob_name, false, presentation, on_mob)
 	if map == null:
 		return false
 	add_child(map)

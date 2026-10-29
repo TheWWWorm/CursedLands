@@ -21,7 +21,12 @@ func _ready() -> void:
 		scenery_batches = SceneryBatches.create(self, object_nodes)
 
 
-static func load_map(map_name: String, mob_name := "", spawn_units := true, presentation := true) -> EIMapScene:
+## `on_mob`, when valid, is called with the unit records the map leaves to
+## the world (unit_records) once the .mob is read and before the objects are
+## placed: a client starts preparing the units' assets on a thread meanwhile
+## (EIUnitModel.prewarm_start).
+static func load_map(map_name: String, mob_name := "", spawn_units := true, presentation := true,
+		on_mob := Callable()) -> EIMapScene:
 	var t0 := Time.get_ticks_msec()
 	var s := EIMapScene.new()
 	s.name = map_name
@@ -39,6 +44,8 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 	if GameFiles.exists(GameData.root.path_join(mob_path)):
 		s.mob = EIMob.load_bytes(GameData.read_file(mob_path))
 		s._relocated_objects = CatacombLift.apply(map_name,mob_name,s.mob,s.terrain)
+		if on_mob.is_valid():
+			on_mob.call(s._left_unit_records())
 		s._place_objects()
 		# The seam trimming only clips duplicate rendering triangles; a map
 		# that presents nothing (the simulation worker) keeps the authored
@@ -51,6 +58,18 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 
 func moved_object_position(nid: int, p: Vector3) -> Vector3:
 	return CatacombLift.moved_position(_relocated_objects,nid,p)
+
+
+## The unit records _place_objects leaves to GameWorld (unit_records after
+## the placement), from the .mob: the same filter, before anything is placed.
+func _left_unit_records() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	if mob == null or _spawn_units:
+		return out
+	for o: Dictionary in mob.objects:
+		if o.kind == "UNIT" and not String(o.template).is_empty():
+			out.append(o)
+	return out
 
 
 ## Instantiates one .mob object record under `parent` (null if its model is missing).
