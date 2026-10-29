@@ -21,6 +21,8 @@ var _programs := {}
 # Borrow immutable programs only; temporal pools and descriptors stay private.
 var program_cache: RefCounted
 var _sets := {}
+## Per-dispatch plans reused while the pass list and its resources repeat.
+var _plans: Array = []
 var _owned: Array[RID] = []
 var _textures: Array[RID] = []
 var _buffers: Array[RID] = []
@@ -214,6 +216,21 @@ func render(frame: PackedByteArray) -> bool:
 	var types: Dictionary=_description.resources
 	for i in dispatches.size():
 		var dispatch: Dictionary=dispatches[i]
+		# The denoiser's pass list and its pool/external resource references
+		# repeat every frame. Compare a compact integer key with last frame's
+		# plan for this slot before assembling uniforms and descriptor keys;
+		# only the constants buffer changes per frame.
+		var key := PackedInt32Array([int(dispatch.pipeline)])
+		for resource: Dictionary in dispatch.resources:
+			key.append(int(resource.type));key.append(int(resource.get("pool",-1)));key.append(1 if resource.storage else 0)
+		var plan: Dictionary=_plans[i] if i<_plans.size() else {}
+		var reusable: bool=not plan.is_empty() and plan.key==key and _rd.uniform_set_is_valid(plan.sets[0]) 			and (not plan.sets[1].is_valid() or _rd.uniform_set_is_valid(plan.sets[1]))
+		if reusable:
+			if plan.sets[1].is_valid():
+				var data: PackedByteArray=dispatch.constants
+				if not data.is_empty() and _rd.buffer_update(_buffers[i],0,data.size(),data)!=OK:return false
+			jobs.append({"program":plan.program,"sets":plan.sets,"grid":dispatch.grid})
+			continue
 		var pipeline: Dictionary=_description.pipelines[dispatch.pipeline]
 		var program := _program(String(pipeline.shader).sha256_text())
 		if program.is_empty():return false
@@ -241,6 +258,8 @@ func render(frame: PackedByteArray) -> bool:
 				_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,1,_samplers[1]),
 				_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,2,_buffers[i])])
 			if not constants.is_valid():return false
+		while _plans.size()<=i:_plans.append({})
+		_plans[i]={"key":key,"program":program,"sets":[resources,constants]}
 		jobs.append({"program":program,"sets":[resources,constants],"grid":dispatch.grid})
 	var grid := Vector2i(ceili(_size.x/8.0),ceili(_size.y/8.0))
 	_dispatch(_programs["pack"+_mode],[_pack],grid)
@@ -265,7 +284,7 @@ func release_targets(release: Callable=Callable()) -> void:
 		if rid.is_valid():
 			if release.is_valid():release.call(rid)
 			else:_rd.free_rid(rid)
-	_textures.clear();_buffers.clear();_external.clear();_permanent.clear();_transient.clear()
+	_textures.clear();_buffers.clear();_external.clear();_permanent.clear();_transient.clear();_plans.clear()
 	_native=null;_size=Vector2i.ZERO;_pack=RID();_resolve=RID();_input_frame=RID();_restart=true;_last_time=0
 
 func dispose(release: Callable=Callable()) -> void:

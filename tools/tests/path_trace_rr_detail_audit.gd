@@ -99,7 +99,7 @@ func _render_callback(kind: int,data: RenderData) -> void:
 	var bindings: Array[RDUniform]=[
 		uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE,0,[sampler,buffers.get_depth_layer(0)]),
 		uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE,1,[sampler,buffers.get_texture_slice(&"forward_clustered",&"normal_roughness",0,0,1,1)]),
-		uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,2,[target._raw[1]]),
+		uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,2,[target.ray_targets()[1]]),
 		uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,3,[output]),
 		uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[uniform_buffer])]
 	var set:=rd.uniform_set_create(bindings,shader,0)
@@ -108,8 +108,11 @@ func _render_callback(kind: int,data: RenderData) -> void:
 	rd.compute_list_bind_uniform_set(list,set,0)
 	rd.compute_list_dispatch(list,ceili(size.x/8.0),ceili(size.y/8.0),1);rd.compute_list_end()
 	result=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAF,rd.texture_get_data(output,0))
-	raw_guide=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(target._raw[1],0))
-	raw_albedo=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(target._raw[3],0))
+	# The ray targets are the published images under RR and the raw images
+	# under the denoiser; read whichever the ray programs wrote.
+	var targets: Array[RID]=target.ray_targets()
+	raw_guide=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(targets[1],0))
+	raw_albedo=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(targets[3],0))
 	if rr!=null and rr._images.size()==4:
 		diffuse=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(rr._images[0],0))
 	rd.free_rid(set);inspected.emit.call_deferred()

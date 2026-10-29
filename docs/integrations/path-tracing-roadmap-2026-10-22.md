@@ -158,6 +158,10 @@ look dramatic would obscure whether light transport actually improved.
 
 ## More lights with a better sampling strategy
 
+Implementation update, 28 October: continuation vertices now draw one local
+light per bounce in proportion to its reach; see
+[the performance plan](path-tracing-performance-plan-2026-10-28.md).
+
 The current loop evaluates the sun and each eligible selected point light at
 every path vertex. The seven local lights are selected around the camera, while
 the emissive proposal uses scene-wide area times estimated emission power.

@@ -101,6 +101,9 @@ int RAB_TranslateLightIndex(uint index,bool previous) {
     return -1;
 #endif
 }
+// Exact textured emitter evaluation is reserved for the final shading of
+// the selected sample; every resampling stage uses the same cheap target.
+static bool di_exact=false;
 RAB_LightSample RAB_SamplePolymorphicLight(RAB_LightInfo light,RAB_Surface receiver,float2 uv) {
     RAB_LightSample sample=RAB_EmptyLightSample();Surface s=receiver.hit;
     float3 incoming=0.0;float pdf;
@@ -128,14 +131,25 @@ RAB_LightSample RAB_SamplePolymorphicLight(RAB_LightInfo light,RAB_Surface recei
         sample.direction=delta/distance;sample.distance=distance;sample.kind=2u;
         bsdf(s,receiver.view,sample.direction,sample.diffuse,sample.specular,pdf);
         uint4 material=geometry.Load4(source.z*16u);uint i=material.x+source.y*3u;
-        Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
-        float3 tex=float3(hit_uv(a,b,c,w),a.emission_layer.w);
-        if(source.w==0u&&colours.SampleLevel(colour_sampler,tex,0).a*a.diffuse.a<asfloat(material.z))return RAB_EmptyLightSample();
-        float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(pb-pa.xyz),.001),
-                          length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(pc-pa.xyz),.001));
-        uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
-        float lod=max(log2(max(max(.002,s.roughness*.02)*distance*density*float(width),1.0)),0.0);
-        float3 emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,tex,lod).rgb*a.emission_layer.rgb);
+        float3 emission;
+        if(!di_exact) {
+            // Candidate and reuse weights only need a consistent target
+            // function. The material's constant emission, without its texture
+            // or cutout, costs two loads instead of three vertices and two
+            // taps; final shading below evaluates the exact sample, so the
+            // resampled estimate stays unbiased.
+            float3 constant=asfloat(vertices.Load3(i*64+48));
+            emission=(material.y&1u)!=0u?constant:linear_colour(constant);
+        } else {
+            Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
+            float3 tex=float3(hit_uv(a,b,c,w),a.emission_layer.w);
+            if(source.w==0u&&colours.SampleLevel(colour_sampler,tex,0).a*a.diffuse.a<asfloat(material.z))return RAB_EmptyLightSample();
+            float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(pb-pa.xyz),.001),
+                              length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(pc-pa.xyz),.001));
+            uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
+            float lod=max(log2(max(max(.002,s.roughness*.02)*distance*density*float(width),1.0)),0.0);
+            emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,tex,lod).rgb*a.emission_layer.rgb);
+        }
         // Density is over the shared light/UV domain, including the area's
         // solid-angle Jacobian. Reconnection reevaluates it at every receiver.
         float cosine=abs(dot(normalize(cross(pb-pa.xyz,pc-pa.xyz)),sample.direction));
@@ -209,7 +223,9 @@ void di_lighting(Surface primary,float3 view,uint2 pixel,float depth,out float3 
     if(di_control.state.z!=0u&&RTXDI_GetNextRandom(rng)<.25)reservoir=initial;
     diffuse=0.0;specular=0.0;direct_specular=0.0;dm=0.0;sm=0.0;
     if(!RTXDI_IsValidDIReservoir(reservoir))return;
+    di_exact=true;
     RAB_LightSample sample=RAB_SamplePolymorphicLight(RAB_LoadLightInfo(RTXDI_GetDIReservoirLightIndex(reservoir),false),surface,RTXDI_GetDIReservoirSampleUV(reservoir));
+    di_exact=false;
     float visible=0.0;
     if(sample.kind==1u)visible=visibility(primary,sample.direction,sample.distance,false);
     else if(sample.kind==2u) {

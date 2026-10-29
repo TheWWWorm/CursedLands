@@ -85,7 +85,7 @@ func _render_callback(kind: int,data: RenderData) -> void:
 	# render() can clear its private cache-history flag in the mutable packet;
 	# the compositor owns a separate history and uses the controller's policy.
 	if _profile_stages:_rd.capture_timestamp("PT ground indirect begin")
-	ground_indirect.render(_target._raw,_frame,projection,transform,reset)
+	ground_indirect.render(_target.ray_targets(),_frame,projection,transform,reset)
 	if _profile_stages:_rd.capture_timestamp("PT ground indirect end")
 	if _rd==null:_rd=RenderingServer.get_rendering_device()
 	if not _prepare(size,buffers):failed=true;return
@@ -114,7 +114,8 @@ func _prepare(size: Vector2i,buffers: RenderSceneBuffersRD) -> bool:
 			format.usage_bits=RenderingDevice.TEXTURE_USAGE_STORAGE_BIT|RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT|RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
 			_images.append(_rd.texture_create(format,RDTextureView.new()))
 		if not _images.all(func(rid: RID):return rid.is_valid()):return false
-	var sources: Array=[_target._raw[1],_target._raw[3],_target._raw[4],_target._raw[5],buffers.get_depth_layer(0),buffers.get_texture_slice(&"forward_clustered",&"normal_roughness",0,0,1,1),_target._frame]
+	var targets: Array[RID]=_target.ray_targets()
+	var sources: Array=[targets[1],targets[3],targets[4],targets[5],buffers.get_depth_layer(0),buffers.get_texture_slice(&"forward_clustered",&"normal_roughness",0,0,1,1),_target._frame]
 	if sources!=_source or not _rd.uniform_set_is_valid(_set):
 		if _rd.uniform_set_is_valid(_set):_rd.free_rid(_set)
 		var bindings: Array[RDUniform]=[]

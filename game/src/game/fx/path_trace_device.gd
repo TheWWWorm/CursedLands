@@ -117,6 +117,17 @@ func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,20,[raw[6]]))
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,28,[raw[7]]))
 	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,29,[raw[8]]));return bindings
+## Ray Reconstruction consumes the raw signals as they are, so the ray
+## programs write the four published images directly instead of tracing into
+## private copies that every frame then copied over. The published RIDs stay
+## stable; the raw slots 4 to 8 (distances, direct specular, sun, moments)
+## remain private inputs of the RR pass and the ground helper.
+func _ray_targets(raw: Array[RID],history: Array[RID]) -> Array[RID]:
+	if not ray_reconstruction or history.size()<4 or raw.size()<9:return raw
+	var targets := raw.duplicate()
+	for i in 4:targets[i]=history[i]
+	return targets
+func ray_targets() -> Array[RID]: return _ray_targets(_raw,_history)
 func published_targets() -> Array[RID]:
 	var result := super.published_targets();result.append(direct_sun.texture_rd_rid);return result
 func _publish_targets() -> void:
@@ -139,7 +150,8 @@ func adopt_presentation(previous: RefCounted) -> bool:
 		or not transmission.presentation_compatible(previous.transmission):return false
 	if published_targets()!=_history+[_raw[6]] or previous.published_targets()!=previous._history+[previous._raw[6]]:return false
 	var raw: Array[RID]=_raw.duplicate();raw[6]=previous._raw[6]
-	var replacement_set:=_target_set(_ray_bindings(raw,_sampler),_shader)
+	# The adopted published images become this device's ray outputs.
+	var replacement_set:=_target_set(_ray_bindings(_ray_targets(raw,previous._history),_sampler),_shader)
 	if not replacement_set.is_valid():return false
 	var transmission_set:=RID()
 	if transmission.active:
@@ -692,10 +704,8 @@ func _composite_direct() -> bool:
 
 func reconstruct(frame: PackedByteArray) -> bool:
 	if ray_reconstruction:
+		# The ray programs already wrote the published images (_ray_targets).
 		nrd_active=false;_direct_valid=false
-		var extent:=Vector3(_size.x,_size.y,1)
-		for i in 4:
-			if _rd.texture_copy(_raw[i],_history[i],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK:return false
 		raw_reconstruction_frames+=1
 		return true
 	if not _reconstruct_direct(frame):return false

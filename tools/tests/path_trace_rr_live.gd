@@ -29,8 +29,11 @@ func rr_ready(rt: Node) -> bool:
 func read_inputs(rt: Node) -> void:
 	readbacks.clear()
 	var device: Object=rt.device
+	# Under RR the ray programs write the published images directly; the
+	# ray targets and the published images are the same resources.
+	var targets: Array[RID]=device.ray_targets()
 	for i in 4:
-		readbacks.append(Image.create_from_data(device._size.x,device._size.y,false,Image.FORMAT_RGBAH,device._rd.texture_get_data(device._raw[i],0)))
+		readbacks.append(Image.create_from_data(device._size.x,device._size.y,false,Image.FORMAT_RGBAH,device._rd.texture_get_data(targets[i],0)))
 		readbacks.append(Image.create_from_data(device._size.x,device._size.y,false,Image.FORMAT_RGBAH,device._rd.texture_get_data(device._history[i],0)))
 	if rt._rr_effect!=null:
 		for i in 4:
@@ -79,7 +82,7 @@ func run() -> void:
 	RenderingServer.call_on_render_thread(read_inputs.bind(rt));await inspected
 	var raw_exact:=readbacks.size()==12
 	for i in 4:raw_exact=raw_exact and readbacks[i*2].get_data()==readbacks[i*2+1].get_data()
-	check(raw_exact,"all four published lighting channels exactly match current noisy PT images")
+	check(raw_exact,"all four published lighting channels are the current noisy PT ray targets")
 	var finite:=true;var surfaces:=0;var max_hit:=0.0
 	for y in range(0,readbacks[8].get_height(),8):
 		for x in range(0,readbacks[8].get_width(),8):

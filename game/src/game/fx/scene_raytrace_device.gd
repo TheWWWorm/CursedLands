@@ -94,6 +94,11 @@ func _release_targets() -> void:
 func _target_set(bindings: Array[RDUniform],shader: RID) -> RID:
 	return _rd.uniform_set_create(bindings,shader,0)
 
+## The images the ray programs write. The base reconstruction traces into the
+## raw images and filters into the published ones; a derived device may trace
+## straight into the published images when nothing filters in between.
+func _ray_targets(raw: Array[RID],_history_targets: Array[RID]) -> Array[RID]: return raw
+
 func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
 	var bindings: Array[RDUniform] = [
 		_uniform(RenderingDevice.UNIFORM_TYPE_ACCELERATION_STRUCTURE,0,[_tlas]),
@@ -161,6 +166,9 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		var pair:=_compute_program(filter_spirv(),"Scene RT reconstruction")
 		_filter_shader=pair[0];_filter_pipeline=pair[1]
 		if not _filter_shader.is_valid() or not _filter_pipeline.is_valid():return false
+	# A same-size switch between the filtered and direct modes changes which
+	# images the ray programs write, so their descriptor set is rebuilt too.
+	var rebind := false
 	if size != _size:
 		# Stage the entire replacement. A failed image or descriptor allocation
 		# must leave the previous complete output and its resource indices intact.
@@ -179,7 +187,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		var filter_set := _filter_target_set(raw,history,auxiliary) if filtered else RID()
 		if filtered and not filter_set.is_valid():
 			_free_targets(raw+history+auxiliary);return false
-		var ray_set := _target_set(_ray_bindings(raw,sampler),_shader)
+		var ray_set := _target_set(_ray_bindings(_ray_targets(raw,history),sampler),_shader)
 		if not ray_set.is_valid():
 			if filter_set.is_valid(): _rd.free_rid(filter_set)
 			_free_targets(raw+history+auxiliary);return false
@@ -209,13 +217,13 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		var filter_set := _filter_target_set(_raw,_history+extra,auxiliary)
 		if not filter_set.is_valid(): _free_targets(extra+auxiliary);return false
 		_history.append_array(extra);_filter_auxiliary=auxiliary;_filter_sets=[filter_set]
-		_history_valid=false
+		_history_valid=false;rebind=true
 	elif not filtered and _history.size()>4:
 		_free_targets(_filter_sets+_history.slice(4)+_filter_auxiliary)
 		_filter_sets.clear();_filter_auxiliary.clear();_history.resize(4)
-		_history_valid=false
-	if not _set.is_valid() or sampler != _sampler:
-		var ray_set := _target_set(_ray_bindings(_raw,sampler),_shader)
+		_history_valid=false;rebind=true
+	if not _set.is_valid() or sampler != _sampler or rebind:
+		var ray_set := _target_set(_ray_bindings(_ray_targets(_raw,_history),sampler),_shader)
 		if not ray_set.is_valid(): return false
 		if _set.is_valid(): _rd.free_rid(_set)
 		_set=ray_set;_sampler=sampler

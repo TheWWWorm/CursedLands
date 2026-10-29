@@ -71,6 +71,8 @@ var lighting_camera_mask := -1
 # Observation-only live diagnostics. The controller enables these solely for
 # --ei-profile-rt; plain values can be retained after a candidate is promoted.
 var profile_cpu := false
+var _profile_presented_us := 0
+var _profile_tracked_us := 0
 var profile_gather := {}
 var profile_topology := {}
 var _profile_gather_active := false
@@ -160,10 +162,15 @@ func _material_version(material: Material) -> Array:
 static func surface_profile(material: Material) -> Vector3:
 	if material is BaseMaterial3D:
 		return Vector3(material.roughness,material.metallic,material.metallic_specular)
-	if material is ShaderMaterial:
+	# Surface materials off restores the original rough dielectric look in
+	# both renderers; the raster shader gates the same profile on this option.
+	if material is ShaderMaterial and GameData.option("gfx_materials")>0:
 		var profile: Variant = material.get_shader_parameter("surface_profile")
 		if profile is Vector4 and profile.x>0.0:
 			return Vector3(clampf(profile.y,0.08,1.0),clampf(profile.z,0.0,1.0),0.5)
+		# Foliage carries no profile uniform; match its raster bark response.
+		if material.has_meta("sway"):
+			return Vector3(0.86,0.0,0.5)
 	# Original assets without a remake profile are rough dielectrics.
 	return Vector3(1.0,0.0,0.5)
 
@@ -664,6 +671,7 @@ func _instance_updates(force: bool) -> Array:
 	# apply that presentation only to the local camera's visible body. Water
 	# reflections and full-body shadow/GI copies retain their authored pose.
 	var presented := {}
+	var started := Time.get_ticks_usec() if profile_cpu else 0
 	if lighting_camera_mask >= 0:
 		if _presented_revision != EIUnitModel.view_revision:
 			_presented_revision = EIUnitModel.view_revision; _presented_views.clear()
@@ -681,7 +689,9 @@ func _instance_updates(force: bool) -> Array:
 				var transform := model.presented_mesh_transform(mesh)
 				presented[i] = {"before":entry.transform,"mask":entry.mask,
 					"transform":transform,"lighting_offset":mesh.global_transform.origin-transform.origin}
+	if profile_cpu: _profile_presented_us = Time.get_ticks_usec()-started; started = Time.get_ticks_usec()
 	var changes := _tracked_instance_updates(force)
+	if profile_cpu: _profile_tracked_us = Time.get_ticks_usec()-started
 	if presented.is_empty() and _view_offsets.is_empty(): return changes
 	var changed := {}
 	for change: Dictionary in changes: changed[change.index] = change
@@ -753,9 +763,15 @@ func _tracked_instance_updates(force: bool) -> Array:
 				entry.mask = mask; entry.transform = transform
 	return transforms
 
+## Per-frame update phases in microseconds; filled only under --ei-profile-rt.
+var profile_update := {}
+
 func updates(force := false) -> Dictionary:
+	var started := Time.get_ticks_usec() if profile_cpu else 0
 	_replace_models()
+	var replaced := Time.get_ticks_usec() if profile_cpu else 0
 	var transforms := _instance_updates(force); var poses := _replacement_poses
+	var tracked := Time.get_ticks_usec() if profile_cpu else 0
 	_replacement_poses = {}
 	for i in _morph_geometries:
 		var geo: Dictionary = geometries[i]
@@ -783,4 +799,9 @@ func updates(force := false) -> Dictionary:
 			data[v*16]=p[at].x; data[v*16+1]=p[at].y; data[v*16+2]=p[at].z
 			data[v*16+4]=nn.x; data[v*16+5]=nn.y; data[v*16+6]=nn.z
 		poses[i] = {"geometry":i,"data":data.to_byte_array()}
+	if profile_cpu:
+		var now := Time.get_ticks_usec()
+		profile_update = {"replace_us":replaced-started,"instances_us":tracked-replaced,"morphs_us":now-tracked,
+			"total_us":now-started,"presented_us":_profile_presented_us,"tracked_us":_profile_tracked_us,
+			"changes":transforms.size(),"poses":poses.size()}
 	return {"instances":transforms,"poses":poses.values()}

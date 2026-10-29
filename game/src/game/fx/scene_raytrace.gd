@@ -287,8 +287,12 @@ func _process(dt: float) -> void:
 		var changes := _scene.updates(_handoff_updates)
 		_handoff_updates=false
 		stats["cpu_update_ms"]=(Time.get_ticks_usec()-update_started)/1000.0
+		if _profile_cpu:cpu_timings["update_detail"]=_scene.profile_update.duplicate(true)
+		var frame_started := Time.get_ticks_usec() if _profile_cpu else 0
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
+		if _profile_cpu:cpu_timings["cpu_frame_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0;frame_started=Time.get_ticks_usec()
 		_render(device,size,frame,changes)
+		if _profile_cpu:cpu_timings["cpu_render_ms"]=(Time.get_ticks_usec()-frame_started)/1000.0
 		if device.output_ready():
 			_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
 			_bind_outputs()
@@ -798,7 +802,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			# Daylight drift alone is tiny (bounded to 0.2% per channel).
 			# It must not give the whole outdoor image the torch's short history
 			# every frame. A changing local light still uses the fast response.
-			var local_changed := bytes.slice(76*4,104*4)!=_path_signature.slice(76*4,104*4) or bytes.slice(116*4)!=_path_signature.slice(116*4)
+			var local_changed := bytes.slice(48*4,104*4)!=_path_signature.slice(48*4,104*4) or bytes.slice(116*4)!=_path_signature.slice(116*4)
 			if local_changed or weather_fading:limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
 		var reuse := history and same_projection and same_cloud_mode and (stationary if progressive else same_lighting or gentle_change)
 		# RR reconstructs current radiance using raster motion/depth. A moving
@@ -838,6 +842,23 @@ func _weather_fading() -> bool:
 	return not game._sky_cave and is_instance_valid(game.sound) and game.sound.weather!=null \
 		and game.sound.weather.world==game.world and game.sound.weather._fade>0.0
 
+## A carried torch or a drifting spell light moves a small fraction of its
+## range each frame. Its receivers keep the same short local history as
+## flame flutter: the NRD pack lowers confidence where current local lights
+## reach, so the shadow follows within two or three frames instead of
+## restarting every receiver in the frame. A jump beyond this fraction, a
+## changed range or a new source still resets immediately.
+const LOCAL_LIGHT_MOTION_FRACTION := 0.1
+
+static func _small_light_motion(current: PackedByteArray, previous: PackedByteArray, offset: int) -> bool:
+	if current.slice(offset,offset+16)==previous.slice(offset,offset+16): return true
+	var range_now := current.decode_float(offset+12)
+	if range_now!=previous.decode_float(offset+12) or range_now<=0.0: return false
+	var old := Vector3(previous.decode_float(offset),previous.decode_float(offset+4),previous.decode_float(offset+8))
+	var now := Vector3(current.decode_float(offset),current.decode_float(offset+4),current.decode_float(offset+8))
+	if not old.is_finite() or not now.is_finite(): return false
+	return old.distance_to(now)<=LOCAL_LIGHT_MOTION_FRACTION*range_now
+
 static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray, outdoor_tolerance := 0.002, include_local := true) -> bool:
 	# Signature floats 76..103 are the seven linear RGB/source-size records.
 	# Projection is checked by the caller; ordinary camera motion reprojects.
@@ -845,7 +866,9 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	# advances sunlight and sky every frame, even with a stationary camera.
 	if current.size()!=previous.size() or current.size()<116*4 or (current.size()-116*4)%32!=0: return false
 	if current.slice(44*4,48*4)!=previous.slice(44*4,48*4): return false
-	if include_local and current.slice(48*4,76*4)!=previous.slice(48*4,76*4): return false
+	if include_local:
+		for i in 7:
+			if not _small_light_motion(current,previous,(48+i*4)*4): return false
 	for offset in [32,40,104,108,112]:
 		if current.decode_float((offset+3)*4)!=previous.decode_float((offset+3)*4): return false
 		var old := Vector3(previous.decode_float(offset*4),previous.decode_float((offset+1)*4),previous.decode_float((offset+2)*4))
@@ -868,7 +891,7 @@ static func _small_lighting_change(current: PackedByteArray, previous: PackedByt
 	var colour_offsets: Array[int]=[]
 	for i in 7:colour_offsets.append((76+i*4)*4)
 	for offset in range(116*4,current.size(),32):
-		if current.slice(offset,offset+16)!=previous.slice(offset,offset+16):return false
+		if not _small_light_motion(current,previous,offset):return false
 		colour_offsets.append(offset+16)
 	for offset: int in colour_offsets:
 		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
@@ -906,7 +929,7 @@ func _collect_lights(focus: Vector3) -> void:
 	_lights.clear()
 	for i in mini(found.size(),PATH_LIGHT_LIMIT if _path_mode else 7): _lights.append(weakref(found[i][1]))
 	stats["lights"]=_lights.size()
-	stats["local_light_shadow_samples"]=4 if _path_mode and _lights.size()>7 else _lights.size()
+	stats["local_light_shadow_samples"]=4 if _path_mode and _lights.size()>4 else _lights.size()
 	if previous!=_lights.map(func(w: WeakRef): return w.get_ref()): _history_key=""
 
 static func _light_priority(light: OmniLight3D,focus: Vector3) -> float:

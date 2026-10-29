@@ -42,7 +42,7 @@ func run() -> void:
 				viewport_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
 				resets+=int(not rt.stats.history_reused)
 			sampling=false
-			check(resets==90 if choice[1] else resets==0,"history rejection matches light motion")
+			check(resets==0,"small light motion keeps the frame history (%d resets)"%resets)
 			runs.append({"lights":choice[0],"moving":choice[1],"round":round_index,"history_resets":resets,
 				"frame_ms":summary(wall),"rt_gpu_ms":summary(gpu_samples.duplicate()),"main_gpu_ms":summary(viewport_gpu),
 				"controller_cpu_ms":summary(cpu_samples.duplicate()),"nrd":rt.device.nrd_active})

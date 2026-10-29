@@ -66,7 +66,7 @@ func inspect_handoff(previous: PresentationPath,target: PresentationPath,fail_af
 func inspect_pair(previous: PresentationPath,target: PresentationPath) -> void:
 	var valid:=true;var raw_equal:=true
 	for rid: RID in public_images(target):valid=valid and target._rd.texture_is_valid(rid)
-	for i in 4:raw_equal=raw_equal and target._rd.texture_get_data(target._raw[i],0)==target._rd.texture_get_data(target._history[i],0)
+	for i in 4:raw_equal=raw_equal and target.ray_targets()[i]==target._history[i]
 	presentation_state={"bytes":previous.live_bytes()+target.live_bytes(),"valid":valid,"raw_equal":raw_equal,
 		"ready":target.output_ready(),"handles":handles(target),"pixels":pixels(target),"rendered":target.completed_renders,
 		"transmission":target.transmission.active,"sharc":target.sharc.active,"rtxdi":target.rtxdi.active}

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Give placed objects a material response from a shared family table instead of a short list of texture names: masonry, plaster houses, timber, iron braziers, gold, clay, bone and cloth props in both the base game and Lost in Astral receive matching roughness, metalness and relief in the raster material and the path-traced scene, and parts the original artists marked metal, stone, wood or leather in their figure records are classified even when their atlas is not listed. Lost in Astral's autumn trees now carry leaf transmission and bark relief like the base trees.
+- Match the path-traced material response to the raster one: foliage traces with its bark roughness and Surface materials off restores rough dielectrics in traced lighting as well.
+- Trace one importance-sampled local shadow ray per path bounce instead of one per in-range light; the first visible surface keeps the exact sum, so direct lighting is unchanged and bounce lighting keeps the same expected energy with fewer rays.
+- Skip relief and authored detail normals on path-traced bounce hits, widen the texture footprint of diffuse bounces, and test cutout alpha at that footprint on bounce rays; camera rays, shadows and the first visible surface are unchanged.
+- Keep each terrain cell's authored tile colour on path-traced bounce hits instead of blending transitions, junctions and cliff neighbours, skip near-vertical triplanar detail planes on flat ground, and sample five to seven local lights at the visible surface with the same four stratified draws that crowded scenes already use.
+- Test cutout foliage at the bounce footprint for shadow and emitter rays that leave a path bounce.
+- Keep path-traced lighting history when a torch or spell light drifts a small fraction of its range per frame; only the surfaces that light reaches use the short responsive history, instead of every surface restarting. Jumps, range or colour changes and new or extinguished lights still reset.
+- Weigh ReSTIR candidates and reused reservoirs with each flame's constant emission instead of sampling its texture per candidate; the chosen sample is still shaded with the exact textured emitter.
+- Under DLSS Ray Reconstruction, trace straight into the published path-tracing images instead of copying four full-resolution images every frame.
+- Keep the path-traced terrain sunlight cache until the sun has turned 0.1 degrees instead of retracing every terrain vertex each frame as the campaign clock advances.
+
 ## 1.35.0 — 2026-10-28
 
 - Let texture packs replace main-menu and Esc-menu signpost textures in `menus.res`, and add `tools/export_textures.py`, which exports the original MMP textures as lossless full-colour PNGs in the texture-pack folder layout so modders can edit and repackage them without MMP or DXT tools.

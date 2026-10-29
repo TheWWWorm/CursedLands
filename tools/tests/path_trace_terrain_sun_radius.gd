@@ -170,9 +170,20 @@ func run() -> void:
 	var repeated:=await measure("terrain-large-disk-repeat")
 	check(repeated.cache.refreshes==soft.cache.refreshes,"an unchanged disk reuses its cached terrain visibility")
 	check(cache_bytes==soft_bytes,"unchanged sun-disk visibility remains deterministic across frames")
+	# The campaign clock turns the sun about 0.005 degrees per frame. That
+	# drift reuses the cached visibility; a larger turn still retraces it.
+	var original_direction:=sun_direction
+	sun_direction=original_direction.rotated(Vector3.FORWARD,0.0005)
+	var drift:=await measure("terrain-large-disk-drift")
+	check(drift.cache.refreshes==soft.cache.refreshes,"a 0.03 degree sun drift reuses the cached terrain visibility")
+	check(cache_bytes==soft_bytes,"the drifting sun keeps the cached values unchanged")
+	sun_direction=original_direction.rotated(Vector3.FORWARD,0.004)
+	var turned:=await measure("terrain-large-disk-turned")
+	check(turned.cache.refreshes==soft.cache.refreshes+1,"a 0.23 degree sun turn refreshes the cache")
+	sun_direction=original_direction
 	angular_radius=0.0
 	var restored:=await measure("terrain-point-restored")
-	check(restored.cache.refreshes==soft.cache.refreshes+1,"returning to a point sun refreshes the cache")
+	check(restored.cache.refreshes==turned.cache.refreshes+1,"returning to a point sun refreshes the cache")
 	check(restored.edge.maximum<0.001 and restored.cache.maximum<0.0001,"restoring zero radius removes the terrain penumbra immediately")
 	check(absf(restored.clear.mean-point.clear.mean)<0.0001,"restored point sunlight retains its original diffuse energy")
 	check(await radius_fixture(false),"build the same shadow boundary with an ordinary object wall")

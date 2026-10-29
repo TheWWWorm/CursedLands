@@ -122,7 +122,7 @@
       "args": [
         "--ei-pt-tuning"
       ],
-      "min_checks": 52
+      "min_checks": 58
     },
     {
       "id": "path_trace_receivers",
@@ -1919,7 +1919,7 @@
       "data": "base",
       "mode": "rendered",
       "args": [],
-      "min_checks": 14,
+      "min_checks": 15,
       "rendering_method": "forward_plus"
     },
     {
@@ -3233,6 +3233,28 @@
       "timeout": 240
     },
     {
+      "id": "figure_material_surface",
+      "script": "tools/tests/figure_material_surface.gd",
+      "summary": "FIGURE_MATERIAL_SURFACE",
+      "contract": "Object surface families and figure material records give placed base-game masonry, timber, iron, cloth, clay and bone props the same roughness, metalness and relief in the raster material and the path-traced scene; verified stone/plank atlases and the chest mask are unchanged; Surface materials off restores rough dielectrics in PT.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 40
+    },
+    {
+      "id": "figure_material_surface_astral",
+      "script": "tools/tests/figure_material_surface.gd",
+      "summary": "FIGURE_MATERIAL_SURFACE",
+      "contract": "Lost in Astral's Jigran stonework, gold and expansion-only props resolve through the same family table, every listed name is an installed atlas, and the autumn tree recolours receive leaf/bark masks that follow the green tree02 original.",
+      "issues": [],
+      "data": "astral",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 55
+    },
+    {
       "id": "chest_surface_material",
       "script": "tools/tests/chest_surface_material.gd",
       "summary": "CHEST_SURFACE_MATERIAL",
@@ -3445,6 +3467,18 @@
       "min_checks": 56
     },
     {
+      "id": "path_trace_bounce_lights",
+      "script": "tools/tests/path_trace_bounce_lights.gd",
+      "summary": "SCENE_RT_DEVICE",
+      "contract": "Native PT continuation vertices draw one local light per bounce in proportion to its reach: a wall lit only through the floor keeps the summed bounce energy of two, seven and sixteen sources within tolerance of single-light renders.",
+      "issues": [],
+      "data": "base",
+      "mode": "rendered",
+      "rendering_method": "forward_plus",
+      "args": [],
+      "min_checks": 16
+    },
+    {
       "id": "path_trace_terrain_sun_radius",
       "script": "tools/tests/path_trace_terrain_sun_radius.gd",
       "summary": "SCENE_RT_DEVICE",
@@ -3454,7 +3488,7 @@
       "mode": "rendered",
       "rendering_method": "forward_plus",
       "args": [],
-      "min_checks": 37
+      "min_checks": 40
     },
     {
       "id": "path_trace_terrain_horizon",
