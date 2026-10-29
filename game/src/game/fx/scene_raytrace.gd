@@ -87,9 +87,11 @@ var _nrd_radiance := OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
 ## reads: 256 drops the emitter next-event rays (--ei-pt-no-emitter-nee).
 var _diagnostic_flags := 256 if OS.get_cmdline_user_args().has("--ei-pt-no-emitter-nee") else 0
 ## Rarely changing global shader parameters are written only when their value
-## changes; the camera matrices still go every frame.
+## changes; the camera matrices still go every frame. The cache is shared like
+## RenderingServer's globals, so another controller's writes or release cannot
+## leave this controller skipping a value that is no longer published.
 const POINT_GLOBALS: Array[StringName] = [&"ei_rt_point0",&"ei_rt_point1",&"ei_rt_point2",&"ei_rt_point3",&"ei_rt_point4",&"ei_rt_point5",&"ei_rt_point6"]
-var _global_values := {}
+static var _global_values := {}
 var _light_ids := PackedInt64Array()
 
 func _set_global(name: StringName,value: Variant) -> void:

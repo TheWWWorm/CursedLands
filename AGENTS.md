@@ -48,11 +48,13 @@ instructions if an old prefix is deliberately needed again.
 
 # Local main and remote updates
 
-On this workstation, the canonical Cursed Lands integration checkout is
+On the Windows workstation, the canonical Cursed Lands integration checkout is
+`C:/web/CursedLands`, on branch `main`; `C:/web` is the workspace.
+On the Linux workstation, it is
 `/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo`,
-on branch `main`. The folder name is historical; it is the current local main.
-`/home/llm2x/Documents/EI` is the workspace, not a Git checkout. Its `publish/`
-checkout and `remake/` tree are legacy locations, not the integration source.
+on branch `main`. That folder name is historical; it is the current Linux main.
+`/home/llm2x/Documents/EI` is the Linux workspace, not a Git checkout. Its
+`publish/` checkout and `remake/` tree are legacy locations, not the integration source.
 
 Verify the owning checkout with `git worktree list --porcelain` from the current
 Cursed Lands repository; use the entry for `refs/heads/main`. If it moves,

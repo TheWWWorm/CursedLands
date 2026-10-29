@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Keep cached path-tracing shader globals synchronized when scene controllers switch or retire.
 - Give placed objects a material response from a shared family table instead of a short list of texture names: masonry, plaster houses, timber, iron braziers, gold, clay, bone and cloth props in both the base game and Lost in Astral receive matching roughness, metalness and relief in the raster material and the path-traced scene, and parts the original artists marked metal, stone, wood or leather in their figure records are classified even when their atlas is not listed. Lost in Astral's autumn trees now carry leaf transmission and bark relief like the base trees.
 - Match the path-traced material response to the raster one: foliage traces with its bark roughness and Surface materials off restores rough dielectrics in traced lighting as well.
 - Trace one importance-sampled local shadow ray per path bounce instead of one per in-range light; the first visible surface keeps the exact sum, so direct lighting is unchanged and bounce lighting keeps the same expected energy with fewer rays.

@@ -379,3 +379,20 @@ sample per bounce vertex (saves one ray per path, adds variance), or a
 cheaper emitter program for scenes whose emitters are all constant-emission
 materials. The `--ei-pt-no-emitter-nee` diagnostic remains for attribution.
 
+## Completion review — 29 October
+
+The follow-up review found that the controller's cached shader globals needed
+process-wide ownership: a second controller could otherwise invalidate the
+first controller's cached values without causing them to be republished. The
+shared cache now has a rendered regression that reproduces the failure on the
+handoff build. Separate-pass output clearing, RR binding adoption, transmission
+history invalidation and NRD dispatch-plan reuse were also checked.
+
+An opaque constant-emitter shortcut was compiled and measured in A–B–B–A
+order. It produced no repeatable improvement and was reverted, with additional
+opaque emitter coverage retained. The accepted shader binaries are unchanged.
+SHaRC changes and fewer light-family samples remain research options with
+quality and performance tradeoffs; neither was enabled by this completion pass.
+See the [completion validation](../validation/path-tracing-completion-2026-10-29.md)
+for regression results, the rejected experiment and native-runtime limitations.
+
