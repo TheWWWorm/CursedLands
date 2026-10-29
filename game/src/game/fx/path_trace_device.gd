@@ -594,11 +594,14 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	if changes.has("rtxdi") and rtxdi_enabled!=bool(changes.rtxdi):
 		rtxdi_enabled=changes.rtxdi;rtxdi_failed=false;rtxdi.invalidate()
 	var di_requested:=rtxdi_enabled and frame.decode_float(145*4)<=8.0 and not rtxdi_failed
-	# direct_light sums every source through seven lights; above that it uses
-	# four proposals. Keep RTXDI for larger sets and registered emitters, but
-	# avoid full-resolution reservoirs and resampling for an exact small sum.
-	var local_count:=mini(int(frame.decode_float(188*4)),64) if frame.decode_float(191*4)>0.5 else 7
-	var di:=di_requested and (_rtxdi_force or emitters.count>0 or local_count>7)
+	# direct_light sums every source exactly through four lights; above that
+	# it already draws four stratified proposals per frame, and the separate
+	# ReSTIR pass with one shadow ray and temporal reuse costs less than those
+	# four rays, so it takes over there and for registered emitters. Up to four
+	# lights keep the exact sum without reservoir allocation; the legacy
+	# seven-slot table carries no count and stays on the exact path.
+	var local_count:=mini(int(frame.decode_float(188*4)),64) if frame.decode_float(191*4)>0.5 else 0
+	var di:=di_requested and (_rtxdi_force or emitters.count>0 or local_count>4)
 	var enabled := frame.decode_float(190*4)>0.5 if frame.decode_float(191*4)>0.5 else sharc_enabled
 	if enabled!=_sharc_requested:sharc_failed=false;_sharc_requested=enabled
 	var requested := enabled and frame.decode_float(145*4)<=8.0 and not sharc_failed

@@ -1,5 +1,5 @@
 extends "res://tools/tests/path_trace_rtxdi.gd"
-## Managed Quality keeps the exact <=7-light estimator without allocating
+## Managed Quality keeps the exact <=4-light estimator without allocating
 ## per-pixel reservoirs. Compare actual raw light, including changing blockers,
 ## then cross the light-count and emissive-geometry boundaries on one device.
 var legacy_lights:=false
@@ -66,8 +66,8 @@ func run() -> void:
 		var angle:=i*TAU/8.0
 		lights.append(Vector4(cos(angle),2.0+0.1*(i%3),sin(angle),6))
 		colours.append(Color(0.2+0.03*(i%3),0.1+0.02*(i%5),0.15+0.01*(i%7),0))
-	var seven_reference: Image
-	for count in [0,1,7]:
+	var four_reference: Image
+	for count in [0,1,4]:
 		selected.assign(range(count));tick=0
 		var reference:=await sparse_capture("exact-%d"%count,{"rtxdi":false,"ray_reconstruction":true})
 		tick=0
@@ -79,33 +79,34 @@ func run() -> void:
 		var energy:=raw_mean()
 		check(energy.r==0 and energy.g==0 and energy.b==0 if count==0 else minf(energy.r,minf(energy.g,energy.b))>0.05,
 			"%d-light fixture has the expected finite coloured energy"%count)
-		if count==7:seven_reference=reference
+		if count==4:four_reference=reference
 	var handles:=device.published_targets().duplicate()
-	# The eighth light must activate the reservoir estimator. Obtain its
+	# The fifth light must activate the reservoir estimator, where the exact
+	# path would otherwise draw four stratified proposals. Obtain its
 	# independent reference by summing two exact small-light renders.
-	var eight_reference:=Color(0,0,0,0)
-	for group in [range(7),[7]]:
-		selected.assign(group);await sparse_capture("eight-reference-"+str(group[0]),{"rtxdi":false})
-		eight_reference+=raw_mean()
-	selected.assign(range(8))
-	var eight:=await average_raw(32,{"rtxdi":true})
-	check(device._rtxdi_mode and device.rtxdi.active and device.rtxdi.bytes>0,"the eighth light activates actual RTXDI resources")
-	check(rgb_error(eight,eight_reference)<0.05,"eight-light reservoir output preserves independently summed RGB energy")
+	var five_reference:=Color(0,0,0,0)
+	for group in [range(4),[4]]:
+		selected.assign(group);await sparse_capture("five-reference-"+str(group[0]),{"rtxdi":false})
+		five_reference+=raw_mean()
+	selected.assign(range(5))
+	var five:=await average_raw(32,{"rtxdi":true})
+	check(device._rtxdi_mode and device.rtxdi.active and device.rtxdi.bytes>0,"the fifth light activates actual RTXDI resources")
+	check(rgb_error(five,five_reference)<0.05,"five-light reservoir output preserves independently summed RGB energy")
 	check(device._deep_paths and device.ray_reconstruction,"many-light transition preserves four-bounce raw reconstruction")
-	await sparse_capture("eight-blocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":2}]})
+	await sparse_capture("five-blocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":2}]})
 	check(raw_mean().r<0.00001 and raw_mean().g<0.00001 and raw_mean().b<0.00001,"new blockers occlude the many-light estimator immediately")
-	await sparse_capture("eight-unblocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":0}]})
-	check(raw_mean().r>eight_reference.r*0.8,"removing the blocker restores many-light illumination")
-	selected.assign(range(7));tick=0
-	var restored:=await sparse_capture("seven-restored")
-	check(reservoir_free(),"returning to seven lights releases the optional reservoir storage")
-	check(restored.get_data()==seven_reference.get_data(),"returning to seven lights restores exact current illumination without reservoir history")
+	await sparse_capture("five-unblocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":0}]})
+	check(raw_mean().r>five_reference.r*0.8,"removing the blocker restores many-light illumination")
+	selected.assign(range(4));tick=0
+	var restored:=await sparse_capture("four-restored")
+	check(reservoir_free(),"returning to four lights releases the optional reservoir storage")
+	check(restored.get_data()==four_reference.get_data(),"returning to four lights restores exact current illumination without reservoir history")
 	check(device.published_targets()==handles,"estimator transitions preserve public lighting texture handles")
-	await sparse_capture("seven-blocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":2}]})
+	await sparse_capture("four-blocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":2}]})
 	check(raw_mean().r<0.00001 and raw_mean().g<0.00001 and raw_mean().b<0.00001,"the exact sparse estimator retains real shadow occlusion")
 	tick=0
-	var clear:=await sparse_capture("seven-unblocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":0}]})
-	check(clear.get_data()==seven_reference.get_data(),"removing a sparse-light blocker restores exact current RGB")
+	var clear:=await sparse_capture("four-unblocked",{"instances":[{"index":1,"transform":Transform3D.IDENTITY,"mask":0}]})
+	check(clear.get_data()==four_reference.get_data(),"removing a sparse-light blocker restores exact current RGB")
 	check(device.rtxdi_enabled and not device.rtxdi_failed,"adaptive selection retains the requested feature and healthy fallback state")
 	legacy_lights=true;tick=0
 	var legacy_reference:=await sparse_capture("legacy-reference",{"rtxdi":false})

@@ -699,6 +699,21 @@ direct-light program references; the library target keeps every declared
 binding in the set layout, so the pass binds the same set as the path
 programs without the SHaRC bindings.
 
+## ReSTIR activation threshold
+
+With the separate pass, ReSTIR at seven lights (1.34–1.35 ms) is cheaper than
+the exact estimator at seven lights (1.49–1.51 ms), which from five lights
+already draws four stratified proposals per frame instead of one ray per
+light. The managed presets therefore activate ReSTIR from five local lights
+(or any registered emitter) instead of eight; up to four lights keep the exact
+sum with one shadow ray each and no reservoir allocation, and the legacy
+seven-slot table, which carries no count, stays on the exact path.
+`path_trace_rtxdi_sparse` now exercises the exact path at 0, 1 and 4 lights,
+the activation at the fifth light and the return to four (37 checks);
+`path_trace_rtxdi` (27), the emitter deep SHaRC RTXDI case (15),
+`path_trace_bounce_lights` (17) and `path_trace_light_history` (58) pass on
+the same pack (`thresh1-*`).
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

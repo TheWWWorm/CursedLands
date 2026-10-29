@@ -324,6 +324,8 @@ evaluation run in a separate thin ray-generation pass over the stored
 surface (`PATH_DI_PASS`), which brought ReSTIR from 3.1–3.7 ms to
 1.34–1.59 ms on the many-light river, below the plain estimator at every
 light count; eight candidates replace sixteen and pairwise MIS was measured
-slower than the basic correction and left out. Measurements are in the
-validation record.
+slower than the basic correction and left out. The managed presets now
+activate ReSTIR from five local lights, where the exact estimator would draw
+four stratified proposals per frame, instead of from eight. Measurements are
+in the validation record.
 

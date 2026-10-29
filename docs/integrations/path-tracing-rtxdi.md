@@ -18,10 +18,12 @@ compatible with radiance NRD, directional NRD, SHaRC and DLSS Ray Reconstruction
 ## Sampling and history
 
 Managed presets use the existing summed-light estimator when the scene has at
-most seven local lights and no registered emissive triangles. That estimator
-already evaluates every light, so allocating and resampling full-screen
-reservoirs adds work without improving light selection. More lights or any
-registered emitter activate RTXDI again; its shader variants are prepared in
+most four local lights and no registered emissive triangles. That estimator
+evaluates every light exactly with one shadow ray each; from five lights it
+would draw four stratified proposals per frame, and the separate ReSTIR pass
+with one shadow ray and temporal reuse measured cheaper than those four rays,
+so five or more lights or any registered emitter activate RTXDI; its shader
+variants are prepared in
 advance. The diagnostic `--ei-pt-tuning` mode continues to honor the explicit
 RTXDI switch. Bounce count, resolution and reconstruction settings are unchanged.
 
