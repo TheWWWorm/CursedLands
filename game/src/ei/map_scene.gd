@@ -38,7 +38,10 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 		s.mob = EIMob.load_bytes(GameData.read_file(mob_path))
 		s._relocated_objects = CatacombLift.apply(map_name,mob_name,s.mob,s.terrain)
 		s._place_objects()
-		s.stats.wall_seams = WallSeams.apply(s.object_nodes)
+		# The seam trimming only clips duplicate rendering triangles; a map
+		# that presents nothing (the simulation worker) keeps the authored
+		# meshes, which collision and scripts use either way.
+		s.stats.wall_seams = WallSeams.apply(s.object_nodes) if presentation else {"faces": 0, "trimmed": 0}
 	s.stats.terrain_ms = t1 - t0
 	s.stats.objects_ms = Time.get_ticks_msec() - t1
 	return s

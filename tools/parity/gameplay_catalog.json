@@ -10164,6 +10164,28 @@
       "focused": "prison_wall_seams"
     },
     {
+      "id": "effects/headless_wall_seams",
+      "category": "effects",
+      "script": "tools/tests/headless_wall_seams.gd",
+      "marker": "HEADLESS_WALL_SEAMS",
+      "min_checks": 8,
+      "quick": true,
+      "description": "A map loaded for a world that presents nothing (the simulation worker) keeps its authored wall meshes and skips the seam trimming; a presenting map still trims, and both keep the authored collision geometry.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone3dun1.mob",
+        "maps/zone3dun1.mpr"
+      ],
+      "display": "headless",
+      "focused": "headless_wall_seams"
+    },
+    {
       "id": "arena/arena_menu_io",
       "category": "arena",
       "script": "tools/tests/arena_menu_io.gd",

@@ -211,6 +211,31 @@ critical one. The next second therefore comes from the client's build ahead
 build 0.7 s, preparation 1.4 s) or from the client's part after the message
 (3 s), not from the worker.
 
+Done in this pass (sixth): the wall-seam trimming (`WallSeams.apply`,
+rendering triangles only) is skipped on a map loaded for a world that
+presents nothing: 0.30 s of the worker's Portal build (not yet measured on
+GPU Lab). Attributed next (`local/validation/cpu-speed-20261029/zone-load/run-pass8-ahead-phases.log`):
+the client's part after the zone message is 3.5 s = spawn 1.28 s (model
+creation 0.89 s: part nodes and meshes, since libraries and atlases are
+prepared ahead), shader warm-up 1.80 s (terrain colour cache 0.86 s =
+creation 0.28 s + an 8-page native bake 0.58 s on the four pool threads;
+materials 0.35 s; first picture 0.39 s), world take-over 0.32 s, attach
+0.19 s. The next change, designed but not started: create the colour
+cache in the ahead build (`TerrainColorCache.create` works out of the
+tree; `terrain.gd` guards it with `is_inside_tree()` for its own
+`apply_gfx`), and in `_rpc_zone` focus the rig on the local hero's record
+position (`r.position`, `r.controller == my_index`; `CameraRig.focus`
+applies the camera transform at once, and `village_start_view` would take
+that position early) and start the page bake (`_select` + `_start_jobs(true)`)
+before the 1.28 s replica spawn, joining it in `ShaderWarmup.run` where
+`prepare(cam)` runs today; ~0.8 s off the critical path. A rendered
+regression (as `focused/terrain_color_loading`) must check the early
+start bakes each page once and the warm-up finds them resident. The
+remaining build-ahead items: `EIUnitModel.prewarm` 1.74 s is serial per
+record (its per-record library decode and atlas composition could be a
+wide group if `EIAnim._libraries` and `_textures` writes are made
+thread-safe), object instantiation 0.67 s, the mob read 0.20 s.
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
