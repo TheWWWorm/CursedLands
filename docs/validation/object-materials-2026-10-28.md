@@ -851,6 +851,41 @@ query code inside the path raygen) costs far more than the one or two
 segments it can replace on this scene, so it stays off in both presets; the
 research notes list the parameter changes a later trial would start from.
 
+## Emissive geometry cost
+
+The new `path_trace_emitter_performance.gd` benchmark hangs 32 hidden
+emissive boxes (12 triangles each) under the placed object nearest the camera
+on the frozen river and reveals them in groups under `--ei-pt-tuning`.
+Ray-stage medians on the head before the emitter change (`emit-2`, Low,
+1280×720): no emitters 0.42–0.45 ms; 8 boxes 0.78 ms and 32 boxes 0.88 ms
+with the exact estimator; 0.90 and 1.00 ms with ReSTIR. The first emitters
+switch the frame from the lean programs to the emitter programs, which trace
+one more shadow ray per path vertex toward a sampled emitter triangle and
+look its primitive up on every hit, so eight small boxes already cost 80% of
+the no-emitter ray stage.
+
+A roulette on bounce-vertex emitter samples (survive in proportion to the
+unshadowed estimate below 0.02 radiance, weight survivors up) passed the
+four emitter fixtures, the sparse policy, bounce-light and light-history
+cases (`eroul1-*`) but did not pay on this benchmark (`eroul-*`: 0.80 against
+0.78–0.79 ms at eight boxes, 0.94 against 0.88–0.89 ms at thirty-two): the
+boxes stand within three metres and their estimates exceed the threshold, so
+no ray is skipped and the estimate costs a little. It was reverted.
+
+Attribution with `--ei-pt-no-emitter-nee`, which drops the emitter next-event
+rays while keeping the emitter programs (`enee-*`, ABBA pairs): eight boxes
+measure 0.80–0.90 ms with the rays and 0.55 ms without, thirty-two boxes
+0.87–0.91 against 0.57 ms, so the next-event rays themselves cost
+0.25–0.33 ms per frame (three per path at this depth) and the emitter
+programs with their per-hit emitter lookups and larger footprint the
+remaining 0.13 ms over the lean programs. With ReSTIR the same pairs read
+0.92–0.94 against 0.72–0.73 ms and 1.01–1.02 against 0.78–0.79 ms. No
+unbiased way to drop those rays presented itself: the one-sample mixture of
+local lights and emitters per bounce vertex would save one ray per path at
+the cost of one light family per vertex, and constant emission at bounce
+vertices would bias textured flames. The emitter cost is therefore recorded
+as the next structural target rather than changed.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records

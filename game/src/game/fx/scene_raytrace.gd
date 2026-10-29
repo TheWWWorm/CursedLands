@@ -83,6 +83,9 @@ var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-h
 var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
 var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
 var _nrd_radiance := OS.get_cmdline_user_args().has("--ei-pt-nrd-radiance")
+## Diagnostic bits carried in the shadow-ray count the path tracer never
+## reads: 256 drops the emitter next-event rays (--ei-pt-no-emitter-nee).
+var _diagnostic_flags := 256 if OS.get_cmdline_user_args().has("--ei-pt-no-emitter-nee") else 0
 ## Rarely changing global shader parameters are written only when their value
 ## changes; the camera matrices still go every frame.
 const POINT_GLOBALS: Array[StringName] = [&"ei_rt_point0",&"ei_rt_point1",&"ei_rt_point2",&"ei_rt_point3",&"ei_rt_point4",&"ei_rt_point5",&"ei_rt_point6"]
@@ -756,7 +759,7 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 	# separately in PathSky's reserved channels, alongside local illumination.
 	var sky := Color.BLACK if game._sky_cave else Gfx.ambient.srgb_to_linear()
 	data.append_array(PackedFloat32Array([sun.r,sun.g,sun.b,GameData.option("rt_shadows"),direction.x,direction.y,direction.z,0.00465,
-		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality],camera.near,
+		sky.r,sky.g,sky.b,GameData.option("rt_gi"),_frame_number,GI_SAMPLES[quality],SHADOW_SAMPLES[quality]+_diagnostic_flags,camera.near,
 		float(camera.projection==Camera3D.PROJECTION_ORTHOGONAL),camera.far,float(history),Scene.RADIUS*2.0,
 		_center.x,_center.y,_center.z,Scene.RADIUS]))
 	# Full-size tables stay zero for absent entries; only the present lights

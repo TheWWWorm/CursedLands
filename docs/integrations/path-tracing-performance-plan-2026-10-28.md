@@ -367,3 +367,15 @@ measurements that decide it: SHaRC update and resolve GPU time at 1440p, the
 share of paths ending at depth one, Quality frame time against the four-
 bounce baseline, and frames to under 10% error after a light toggle.
 
+## Open: emissive geometry
+
+`path_trace_emitter_performance.gd` shows the first emissive triangles
+switching the frame to the emitter programs at a cost of about 80% of the
+no-emitter ray stage on the river (0.42 → 0.78–0.80 ms at eight small boxes),
+of which 0.25–0.33 ms are the emitter next-event rays (three per path) and
+0.13 ms the emitter programs themselves. Roulette on faint bounce-vertex
+samples did not engage on nearby flames. Options left: one light-family
+sample per bounce vertex (saves one ray per path, adds variance), or a
+cheaper emitter program for scenes whose emitters are all constant-emission
+materials. The `--ei-pt-no-emitter-nee` diagnostic remains for attribution.
+

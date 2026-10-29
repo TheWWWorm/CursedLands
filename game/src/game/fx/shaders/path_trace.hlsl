@@ -448,6 +448,10 @@ float emitter_hit_pdf(Surface hit,float3 origin) {
 void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 light_direction) {
     diffuse=0.0;specular=0.0;
     light_direction=0.0;
+    // Diagnostic (--ei-pt-no-emitter-nee): the controller adds 256 to the
+    // unused shadow-ray count so attribution runs can drop the emitter
+    // next-event rays while keeping the emitter programs.
+    if(frame.settings.z>=256.0)return;
     uint count=emitters.Load(0);if(count==0u)return;
     float choice=path_random(sampler,8u).x;uint low=0u,high=count;
     while(low<high) {
