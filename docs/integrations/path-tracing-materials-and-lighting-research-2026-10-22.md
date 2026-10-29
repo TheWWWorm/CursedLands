@@ -16,6 +16,10 @@ The [authored-lighting follow-through](../validation/path-tracing-authored-light
 adds flame-sized PT sources, a calibrated fixed HDR display profile and matched
 day/night/cave qualification. Per-zone source placement and broader color-art
 cleanup remain content-authoring work.
+The [object material families](../validation/object-materials-2026-10-28.md)
+follow-through (28 October) replaces the short texture-name list with a family
+table covering the placed props of both editions, uses the figure material
+records as a classified fallback, and masks Lost in Astral's autumn trees.
 The [GPU 1 control](../validation/path-tracing-gpu1-control-2026-10-23/README.md)
 completes the remaining unmapped-scene performance qualification on an RTX 3090
 Ti, separately from the mapped-content and lighting measurements.
