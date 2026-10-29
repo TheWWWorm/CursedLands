@@ -349,7 +349,10 @@ payoff this experiment does not predict.
 
 ## Follow-up: SHaRC in the Quality preset
 
-The radiance cache stays off in both presets. The research notes (NVIDIA
+The radiance cache stays off in both presets: measured on the river at four
+bounces it doubles the ray stage (0.52–0.54 → 0.87–1.08 ms, update raygen
+and resolve included) while the four-bounce tail it would replace costs
+0.05–0.1 ms over two bounces. The research notes (NVIDIA
 SHaRC Integration guide and AGENTS notes, the RTXGI path-tracer sample, issue
 7 on lighting lag) suggest a trial for Quality only: update one jittered
 pixel per 5×5 block (4% of paths) instead of 4×4 with propagation depth 4,

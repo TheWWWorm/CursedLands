@@ -835,6 +835,22 @@ within noise; refraction off is unchanged (0.54–0.57 ms, one first block at
 pass (`tdeep1-*`). The estimator stays unbiased; only the depth tail is
 shared with the main integrator.
 
+## Radiance cache at four bounces
+
+River, Low, all detail features, `--pt-case=path-4-low` under
+`--ei-pt-tuning` (so refraction stays off and `pt_sharc` follows the launch
+setting), ABBA (`sharc-off1/2`, `sharc-on1/2`): the four-bounce ray stage
+without the cache measures 0.524–0.543 ms, only 0.05–0.1 ms above the two-
+bounce case now that the cliff projection is left to the visible surface and
+the roulette tail starts at the third bounce. With the SHaRC cache on, the
+ray stage (which includes the cache update raygen and the resolve pass)
+measures 0.870–1.075 ms, about double, while the reconstruction stays at
+0.185–0.196 ms. The cache as configured (one update path per 4×4 tile with
+eight propagation steps, a one-million-entry resolve every frame and the
+query code inside the path raygen) costs far more than the one or two
+segments it can replace on this scene, so it stays off in both presets; the
+research notes list the parameter changes a later trial would start from.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
