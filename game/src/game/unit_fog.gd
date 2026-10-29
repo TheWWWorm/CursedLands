@@ -204,6 +204,24 @@ static func relevant_for(s: Session, player: int, camera := Vector2.INF) -> Arra
 	return out
 
 
+## relevant_for for one unit, without the noticed lists (callers such as
+## GameUnit.party_knows test those first): whether the issuing player is shown
+## `u` now. Single player without unit_fog shows every unit near the camera.
+static func shown_to(s: Session, player: int, u: GameUnit) -> bool:
+	if s == null or s.world == null or not is_instance_valid(u) or u.hidden:
+		return false
+	if u.controller == player or s.shop_available():
+		return true
+	var rig: CameraRig = s.game.rig if s.game != null else null
+	if not s.multiplayer_game and rig != null and rig.held:
+		return true
+	if sight_active(s):
+		if not s.lmp.is_empty() and not String(u.info.get("name", "")).is_empty():
+			return true
+		return sees(party_eyes_for(s.world, player, s.multiplayer_game and s.lmp.is_empty()), u)
+	return rig == null or u.pos.distance_squared_to(Vector2(rig.position.x, -rig.position.z)) < CAMERA_RANGE * CAMERA_RANGE
+
+
 ## Whether `u` is on this player's list (minimap dots, over
 ## ). Online / unit_fog: the rule above (u.visible). Single player
 ## (= 0): the player's own units and every object

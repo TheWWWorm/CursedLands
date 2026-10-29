@@ -1303,6 +1303,11 @@ func attack(t: GameUnit, queue := false, aim := -1, run := false, path_notice :=
 ## the target is known: of its side or player, noticed by the unit (5cb7f0),
 ## or in the player's group (66e0d0), which 66e0f0 fills
 ## from the noticed lists of all the party's units.
+## Remake: a unit the player is shown (UnitFog.shown_to) is known too. The
+## original single player draws every unit while the party notices far fewer
+## (a 90-degree half cone and the sight range, ~13 m for Zak), so a boar drawn
+## behind the hero could be clicked but never attacked; only a target that
+## leaves what the player sees ends the order.
 func party_knows(t: GameUnit) -> bool:
 	if controller < 0 or t == null or t.faction == faction or t.controller == controller:
 		return true
@@ -1312,7 +1317,7 @@ func party_knows(t: GameUnit) -> bool:
 	for u: GameUnit in world.unit_rows():
 		if u.controller == controller and not u.dead and (u.get_meta("noticed", {}) as Dictionary).has(id):
 			return true
-	return false
+	return world.session != null and UnitFog.shown_to(world.session, controller, t)
 
 
 ## 554b30 / 54d960 / 54c800: a blow

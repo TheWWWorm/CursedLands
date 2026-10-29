@@ -756,6 +756,24 @@
       ]
     },
     {
+      "id": "combat/party_attack_drawn_target",
+      "category": "combat",
+      "script": "tools/tests/party_attack_drawn_target.gd",
+      "marker": "PARTY_ATTACK_DRAWN_TARGET",
+      "min_checks": 9,
+      "quick": false,
+      "description": "A party attack on a unit the player is shown but the party has not noticed goes on; it ends once the player no longer sees it",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "combat/hit_reaction_tempo",
       "category": "combat",
       "script": "tools/tests/hit_reaction_tempo.gd",

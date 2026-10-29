@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.36.1 — 2026-10-29
+
+- Let party members attack a unit the player can see even when no party member has noticed it yet, such as a creature behind the hero; the order still ends with "no target" once the player can no longer see the target.
+
 ## 1.36.0 — 2026-10-29
 
 - Bring combat and creature decisions closer to the original: preserve scripted Follow escorts and alarm behaviours, share hostility with nearby friends, respect staged taming and damaged aimed parts, cancel attacks whose targets leave reach or knowledge, handle high flyers and Feeblemind correctly, preserve attack timing through hit reactions, and propagate attack noise.
