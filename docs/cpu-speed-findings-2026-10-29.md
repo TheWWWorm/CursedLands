@@ -380,7 +380,7 @@ Remaining leads, in order of expected value:
    `EIFigure.instantiate`: node trees, cached meshes 0.4 s when cold) and
    2.2 s on the client (materials, `GroundContact`, scenery batches) is
    scene-tree work and would need the meshes built ahead on the pool.
-6. **Presentation terrain build on the client** (`EITerrain.load_map(…, true)`,
+6. Done (tenth change, sector lanes): **Presentation terrain build on the client** (`EITerrain.load_map(…, true)`,
    GPU Lab 2880×1800, `local/validation/cpu-speed-20261029/terrain-build/`):
    6.2–6.3 s with cold caches, 1.84 s warm. Phase sums over the sectors:
 
@@ -401,8 +401,9 @@ Remaining leads, in order of expected value:
    `_mesh_arrays` and the liquid helpers to one task per sector (they read
    the sector bytes and the material table and write per-sector arrays; the
    shared `heights`/`land_xy`/`land_n` rows would be merged on the main
-   thread) is the remaining terrain lead. The cold cliff cache and the
-   `apply_gfx` tail are one-time costs per installation.
+   thread) was the remaining terrain lead; done as `_sector_arrays` on a
+   wide group (the rows stay serial in phase A). The cold cliff cache and
+   the `apply_gfx` tail are one-time costs per installation.
 
 ## 8. Operational notes
 
