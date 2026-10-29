@@ -323,6 +323,29 @@ while the worker still prepares. The client's own path is the critical
 path now: build ahead 4.5 s (terrain, objects 1.4 s, nav 0.7 s, prewarm),
 then spawn 1.3 s, colour cache, attach and first picture 2.75 s.
 
+Attribution of the client's path after the eleventh change (instrumented
+runs `local/validation/cpu-speed-20261029/zone-load/run-pass15*-phases-
+d883a1b3.log`, patch `ahead-phase-timers-v2.patch`, warm, GPU Lab):
+
+| client phase | time | inside |
+| --- | --- | --- |
+| build ahead: terrain | 1.28 s | presenting build, sectors on lanes |
+| build ahead: objects | 1.35 s | instantiate 0.62, LEVER 0.26, OBJECT 0.42, mob read 0.20 |
+| build ahead: nav build | 0.68 s | footprints on lanes |
+| build ahead: prewarm | 1.03 s | libraries 0.85 (11 base decodes 0.51, 35 height copies 0.11, 18 pruned copies 0.15), gear plans 0.08, atlases 0.06 |
+| after the message: world | 0.30 s | the world built ahead enters the tree |
+| after the message: spawn | 1.28 s | model creation 0.88 (parts 0.58: nodes 0.07, geometry 0.09, meshes 0.17, mesh instances 0.07, materials 0.02; plans and materials 0.16; player and adb 0.06), first action 0.14, snapshots 0.10 |
+| after the message: attach | 0.19 s | |
+| after the message: warm-up | 0.70–0.86 s | `_zone_materials` walk 0.16, first picture 0.36–0.38, 32 materials 0.2–0.3 |
+
+Model creation is diffuse per-part GDScript (about 70 µs per part over
+~20 parts per model, nothing dominant) and the scene-tree phases scale with
+the node count; the lane work of the build ahead (prewarm decode, nav
+footprints) still waits for the main thread's scene work (object placement)
+and vice versa, so overlapping them is the next structural lead: the
+prewarm's libraries decoded on a background thread while the objects are
+placed (below).
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
