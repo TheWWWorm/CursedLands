@@ -249,11 +249,28 @@ class GameplayExecution(unittest.TestCase):
         self.assertEqual({row["category"] for row in rows},
                          {"quests", "creatures", "animation", "effects", "stealth", "commands", "pathing",
                           "spells", "inventory", "progression", "party", "persistence", "combat", "network",
-                          "settings", "dialogue", "coop", "interface", "arena"})
+                          "settings", "dialogue", "coop", "interface", "arena", "focused"})
         for row in rows:
             script = REPO / row["script"]
-            self.assertTrue(script.is_file(), row["id"])
-            self.assertIn(row["marker"], script.read_text(), row["id"])
+            sources = []
+            seen = set()
+            # Focused cases can inherit their completion printer through
+            # several scripts. Validate that chain instead of requiring
+            # every subclass to duplicate the parent's summary marker.
+            while script is not None:
+                self.assertNotIn(script, seen, row["id"])
+                self.assertTrue(script.is_file(), row["id"])
+                seen.add(script)
+                source = script.read_text()
+                sources.append(source)
+                base = re.search(r'^extends\s+"([^"]+\.gd)"', source, re.M)
+                if base:
+                    name = base.group(1)
+                    script = REPO / name[6:] if name.startswith("res://") else script.parent / name
+                    script = script.resolve()
+                else:
+                    script = None
+            self.assertIn(row["marker"], "\n".join(sources), row["id"])
 
     def test_frozen_selection_replays_without_catalog_changes(self):
         rows = catalog()[:2]

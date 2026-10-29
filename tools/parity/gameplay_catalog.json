@@ -2508,6 +2508,26 @@
       "focused": "unit_prewarm_background"
     },
     {
+      "id": "pathing/arena_scenery_clearance",
+      "category": "pathing",
+      "script": "tools/tests/arena_scenery_clearance.gd",
+      "marker": "ARENA_SCENERY_CLEARANCE",
+      "min_checks": 41,
+      "quick": true,
+      "description": "The arena keeps all 21 surrounding scenery objects while the full fighting area and mirrored home-to-centre routes stay open for all eight movement classes after a serial navigation build.",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "focused": "arena_scenery_clearance"
+    },
+    {
       "id": "animation/world_prewarm_authority",
       "category": "animation",
       "script": "tools/tests/world_prewarm_authority.gd",

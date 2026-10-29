@@ -23,5 +23,5 @@ func _ready()->void:
 			var route:=nav.find_path(away,Vector2(32,32),[],[],0.0,movement)
 			check(not route.is_empty() and route[-1].distance_to(Vector2(32,32))<0.3,"mirrored creature reaches combat: "+str([movement,home]))
 	ground.queue_free();await get_tree().process_frame
-	print("ARENA_SCENERY_CLEARANCE ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_SCENERY_CLEARANCE ",JSON.stringify({"checks":checks,"failures":failures.size()}))
 	get_tree().quit(0 if failures.is_empty() else 1)
