@@ -884,187 +884,21 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	if complexion == Vector3.ZERO and not unit.get("effective_complexion", false):   # absent map override
 		complexion = GameUnit.proto_complexion(proto)
 	set_meta("complexion", complexion)
-	var mask := String(race.get("mask", template)).to_lower()
+	var plan := gear_plan(model, unit, proto, race, template, get_meta("peaceful_gear", false))
+	var mask: String = plan.mask
 	var parts: Dictionary = model.parts
-
-	# --- which mesh goes on which part
-	var mesh_for := {}  # part -> fig part name
-	var body_parts: PackedStringArray = unit.get("parts", PackedStringArray())
-	for link: Array in model.links:
-		var p: String = link[0]
-		if "." in p:
-			continue
-		# Without the map's part list only the body gets meshes; weapon and
-		# armour variants are added below from what the unit carries.
-		if p in body_parts or (body_parts.is_empty() and _is_body_part(p, model)):
-			mesh_for[p] = p
-	# Goblins carry an authored natural weapon rather than an inventory item.
-	# The ranged prototype keeps its sling; the other prototypes keep the pike.
-	if template == "unmogo":
-		var ranged := int(proto.get("weapon_type_id", -1)) == 5
-		mesh_for.erase("rh3.axeth00")
-		mesh_for.erase("rh3.sword00")
-		mesh_for.erase("rh3.pike00" if ranged else "sling")
-		var natural := "sling" if ranged else "rh3.pike00"
-		if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
-			mesh_for[natural] = natural
-	# The lizard's trident is part of its authored figure, with no inventory
-	# weapon entry. The generic dotted-variant filter otherwise drops it.
-	if template == "unmoli" and parts.has("rh3.trident") \
-			and (body_parts.is_empty() or "rh3.trident" in body_parts):
-		mesh_for["rh3.trident"] = "rh3.trident"
-	# Lesoviki have no inventory weapon: their blowpipe and dart box are
-	# authored figure parts, mounted and animated with the hand and torso.
-	if template == "unmodr":
-		for natural: String in ["rh3.tube00", "bd.box00"]:
-			if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
-				mesh_for[natural] = natural
-	# Rick's staff belongs to his authored figure, not to an inventory slot.
-	# Keep the LNK hand attachment and its animation like the other natural props.
-	if template == "unmori" and parts.has("rh3.staff00") \
-			and (body_parts.is_empty() or "rh3.staff00" in body_parts):
-		mesh_for["rh3.staff00"] = "rh3.staff00"
-	var layers: Array[String] = []
-	var surfaces: Array[Vector3] = []
-	#  formats the prototype's skin index directly. The race's
-	# texture list is incomplete (e.g. unhuma has 29 entries but skins 0..36).
-	# An absent prototype alone uses skin 00. The wiki's cut-content pages
-	# pass "skin" to show an otherwise unused redress skin on a prototype.
-	var skin_i: int = int(unit.get("skin", proto.get("skin", 0)))
-	var skin := "skin_%02d" % skin_i
-	if not race.is_empty() and int(race.get("type_id", 0)) != 0x32:
-		# Creature figures use named textures (e.g. Wolf00), not redress skins.
-		# The redress is for characters (race
-		# type 0x32) only; a creature keeps its map record's texture (0xB007,
-		# record): WolfWhite* "wolf01", BoarDark* "boar01", though every
-		# wolf / boar prototype has skin 0. Without a record: the race list.
-		var skins: PackedStringArray = race.get("textures", PackedStringArray())
-		skin = skins[skin_i] if skin_i >= 0 and skin_i < skins.size() else (skins[0] if skins.size() else "")
-		if String(unit.get("texture", "")) != "":
-			skin = String(unit.texture)
-	elif race.is_empty() and unit.has("template"):
-		# A bare figure without a race record (wiki previews of figures no
-		# race uses) names its own texture, or none at all.
-		skin = String(unit.get("texture", ""))
-	layers.append(skin.to_lower())
-	surfaces.append(SurfaceResponse.SKIN)
-
-	# Hair is a variant under the head ("hr.00".."hr.02" = prototype hair
-	# 0..2); there is no base "hr" part. A helmet selects its armoured variant
-	# if present, otherwise hides the hair.
-	var hair_part := "hr.%02d" % int(unit.get("hair", proto.get("hair", 0)))
-	if not parts.has(hair_part):
-		hair_part = ""
-
-	var wears: Array = Array(unit.get("armors", PackedStringArray()))
-	if not unit.has("armors"):
-		wears = Array(proto.get("wears", PackedStringArray()))
-	var armors := []
-	var helm_layer := ""
-	var helm_surface := SurfaceResponse.DULL
-	var helm_parts := {}
-	for w: String in wears:
-		var item := Items.info(w)
-		var a: Dictionary = item.row if item.table == "armors" else {}
-		if a.is_empty():
-			continue
-		if get_meta("peaceful_gear", false) and a.type == "helm":
-			continue
-		armors.append([a, item.mat])
-	armors.sort_custom(func(x, y):
-		var xi := ARMOR_ORDER.find(x[0].type)
-		var yi := ARMOR_ORDER.find(y[0].type)
-		if xi in [4, 5] and yi in [4, 5]:
-			#  field 0x18 -> record
-			# returns a uint and compares it with JAE.
-			var xp := int(x[0].get("layer_order", 0))
-			var yp := int(y[0].get("layer_order", 0))
-			if xp != yp:
-				return xp < yp
-		return xi < yi)
-	for am: Array in armors:
-		var a: Dictionary = am[0]
-		var t1: int = a.get("texture1", -1)
-		if t1 < 0 or not ARMOR_PREFIX.has(a.type):
-			continue
-		var layer := Items.equipment_layer("armors", a, am[1], mask)
-		if a.type == "helm":
-			# The 128 px helm atlas is separate from the 256 px body atlas
-			# . Stretching it over the body paints the arms / face.
-			helm_layer = layer
-			helm_surface = SurfaceResponse.equipment(am[1])
-			#  ("hr", "hd" row 2): the helmet is
-			# added under the head, preserving the face. Hair is replaced by
-			# its armoured variant, or removed when the figure has none.
-			var helm := "hd.armor%02d" % t1
-			if parts.has(helm):
-				mesh_for[helm] = helm
-				helm_parts[helm] = true
-			if hair_part:
-				var armored_hair := hair_part + ".armor%02d" % t1
-				hair_part = armored_hair if parts.has(armored_hair) else ""
-			continue
-		layers.append(layer)
-		surfaces.append(SurfaceResponse.equipment(am[1]))
-		for p: String in ARMOR_PARTS.get(a.type, []):
-			var v := "%s.armor%02d" % [p, t1]
-			if parts.has(v):
-				mesh_for[p] = v
-
-	#  secondary 128 px atlas contains the helmet, then the
-	# active weapon, with no skin or clothing from the 256 px body atlas.
-	var weapon_layer := ""
-	var weapon_surface := SurfaceResponse.DULL
-	var before := mesh_for.duplicate()
-	# Weapon meshes ("rh3.dagger01", "lh3.bwpartb01") are the weapon alone:
-	# the original draws them in addition to the hand (its fist grips the
-	# handle), unlike armour variants, which replace the part's mesh.
-	var held := {}   # part -> weapon fig part
-	var weapons: Array = Array(unit.get("weapons", PackedStringArray()))
-	if not unit.has("weapons") and String(proto.get("weapon", "")) != "":
-		weapons = [proto.weapon]
-	if get_meta("peaceful_gear", false): weapons = []
-	for w: String in weapons.slice(0, 1):
-		var item := Items.info(w)
-		var wd: Dictionary = item.row if item.table == "weapons" else {}
-		if wd.is_empty():
-			continue
-		weapon_type = wd.type
-		var t1: int = wd.get("texture1", 1)
-		var mat: Dictionary = item.mat
-		weapon_surface = SurfaceResponse.equipment(mat)
-		if WEAPON_PREFIX.has(wd.type):
-			weapon_layer = Items.equipment_layer("weapons", wd, mat, mask)
-		if WEAPON_MESH.has(wd.type):
-			for idx in [t1, t1 - 1]:   # "%02d" of the weapon record (texture1)
-				var v: String = WEAPON_MESH[wd.type] % idx
-				if parts.has(v):
-					held["rh3"] = v
-					break
-		elif wd.type == "bow":
-			for idx in [t1, t1 - 1]:   # "%02d" of the weapon record (texture1)
-				if parts.has("lh3.bwpartb%02d" % idx):
-					held["lh3"] = "lh3.bwpartb%02d" % idx
-					for extra in ["bwparta%02d", "bwtetivaa%02d", "bwtetivab%02d"]:
-						if parts.has(extra % idx):
-							mesh_for[extra % idx] = extra % idx
-					break
-		if wd.type == "crossbow":
-			for extra in ["crbow%02dpart01", "crbow%02dpart02", "crbow%02dtetiva01", "crbow%02dtetiva02"]:
-				if parts.has(extra % t1):
-					mesh_for[extra % t1] = extra % t1
-
-	var weapon_parts := {}
-	for p: String in mesh_for:
-		if before.get(p, "") != mesh_for[p]:
-			weapon_parts[p] = true
-	# Weapon variants live below animated mount nodes in the original LNK.
-	# For example rh3 -> rh3.sword00 -> rh3.dagger03: sword00 supplies both
-	# a BON offset and an ANM track. Attaching the blade directly to rh3 puts
-	# its handle through the wrist and discards the weapon's animation.
-	for p: String in held:
-		mesh_for[held[p]] = held[p]
-		weapon_parts[held[p]] = true
+	var mesh_for: Dictionary = plan.mesh_for
+	var layers: Array[String] = plan.layers
+	var surfaces: Array[Vector3] = plan.surfaces
+	var hair_part: String = plan.hair_part
+	var helm_layer: String = plan.helm_layer
+	var helm_surface: Vector3 = plan.helm_surface
+	var helm_parts: Dictionary = plan.helm_parts
+	var weapon_layer: String = plan.weapon_layer
+	var weapon_surface: Vector3 = plan.weapon_surface
+	var weapon_parts: Dictionary = plan.weapon_parts
+	if plan.weapon_type != "":
+		weapon_type = plan.weapon_type
 
 	var asset_prefix := String(proto.get("_arena_assets", ""))
 	if not asset_prefix.is_empty():
@@ -1116,16 +950,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var welded := {}        # part -> ArrayMesh in part space
 	var lighting_parts := {}   # per-build native material variants
 	var parent_of := {}
-	var needed := {}
 	for link: Array in model.links:
 		parent_of[link[0]] = link[1]
-		if not "." in link[0] and _is_body_part(link[0], model):
-			needed[link[0]] = true
-	for p: String in mesh_for:
-		var ancestor := p
-		while ancestor != "":
-			needed[ancestor] = true
-			ancestor = parent_of.get(ancestor, "")
+	var needed := needed_parts(model, mesh_for)
 	for link: Array in model.links:
 		var p: String = link[0]
 		if not needed.has(p):
@@ -1854,6 +1681,295 @@ func set_part_visible(part: String, on: bool) -> void:
 
 ## Body parts are the non-variant parts that have bones; weapon/armor extras
 ## (bows, quivers, shells) are only created when worn.
+## What a unit record wears and holds, from its prototype, race and figure:
+## the mesh of each part (armour and weapon variants), the body atlas layers
+## with their surface profiles, the helmet and weapon of the secondary atlas,
+## and the weapon's type. _build applies it; prewarm composes from it.
+static func gear_plan(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary,
+		template: String, peaceful: bool) -> Dictionary:
+	var mask := String(race.get("mask", template)).to_lower()
+	var plan_weapon_type := ""
+	var parts: Dictionary = model.parts
+
+	# --- which mesh goes on which part
+	var mesh_for := {}  # part -> fig part name
+	var body_parts: PackedStringArray = unit.get("parts", PackedStringArray())
+	for link: Array in model.links:
+		var p: String = link[0]
+		if "." in p:
+			continue
+		# Without the map's part list only the body gets meshes; weapon and
+		# armour variants are added below from what the unit carries.
+		if p in body_parts or (body_parts.is_empty() and _is_body_part(p, model)):
+			mesh_for[p] = p
+	# Goblins carry an authored natural weapon rather than an inventory item.
+	# The ranged prototype keeps its sling; the other prototypes keep the pike.
+	if template == "unmogo":
+		var ranged := int(proto.get("weapon_type_id", -1)) == 5
+		mesh_for.erase("rh3.axeth00")
+		mesh_for.erase("rh3.sword00")
+		mesh_for.erase("rh3.pike00" if ranged else "sling")
+		var natural := "sling" if ranged else "rh3.pike00"
+		if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
+			mesh_for[natural] = natural
+	# The lizard's trident is part of its authored figure, with no inventory
+	# weapon entry. The generic dotted-variant filter otherwise drops it.
+	if template == "unmoli" and parts.has("rh3.trident") \
+			and (body_parts.is_empty() or "rh3.trident" in body_parts):
+		mesh_for["rh3.trident"] = "rh3.trident"
+	# Lesoviki have no inventory weapon: their blowpipe and dart box are
+	# authored figure parts, mounted and animated with the hand and torso.
+	if template == "unmodr":
+		for natural: String in ["rh3.tube00", "bd.box00"]:
+			if parts.has(natural) and (body_parts.is_empty() or natural in body_parts):
+				mesh_for[natural] = natural
+	# Rick's staff belongs to his authored figure, not to an inventory slot.
+	# Keep the LNK hand attachment and its animation like the other natural props.
+	if template == "unmori" and parts.has("rh3.staff00") \
+			and (body_parts.is_empty() or "rh3.staff00" in body_parts):
+		mesh_for["rh3.staff00"] = "rh3.staff00"
+	var layers: Array[String] = []
+	var surfaces: Array[Vector3] = []
+	#  formats the prototype's skin index directly. The race's
+	# texture list is incomplete (e.g. unhuma has 29 entries but skins 0..36).
+	# An absent prototype alone uses skin 00. The wiki's cut-content pages
+	# pass "skin" to show an otherwise unused redress skin on a prototype.
+	var skin_i: int = int(unit.get("skin", proto.get("skin", 0)))
+	var skin := "skin_%02d" % skin_i
+	if not race.is_empty() and int(race.get("type_id", 0)) != 0x32:
+		# Creature figures use named textures (e.g. Wolf00), not redress skins.
+		# The redress is for characters (race
+		# type 0x32) only; a creature keeps its map record's texture (0xB007,
+		# record): WolfWhite* "wolf01", BoarDark* "boar01", though every
+		# wolf / boar prototype has skin 0. Without a record: the race list.
+		var skins: PackedStringArray = race.get("textures", PackedStringArray())
+		skin = skins[skin_i] if skin_i >= 0 and skin_i < skins.size() else (skins[0] if skins.size() else "")
+		if String(unit.get("texture", "")) != "":
+			skin = String(unit.texture)
+	elif race.is_empty() and unit.has("template"):
+		# A bare figure without a race record (wiki previews of figures no
+		# race uses) names its own texture, or none at all.
+		skin = String(unit.get("texture", ""))
+	layers.append(skin.to_lower())
+	surfaces.append(SurfaceResponse.SKIN)
+
+	# Hair is a variant under the head ("hr.00".."hr.02" = prototype hair
+	# 0..2); there is no base "hr" part. A helmet selects its armoured variant
+	# if present, otherwise hides the hair.
+	var hair_part := "hr.%02d" % int(unit.get("hair", proto.get("hair", 0)))
+	if not parts.has(hair_part):
+		hair_part = ""
+
+	var wears: Array = Array(unit.get("armors", PackedStringArray()))
+	if not unit.has("armors"):
+		wears = Array(proto.get("wears", PackedStringArray()))
+	var armors := []
+	var helm_layer := ""
+	var helm_surface := SurfaceResponse.DULL
+	var helm_parts := {}
+	for w: String in wears:
+		var item := Items.info(w)
+		var a: Dictionary = item.row if item.table == "armors" else {}
+		if a.is_empty():
+			continue
+		if peaceful and a.type == "helm":
+			continue
+		armors.append([a, item.mat])
+	armors.sort_custom(func(x, y):
+		var xi := ARMOR_ORDER.find(x[0].type)
+		var yi := ARMOR_ORDER.find(y[0].type)
+		if xi in [4, 5] and yi in [4, 5]:
+			#  field 0x18 -> record
+			# returns a uint and compares it with JAE.
+			var xp := int(x[0].get("layer_order", 0))
+			var yp := int(y[0].get("layer_order", 0))
+			if xp != yp:
+				return xp < yp
+		return xi < yi)
+	for am: Array in armors:
+		var a: Dictionary = am[0]
+		var t1: int = a.get("texture1", -1)
+		if t1 < 0 or not ARMOR_PREFIX.has(a.type):
+			continue
+		var layer := Items.equipment_layer("armors", a, am[1], mask)
+		if a.type == "helm":
+			# The 128 px helm atlas is separate from the 256 px body atlas
+			# . Stretching it over the body paints the arms / face.
+			helm_layer = layer
+			helm_surface = SurfaceResponse.equipment(am[1])
+			#  ("hr", "hd" row 2): the helmet is
+			# added under the head, preserving the face. Hair is replaced by
+			# its armoured variant, or removed when the figure has none.
+			var helm := "hd.armor%02d" % t1
+			if parts.has(helm):
+				mesh_for[helm] = helm
+				helm_parts[helm] = true
+			if hair_part:
+				var armored_hair := hair_part + ".armor%02d" % t1
+				hair_part = armored_hair if parts.has(armored_hair) else ""
+			continue
+		layers.append(layer)
+		surfaces.append(SurfaceResponse.equipment(am[1]))
+		for p: String in ARMOR_PARTS.get(a.type, []):
+			var v := "%s.armor%02d" % [p, t1]
+			if parts.has(v):
+				mesh_for[p] = v
+
+	#  secondary 128 px atlas contains the helmet, then the
+	# active weapon, with no skin or clothing from the 256 px body atlas.
+	var weapon_layer := ""
+	var weapon_surface := SurfaceResponse.DULL
+	var before := mesh_for.duplicate()
+	# Weapon meshes ("rh3.dagger01", "lh3.bwpartb01") are the weapon alone:
+	# the original draws them in addition to the hand (its fist grips the
+	# handle), unlike armour variants, which replace the part's mesh.
+	var held := {}   # part -> weapon fig part
+	var weapons: Array = Array(unit.get("weapons", PackedStringArray()))
+	if not unit.has("weapons") and String(proto.get("weapon", "")) != "":
+		weapons = [proto.weapon]
+	if peaceful: weapons = []
+	for w: String in weapons.slice(0, 1):
+		var item := Items.info(w)
+		var wd: Dictionary = item.row if item.table == "weapons" else {}
+		if wd.is_empty():
+			continue
+		plan_weapon_type = wd.type
+		var t1: int = wd.get("texture1", 1)
+		var mat: Dictionary = item.mat
+		weapon_surface = SurfaceResponse.equipment(mat)
+		if WEAPON_PREFIX.has(wd.type):
+			weapon_layer = Items.equipment_layer("weapons", wd, mat, mask)
+		if WEAPON_MESH.has(wd.type):
+			for idx in [t1, t1 - 1]:   # "%02d" of the weapon record (texture1)
+				var v: String = WEAPON_MESH[wd.type] % idx
+				if parts.has(v):
+					held["rh3"] = v
+					break
+		elif wd.type == "bow":
+			for idx in [t1, t1 - 1]:   # "%02d" of the weapon record (texture1)
+				if parts.has("lh3.bwpartb%02d" % idx):
+					held["lh3"] = "lh3.bwpartb%02d" % idx
+					for extra in ["bwparta%02d", "bwtetivaa%02d", "bwtetivab%02d"]:
+						if parts.has(extra % idx):
+							mesh_for[extra % idx] = extra % idx
+					break
+		if wd.type == "crossbow":
+			for extra in ["crbow%02dpart01", "crbow%02dpart02", "crbow%02dtetiva01", "crbow%02dtetiva02"]:
+				if parts.has(extra % t1):
+					mesh_for[extra % t1] = extra % t1
+
+	var weapon_parts := {}
+	for p: String in mesh_for:
+		if before.get(p, "") != mesh_for[p]:
+			weapon_parts[p] = true
+	# Weapon variants live below animated mount nodes in the original LNK.
+	# For example rh3 -> rh3.sword00 -> rh3.dagger03: sword00 supplies both
+	# a BON offset and an ANM track. Attaching the blade directly to rh3 puts
+	# its handle through the wrist and discards the weapon's animation.
+	for p: String in held:
+		mesh_for[held[p]] = held[p]
+		weapon_parts[held[p]] = true
+
+	return {"mask": mask, "mesh_for": mesh_for, "layers": layers, "surfaces": surfaces,
+		"hair_part": hair_part, "helm_layer": helm_layer, "helm_surface": helm_surface,
+		"helm_parts": helm_parts, "weapon_layer": weapon_layer, "weapon_surface": weapon_surface,
+		"weapon_parts": weapon_parts, "weapon_type": plan_weapon_type}
+
+
+## The parts a figure needs: its body parts and every ancestor of a part
+## that gets a mesh (armour, weapons), by name.
+static func needed_parts(model: Dictionary, mesh_for: Dictionary) -> Dictionary:
+	var parent_of := {}
+	var needed := {}
+	for link: Array in model.links:
+		parent_of[link[0]] = link[1]
+		if not "." in link[0] and _is_body_part(link[0], model):
+			needed[link[0]] = true
+	for p: String in mesh_for:
+		var ancestor := p
+		while ancestor != "":
+			needed[ancestor] = true
+			ancestor = parent_of.get(ancestor, "")
+	return needed
+
+
+## The part _build makes the model's animation root: the last needed link
+## whose parent is not a needed part itself.
+static func root_part_of(model: Dictionary, needed: Dictionary) -> String:
+	var root := ""
+	var made := {}
+	for link: Array in model.links:
+		if not needed.has(link[0]):
+			continue
+		if not made.has(String(link[1])):
+			root = link[0]
+		made[link[0]] = true
+	return root
+
+
+## Fills the caches the records' models will need: their templates' decoded
+## clip libraries (the base, the set of parts, the height) and their composed
+## body and secondary atlases. A client runs it for the zone's own unit
+## records while the host still builds (Session._rpc_zone_ahead), so the
+## replicas the zone message brings find them ready. Returns what it made.
+static func prewarm(records: Array) -> Dictionary:
+	var made := {"libraries": 0, "textures": 0, "records": 0}
+	var db := GameData.db
+	for record in records:
+		if not record is Dictionary:
+			continue
+		var unit: Dictionary = CampaignState.map_unit_record(record)
+		var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
+		var race := db.find("race_models", unit.get("look_race", proto.get("base_race", "")))
+		var tmpl: String = unit.get("template", "")
+		if tmpl.is_empty():
+			tmpl = String(race.get("mask", "")).to_lower()
+		var asset_prefix := String(proto.get("_arena_assets", ""))
+		var asset_template := asset_prefix + tmpl
+		var model := EIFigure.get_model(asset_template)
+		if model.is_empty():
+			continue
+		made.records += 1
+		NetStatus.keep_alive()
+		var complexion: Vector3 = unit.get("complexion", Vector3.ZERO)
+		if complexion == Vector3.ZERO and not unit.get("effective_complexion", false):
+			complexion = GameUnit.proto_complexion(proto)
+		var plan := gear_plan(model, unit, proto, race, tmpl, bool(unit.get("peaceful_gear", false)))
+		var needed := needed_parts(model, plan.mesh_for)
+		var present := PackedStringArray()
+		for link: Array in model.links:
+			if needed.has(link[0]):
+				present.append(link[0])
+		if not _template_paths.has(asset_template):
+			_template_paths[asset_template] = template_paths(model)
+		var before := EIAnim._libraries.size()
+		EIAnim.library(asset_template, _template_paths[asset_template], root_part_of(model, needed),
+				height_scale(asset_template, complexion.z), true, present)
+		made.libraries += EIAnim._libraries.size() - before
+		var mask: String = plan.mask
+		var layers: Array[String] = plan.layers
+		var surfaces: Array[Vector3] = plan.surfaces
+		var secondary: Array[String] = []
+		var secondary_surfaces: Array[Vector3] = []
+		if plan.helm_layer:
+			secondary.append(plan.helm_layer)
+			secondary_surfaces.append(plan.helm_surface)
+		if plan.weapon_layer:
+			secondary.append(plan.weapon_layer)
+			secondary_surfaces.append(plan.weapon_surface)
+		for atlas: Array in [[layers, surfaces], [secondary, secondary_surfaces]]:
+			var names: Array[String] = atlas[0]
+			if names.is_empty():
+				continue
+			if not asset_prefix.is_empty():
+				for i in names.size(): names[i] = asset_prefix + names[i]
+			var textures := _textures.size() + _surface_textures.size()
+			_compose(mask, names)
+			_compose_surface(mask, names, atlas[1])
+			made.textures += _textures.size() + _surface_textures.size() - textures
+	return made
+
+
 static func _is_body_part(p: String, model: Dictionary) -> bool:
 	return model.parts.has(p) and not (p.begins_with("bw") or p.begins_with("crbow")
 		or p.begins_with("base") or p in ["arrows", "quiver", "l_shell", "r_shell"])

@@ -2398,6 +2398,28 @@
       "focused": "zone_build_ahead"
     },
     {
+      "id": "network/unit_prewarm_ahead",
+      "category": "network",
+      "script": "tools/tests/unit_prewarm_ahead.gd",
+      "marker": "UNIT_PREWARM_AHEAD",
+      "min_checks": 10,
+      "quick": true,
+      "description": "The client's build ahead of the zone message also prepares the unit assets its replicas will need (the templates' clip libraries and the composed atlases of the map's unit records): models made afterwards add nothing to those caches, the gear plan, needed parts and root part agree with the built model, a second preparation makes nothing, and the zone message still takes the prepared world.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mpr",
+        "maps/zone1.mob"
+      ],
+      "display": "headless",
+      "focused": "unit_prewarm_ahead"
+    },
+    {
       "id": "quests/catacomb_mechanisms",
       "category": "quests",
       "script": "tools/tests/catacomb_mechanisms.gd",

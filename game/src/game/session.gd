@@ -1181,6 +1181,12 @@ func _rpc_zone_ahead(id: String, mpr := "") -> void:
 	LoadingScreen.prepare(get_tree(), z, LoadingScreen.CLIENT)
 	_ahead_world = _construct_world(z, false)
 	_ahead_zone = [id, String(z.mpr)]
+	# The replicas come with the zone message; the map's own unit records
+	# name the same templates and gear, so their clip libraries and atlases
+	# are composed now, while the host still builds.
+	var made := EIUnitModel.prewarm(_ahead_world.map.unit_records if _ahead_world.map else [])
+	GameData.trace("zone build ahead %s: %d records, %d libraries, %d textures prepared" % [
+		id, made.records, made.libraries, made.textures])
 
 
 ## The world built ahead for zone `z`, or null (any other is discarded).

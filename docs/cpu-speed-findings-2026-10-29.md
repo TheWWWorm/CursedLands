@@ -183,6 +183,22 @@ clock from the worker's "zone load" to the client's "zone ready"): 46–47 s
 before this pass, 34 s with the pruned libraries, 25 s with the build ahead
 (`local/validation/cpu-speed-20261029/zone-ahead/solo-load-wallclock.txt`).
 
+Done in this pass (fourth): the client's work after the zone message was
+attributed (`local/validation/cpu-speed-20261029/zone-load/portal-client-phases-after-wide.txt`,
+GPU Lab, warm, 415 records, 5.1 s): spawning 2.86 s (model creation 2.42 s =
+atlas composition 0.88 s, clip libraries 0.80 s, part nodes and meshes
+0.67 s; first pose 0.15 s, snapshots 0.10 s), `ShaderWarmup.run` 1.66 s
+(the terrain colour cache 0.86 s, the materials 0.25 s, HUD previews
+0.08 s, ~0.45 s in its tail not split), `attach_world` 0.19 s, taking the
+world built ahead 0.32 s. The libraries and atlases are now prepared during
+the build ahead from the map's own unit records (`EIUnitModel.prewarm`);
+solo Portal load on GPU Lab, warm: 13 → 11 s (the client's part after the
+message 5 → 3 s; 67 libraries and 92 atlases prepared for 413 records
+before the worker published). Remaining there: the part nodes and meshes
+(scene-tree work, 1.6 ms per unit), the terrain colour cache preparation
+(native jobs; it needs the camera's position, which `village_start_view`
+sets after the spawn), and the warm-up tail.
+
 Done in this pass (third): the objects' navigation footprints are worked
 out on the worker threads (`NavGrid._footprints`); `NavGrid.build` for the
 Portal 1.41–1.46 → 0.67–0.70 s on both processes (lead 5 below). Solo Portal
