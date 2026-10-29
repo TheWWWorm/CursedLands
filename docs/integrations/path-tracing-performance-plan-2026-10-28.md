@@ -343,3 +343,20 @@ evaluation in the ray program, which would need per-instance transforms in a
 buffer and runtime selection of the terrain material variants, and whose
 payoff this experiment does not predict.
 
+## Follow-up: SHaRC in the Quality preset
+
+The radiance cache stays off in both presets. The research notes (NVIDIA
+SHaRC Integration guide and AGENTS notes, the RTXGI path-tracer sample, issue
+7 on lighting lag) suggest a trial for Quality only: update one jittered
+pixel per 5×5 block (4% of paths) instead of 4×4 with propagation depth 4,
+replace the roughness 0.6 / metalness gate at the query with the SDK's
+accumulated-roughness footprint test plus the sqrt(3)·voxel length test
+(keeping the leaf exclusion), stop clearing the cache on deformed geometry
+and rely on stale eviction, and evaluate direct light at the query hit so the
+cache carries indirect light only. NVIDIA publishes no two-bounce
+measurement; with two bounces the cache removes one segment while the update,
+resolve and clear are fixed costs, so Balanced is unlikely to break even. The
+measurements that decide it: SHaRC update and resolve GPU time at 1440p, the
+share of paths ending at depth one, Quality frame time against the four-
+bounce baseline, and frames to under 10% error after a light toggle.
+

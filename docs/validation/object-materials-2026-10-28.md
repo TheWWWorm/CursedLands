@@ -809,6 +809,16 @@ refraction and ReSTIR savings need water or more than four lights and are
 measured on the river above. Frame times (8.2–10.1 ms) are main-thread bound
 and overlap between packs.
 
+## Material maps on bounce hits (tried, reverted)
+
+Gating the per-texel roughness and metalness maps, the authored detail map
+and the ground relief maps to the visible surface, so bounce hits used the
+material record's constant response, passed nine fixtures (`bmaps1-*`) but
+measured 0.45–0.48 ms against 0.44–0.47 ms on the river (`bmaps-river-*`),
+within noise and if anything slower. The maps cost one tap each on the few
+object bounce hits of this view, so the change was reverted and bounce hits
+keep the same material response as the visible surface.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
