@@ -23,19 +23,11 @@ func _init(terrain: EITerrain, contact := true) -> void:
 	_build(terrain,contact)
 
 
-static func _vertex_image(terrain: EITerrain, contact: bool) -> Image:
+## RGB: authored xy offsets and height; A: the snow thaw (SnowMelt).
+static func _vertex_image(terrain: EITerrain) -> Image:
 	var count := terrain.heights.size()
 	var width := terrain.grid_w
 	var height := terrain.sectors_y * 32 + 1
-	var top_x := PackedFloat32Array()
-	if contact:
-		top_x.resize(count)
-		for y in height:
-			for x in width:
-				var top := -INF
-				for dx in range(-1, 3):
-					top = maxf(top, terrain.heights[y * width + clampi(x + dx, 0, width - 1)])
-				top_x[y * width + x] = top
 	var points := PackedFloat32Array()
 	points.resize(count * 4)
 	for y in height:
@@ -45,14 +37,34 @@ static func _vertex_image(terrain: EITerrain, contact: bool) -> Image:
 			points[at] = terrain.land_xy[i].x
 			points[at + 1] = terrain.heights[i]
 			points[at + 2] = terrain.land_xy[i].y
-			if not contact: continue
+	for i: int in terrain.snow_melt:
+		if i < count: points[i * 4 + 3] = terrain.snow_melt[i]
+	return Image.create_from_data(width,height,false,Image.FORMAT_RGBAF,points.to_byte_array())
+
+
+## Conservative upper bound for any triangle covering each metre, per grid
+## vertex. The contact shader adds the maximum loose/banked displacement.
+static func _upper_bounds(terrain: EITerrain) -> PackedFloat32Array:
+	var count := terrain.heights.size()
+	var width := terrain.grid_w
+	var height := terrain.sectors_y * 32 + 1
+	var top_x := PackedFloat32Array()
+	top_x.resize(count)
+	for y in height:
+		for x in width:
+			var top := -INF
+			for dx in range(-1, 3):
+				top = maxf(top, terrain.heights[y * width + clampi(x + dx, 0, width - 1)])
+			top_x[y * width + x] = top
+	var bounds := PackedFloat32Array()
+	bounds.resize(count)
+	for y in height:
+		for x in width:
 			var top := -INF
 			for dy in range(-1, 3):
 				top = maxf(top, top_x[clampi(y + dy, 0, height - 1) * width + x])
-			# Conservative upper bound for any triangle covering this metre.
-			# Shader adds the maximum loose/banked displacement before skipping.
-			points[at + 3] = top
-	return Image.create_from_data(width,height,false,Image.FORMAT_RGBAF,points.to_byte_array())
+			bounds[y * width + x] = top
+	return bounds
 
 
 func _build(terrain: EITerrain, contact: bool) -> void:
@@ -61,9 +73,9 @@ func _build(terrain: EITerrain, contact: bool) -> void:
 		vertices = shared.vertices; normals = shared.normals
 		light_inputs = shared.light_inputs; candidates = shared.candidates
 		return
-	var image := _vertex_image(terrain, contact)
-	# A contact consumer may join after cover. Preserve the bound vertex RID
-	# when adding its upper bounds; XYZ and the cover's geometry stay identical.
+	var image := _vertex_image(terrain)
+	# A contact consumer may join after cover. Preserve the bound vertex RID;
+	# its upper bounds live in the normal map (_normal_image alpha).
 	if vertices: vertices.update(image)
 	else: vertices = ImageTexture.create_from_image(image)
 	if contact:
@@ -114,6 +126,17 @@ static func _candidate_image(terrain: EITerrain) -> Image:
 	return image
 
 
+## The snow thaw changed after this snapshot was made (EITerrain.set_snow_melt).
+func refresh_vertices(terrain: EITerrain) -> void:
+	if terrain is ArenaWinterTerrain:
+		return # shared courtyard textures (ArenaSurfaceCache); arenas have no fires
+	var image := _vertex_image(terrain)
+	if vertices: vertices.set_image(image) # same RID
+	if _vertex_snapshot:
+		_vertex_snapshot = image
+		if metadata: metadata.build(_metadata_images(terrain))
+
+
 func _refresh_metadata(terrain: EITerrain) -> void:
 	var cliff := terrain._cliffs
 	var transition := terrain._transitions
@@ -151,8 +174,11 @@ static func _mesh_normal(value: Vector3) -> Vector3:
 		float(clampi(int(encoded.y),0,65535))/65535.0))
 
 
+## RGB: the drawn vertex normal, sector-local 33 x 33 pages; A: the vertex's
+## upper height bound (_upper_bounds), read by the contact broad phase.
 static func _normal_image(terrain: EITerrain) -> Image:
 	var pixels := Image.create(terrain.sectors_x*33,terrain.sectors_y*33,false,Image.FORMAT_RGBAF)
+	var bounds := _upper_bounds(terrain)
 	for sector: Node in terrain.get_children():
 		if not sector is EITerrainSector: continue
 		var name_parts := String(sector.name).split("_")
@@ -163,7 +189,8 @@ static func _normal_image(terrain: EITerrain) -> Image:
 				var tx := mini(x/2,15); var ty := mini(y/2,15)
 				var source := (ty*16+tx)*9+(y-ty*2)*3+x-tx*2
 				var n := _mesh_normal(source_normals[source])
-				pixels.set_pixelv(origin+Vector2i(x,y),Color(n.x,n.y,n.z,1.0))
+				var vertex := origin/33*32+Vector2i(x,y)
+				pixels.set_pixelv(origin+Vector2i(x,y),Color(n.x,n.y,n.z,bounds[vertex.y*terrain.grid_w+vertex.x]))
 	return pixels
 
 

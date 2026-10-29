@@ -244,6 +244,15 @@ No ground types, effects or pixel assertions are substituted. The fresh-load
 and immediate-traversal comparison is documented in the
 [hitch investigation](validation/fresh-loading-hitch-2026-10-27/README.md).
 
+`snow_fire_thaw` (headless, zone12) covers the thawed snow round lit camp
+fires and braziers: the field comes from the TORCH records alone, so loads and
+saves need no state; unlit braziers and wall-high torches leave the snow
+alone. It checks the per-vertex thaw in the loose-ground vertex data, the
+ray-traced and small-animal CPU mirrors, untouched snow away from fires, the
+trail-like trodden floor and wet ground shaded from the smooth thaw field, and
+the ground-contact upper bound that moved to the normal map's alpha. The
+original game has no snow deformation, so no original comparison applies.
+
 `wisp_loading` exercises the real Autochess recruitment card and combat meshes
 after opening preparation, including all three native wisp forms. It requires
 completed preview draws, no first-use draw/surface/mesh compilation, independent

@@ -12,6 +12,7 @@ var _spawn_units := true
 var _presentation := true
 const WallSeams := preload("res://src/ei/wall_seams.gd")
 const CatacombLift := preload("res://src/ei/catacomb_lift.gd")
+const SnowMelt := preload("res://src/game/fx/snow_melt.gd")
 var _relocated_objects := {}
 var scenery_batches: SceneryBatches
 
@@ -61,6 +62,9 @@ static func load_map(map_name: String, mob_name := "", spawn_units := true, pres
 		s.mob = mob_thread.wait_to_finish() if mob_thread else EIMob.load_bytes(mob_bytes)
 		s.stats.mob_thread = mob_thread != null
 		s._relocated_objects = CatacombLift.apply(map_name,mob_name,s.mob,s.terrain)
+		if presentation:
+			# Snow round the map's fires starts thawed (Snow deformation).
+			s.terrain.set_snow_melt(SnowMelt.field(s.terrain, SnowMelt.sources(s.mob)))
 		if on_mob.is_valid():
 			on_mob.call(s._left_unit_records())
 		if on_placing.is_valid():

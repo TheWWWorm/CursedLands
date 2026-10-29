@@ -697,6 +697,7 @@ func _toggle_original_look() -> void:
 
 func _switch_text(row: Dictionary) -> String:
 	var v := int(_values.get(row.name, 0))
+	if row.name == "pt_mode": v = GameData.PathTraceSettings.mode(v)
 	if v > 0 and row.get("unavailable", false):
 		return RemakeText.t("Off (unavailable)")
 	if row.name == "graphics_preset" and v == GfxPresets.DETECTED:
@@ -708,6 +709,16 @@ func _switch_text(row: Dictionary) -> String:
 		#  row 0x19: difficulty_hard ("Normal") / difficulty_easy ("Novice").
 		return _t("string difficulty_easy", "Novice") if v == 1 else _t("string difficulty_hard", "Normal")
 	return _t("string option_on", "On") if v == 1 else _t("string option_off", "Off")
+
+
+## The saved value one choice step away. Path tracing's later Performance ID
+## is listed between Off and Balanced (PathTraceSettings.ORDER).
+func _step_choice(row: Dictionary, d: int) -> int:
+	var v := int(_values.get(row.name, 0))
+	if row.name == "pt_mode":
+		var order: Array = GameData.PathTraceSettings.ORDER
+		return order[posmod(order.find(GameData.PathTraceSettings.mode(v)) + d, order.size())]
+	return posmod(v + d, int(row.max))
 
 
 func _set_value(name: String, v: int) -> void:
@@ -753,7 +764,7 @@ func _toggle(r: int) -> void:
 			picker.show_popup()
 		"switch":
 			sound("messbox\\ok")
-			_set_value(row.name, FsrGraphics.next_value(row.name, int(_values.get(row.name, 0)), _values) if row.name in FsrGraphics.OPTIONS else (int(_values.get(row.name, 0)) + 1) % int(row.max))
+			_set_value(row.name, FsrGraphics.next_value(row.name, int(_values.get(row.name, 0)), _values) if row.name in FsrGraphics.OPTIONS else _step_choice(row, 1))
 		"link":
 			sound("messbox\\ok" if row.get("preset", false) else "save\\select")   # Original look: a switch's sound
 			if row.get("profile",false):
@@ -1223,7 +1234,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 					var row: Dictionary = _rows[_sel]
 					var d := -1 if e.keycode == KEY_LEFT else 1
 					sound("messbox\\ok")
-					_set_value(row.name, posmod(int(_values.get(row.name, 0)) + d, int(row.max)))
+					_set_value(row.name, _step_choice(row, d))
 			KEY_UP, KEY_DOWN:
 				sound("save\\select")
 				var d := -1 if e.keycode == KEY_UP else 1

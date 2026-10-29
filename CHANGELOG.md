@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.37.0 — 2026-10-29
+
+- Keep what creatures are doing across save and load: patrols continue from their current point, walk and glances instead of restarting their route and drifting out of step with their partners, and a creature pursuing a target keeps its attack, combat stance and alarm countdown. Returning to a zone keeps patrol progress but does not resume a fight with the party that left. Older saves load as before.
+- Add a Performance path-tracing preset between Off and Balanced. It traces one light bounce with Balanced's reconstruction and lighting settings and needs noticeably less GPU time; saved Balanced and Quality choices are unchanged.
+- Keep path-traced lighting on the viewed ground when an overhead camera zooms out. High views now centre the traced region and its quality range on the view axis above the ground they show, instead of on the eye 45–80 m away; walking and other low views are unchanged. A moving camera also prepares its next traced region while the previous one is still being released, rather than waiting for that release to finish, and aims that region from the camera's travel instead of extrapolating rotation or zoom.
+- Snow deformation: the loose snow round lit camp fires and braziers starts thawed when a zone is shown, so fires no longer stand buried in fresh snow. The thawed patch looks like a trampled trail, with a darker trodden floor, patches of wet ground near the fire and a soft, ragged bank where the loose layer ends; a typical camp fire clears about 3.8 m round it. The thaw comes from the map's fire records alone (identical on every load and in saves; unlit braziers, wall-high torches and carried torches leave the snow alone) and applies to the land, ground-contact, ground-mark, cover and ray-traced surfaces alike. With Snow deformation off the original flat snow is unchanged. Regression `tools/tests/snow_fire_thaw.gd` (catalog `focused/snow_fire_thaw`).
+
 ## 1.36.1 — 2026-10-29
 
 - Let party members attack a unit the player can see even when no party member has noticed it yet, such as a creature behind the hero; the order still ends with "no target" once the player can no longer see the target.

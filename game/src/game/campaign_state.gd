@@ -1068,12 +1068,133 @@ static func apply_body(u: GameUnit, st: Dictionary) -> void:
 		u.world.set_meta("restored_magic", q)
 
 
+# ---------------------------------------------------------------- unit AI
+# The original writes each unit's AI with it (AIBrain::Save 5d8860, read back
+# by AIBrain::Load 5d8310): the AI state and its point (+4, +8), the planned
+# glances (SaveLooks 5d91b0 / LoadLooks 5d9010), the action's target refs
+# (AIRef::Save 50e290), the guard segment (+0x50, +0x5c), every motivation
+# with its own record — PatrolMode 5d1a40 / 5d1930 keeps its current point
+# (+0x1c), AggressionMode 5d27a0 / 5d2770 its enemy — the index of the current
+# motivation, the noticed lists (AIMemory::Save 5cc350; the remake's
+# CorpsePools ledger) and its flags. The remake keeps what it models: the calm
+# motivation's state (meta "calm": patrol point, walk destination, glances
+# and the hold left), its walk, the AI's attack and its target, the combat
+# flag (`alert`), the alarm alert with its countdown and the segment. Script
+# orders are the VM's (_save_story_orders); manual party orders still stop.
+
+const ActorRefs := preload("res://src/game/actor_refs.gd")
+
+
+## A living AI unit's action state for store_zone ({} = nothing to keep).
+## Times are kept as seconds left: world time starts afresh on load.
+static func ai_state(u: GameUnit) -> Dictionary:
+	if u.dead or u.controller >= 0 or u.has_meta("hero") or u.world == null:
+		return {}
+	var now := u.world.time
+	var out := {}
+	if u.has_meta("calm") and u.get_meta("calm") is Dictionary:
+		var c: Dictionary = Dictionary(u.get_meta("calm")).duplicate(true)
+		if c.has("until"):
+			c.until = maxf(0.0, float(c.until) - now) if float(c.until) >= 0.0 else -1.0
+		out.calm = c
+	var seg: Variant = u.get_meta("ai_post", [])
+	if seg is Array and seg.size() == 2 and seg[0] is Vector2 and seg[1] is Vector2:
+		out.post = seg.duplicate()
+	# A command posted this tick waits in the queue (on_attacked's retaliation).
+	var order: Dictionary = u.order if not u.order.is_empty() else (u.orders[0] if not u.orders.is_empty() else {})
+	if order.get("calm", false) and order.get("type", "") == "move" and order.get("to") is Vector2:
+		out.walk = {"to": order.to, "run": bool(order.get("run", false))}
+	elif order.get("ai", false) and order.get("type", "") == "attack" and not order.get("story", false):
+		var t: Variant = order.get("target")
+		if t is GameUnit and is_instance_valid(t) and not t.dead:
+			var ref := ActorRefs.of(t)
+			if not ref.is_empty():
+				out.attack = {"target": ref, "aim": int(order.get("aim", -1))}
+	if u.alert:
+		out.alert = true
+	if u.resting:
+		out.resting = true
+	if u.has_meta("alerted"):
+		# The alarm countdown left (-1: not started, UnitAI.ALARM_COUNT).
+		out.alerted = int(u.get_meta("alarm_left")) if u.has_meta("alarm_left") else -1
+	return out
+
+
+## Puts back the calm state of ai_state(u) (restore_zone: before the absence
+## catch-up of a revisited zone and before the VM, which may reset it). The
+## attack waits for resume_ai_state: its target can be a party unit.
+static func apply_ai_state(u: GameUnit, st: Dictionary) -> void:
+	if u.dead or u.controller >= 0 or u.world == null or st.is_empty():
+		return
+	_apply_ai_calm(u, st)
+	var walk: Variant = st.get("walk")
+	if walk is Dictionary and walk.get("to") is Vector2 and u.order.is_empty() and u.orders.is_empty():
+		u.command({"type": "move", "to": walk.to, "run": bool(walk.get("run", false)), "calm": true})
+	if bool(st.get("alert", false)):
+		u.alert = true
+	if bool(st.get("resting", false)) and u.order.is_empty() and u.orders.is_empty():
+		u.resting = true
+	_apply_ai_alarm(u, st)
+
+
+static func _apply_ai_calm(u: GameUnit, st: Dictionary) -> void:
+	var raw: Variant = st.get("calm")
+	if raw is Dictionary:
+		var c: Dictionary = raw.duplicate(true)
+		if c.has("until"):
+			var left := float(c.until)
+			c.until = u.world.time + left if left >= 0.0 and is_finite(left) else -1.0
+		if c.get("look") is Array and (not c.has("dest") or c.dest is Vector2):
+			u.set_meta("calm", c)
+	var seg: Variant = st.get("post")
+	if seg is Array and seg.size() == 2 and seg[0] is Vector2 and seg[1] is Vector2:
+		u.set_meta("ai_post", seg.duplicate())
+
+
+static func _apply_ai_alarm(u: GameUnit, st: Dictionary) -> void:
+	if not (st.get("alerted") is int or st.get("alerted") is float) or u.world.ai == null:
+		return
+	var left := int(st.alerted)
+	u.set_meta("alerted", true)
+	if left >= 0:
+		u.set_meta("alarm_left", left)
+	# Its countdown goes on (UnitAI._alert / _alarm_tick).
+	if int(u.world.ai.logic(u).get("alarm_raise", 0)) != 0 and int(u.get_meta("alarm_left", UnitAI.ALARM_COUNT)) > 0:
+		u.world.ai._alarm_wait[u.get_instance_id()] = u
+
+
+## replay_restored, with the party deployed and the VM restored: the AI's
+## attack on its target again, and the calm state or alarm alert where the VM
+## reset them (a script motivation re-applied, an alarm raised again).
+static func resume_ai_state(world: GameWorld, u: GameUnit, st: Dictionary) -> void:
+	if u.dead or u.controller >= 0 or st.is_empty():
+		return
+	if not u.has_meta("calm"):
+		_apply_ai_calm(u, st)
+	if not u.has_meta("alerted"):
+		_apply_ai_alarm(u, st)
+	var at: Variant = st.get("attack")
+	if not at is Dictionary or not at.get("target") is Array or not u.order.is_empty() or not u.orders.is_empty():
+		return
+	var t := ActorRefs.resolve(world, at.target)
+	if t == null or t.dead or t.hidden or world.units.get(t.uid) != t or t == u:
+		return
+	u.command({"type": "attack", "target": t, "aim": int(at.get("aim", -1)), "ai": true})
+	u.alert = true
+
+
 ## Host, once `world` is the session's world and in the tree: the restored
 ## units' effect visuals and the zone's lasting ground spells run again
 ## (sent to the co-op clients too, as already running: no start sound).
 func replay_restored(world: GameWorld) -> void:
 	if world == null or world.session == null:
 		return
+	var ai_rows: Dictionary = world.get_meta("restored_ai", {})
+	world.remove_meta("restored_ai")
+	for uid in ai_rows:
+		var au: GameUnit = world.units.get(int(uid))
+		if au != null and ai_rows[uid] is Dictionary:
+			resume_ai_state(world, au, ai_rows[uid])
 	var phases: Dictionary = world.get_meta("restored_actions", {})
 	world.remove_meta("restored_actions")
 	for uid in phases:
@@ -1171,6 +1292,9 @@ func store_zone(id: String, world: GameWorld) -> void:
 		# facing. Resetting a guard's angle on load changes who it can see.
 		z.units[u.uid] = [u.pos.x, u.pos.y, 0.0 if u.dead else u.hp, u.faction, u.hidden,
 			{} if u.dead else body_state(u), u.facing, u.placement_z]
+		var ai := ai_state(u)
+		if not ai.is_empty():
+			z.get_or_add("ai", {})[u.uid] = ai
 	# Looted corpses (Session.take_loot) are off the world but WasLooted still
 	# sees them (GameWorld.looted).
 	z.looted = world.looted.keys()
@@ -1366,6 +1490,27 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			u.controller = int(z.controls[nid])
 			u.mode = "player"
 			u.set_meta("script_control", true)
+	# What the zone's AI units were doing (older saves: none; each unit then
+	# starts its motivations afresh). The attack resumes in replay_restored.
+	# A zone revisited (not a game load) keeps the patrol and alarm state for
+	# its absence catch-up, but not a fight with a party that walked out of
+	# the zone: its units decide afresh against the arriving party.
+	var loading: bool = world.session != null and world.session._restoring
+	var ai_rows: Variant = z.get("ai")
+	if ai_rows is Dictionary and not ai_rows.is_empty():
+		var resume := {}
+		for nid: Variant in ai_rows:
+			if not (nid is int or ((nid is String or nid is StringName) and str(nid).is_valid_int())):
+				continue
+			var u: GameUnit = world.units.get(int(nid) if nid is int else str(nid).to_int())
+			if u and ai_rows[nid] is Dictionary:
+				var row: Dictionary = ai_rows[nid]
+				if not loading:
+					row = row.duplicate()
+					row.erase("attack"); row.erase("alert")
+				apply_ai_state(u, row)
+				resume[u.uid] = row
+		world.set_meta("restored_ai", resume)
 	for nid in z.levers:
 		if world.levers.has(int(nid)):
 			var v = z.levers[nid]

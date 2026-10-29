@@ -43,9 +43,11 @@ varying vec3 ei_e;
 varying float ei_k;
 """ + GroundSurfaceShader.LAND_UNIFORMS + GroundSurfaceShader.SOFT_UNIFORMS + """varying vec3 wpos;
 varying vec2 soft_profile;
+varying float soft_thaw;
 """ + GroundSurfaceShader.SOFT_FUNCTIONS + """void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	soft_profile = vec2(0.0);
+	soft_thaw = 0.0;
 	if (soft_ground) {
 		int id = int(UV2.y + 0.5);
 		int width = textureSize(terrain_tiles, 0).x;
@@ -63,6 +65,7 @@ varying vec2 soft_profile;
 		else if (rotation == 3) { local = vec2(local.y, -local.x); }
 		vec2 grid = (vec2(tile) + clamp(local + 0.5, vec2(0.0), vec2(1.0))) * 2.0;
 		soft_profile = soft_profile_grid(grid);
+		soft_thaw = soft_thaw_grid(grid);
 		VERTEX.y += soft_profile.x;
 		if (soft_tracks) {
 			vec2 track = soft_sample(vec2(wpos.x, -wpos.z));
@@ -176,6 +179,49 @@ void fragment() {
 		c = mix(c, ei_puddle_colour(c,up_view), puddle);
 		ei_surface.xy = mix(ei_surface.xy, vec2(0.95,0.07), puddle);
 		NORMAL = normalize((VIEW_MATRIX * vec4(normalize(mix(wn,vec3(0.0,1.0,0.0),puddle)),0.0)).xyz);
+	}
+	if (soft_ground) {
+		// Snow thawed round a fire (SnowMelt) looks like a trampled trail's
+		// floor: a ragged edge where the loose layer ends, compacted darker
+		// snow, and thin wet patches with the ground showing near the fire.
+		// The geometry already lost its loose layer (soft_vertex_profile);
+		// world-anchored noise breaks the per-metre field into a natural edge.
+		vec2 thaw_p = vec2(wpos.x, -wpos.z);
+		vec2 thaw_dx = dFdx(thaw_p);
+		vec2 thaw_dy = dFdy(thaw_p);
+		if (soft_thaw > 0.0) {
+			const float EDGE_STEP = 0.2;
+			float broad = 0.0;
+			float grain = 0.0;
+			vec2 broad_slope = vec2(0.0);
+			if (detail > 0.0) {
+				vec2 q = thaw_p * 0.23;
+				broad = textureGrad(macro_tex, q, thaw_dx * 0.23, thaw_dy * 0.23).r - 0.5;
+				grain = textureGrad(macro_tex, thaw_p * 0.87 + 0.31, thaw_dx * 0.87, thaw_dy * 0.87).r - 0.5;
+				broad_slope = vec2(
+					textureGrad(macro_tex, q + vec2(EDGE_STEP * 0.23, 0.0), thaw_dx * 0.23, thaw_dy * 0.23).r - 0.5 - broad,
+					textureGrad(macro_tex, q + vec2(0.0, EDGE_STEP * 0.23), thaw_dx * 0.23, thaw_dy * 0.23).r - 0.5 - broad) / EDGE_STEP;
+			}
+			float edge = 0.45 * min(soft_thaw * 4.0, 1.0);
+			float thaw = soft_thaw + broad * edge;
+			float trodden = smoothstep(0.15, 0.50, thaw);
+			float bare = smoothstep(0.55, 0.95, thaw + grain * 0.5);
+			// The edge is a shallow step, shaded like a trail's wall. Its
+			// slope comes from the smooth field, not the mesh's triangles.
+			vec2 slope = soft_thaw_smooth(thaw_p).yz + broad_slope * edge;
+			float tt = clamp((thaw - 0.15) / 0.35, 0.0, 1.0);
+			slope *= -0.05 * 6.0 * tt * (1.0 - tt) / 0.35;
+			vec3 wn = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
+			vec3 thaw_normal = normalize(wn + vec3(-slope.x, 0.0, slope.y));
+			if (ei_surface_fx.x < 0.5 && dot(ei_sun_dir, ei_sun_dir) > 0.5) {
+				float relief = dot(thaw_normal - wn, normalize(ei_sun_dir));
+				c *= clamp(1.0 + relief * 0.5, 0.78, 1.06);
+			}
+			NORMAL = normalize((VIEW_MATRIX * vec4(thaw_normal, 0.0)).xyz);
+			// The trail's compaction darkening, then wet earth through thin snow.
+			c *= 1.0 - trodden * 0.16;
+			c = mix(c, c * vec3(0.47, 0.40, 0.33), bare * 0.75);
+		}
 	}
 	if (soft_tracks && soft_profile.y > 0.0) {
 		vec2 uv = vec2(wpos.x, -wpos.z);
@@ -863,6 +909,10 @@ const DECAL_LAYER := 1 << 18
 
 var _atlases: TextureLayered
 var _soft_vertices: ImageTexture
+## Remake thaw of the loose snow round the map's lit fires, per grid vertex
+## index (0..1, sparse; SnowMelt). Map data only: identical on every load.
+var snow_melt := {}
+var snow_melt_revision := 0
 var _detail_atlases: TextureLayered
 ## TerrainSurfaceMaps for _detail_atlases, or null (unsupported / disabled).
 var _surface_maps: TextureLayered
@@ -927,6 +977,20 @@ var _waterfalls: Waterfalls
 const SEA_MATERIALS := {"zone1": [2], "zone7": [0], "zone8": [4]}
 ## Breaking-surf appearance has separate visual acceptance from cover habitat.
 const SURF_MATERIALS := {"zone1": [2]}
+
+
+## Install the snow thaw round the map's fires (SnowMelt.field). Existing
+## loose-ground textures keep their RIDs; options enabled later read it too.
+func set_snow_melt(melt: Dictionary) -> void:
+	if melt.is_empty() and snow_melt.is_empty():
+		return
+	snow_melt = melt
+	snow_melt_revision += 1
+	if _soft_vertices:
+		_soft_vertices.set_image(GroundSurfaceData._vertex_image(self)) # same RID
+	var data := _ground_surface.get_ref() as GroundSurfaceData if _ground_surface else null
+	if data:
+		data.refresh_vertices(self)
 
 
 func ground_surface_data(triangle_only := false) -> GroundSurfaceData:
@@ -1401,7 +1465,7 @@ func apply_gfx() -> void:
 	_land_mat.set_shader_parameter("rain_cover", _rain_cover)
 	_land_mat.set_shader_parameter("soft_ground", Gfx.on("gfx_soft_ground"))
 	if Gfx.on("gfx_soft_ground") and _soft_vertices == null:
-		_soft_vertices = ImageTexture.create_from_image(GroundSurfaceData._vertex_image(self, false))
+		_soft_vertices = ImageTexture.create_from_image(GroundSurfaceData._vertex_image(self))
 	_land_mat.set_shader_parameter("soft_vertices", _soft_vertices)
 	# The original water's terms (also the base of the remake water).
 	var me := PackedVector3Array()

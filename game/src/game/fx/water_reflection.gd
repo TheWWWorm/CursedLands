@@ -472,7 +472,7 @@ func _render_path_water(target_device: PathWater,scene: RayScene,center: Vector3
 	bytes.append_array(PackedFloat32Array([plane,Gfx.fog_depth.x,Gfx.fog_depth.y,0,fog.r,fog.g,fog.b,0]).to_byte_array())
 	RayDevice.dispatch(target_device,&"set_cloud_texture",[producer._path_cloud_texture()])
 	_submit_frame(target_device,target,bytes,changes)
-	rt_stats["path_traced"]=true;rt_stats["bounces"]=GameData.option("pt_mode")*2
+	rt_stats["path_traced"]=true;rt_stats["bounces"]=GameData.PathTraceSettings.bounces(GameData.option("pt_mode"))
 	rt_stats["nrd_directional"]=target_device.nrd_active and target_device.nrd.directional
 	_update_render_stats(changes,target,quality)
 

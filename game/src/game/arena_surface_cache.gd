@@ -17,7 +17,7 @@ static func acquire(terrain: EITerrain) -> Dictionary:
 	for entry in _entries:
 		if entry.key == key: return entry.textures
 	var textures := {
-		"vertices":ImageTexture.create_from_image(GroundSurfaceData._vertex_image(terrain, true)),
+		"vertices":ImageTexture.create_from_image(GroundSurfaceData._vertex_image(terrain)),
 		"normals":ImageTexture.create_from_image(GroundSurfaceData._normal_image(terrain)),
 		"light_inputs":ImageTexture.create_from_image(GroundSurfaceData._light_input_image(terrain)),
 		"candidates":ImageTexture.create_from_image(GroundSurfaceData._candidate_image(terrain)) \

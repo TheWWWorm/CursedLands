@@ -15,20 +15,34 @@ builds they qualify.
 
 Open **Options → Remake → Ray tracing / Path tracing**.
 
-The player control is **Path tracing: Off / Balanced / Quality**. Off remains
-the default. Balanced traces two surface bounces. Quality traces four and
-enables water/glass refraction. Both use Responsive accumulation, a fixed PT
+The player control is **Path tracing: Off / Performance / Balanced / Quality**.
+Off remains the default. Performance traces one surface bounce, Balanced two.
+Quality traces four and enables water/glass refraction. All use Responsive accumulation, a fixed PT
 resolution, and automatic DLSS Ray Reconstruction when the selected DLSS/DLAA
 renderer supports it. Otherwise they use radiance NRD, with the built-in filter
 as its fallback. The Screen link opens the existing upscaling-quality and frame
 generation controls; neither is silently changed by a PT preset.
+
+Performance differs from Balanced only in its bounce count; it shares the
+non-deep path program, reconstruction, light sampling and resolution budget.
+On the frozen river (RTX 3090, Vulkan, player presets, radiance NRD) it cut
+the PT pass from 1.25 to 0.87 ms at 1280×720 and from 5.03 to 3.59 ms at
+2560×1440 (ray dispatch −38/−42%), with whole-frame time −6/−16%. Matched
+river, night, grove and cave-brazier captures stayed within 1% of Balanced's
+brightness with no added still-frame noise or fireflies; the second bounce
+contributes little after the ambient floor in these scenes. Lower resolution
+or fewer samples were not used: Balanced already traces one sample at 50% in
+the fallback, and DLSS Ray Reconstruction requires its input resolution.
+`tools/tests/path_trace_performance_mode.gd` repeats these measurements.
 
 Balanced uses the direct-light sampler without RTXDI reservoir reuse. Quality
 enables RTXDI. SHaRC remains disabled in both player presets: the moving-scene
 qualification resets its cache frequently, with an added cost on this workload.
 The underlying implementations remain available through the diagnostic flag.
 
-Preset IDs reuse the saved `pt_mode` values 0/1/2. Hidden tuning values and
+Preset IDs reuse the saved `pt_mode` values 0/1/2; Performance is the later
+ID 3, listed between Off and Balanced (`PathTraceSettings.ORDER`). Unknown
+saved IDs above 3 resolve to Quality, negative IDs to Off. Hidden tuning values and
 standalone RT quality remain stored unchanged; the preset resolves effective
 values at runtime. Switching PT off restores the standalone RT controls and
 their saved quality. Apply/Cancel retain their normal behavior.
@@ -38,7 +52,7 @@ restore the detailed controls and use the stored tuning values directly.
 Existing diagnostic fixtures that set individual PT fields must include this
 flag. The player-preset tests deliberately omit it. Diagnostic controls include:
 
-- **Path tracing (test):** Off, 2 bounces or 4 bounces.
+- **Path tracing (test):** Off, 1 bounce, 2 bounces or 4 bounces.
 - **RT lighting quality:** Low traces at 50% of the 3D render width and height
   with one path sample per pixel; Medium uses 75% and two samples; High uses
   100% and four samples. Medium is the default. Path tracing follows the
@@ -589,5 +603,6 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_materials.gd` | Actual compilation/draw of 144 world material variants |
 | `path_trace_fsr.gd` | Production frame generation and measured FPS HUD alongside water and path tracing, resize and pause/resume |
 | `path_trace_performance.gd` | Separate ray-pass GPU, controller CPU and whole-frame timing against conventional and one-bounce RT lighting |
+| `path_trace_performance_mode.gd` | Player Performance preset: managed values, one-bounce program, interleaved Balanced/Performance GPU timing at 720p/1440p, matched river/night/grove/cave captures and camera pan |
 | `scene_raytrace_options.gd` | Shared RT/PT settings, persistence, supported/unsupported controls, EN/RU/DE labels, choices and help |
 | `scene_raytrace_fallback.gd` | Saved experimental settings on unsupported renderers |

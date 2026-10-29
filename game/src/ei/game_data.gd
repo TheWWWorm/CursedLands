@@ -117,7 +117,7 @@ const OPTIONS := [
 	# Scene RT is explicitly opt in, independent of automatic presets.
 	["rt_shadows", 1, 2, 28, 0, 0], ["rt_gi", 1, 2, 28, 1, 0],
 	["q_rt_lighting", 1, 3, 28, 2, 1],
-	["pt_mode", 1, 3, 28, 3, 0], ["pt_accumulation", 1, 2, 28, 4, 0],
+	["pt_mode", 1, 4, 28, 3, 0], ["pt_accumulation", 1, 2, 28, 4, 0],
 	["pt_target_fps", 1, 4, 28, 5, 0], ["pt_sharc", 1, 2, 28, 6, 0],
 	["pt_denoiser", 1, 2, 28, 7, 0], ["pt_ray_reconstruction", 1, 2, 28, 8, 0], ["pt_restir", 1, 2, 28, 9, 0], ["pt_refraction", 1, 2, 28, 10, 0],
 	# Water (group 23): surface appearance and optional creature interaction.
@@ -295,7 +295,7 @@ const DISPLAY_CHOICES := {
 	"q_water_rt_quality": ["Low (50 %)", "Medium (75 %)", "High (100 %)"],
 	"q_rt_lighting": ["Low (50 %)", "Medium (75 %)", "High (100 %)"],
 	"rt_shadows": ["Off", "On"], "rt_gi": ["Off", "On"],
-	"pt_mode": ["Off", "2 bounces", "4 bounces"],
+	"pt_mode": ["Off", "2 bounces", "4 bounces", "1 bounce"],   # by saved ID; PathTraceSettings.ORDER steps
 	"pt_preset": PathTraceSettings.CHOICES,
 	"pt_accumulation": ["Responsive", "Still scene"],
 	"pt_target_fps": ["Off", "30 FPS", "45 FPS", "60 FPS"],
@@ -339,7 +339,7 @@ const REMAKE_OPTIONS := {
 	"rt_shadows": ["RT shadows (test)", "Trace soft sun shadows and shadows from up to seven nearby point lights. Respects the character and object shadow switches. Other lights keep conventional shadows. Costs additional GPU time."],
 	"rt_gi": ["RT indirect light (test)", "Trace one diffuse bounce from the sun, nearby lights and emissive surfaces, with sky visibility. Replaces flat ambient light on supported nearby surfaces. Experimental: moving light can be noisy. This is not multi-bounce path tracing."],
 	"q_rt_lighting": ["RT lighting quality", "Low uses 50 % width and height with one sample, Medium 75 % with two, High 100 % with four. Path tracing follows the 3D render resolution, including Render scale and FSR; RT lighting follows the window. Depth-aware reconstruction smooths the result. Higher quality costs more GPU time. Independent of water reflection quality."],
-	"pt_mode": ["Path tracing (test)", "Trace direct light and up to two or four surface bounces, including glossy reflections. Replaces RT shadows and indirect light on supported nearby surfaces; their saved choices are preserved. Uses RT lighting quality. Water and particles keep their own rendering. Experimental and GPU intensive."],
+	"pt_mode": ["Path tracing (test)", "Trace direct light and up to one, two or four surface bounces, including glossy reflections. Replaces RT shadows and indirect light on supported nearby surfaces; their saved choices are preserved. Uses RT lighting quality. Water and particles keep their own rendering. Experimental and GPU intensive."],
 	"pt_preset": [PathTraceSettings.LABEL, PathTraceSettings.HELP],
 	"pt_sharc": ["SHaRC indirect lighting", "Reuses indirect lighting between nearby surfaces to reduce noise and extend light bounces. Uses about 44 MiB of additional video memory per active scene. Moving geometry and abrupt lighting changes clear the cache. Only available with Responsive path accumulation. Performance depends on the scene."],
 	"pt_ray_reconstruction": ["DLSS Ray Reconstruction", RtxGraphics.RR_HELP],

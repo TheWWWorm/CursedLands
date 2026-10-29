@@ -74,9 +74,11 @@ vec2 soft_surface(vec2 p, float height) {
 // Subdividing a triangle must preserve its original displaced edge. Sampling
 // a nonlinear snow profile at newly inserted points otherwise opens cracks
 // against a neighbouring coarse triangle, including at shifted MPR vertices.
+// A: the remake thaw round the map's fires (SnowMelt), 0..1. Thawed snow
+// keeps only that fraction of its loose layer and of its track depth.
 vec2 soft_vertex_profile(ivec2 grid) {
-	vec3 data = texelFetch(soft_vertices, grid, 0).rgb;
-	return soft_surface(vec2(grid) + data.xz, data.y);
+	vec4 data = texelFetch(soft_vertices, grid, 0);
+	return soft_surface(vec2(grid) + data.xz, data.y) * (1.0 - data.a);
 }
 vec2 soft_profile_grid(vec2 grid) {
 	ivec2 cell = clamp(ivec2(floor(grid)), ivec2(0), textureSize(soft_vertices, 0) - 2);
@@ -89,6 +91,45 @@ vec2 soft_profile_grid(vec2 grid) {
 	return soft_vertex_profile(cell + ivec2(1)) * (local.x + local.y - 1.0)
 		+ soft_vertex_profile(cell + ivec2(1,0)) * (1.0 - local.y)
 		+ soft_vertex_profile(cell + ivec2(0,1)) * (1.0 - local.x);
+}
+// Visible thaw: the thaw where loose snow lay before it (land colour only).
+float soft_vertex_thaw(ivec2 grid) {
+	vec4 data = texelFetch(soft_vertices, grid, 0);
+	if (data.a <= 0.0) { return 0.0; }
+	return data.a * clamp(soft_surface(vec2(grid) + data.xz, data.y).x / 0.075, 0.0, 1.0);
+}
+float soft_thaw_grid(vec2 grid) {
+	ivec2 cell = clamp(ivec2(floor(grid)), ivec2(0), textureSize(soft_vertices, 0) - 2);
+	vec2 local = clamp(grid - vec2(cell), vec2(0.0), vec2(1.0));
+	if (local.x + local.y <= 1.0) {
+		return soft_vertex_thaw(cell) * (1.0 - local.x - local.y)
+			+ soft_vertex_thaw(cell + ivec2(1,0)) * local.x
+			+ soft_vertex_thaw(cell + ivec2(0,1)) * local.y;
+	}
+	return soft_vertex_thaw(cell + ivec2(1)) * (local.x + local.y - 1.0)
+		+ soft_vertex_thaw(cell + ivec2(1,0)) * (1.0 - local.y)
+		+ soft_vertex_thaw(cell + ivec2(0,1)) * (1.0 - local.x);
+}
+// Fragment relief of the thaw: a C1 quadratic B-spline of the per-vertex
+// thaw, returning (value, d/dx, d/dy) in grid units. Shading from the
+// triangle-linear varying would crease along every mesh edge.
+vec3 soft_thaw_smooth(vec2 grid) {
+	vec2 g = grid + 0.5;
+	ivec2 base = ivec2(floor(g)) - 1;
+	vec2 t = g - floor(g);
+	vec3 wx = vec3(0.5 * (1.0 - t.x) * (1.0 - t.x), 0.5 + t.x * (1.0 - t.x), 0.5 * t.x * t.x);
+	vec3 wy = vec3(0.5 * (1.0 - t.y) * (1.0 - t.y), 0.5 + t.y * (1.0 - t.y), 0.5 * t.y * t.y);
+	vec3 dx = vec3(t.x - 1.0, 1.0 - 2.0 * t.x, t.x);
+	vec3 dy = vec3(t.y - 1.0, 1.0 - 2.0 * t.y, t.y);
+	ivec2 last = textureSize(soft_vertices, 0) - 1;
+	vec3 result = vec3(0.0);
+	for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 3; i++) {
+			float a = texelFetch(soft_vertices, clamp(base + ivec2(i, j), ivec2(0), last), 0).a;
+			result += a * vec3(wx[i] * wy[j], dx[i] * wy[j], wx[i] * dy[j]);
+		}
+	}
+	return result;
 }
 float soft_dense(ivec2 tile) {
 	if (any(lessThan(tile, ivec2(0))) || any(greaterThanEqual(tile, textureSize(soft_tiles, 0)))) { return 0.0; }

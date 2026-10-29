@@ -10068,6 +10068,26 @@
       "focused": "corpse_memory_save"
     },
     {
+      "id": "persistence/npc_action_save",
+      "category": "persistence",
+      "script": "tools/tests/npc_action_save.gd",
+      "marker": "NPC_ACTION_SAVE",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Patrol progress, glances and a pursuing NPC's attack and combat stance survive save/load.",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone3obr.mob",
+        "maps/zone3obr.mpr"
+      ],
+      "focused": "npc_action_save"
+    },
+    {
       "id": "combat/magic_trap_targets",
       "category": "combat",
       "script": "tools/tests/magic_trap_targets.gd",
@@ -11625,6 +11645,26 @@
       "display": "rendered",
       "rendering_method": "forward_plus",
       "focused": "path_trace_travel_coverage"
+    },
+    {
+      "id": "focused/path_trace_tactical_camera",
+      "category": "focused",
+      "script": "tools/tests/path_trace_tactical_camera.gd",
+      "marker": "PT_TACTICAL_CAMERA",
+      "min_checks": 19,
+      "quick": false,
+      "description": "Fresh LiA gz3h overhead camera with four-bounce PT: zooming from 36 to 72 m, in steps or continuously, keeps the focus ground's traced colour and the same region, low views keep the eye anchor, and moving on after a promotion prepares the next region while the previous one retires, restoring PT colour within 100 frames after a 90 m move.",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_tactical_camera"
     },
     {
       "id": "focused/path_trace_light_history",
@@ -13320,6 +13360,27 @@
       "focused": "soft_ground_mesh"
     },
     {
+      "id": "focused/snow_fire_thaw",
+      "category": "focused",
+      "script": "tools/tests/snow_fire_thaw.gd",
+      "marker": "SNOW_FIRE_THAW",
+      "min_checks": 45,
+      "quick": true,
+      "description": "Loose snow round the map's lit fires starts thawed with a soft edge: a deterministic per-vertex field from the TORCH records (unlit and wall-high torches excluded) scales the raster, ray-traced and CPU loose-snow profiles, and the contact broad-phase bound still covers every candidate cell.",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone12.mpr",
+        "maps/zone12.mob"
+      ],
+      "display": "headless",
+      "focused": "snow_fire_thaw"
+    },
+    {
       "id": "focused/terrain_cliff_composed",
       "category": "focused",
       "script": "tools/tests/terrain_cliff_render.gd",
@@ -14133,7 +14194,7 @@
       "category": "focused",
       "script": "tools/tests/path_trace_presets.gd",
       "marker": "PT_PRESETS",
-      "min_checks": 106,
+      "min_checks": 174,
       "quick": false,
       "description": "Managed PT presets preserve stored tuning preferences and standalone RT settings, retain diagnostic overrides, and cover English, Russian and German.",
       "kind": "remake_regression",
@@ -14152,7 +14213,7 @@
       "category": "focused",
       "script": "tools/tests/path_trace_preset_options.gd",
       "marker": "PT_PRESET_OPTIONS",
-      "min_checks": 108,
+      "min_checks": 135,
       "quick": false,
       "description": "The player PT menu offers coherent presets and a Screen settings link, preserves Apply/Cancel and legacy preferences, and fits EN/RU/DE at720p,1440p and4K.",
       "kind": "remake_regression",
@@ -14166,6 +14227,28 @@
       "display": "rendered",
       "rendering_method": "forward_plus",
       "focused": "path_trace_preset_options"
+    },
+    {
+      "id": "focused/path_trace_performance_mode",
+      "category": "focused",
+      "script": "tools/tests/path_trace_performance_mode.gd",
+      "marker": "PT_PERFORMANCE_MODE",
+      "min_checks": 144,
+      "quick": false,
+      "description": "The player Performance PT preset traces one bounce with Balanced's managed budget, is measurably cheaper than Balanced at 720p and 1440p, and keeps matched river, night, grove and cave captures and camera pans free of added noise, fireflies or colour shifts.",
+      "kind": "remake_regression",
+      "timeout": 900,
+      "args": [
+        "--ei-profile-rt"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus",
+      "focused": "path_trace_performance_mode"
     },
     {
       "id": "focused/path_trace_terrain_collect",

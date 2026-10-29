@@ -8,6 +8,9 @@ global uniform mat4 ei_rt_view_projection;
 global uniform mat4 ei_rt_inverse_view_projection;
 global uniform mat4 ei_rt_view;
 global uniform vec3 ei_rt_eye;
+// Coverage anchor relative to the eye: zero for low views, along the view
+// axis toward the viewed ground for high ones. Zero keeps eye-centred coverage.
+global uniform vec3 ei_rt_focus_offset;
 global uniform float ei_pt_active;
 global uniform float ei_pt_rr_active;
 global uniform sampler2D ei_rt_gi : filter_nearest, repeat_disable;
@@ -44,14 +47,17 @@ varying vec3 ei_rt_rest;
 #endif
 #endif
 
-// Traced receivers fade out by distance from the eye as well as from the
-// snapshot centre. The centre trails the camera by up to the 16 m recentre
-// step, so a centre-only fade let the far PT boundary creep toward a moving
-// camera and jump back when the next snapshot was published. The eye reach
-// keeps receivers inside the same centre bound, preserving the occluder margin.
+// Traced receivers fade out by distance from the coverage anchor as well as
+// from the snapshot centre. The centre trails the camera by up to the 16 m
+// recentre step, so a centre-only fade let the far PT boundary creep toward a
+// moving camera and jump back when the next snapshot was published. The anchor
+// moves continuously with the camera; it is the eye for low views and lies on
+// the view axis above the viewed ground for high ones, so zooming an overhead
+// camera does not move its ground out of range. The anchor reach keeps
+// receivers inside the same centre bound, preserving the occluder margin.
 float ei_rt_coverage(vec3 world) {
     float reach=ei_rt_state.w-16.0;
-    float eye=1.0-smoothstep(reach-12.0,reach,distance(world,ei_rt_eye));
+    float eye=1.0-smoothstep(reach-12.0,reach,distance(world,ei_rt_eye+ei_rt_focus_offset));
     float scene=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance(world,ei_rt_center.xyz));
     return min(eye,scene);
 }
@@ -80,10 +86,11 @@ float ei_rt_receiver_bound() {
 }
 
 float ei_pt_receiver_blend(vec3 world) {
-    // Quality range follows the continuously moving eye, not an acceleration
-    // snapshot that jumps on promotion. The wider retained geometry still
-    // supplies an independent safety bound while a replacement is prepared.
-    float view_fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_eye));
+    // Quality range follows the continuously moving coverage anchor, not an
+    // acceleration snapshot that jumps on promotion. The wider retained
+    // geometry still supplies an independent safety bound while a replacement
+    // is prepared.
+    float view_fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_eye-ei_rt_focus_offset));
     float bound=ei_rt_receiver_bound();
     float scene_fade=1.0-smoothstep(bound-12.0,bound,length(world-ei_rt_center.xyz));
     return view_fade*scene_fade;
@@ -440,6 +447,7 @@ static func globals() -> void:
 	for key in [&"ei_rt_view_projection",&"ei_rt_inverse_view_projection",&"ei_rt_view"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_MAT4,Projection())
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_rt_focus_offset",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_rr_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_ground_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)

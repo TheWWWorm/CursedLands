@@ -2,6 +2,7 @@ extends RefCounted
 ## CPU counterpart of GroundSurfaceShader's visible loose-ground query for
 ## at most two small animals. Reads the existing CPU track images; no GPU
 ## readback, navigation mutation or extra footprint field is introduced.
+const SnowMelt = preload("res://src/game/fx/snow_melt.gd")
 
 
 static func profile(terrain: EITerrain, tile: Vector2i) -> Vector2:
@@ -34,7 +35,8 @@ static func surface(terrain: EITerrain, p: Vector2, height: float) -> Vector2:
 	if not is_finite(water): water=-10000.0
 	var material:=int(terrain.water_mat[index]); material=material if material<64 else 0
 	water+=float(terrain.water_offsets.get(material,0.0))
-	return value*mask*smoothstep(0.025,0.10,height-water)
+	# The thaw round fires (SnowMelt), interpolated like the drawn vertices.
+	return value*mask*smoothstep(0.025,0.10,height-water)*(1.0-SnowMelt.at(terrain,p))
 
 
 static func texel(image: Image, p: Vector2) -> Color:

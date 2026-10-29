@@ -11,6 +11,17 @@ const SCALES := [0.5,0.75,1.0]
 const GI_SAMPLES := [1,2,4]
 const SHADOW_SAMPLES := [1,2,4]
 const RECEIVER_RADIUS := 72.0
+## Coverage follows the part of the view that holds the visible ground. A
+## high tactical camera's eye can be 45-80 m from the ground it shows, beyond
+## the 60-72 m quality range, so zooming out would replace path tracing with
+## conventional lighting. Such a view anchors its region on the view axis,
+## ANCHOR_HEIGHT above the ground it looks at, never more than ANCHOR_REACH
+## from the eye (the eye stays inside the 60 m full-quality range). Walking
+## and other low views keep the eye-centred region unchanged.
+const ANCHOR_HEIGHT := 12.0
+const ANCHOR_REACH := 48.0
+## Retiring generations allowed while a replacement region is being prepared.
+const RETIRING_LIMIT := 1
 const PATH_LIGHT_LIMIT := 64
 ## Snapshot gathering budgets (microseconds per frame). Live replacement shares
 ## the frame with a lit scene; uncovered loading keeps the frame responsive. An
@@ -56,6 +67,8 @@ var _frame_number := 0
 var _previous_view := Projection()
 var _previous_view_projection := Projection()
 var _previous_camera := Transform3D.IDENTITY
+var _anchor := Vector3.INF
+var _previous_anchor := Vector3.INF
 var _previous_camera_velocity := Vector3.ZERO
 var _previous_camera_step := Vector3.ZERO
 var _camera_motion_idle := 0
@@ -109,7 +122,7 @@ static func _bounce_override_arg() -> int:
 	return -1
 
 func _path_bounces() -> int:
-	return _bounce_override if _bounce_override>=0 else GameData.option("pt_mode")*2
+	return _bounce_override if _bounce_override>=0 else GameData.PathTraceSettings.bounces(GameData.option("pt_mode"))
 var _profile_prepare := {}
 var _ground_cache := Scene.Ground.new()
 var _source_cache := Scene.SourceCache.new()
@@ -137,6 +150,34 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_priority = 101
 	Gfx.ensure_globals()
+
+## Region and quality-range anchor for a camera transform. The view axis is
+## intersected with the terrain (not the ground under the eye, which changes
+## as an overhead camera pans across slopes), so zooming moves the eye along
+## the axis while the anchor stays above the same ground.
+static func coverage_anchor(view: Transform3D,terrain: EITerrain) -> Vector3:
+	var eye := view.origin
+	var forward := -view.basis.z.normalized()
+	if forward.y>=-0.01 or not is_instance_valid(terrain):return eye
+	var rise := ANCHOR_HEIGHT/-forward.y
+	var limit := minf(rise+ANCHOR_REACH,Scene.RADIUS*2.0)
+	if limit<=rise:return eye
+	var above := func(t: float) -> bool:
+		var p := eye+forward*t
+		var ground := terrain.height_at(p.x,-p.z)
+		return not is_finite(ground) or p.y>ground
+	if not above.call(0.0):return eye
+	var low := 0.0;var high := limit
+	var t := 2.0
+	while t<limit:
+		if not above.call(t):high=t;break
+		low=t;t+=2.0
+	if high<limit or not above.call(limit):
+		for i in 6:
+			var middle := (low+high)*0.5
+			if above.call(middle):low=middle
+			else:high=middle
+	return eye+forward*clampf(high-rise,0.0,ANCHOR_REACH)
 
 static func internal_render_size(viewport: Vector2,render_scale: float) -> Vector2i:
 	# Godot truncates the scaled 3D dimensions before allocating its buffers.
@@ -191,14 +232,16 @@ func _process(dt: float) -> void:
 		_clear_failure();_history_key="";_rr_view_key="";_poll=0.0
 	elif not visible_request:
 		_preparation_seen="";_end_preparation()
-	var may_retry := _allow_retry(camera.global_position,dt)
+	var anchor := coverage_anchor(camera.get_camera_transform(),terrain)
+	_anchor=anchor
+	var may_retry := _allow_retry(anchor,dt)
 	# Spell flashes can live for less than the geometry polling interval.
 	# Refresh the bounded light list before this frame, without rebuilding meshes.
-	if _path_mode:_collect_lights(camera.global_position)
+	if _path_mode:_collect_lights(anchor)
 	_poll -= dt
 	if _scene != null and (_poll<=0.0 or _scene.topology_pending) and not terrain_preparing:
 		_poll = 1.0
-		if not _path_mode:_collect_lights(camera.global_position)
+		if not _path_mode:_collect_lights(anchor)
 		# Keep the working region lit while changed membership/equipment is
 		# gathered. Instance updates immediately mask removed/replaced meshes;
 		# a new scene is published only after its first complete frame.
@@ -210,11 +253,25 @@ func _process(dt: float) -> void:
 	var building := _gather if _gather!=null else _pending_scene
 	var motion := camera.global_position-_previous_camera.origin
 	var continuous := _rr_view_key!="" and _continuous_camera_motion(motion,dt)
-	_stationary_travel_frames=_stationary_travel_frames+1 if motion.length()<0.01 else 0
+	# The region travels with its anchor. Zooming along the view axis moves the
+	# eye but barely the anchor, so it does not request a replacement region.
+	var anchor_motion := anchor-_previous_anchor if _previous_anchor.is_finite() else Vector3.ZERO
+	_previous_anchor=anchor
+	_stationary_travel_frames=_stationary_travel_frames+1 if anchor_motion.length()<0.01 else 0
 	# Start travel work before the fixed sixteen-metre threshold and aim ahead
 	# of sustained movement. A one-off camera cut still targets its exact pose.
-	var lead := (motion*64.0).limit_length(Scene.RADIUS*2.0-32.0) if continuous else Vector3.ZERO
-	var drifting := device!=null and camera.global_position.distance_to(_center)>12.0
+	# Translation persists, but the anchor's own motion also contains rotation
+	# and zoom, which settle and must not be extrapolated through its lever arm.
+	# An anchor that stays put while the eye moves (zooming or orbiting the
+	# viewed ground) needs no prediction. Otherwise predict the eye's travel
+	# and take the anchor of that pose: a pan keeps its offset above the
+	# ground, and a descending fly-in arrives at its low, eye-centred anchor.
+	var lead := Vector3.ZERO
+	if continuous and anchor_motion.length()>=motion.length()*0.5:
+		var travel := (motion*64.0).limit_length(Scene.RADIUS*2.0-32.0)
+		var ahead := camera.get_camera_transform();ahead.origin+=travel
+		lead=(coverage_anchor(ahead,terrain)-anchor).limit_length(Scene.RADIUS*2.0-32.0)
+	var drifting := device!=null and anchor.distance_to(_center)>12.0
 	_travel_build_budget=6000 if drifting or lead.length()>4.0 else 1500
 	# A fast prediction has only about forty frames before the old region's
 	# receivers fall outside coverage. Leave room after gathering for staged
@@ -224,12 +281,12 @@ func _process(dt: float) -> void:
 	# walking retains the smaller budget; GPU building stays independently bounded.
 	var fast_candidate := building!=null and _candidate_lead.length()>64.0
 	_travel_gather_budget=(GATHER_FAST_RR_TRAVEL_US if _rr_active else GATHER_FAST_TRAVEL_US) if lead.length()>64.0 or fast_candidate else _travel_build_budget
-	var candidate_drift := camera.global_position.distance_to(building.center) if building!=null else 0.0
+	var candidate_drift := anchor.distance_to(building.center) if building!=null else 0.0
 	var obsolete := candidate_drift>32.0
 	if building!=null and not _candidate_lead.is_zero_approx():
 		var path_start: Vector3=building.center-_candidate_lead
-		var closest:=Geometry3D.get_closest_point_to_segment(camera.global_position,path_start,building.center)
-		obsolete=camera.global_position.distance_to(closest)>32.0 \
+		var closest:=Geometry3D.get_closest_point_to_segment(anchor,path_start,building.center)
+		obsolete=anchor.distance_to(closest)>32.0 \
 			or (_stationary_travel_frames>=4 and candidate_drift>32.0)
 	if building!=null and (obsolete or (prepare and terrain_preparing)):
 		# A saved/first-person camera may settle after loading has started a
@@ -246,10 +303,16 @@ func _process(dt: float) -> void:
 	# Explicit terrain workers continue under the shared pause. Do not gather
 	# their old geometry or acknowledge its shaders before their bounded work.
 	if terrain_preparing: return
+	# Bounded retirement frees a large previous region over about a hundred
+	# frames. Waiting for all of it froze coverage after every promotion while
+	# the camera kept panning, so the view fell back to conventional lighting.
+	# One generation may still be retiring while the next one is prepared.
+	# A promotion during that time queues a second one; further regions then
+	# wait for the older retirement, bounding the generations kept alive.
 	if _gather==null and _pending_device==null and may_retry \
-		and _retired_devices.is_empty() and _retired_scenes.is_empty() \
-		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>(4.0 if lead.length()>4.0 else 16.0)):
-		_begin_snapshot(terrain,camera,lead if device!=null else Vector3.ZERO)
+		and _retired_devices.size()<=RETIRING_LIMIT and _retired_scenes.size()<=RETIRING_LIMIT \
+		and (device==null or _topology_pending or anchor.distance_to(_center)>(4.0 if lead.length()>4.0 else 16.0)):
+		_begin_snapshot(terrain,camera,lead if device!=null else Vector3.ZERO,anchor)
 	if _profile_cpu:
 		cpu_timings["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	# Live travel shares the frame with rendering and simulation, while the
@@ -292,7 +355,7 @@ func _process(dt: float) -> void:
 	# private until its complete near-field covers the current view; never
 	# publish a distant prediction merely because its textures are allocated.
 	var candidate_near := _pending_scene==null or _candidate_lead.is_zero_approx() \
-		or camera.global_position.distance_to(_pending_scene.center)<=32.0
+		or anchor.distance_to(_pending_scene.center)<=32.0
 	if _pending_ready and candidate_near and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
 		var validation_started:=Time.get_ticks_usec()
 		var changed:=_pending_scene.topology_changed()
@@ -333,6 +396,7 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
 			RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
 			RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
+			RenderingServer.global_shader_parameter_set(&"ei_rt_focus_offset",anchor-camera.get_camera_transform().origin)
 			_set_global(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,Scene.RADIUS))
 			_set_global(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
 			_set_global(&"ei_pt_active",float(_path_mode))
@@ -505,7 +569,8 @@ func _settle_preparation(size: Vector2i) -> void:
 	if _preparation_visible_frame<0: _preparation_visible_frame=Engine.get_frames_drawn()
 	elif Engine.get_frames_drawn()>_preparation_visible_frame: _end_preparation()
 
-func _begin_snapshot(terrain: EITerrain,camera: Camera3D,lead := Vector3.ZERO) -> void:
+func _begin_snapshot(terrain: EITerrain,camera: Camera3D,lead := Vector3.ZERO,anchor := Vector3.INF) -> void:
+	if not anchor.is_finite():anchor=coverage_anchor(camera.get_camera_transform(),terrain)
 	_failed=false
 	_gather=Scene.new();_gather.lighting_camera_mask=camera.cull_mask
 	_gather.profile_cpu=_profile_cpu
@@ -515,8 +580,8 @@ func _begin_snapshot(terrain: EITerrain,camera: Camera3D,lead := Vector3.ZERO) -
 	_gather.path_transmission=_transmission_mode
 	# No water-plane clipping: ceilings and underground rooms participate.
 	_candidate_lead=lead
-	_gather.begin(terrain,camera.global_position+lead,-1.0e20,device!=null)
-	if device==null: _center=camera.global_position
+	_gather.begin(terrain,anchor+lead,-1.0e20,device!=null)
+	if device==null: _center=anchor
 
 func _queue_candidate() -> void:
 	_pending_scene=_gather;_gather=null
@@ -578,7 +643,7 @@ func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
 			if _profile_cpu:
 				_profile_prepare.parts_us.dispatch=Time.get_ticks_usec()-profile_part;profile_part=Time.get_ticks_usec()
 			_pending_geometries=[];_pending_placements=[];_pending_stage=-1
-			_collect_lights(camera.global_position)
+			_collect_lights(_anchor)
 			if _profile_cpu:_profile_prepare.parts_us.lights=Time.get_ticks_usec()-profile_part
 
 func _bind_outputs() -> void:
@@ -1006,12 +1071,14 @@ func _release(release_programs := true) -> void:
 	_set_gi_active(false)
 	_global_values.clear()
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_focus_offset",Vector3.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_active",0.0)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_colour",null)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_trans_guide",null)
 	stats["active"]=false;stats["rebuilding"]=false
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key="";_rr_view_key=""
+	_previous_anchor=Vector3.INF
 	_cancel_candidate();_clear_failure()
 	_scene=null;_lights.clear();_light_ids=PackedInt64Array();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
 	_ground_cache=Scene.Ground.new()

@@ -199,7 +199,8 @@ bool contact_locate(vec3 world,vec3 wn,float band,float distance_to_eye,out floa
 	if (any(lessThan(p,vec2(0.0))) || any(greaterThanEqual(p,vec2(textureSize(query_vertices,0)-1)))) { return false; }
 	// A conservative bound from every source vertex of the nine candidate
 	// cells. Loose material/banks can add at most 0.5 m; no track read needed.
-	if (world.y>texelFetch(query_vertices,cell,0).a+0.5+band*2.5) { return false; }
+	// The normal map's sector pages repeat each 32nd vertex (33 per sector).
+	if (world.y>texelFetch(query_normals,cell+cell/32,0).a+0.5+band*2.5) { return false; }
 	// Fold the adjacent strip up the wall. At zero rise this is exactly the
 	// original ground point; upward faces retain an ordinary top projection.
 	float horizontal=length(wn.xz);

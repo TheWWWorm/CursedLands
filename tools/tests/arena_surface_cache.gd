@@ -19,7 +19,7 @@ func _ready() -> void:
 	for property in ["vertices", "normals", "light_inputs", "candidates"]:
 		check(a.get(property) == b.get(property), "identical boards share " + property)
 	var ground := worlds[0].terrain
-	var expected := {"vertices":GroundSurfaceData._vertex_image(ground,true),
+	var expected := {"vertices":GroundSurfaceData._vertex_image(ground),
 		"normals":GroundSurfaceData._normal_image(ground),
 		"light_inputs":GroundSurfaceData._light_input_image(ground),
 		"candidates":GroundSurfaceData._candidate_image(ground)}

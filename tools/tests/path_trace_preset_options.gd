@@ -21,7 +21,7 @@ func run() -> void:
 		"volume_voice":0, "auto_graphics":0}, true)
 	var retained := GameData.options.duplicate(true)
 	var panel := OptionsPanel.new(); add_child(panel); panel.open(); panel._show_group(OptionsPanel.SCENE_RT_GROUP)
-	check(row_named(panel, "pt_mode").get("choices", []) == RemakeText.tl(["Off", "Balanced", "Quality"]), "player chooses a preset instead of isolated bounce tuning")
+	check(row_named(panel, "pt_mode").get("choices", []) == RemakeText.tl(["Off", "Balanced", "Quality", "Performance"]), "player chooses a preset instead of isolated bounce tuning")
 	for name in HIDDEN:
 		check(row_named(panel, name).is_empty(), "internal tuning absent from player menu: " + name)
 	check(panel._rows.size() == 3, "active PT menu has only preset, Screen link and Back")
@@ -30,6 +30,31 @@ func run() -> void:
 	check(GameData.options.pt_mode == 2, "preset changes remain pending until Apply")
 	panel._restore(); panel._close(); panel.open(); panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 	check(panel._values.pt_mode == 2, "Cancel restores the saved preset")
+	# Saved IDs keep their meaning; the later Performance ID (3) is offered
+	# between Off and Balanced by click/Enter and by Left/Right.
+	var stepped := []
+	panel._set_value("pt_mode", 0); panel._sel = 0
+	for i in 4:
+		panel._toggle(0); stepped.append([panel._values.pt_mode, panel._switch_text(row_named(panel, "pt_mode"))])
+	check(stepped == [[3, RemakeText.t("Performance")], [1, RemakeText.t("Balanced")], [2, RemakeText.t("Quality")], [0, RemakeText.t("Off")]],
+		"clicking steps Off, Performance, Balanced, Quality " + str(stepped))
+	panel._sel = 0; key(panel, KEY_LEFT)
+	check(panel._values.pt_mode == 2, "Left from Off wraps to Quality")
+	key(panel, KEY_RIGHT); key(panel, KEY_RIGHT)
+	check(panel._values.pt_mode == 3, "Right from Off selects Performance")
+	key(panel, KEY_LEFT)
+	check(panel._values.pt_mode == 0, "Left from Performance returns to Off")
+	panel._set_value("pt_mode", 3); panel._accept()
+	check(GameData.option("pt_mode") == 3 and GameData.option("pt_refraction") == 0 and GameData.option("pt_restir") == 0
+		and GameData.option("pt_accumulation") == 0 and GameData.option("q_rt_lighting") == 0, "Apply selects Performance with Balanced's managed budget")
+	var performance_config := ConfigFile.new()
+	check(performance_config.load(GameData.CONFIG_PATH) == OK and int(performance_config.get_value("options", "pt_mode", -1)) == 3, "Performance is saved as its own ID")
+	panel.open(); panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+	check(panel._values.pt_mode == 3 and panel._switch_text(row_named(panel, "pt_mode")) == RemakeText.t("Performance"), "reopened menu shows the saved Performance preset")
+	GameData.options.pt_mode = 7; panel._close(); panel.open(); panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+	check(panel._switch_text(row_named(panel, "pt_mode")) == RemakeText.t("Quality"), "an out-of-range saved ID shows the mode it runs")
+	panel._sel = 0; key(panel, KEY_RIGHT)
+	check(panel._values.pt_mode == 0, "stepping from an out-of-range ID continues after Quality")
 	panel._set_value("pt_mode", 1); panel._accept()
 	check(GameData.option("pt_mode") == 1 and GameData.option("pt_accumulation") == 0
 		and GameData.option("pt_target_fps") == 0 and GameData.option("pt_denoiser") == 0,
@@ -67,7 +92,8 @@ func run() -> void:
 			check(panel._rows.get(1, {}).get("to", -1) == OptionsPanel.SCREEN_GROUP, "Screen settings are directly reachable " + language)
 			if panel._rows.get(1, {}).get("to", -1) == OptionsPanel.SCREEN_GROUP:
 				check(panel.text_width(panel._rows[1].label) <= 420, "Screen link fits " + language)
-			panel._values.pt_mode = 1; panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+			panel._values.pt_mode = 3; panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+			check(panel._switch_text(row_named(panel, "pt_mode")) == RemakeText.t("Performance"), "Performance choice is shown " + language)
 			get_window().grab_focus(); GameData._tips.delay = .1
 			Input.warp_mouse(Vector2(20,20)); await frames()
 			var at := panel.p8(Vector2(400, panel._row_y(0) + 12))

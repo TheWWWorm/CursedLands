@@ -106,7 +106,7 @@ func wait_preparation(label: String,previous_id := 0,expect_cover := true,allow_
 		success=controller.device!=null and controller.device.get_instance_id()!=previous_id and controller.device.output_ready() \
 			and controller.stats.get("active",false) and not controller.stats.get("rebuilding",false) \
 			and controller.stats.get("quality",-1)==GameData.option("q_rt_lighting") \
-			and controller.stats.get("path_bounces",-1)==GameData.option("pt_mode")*2 \
+			and controller.stats.get("path_bounces",-1)==GameData.PathTraceSettings.bounces(GameData.option("pt_mode")) \
 			and not held and not Screen.active()
 		if success: break
 	var events := progress_rows.filter(func(row: Dictionary): return row.case==label and not String(row.owner).is_empty())

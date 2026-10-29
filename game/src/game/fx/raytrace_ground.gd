@@ -14,7 +14,7 @@ var cache_misses := 0
 var _cache_enabled := not OS.get_cmdline_user_args().has("--ei-rt-no-ground-cache")
 
 func configure(source: EITerrain) -> void:
-	var key := [source.get_instance_id(),source._tile_tex,source._cell_tex,Gfx.on("gfx_soft_ground"),source._cliffs]
+	var key := [source.get_instance_id(),source._tile_tex,source._cell_tex,Gfx.on("gfx_soft_ground"),source._cliffs,source.snow_melt_revision]
 	if _cache_enabled and key==_source_key:return
 	_source_key=key;profiles.clear();_sectors.clear();tiles=null;cells=null
 	terrain=source
@@ -48,6 +48,7 @@ func vertex_profile(grid: Vector2i) -> Vector2:
 		var water:=cells.get_pixelv(Vector2i(p.floor()).clamp(Vector2i.ZERO,cells.get_size()-Vector2i.ONE))
 		var water_y:=water.r+terrain._level[clampi(roundi(water.a),0,63)]
 		result*=mask*smoothstep(0.025,0.10,terrain.heights[index]-water_y)
+		result*=1.0-float(terrain.snow_melt.get(index,0.0)) # SnowMelt, as soft_vertex_profile
 	profiles[grid]=result
 	return result
 

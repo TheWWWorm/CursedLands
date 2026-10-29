@@ -16,7 +16,17 @@ func _ready() -> void:
 		"rt_shadows":1, "rt_gi":1, "rtx_upscaling":4, "rtx_frame_generation":1,
 		"volume_sfx":0, "gfx_water_reflections":2}
 	var original := saved.duplicate(true)
-	for mode in [1, 2]:
+	# Saved IDs: 1 Balanced and 2 Quality predate Performance (3). Older
+	# profiles keep their meaning; the menu lists Performance before Balanced.
+	check(Presets.CHOICES == ["Off", "Balanced", "Quality", "Performance"], "choice texts are indexed by the saved ID")
+	check(Presets.ORDER == [0, 3, 1, 2], "the menu steps Off, Performance, Balanced, Quality")
+	check(Presets.BOUNCES == [0, 2, 4, 1], "Performance traces one bounce, Balanced two and Quality four")
+	check(GameData.DISPLAY_CHOICES.pt_mode.size() == Presets.CHOICES.size(), "diagnostic bounce choices cover every saved ID")
+	for pair: Array in [[-1, 0], [0, 0], [1, 1], [2, 2], [3, 3], [4, 2], [9, 2]]:
+		check(Presets.mode(pair[0]) == pair[1] and Presets.value("pt_mode", {"pt_mode":pair[0]}, false) == pair[1],
+			"unknown or edited saved ID %d resolves to a known mode" % pair[0])
+		check(Presets.bounces(pair[0]) == Presets.BOUNCES[pair[1]], "bounces follow the resolved mode %d" % pair[0])
+	for mode in [1, 2, 3]:
 		saved.pt_mode = mode
 		check(Presets.value("pt_mode", saved, false) == mode, "old bounce IDs retain the same number of bounces")
 		check(Presets.value("pt_accumulation", saved, false) == 0, "play presets always use responsive history")
@@ -42,11 +52,17 @@ func _ready() -> void:
 	check(not RtxGraphics.rr_active() or RtxGraphics.reason(RtxGraphics.RAY_RECONSTRUCTION).is_empty(), "automatic RR still requires actual native support")
 	GameData.options.pt_mode = 0
 	check(GameData.option("q_rt_lighting") == 2, "turning PT off restores the retained standalone RT quality")
+	GameData.options.pt_mode = 3
+	check(GameData.option("pt_mode") == 3 and GameData.option("pt_refraction") == 0 and GameData.option("pt_restir") == 0
+		and GameData.option("q_rt_lighting") == (2 if Presets.tuning_enabled() else 0), "runtime Performance shares Balanced's managed budget")
+	GameData.options.pt_mode = 7
+	check(GameData.option("pt_mode") == 2 and GameData.option("pt_refraction") == int(not Presets.tuning_enabled()), "an out-of-range saved ID keeps the former four-bounce behaviour")
 	GameData.options = previous
 	for language in ["en", "ru", "de"]:
 		RemakeText.lang = language
 		for key: String in [Presets.LABEL, Presets.HELP, Presets.SCREEN_LABEL, Presets.SCREEN_HELP,
-			GameData.REMAKE_OPTIONS.gfx_terrain_cliffs[0], GameData.REMAKE_OPTIONS.gfx_terrain_cliffs[1]] + Presets.CHOICES:
+			GameData.REMAKE_OPTIONS.gfx_terrain_cliffs[0], GameData.REMAKE_OPTIONS.gfx_terrain_cliffs[1],
+			GameData.REMAKE_OPTIONS.pt_mode[1]] + Presets.CHOICES + GameData.DISPLAY_CHOICES.pt_mode:
 			check(not RemakeText.t(key).is_empty() and (language == "en" or RemakeText.t(key) != key), "preset and terrain text translated: " + language + " " + key.left(32))
 	RemakeText.lang = "en"
 	print("PT_PRESETS ", JSON.stringify({"checks":checks, "failures":failures}))
