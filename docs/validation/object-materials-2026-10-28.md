@@ -788,6 +788,27 @@ surface is unchanged. River, Low, all detail features, ABBA
 than the projected rock texture; the cliff memo therefore only serves the
 visible surface now.
 
+## Foothills 4K against the published 1.35.0 pack
+
+`path_trace_location_walk.gd --pt-location-benchmark` (Foothills, first
+person, 3840×2160 output, 1920×1080 raster, 960×540 trace lattice, NRD,
+four local lights, no water or emitters) on the published 1.35.0 pack and
+the head after the day's work (`foothills-base1/2`, `foothills-head1/2`;
+three rounds of forward and ground views per process, 180 frames each):
+
+| View | Published 1.35.0 | Head | Change |
+| --- | ---: | ---: | ---: |
+| Forward, ray stage | 1.29–1.42 ms | 1.09–1.28 ms | −10 to −15% |
+| Ground, ray stage | 1.53–1.59 ms | 1.29–1.44 ms | −10 to −16% |
+| Forward, RT GPU total | 1.76–1.93 ms | 1.57–1.81 ms | |
+| Ground, RT GPU total | 2.19–2.29 ms | 1.96–2.13 ms | |
+| Controller main thread | 1.75–2.04 ms | 1.54–1.86 ms | |
+
+This scene exercises the material, bounce and controller changes only; the
+refraction and ReSTIR savings need water or more than four lights and are
+measured on the river above. Frame times (8.2–10.1 ms) are main-thread bound
+and overlap between packs.
+
 ## Original comparison and limits
 
 The original renderer has no roughness or metalness; its material records
