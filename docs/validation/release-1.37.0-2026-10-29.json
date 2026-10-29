@@ -1,0 +1,143 @@
+{
+  "version": "1.37.0",
+  "release_type": "stable",
+  "date": "2026-10-29",
+  "release_tag": "v1.37.0",
+  "acceptance_passed": true,
+  "source_commit": "89d6acd91f1fa98e0881de3dfa699db97eab55aa",
+  "game_tree": "3758080780e6bd4fc30648a0687ff248ab249eaf",
+  "semver": "MINOR: a new Performance path-tracing preset and fire-thawed snow are backward-compatible features; save/load now keeps NPC actions with an optional save row that older saves omit. Saves/settings remain compatible; campaign protocol 23 and Autochess protocol 5 are unchanged.",
+  "new_regressions": {
+    "combat/party_attack_drawn_target": "fails on 1.36.0 (3 of 9), passes",
+    "persistence/npc_action_save": "46 checks",
+    "focused/path_trace_tactical_camera": "fails on 1.36.0 (7 failures), 19 checks pass",
+    "focused/path_trace_performance_mode": "144 checks",
+    "focused/snow_fire_thaw": "45 checks"
+  },
+  "headless_catalog": {
+    "programs": 578,
+    "passed": 551,
+    "checks_in_passed": 733154,
+    "not_passed": [
+      "arena/arena_economy",
+      "arena/arena_elimination_places",
+      "arena/arena_live_shop",
+      "arena/arena_result_health",
+      "commands/worker_travel_clock",
+      "coop/coop_guest_roles_net",
+      "coop/coop_guest_roles_net_astral",
+      "coop/coop_solo_return",
+      "coop/coop_vm_solo",
+      "dialogue/gipat_captive_dialogue_hermit_first",
+      "focused/unit_sound_state",
+      "focused/vegetation_warmup",
+      "inventory/recruited_equipment_net_astral",
+      "pathing/path_preview",
+      "quests/base_campaign_gipat_departure",
+      "quests/base_campaign_gipat_departure_hermit_first",
+      "quests/base_campaign_gipat_farewell1",
+      "quests/base_campaign_gipat_farewell2",
+      "quests/base_campaign_gipat_farewell3",
+      "quests/base_campaign_gipat_farewell4",
+      "quests/lia_first_visit_orders_07",
+      "quests/lia_first_visit_orders_08",
+      "quests/lia_first_visit_orders_09",
+      "quests/lia_first_visit_orders_10",
+      "quests/story_coop_effects",
+      "quests/story_coop_predicates",
+      "quests/zone7_arrival"
+    ],
+    "scope": "Every headless program in tools/parity/gameplay_catalog.json from private source (remake regressions, no original-executable comparison). Each program that did not pass was rerun on 1.36.0 source (private a5722f5fe) and fails identically there, with the same failure lines: none is introduced by 1.37.0."
+  },
+  "packaged_linux": {
+    "cases": 408,
+    "passed": 383,
+    "checks_in_passed": 494334,
+    "not_passed": [
+      "arena_equipment_roster_ui_de_1080",
+      "arena_equipment_roster_ui_de_1440",
+      "arena_equipment_roster_ui_de_2160",
+      "arena_equipment_roster_ui_de_720",
+      "arena_equipment_roster_ui_en_1080",
+      "arena_equipment_roster_ui_en_1440",
+      "arena_equipment_roster_ui_en_2160",
+      "arena_equipment_roster_ui_ru_1080",
+      "arena_equipment_roster_ui_ru_1440",
+      "arena_equipment_roster_ui_ru_2160",
+      "arena_equipment_roster_ui_ru_720",
+      "arena_item_first_click",
+      "arena_reserve_moves_ui",
+      "path_trace_rr_details",
+      "path_trace_rr_live",
+      "path_trace_rr_traversal_cave",
+      "path_trace_rr_traversal_desert",
+      "path_trace_rr_traversal_river",
+      "path_trace_rr_traversal_snow",
+      "path_trace_rr_unavailable",
+      "path_trace_rtxdi_live",
+      "path_trace_transmission_live",
+      "path_trace_travel_rr",
+      "path_trace_travel_rr_night",
+      "terrain_cliff_composed_gl"
+    ],
+    "scope": "Every focused case (headless and rendered, GPU Lab) against the 1.37.0 Linux package. 13 not-passed cases were rerun against the published 1.36.1 Linux package and fail identically; the other 12 are language/resolution or zone variants of those cases. RR/DLSS cases need native Windows/D3D12 and are covered under Proton."
+  },
+  "windows_proton": {
+    "cases": 13,
+    "passed": 13,
+    "scope": "Packaged 1.37.0 Windows build, D3D12 under GE-Proton 11-11 / VKD3D in GPU Lab, one locked prefix: window extents, PT programs, Ray Reconstruction raw/resources/presentation/live, RR fast travel day/night, RTXDI, transmission, preset options, Performance mode and tactical camera.",
+    "note": "path_trace_performance_mode failed once (grove colour balance 0.0505: the Balanced capture caught the sky still changing, ground-only tint 0.011); the immediate rerun passed all 144 checks (grove 0.0013). Frame generation was not exercised."
+  },
+  "browser": {
+    "fresh": true,
+    "upgrade": {
+      "from": "1.36.1",
+      "to": "1.37.0",
+      "indexeddb_preserved": true
+    }
+  },
+  "tooling": {
+    "python_tools": 148,
+    "parity_tests": 175,
+    "translations": "3697 entries, 0 errors",
+    "issue_coverage": "111 issues, 0 uncovered",
+    "script_parse": "1257 scripts, 0 failed (1 needs the patched engine)"
+  },
+  "five_platform_script_parity": {
+    "compiled_scripts": 463,
+    "all_five_platforms_identical": true,
+    "version_code": 73,
+    "debuggable": false,
+    "apk_sha256": "93d9a6c90c6181f89595c98e8d325f39877e74ac7a55a96f8c2c13da1dcfd02b"
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "383 of 408 packaged cases pass in GPU Lab; every other case fails identically on 1.36.1."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "scope": "13 packaged D3D12 cases under Proton; native Windows not run."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Package built and script-audited; engine unchanged from 1.36.x."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "APK built, signed with the public certificate and audited; no device run."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium start and upgrade from published 1.36.1 cache; IndexedDB retained."
+    }
+  },
+  "limits": [
+    "Native Windows GPU, macOS and Android device runs were not performed.",
+    "Frame generation was not tested for this release.",
+    "27 headless catalog programs and 25 packaged cases fail identically on 1.36.0/1.36.1; they are pre-existing and listed above.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "previous_acceptance": "release-1.36.1-2026-10-29.json"
+}
