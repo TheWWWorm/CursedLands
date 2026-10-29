@@ -395,4 +395,3 @@ SHaRC changes and fewer light-family samples remain research options with
 quality and performance tradeoffs; neither was enabled by this completion pass.
 See the [completion validation](../validation/path-tracing-completion-2026-10-29.md)
 for regression results, the rejected experiment and native-runtime limitations.
-
