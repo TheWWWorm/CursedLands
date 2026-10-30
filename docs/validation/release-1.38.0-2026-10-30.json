@@ -1,0 +1,124 @@
+{
+  "version": "1.38.0",
+  "release_type": "stable",
+  "date": "2026-10-30",
+  "release_tag": "v1.38.0",
+  "acceptance_passed": true,
+  "source_commit": "c57e8e3d2bf01a61007cb4d3c9f488b0ff307a36",
+  "game_tree": "dddbc7a290e5254baabf160d6bde4d8be03066b6",
+  "semver": "MINOR: the Lost in Astral Multiplayer board and the Autochess default are backward-compatible features; the rest are fixes. Saves and settings remain compatible; campaign protocol 23 and Autochess protocol 5 are unchanged.",
+  "new_regressions": {
+    "interface/menu_multiplayer_board_astral": "47 checks (EN/RU/DE caption, click area, hover, network screen, skin)",
+    "interface/menu_multiplayer_board_base": "29 checks (base board untouched)",
+    "arena/arena_default_mode": "9 checks; fails on 1.37.0 (Expedition default)",
+    "arena/arena_bot_only_ready": "12 checks; fails on 1.37.0 (bot-only preparation waits for the timer)",
+    "focused/water_level_animation": "28 checks; fails on 1.37.0 (no per-material water cells); animated step 273 us vs 3021 us full-map scan",
+    "tools/parity/test_gameplay.py": "concurrent runners share program starts (memory gate); fails on 1.37.0 tooling"
+  },
+  "performance": {
+    "case": "gz5h (Lost in Astral Canyon of Death) user save during scripted water rise, 2880x1800, RTX 3090, GPU Lab",
+    "fps_median_before": 15,
+    "fps_median_after": 72,
+    "fps_p10_before": 13,
+    "fps_p10_after": 51,
+    "note": "Single-player load; host and guest presentation use the same path. A real two-machine co-op session was not measured."
+  },
+  "headless_catalog": {
+    "programs": 581,
+    "passed": 581,
+    "checks_in_passed": 736783,
+    "not_passed": [],
+    "scope": "Every headless program in tools/parity/gameplay_catalog.json from the integrated public source (remake regressions, no original-executable comparison), base GOG data and LiA 1.02."
+  },
+  "packaged_linux": {
+    "cases": 401,
+    "passed": 389,
+    "checks_in_passed": 494544,
+    "skipped_windows_only": [
+      "path_trace_travel_rr",
+      "path_trace_travel_rr_night",
+      "path_trace_rr_live",
+      "path_trace_rr_unavailable",
+      "path_trace_rtxdi_live",
+      "path_trace_rr_traversal_river",
+      "path_trace_rr_traversal_snow",
+      "path_trace_rr_traversal_desert",
+      "path_trace_rr_traversal_cave",
+      "path_trace_rr_details"
+    ],
+    "not_passed": [
+      "arena_equipment_roster_ui_de_1080",
+      "arena_equipment_roster_ui_de_1440",
+      "arena_equipment_roster_ui_de_2160",
+      "arena_equipment_roster_ui_de_720",
+      "arena_equipment_roster_ui_en_1440",
+      "arena_equipment_roster_ui_en_2160",
+      "arena_equipment_roster_ui_en_720",
+      "arena_equipment_roster_ui_ru_1080",
+      "arena_equipment_roster_ui_ru_2160",
+      "arena_equipment_roster_ui_ru_720",
+      "arena_item_first_click",
+      "arena_reserve_moves_ui"
+    ],
+    "scope": "Every focused case (headless and rendered, GPU Lab) against the 1.38.0 Linux package with LiA 1.02 and original EN/RU/DE texts. The not-passed cases are the Autochess UI first-click group: arena_item_first_click, arena_reserve_moves_ui and arena_equipment_roster_ui_en_720 fail identically on the published 1.37.0 Linux package; the group passes from source and with --render-thread safe (see catalog-failures-2026-10-29.md)."
+  },
+  "windows_proton": {
+    "cases": 13,
+    "passed": 13,
+    "scope": "Packaged 1.38.0 Windows build, D3D12 under GE-Proton 11-11 / VKD3D in GPU Lab, one locked prefix: window extents, PT programs, Ray Reconstruction raw/resources/presentation/live, RR fast travel day/night, RTXDI, transmission, presets, Performance mode, tactical camera.",
+    "note": "path_trace_performance_mode completed 144 checks with 0 failures and a clean exit; the suite wrapper did not recognise its JSON summary line, so it is counted from the program's own summary."
+  },
+  "browser": {
+    "fresh": true,
+    "upgrade": {
+      "from": "1.37.0",
+      "to": "1.38.0",
+      "indexeddb_preserved": true
+    }
+  },
+  "tooling": {
+    "python_tools": 128,
+    "parity_tests": 180,
+    "translations": "3697 entries, 0 errors",
+    "issue_coverage": "111 issues, 0 uncovered",
+    "script_parse": "1261 scripts, 0 failed (1 needs the patched engine)"
+  },
+  "five_platform_script_parity": {
+    "compiled_scripts": 464,
+    "all_five_platforms_identical": true,
+    "version_code": 74,
+    "debuggable": false,
+    "apk_sha256": "10fd7c013887f812f7ed627bb75836ee49f93b2acd205381d78223694eb34d55"
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "scope": "389 of 401 packaged cases pass in GPU Lab; the Autochess UI first-click group fails identically on 1.37.0."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "proton_tested": true,
+      "scope": "13 packaged D3D12 cases under Proton; native Windows not run."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "scope": "Package built and script-audited; engine unchanged from 1.37.0."
+    },
+    "android": {
+      "target_os_tested": false,
+      "scope": "APK built, signed with the public certificate and audited; no device run."
+    },
+    "web": {
+      "target_os_tested": true,
+      "scope": "Fresh Chromium start and upgrade from published 1.37.0 cache; IndexedDB retained."
+    }
+  },
+  "limits": [
+    "Native Windows GPU, macOS and Android device runs were not performed.",
+    "Frame generation was not tested for this release.",
+    "The Autochess UI first-click packaged cases fail identically on 1.37.0 (separate render thread with synthetic input); whether real player input is affected is not established.",
+    "The gz5h frame-rate fix was measured in single player; a two-machine co-op session was not measured.",
+    "Path tracing and frame generation remain experimental."
+  ],
+  "previous_acceptance": "release-1.37.0-2026-10-29.json"
+}
