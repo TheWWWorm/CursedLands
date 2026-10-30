@@ -10,6 +10,7 @@
 - Prepare the loose ground-cover shader while a zone loads again; the warmup built an incomplete record and skipped it, so the first leaves and stones could stutter on screen.
 - Unit sounds skip a unit removed from the world instead of reporting a script error every frame.
 - Test catalog: cases that need a Windows Direct3D 12 runtime (live DLSS Ray Reconstruction) are reported as skipped on other platforms, and stale fixtures were brought up to date. Details: `docs/validation/catalog-failures-2026-10-29.md`.
+- Test runners: parallel suites no longer overcommit memory. `tools/parity/gameplay.py` and `tools/check_regressions.py` record each program start in a machine-wide ledger and count a program started in the last minute as already using its peak (now 6 GiB), so two suites running side by side cannot start more programs than free memory holds while earlier ones are still loading. Regression `tools/parity/test_gameplay.py` (`test_concurrent_runners_count_each_others_loading_programs`).
 
 ## 1.37.0 — 2026-10-29
 

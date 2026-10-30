@@ -70,6 +70,13 @@ python3 tools/check_regressions.py --engine /path/to/godot \
 python3 tools/check_regressions.py --jobs 4 ...
 ```
 
+Every case waits until free memory holds one more program (about 6 GiB) plus an
+8 GiB reserve. Programs started in the last minute by any runner on the machine
+(this runner, `tools/parity/gameplay.py` or another suite) count as already
+using that memory, through a shared ledger in `~/.cache/cursed-lands/`, so
+suites run side by side cannot overcommit while their programs are still
+loading. A run's first case starts once nothing else is loading.
+
 The runner creates a new profile per case with mouse confinement disabled, FPS
 visible, all three audio volumes zero and networking discovery disabled. It uses
 the shared gameplay bootstrap to confirm the actual campaign, script, profile

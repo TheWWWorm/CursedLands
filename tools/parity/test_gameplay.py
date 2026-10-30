@@ -12,7 +12,7 @@ import time
 import unittest
 import xml.etree.ElementTree as ET
 
-from gameplay import (MEMORY_RESERVE, PROGRAM_MEMORY, MemoryGate, auto_jobs, argument_paths, assess, catalog, engine_argv, host_platform,
+from gameplay import (MEMORY_RESERVE, PROGRAM_MEMORY, RAMP_SECONDS, MemoryGate, StartLedger, auto_jobs, argument_paths, assess, catalog, engine_argv, host_platform,
                       min_checks, missing_assets, parse_summary, platform_requirement, run_program, save_report, uses_network)
 from run import HERE, PROFILE, REPO
 
@@ -374,24 +374,64 @@ class GameplayExecution(unittest.TestCase):
     def test_memory_gate_holds_programs_until_memory_frees(self):
         free = [0]
         stop = threading.Event()
-        gate = MemoryGate(stop, available=lambda: free[0], poll=0.05)
-        order = []
-        with gate:
-            # The first program always starts; the second waits for memory.
-            second = threading.Thread(target=lambda: gate.__enter__() and order.append("second"))
-            second.start()
-            second.join(0.3)
-            self.assertEqual(order, [])
-            free[0] = PROGRAM_MEMORY + MEMORY_RESERVE
-            second.join(2)
-            self.assertEqual(order, ["second"])
-        gate.__exit__(None, None, None)
-        # A stopped run admits waiters at once so they can end promptly.
-        free[0] = 0
-        with gate:
+        with tempfile.TemporaryDirectory() as folder:
+            gate = MemoryGate(stop, available=lambda: free[0], poll=0.05,
+                              ledger=StartLedger(Path(folder) / "starts.json"))
+            order = []
+            with gate:
+                # The first program always starts; the second waits for memory
+                # that also covers the first while it is still loading.
+                second = threading.Thread(target=lambda: gate.__enter__() and order.append("second"))
+                second.start()
+                second.join(0.3)
+                self.assertEqual(order, [])
+                free[0] = PROGRAM_MEMORY + MEMORY_RESERVE
+                second.join(0.3)
+                self.assertEqual(order, [])
+                free[0] = 2 * PROGRAM_MEMORY + MEMORY_RESERVE
+                second.join(2)
+                self.assertEqual(order, ["second"])
+            gate.__exit__(None, None, None)
+            # A stopped run admits waiters at once so they can end promptly.
+            free[0] = 0
             stop.set()
             with gate:
-                self.assertEqual(gate.active, 2)
+                with gate:
+                    self.assertEqual(gate.active, 2)
+
+    def test_concurrent_runners_count_each_others_loading_programs(self):
+        # 1.38.0: a headless catalog and a packaged suite each admitted programs
+        # against free memory that the other's starting programs were about to
+        # take, leaving 3 GB of 62. Starts are now shared through the ledger.
+        now = [1000.0]
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "starts.json"
+            headless, packaged = (StartLedger(path, clock=lambda: now[0]) for _ in range(2))
+            free = MEMORY_RESERVE + 2 * PROGRAM_MEMORY
+            self.assertTrue(headless.admit(free, first=True))
+            self.assertTrue(headless.admit(free, first=False))
+            # Two programs are loading: memory that looks free is theirs.
+            self.assertFalse(packaged.admit(free, first=True))
+            self.assertFalse(packaged.admit(free, first=False))
+            self.assertTrue(packaged.admit(free + 2 * PROGRAM_MEMORY, first=False))
+            # Once the programs have reached their peak, free memory is accurate.
+            now[0] += RAMP_SECONDS
+            self.assertTrue(packaged.admit(free, first=False))
+            # Starts recorded by a runner that has exited no longer count.
+            rows = json.loads(path.read_text())
+            path.write_text(json.dumps([dict(row, pid=2**22 + 12345) for row in rows]))
+            now[0] += 1
+            self.assertTrue(packaged.admit(MEMORY_RESERVE + PROGRAM_MEMORY, first=False))
+
+    def test_unreadable_ledger_falls_back_to_free_memory(self):
+        with tempfile.TemporaryDirectory() as folder:
+            blocked = Path(folder) / "file"
+            blocked.write_text("")
+            gate = MemoryGate(threading.Event(), available=lambda: 0, ledger=StartLedger(blocked / "starts.json"))
+            self.assertTrue(gate.admit(0))
+            gate.active = 1
+            self.assertFalse(gate.admit(0))
+            self.assertTrue(gate.admit(PROGRAM_MEMORY + MEMORY_RESERVE))
 
     def test_programs_opening_fixed_ports_are_found_through_their_bases(self):
         # A parallel run serializes these; base scripts carry the sockets.

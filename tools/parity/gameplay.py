@@ -140,10 +140,14 @@ def uses_network(script, runtime, seen=None):
     return False
 
 
-# One loaded-map program peaks near 4.2 GiB and uses about 1.5 cores
-# (LiA quest run, 2026-10-28); keep room for the desktop and other work.
-PROGRAM_MEMORY = 9 * 2**29
+# One loaded-map program peaks near 6 GiB and uses about 1.5 cores (6.2 GB
+# resident in the 1.38.0 headless catalog, 2026-10-30); keep room for the
+# desktop and other work.
+PROGRAM_MEMORY = 6 * 2**30
 MEMORY_RESERVE = 8 * 2**30
+# A program reaches its peak within this long of starting; until then free
+# memory does not yet show what it will take.
+RAMP_SECONDS = 60.0
 
 
 def available_memory():
@@ -177,19 +181,76 @@ def jobs_argument(value):
     return jobs
 
 
+class StartLedger:
+    """Program starts recorded by every test runner on this machine, so
+    concurrent suites see each other's programs that are still loading.
+    A start counts as one program's peak until RAMP_SECONDS have passed or
+    its runner has exited."""
+    def __init__(self, path=None, clock=time.time):
+        self.path = Path(path) if path else Path.home() / ".cache/cursed-lands/test-starts.json"
+        self.clock = clock
+
+    def admit(self, free, first):
+        """Record a start and return True when free memory holds one more
+        program besides those still loading; the first program of a run
+        needs only that nothing else is loading."""
+        import fcntl
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with open(self.path, "a+") as handle:
+            fcntl.flock(handle, fcntl.LOCK_EX)
+            handle.seek(0)
+            try:
+                rows = json.loads(handle.read() or "[]")
+            except ValueError:
+                rows = []
+            now = self.clock()
+            rows = [row for row in rows if now - row["time"] < RAMP_SECONDS and alive(row["pid"])]
+            loading = len(rows) * PROGRAM_MEMORY
+            admitted = free - loading >= PROGRAM_MEMORY + MEMORY_RESERVE or (first and not rows)
+            if admitted:
+                rows.append({"pid": os.getpid(), "time": now})
+            handle.seek(0)
+            handle.truncate()
+            handle.write(json.dumps(rows))
+            return admitted
+
+
+def alive(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except OSError:
+        pass
+    return True
+
+
 class MemoryGate:
-    """Hold a program back while free memory is below one program's peak plus
-    the reserve. The first program always starts, so a run never stalls."""
-    def __init__(self, stop, available=available_memory, poll=2.0):
+    """Hold a program back while free memory, less what programs started in
+    the last RAMP_SECONDS (by any runner) will still take, is below one
+    program's peak plus the reserve. The first program of a run starts once
+    nothing else is loading, so a run never stalls."""
+    def __init__(self, stop, available=available_memory, poll=2.0, ledger=None):
         self.stop, self.available, self.poll = stop, available, poll
+        if ledger is None and os.name == "posix":
+            ledger = StartLedger()
+        self.ledger = ledger
         self.active = 0
         self.condition = threading.Condition()
 
+    def admit(self, free):
+        if self.ledger:
+            try:
+                return self.ledger.admit(free, not self.active)
+            except OSError:
+                pass
+        return not self.active or free >= PROGRAM_MEMORY + MEMORY_RESERVE
+
     def __enter__(self):
         with self.condition:
-            while self.active and not self.stop.is_set():
+            while not self.stop.is_set():
                 free = self.available()
-                if free is None or free >= PROGRAM_MEMORY + MEMORY_RESERVE:
+                if free is None or self.admit(free):
                     break
                 self.condition.wait(self.poll)
             self.active += 1
