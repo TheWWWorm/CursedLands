@@ -169,7 +169,10 @@ func _ready() -> void:
 	# equipment and purse stay the solo source's; no production adoption of
 	# host vars or chapter is involved in the join under test.
 	solo.vars=host.state.vars.duplicate(true); solo.side_quests=host.state.side_quests.duplicate(true)
-	solo.quest_items=host.state.quest_items.duplicate(true); solo.current_zone=camp; solo.visited[camp]=true
+	solo.quest_items=host.state.quest_items.duplicate(true)
+	# Its own travel to the camp is a native collection of the deployed bag,
+	# which makes the chapter party the loaded quest-bag owner (as the host's).
+	solo.store_party_quest_items(); solo.current_zone=camp; solo.visited[camp]=true
 	CoopProgress.main_hero(solo).str=44.0
 	solo.money=777; solo.items=["rune:e1","rune:e2","rune:ic"]
 	fingerprint=identity(CoopProgress.main_hero(solo)); purse=CoopProgress.main_bag(solo).duplicate(true)

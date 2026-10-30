@@ -166,6 +166,30 @@ class PackagedFixtureTests(unittest.TestCase):
             result = json.loads((root / "results/results.json").read_text())
             self.assertTrue(result["passed"])
 
+    def test_other_platform_case_is_skipped_not_run_or_passed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / "catalog.json"
+            other = "linux" if runner.sys.platform == "win32" else "windows"
+            manifest.write_text(json.dumps({"schema": 1, "tests": [catalog_entry(
+                "probe", "native runtime only", platforms=[other])]}))
+            engine = root / "game.x86_64"
+            engine.write_bytes(b"engine")
+            args = ["check_regressions.py", "--engine", str(engine), "--only", "probe",
+                    "--output", str(root / "results")]
+            with patch.object(runner, "CATALOG", manifest), patch.object(runner.sys, "argv", args), \
+                    patch.object(runner.shutil, "which", side_effect=lambda value: value), \
+                    patch.object(runner.subprocess, "check_output", return_value="source\n"), \
+                    patch.object(runner, "run_program", side_effect=AssertionError("skipped case ran")):
+                self.assertEqual(runner.main(), 0)
+            result = json.loads((root / "results/results.json").read_text())
+            self.assertEqual((result["cases"], result["skipped"]), ([], [{"id": "probe", "platforms": [other]}]))
+
+    def test_platform_minimum_applies_on_that_platform(self):
+        here = runner.platform_requirement.__globals__["host_platform"]()
+        case = runner.focused_case(catalog_entry("probe", "x", min_checks=5, platform_min_checks={here: 2}))
+        self.assertEqual(case["min_checks"], 2)
+
 
 class SourceFixtureTests(unittest.TestCase):
     def test_source_run_stages_res_tools_imports(self):

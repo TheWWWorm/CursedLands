@@ -565,7 +565,12 @@ var options := {}
 var graphics_revision := 0
 ## A player preference, independent of expedition saves and undo.
 var arena_speed := 1
-var arena_mode := 0
+## Trials of the Allods mode: 0 expedition, 1 autochess, 2 LiA autochess.
+## New profiles open on the ordinary autochess.
+var arena_mode := 1
+## Profiles before this revision stored the old expedition default without a
+## choice; they move to the autochess default once.
+const ARENA_MODE_REV := 1
 var arena_character := "hero"
 
 var _texture_cache := {}
@@ -618,6 +623,14 @@ static func ground_effect_defaults(cfg: ConfigFile, platform: Dictionary = {}) -
 	return values
 
 
+## The Trials of the Allods mode a settings file selects (ARENA_MODE_REV).
+static func saved_arena_mode(cfg: ConfigFile) -> int:
+	var mode := clampi(int(cfg.get_value("arena", "mode", 1)), 0, 2)
+	if int(cfg.get_value("arena", "mode_rev", 0)) < ARENA_MODE_REV and mode == 0:
+		mode = 1
+	return mode
+
+
 func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--renderer-probe"):
 		process_mode = Node.PROCESS_MODE_DISABLED
@@ -636,7 +649,7 @@ func _ready() -> void:
 		hero_class = cfg.get_value("player", "hero", hero_class)
 		difficulty = cfg.get_value("game", "difficulty", 0)
 		resolution_size = String(cfg.get_value("display", "resolution", "native"))
-	arena_mode = clampi(int(cfg.get_value("arena", "mode", 0)), 0, 2)
+	arena_mode = saved_arena_mode(cfg)
 	arena_character = ArenaCommanders.valid(str(cfg.get_value("arena", "character", "hero")))
 	arena_speed = 2 if cfg.get_value("arena", "battle_speed", 1) == 2 else 1
 	for o: Array in OPTIONS:
@@ -913,6 +926,7 @@ func save_settings() -> void:
 	cfg.set_value("display", "resolution", resolution_size)
 	cfg.set_value("arena", "battle_speed", arena_speed)
 	cfg.set_value("arena", "mode", arena_mode)
+	cfg.set_value("arena", "mode_rev", ARENA_MODE_REV)
 	cfg.set_value("arena", "character", arena_character)
 	var old := ConfigFile.new()   # hand-edited [debug] keys (FlashLog) and GfxDetect's record survive
 	if old.load(CONFIG_PATH) == OK:

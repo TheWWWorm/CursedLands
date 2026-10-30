@@ -234,6 +234,8 @@ func _setup_column() -> void:
 		if part.begins_with("but") and not part.begins_with("button"):
 			mi.material_override = labels
 	MenuCaptions.apply(_column, "unmoco2")
+	# LiA's skull in the middle becomes the Multiplayer board again.
+	MenuMultiplayerBoard.install(_column, true)
 	for part: String in BOARDS:
 		var n := _column.find_child(part, true, false) as Node3D
 		if n:
@@ -334,7 +336,11 @@ static func reg_rects() -> Array:
 		var mm: Dictionary = EIRegFile.parse(GameData.menus.read("menus.reg")).get("MainMenu", {})
 		for e: Array in REG:
 			var v: Array = mm.get(e[0], [])
-			_reg_rects.append(Rect2(v[0], v[1], v[2] - v[0], v[3] - v[1]) if v.size() == 4 else Rect2())
+			var r := Rect2(v[0], v[1], v[2] - v[0], v[3] - v[1]) if v.size() == 4 else Rect2()
+			# LiA's empty Multiplayer area: the restored board's original one.
+			if e[0] == "Multiplayer" and r.size == Vector2.ZERO:
+				r = MenuMultiplayerBoard.REG_RECT
+			_reg_rects.append(r)
 	return _reg_rects
 
 

@@ -55,7 +55,8 @@ func advance_clock(dt: float, budget_usec := 0) -> void:
 		var changed_players := run.advance_bots(dt)
 		for player in changed_players: boards._sync_board(player)
 		if not changed_players.is_empty(): updated.emit()
-		if run.elapse_preparation(dt): start_round()
+		# Only computers remain in the tournament: nobody needs to prepare.
+		if run.elapse_preparation(dt) or everyone_ready(): start_round()
 	elif run.stage == "fight":
 		_ticks += dt * battle_speed
 		# Independent boards retain their 55 ms simulation ticks and player
@@ -180,9 +181,11 @@ func disconnect_player(player: int) -> void:
 	if run.stage == "prepare" and everyone_ready(): start_round()
 	updated.emit()
 
+## Every living human is ready; with none left (all eliminated or gone), the
+## computers' rounds start at once instead of waiting out the preparation.
 func everyone_ready() -> bool:
 	var active := run.humans.keys().filter(func(id): return run.health(id) > 0)
-	return not active.is_empty() and active.all(func(id): return ready_seats.has(id))
+	return active.all(func(id): return ready_seats.has(id))
 
 func state_for(player: int, names: Array) -> Dictionary:
 	var companies := []

@@ -885,6 +885,12 @@ var water_base := PackedFloat32Array()
 var water_mat := PackedByteArray()
 ## SetWaterLevel: current level offset (EI z) per map material.
 var water_offsets := {}
+## Cells of each liquid material and their bounds (water_cells): built once
+## from water_mat. A scripted level change moves 18 times a second and must
+## not scan the whole map on every logic tick.
+var _water_cells := {}
+var _water_bounds := {}
+var _water_cells_size := -1
 ## Walkable-surface heights from objects like bridges, -INF where none.
 var surface := PackedFloat32Array()
 ## Ground type per cell (tiledesc.reg: 0 grass .. 13 lava, 14 swamp, 15 high rock).
@@ -1090,6 +1096,7 @@ func _parse_header(d: PackedByteArray) -> bool:
 	liquid_ground.fill(255)
 	water_mat.resize(water.size())
 	water_mat.fill(255)
+	_water_cells_size = -1
 	land_tile.resize(sectors_x * TILES * sectors_y * TILES)
 	water_tile.resize(land_tile.size())
 	water_tile.fill(-1)
@@ -1744,6 +1751,7 @@ func _record_water(pos: PackedVector3Array, mats: PackedInt32Array, sx: int, sy:
 					var gy := sy * SECTOR + ty * 2 + dy
 					water[gy * cells_w + gx] = level
 					water_mat[gy * cells_w + gx] = mini(mats[ty * TILES + tx], 254)
+	_water_cells_size = -1
 
 
 ## Ground height (EI z) a walking unit stands on: terrain, or a bridge/floor above it.
@@ -1780,7 +1788,8 @@ static func ground_in(hs: PackedFloat32Array, surf: PackedFloat32Array, gw: int,
 ## material `mat` to `offset` (EI z) above its level in the map files. The
 ## surface moves in the water shader; the per-cell levels (water) follow.
 ## Returns the cell rect whose water changed (empty when none).
-func set_water_offset(mat: int, offset: float) -> Rect2i:
+## `animated`: one step of a gradual SetWaterLevel (TerrainDetails.water_changed).
+func set_water_offset(mat: int, offset: float, animated := false) -> Rect2i:
 	if absf(float(water_offsets.get(mat, 0.0)) - offset) < 1e-6:
 		return Rect2i()
 	water_offsets[mat] = offset
@@ -1802,21 +1811,39 @@ func set_water_offset(mat: int, offset: float) -> Rect2i:
 		color_cache.sync_parameter("level", _level)
 	if is_instance_valid(contact):
 		contact.refresh_parameters()
-	var cells_w := sectors_x * SECTOR
-	var lo := Vector2i(1 << 30, 1 << 30)
-	var hi := Vector2i(-1, -1)
-	for i in water_mat.size():
-		if water_mat[i] == mat:
-			water[i] = water_base[i] + offset
-			var c := Vector2i(i % cells_w, i / cells_w)
-			lo = lo.min(c)
-			hi = hi.max(c)
-	if hi.x < 0:
+	var cells := water_cells(mat)
+	if cells.is_empty():
 		return Rect2i()
-	if is_instance_valid(_reflection): _reflection.request_refresh()
+	for i in cells:
+		water[i] = water_base[i] + offset
+	if is_instance_valid(_reflection): _reflection.request_refresh(animated)
 	if is_instance_valid(details):
-		details.water_changed()
-	return Rect2i(lo, hi - lo + Vector2i.ONE)
+		details.water_changed(animated)
+	return _water_bounds[mat]
+
+
+## The cells whose liquid tile has map material `mat`, in map order.
+func water_cells(mat: int) -> PackedInt32Array:
+	if _water_cells_size != water_mat.size():
+		_water_cells.clear()
+		_water_bounds.clear()
+		_water_cells_size = water_mat.size()
+		var cells_w := sectors_x * SECTOR
+		var lists := {}
+		for i in water_mat.size():
+			var m := water_mat[i]
+			if m == 255: continue
+			var c := Vector2i(i % cells_w, i / cells_w)
+			if not lists.has(m):
+				lists[m] = []
+				_water_bounds[m] = Rect2i(c, Vector2i.ZERO)
+			lists[m].append(i)
+			_water_bounds[m] = _water_bounds[m].expand(c)
+		for m in lists:
+			_water_cells[m] = PackedInt32Array(lists[m])
+			var r: Rect2i = _water_bounds[m]
+			_water_bounds[m] = Rect2i(r.position, r.size + Vector2i.ONE)
+	return _water_cells.get(mat, PackedInt32Array())
 
 
 func _refresh_water_current() -> void:

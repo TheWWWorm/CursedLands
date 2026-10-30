@@ -792,6 +792,8 @@
         "arena/arena_round_lifecycle",
         "arena/arena_alliances",
         "arena/arena_sale_quotes",
+        "arena/arena_bot_only_ready",
+        "arena/arena_default_mode",
         "arena/arena_tournament",
         "arena/arena_battle_limits",
         "arena/arena_solo_recovery"

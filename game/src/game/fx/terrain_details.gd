@@ -195,7 +195,25 @@ func add_step(x: float, y: float, a: float, b: float, angle: float, owner := 0, 
 			soft_ground.add_travel(owner, centre, Vector2(a, b))
 
 
-func water_changed() -> void:
+## A gradual SetWaterLevel moves every 55-ms logic tick. Rebuilding grass on
+## each step stalled whole frames (gz5h's canyon river), so animated levels
+## clear it at most once a second, and once more at the end.
+const WATER_CLEAR_MSEC := 1000
+var _water_pending := false
+var _water_next_msec := 0
+
+
+## `animated`: one step of a scripted level change; the final level is still
+## applied within WATER_CLEAR_MSEC.
+func water_changed(animated := false) -> void:
+	_water_pending = true
+	if not animated or Time.get_ticks_msec() >= _water_next_msec:
+		_apply_water_change()
+
+
+func _apply_water_change() -> void:
+	_water_pending = false
+	_water_next_msec = Time.get_ticks_msec() + WATER_CLEAR_MSEC
 	# Scripted flooding must not leave blades emerging from submerged grass.
 	_clear_grass()
 	if is_instance_valid(soft_ground):
@@ -203,6 +221,8 @@ func water_changed() -> void:
 
 
 func _process(_dt: float) -> void:
+	if _water_pending and Time.get_ticks_msec() >= _water_next_msec:
+		_apply_water_change()
 	if not (_grass or _cover) or not is_instance_valid(terrain):
 		return
 	_update_scenery()
@@ -655,8 +675,10 @@ func cover_warmup_variants() -> Array:
 	var sea: RefCounted = _cover_field.sea if not _cover_field.sea.tiles.is_empty() else null
 	var regional: RefCounted = _cover_field if _cover_field.regions.cave else null
 	for kind in [BiomeCover.Kind.LEAF, BiomeCover.Kind.STONE]:
+		# Same fields as a streamed BiomeCover record: Geometry.build reads them.
 		var records: Array[Dictionary] = [{"kind":kind,"p":Vector2.ZERO,"height":-0.008,
-			"seed":0.0,"angle":0.0,"scale":0.0,"normal":Vector3.UP,"colour":Color.WHITE}]
+			"seed":0.0,"angle":0.0,"scale":0.0,"normal":Vector3.UP,"colour":Color.WHITE,
+			"snow":false,"flower":0.0,"cold":false}]
 		var geometry := BiomeCover.Geometry.new()
 		var arrays := geometry.build(records,Vector2i.ZERO,sea,regional)
 		var mesh := ArrayMesh.new()

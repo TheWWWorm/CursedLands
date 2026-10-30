@@ -26,6 +26,8 @@ from run import HERE, REPO, PROFILE, command, file_hash, isolated_environment, s
 
 
 TEXTS = ("en", "ru", "de")
+# Platforms an entry's `platforms` / `platform_min_checks` may name.
+PLATFORMS = ("linux", "windows", "macos")
 
 
 def catalog(selection=None, path=None):
@@ -57,6 +59,14 @@ def catalog(selection=None, path=None):
                 or row.get("display", "headless") not in ("headless", "rendered")
                 or row.get("rendering_method", "gl_compatibility") not in ("gl_compatibility", "mobile", "forward_plus")):
             raise ValueError("Every entry must declare evidence type and nonzero minimum coverage")
+        platforms = row.get("platforms", list(PLATFORMS))
+        minimums = row.get("platform_min_checks", {})
+        if (not isinstance(platforms, list) or not platforms or len(set(platforms)) != len(platforms)
+                or any(name not in PLATFORMS for name in platforms) or not isinstance(minimums, dict)
+                or any(name not in platforms or type(value) is not int or not 1 <= value <= row["min_checks"]
+                       for name, value in minimums.items())):
+            raise ValueError("platforms and platform_min_checks name supported platforms; "
+                             "a platform minimum is positive and at most min_checks")
         for campaign, files in required_assets(row).items():
             if campaign not in ("cursed_lands", "lost_in_astral"):
                 raise ValueError("Unknown additional campaign")
@@ -66,6 +76,25 @@ def catalog(selection=None, path=None):
         argument_paths(row, {**{key: Path("/data") / key for key in required_assets(row)},
                              **{"texts_" + language: Path("/data/texts") / language for language in row.get("texts", [])}})
     return rows
+
+
+def host_platform(name=None):
+    name = name or sys.platform
+    return "windows" if name == "win32" else "macos" if name == "darwin" else "linux"
+
+
+def platform_requirement(spec, platform=None):
+    """The platforms an entry's whole contract needs when this host is not one
+    of them (for example a native Windows D3D12 runtime), else None. Such an
+    entry is reported as skipped, never as passed."""
+    platforms = spec.get("platforms")
+    return platforms if platforms and (platform or host_platform()) not in platforms else None
+
+
+def min_checks(spec, platform=None):
+    """Assertions this host must complete. A platform minimum covers entries
+    whose platform-specific branch legitimately runs only elsewhere."""
+    return spec.get("platform_min_checks", {}).get(platform or host_platform(), spec["min_checks"])
 
 
 def required_assets(spec):
@@ -348,6 +377,12 @@ def main():
             alias = f" (focused: {row['focused']})" if "focused" in row else ""
             print(f"{row['id']} [{row['campaign']}]{alias}: {row['description']}")
         return 0
+    skipped = [{"id": row["id"], "platforms": row["platforms"]} for row in tests if platform_requirement(row)]
+    for row in skipped:
+        print(f"Skipping {row['id']}: requires {', '.join(row['platforms'])}", flush=True)
+    tests = [dict(row, min_checks=min_checks(row)) for row in tests if not platform_requirement(row)]
+    if not tests:
+        raise ValueError("No gameplay programs selected for this platform")
     if not args.game_dir or not args.out or not args.godot:
         parser.error("--game-dir, --godot and --out are required")
     if args.timeout is not None and args.timeout < 1:
@@ -359,7 +394,7 @@ def main():
     if not sys.platform.startswith("linux"):
         raise ValueError("Capture profile isolation is qualified only on Linux")
     output.mkdir(parents=True, exist_ok=False)
-    report = {"schema": 1, "tests": [], "selected": [r["id"] for r in tests], "complete": False,
+    report = {"schema": 1, "tests": [], "selected": [r["id"] for r in tests], "skipped": skipped, "complete": False,
               "seed": args.seed, "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
               "game_source": str(source), "evidence": "remake_regression",
               "feature_inventory": json.loads((HERE / "player_features.json").read_text())}

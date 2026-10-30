@@ -969,7 +969,12 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 		state.store_party_positions(world)
 		state.collect_pets(world)
 		state.store_zone(zone_id, world)
-	if not _restoring and lmp.is_empty():
+	# Native collection (0x4edac0 -> 0x4621b0) stores the bag of a deployed
+	# party when it travels. A first deployment has collected nothing: it
+	# only loads a party selected beforehand. Archiving the unchanged owner's
+	# bag there credited the host alone, before any guest could share the
+	# boundary, and split their otherwise identical stories.
+	if not _restoring and lmp.is_empty() and (world and zone_id or state.quest_party != state.current_party):
 		coop.store_party_quest_items()
 	travel_options = []
 	_leave_armed = -1

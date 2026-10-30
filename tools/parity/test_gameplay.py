@@ -12,8 +12,8 @@ import time
 import unittest
 import xml.etree.ElementTree as ET
 
-from gameplay import (MEMORY_RESERVE, PROGRAM_MEMORY, MemoryGate, auto_jobs, argument_paths, assess, catalog, engine_argv, missing_assets, parse_summary, run_program,
-                      save_report, uses_network)
+from gameplay import (MEMORY_RESERVE, PROGRAM_MEMORY, MemoryGate, auto_jobs, argument_paths, assess, catalog, engine_argv, host_platform,
+                      min_checks, missing_assets, parse_summary, platform_requirement, run_program, save_report, uses_network)
 from run import HERE, PROFILE, REPO
 
 
@@ -38,6 +38,36 @@ class GameplayResults(unittest.TestCase):
         selected = {line.split()[0] for line in result.stdout.splitlines()}
         self.assertEqual(selected, {"quests/lia_tomb_exit", "commands/travel_command_lifecycle",
                                    "commands/travel_command_lifecycle_astral"})
+
+    def test_platform_scope_skips_and_lowers_only_declared_platforms(self):
+        windows = dict(SPEC, platforms=["windows"], platform_min_checks={"windows": 2})
+        self.assertEqual(platform_requirement(windows, "linux"), ["windows"])
+        self.assertIsNone(platform_requirement(windows, "windows"))
+        self.assertIsNone(platform_requirement(SPEC, "linux"))
+        partial = dict(SPEC, platform_min_checks={"linux": 2})
+        self.assertEqual((min_checks(partial, "linux"), min_checks(partial, "windows")), (2, 3))
+        self.assertEqual(host_platform("win32"), "windows")
+        self.assertEqual(host_platform("linux"), "linux")
+
+    def test_platform_fields_are_validated(self):
+        valid = json.loads((HERE / "gameplay_catalog.json").read_text())["tests"][0]
+        for change in ({"platforms": []}, {"platforms": ["dos"]}, {"platforms": ["linux", "linux"]},
+                       {"platform_min_checks": {"linux": 0}},
+                       {"platform_min_checks": {"linux": valid["min_checks"] + 1}},
+                       {"platforms": ["windows"], "platform_min_checks": {"linux": 1}}):
+            with tempfile.TemporaryDirectory() as directory, self.subTest(change=change):
+                path = Path(directory) / "catalog.json"
+                path.write_text(json.dumps({"schema": 1, "tests": [dict(valid, **change)]}))
+                with self.assertRaises(ValueError):
+                    catalog(path=path)
+
+    def test_registered_windows_only_cases_are_scoped(self):
+        rows = {row.get("focused"): row for row in catalog()}
+        self.assertEqual(rows["path_trace_rr_live"]["platforms"], ["windows"])
+        self.assertIsNotNone(platform_requirement(rows["path_trace_rr_live"], "linux"))
+        self.assertEqual(min_checks(rows["path_trace_transmission_live"], "linux"), 21)
+        self.assertEqual(min_checks(rows["path_trace_transmission_live"], "windows"),
+                         rows["path_trace_transmission_live"]["min_checks"])
 
     def test_supported_summary_formats(self):
         for tail in ("3 checks 0 failures", "3 checks 0 failures; fast_us=12",

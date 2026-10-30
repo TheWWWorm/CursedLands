@@ -54,6 +54,10 @@ func farewell() -> void:
 	if not await wait_zone("gz11k"):
 		await finish_gipat("BASE_CAMPAIGN_GIPAT_BRANCHES","Companion farewell did not reach Ingos."); return
 	check(s.party_units(0).size() == 1 and not s.state.mercs.has(n),"original lone protagonist reaches Ingos after companion farewell")
+	# Ingos opens its arrival quest a few ticks after loading. Settle that
+	# authored progress first, so the reload comparison sees only replays.
+	ticks(12)
+	check(value("q.gz11k.q42k") == 1,"original Ingos arrival starts the town quest")
 	await roundtrip("base_gipat_farewell_arrival",["b.Rick.R36_2","b.merc%d.n10_%d"%[n,n]])
 	await finish_gipat("BASE_CAMPAIGN_GIPAT_BRANCHES","Prepared earlier companion availability and Rick arrival offer; ordinary hire, Rick introduction/warning, missing-farewell gate, actual selected companion n10 farewell, dialogue transfer to Ingos and reload. merc_travel=0 selects original island separation behavior. One run per original Gipat companion 1–4.")
 

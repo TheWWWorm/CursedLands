@@ -55,6 +55,9 @@ func prepared(strength: float, money: int, name: String) -> CampaignState:
 	st.add_party_unit(party,"Hero2" if astral else "Hero","Hero2" if astral else "Human Hero Hadagan")
 	st.copy_stats("Hero",party+"::"+("Hero2" if astral else "Hero"))
 	st.set_current_party(party)
+	# A real save is taken after the selected party was deployed, which
+	# makes it the loaded quest-bag owner (native collect/deploy).
+	st.store_party_quest_items()
 	if astral: st.money = money; st.items = ["rune:e1"]
 	st.visited["bz5h" if astral else "bz13h"] = true
 	st.visited["gz2h" if astral else "gz15h"] = true

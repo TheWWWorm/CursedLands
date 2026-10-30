@@ -6,22 +6,28 @@ func check(ok: bool, label: String) -> void:
 	if not ok: failures.append(label); printerr("FAIL ",label)
 func fresh() -> ArenaOnlineTournament:
 	var run := ArenaOnlineTournament.new(); run.begin(7319); run.stage="fight"
+	# Neutral creep rounds deal no player damage (Underlords rule); a player
+	# round charges defeat_damage(wave / 10 + surviving damage).
+	run.wave=4; run._choose_pairings()
+	check(not run.is_creep_round(),"fixture fights a damaging player round")
 	return run
 func _ready() -> void:
 	var run := fresh()
 	var bank := run.gold
+	var home := run.defeat_damage(7); var guest := run.defeat_damage(5)
+	check(home > guest and guest > 0,"fixture losses are distinct and positive")
 	run.resolve(1,15,[0,100],[0,7])
-	check(run.lives==90 and run.stage=="fight","home defeat charges health before other boards finish")
-	check(run.gold==bank and run.last_result.health_lost==10,"loss feedback precedes shared income")
-	run.record_board(0,1,[0,7]); check(run.lives==90,"duplicate result cannot charge twice")
+	check(run.lives==100-home and run.stage=="fight","home defeat charges health before other boards finish")
+	check(run.gold==bank and run.last_result.health_lost==home,"loss feedback precedes shared income")
+	run.record_board(0,1,[0,7]); check(run.lives==100-home,"duplicate result cannot charge twice")
 	var saved := run.snapshot()
 	var restored := ArenaTournamentRun.new(); restored.auto_save=false
 	check(saved.lives==100 and restored.restore(saved) and restored.lives==100 and restored.stage=="prepare","interrupted save replays at original health")
 	run.record_board(1,1,[0,5])
-	check(run.health(1)==92 and run.company(1).last_result.health_lost==8,"guest loses health immediately too")
+	check(run.health(1)==100-guest and run.company(1).last_result.health_lost==guest,"guest loses health immediately too")
 	for player in range(2,9): run.record_board(player,0,[3,0])
-	check(run.stage=="result" and run.lives==90 and run.health(1)==92,"shared settlement does not charge losses again")
-	check(run.company(1).last_result.health_lost==8,"guest recap retains the full earlier loss")
+	check(run.stage=="result" and run.lives==100-home and run.health(1)==100-guest,"shared settlement does not charge losses again")
+	check(run.company(1).last_result.health_lost==guest,"guest recap retains the full earlier loss")
 	run=fresh(); run.lives=1
 	run.resolve(1,15,[0,100],[0,7])
 	check(run.lives==0 and run.stage=="fight","lethal home defeat waits for remaining boards")

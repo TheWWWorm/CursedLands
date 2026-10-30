@@ -57,7 +57,10 @@ func _run() -> void:
 		for u:GameUnit in s.world.unit_rows():
 			if u!=hero:ignored.append(u)
 		evidence.approaches.append({"topic":step[1],"hero":clean(hero.pos),"npc":clean(npc.pos),"blocked":hero.blocked,"ready":npc.village_talk_ready(),"pending":Briefings.pending_for(s.state,npc,0),"static_path":clean(s.world.nav.find_path(hero.pos,npc.pos,ignored,[],0.0,hero.move_class(),true))})
-		check(s.state.get_var(0,step[1])==1,"native handler offers "+step[1])
+		# #OnBriefingComplete runs on the world tick after the previous
+		# briefing closes; an already-ready NPC must not be approached first.
+		if not await until(func():return s.state.get_var(0,step[1])==1,"native handler offers "+step[1],30):
+			await finish();return
 		var cmd:Dictionary={"t":"interact","target":npc.uid,"units":[hero.uid],"unit":hero.uid}
 		evidence.commands.append(cmd);game.issue(cmd)
 		if not await until(func():return not game.hud._dialog._topics.is_empty(),"ordinary approach opens "+step[1],800):

@@ -34,7 +34,6 @@ var _mods_button: Button
 var _wiki: WikiPanel
 var _wiki_hint: Label
 var _arena_pve_button: Button
-var _coop_button: Button
 var _opening_panel := false
 var _font_layout_scale := -1.0
 ## The startup recovery probe renders this screen without running calibration.
@@ -105,16 +104,8 @@ func _ready() -> void:
 	_wiki_hint.add_theme_font_size_override("font_size", 14)
 	_wiki_hint.add_theme_color_override("font_color", Interface800.GREY)
 	add_child(_wiki_hint)
-	# The expansion's original signpost deliberately has no Multiplayer
-	# board. Its remake co-op gets a visible entry beside the game choices.
-	if GameData.campaign_id == CampaignProfile.ASTRAL:
-		_coop_button = Button.new()
-		_coop_button.text = RemakeText.t("Co-op campaign")
-		_coop_button.custom_minimum_size = Vector2(288, 64)
-		_coop_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		CampaignChoices.style_button(_coop_button)
-		_coop_button.pressed.connect(func(): _on_board("multiplayer"))
-		_campaign_bar.add_child(_coop_button)
+	# The expansion's original signpost has a skull instead of the Multiplayer
+	# board; MenuScene restores the board in its middle place (MenuMultiplayerBoard).
 	_mods_button = Button.new()
 	_mods_button.text = RemakeText.t("Mods and rules")
 	_mods_button.custom_minimum_size = Vector2(288, 64)
@@ -331,8 +322,6 @@ func campaign_pad_targets() -> Array:
 			targets.append({"rect": _campaigns.buttons[id].get_global_rect(), "id": "campaign_" + id})
 		targets.append({"rect": _mods_button.get_global_rect(), "id": "campaign_mods"})
 		if _arena_pve_button.visible: targets.append({"rect": _arena_pve_button.get_global_rect(), "id": "campaign_arena_pve"})
-		if _coop_button:
-			targets.append({"rect": _coop_button.get_global_rect(), "id": "campaign_coop"})
 		if _version._updates: targets.append_array(_version._updates.pad_targets())
 	return targets
 

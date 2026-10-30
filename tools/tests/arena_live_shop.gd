@@ -23,7 +23,10 @@ func _ready() -> void:
 	check(restored.restore(run.snapshot()) and restored.shop == run.shop, "multiple locks survive save")
 	# Nine original toads chain through two stars into one elite; every old
 	# two-star save retains its prototype, investment and identity.
+	# LiA expansion recruits exist only with a mounted LiA database.
+	var expansion := ArenaExpansion.mount()
 	for family in ArenaRules.FAMILIES.size():
+		if family in ArenaExpansion.FAMILIES and not expansion: continue
 		run = fresh()
 		var kept := run._recruit(family, 1, 6)
 		run.deploy(kept.uid, Vector2(27, 32))

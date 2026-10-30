@@ -62,9 +62,12 @@ func tick() -> void:
 	_stamp += 1
 	var n := 0
 	var lis := Vector2(mixer.listener.x, mixer.listener.y)
-	for u: GameUnit in world.unit_rows():
-		if not is_instance_valid(u):
+	for row in world.unit_rows():
+		# A freed row is skipped before the typed assignment: Godot rejects
+		# assigning a freed instance to a typed variable.
+		if not is_instance_valid(row):
 			continue
+		var u: GameUnit = row
 		var key := u.get_instance_id()
 		var st: VoiceState = _units.get(key)
 		if u.pos.distance_squared_to(lis) > MAX_D * MAX_D:

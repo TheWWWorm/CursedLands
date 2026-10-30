@@ -70,7 +70,7 @@ func coverage(sea: bool, cave: bool) -> void:
 	var records: Array[Dictionary]=[]
 	for kind in [Cover.Kind.LEAF,Cover.Kind.STONE]:
 		records.append({"kind":kind,"p":Vector2(3.4,3.4),"height":0.0,"seed":0.3,
-			"angle":0.5,"scale":0.9,"normal":Vector3.UP,"colour":Color.WHITE})
+			"angle":0.5,"scale":0.9,"normal":Vector3.UP,"colour":Color.WHITE,"snow":false,"flower":0.0,"cold":false})
 	var arrays := Cover.Geometry.new().build(records,Vector2i.ZERO,field.sea if sea else null,field if cave else null)
 	var contacts := Cover.Contact.build(field,records,Vector2i.ZERO)
 	var mounds := field.mounds.build(field,Vector2i.ZERO,[])

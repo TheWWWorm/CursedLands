@@ -6,6 +6,9 @@ func check(value: bool, label: String) -> void:
 	if not value: failures += 1; printerr("FAIL ",label)
 func _ready() -> void:
 	var run := ArenaTournamentRun.new(); run.auto_save=false; run.live_boards=true; run.begin(7191)
+	# Creep rounds deal no player damage; fight a player round instead.
+	run.wave=4; run._choose_pairings()
+	check(not run.is_creep_round() and run.defeat_damage(3)>2,"fixture defeats are lethal for both rivals")
 	run.stage="fight"; run.rival_health[0]=1; run.rival_health[1]=2
 	run.record_board(1,1,[0,3])
 	check(run.health(1)==0 and run.placements[1]==0,"rank stays pending while other boards are fighting")

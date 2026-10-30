@@ -89,9 +89,12 @@ func _ready() -> void:
 		for id: String in MenuScene.BOARDS:
 			if not menu._scene._boards.has(id): continue
 			var rect := menu._scene.board_rect(id)
-			if rect.get_area()<100: continue # LiA has no multiplayer board.
-			areas[id]=rect
+			if rect.get_area()<100: continue
 			check(menu._scene.board_at(rect.get_center())==id,"main caption remains clickable "+id+" "+str(size))
+			# LiA's restored Multiplayer board carries a distance-field caption,
+			# not painted lettering (menu_multiplayer_board covers it).
+			if id==MenuMultiplayerBoard.PART and MenuMultiplayerBoard.needed(): continue
+			areas[id]=rect
 		await compare(main_pairs,areas,"main-"+locale+"-"+str(size.x),size.x==3840)
 		for button: Button in menu._campaigns.buttons.values()+[menu._mods_button,menu._arena_pve_button]:
 			if button.is_visible_in_tree():

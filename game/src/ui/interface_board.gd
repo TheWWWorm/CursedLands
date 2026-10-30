@@ -64,6 +64,8 @@ func _build(model: String, skin: String, labels: String, parts: PackedStringArra
 		var part := String(mi.get_parent().name)
 		mi.material_override = lab_mat if is_label_part(part, figure_parts.get(part, {})) else tex_mat
 	MenuCaptions.apply(_fig, model)
+	if model == "unmoco2":
+		MenuMultiplayerBoard.install(_fig, false)
 	# EISpace.vec maps EI (x, y, z) to Godot (x, z, −y): exactly the original's π/2
 	# turn about the view x axis seen from a Godot camera (view y down / z
 	# forward = Godot −y / −z). Any further angle turns about x as well.

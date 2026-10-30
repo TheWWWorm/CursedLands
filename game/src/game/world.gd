@@ -1250,8 +1250,9 @@ func set_water_state(levels: Dictionary) -> void:
 				terrain.set_water_offset(int(mat), 0.0)
 	water_levels = levels.duplicate(true)
 	if terrain:
+		# Entries with ticks left are still moving: their next steps follow.
 		for mat in water_levels:
-			terrain.set_water_offset(int(mat), float(water_levels[mat][1]))
+			terrain.set_water_offset(int(mat), float(water_levels[mat][1]), int(water_levels[mat][0]) >= 1)
 
 
 ##  on the 55 ms logic tick: each entry with ticks
@@ -1275,7 +1276,7 @@ func _tick_water(dt: float) -> void:
 				e[0] = int(e[0]) - 1
 				e[1] = float(e[1]) + float(e[2])
 				if terrain:
-					terrain.set_water_offset(int(mat), float(e[1]))
+					terrain.set_water_offset(int(mat), float(e[1]), int(e[0]) >= 1)
 			elif float(e[1]) == 0.0:
 				water_levels.erase(mat)
 				changed = true

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.38.0 — 2026-10-30
+
+- Lost in Astral's main menu shows a Multiplayer board in the middle of the signpost, where the original's Multiplayer board stood, instead of the expansion's bare skull. It uses the original's click area and hover animation, opens the network screen, and carries a localized caption (English, Russian, German) drawn as a distance-field font so it stays sharp at 4K. The separate LiA "Co-op campaign" button is removed. The base game's board is unchanged. Regression `tools/tests/menu_multiplayer_board.gd` (catalog `interface/menu_multiplayer_board_astral`, `_base`).
+- Trials of the Allods opens on Autochess by default instead of Expedition. Profiles that still hold the old untouched Expedition default move once; a mode chosen after this change is kept. Regression `tools/tests/arena_default_mode.gd` (catalog `arena/arena_default_mode`).
+- Online Autochess: once every human is eliminated or has left, the computers' round starts at once instead of waiting out the preparation timer. Living humans who are not ready still hold the round. Regression `tools/tests/arena_bot_only_ready.gd` (catalog `arena/arena_bot_only_ready`).
+- Fix low frame rates while a scripted water level rises or falls, such as the river in Lost in Astral's Canyon of Death (gz5h), for both co-op host and guest: each step updated every map cell and rebuilt the grass and the reflection plane about 18 times a second (13–18 fps). Steps now update only that water's cells; while the level moves, grass refreshes at most once a second and the reflection plane every 0.25 s, and the final level applies at once (median 15 → 72 fps on the reported save). Regression `tools/tests/water_level_animation.gd` (catalog `focused/water_level_animation`).
+- Co-op: a guest whose story matches the host's keeps full checkpoint credit when the session's first zone loads.
+- Prepare the loose ground-cover shader while a zone loads again; the warmup built an incomplete record and skipped it, so the first leaves and stones could stutter on screen.
+- Unit sounds skip a unit removed from the world instead of reporting a script error every frame.
+- Test catalog: cases that need a Windows Direct3D 12 runtime (live DLSS Ray Reconstruction) are reported as skipped on other platforms, and stale fixtures were brought up to date. Details: `docs/validation/catalog-failures-2026-10-29.md`.
+
 ## 1.37.0 — 2026-10-29
 
 - Keep what creatures are doing across save and load: patrols continue from their current point, walk and glances instead of restarting their route and drifting out of step with their partners, and a creature pursuing a target keeps its attack, combat stance and alarm countdown. Returning to a zone keeps patrol progress but does not resume a fight with the party that left. Older saves load as before.

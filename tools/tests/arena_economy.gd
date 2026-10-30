@@ -86,7 +86,11 @@ func _ready() -> void:
 	check(run.sale_value(run.army[0]) == 1,"one-star recruits can be exchanged without losing gold")
 	var copy := run._recruit(2,0,1);run._recruit(2,0,1);run.combine_ready()
 	check(run.sale_value(run.army[1]) == 2,"evolved units retain a partial refund")
+	# LiA expansion recruits exist only when an installed LiA database is
+	# mounted; retired families keep native rows and stay covered.
+	var expansion := ArenaExpansion.mount()
 	for family in ArenaRules.FAMILIES.size():
+		if family in ArenaExpansion.FAMILIES and not expansion: continue
 		for rank in ArenaRules.FAMILIES[family].forms.size():
 			var id := ArenaRules.prototype(family,rank)
 			# Some native species have one model shared by all three ranks.

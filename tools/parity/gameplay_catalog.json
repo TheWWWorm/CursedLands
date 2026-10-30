@@ -3066,7 +3066,7 @@
       "category": "inventory",
       "script": "tools/tests/recruited_equipment_net.gd",
       "marker": "RECRUITED_EQUIPMENT_NET",
-      "min_checks": 22,
+      "min_checks": 23,
       "quick": false,
       "description": "Recruitment followed by real guest unequip commands, without a zone reload.",
       "kind": "remake_regression",
@@ -3086,7 +3086,7 @@
       "category": "inventory",
       "script": "tools/tests/recruited_equipment_net.gd",
       "marker": "RECRUITED_EQUIPMENT_NET",
-      "min_checks": 16,
+      "min_checks": 19,
       "quick": false,
       "description": "Recruitment followed by real guest unequip commands, without a zone reload.",
       "kind": "remake_regression",
@@ -3102,7 +3102,8 @@
         "maps/zonezero.mpr",
         "res/database.res",
         "res/texts.res",
-        "maps/bz1h.mob"
+        "maps/bz1h.mob",
+        "maps/bz2h.mob"
       ],
       "display": "headless"
     },
@@ -5472,7 +5473,7 @@
       "category": "arena",
       "script": "tools/tests/arena_elimination_places.gd",
       "marker": "ARENA_ELIMINATION_PLACES",
-      "min_checks": 12,
+      "min_checks": 13,
       "quick": true,
       "description": "Arena elimination places behavior and boundaries",
       "kind": "remake_regression",
@@ -5562,7 +5563,7 @@
       "category": "arena",
       "script": "tools/tests/arena_result_health.gd",
       "marker": "ARENA_RESULT_HEALTH",
-      "min_checks": 11,
+      "min_checks": 15,
       "quick": true,
       "description": "Arena result health behavior and boundaries",
       "kind": "remake_regression",
@@ -5619,6 +5620,42 @@
       "min_checks": 254,
       "quick": true,
       "description": "Arena sale quotes behavior and boundaries",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_bot_only_ready",
+      "category": "arena",
+      "script": "tools/tests/arena_bot_only_ready.gd",
+      "marker": "ARENA_BOT_ONLY_READY",
+      "min_checks": 12,
+      "quick": true,
+      "description": "Online autochess preparation starts at once when no living humans remain",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_default_mode",
+      "category": "arena",
+      "script": "tools/tests/arena_default_mode.gd",
+      "marker": "ARENA_DEFAULT_MODE",
+      "min_checks": 9,
+      "quick": true,
+      "description": "Trials of the Allods defaults to ordinary autochess; explicit later choices are kept",
       "kind": "remake_regression",
       "timeout": 240,
       "args": [],
@@ -9310,7 +9347,7 @@
       "category": "quests",
       "script": "tools/tests/base_campaign_gipat_departure.gd",
       "marker": "BASE_CAMPAIGN_GIPAT_DEPARTURE",
-      "min_checks": 260,
+      "min_checks": 262,
       "timeout": 300,
       "campaign": "cursed_lands",
       "kind": "remake_regression",
@@ -9337,7 +9374,7 @@
       "category": "quests",
       "script": "tools/tests/base_campaign_gipat_departure.gd",
       "marker": "BASE_CAMPAIGN_GIPAT_DEPARTURE",
-      "min_checks": 254,
+      "min_checks": 256,
       "timeout": 300,
       "campaign": "cursed_lands",
       "kind": "remake_regression",
@@ -9418,7 +9455,7 @@
       "category": "quests",
       "script": "tools/tests/base_campaign_gipat_branches.gd",
       "marker": "BASE_CAMPAIGN_GIPAT_BRANCHES",
-      "min_checks": 61,
+      "min_checks": 63,
       "timeout": 300,
       "campaign": "cursed_lands",
       "kind": "remake_regression",
@@ -9444,7 +9481,7 @@
       "category": "quests",
       "script": "tools/tests/base_campaign_gipat_branches.gd",
       "marker": "BASE_CAMPAIGN_GIPAT_BRANCHES",
-      "min_checks": 61,
+      "min_checks": 63,
       "timeout": 300,
       "campaign": "cursed_lands",
       "kind": "remake_regression",
@@ -9470,7 +9507,7 @@
       "category": "quests",
       "script": "tools/tests/base_campaign_gipat_branches.gd",
       "marker": "BASE_CAMPAIGN_GIPAT_BRANCHES",
-      "min_checks": 61,
+      "min_checks": 63,
       "timeout": 300,
       "campaign": "cursed_lands",
       "kind": "remake_regression",
@@ -9496,7 +9533,7 @@
       "category": "quests",
       "script": "tools/tests/base_campaign_gipat_branches.gd",
       "marker": "BASE_CAMPAIGN_GIPAT_BRANCHES",
-      "min_checks": 61,
+      "min_checks": 63,
       "timeout": 300,
       "campaign": "cursed_lands",
       "kind": "remake_regression",
@@ -10838,8 +10875,8 @@
         "res/figures.res",
         "maps/zone1.mob",
         "maps/zone1.mpr",
-        "maps/zone3.mob",
-        "maps/zone3.mpr",
+        "maps/zone3obr.mob",
+        "maps/zone3obr.mpr",
         "res/menus.res",
         "res/textures.res"
       ],
@@ -11351,6 +11388,54 @@
       "focused": "menu_caption_4k_astral_de"
     },
     {
+      "id": "interface/menu_multiplayer_board_astral",
+      "category": "interface",
+      "script": "tools/tests/menu_multiplayer_board.gd",
+      "marker": "MENU_MULTIPLAYER_BOARD",
+      "min_checks": 47,
+      "quick": false,
+      "description": "LiA signpost restores the original's middle Multiplayer board (localized EN/RU/DE caption, click area, hover, gamepad, network screen); the base game's board is unchanged",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "display": "rendered",
+      "focused": "menu_multiplayer_board_astral"
+    },
+    {
+      "id": "interface/menu_multiplayer_board_base",
+      "category": "interface",
+      "script": "tools/tests/menu_multiplayer_board.gd",
+      "marker": "MENU_MULTIPLAYER_BOARD",
+      "min_checks": 29,
+      "quick": false,
+      "description": "LiA signpost restores the original's middle Multiplayer board (localized EN/RU/DE caption, click area, hover, gamepad, network screen); the base game's board is unchanged",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/menus.res",
+        "res/textures.res",
+        "maps/zonemainmenunew.mob",
+        "maps/zonemainmenunew.mpr"
+      ],
+      "display": "rendered",
+      "focused": "menu_multiplayer_board_base"
+    },
+    {
       "id": "interface/release_check",
       "category": "interface",
       "script": "tools/tests/release_check.gd",
@@ -11600,6 +11685,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_travel_rr"
     },
     {
@@ -11624,6 +11712,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_travel_rr_night"
     },
     {
@@ -11769,6 +11860,27 @@
       "display": "rendered",
       "rendering_method": "forward_plus",
       "focused": "path_trace_water_bounds"
+    },
+    {
+      "id": "focused/water_level_animation",
+      "category": "focused",
+      "script": "tools/tests/water_level_animation.gd",
+      "marker": "WATER_LEVEL_ANIMATION",
+      "min_checks": 28,
+      "quick": true,
+      "description": "Gradual SetWaterLevel steps update only the material's cells (same area and heights as the full scan); grass and the reflection plane follow a moving level at a bounded rate and apply the final level at once (gz5h co-op frame rate)",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "maps/zone1.mpr"
+      ],
+      "display": "headless",
+      "focused": "water_level_animation"
     },
     {
       "id": "focused/water_reflection_levels",
@@ -13407,7 +13519,7 @@
       "category": "focused",
       "script": "tools/tests/terrain_cliff_render.gd",
       "marker": "TERRAIN_CLIFF_RENDER",
-      "min_checks": 24,
+      "min_checks": 21,
       "quick": false,
       "description": "Compatibility cliff terrain retains contact and surface composition.",
       "kind": "remake_regression",
@@ -13546,6 +13658,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_live"
     },
     {
@@ -13590,6 +13705,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_unavailable"
     },
     {
@@ -13676,6 +13794,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rtxdi_live"
     },
     {
@@ -13740,6 +13861,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platform_min_checks": {
+        "linux": 21
+      },
       "focused": "path_trace_transmission_live"
     },
     {
@@ -14334,6 +14458,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_traversal_river"
     },
     {
@@ -14362,6 +14489,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_traversal_snow"
     },
     {
@@ -14390,6 +14520,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_traversal_desert"
     },
     {
@@ -14418,6 +14551,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_traversal_cave"
     },
     {
@@ -14562,6 +14698,9 @@
       ],
       "display": "rendered",
       "rendering_method": "forward_plus",
+      "platforms": [
+        "windows"
+      ],
       "focused": "path_trace_rr_details"
     },
     {

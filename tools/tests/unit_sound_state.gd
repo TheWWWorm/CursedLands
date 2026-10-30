@@ -190,8 +190,10 @@ func _ready() -> void:
 			for handle in f.mixer.active.keys():
 				if (handle+frame)%3 == 0: f.mixer.active.erase(handle)
 			for i in f.actors.size():
+				# A deleted actor is checked before the typed assignment: Godot
+				# rejects assigning a freed instance to a typed variable.
+				if not is_instance_valid(f.actors[i]): continue
 				var actor: Actor = f.actors[i]
-				if not is_instance_valid(actor): continue
 				actor.model = null if (i+frame)%19 == 0 else f.models[i]
 				f.models[i].player = null if (i+frame)%23 == 0 else f.players[i]
 				actor.pos = Vector2(float((i*7+frame)%120),0)

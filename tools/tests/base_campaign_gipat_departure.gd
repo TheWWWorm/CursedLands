@@ -75,5 +75,9 @@ func run() -> void:
 		await finish_gipat("BASE_CAMPAIGN_GIPAT_DEPARTURE","Rick departure dialogue did not reach Ingos."); return
 	check(s.state.current_party == "" and not s.party_units(0).is_empty(),"original Gipat protagonist reaches playable Ingos")
 	check(not s.state.quest_items.has("golemcenterkey00") and not s.state.quest_items.has("lizardclaw00"),"original island departure retains no spent chapter keys")
+	# Ingos opens its arrival quest a few ticks after loading. Settle that
+	# authored progress first, so the reload comparison sees only replays.
+	ticks(12)
+	check(value("q.gz11k.q42k") == 1,"original Ingos arrival starts the town quest")
 	await roundtrip("base_gipat_departed",["q.gz4g.q29g","q.gz8g.q30g","q.gz8g.q34g","q.gz8g.q35g","q.gz8g.q35ag","q.gz4g.q36g","q.gz10g.q36ag","q.gz4g.q37g","b.Rick.R36_2"])
 	await finish_gipat("BASE_CAMPAIGN_GIPAT_DEPARTURE","Prepared earlier z27 Hadagan offer. Actual q29g patrol/captive scene with commander-first or hermit-first order→q30g keyed lizard route→q34g dam+stone→q35g ambush/q35ag treasure→q36g remote tunnel/qk9g bonus→ordinary tunnel entry→q36ag keyed golem, delayed deactivation and both optional money crypts→ordinary return/q37g Rick passage→R36 scene and dialogue to playable gz11k. Saves, partial gates/groups/controls and duplicate rewards. Walking/combat accelerated; companion farewell branch is separate.")

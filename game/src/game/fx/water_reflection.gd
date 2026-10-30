@@ -108,7 +108,20 @@ static func raytrace_target_size(size: Vector2, quality := 2) -> Vector2i:
 	return Vector2i(maxi(2, roundi(size.x * scale)), maxi(2, roundi(size.y * scale)))
 
 
-func request_refresh() -> void:
+## `animated`: one 55-ms step of a gradual SetWaterLevel. The plane scan
+## (~3.5 ms in gz5h's canyon) then follows the level at most every
+## ANIMATED_SCAN seconds; the final level rescans at once.
+const ANIMATED_SCAN := 0.25
+var _water_moved := false
+
+
+func request_refresh(animated := false) -> void:
+	if animated:
+		if not _water_moved:
+			_water_moved = true
+			_poll = minf(_poll, ANIMATED_SCAN)
+		return
+	_water_moved = false
 	_poll = 0.0
 	_plane_key = []
 	_rows_terrain = null
@@ -161,7 +174,8 @@ func _process(dt: float) -> void:
 		# The scan (~1.5 ms in Rindale's mansion) depends only on the view and
 		# the current plane while the water stays as it is (request_refresh).
 		var key := [source.get_frustum(), source.global_position, plane, terrain]
-		if source != _source or key != _plane_key:
+		if source != _source or key != _plane_key or _water_moved:
+			_water_moved = false
 			plane = _select_plane(source, true)
 			_plane_key = [key[0], key[1], plane, terrain]
 		_source = source

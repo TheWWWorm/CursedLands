@@ -25,7 +25,8 @@ import time
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "tools/parity"))
-from gameplay import MemoryGate, TEXTS, auto_jobs, available_memory, catalog, jobs_argument, required_assets, uses_network
+from gameplay import (MemoryGate, TEXTS, auto_jobs, available_memory, catalog, jobs_argument, min_checks,
+                      platform_requirement, required_assets, uses_network)
 from process import DIAGNOSTIC, RENDERED_RESOLUTION, parse_summary, rendered_arguments, run_program
 
 # One registry for both runners: a catalog entry with `focused` is also a case
@@ -65,7 +66,8 @@ def focused_case(row):
     case = {"id": row["focused"], "catalog_id": row["id"], "script": row["script"], "summary": row["marker"],
             "contract": row["description"], "issues": list(row.get("issues", []) or []), "campaign": row["campaign"],
             "data": "base" if row["campaign"] == "cursed_lands" else "astral", "mode": row.get("display", "headless"),
-            "args": list(row["args"]), "min_checks": row["min_checks"], "timeout": row["timeout"], "needs": needs}
+            "args": list(row["args"]), "min_checks": min_checks(row), "timeout": row["timeout"], "needs": needs,
+            "platforms": list(row.get("platforms", []))}
     for key in ("rendering_method", "resolution"):
         if key in row:
             case[key] = row[key]
@@ -213,6 +215,12 @@ def main():
         for case in selected:
             print(f'{case["id"]:34} {case["mode"]:8} {case["catalog_id"]:44} {case["contract"]}')
         return 0
+    # A case whose whole contract needs another platform (a native Windows
+    # D3D12 runtime) is reported as skipped here, never run or passed.
+    skipped = [{"id": case["id"], "platforms": case["platforms"]} for case in selected if platform_requirement(case)]
+    selected = [case for case in selected if not platform_requirement(case)]
+    for case in skipped:
+        print("SKIP", case["id"], "requires " + ", ".join(case["platforms"]), flush=True)
     if not args.output:
         parser.error("--output must name a new directory")
     engine = shutil.which(args.engine)
@@ -253,10 +261,14 @@ def main():
     report = {
         "git_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
         "game_source_sha256": source_hash.hexdigest(), "catalog_sha256": digest(CATALOG),
-        "engine": engine, "engine_sha256": digest(engine), "data": paths, "cases": [],
+        "engine": engine, "engine_sha256": digest(engine), "data": paths, "cases": [], "skipped": skipped,
     }
     if args.packaged:
         report["pack"] = {"path": str(pack), "sha256": digest(pack)}
+    if not selected:
+        report.update(passed=True, complete=True)
+        (output / "results.json").write_text(json.dumps(report, indent=2) + "\n")
+        return 0
     # Tests are read-only, so one staged copy per run serves every case.
     scripts = stage_tests(output / "tools")
     jobs = min(len(selected), auto_jobs(available=available_memory()) if args.jobs == "auto" else args.jobs)

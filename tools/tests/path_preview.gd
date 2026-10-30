@@ -33,7 +33,9 @@ func _ready() -> void:
 	await s.enter_zone("gz1g",1,false)
 	s.world.vm.instances.clear()
 	var hero: GameUnit=s.party_units(0)[0]
-	var fx := ParticleFx.of(s.world)
+	# Order marks live in their own real-time OrderFx node (they keep drawing
+	# while paused), not in the world's gameplay ParticleFx.
+	var fx := ParticleFx.for_order_marks(s.world)
 	fx.set_process(false)
 	g.rig.set_process(false)
 	var camera := Camera3D.new(); add_child(camera); camera.current=true

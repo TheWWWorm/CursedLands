@@ -350,6 +350,13 @@ editor-only `--path`. Use the qualified custom runtime for ray-tracing checks;
 the stock editor does not expose the project's native ray APIs. Rendered cases
 may declare `rendering_method: forward_plus`; ordinary UI checks retain their
 Compatibility default. Unsupported hardware is not a passing trace check.
+An entry whose whole contract needs one platform's native runtime declares
+`platforms` (for example `["windows"]` for live DLSS Ray Reconstruction on
+Direct3D 12). Elsewhere both runners list it under `skipped`; it is never run
+or counted as passed. An entry whose platform-specific branch legitimately runs
+only elsewhere keeps its full `min_checks` and declares the smaller count for
+the other platform in `platform_min_checks` (`path_trace_transmission_live`
+checks transparent radiance on Linux and adds the RR evaluation on Windows).
 
 The October 25 EI1 selection includes unindexed weather-cover geometry, repeated
 LiA save loads in raster/PT modes, direct-light stability, incremental water

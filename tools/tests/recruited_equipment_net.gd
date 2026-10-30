@@ -19,17 +19,24 @@ func _ready() -> void:
 	freeze(client)
 	# Keep authority network/state batching running while simulation is frozen.
 	host.set_physics_process(true)
-	var n:=2
+	# LiA merc2 is Kel, the story companion the host always controls
+	# (Session._story_companion), so a guest-owned LiA recruit uses merc10.
+	var n:=10 if GameData.campaign_id==CampaignProfile.ASTRAL else 2
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--recruit="):n=int(arg.trim_prefix("--recruit="))
 	var rec:=host._find_merc_record(n)
 	if GameData.campaign_id==CampaignProfile.ASTRAL:
 		# The base-game fallback intentionally scans basecam/bz2g. LiA
 		# recruits are authored in its own chapter maps.
-		var mob := EIMob.load_bytes(GameData.read_file("maps/bz1h.mob"))
-		for row: Dictionary in mob.objects:
-			if row.get("kind")=="UNIT" and String(row.get("name","")).to_lower()=="merc%d"%n:
-				rec=row; break
+		rec={}
+		for map in ["bz1h","bz2h","bz3h","bz4h","bz5h","bz6h","bz7h"]:
+			var bytes := GameData.read_file("maps/%s.mob"%map)
+			if not rec.is_empty() or bytes.is_empty(): continue
+			var mob := EIMob.load_bytes(bytes)
+			for row: Dictionary in mob.objects:
+				if row.get("kind")=="UNIT" and String(row.get("name","")).to_lower()=="merc%d"%n:
+					rec=row; break
+	check(not host._story_companion(n),"fixture recruit is guest-assignable")
 	check(not rec.is_empty(),"campaign supplies original recruit record")
 	if failures: await finish();return
 	print("RECRUIT_RECORD ",rec.name," ",rec.prototype)
