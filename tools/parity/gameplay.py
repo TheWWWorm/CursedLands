@@ -8,7 +8,7 @@ failures, 2 means at least one setup, capture, or runtime error.
 import argparse
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from contextlib import nullcontext
+from contextlib import contextmanager, nullcontext
 import json
 import os
 from pathlib import Path
@@ -194,10 +194,8 @@ class StartLedger:
         """Record a start and return True when free memory holds one more
         program besides those still loading; the first program of a run
         needs only that nothing else is loading."""
-        import fcntl
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.path, "a+") as handle:
-            fcntl.flock(handle, fcntl.LOCK_EX)
+        with open(self.path, "a+") as handle, exclusive(handle):
             handle.seek(0)
             try:
                 rows = json.loads(handle.read() or "[]")
@@ -212,10 +210,34 @@ class StartLedger:
             handle.seek(0)
             handle.truncate()
             handle.write(json.dumps(rows))
+            handle.flush()
             return admitted
 
 
+@contextmanager
+def exclusive(handle):
+    """Hold an exclusive lock on an open file (POSIX flock, Windows byte lock)."""
+    if os.name == "posix":
+        import fcntl
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        yield
+        return
+    import msvcrt
+    handle.seek(0)
+    msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+    try:
+        yield
+    finally:
+        handle.seek(0)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+
+
 def alive(pid):
+    """Whether a runner process still exists. Only probed on POSIX: on
+    Windows os.kill(pid, 0) terminates the process, so there a start simply
+    expires after RAMP_SECONDS."""
+    if os.name != "posix":
+        return True
     try:
         os.kill(pid, 0)
     except ProcessLookupError:

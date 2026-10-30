@@ -417,6 +417,8 @@ class GameplayExecution(unittest.TestCase):
             # Once the programs have reached their peak, free memory is accurate.
             now[0] += RAMP_SECONDS
             self.assertTrue(packaged.admit(free, first=False))
+            if os.name != "posix":
+                return
             # Starts recorded by a runner that has exited no longer count.
             rows = json.loads(path.read_text())
             path.write_text(json.dumps([dict(row, pid=2**22 + 12345) for row in rows]))
