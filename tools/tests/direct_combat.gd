@@ -108,6 +108,13 @@ func _ready() -> void:
 	a.orders.clear();a._attack_cd=1.0
 	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.RIGHT},0)
 	check(a.orders.size()==1 and a._attack_cd==1.0 and a._pending_hit.is_empty(),"buffered attack cannot bypass weapon cooldown or create an early impact")
+	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.LEFT,"aim":2},0)
+	s.apply_command({"t":"direct_attack","units":[a.uid],"direction":Vector3.FORWARD,"aim":4},0)
+	check(a.orders.size()==1 and a.orders[0].direction==Vector3.FORWARD and a.orders[0].aim==4,"latest short tap replaces the single trailing attack")
+	a._pending_hit={"t":0.25,"direction":Vector3.RIGHT}
+	a.cancel_direct_attack()
+	check(a.orders.is_empty(),"leaving direct aim discards the unstarted buffered attack")
+	check(a._pending_hit.direction==Vector3.RIGHT and a._pending_hit.t==0.25,"cancel preserves a committed impact")
 	s.world=null;s.free();w.free()
 	print("DIRECT_COMBAT ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)

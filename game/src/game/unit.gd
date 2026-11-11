@@ -282,7 +282,10 @@ var _anim_lock := 0.0:
 	set(value):
 		if _anim_lock != value:
 			_anim_lock = value
+			if value <= 0.0: _moving_hit_order = {}
 			if _sim_state: _sim_state.update(&"_anim_lock", value)
+# The character's existing movement command may continue under a hit clip.
+var _moving_hit_order := {}
 var _story_clip := ""     # a script clip whose completion the saved VM may await
 var _story_pose_ticks := 0 # presentation only; does not extend command completion
 ## Native village talk checks the creature's current command
@@ -1790,7 +1793,9 @@ func _tick(dt: float) -> void:
 	# Running characters lose max stamina / 150 per tick and
 	# walk once it is gone. Native 547890 says "out of stamina" (ack 0x1d)
 	# on the tick it runs out; the remake keeps the run request for later.
-	if has_meta("hero") and action == "run" and not _sandbox_mana() and not free_running():
+	var moving_hit := _anim_lock > 0.0 and _continues_moving_hit()
+	var running_hit := moving_hit and running and stance == STANCE_NONE and not cannot_run()
+	if has_meta("hero") and (action == "run" or running_hit) and not _sandbox_mana() and not free_running():
 		var had_stamina := mana > 0.0
 		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
 		if had_stamina and mana <= 0.0 and world.authority:
@@ -1854,6 +1859,10 @@ func _tick(dt: float) -> void:
 		_perceive_next = world.time + TICK - 0.0001
 		world.ai.player_perceive(self)
 	if _anim_lock > 0.0:
+		# Native 547890 dispatches the same move under its flagged hit queue.
+		# Do not dequeue a replacement or run engagement decisions here.
+		if moving_hit and not path.is_empty():
+			_do_move(dt)
 		_anim_lock -= dt
 		return
 	if direct_controlled and order.is_empty() and orders.is_empty() and not direct_steering.is_empty():
@@ -3741,8 +3750,16 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		remove_meta("attacker")
 		world.ai.hit_hook(self, null)
 		return
-	if _anim_lock <= 0.0 and world.random_float() < 0.5 and _can_react_for(_hit_reaction_len()):
+	# 553f40 reaches the reaction aftermath only for positive post-armour damage.
+	if amount > 0.0 and _anim_lock <= 0.0 and world.random_float() < 0.5 and _can_react_for(_hit_reaction_len()):
 		_anim_lock = minf(model.act("hit", 1, 0.05), 0.6)
+		# The original character controller gives moving hit rows flag 2
+		# (550a80), distinct from a stationary reaction's action lock.
+		if _anim_lock > 0.0 and _moving and not path.is_empty() \
+				and int(race.get("type_id", 0)) == 0x32 and action in ["walk", "run", "crawl"] \
+				and not direct_controlled and _pending_hit.is_empty() and order.get("type", "") == "move" \
+				and not order.has("use_object") and not order.has("swarm") and not order.get("story_move", false):
+			_moving_hit_order = order
 		action = "hit"
 		GameSound.unit(self, "hit")
 	# a blow that does not kill: a creature attacker's side goes
@@ -4476,7 +4493,14 @@ func anim_flush(defer_pose := false) -> void:
 		model.flush_pending_pose()
 
 
+func _continues_moving_hit() -> bool:
+	return action == "hit" and not _moving_hit_order.is_empty() and is_same(order, _moving_hit_order)
+
+
 func _set_action(a: String) -> void:
+	# _do_move updates the route and gait, while the hit owns the figure.
+	if _anim_lock > 0.0 and _continues_moving_hit() and a in _STEADY:
+		return
 	var _profile := world.profile_scope("unit_set_action", uid) if world and world.profile_simulation else null
 	# A calm AI also refreshes idle directly. It must not cancel a village
 	# script's held presentation; processing any real order clears it first.

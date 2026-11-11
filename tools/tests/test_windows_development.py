@@ -1,5 +1,7 @@
 """Registered by unittest discovery in the Linux/Windows CI matrix."""
 import os
+import contextlib
+import io
 import importlib.util
 from pathlib import Path
 import subprocess
@@ -39,6 +41,33 @@ class WindowsDevelopmentTests(unittest.TestCase):
             settings = (root / "data/godot/app_userdata/Cursed Lands/settings.cfg").read_text()
             for value in ("confine_mouse=0", "show_fps=1", "volume_sfx=0", "volume_stream=0", "volume_voice=0"):
                 self.assertIn(value, settings)
+
+    def translation_check_with_legacy_locale(self, missing=False):
+        # Reproduce legacy Windows defaults on either CI platform, using the
+        # complete actual validator/catalog rather than a copied scanner.
+        checker = ROOT / "tools/check_translations.py"
+        source = checker.read_text(encoding="utf-8")
+        read_text = Path.read_text
+        def legacy_read_text(path, encoding=None, errors=None):
+            text = read_text(path, encoding=encoding or "cp1252", errors=errors)
+            if missing and path == ROOT / "game/src/ui/game_console.gd":
+                text += '\nRemakeText.t("UTF-8 regression missing translation key")\n'
+            return text
+        output = io.StringIO()
+        with patch.object(Path, "read_text", legacy_read_text), contextlib.redirect_stdout(output):
+            with self.assertRaises(SystemExit) as result:
+                exec(compile(source, str(checker), "exec"), {"__file__": str(checker), "__name__": "__main__"})
+        return result.exception.code, output.getvalue()
+
+    def test_translation_checker_reads_utf8_under_legacy_windows_locale(self):
+        code, output = self.translation_check_with_legacy_locale()
+        self.assertEqual(code, 0, output)
+        self.assertIn("0 errors", output)
+
+    def test_translation_checker_still_rejects_missing_catalog_keys(self):
+        code, output = self.translation_check_with_legacy_locale(missing=True)
+        self.assertEqual(code, 1, output)
+        self.assertIn("missing RU/DE key: UTF-8 regression missing translation key", output)
 
     @unittest.skipUnless(sys.platform == "win32", "native Windows process ownership test")
     def test_error_kills_child_and_preserves_unrelated_process(self):

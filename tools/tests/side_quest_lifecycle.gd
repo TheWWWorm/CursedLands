@@ -59,7 +59,22 @@ func _ready() -> void:
 		var before := s.state.vars.duplicate(true)
 		s.apply_command({"t":"dialog_done","id":"sq."+q.id+".1"},0)
 		check(s.state.vars==before,label+"duplicate offer completion cannot repeat quest initialization")
+		# The original quest script keeps its multiplayer GS namespace even
+		# when its units and objectives are used on a single-player map.
+		s.zone_id = zone
+		check(ZoneObjectives.browse_zones(s) == PackedStringArray([zone]), label+"village objectives browse the physical campaign zone")
+		var panel := ZoneObjectives.new()
+		panel.setup(s, zone, [], true, "field")
+		check(panel.quests == PackedStringArray([q.id]), label+"accepted quest appears on the field map")
+		var places := SideQuests.quest_places(q.id)
+		check(not places.is_empty() and panel._areas.size() == places.size(), label+"every authored marker is shown")
+		for i in mini(places.size(), panel._areas.size()):
+			check(panel._areas[i].is_equal_approx(panel._zone_point(places[i])), label+"marker is on the campaign map")
+		check(panel._desc.get_parsed_text().contains(q.desc), label+"field objectives use the archive description")
 		SideQuests.finish(s,q.id)
+		panel._select(0)
+		check(panel._desc.get_parsed_text().contains(ZoneObjectives._str("obj_completed")), label+"field objectives read completion from the quest script's variable")
+		panel.free()
 		check(s.state.side_quests.get(q.id)=="done",label+"objective completion waits for reward")
 		check(SideQuests.offers(s).is_empty(),label+"unclaimed reward still blocks more offers")
 		check(SideQuests.active_in(s,zone).is_empty(),label+"completed quest stops injecting active overlay")

@@ -291,7 +291,7 @@ class GameplayExecution(unittest.TestCase):
                 self.assertNotIn(script, seen, row["id"])
                 self.assertTrue(script.is_file(), row["id"])
                 seen.add(script)
-                source = script.read_text()
+                source = script.read_text(encoding="utf-8")
                 sources.append(source)
                 base = re.search(r'^extends\s+"([^"]+\.gd)"', source, re.M)
                 if base:

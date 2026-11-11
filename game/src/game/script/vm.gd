@@ -956,13 +956,16 @@ func _call(name: String, a: Array, inst: Instance):
 				if not spell.is_empty() and not Spells.parse(spell).proto.is_empty():
 					u.command({"type": "cast", "spell": spell, "point": Vector2(_num(v[1]), _num(v[2])), "story": true})
 		# Builtin 0x2 MoveToPoint(unit, x, y) ->: AI state 1 and a
-		# move order to the point.
+		# move order to the point. The order has no double-click flag
+		# (CUnitServer::OrderMove(point, 0, 0)): the unit moves at its gait
+		# (script Run or the HUD's, whichever came last), a unit outside the
+		# party runs while its combat flag is set (the move's ai_combat_run);
+		# its last run does not count (tools/tests/script_move_gait.gd).
 		"MoveToPoint":
 			var u := _unit(v[0])
 			if u and not u.dead:
 				var to := Vector2(_num(v[1]), _num(v[2]))
-				u.command({"type": "move", "to": to, "run": u.get_meta("script_run", false) or u.running,
-					"story_move": true})
+				u.command({"type": "move", "to": to, "run": u.gait_run, "story_move": true})
 				u.set_meta("ai_state", 1)
 				preload("res://src/game/script/story_compat.gd").story_move(self, inst.sname, u, to)
 		"RemakeEscapeReady":

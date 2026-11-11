@@ -89,13 +89,27 @@ def run_program(argv, log, env, timeout, stop=None, grace=0.0, mirror=None, tole
                     break
                 time.sleep(0.1)
         finally:
+            cleanup_errors = []
             try:
                 if process.poll() is None:
                     _end(process, grace, job)
                 process.wait()
+            except Exception as exc:
+                cleanup_errors.append(("stop/wait", exc))
             finally:
                 if job:
-                    job.close()
+                    try:
+                        job.close()
+                    except Exception as exc:
+                        cleanup_errors.append(("owned job close", exc))
+            if cleanup_errors:
+                # Keep draining fatal, but do not replace the diagnostic that
+                # requested shutdown with a secondary Win32/wait exception.
+                if not error and len(cleanup_errors) == 1:
+                    raise cleanup_errors[0][1]
+                details = "; ".join(f"{step}: {type(exc).__name__}: {exc}"
+                                    for step, exc in cleanup_errors)
+                raise RuntimeError(f"{error or 'Process cleanup'}; cleanup failed: {details}") from cleanup_errors[-1][1]
     return process.returncode, error
 
 

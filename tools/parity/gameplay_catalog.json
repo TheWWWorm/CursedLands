@@ -304,6 +304,23 @@
       ]
     },
     {
+      "id": "commands/script_move_gait",
+      "category": "commands",
+      "script": "tools/tests/script_move_gait.gd",
+      "marker": "SCRIPT_MOVE_GAIT",
+      "min_checks": 17,
+      "quick": true,
+      "description": "Script MoveToPoint moves at the unit's gait or combat run, against the original order pipeline replayed in Unicorn",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
       "id": "quests/story_coop_predicates",
       "category": "quests",
       "script": "tools/tests/story_coop_predicates.gd",
@@ -778,9 +795,9 @@
       "category": "combat",
       "script": "tools/tests/hit_reaction_tempo.gd",
       "marker": "HIT_REACTION_TEMPO",
-      "min_checks": 4,
+      "min_checks": 23,
       "quick": false,
-      "description": "A fighter whose next strike is due before a hit reaction would end plays none",
+      "description": "Standing hits retain their strike and move locks, while a moving character can flinch on its active route",
       "kind": "remake_regression",
       "timeout": 300,
       "args": [],
@@ -6164,9 +6181,9 @@
       "category": "quests",
       "script": "tools/tests/side_quest_lifecycle.gd",
       "marker": "SIDE_QUEST_LIFECYCLE",
-      "min_checks": 590,
+      "min_checks": 760,
       "quick": true,
-      "description": "Every installed side-quest archive: offer gating, acceptance, completion, repeated reward messages and persistence",
+      "description": "Village quest acceptance, campaign objectives and markers, completion, repeated reward messages and persistence for all 28 archives",
       "kind": "remake_regression",
       "timeout": 240,
       "args": [],

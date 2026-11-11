@@ -119,6 +119,7 @@ var _pic: Texture2D
 var _pic_rect := Rect2()
 var _pic_uv := Rect2()
 var _areas := PackedVector2Array()
+var _row_zones := {}  # quest id -> zone namespace used by its script
 var _desc: RichTextLabel
 var _zone_desc: RichTextLabel
 var _title := ""
@@ -164,7 +165,7 @@ func setup(s: Session, id: String, opts: Array, is_leader := true, how := "trave
 		zones = browse_zones(s)
 		zone_i = 0
 		for i in zones.size():
-			if _has_quest(s, zones[i], s.state.last_quest):
+			if _quest_rows(s, zones[i]).has(s.state.last_quest):
 				zone_i = i
 		id = zones[zone_i] if not zones.is_empty() else id
 	_fill(id, opts)
@@ -198,7 +199,7 @@ static func browse_zones(s: Session) -> PackedStringArray:
 	for k: String in s.state.vars:
 		if not k.begins_with("0:q.") or k.get_slice_count(".") != 3 or not is_equal_approx(float(s.state.vars[k]), 1.0):
 			continue
-		var z := k.get_slice(".", 1)
+		var z := _display_zone(s, k)
 		if out.has(z):
 			continue
 		if s.players.size() <= 1 and String(s.campaign.zone(z).get("allod", "")) != allod:
@@ -207,13 +208,35 @@ static func browse_zones(s: Session) -> PackedStringArray:
 	if out.is_empty() and s.state.last_quest != "":
 		for k: String in s.state.vars:
 			if k.begins_with("0:q.") and k.get_slice_count(".") == 3 and k.get_slice(".", 2) == s.state.last_quest:
-				out.append(k.get_slice(".", 1))
+				out.append(_display_zone(s, k))
 				break
 	return out
 
 
-static func _has_quest(s: Session, z: String, q: String) -> bool:
-	return q != "" and s.state.vars.has("0:q.%s.%s" % [z, q])
+## An .mq's script keeps q.<archive>.<archive> when the quest overlays a
+## campaign zone. LMP plays the archive as its own zone.
+static func _display_zone(s: Session, key: String) -> String:
+	var z := key.get_slice(".", 1)
+	if s.lmp.is_empty() and z == key.get_slice(".", 2):
+		var archive := SideQuests.get_quest(z)
+		if not archive.is_empty():
+			var campaign_zone := SideQuests.zone_of(s, archive)
+			if not campaign_zone.is_empty():
+				return campaign_zone
+	return z
+
+
+static func _quest_rows(s: Session, id: String) -> Dictionary:
+	var rows := {}
+	for k: String in s.state.vars:
+		if not k.begins_with("0:q.") or k.get_slice_count(".") != 3 or is_zero_approx(float(s.state.vars[k])):
+			continue
+		if _display_zone(s, k) == id:
+			var q := k.get_slice(".", 2)
+			var raw_zone := k.get_slice(".", 1)
+			if raw_zone == id or not rows.has(q):
+				rows[q] = raw_zone
+	return rows
 
 
 ## picture, entrances, quest rows and zone text of zone `id`.
@@ -258,10 +281,8 @@ func _fill(id: String, opts: Array) -> void:
 			entrance = entrances.size()
 		entrances.append(e)
 	# Quests (GS vars q.<zone>.<quest> ≠ 0).
-	var prefix := "0:q.%s." % id
-	for k: String in s.state.vars:
-		if k.begins_with(prefix) and k.get_slice_count(".") == 3 and not is_zero_approx(float(s.state.vars[k])):
-			quests.append(k.get_slice(".", 2))
+	_row_zones = _quest_rows(s, id)
+	quests = PackedStringArray(_row_zones.keys())
 	quests.sort()
 	var zt := GameData.text("zone " + id).split("\n")
 	_title = zt[0].strip_edges() if zt.size() else id
@@ -376,7 +397,7 @@ func description(q: String) -> String:
 		if not l.begins_with("#subobj"):
 			continue
 		var n := l.substr(7).strip_edges()
-		var st := int(session.state.get_var(0, "q.%s.%s.%s" % [zone, q, n]))
+		var st := int(session.state.get_var(0, "q.%s.%s.%s" % [_row_zones.get(q, zone), q, n]))
 		if st == 0:
 			continue
 		var title := lines[i + 1].strip_edges() if i + 1 < lines.size() else ""
@@ -473,7 +494,7 @@ func _draw() -> void:
 		var y := 30.0 + 24.0 * row
 		if i == sel:
 			draw_rect(_r(Rect2(60, y, 310, 24)), Color8(0xa0, 0x68, 0x00, 0xc8))
-		var st := int(session.state.get_var(0, "q.%s.%s" % [zone, quests[i]]))
+		var st := int(session.state.get_var(0, "q.%s.%s" % [_row_zones[quests[i]], quests[i]]))
 		if _cross and st in [2, 3]:
 			var u := 68.0 if st == 2 else 0.0
 			var s := _cross.get_size() / 256.0

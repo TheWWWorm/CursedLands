@@ -241,6 +241,18 @@ def repeat_signature(capture):
     return dict(capture, entry=kept(capture["entry"]), after=kept(capture["after"]))
 
 
+def replay_request(cp):
+    """What the replaying process gets: never the recorded result."""
+    entering = bool(cp["steps"]) and "enter" in cp["steps"][0]
+    # An entry checkpoint was recorded with ~20 s in the zone after arrival.
+    return {"zone": cp["zone"], "vars_before": cp["vars_before"],
+            "campaign": cp.get("campaign", "original"),
+            "settle": cp.get("settle", 20.0 if entering else 2.2),
+            "after_settle": cp.get("after_settle", 2.0),
+            "fixture": cp.get("fixture", {}), "probes": cp.get("probes", {}),
+            "steps": [s for s in cp["steps"] if "enter" not in s]}
+
+
 def capture_process(argv, log, env, timeout):
     from gameplay import run_program
     return run_program(argv, log, env, timeout)
@@ -254,15 +266,7 @@ def run_one(name, cp, a, work):
     case = work / name
     case.mkdir(parents=True)
     env = isolated_environment(case, "Cursed Lands", data)
-    entering = bool(cp["steps"]) and "enter" in cp["steps"][0]
-    # An entry checkpoint was recorded with ~20 s in the zone after arrival.
-    run_cp = {"zone": cp["zone"], "vars_before": cp["vars_before"],
-              "campaign": cp.get("campaign", "original"),
-              "settle": cp.get("settle", 20.0 if entering else 2.2),
-              "after_settle": cp.get("after_settle", 2.0),
-              "fixture": cp.get("fixture", {}), "probes": cp.get("probes", {}),
-              "steps": [s for s in cp["steps"] if "enter" not in s]}
-    (case / "checkpoint.json").write_text(json.dumps(run_cp))
+    (case / "checkpoint.json").write_text(json.dumps(replay_request(cp)))
     argv = [a.godot, "--path", str(a.runtime), "--headless", "--audio-driver", "Dummy", "--",
             "--no-movies", "--ei-path=" + str(data), "--tool=" + str(a.runtime / "tools/tests/original_checkpoint.gd"),
             "--checkpoint=" + str(case / "checkpoint.json")]
@@ -274,7 +278,12 @@ def run_one(name, cp, a, work):
     if len(found) != 1 or code not in (0, 1) or errors or capture_error:
         return {"name": name, "error": f"capture incomplete/invalid (exit {code}, {len(found)} result records); see {log}",
                 "script_errors": errors, "log_tail": text[-1500:]}
-    res = json.loads(found[-1].split(" ", 1)[1])
+    return build_report(name, cp, json.loads(found[-1].split(" ", 1)[1]), code, errors, log)
+
+
+def build_report(name, cp, res, code, errors, log):
+    """Compares one capture with the recording. The engine that captured it plays no part here."""
+    entering = bool(cp["steps"]) and "enter" in cp["steps"][0]
     entry, after = kept(res["entry"]), kept(res["after"])
     before, expect = cp["vars_before"], cp["vars_after"]
     # An entry checkpoint starts outside the zone: its delta includes the

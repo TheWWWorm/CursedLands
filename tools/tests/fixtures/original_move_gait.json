@@ -1,0 +1,420 @@
+{
+ "scope": "Capture the gait of a script MoveToPoint against a player's move order in\nthe original base game (bounded x86 replay in Unicorn, not a playthrough).",
+ "original": {
+  "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "locations": {
+   "order_move": "0x554740",
+   "take_order": "0x54a6e0",
+   "run_gate": "0x548520",
+   "world": "0x455940",
+   "notify": "0x50e9f0",
+   "set_target": "0x52a8f0",
+   "refusal": "0x5241c0",
+   "placement": "0x5ba5a0",
+   "transform": "0x530570",
+   "ack": "0x66d6a0"
+  },
+  "cases": [
+   {
+    "source": "script",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "script",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "script",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "script",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "script",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "script",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "script",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "script",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_click",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "player_click",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "player_click",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_click",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_click",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "player_click",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_click",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_click",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 2,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 2,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 2,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "player_double_click",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 1,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "attack",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 0,
+    "moves_at_gait": 2
+   },
+   {
+    "source": "attack",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 0,
+    "run_request_bits": 1,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 2,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": true,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 2,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": true,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": false,
+    "gait": 2,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 0,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   },
+   {
+    "source": "attack_double_click",
+    "party": false,
+    "gait": 3,
+    "combat_flag": 1,
+    "queued_order": 3,
+    "double_click": 1,
+    "run_request_bits": 3,
+    "moves_at_gait": 3
+   }
+  ]
+ }
+}

@@ -382,3 +382,338 @@ class SharedProcessTests(unittest.TestCase):
     def test_focused_runner_offers_parallel_jobs(self):
         self.assertEqual(runner.jobs_argument("auto"), "auto")
         self.assertEqual(runner.jobs_argument("3"), 3)
+
+
+class WindowsJobDrainTests(unittest.TestCase):
+    """Win32 API completion witnesses are deterministic on every test platform."""
+
+    class API:
+        def __init__(self, pids=(10, 11), *, extra_pid=False, late_child=False, timeout_pid=None, query_error=False):
+            self.pids = set(pids)
+            self.completed = set()
+            self.terminating = set()
+            self.events = []
+            self.opened = set()
+            self.extra_pid = extra_pid
+            self.late_child = late_child
+            self.timeout_pid = timeout_pid
+            self.query_error = query_error
+            self.error = 0
+            self.bulk_request = False
+
+        def QueryInformationJobObject(self, job, kind, pointer, size, returned):
+            self.events.append(("query", job))
+            if self.query_error:
+                self.error = 5
+                return False
+            info = pointer._obj
+            pids = [] if self.bulk_request else sorted(self.pids - self.completed)
+            if self.extra_pid:
+                pids.append(99)
+                self.extra_pid = False
+            info.assigned = len(pids)
+            info.count = min(len(pids), len(info.pids))
+            for index, pid in enumerate(pids[:info.count]):
+                info.pids[index] = pid
+            self.error = 234 if info.count != info.assigned else 0
+            return not self.error
+
+        def OpenProcess(self, access, inherit, pid):
+            handle = pid + 1000
+            self.opened.add(handle)
+            return handle
+
+        def IsProcessInJob(self, handle, job, pointer):
+            pointer._obj.value = handle - 1000 in self.pids
+            return True
+
+        def TerminateJobObject(self, job, code):
+            # Old implementation: membership disappears at request time,
+            # while the interpreter still owns its inherited log handles.
+            self.terminating.update(self.pids)
+            self.bulk_request = True
+            self.events.append(("bulk-request", job))
+            return True
+
+        def TerminateProcess(self, handle, code):
+            pid = handle - 1000
+            self.terminating.add(pid)
+            self.events.append(("terminate", pid))
+            return True
+
+        def WaitForSingleObject(self, handle, milliseconds):
+            pid = handle - 1000
+            if pid in self.completed:
+                return 0
+            if not milliseconds or pid == self.timeout_pid:
+                return 258
+            if pid in self.terminating:
+                self.completed.add(pid)
+                self.events.append(("joined", pid))
+                if self.late_child:
+                    self.pids.add(12)
+                    self.late_child = False
+                return 0
+            return 258
+
+        def CloseHandle(self, handle):
+            self.events.append(("close", handle))
+            self.opened.discard(handle)
+            return True
+
+    class DeniedAPI(API):
+        def __init__(self, *args, denied_pid=10, terminate_error=5, wait_state=0, immediate_state=258, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.denied_pid, self.terminate_error, self.wait_state = denied_pid, terminate_error, wait_state
+            self.immediate_state = immediate_state
+            self.denied = False
+
+        def TerminateProcess(self, handle, code):
+            if handle - 1000 == self.denied_pid:
+                self.denied = True
+                self.error = self.terminate_error
+                self.events.append(("terminate-denied", self.denied_pid))
+                return False
+            return super().TerminateProcess(handle, code)
+
+        def WaitForSingleObject(self, handle, milliseconds):
+            pid = handle - 1000
+            if self.denied and pid == self.denied_pid and pid not in self.completed:
+                self.events.append(("denied-wait", pid, milliseconds))
+                if not milliseconds:
+                    if self.immediate_state == 0xffffffff:
+                        self.error = 6
+                    return self.immediate_state
+                if milliseconds and self.wait_state == 0:
+                    self.completed.add(pid)
+                    self.events.append(("joined", pid))
+                    return 0
+                if self.wait_state == 0xffffffff:
+                    self.error = 6  # wait failure must not replace original error5
+                return self.wait_state if self.wait_state else 258
+            return super().WaitForSingleObject(handle, milliseconds)
+
+    def job(self, **kwargs):
+        import windows_job
+        job = windows_job.WindowsJob.__new__(windows_job.WindowsJob)
+        job.handle, job.api = 7, self.API(**kwargs)
+        return job
+
+    def windows_errors(self, api):
+        import contextlib
+        import windows_job
+        stack = contextlib.ExitStack()
+        stack.enter_context(patch.object(windows_job.ctypes, "get_last_error", lambda: api.error, create=True))
+        stack.enter_context(patch.object(windows_job.ctypes, "WinError", lambda code: OSError(code, "Win32 probe"), create=True))
+        return stack
+
+    def test_termination_waits_for_every_process_handle_before_log_reuse(self):
+        job = self.job()
+        with self.windows_errors(job.api):
+            job.terminate()
+            self.assertEqual(job.api.completed, {10, 11}, "leader exit or empty job accounting is not descendant completion")
+            self.assertFalse(job.api.opened, "pinned process handles must be released")
+            job.close()
+        self.assertIsNone(job.handle)
+
+    def test_successful_leader_exit_still_joins_descendant_and_ignores_reused_pid(self):
+        job = self.job(extra_pid=True)
+        job.api.completed.add(10)
+        with self.windows_errors(job.api):
+            job.close()
+        self.assertEqual(job.api.completed, {10, 11}, "normal success must also drain the inherited log owner")
+        self.assertNotIn(("terminate", 99), job.api.events, "PID reuse must never kill an unrelated process")
+        self.assertFalse(job.api.opened)
+        self.assertGreater(job.api.events.index(("close", 7)), job.api.events.index(("joined", 11)))
+
+    def test_children_created_during_shutdown_are_also_joined(self):
+        job = self.job(late_child=True)
+        with self.windows_errors(job.api):
+            job.close()
+        self.assertEqual(job.api.completed, {10, 11, 12})
+        self.assertFalse(job.api.opened)
+        self.assertGreater(job.api.events.index(("close", 7)), job.api.events.index(("joined", 12)))
+
+    def test_cleanup_timeout_is_an_error_and_still_closes_owned_handles(self):
+        job = self.job(timeout_pid=10)
+        with self.windows_errors(job.api), self.assertRaises(TimeoutError):
+            job.close()
+        self.assertIsNone(job.handle)
+        self.assertFalse(job.api.opened)
+        self.assertIn(("close", 7), job.api.events, "KILL_ON_JOB_CLOSE remains containment on failed waits")
+
+    def test_membership_query_failure_cannot_report_clean_shutdown(self):
+        job = self.job(query_error=True)
+        with self.windows_errors(job.api), self.assertRaises(OSError):
+            job.close()
+        self.assertIsNone(job.handle)
+        self.assertIn(("close", 7), job.api.events)
+
+    def test_job_membership_buffer_grows_without_truncating_owned_children(self):
+        job = self.job(pids=range(10, 80))
+        with self.windows_errors(job.api):
+            job.close()
+        self.assertEqual(job.api.completed, set(range(10, 80)))
+        self.assertFalse(job.api.opened)
+
+
+    def test_denied_termination_joins_only_actual_late_signaled_owned_handle(self):
+        import windows_job
+        job = self.job()
+        job.api = self.DeniedAPI(extra_pid=True)
+        #1s total, .25s spent before ownership checks, .75s before failed kill:
+        # the recovery wait gets only250ms, never a renewed1s timeout.
+        with self.windows_errors(job.api), patch.object(windows_job.time, "monotonic", side_effect=[100,100.25,100.75,100.875,100.875]):
+            try:
+                job.terminate(timeout=1)
+            except OSError as error:
+                self.fail("actual delayed owned-handle signal was not joined: " + str(error))
+        self.assertIn(("denied-wait",10,250),job.api.events)
+        self.assertEqual(job.api.completed,{10,11})
+        self.assertNotIn(("terminate",99),job.api.events)
+        self.assertFalse(any(event[:2]==("denied-wait",99) for event in job.api.events))
+        self.assertFalse(job.api.opened)
+        with self.windows_errors(job.api):job.close()
+        self.assertIsNone(job.handle)
+        self.assertGreater(job.api.events.index(("close",7)),job.api.events.index(("joined",11)))
+
+    def test_live_denied_and_failed_wait_remain_fatal_with_kill_on_close(self):
+        for state in (258,0xffffffff,128):
+            with self.subTest(wait_state=state):
+                job=self.job();job.api=self.DeniedAPI(wait_state=state)
+                with self.windows_errors(job.api),self.assertRaises(OSError) as caught:job.close()
+                self.assertEqual(caught.exception.errno,5)
+                self.assertNotIn(10,job.api.completed)
+                self.assertFalse(job.api.opened)
+                self.assertIsNone(job.handle)
+                self.assertIn(("close",7),job.api.events)
+
+    def test_denied_recovery_cannot_extend_the_existing_deadline(self):
+        import windows_job
+        job=self.job();job.api=self.DeniedAPI()
+        with self.windows_errors(job.api),patch.object(windows_job.time,"monotonic",side_effect=[100,100.25,105.25]),self.assertRaises(OSError) as caught:
+            job.close()
+        self.assertEqual(caught.exception.errno,5)
+        self.assertIn(("denied-wait",10,0),job.api.events)
+        self.assertNotIn(10,job.api.completed)
+        self.assertFalse(job.api.opened)
+        self.assertIn(("close",7),job.api.events)
+
+    def test_other_termination_errors_do_not_get_a_blocking_recovery_wait(self):
+        job=self.job();job.api=self.DeniedAPI(terminate_error=6)
+        with self.windows_errors(job.api),self.assertRaises(OSError) as caught:job.close()
+        self.assertEqual(caught.exception.errno,6)
+        self.assertIn(("denied-wait",10,0),job.api.events)
+        self.assertFalse(job.api.opened)
+
+    def test_immediate_failed_or_unexpected_wait_never_retries_even_if_later_signal_is_available(self):
+        for state in (0xffffffff,128):
+            with self.subTest(immediate_state=state):
+                job=self.job();job.api=self.DeniedAPI(immediate_state=state,wait_state=0)
+                with self.windows_errors(job.api),self.assertRaises(OSError) as caught:job.close()
+                self.assertEqual(caught.exception.errno,5)
+                self.assertEqual([event for event in job.api.events if event[0]=="denied-wait"],[("denied-wait",10,0)])
+                self.assertNotIn(10,job.api.completed)
+                self.assertFalse(job.api.opened)
+                self.assertIn(("close",7),job.api.events)
+
+    def test_unrelated_reused_pid_never_gets_termination_or_recovery_wait(self):
+        job=self.job();job.api=self.DeniedAPI(pids=(),extra_pid=True,denied_pid=99)
+        with self.windows_errors(job.api):job.close()
+        self.assertFalse(any(event[0] in ("terminate","terminate-denied","denied-wait") for event in job.api.events))
+        self.assertIn(("close",1099),job.api.events)
+        self.assertFalse(job.api.opened)
+
+
+class ProcessCleanupContextTests(unittest.TestCase):
+    """Exercise the real shutdown control flow with deterministic owned jobs."""
+
+    def run_owned(self, *, trigger="stop", close_error=False, end_error=False):
+        import types
+        source = Path(__file__).resolve().parents[1] / "parity/process.py"
+        spec = importlib.util.spec_from_file_location("isolated_process_context", source)
+        control = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(control)
+        events = []
+
+        class Process:
+            def __init__(self, *args, **kwargs):
+                self.pid, self._handle = 1234, 4321
+                self.returncode = 0 if trigger == "natural" else None
+                if trigger == "diagnostic":
+                    kwargs["stdout"].write("ERROR: explicit synthetic diagnostic\n")
+                    kwargs["stdout"].flush()
+
+            def poll(self):
+                return self.returncode
+
+            def wait(self, *args, **kwargs):
+                events.append("wait")
+                return self.returncode
+
+        class Job:
+            def __init__(self, process):
+                self.process = process
+
+            def terminate(self):
+                events.append("terminate")
+                self.process.returncode = 1
+                if end_error:
+                    raise PermissionError(5, "synthetic owned stop denied")
+
+            def close(self):
+                events.append("close")
+                self.process.returncode = 1
+                if close_error:
+                    raise PermissionError(5, "synthetic owned close denied")
+
+        module = types.ModuleType("windows_job")
+        module.WindowsJob = Job
+        control.os = types.SimpleNamespace(name="nt")
+        control.subprocess = types.SimpleNamespace(Popen=Process, STDOUT=subprocess.STDOUT,
+            DEVNULL=subprocess.DEVNULL, CREATE_NEW_PROCESS_GROUP=0)
+        with tempfile.TemporaryDirectory() as directory, patch.dict(sys.modules, windows_job=module):
+            try:
+                outcome = control.run_program(["SYNTHETIC-NEVER-LAUNCH"], Path(directory) / "synthetic.log", {},
+                    -1 if trigger == "timeout" else 10, stop=types.SimpleNamespace(is_set=lambda: trigger == "stop"))
+            except Exception as exc:
+                return exc, events
+        return outcome, events
+
+    def test_uncontended_owned_stop_keeps_original_reason(self):
+        outcome, events = self.run_owned()
+        self.assertEqual(outcome, (1, "Run stopped before this test finished"))
+        self.assertEqual(events, ["terminate", "wait", "close"])
+
+    def test_stop_reason_and_cleanup_failure_both_remain_fatal_visible(self):
+        outcome, events = self.run_owned(close_error=True)
+        self.assertIsInstance(outcome, RuntimeError)
+        self.assertIn("Run stopped before this test finished", str(outcome))
+        self.assertIn("synthetic owned close denied", str(outcome))
+        self.assertIsInstance(outcome.__cause__, PermissionError)
+        self.assertEqual(events, ["terminate", "wait", "close"])
+
+    def test_timeout_reason_is_not_replaced_by_cleanup_failure(self):
+        outcome, _ = self.run_owned(trigger="timeout", close_error=True)
+        self.assertIsInstance(outcome, RuntimeError)
+        self.assertIn("Test exceeded -1 seconds", str(outcome))
+        self.assertIn("synthetic owned close denied", str(outcome))
+
+    def test_runtime_diagnostic_is_not_replaced_by_cleanup_failure(self):
+        outcome, _ = self.run_owned(trigger="diagnostic", close_error=True)
+        self.assertIsInstance(outcome, RuntimeError)
+        self.assertIn("Runtime/script error; stopped this test process", str(outcome))
+        self.assertIn("synthetic owned close denied", str(outcome))
+
+    def test_stop_and_close_failures_still_attempt_owned_drain_and_report_both(self):
+        outcome, events = self.run_owned(close_error=True, end_error=True)
+        self.assertIsInstance(outcome, RuntimeError)
+        for text in ("Run stopped before this test finished", "synthetic owned stop denied", "synthetic owned close denied"):
+            self.assertIn(text, str(outcome))
+        self.assertEqual(events, ["terminate", "close"], "failed stop must still attempt owned-job draining")
+
+    def test_natural_completion_cleanup_failure_stays_original_fatal_type(self):
+        outcome, events = self.run_owned(trigger="natural", close_error=True)
+        self.assertIsInstance(outcome, PermissionError)
+        self.assertIn("synthetic owned close denied", str(outcome))
+        self.assertEqual(events, ["wait", "close"])

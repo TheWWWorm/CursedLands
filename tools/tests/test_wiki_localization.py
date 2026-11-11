@@ -23,12 +23,12 @@ class AstralTutorialLocalizationTest(unittest.TestCase):
         }
         astral = {"campaign": "lost_in_astral", "language": "ru", "texts": {key: astral_text},
                   "used": [key], "entries": {}}
-        translations = json.loads((Path(__file__).resolve().parents[1] / "wiki_lia_translations.json").read_text())
+        translations = json.loads((Path(__file__).resolve().parents[1] / "wiki_lia_translations.json").read_text(encoding="utf-8"))
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp)
             self.assertTrue(prepare(base, astral, translations, output))
-            self.assertIn("harpy", json.loads((output / "en.json").read_text())[key].lower())
-            self.assertIn("harpyie", json.loads((output / "de.json").read_text())[key].lower())
+            self.assertIn("harpy", json.loads((output / "en.json").read_text(encoding="utf-8"))[key].lower())
+            self.assertIn("harpyie", json.loads((output / "de.json").read_text(encoding="utf-8"))[key].lower())
 
 
 if __name__ == "__main__":
