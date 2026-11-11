@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0-experimental.1 — 2026-11-11
+
+- Add an experimental Windows edition built with Unreal Engine 5.8 for the Evil Islands and Lost in Astral campaigns and Trials of the Allods.
+- Add real-time path tracing, DLSS Super Resolution and Ray Reconstruction on supported hardware, and built-in upscaling with DLSS off. AMD FSR is available on supported Windows configurations.
+- Fix a crash when entering Autochess and correct the direction of right-button camera drag.
+- Prepare the first-person quest backdrop asynchronously and extend path-traced grass shadows across the tactical view.
+- Use Unreal co-op protocol 1004. All players in an Unreal co-op session need matching builds.
+
 ## 1.38.0 — 2026-10-30
 
 - Lost in Astral's main menu shows a Multiplayer board in the middle of the signpost, where the original's Multiplayer board stood, instead of the expansion's bare skull. It uses the original's click area and hover animation, opens the network screen, and carries a localized caption (English, Russian, German) drawn as a distance-field font so it stays sharp at 4K. The separate LiA "Co-op campaign" button is removed. The base game's board is unchanged. Regression `tools/tests/menu_multiplayer_board.gd` (catalog `interface/menu_multiplayer_board_astral`, `_base`).
