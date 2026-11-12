@@ -10,7 +10,7 @@
   "resource_count": 1530,
   "all_pck_resource_md5_valid": true,
   "original_game_data_bundled": false,
-  "pck_sha256": "86018e1dd6aeec617e4351c3de43f827cb162f405b4600e5e44a872b26212c1b",
+  "pck_sha256": "4c4c250296578e4a1422a5bcbdf73a82654e68a6f8a050c6dbc6e667a65f58e2",
   "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
-  "source_commit": "b65a6fe50cb6b1af0a1fb5e13e2292c27efdda83"
+  "source_commit": "6870de2c9510b89f1a022e8e70f0cb17f2ca92bd"
 }

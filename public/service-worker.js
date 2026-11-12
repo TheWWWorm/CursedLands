@@ -2,7 +2,7 @@
 // Replaced with content hashes and engine-only files by tools/export_mobile.py.
 // The "2" marks the cache layout that stores the shell under the scope URL;
 // older caches stored a redirected copy of index.html and are deleted below.
-const ENGINE_CACHE = 'cursed-engine-2-e0c95c06720dcf92af7d';
+const ENGINE_CACHE = 'cursed-engine-2-baa89b48a2eee8f60d2d';
 // Hosts may redirect /index.html to / (Cloudflare Workers assets do). A
 // redirected response must never answer a navigation (the browser fails it
 // with ERR_FAILED), so the shell is fetched and stored as "./".
@@ -13,16 +13,16 @@ const HASHES = {
 "icon-192.png": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
 "icon-512.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
 "index.apple-touch-icon.png": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
-"index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
-"index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
-"index.html": "e6a76f28f0ec0d8269ca544b767daed9e5cafa233ff2a1b0e57f8ce5016e0bfd",
+"index.audio.position.worklet.js": "0fba97ee348ded832bdb5eb295a4cec212174938c0c92f28b93962b47a71a2ea",
+"index.audio.worklet.js": "aeac7d92d70ead1cd09b4573ee43cd6660f85915852650dfc2a80c9de94145ac",
+"index.html": "9989e251a5e6499f635b48611d3b650a573d9f987764b8eec4f38ec293b01e1f",
 "index.icon.png": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
-"index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
-"index.pck": "86018e1dd6aeec617e4351c3de43f827cb162f405b4600e5e44a872b26212c1b",
+"index.js": "400ea3a9d754f4e22d4d8615c3902ee86532d7fa55ddb321304c5a8a405c01db",
+"index.pck": "4c4c250296578e4a1422a5bcbdf73a82654e68a6f8a050c6dbc6e667a65f58e2",
 "index.png": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
 "index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
 "installer-worker.js": "147004bdaf5b7d80c0b9dffebca09cbc70e3d02a5c514743fbc5a1a68c9f8d8a",
-"manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+"manifest.webmanifest": "03246c30af056f58cf22ff1810e7318727b1383827701d186499a0ca4c617207",
 "storage.js": "f6b6f85e64975fdf1a90d95b76c4409eb9b5b82f9b043867969b0a394cd77129"
 };   // file name → SHA-256
 const ENGINE_FILES = Object.keys(HASHES).map(name => name === 'index.html' ? SHELL : new URL(name, SHELL).href);

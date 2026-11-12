@@ -16,6 +16,8 @@ The current stable release is [**1.37.0**](https://github.com/TheWWWorm/CursedLa
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
+The [experimental Unreal Engine edition for Windows](https://github.com/TheWWWorm/CursedLands/releases/tag/v2.0.0-experimental.2) is available as a prerelease. It uses an existing Evil Islands or Lost in Astral installation.
+
 ## Screenshots
 
 Frames from the [4K, 60 FPS trailer](https://www.youtube.com/watch?v=3zZLq5H10ic), captured in the engine at 3840×2160 with Ultra graphics and without trailer titles. Some scenes use **HD Lands textures by Atom**.
