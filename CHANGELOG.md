@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0-experimental.2
+
+- Improved Unreal campaign save restoration, co-op checkpoint recovery, defeat handling, revival, travel, and experience rewards.
+- Corrected dialogue staging, campaign input and settings, path markers, and travel-map quest highlights.
+- Improved path-traced foliage and swamp water, corrected Direct3D shader and frame-generation selection, and made automatic character lighting respect path tracing.
+
+See [the release notes](docs/releases/2.0.0-experimental.2.md).
+
 ## 2.0.0-experimental.1 — 2026-11-11
 
 - Add an experimental Windows edition built with Unreal Engine 5.8 for the Evil Islands and Lost in Astral campaigns and Trials of the Allods.
