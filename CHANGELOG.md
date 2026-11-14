@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0-experimental.4
+
+- Corrected LMP traders, the quest screen's map and conversation order in network games, the session chat over the journal and quest screen, and the lobby's menu theme.
+- Held list arrows repeat in the multiplayer character screens, and the character figure stands and turns about its own middle.
+- A first-person click swings once; conversation actors face their old way after walking home; villagers keep their work pose between repeats; footprints point forward.
+- Corrected the save notice, the camp's mode buttons, wind on the main menu, lava with water effects off, sky light in shadows under Original lighting, crash report logs and the FSR frame generation restart notice.
+- Use Unreal co-op protocol 1007.
+
+See [the release notes](docs/releases/2.0.0-experimental.4.md).
+
 ## 2.0.0-experimental.3
 
 - Rebuilt the Unreal options menu, and added the edition's own tree leaves with corrected path-traced terrain, snow walls and crowns.
