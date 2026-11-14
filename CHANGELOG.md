@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0-experimental.3
+
+- Rebuilt the Unreal options menu, and added the edition's own tree leaves with corrected path-traced terrain, snow walls and crowns.
+- Corrected the unit fog on bases, minimap enemy colours, wheel zoom and order marks in a pause, the remembered game speed, mercenary equipment on hire, zone exits, item cells, leftover screens and mounted mod packages.
+- The item constructor marks unusable materials, multiplayer under changed rules is refused with an explanation, and unavailable Esc menu entries are shown locked.
+- Use Unreal co-op protocol 1006.
+
+See [the release notes](docs/releases/2.0.0-experimental.3.md).
+
 ## 2.0.0-experimental.2
 
 - Improved Unreal campaign save restoration, co-op checkpoint recovery, defeat handling, revival, travel, and experience rewards.

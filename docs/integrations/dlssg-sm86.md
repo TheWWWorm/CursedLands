@@ -16,6 +16,10 @@ The [historical validation](../validation/dlssg-sm86-2026-10-24.md) records loca
 technical tests; it does not establish distribution rights. Historical recipes
 or successful test results must not be used to override this withdrawal.
 
+Local testing remains allowed (owner, 2026-11-10): the package may be used on a development machine
+to verify DLSS frame generation on RTX 30 hardware. Keep it and every copy outside both repositories and
+outside release and export staging, remove test copies afterwards, and never ship it publicly.
+
 The ordinary Windows build remains the download for RTX 30 hardware. This
 withdrawal does not establish license clearance for the standard DLSS/NRD
 integration; its separate attribution and approval requirements remain in
