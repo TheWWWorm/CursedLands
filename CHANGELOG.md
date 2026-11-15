@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0-experimental.5
+
+- A multiplayer quest left unfinished stays open at the base; the multiplayer character keeps its bag, and its creation and kit pages show the build, voice, attribute help and ability ranks.
+- Units appear within the party's sight and life sense and fade at the fog's edge; figures turn smoothly; co-op guest movement is smoother.
+- Corrected 'Reset skills...', the skills and dressing screens' spell and armour help, the item constructor's filters, preview and plate pads, and camp row motion and figures.
+- Texture packs keep ground transitions, firs keep their needles with wind, snow trails follow their option, and footprints and moonlit land are corrected.
+- Films and the graphics test end at a map load; autosave pictures, the driver prompt, an "All sound" switch, dropdown choices and many script, save and travel details are corrected.
+- Use Unreal co-op protocol 1008.
+
+See [the release notes](docs/releases/2.0.0-experimental.5.md).
+
 ## 2.0.0-experimental.4
 
 - Corrected LMP traders, the quest screen's map and conversation order in network games, the session chat over the journal and quest screen, and the lobby's menu theme.
