@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.0.0-experimental.6
+
+- Co-op guests get the host's story, films, credits, scenery, levers, effects and sounds. A movie or conversation already running is replayed to a joining guest.
+- Guest progress, credit, revival and ping follow the host's session rules.
+- A guest's camera, minimap, key layout, touch bar and gamepad work in the field. The host's faces show the other players' heroes.
+- A guest's trades, repairs and constructor deals wait for the host's result, and whole stacks trade in one deal.
+- Hired companions and tamed animals belong to their player, with per-player hire topics.
+- Online Arena guests follow the host's board phase, damage and later rounds.
+- Master volume replaces "All sound"; corrected fogged units on the minimap, cursor frames, FSR sharpening and background running.
+- Use Unreal co-op protocol 1009 and online Arena protocol 1006.
+
+See [the release notes](docs/releases/2.0.0-experimental.6.md).
+
 ## 2.0.0-experimental.5
 
 - A multiplayer quest left unfinished stays open at the base; the multiplayer character keeps its bag, and its creation and kit pages show the build, voice, attribute help and ability ranks.
