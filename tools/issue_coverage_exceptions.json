@@ -70,6 +70,7 @@
   "99": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
   "208": "Unreal-only regression registered as CursedLands.Campaign.Rendering.VillageLightPan in private Unreal automation.",
   "209": "Unreal-only native multiplayer Cave journal regression in the private Unreal test harness.",
+  "210": "Unreal-only co-op voice regression registered as CursedLands.Coop.Architecture.VoiceIdentity. The loss-injected host and guest pickup probe verifies delivery to the owning guest.",
   "212": "Unreal-only native village dialogue cursor regression in the private Unreal test harness.",
   "220": "Unreal-only regression registered in private tools/tests/test_unreal_host_refusal.py; HD Lands 1.5.0 tested with either peer using the pack."
 }

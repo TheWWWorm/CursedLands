@@ -2,7 +2,7 @@
 
 ## 2.0.0-experimental.7
 
-- Reworked Unreal co-op guest presentation, movement, input and state replication. Guests can reclaim their hero after a connection loss, and installed texture packs work with the original co-op rules. [#220](https://github.com/TheWWWorm/CursedLands/issues/220)
+- Reworked Unreal co-op guest presentation, movement, input and state replication. Guests can reclaim their hero after a connection loss, and installed texture packs work with the original co-op rules. Guest heroes play their voice acknowledgments on the owning player’s machine. [#210](https://github.com/TheWWWorm/CursedLands/issues/210) [#220](https://github.com/TheWWWorm/CursedLands/issues/220)
 - Fixed Cave journal access, village dialogue input and Gipat pig targeting. [#209](https://github.com/TheWWWorm/CursedLands/issues/209) [#212](https://github.com/TheWWWorm/CursedLands/issues/212) [#213](https://github.com/TheWWWorm/CursedLands/issues/213)
 - Restored held character-creation input, continuous character previews and camera-independent village lights. [#206](https://github.com/TheWWWorm/CursedLands/issues/206) [#207](https://github.com/TheWWWorm/CursedLands/issues/207) [#208](https://github.com/TheWWWorm/CursedLands/issues/208)
 - Corrected crafting material selection, movement order replacement and cancellation, and crash-log recovery.
