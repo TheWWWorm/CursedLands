@@ -2,7 +2,7 @@
 // Replaced with content hashes and engine-only files by tools/export_mobile.py.
 // The "2" marks the cache layout that stores the shell under the scope URL;
 // older caches stored a redirected copy of index.html and are deleted below.
-const ENGINE_CACHE = 'cursed-engine-2-baa89b48a2eee8f60d2d';
+const ENGINE_CACHE = 'cursed-engine-2-ae8233d7a60189abbcf9';
 // Hosts may redirect /index.html to / (Cloudflare Workers assets do). A
 // redirected response must never answer a navigation (the browser fails it
 // with ERR_FAILED), so the shell is fetched and stored as "./".
@@ -15,10 +15,10 @@ const HASHES = {
 "index.apple-touch-icon.png": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
 "index.audio.position.worklet.js": "0fba97ee348ded832bdb5eb295a4cec212174938c0c92f28b93962b47a71a2ea",
 "index.audio.worklet.js": "aeac7d92d70ead1cd09b4573ee43cd6660f85915852650dfc2a80c9de94145ac",
-"index.html": "9989e251a5e6499f635b48611d3b650a573d9f987764b8eec4f38ec293b01e1f",
+"index.html": "1c5f5c13160a788e48b698bb9474248c809b2804ed4b5374c72d2f99b31b740b",
 "index.icon.png": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
 "index.js": "400ea3a9d754f4e22d4d8615c3902ee86532d7fa55ddb321304c5a8a405c01db",
-"index.pck": "4c4c250296578e4a1422a5bcbdf73a82654e68a6f8a050c6dbc6e667a65f58e2",
+"index.pck": "2cf1ddf9311078519367e040369e66e1866ca6481fd6fd546a24a05f7be490c3",
 "index.png": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
 "index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
 "installer-worker.js": "147004bdaf5b7d80c0b9dffebca09cbc70e3d02a5c514743fbc5a1a68c9f8d8a",
