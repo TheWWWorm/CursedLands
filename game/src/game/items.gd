@@ -695,6 +695,11 @@ static func construct_price(bp: String, mat: String, spell := "") -> int:
 	return int(price(item) * float(coef[Deal.CONSTR]))
 
 
+## Fill from the selected row first, then cover any remainder from the other.
+static func construct_material_purchase(needed: int, in_bag: int, in_shop: int, prefer_shop: bool) -> int:
+	return maxi(needed - in_bag, mini(needed, in_shop) if prefer_shop else 0)
+
+
 ## Remake fix (as the Rebirth edition): the original subtracts a worn weapon's
 ## or armour's repair cost here as in every deal (60fa70), so taking a worn
 ## item apart and rebuilding it was cheaper than repairing it. Added instead.

@@ -258,6 +258,7 @@ var repair_wait := false
 var _repair_req := 0
 var c_bp := ""       # item constructor: blueprint, material name, ready item, spell
 var c_mat := ""
+var c_shop_materials := false
 var c_ready := ""
 var c_spell: String = ""   # "spell:<id>", from the bag or the hero's known spells
 var s_spell := ""    # spell constructor pile: code of a keystone or ready spell
@@ -756,7 +757,7 @@ func shop_left(it: String) -> int:
 		if it == c_bp and not c_bp in st.items:
 			n -= 1
 		if c_mat != "" and it == Items.material_unit(c_mat):
-			n -= maxi(0, Items.components(c_bp) - st.items.count(it))
+			n -= Items.construct_material_purchase(Items.components(c_bp), st.items.count(it), n, c_shop_materials)
 	if mode == "spellconstr":
 		n -= _s_used(it, "shop")
 	return maxi(0,n) if trade_wait else n
@@ -1064,7 +1065,9 @@ func bag_count(it: String) -> int:
 	var n := st.items.count(it) + (1 if st.quest_items.has(it) else 0)
 	var used := 1 if it == c_ready or it == c_bp else 0
 	if c_mat != "" and it == Items.material_unit(c_mat) and c_bp != "":
-		used = mini(Items.components(c_bp), n)
+		var needed := Items.components(c_bp)
+		var stock := hud.game.session.shop_count(it, {"shop": shop_id}) if c_shop_materials else 0
+		used = needed - Items.construct_material_purchase(needed, n, stock, c_shop_materials)
 	var left := n - sell_pile.count(it) - repair_pile.count(it) - used - _s_used(it, "bag")
 	return maxi(0,left) if trade_wait or repair_wait else left
 
@@ -1193,6 +1196,7 @@ func _clear_constr() -> void:
 	s_wait = false
 	c_bp = ""
 	c_mat = ""
+	c_shop_materials = false
 	c_ready = ""
 	c_spell = ""
 
@@ -1206,8 +1210,10 @@ func constr_cost() -> int:
 		return 0
 	var st := hud.game.session.state
 	var n := Items.components(c_bp)
+	var material := Items.material_unit(c_mat)
+	var stock := hud.game.session.shop_count(material, {"shop": shop_id}) if c_shop_materials else 0
 	var cost := Items.construct_price(c_bp, c_mat, c_spell)
-	cost += maxi(0, n - st.items.count(Items.material_unit(c_mat))) * Items.buy_price(Items.material_unit(c_mat))
+	cost += Items.construct_material_purchase(n, st.items.count(material), stock, c_shop_materials) * Items.buy_price(material)
 	if not c_bp in st.items:
 		cost += Items.buy_price(c_bp)
 	return cost
@@ -1258,7 +1264,7 @@ func _on_yes() -> void:
 				result += "|" + sp.trim_prefix("spell:")
 			_expect_received("bag", result)
 			construct.emit({"t": "construct", "bp": c_bp, "mat": c_mat, "spell": sp,
-				"unit": _unit.uid if _unit else -1})
+				"unit": _unit.uid if _unit else -1, "shop_materials": c_shop_materials})
 		_clear_constr()
 		_sig = ""
 		_update_total()
@@ -2178,6 +2184,7 @@ func _move_now(id: String, where: String) -> void:
 			var m := id.trim_prefix("material.")
 			if c_bp == "" or _mat_fits(c_bp, m):
 				c_mat = m
+				c_shop_materials = where == "shop"
 		elif id.begins_with("spell:") and _spell_fits(id):
 			c_spell = id
 		elif where == "bag" and Items.can_deconstruct(id):

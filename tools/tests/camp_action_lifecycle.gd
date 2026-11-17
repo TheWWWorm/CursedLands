@@ -49,6 +49,35 @@ func _ready() -> void:
 			cases+=1
 	check(cases==9,"nine weapon/armour recipe and material combinations exercised")
 
+	# Both rows offer the same material. Selecting the trader's row should
+	# leave the owned units alone and quote the price the purchase will charge.
+	var blueprint := "bp:stone axe"
+	var material := "material.rock"
+	var needed := Items.components(blueprint)
+	s.state.items = [blueprint]
+	for i in needed: s.state.items.append(material)
+	s.state.shops[1].goods[material] = needed + 1
+	s.state.money = 1000000
+	var panel: InventoryPanel = g.hud._inventory
+	panel.open(true, 1)
+	var camp := panel._camp
+	camp.set_mode("itemconstr")
+	camp._move_now(blueprint, "bag")
+	camp._move_now(material, "bag")
+	var bag_price: int = camp.deal_info()[1]
+	camp._move_now(material, "shop")
+	var shop_price: int = camp.deal_info()[1]
+	check(shop_price == bag_price + needed * Items.buy_price(material), "shop row quotes the selected trader materials")
+	check(camp.bag_count(material) == needed and camp.shop_left(material) == 1, "only selected trader materials leave their row")
+	if DisplayServer.get_name() != "headless":
+		await get_tree().process_frame
+		await RenderingServer.frame_post_draw
+		check(get_viewport().get_texture().get_image().save_png("user://constructor-trader-materials.png") == OK, "capture the selected trader materials")
+	camp._on_yes()
+	check(s.state.items.has("stone axe.rock") and s.state.items.count(material) == needed, "paid construction preserves the player's material")
+	check(s.state.shops[1].goods.get(material) == 1 and s.state.money == 1000000 - shop_price, "construction consumes the quoted stock and charges the quoted fee")
+	panel.hide()
+
 	var h: Dictionary=hero.get_meta("hero")
 	h.weapons=[]; h.weapon_slots=[]; h.armors=[]; h.spells=[]
 	h.skills={"astral":100}; h.int=100.0

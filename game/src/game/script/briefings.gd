@@ -221,6 +221,12 @@ static func pending_for(state: CampaignState, u: GameUnit, player := 0) -> Array
 		var m: Dictionary = state.mercs.get(name.substr(4).to_int(), {})
 		if not m.is_empty() and (int(m.get("controller", 0)) != player or m.get("travel_waiting", false)):
 			return []
+	# A map name shared by several actors belongs to its script binding, if present.
+	var world := u.world
+	if world and not name.is_empty():
+		var bound: GameUnit = world.units.get(ScriptVM.name_id(name))
+		if is_instance_valid(bound) and bound != u:
+			name = ""
 	var out := []
 	var seen := {}
 	var constr := []
@@ -236,7 +242,7 @@ static func pending_for(state: CampaignState, u: GameUnit, player := 0) -> Array
 		var parts := key.split(".")
 		if parts.size() != 3:
 			continue
-		if parts[1] == name or ScriptVM.name_id(parts[1]) == u.uid:
+		if (not name.is_empty() and parts[1] == name) or ScriptVM.name_id(parts[1]) == u.uid:
 			if parts[2].to_lower().begins_with("constr"):
 				constr = [parts[1], parts[2]]   # last found before online sorting
 			else:
@@ -693,6 +699,9 @@ func cast(actors: Array, partner: GameUnit, player: int) -> Dictionary:
 
 
 func _actor_unit(actor: String, player: int) -> GameUnit:
+	var bound: GameUnit = vm.world.units.get(ScriptVM.name_id(actor)) if actor != "hero" else null
+	if is_instance_valid(bound) and bound.dead:
+		return null
 	var fallback: GameUnit = null
 	for u: GameUnit in vm.world.units.values():
 		if u.dead:
@@ -702,7 +711,7 @@ func _actor_unit(actor: String, player: int) -> GameUnit:
 				if u.controller == player:
 					return u
 				fallback = u if fallback == null else fallback
-		elif String(u.info.get("name", "")).to_lower() == actor or u.uid == ScriptVM.name_id(actor):
+		elif u == bound or (not is_instance_valid(bound) and String(u.info.get("name", "")).to_lower() == actor):
 			# Astral names the current protagonist Hero2/Hero3/... instead
 			# of Hero. A guest initiating that conversation takes the same
 			# role. Keeping the host as a second protagonist would push the

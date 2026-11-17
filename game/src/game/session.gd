@@ -3763,9 +3763,8 @@ func _sold_to(rec: Dictionary, item: String) -> void:
 			l.append(key)
 
 
-## Host: item constructor (Items.construct_price). Pieces come from the
-## inventory first; missing ones are bought from the shop at their buy price
-## (camphelp 102, mode 5).
+## Host: item constructor (camphelp 102, mode 5). The material comes from the
+## selected row first, and all trader pieces are charged at the buy price.
 func _construct(cmd: Dictionary, player: int = 0) -> void:
 	var sid := shop_id(cmd)
 	if sid == 0 or not Shops.sells_items(sid):
@@ -3775,16 +3774,19 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 	if not Items.valid_blueprint(bp) or not tradeable_item(bp) \
 		or not Items.materials_for(bp).any(func(m): return String(m.name).to_lower() == mat):
 		return
-	var need := {bp: 1, Items.material_unit(mat): Items.components(bp)}
+	var material := Items.material_unit(mat)
+	var need := {bp: 1, material: Items.components(bp)}
 	var spell := String(cmd.get("spell", "")).to_lower()
 	var cost := Items.construct_price(bp, mat, spell)
 	var take := {}
 	for piece: String in need:
 		var have := state.items.count(piece)
-		take[piece] = mini(have, int(need[piece]))
-		var missing := int(need[piece]) - int(take[piece])
+		var available := shop_count(piece, cmd)
+		var missing := Items.construct_material_purchase(int(need[piece]), have, available,
+			piece == material and cmd.get("shop_materials", false) == true)
+		take[piece] = int(need[piece]) - missing
 		if missing > 0:
-			if shop_count(piece, cmd) < missing:
+			if available < missing:
 				return
 			cost += missing * Items.buy_price(piece)
 	# Optional spell slot (: the spell lying in the pile
@@ -3820,7 +3822,7 @@ func _construct(cmd: Dictionary, player: int = 0) -> void:
 	if spell != "":
 		item += "|" + spell.trim_prefix("spell:")
 	state.items.append(item)
-	sync_state()
+	_sync_menu_state()
 
 
 ## Host: take an inventory item apart into its blueprint and material units

@@ -154,6 +154,27 @@ func _ready() -> void:
 		Items.coef=Shops.coef(1)
 		check(host.call("_repair_apply",{"shop":5,"items":[worn,worn]},0) and host.state.money==0,"named free shop rates override the host's open-shop rates")
 		check(host.state.items==[weapon,weapon],"free repair restores both copies")
+	# A guest can pay to craft with shop materials even when their purse
+	# already holds the same kind. The shared shop deducts exactly the quote.
+	var plan := "bp:stone axe"
+	var material := "material.rock"
+	var needed := Items.components(plan)
+	purse.items = [plan]
+	for i in needed: purse.items.append(material)
+	purse.money = 50000
+	host.state.shops[1].goods[material] = needed + 1
+	host.sync_state()
+	check(await soon(func():return client.state.items.has(plan) and client.shop_count(material, {"shop": 1}) == needed + 1),"guest receives both material sources")
+	panel.open(true, 1); camp.set_mode("itemconstr")
+	camp._move_now(plan, "bag"); camp._move_now(material, "shop")
+	cost = camp.deal_info()[1]
+	get_tree().paused = true
+	camp._on_yes()
+	check(await soon(func():return client.state.items.has(weapon)) and get_tree().paused,"guest's paid construction completes while paused")
+	get_tree().paused = false
+	check(client.state.items.count(material) == needed and client.state.money == 50000 - cost,"guest keeps their materials and pays the quoted total")
+	check(host.state.shops[1].goods.get(material) == 1 and host.state.items == [weapon,weapon] and host.state.money == 0,"host deducts the trader's units and keeps its own purse")
+	panel.hide()
 	# Both sides of a player exchange use the same exact-item stacks as a shop.
 	var potion := "tiny potion 1"
 	var kinds := ["tiny potion 2","tiny potion 3","rune:e1","rune:e2","rune:r1",weapon,worn]

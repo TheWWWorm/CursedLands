@@ -824,6 +824,7 @@ func _update_help(h: Array) -> void:
 
 
 func _press(h: Array, edge := false) -> void:
+	_hold = ""
 	if h.is_empty():
 		return
 	var which := ""
@@ -1047,6 +1048,9 @@ func _press_kit(h: Array) -> void:
 			var ok := false
 			if h[1] == "skill":
 				ok = Skills.raise(hero, String(h[2]))
+				if ok:
+					_hold = "skill:" + String(h[2])
+					_hold_t = -0.5
 			else:
 				ok = Perks.learn(hero, String(h[2]))
 			sound("camp\\perk" if ok else "messbox\\cancel")
@@ -1202,13 +1206,22 @@ func _process(dt: float) -> void:
 			if steps: _scroll_list(_scroll_repeat.key, steps, Input.is_key_pressed(KEY_SHIFT))
 	if state in [SEL, CREATE] and _turn != 0:
 		_doll.turn_camp_by((TURN_SPEED if _turn == 1 else -TURN_SPEED) * dt)
-	# a held "−" / "+" steps again every frame from 0.75 s .
-	if _hold and state == CREATE:
+	if _hold and (MessageBox.is_up(_box) or not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or TouchInput.holding(self))):
+		_hold = ""
+	# A held control takes its first repeat after 0.75 seconds. Skill purchases
+	# then run at a steady rate so the frame rate cannot determine XP spending.
+	if _hold and state in [CREATE, KIT]:
 		_hold_t += dt
 		if _hold_t >= 0.25:
 			var parts := _hold.split(":")
-			var ok := MpCharacter.step_height(_hero(), int(parts[1])) if parts[0] == "height" \
-				else MpCharacter.step_attr(_hero(), parts[0], int(parts[1]))
+			var ok: bool
+			if state == KIT:
+				ok = Skills.raise(_hero(), parts[1])
+				_hold_t = 0.15
+			elif parts[0] == "height":
+				ok = MpCharacter.step_height(_hero(), int(parts[1]))
+			else:
+				ok = MpCharacter.step_attr(_hero(), parts[0], int(parts[1]))
 			if not ok:
 				_hold = ""
 			_layout()

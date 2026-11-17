@@ -12,6 +12,41 @@ func check(ok: bool, label: String) -> void:
 func frames() -> void:
 	for i in 4: await get_tree().process_frame
 
+func mouse_button(at: Vector2, down: bool) -> void:
+	var event := InputEventMouseButton.new()
+	event.position = at
+	event.button_index = MOUSE_BUTTON_LEFT
+	event.pressed = down
+	Input.parse_input_event(event)
+
+
+func check_kit_skill_hold(panel: MpCharPanel, original: Dictionary) -> void:
+	panel.edit = original.duplicate(true)
+	panel._set_state(MpCharPanel.CREATE)
+	var hero := panel._hero()
+	hero.exp = 1000000.0
+	panel._next_from_create()
+	await frames()
+	check(panel.state == MpCharPanel.KIT and not panel._skill_rows.is_empty(), "multiplayer training screen is ready")
+	if panel._skill_rows.is_empty(): return
+	var first: Array = panel._skill_rows[0]
+	var skill := String(first[2])
+	var at := panel.p8((first[0] as Rect2).get_center())
+	var level := Skills.level(hero, skill)
+	var starting_xp := float(hero.exp)
+	var price := Skills.cost(hero, skill)
+	mouse_button(at, true)
+	await frames()
+	check(Skills.level(hero, skill) == level + 1 and hero.exp == starting_xp - price, "press immediately buys exactly one skill level")
+	await get_tree().create_timer(1.1).timeout
+	var after := Skills.level(hero, skill)
+	var remaining := float(hero.exp)
+	check(after > level + 1 and remaining < starting_xp - price, "one held press buys additional levels")
+	mouse_button(at, false)
+	await get_tree().create_timer(0.35).timeout
+	check(Skills.level(hero, skill) == after and hero.exp == remaining, "release stops training and XP spending")
+
+
 func _ready() -> void:
 	GameData.options.merge({"auto_graphics":0,"show_tutorial":0,"pad_enabled":0,"item_icon_fit":1}, true)
 	var panel := MpCharPanel.new(); add_child(panel); panel.open(false)
@@ -56,6 +91,8 @@ func _ready() -> void:
 		check(MpCharacter.hero_of(saved).spells == [spell], "chosen spell survives disk reload: " + spell)
 		check(MpCharacter.hero_of(MpCharacter.accept(saved)).spells == [spell], "host admission retains chosen spell: " + spell)
 	check(unusable > 0, "fixture includes a spell the new hero cannot cast yet")
+	await check_kit_skill_hold(panel, original)
+	panel._set_state(MpCharPanel.SEL)
 	panel._press(["view"]); await frames()
 	check(panel.state == MpCharPanel.VIEW and panel._camp != null, "View opens the actual camp for the saved character")
 	if panel._camp == null: get_tree().quit(1); return

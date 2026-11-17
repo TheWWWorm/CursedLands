@@ -1976,9 +1976,9 @@
       "category": "inventory",
       "script": "tools/tests/camp_transactions.gd",
       "marker": "CAMP_TRANSACTIONS",
-      "min_checks": 53,
+      "min_checks": 57,
       "quick": false,
-      "description": "Repair and exchange stacks, stale selections, private purses and replayed commands",
+      "description": "Repair and exchange stacks, buy selected crafting materials while paused, and exercise private purses and replayed commands",
       "kind": "remake_regression",
       "timeout": 300,
       "args": [],
@@ -3266,6 +3266,30 @@
       ],
       "display": "headless",
       "focused": "dialogue_highlights"
+    },
+    {
+      "id": "dialogue/gipat_pig_topics",
+      "category": "dialogue",
+      "script": "tools/tests/gipat_pig_topics.gd",
+      "marker": "GIPAT_PIG_TOPICS",
+      "min_checks": 6,
+      "quick": false,
+      "description": "The original Gipat pig dialogue belongs to its script-bound actor, including the highlight and actor in the cast.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "maps/basecam.mob",
+        "maps/basegipat.mpr",
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless",
+      "focused": "gipat_pig_topics",
+      "issues": [
+        213
+      ]
     },
     {
       "id": "dialogue/ingos_guards",
@@ -6243,12 +6267,13 @@
     },
     {
       "id": "inventory/camp_action_lifecycle",
+      "focused": "camp_action_lifecycle",
       "category": "inventory",
       "script": "tools/tests/camp_action_lifecycle.gd",
       "marker": "CAMP_ACTION_LIFECYCLE",
-      "min_checks": 76,
+      "min_checks": 80,
       "quick": false,
-      "description": "Construct and dismantle nine authored recipes, reject stale/invalid requests, weapon-slot selection, eight-spell capacity, and save/load",
+      "description": "Construct and dismantle nine authored recipes, choose either material source, reject stale and invalid requests, and exercise equipment and save/load",
       "kind": "remake_regression",
       "timeout": 240,
       "args": [],
@@ -6262,12 +6287,13 @@
     },
     {
       "id": "inventory/camp_action_lifecycle_astral",
+      "focused": "camp_action_lifecycle_astral",
       "category": "inventory",
       "script": "tools/tests/camp_action_lifecycle.gd",
       "marker": "CAMP_ACTION_LIFECYCLE",
-      "min_checks": 76,
+      "min_checks": 80,
       "quick": false,
-      "description": "Construct and dismantle nine authored recipes, reject stale/invalid requests, weapon-slot selection, eight-spell capacity, and save/load",
+      "description": "Construct and dismantle nine authored recipes, choose either material source, reject stale and invalid requests, and exercise equipment and save/load",
       "kind": "remake_regression",
       "timeout": 240,
       "args": [],
@@ -6352,6 +6378,26 @@
       ],
       "display": "headless",
       "focused": "issue_ui_controls"
+    },
+    {
+      "id": "animation/paperdoll_continuity",
+      "category": "animation",
+      "script": "tools/tests/paperdoll_animation_continuity.gd",
+      "marker": "PAPERDOLL_ANIMATION_CONTINUITY",
+      "min_checks": 56,
+      "quick": true,
+      "description": "Character previews retain the original idle clip, phase and speed while physique and equipment change",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless",
+      "focused": "paperdoll_animation_continuity"
     },
     {
       "id": "animation/equipment_continuity",
@@ -10270,9 +10316,9 @@
       "category": "interface",
       "script": "tools/tests/recent_character_controls.gd",
       "marker": "RECENT_CHARACTER_CONTROLS",
-      "min_checks": 71,
+      "min_checks": 75,
       "quick": false,
-      "description": "Every spell in a real multiplayer kit survives selection/save/admission; View and training Accept/Cancel work.",
+      "description": "A multiplayer kit preserves spell choices and repeats skill purchases while held; View and training Accept/Cancel work.",
       "kind": "remake_regression",
       "timeout": 420,
       "args": [],
@@ -10285,7 +10331,8 @@
         79,
         81,
         84,
-        87
+        87,
+        206
       ],
       "focused": "recent_character_controls"
     },
