@@ -6397,7 +6397,10 @@
         "res/figures.res"
       ],
       "display": "headless",
-      "focused": "paperdoll_animation_continuity"
+      "focused": "paperdoll_animation_continuity",
+      "issues": [
+        207
+      ]
     },
     {
       "id": "animation/equipment_continuity",
