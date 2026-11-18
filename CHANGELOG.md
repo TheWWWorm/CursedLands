@@ -5,7 +5,8 @@
 - Unreal co-op guests use the host's campaign rules for camera and gamepad input, selected-party orders, movement gait, targeting and revival. Guest movement updates, route markers and field feedback are more consistent.
 - Unreal can prepare sharper artwork from the main menu. It saves the results for subsequent sessions and falls back to the CPU when GPU preparation is unavailable.
 - Unreal Autochess keeps its layout steady through character selection, shopping and ready changes. Online play carries the chosen hero into the lobby and preserves equipment selection and rewards. Fighters resume pursuit after defeating a target.
-- Unreal restores original character light shading, improves terrain transitions and sand ripples, and fixes quest markers after loading a campaign save. [#223](https://github.com/TheWWWorm/CursedLands/issues/223)
+- Unreal restores original character light shading, keeps high-resolution terrain samples inside their atlas tiles, improves sand ripples, and fixes quest markers after loading a campaign save. [#223](https://github.com/TheWWWorm/CursedLands/issues/223) [#225](https://github.com/TheWWWorm/CursedLands/issues/225)
+- Unreal shows the branded cover as the first window opens and plays the opening films while shaders prepare. Scenery texture packs keep their authored sizes on zone load. [#148](https://github.com/TheWWWorm/CursedLands/issues/148) [#127](https://github.com/TheWWWorm/CursedLands/issues/127)
 
 - Unreal loads startup and zone-loading BIK films from enabled mod packages. [#215](https://github.com/TheWWWorm/CursedLands/issues/215)
 - In Unreal, village NPCs with pending dialogue stay highlighted while the topic list is open. [#224](https://github.com/TheWWWorm/CursedLands/issues/224)

@@ -68,7 +68,9 @@
   "93": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
   "97": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
   "99": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
+  "127": "Unreal-only native scenery texture size and load regression registered in tools/tests/test_unreal_mods_import.py.",
   "131": "Unreal constructor selection, preview, source, and settlement regressions registered in tools/tests/test_unreal_red_materials.py and the EIFormats shop tests.",
+  "148": "Unreal-only native first-window and startup film regression registered in tools/tests/test_unreal_movie_queue.py.",
   "175": "Unreal-only hit reaction and voice regression registered in tools/tests/test_unreal_combat_sound.py.",
   "208": "Unreal-only regression registered as CursedLands.Campaign.Rendering.VillageLightPan in private Unreal automation.",
   "209": "Unreal-only native multiplayer Cave journal regression in the private Unreal test harness.",
@@ -83,5 +85,6 @@
   "221": "Unreal-only rendered TacticalGroundPick automation registered in tools/tests/test_unreal_navheight.py.",
   "222": "Unreal-only tactical pause and audio mixer regression registered in tools/tests/test_unreal_pause_camera.py.",
   "223": "Unreal-only character light regression registered in tools/tests/test_unreal_character_light.py, with native Original, Lumen and path-traced comparisons.",
-  "224": "Unreal-only native regression registered in tools/tests/test_unreal_talk_lit.py. It checks the pending NPC before the list opens, with the list open, and during spoken dialogue."
+  "224": "Unreal-only native regression registered in tools/tests/test_unreal_talk_lit.py. It checks the pending NPC before the list opens, with the list open, and during spoken dialogue.",
+  "225": "Unreal-only native high-resolution terrain atlas sampling regression registered in tools/tests/test_unreal_mods_import.py."
 }
