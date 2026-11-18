@@ -82,5 +82,6 @@
   "220": "Unreal-only regression registered in private tools/tests/test_unreal_host_refusal.py; HD Lands 1.5.0 tested with either peer using the pack.",
   "221": "Unreal-only rendered TacticalGroundPick automation registered in tools/tests/test_unreal_navheight.py.",
   "222": "Unreal-only tactical pause and audio mixer regression registered in tools/tests/test_unreal_pause_camera.py.",
+  "223": "Unreal-only character light regression registered in tools/tests/test_unreal_character_light.py, with native Original, Lumen and path-traced comparisons.",
   "224": "Unreal-only native regression registered in tools/tests/test_unreal_talk_lit.py. It checks the pending NPC before the list opens, with the list open, and during spoken dialogue."
 }
