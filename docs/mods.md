@@ -185,6 +185,14 @@ An `overrides` entry maps an existing archive entry to a package-relative file:
 
 Supported API 1 archives are `textures.res`, `redress.res` and `menus.res` (MMP or PNG), `sfx.res` (game-supported WAV), `speech.res` (MP3), and `movies` (BIK films of the Movies folder, by file name such as `progres.bik`). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`; the replacement file can be an MMP or a PNG image (recognised by its contents, up to 16384 pixels per side). Supply other files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name and are included in archive suffix listings. API 2 accepts only texture overrides and documentation, as described above. API 3 also accepts these archive overrides alongside its formula contract.
 
+In Unreal, to replace a loading film, set the package manifest's `api` to `1`
+and include an override like this. Use `progres.bik` for startup or the
+corresponding `progres1.bik` through `progres5.bik` for zone loading.
+
+```json
+{"archive": "movies", "entry": "progres1.bik", "file": "assets/movies/progres1.bik"}
+```
+
 `redress.res` holds character skin, clothing and equipment layers. For example:
 
 ```json

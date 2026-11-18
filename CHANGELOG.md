@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.0-experimental.8
+
+- Unreal co-op guests use the host's campaign rules for camera and gamepad input, selected-party orders, movement gait, targeting and revival. Guest movement updates, route markers and field feedback are more consistent.
+- Unreal can prepare sharper artwork from the main menu. It saves the results for subsequent sessions and falls back to the CPU when GPU preparation is unavailable.
+- Unreal Autochess keeps its layout steady through character selection, shopping and ready changes. Online play carries the chosen hero into the lobby and preserves equipment selection and rewards. Fighters resume pursuit after defeating a target.
+- Unreal restores original character light shading, improves terrain transitions and sand ripples, and fixes quest markers after loading a campaign save.
+
+- Unreal loads startup and zone-loading BIK films from enabled mod packages. [#215](https://github.com/TheWWWorm/CursedLands/issues/215)
+- In Unreal, village NPCs with pending dialogue stay highlighted while the topic list is open. [#224](https://github.com/TheWWWorm/CursedLands/issues/224)
+- Unreal movement clicks pass through tree crowns and select the terrain or bridge deck behind them. [#221](https://github.com/TheWWWorm/CursedLands/issues/221)
+- Unreal imports multiple mod archives in the background and shows the current file and progress when you reopen Mods and rules. [#216](https://github.com/TheWWWorm/CursedLands/issues/216)
+- Unreal catalog downloads continue after you leave Mods and rules. [#217](https://github.com/TheWWWorm/CursedLands/issues/217)
+- Unreal keeps terrain ambience and map sound emitters playing during tactical pause. [#222](https://github.com/TheWWWorm/CursedLands/issues/222)
+- Unreal places individual footprints when you backpedal or strafe while turning in first person. [#218](https://github.com/TheWWWorm/CursedLands/issues/218)
+- Unreal renders grass above bare soil at terrain texture transitions. [#219](https://github.com/TheWWWorm/CursedLands/issues/219)
+- Unreal campaign characters play their hit reaction and voice cue on eligible damaging hits. [#175](https://github.com/TheWWWorm/CursedLands/issues/175)
+- Unreal's item constructor shows the clickable build preview separately from the assembly and disassembly slots. [#131](https://github.com/TheWWWorm/CursedLands/issues/131)
+- Unreal centers Healing's casting and impact particles on the caster and recipient respectively.
+
+Unreal co-op uses protocol 1031 and online Arena uses protocol 1006. See [the release notes](docs/releases/2.0.0-experimental.8.md).
+
 ## 2.0.0-experimental.7
 
 - Reworked Unreal co-op guest presentation, movement, input and state replication. Guests can reclaim their hero after a connection loss, and installed texture packs work with the original co-op rules. Guest heroes play their voice acknowledgments on the owning player’s machine. [#210](https://github.com/TheWWWorm/CursedLands/issues/210) [#220](https://github.com/TheWWWorm/CursedLands/issues/220)

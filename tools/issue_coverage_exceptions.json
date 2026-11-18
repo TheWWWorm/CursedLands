@@ -68,9 +68,19 @@
   "93": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
   "97": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
   "99": "fixed before the registries recorded issue links (seeded 2026-10-28); register or link a test, then remove this entry",
+  "131": "Unreal constructor selection, preview, source, and settlement regressions registered in tools/tests/test_unreal_red_materials.py and the EIFormats shop tests.",
+  "175": "Unreal-only hit reaction and voice regression registered in tools/tests/test_unreal_combat_sound.py.",
   "208": "Unreal-only regression registered as CursedLands.Campaign.Rendering.VillageLightPan in private Unreal automation.",
   "209": "Unreal-only native multiplayer Cave journal regression in the private Unreal test harness.",
   "210": "Unreal-only co-op voice regression registered as CursedLands.Coop.Architecture.VoiceIdentity. The loss-injected host and guest pickup probe verifies delivery to the owning guest.",
   "212": "Unreal-only native village dialogue cursor regression in the private Unreal test harness.",
-  "220": "Unreal-only regression registered in private tools/tests/test_unreal_host_refusal.py; HD Lands 1.5.0 tested with either peer using the pack."
+  "215": "Unreal-only rendered startup and zone film regression registered in tools/tests/test_unreal_mods_import.py.",
+  "216": "Unreal-only background archive import regression registered in tools/tests/test_unreal_mods_import.py.",
+  "217": "Unreal-only background download regression registered in tools/tests/test_unreal_mods_import.py.",
+  "218": "Unreal-only first-person footprint cadence regression registered in tools/tests/test_unreal_footprint_size.py.",
+  "219": "Unreal-only native WorldNormal regression registered in tools/tests/test_unreal_look_pairs.py. The synthetic atlas regression is registered in EIFormats transitions_tests.cpp.",
+  "220": "Unreal-only regression registered in private tools/tests/test_unreal_host_refusal.py; HD Lands 1.5.0 tested with either peer using the pack.",
+  "221": "Unreal-only rendered TacticalGroundPick automation registered in tools/tests/test_unreal_navheight.py.",
+  "222": "Unreal-only tactical pause and audio mixer regression registered in tools/tests/test_unreal_pause_camera.py.",
+  "224": "Unreal-only native regression registered in tools/tests/test_unreal_talk_lit.py. It checks the pending NPC before the list opens, with the list open, and during spoken dialogue."
 }
