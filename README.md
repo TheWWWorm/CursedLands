@@ -12,11 +12,11 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.37.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.37.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It keeps creatures' patrols and pursuits across save and load, steadies path-traced colours while the camera zooms and pans, adds a faster Performance path-tracing preset, thaws the snow around fires and includes the 1.36.1 attack-order fix. See the [release notes](docs/releases/1.37.0.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.38.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.38.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It restores the Lost in Astral Multiplayer board, makes Autochess the default Trials mode, and improves performance while scripted water levels change. See the [release notes](docs/releases/1.38.0.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
-The [experimental Unreal Engine edition for Windows](https://github.com/TheWWWorm/CursedLands/releases/tag/v2.0.0-experimental.7) is available as a prerelease. It uses an existing Evil Islands or Lost in Astral installation.
+The [experimental Unreal Engine edition for Windows](https://github.com/TheWWWorm/CursedLands/releases/tag/v2.0.0-experimental.8) is available as a prerelease. It uses an existing Evil Islands or Lost in Astral installation.
 
 ## Screenshots
 
