@@ -21,6 +21,54 @@ func spawn(s: Session, nid: int, at: Vector2, side: int, facing: float) -> GameU
 	u.ai_next = INF; u._perceive_next = INF
 	return u
 
+func check_party_calls(s: Session, host_hire: GameUnit, guest: GameUnit, guest_hire: GameUnit) -> void:
+	var w := s.world
+	var target := spawn(s, 990309, guest.pos, 23, 0.0)
+	target.mode = "player"  # A calm NPC with no Aggression motivation.
+	w.set_relation(host_hire.faction, target.faction, 2)
+	for observer: GameUnit in [host_hire, guest, guest_hire]:
+		check(w.is_enemy(observer, target) and w.ai._player_target(observer) != target,
+			"observer %d sees no combat call before anyone orders an attack" % observer.uid)
+	guest.attack(target)
+	guest._tick(GameUnit.TICK)
+	check(guest._order_target() == target, "guest started its attack on the calm subject")
+	check(w.ai._player_target(guest_hire) == target, "guest hire answers its hero's call")
+	check(w.ai._player_target(host_hire) != target, "host hire ignores the guest's call")
+	guest.command({"type":"stop"})
+	host_hire.attack(target)
+	host_hire._tick(GameUnit.TICK)
+	check(host_hire._order_target() == target, "host hire started its attack on the calm subject")
+	check(w.ai._player_target(guest) != target, "guest hero ignores the host hire's call")
+	check(w.ai._player_target(guest_hire) != target, "guest hire ignores the host hire's call")
+	host_hire.command({"type":"stop"})
+
+func check_dragon_peasants(w: GameWorld, hero: GameUnit) -> void:
+	# zone1's two dragon triggers use opposite forms of Any(i, Peasans, IsEnemy(i, 0)).
+	var peasants: Array = w.vm.globals.get("Peasans", [])
+	check(peasants.size() == 3, "the authored dragon approach has three peasants")
+	if peasants.size() != 3: return
+	var victim: GameUnit = peasants[0]
+	var untouched: GameUnit = peasants[1]
+	for peasant: GameUnit in peasants:
+		w.set_relation(peasant.faction, 0, 1)
+	var inst := ScriptVM.Instance.new()
+	var args := [[ScriptParser.N_VAR, "i"], [ScriptParser.N_NUM, 0.0]]
+	var group_args := [[ScriptParser.N_VAR, "i"], [ScriptParser.N_VAR, "Peasans"], [ScriptParser.N_CALL, "IsEnemy", args]]
+	check(not w.vm._call("Any", group_args, inst), "the peaceful dragon branch starts eligible")
+	w.ai._hate(victim, 0, true)
+	check(w.is_enemy(victim, hero) and not w.is_enemy(untouched, hero), "the provoked peasant alone retargets")
+	check(bool(w.vm._call("Any", group_args, inst)), "the attacked peasant selects the hostile dragon branch")
+	inst.locals.i = victim
+	check(bool(w.vm._call("IsEnemy", [args[0], [ScriptParser.N_NUM, 32.0]], inst)), "the original side bit wraps at 32")
+	inst.locals.i = untouched
+	check(not w.vm._call("IsEnemy", args, inst), "the untouched peasant remains neutral in the script")
+	w.set_relation(victim.faction, 0, 2)
+	w.ai._hate(victim, 0, true)
+	victim.set_meta("peace", [0])
+	inst.locals.i = victim
+	check(not w.is_enemy(victim, hero) and not w.vm._call("IsEnemy", args, inst), "personal peace suppresses the faction and personal enemy in both queries")
+
+
 func _ready() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"auto_graphics":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
 	TutorialPanel.auto_show = false
@@ -73,6 +121,18 @@ func _ready() -> void:
 	check(not w.is_enemy(far, hero), "a friend beyond every radius stays neutral")
 	check(not w.is_enemy(stranger, hero), "a nearby unit of another side stays neutral")
 	check(not w.is_enemy(near, victim) and not w.is_enemy(victim, near), "the friends stay friends")
+	# Check direct inheritance before the next world tick can deliver a nearby friend's claim.
+	var guest := spawn(s, 990306, at, hero.faction, 0.0)
+	var guest_hire := spawn(s, 990307, at, hero.faction, 0.0)
+	var host_hire := spawn(s, 990308, at, hero.faction, 0.0)
+	guest.controller = 1
+	guest_hire.controller = guest.controller
+	host_hire.controller = hero.controller
+	w.ai._hate(guest, 23, true)
+	for u: GameUnit in [hero, host_hire, guest, guest_hire, stranger]:
+		check(w.ai._hates(u, 23) == (u.controller == guest.controller), "only the provoked owner's party inherits hostility on unit %d" % u.uid)
+	check_party_calls(s, host_hire, guest, guest_hire)
+	check_dragon_peasants(w, hero)
 	g.queue_free(); s.queue_free(); await get_tree().process_frame
 	print("HOSTILITY_SPREAD ", checks, " checks ", failures, " failures")
 	get_tree().quit(0 if failures == 0 else 1)

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.0.0-experimental.9
+
+- Unreal co-op host and guest run one shared implementation of the field and gamepad controls, including selection keys, Follow, Use/Steal, belt casts, weapon shortcuts, lever use and the camera.
+- Unreal co-op scopes personal hostility, party calls for help, attack-move waits, follower collision waits and movement retries to each player's own party. Scripted hostility checks, faction diplomacy and the minimap's hostile and Curse markers follow the same rules. The Godot edition's scripted hostility check also includes personal hostility.
+- When an Unreal co-op hero falls, a living companion keeps its field equipment, belt, inventory and Use/Steal and can revive the hero. Inventory opens on a living member of the player's own party.
+- In the Unreal original multiplayer mode, a private base and its inventory are kept until the return succeeds. Worn equipment and unequipped purchases are carried back, repairs are charged, departure tolls are shared, and a player joining an active quest receives its current state. Script party and sight queries answer for the requested player.
+- Unreal Lost in Astral chests check the lock skill and show its hint. Co-op guests see the Lost in Astral camp fire, roster portraits and inner armour surfaces under path tracing. Character and equipment previews are lit under path tracing, and saved quest markers return after loading in the Windows package.
+- Unreal online Autochess guests see and hear the host's whole fight, including spells, hits, item effects, lightning, blood marks and fighters spawned during the fight. Guest shop sounds follow the host's answer. An online game no longer freezes for several seconds while its courtyards load, and the actions and round badge share one row.
+- Unreal reuses the prepared main menu island when returning to the menu or switching campaigns.
+
+Unreal co-op uses protocol 1032 and online Arena uses protocol 1007. See [the release notes](docs/releases/2.0.0-experimental.9.md).
+
 ## 2.0.0-experimental.8
 
 - Unreal co-op guests use the host's campaign rules for camera and gamepad input, selected-party orders, movement gait, targeting and revival. Guest movement updates, route markers and field feedback are more consistent.

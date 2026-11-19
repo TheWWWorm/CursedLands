@@ -796,20 +796,24 @@ func weather_sight_factor() -> float:
 
 
 func is_enemy(a: GameUnit, b: GameUnit) -> bool:
+	return is_enemy_side(a, b.faction)
+
+
+func is_enemy_side(a: GameUnit, side: int) -> bool:
 	# actor AND actor AND target-side bit.
 	# Taming clears the tamer's bit in the actor's allowed mask
 	# suppressing both diplomacy and hit-induced hate. This is directional:
 	# the target's allowed mask does not participate in the actor's query.
-	if a.has_meta("peace") and b.faction in a.get_meta("peace"):
+	if a.has_meta("peace") and side in a.get_meta("peace"):
 		return false
 	#  sets a side's bit in a unit's own hostility mask:
 	# the unit is then hostile to that side whatever the diplomacy (meta "hate").
 	# Kept per zone world: the sides are the zone's (a hero carries no hate on).
 	if a.has_meta("hate"):
 		var hate: Dictionary = a.get_meta("hate")
-		if int(hate.get("w", 0)) == get_instance_id() and b.faction in hate.get("f", []):
+		if int(hate.get("w", 0)) == get_instance_id() and side in hate.get("f", []):
 			return true
-	return relation(a.faction, b.faction) == 2
+	return relation(a.faction, side) == 2
 
 
 func draw_frame_enabled() -> bool:

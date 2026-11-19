@@ -908,7 +908,7 @@ func _call(name: String, a: Array, inst: Instance):
 			return 1.0 if u and not u.dead else 0.0
 		"IsEnemy":
 			var u := _unit(v[0])
-			return 1.0 if u and world.relation(u.faction, int(_num(v[1]))) == 2 else 0.0
+			return 1.0 if u and world.is_enemy_side(u, int(_num(v[1])) & 31) else 0.0
 		# Builtin 0xb1 IsPlayerInDanger(player): the player's combat flag
 		# (player == 2,; UnitAI._player_in_combat).
 		"IsPlayerInDanger": return 1.0 if _in_danger() else 0.0
