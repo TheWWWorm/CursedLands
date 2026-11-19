@@ -2,7 +2,7 @@
 // Replaced with content hashes and engine-only files by tools/export_mobile.py.
 // The "2" marks the cache layout that stores the shell under the scope URL;
 // older caches stored a redirected copy of index.html and are deleted below.
-const ENGINE_CACHE = 'cursed-engine-2-0a9e58254fcc8d9870df';
+const ENGINE_CACHE = 'cursed-engine-2-35e58040f5ae569ffc49';
 // Hosts may redirect /index.html to / (Cloudflare Workers assets do). A
 // redirected response must never answer a navigation (the browser fails it
 // with ERR_FAILED), so the shell is fetched and stored as "./".
@@ -15,16 +15,16 @@ const HASHES = {
 "index.apple-touch-icon.png": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
 "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
 "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
-"index.html": "3a0ee88e52240712e37f39384bf7b3a307b7912f02f560d4a73147e3bc8cc12a",
+"index.html": "12747a9c2c023ed1b4cbc7931d07c8e6b138985b38231646d56fa7f3a052bbcd",
 "index.icon.png": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
 "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
-"index.pck": "d1775c444d1031230433881ca32c87bb1bae7440f2e8df6bee0aa7354421f9d0",
+"index.pck": "ad3624ce82d44bf3c640b04fcdb486b4422839c59bebf62ac07c1beb210a1f0c",
 "index.png": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
 "index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
 "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
 "manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
 "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581"
-};   // file name â†’ SHA-256
+};   // file name → SHA-256
 const ENGINE_FILES = Object.keys(HASHES).map(name => name === 'index.html' ? SHELL : new URL(name, SHELL).href);
 let progress = {type: 'progress', loaded: 0, total: 0};
 let lastBroadcast = 0;
