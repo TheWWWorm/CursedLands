@@ -86,5 +86,22 @@
   "222": "Unreal-only tactical pause and audio mixer regression registered in tools/tests/test_unreal_pause_camera.py.",
   "223": "Unreal-only character light regression registered in tools/tests/test_unreal_character_light.py, with native Original, Lumen and path-traced comparisons.",
   "224": "Unreal-only native regression registered in tools/tests/test_unreal_talk_lit.py. It checks the pending NPC before the list opens, with the list open, and during spoken dialogue.",
-  "225": "Unreal-only native high-resolution terrain atlas sampling regression registered in tools/tests/test_unreal_mods_import.py."
+  "225": "Unreal-only native high-resolution terrain atlas sampling regression registered in tools/tests/test_unreal_mods_import.py.",
+  "227": "Unreal-only rain loop regression registered in tools/tests/test_unreal_rain_loop.py, with the weather rule in prototypes/unreal/EIFormats/tests/eiformats_tests.cpp.",
+  "232": "Unreal-only idle variant regression registered in tools/tests/test_unreal_idle_variants.py.",
+  "233": "Unreal-only weather idle line regression registered in tools/tests/test_unreal_bored_weather.py, with the acks table in prototypes/unreal/EIFormats/tests/audio_tests.cpp.",
+  "236": "Unreal-only liquid tile animation and Original-preset wave regressions registered in tools/tests/test_unreal_water_tile_frames.py and tools/tests/test_unreal_original_water_waves.py.",
+  "237": "Unreal-only modern lava crust and light regression registered in tools/tests/test_unreal_lava_look.py.",
+  "238": "Unreal-only direct-view pointer lock regression registered in tools/tests/test_unreal_mouse_look_lock.py.",
+  "239": "Unreal-only camp spell rune regression registered in tools/tests/test_unreal_camp_spell_runes.py.",
+  "240": "Unreal-only gait switch footprint regression registered in tools/tests/test_unreal_footprint_gait_switch.py.",
+  "242": "Unreal-only footprint orientation regression registered in tools/tests/test_unreal_footprint_render_toe.py.",
+  "244": "Unreal-only options rows regression (select_type) registered in tools/tests/test_unreal_options_tabs.py and prototypes/unreal/EIFormats/tests/options_tests.cpp.",
+  "245": "Unreal-only options rows regression (aim_press_once) registered in tools/tests/test_unreal_options_tabs.py and prototypes/unreal/EIFormats/tests/options_tests.cpp.",
+  "253": "Unreal-only automation test CursedLands.Campaign.AI.FearWatchBehind, run by tools/tests/test_unreal_gh_issue_regressions.py.",
+  "256": "Unreal-only automation test CursedLands.Campaign.Posture.DeferredCross, run by tools/tests/test_unreal_gh_issue_regressions.py.",
+  "257": "Unreal-only automation test CursedLands.Campaign.Posture.DeferredCross, run by tools/tests/test_unreal_gh_issue_regressions.py.",
+  "259": "Unreal-only talk walk regression in tools/tests/test_unreal_gh_issue_regressions.py (test_a_finished_talk_walk_is_stopped_before_the_cast_faces).",
+  "260": "Unreal-only native navigation regression testNavCutBlockGraph in prototypes/unreal/EIFormats/tests/nav_tests.cpp.",
+  "261": "Unreal-only automation test CursedLands.Campaign.Travel.ReturnForgetsParty, run by tools/tests/test_unreal_gh_issue_regressions.py."
 }

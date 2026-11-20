@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.0-experimental.10
+
+- Unreal co-op host and guest share the spell keys and slots, spell refusals, the field cursor, the belt and its direct-view aim, the aim wheel, gamepad buttons, target cycling, minimap marks, journal clicks, item tips and the unit panel. Shift-clicking a unit adds it without reviving, the message log no longer blocks field clicks, and both seats refuse Select all in a network game.
+- Unreal prepares terrain, merged scenery, leafy models, collision and static navigation on worker threads and upscales load-time textures faster. Big co-op fights send more current poses to guests when the host's frame rate drops.
+- Unreal offers the selection marker and hold-to-aim options again. [#244](https://github.com/TheWWWorm/CursedLands/issues/244) [#245](https://github.com/TheWWWorm/CursedLands/issues/245)
+- Unreal pause orders: a stance taken back is not played and a stance change no longer interrupts an attack ordered in the same pause. [#256](https://github.com/TheWWWorm/CursedLands/issues/256) [#257](https://github.com/TheWWWorm/CursedLands/issues/257)
+- Unreal fearful creatures flee from sensed heroes behind them, enemies forget the party when it enters a zone again, a hero turns to the speaker after walking up to talk, and long routes on large maps reach their goal. [#253](https://github.com/TheWWWorm/CursedLands/issues/253) [#261](https://github.com/TheWWWorm/CursedLands/issues/261) [#259](https://github.com/TheWWWorm/CursedLands/issues/259) [#260](https://github.com/TheWWWorm/CursedLands/issues/260)
+- Unreal plays the rain's own loop and picks idle lines for the shown rain or snow. [#227](https://github.com/TheWWWorm/CursedLands/issues/227) [#233](https://github.com/TheWWWorm/CursedLands/issues/233)
+- Unreal animates the original's water and lava tiles, keeps their waves under the Original preset, and fixes modern lava's sliding crust and light spots. [#236](https://github.com/TheWWWorm/CursedLands/issues/236) [#237](https://github.com/TheWWWorm/CursedLands/issues/237)
+- Unreal footprints point toe forward and gait switches leave no extra prints. [#242](https://github.com/TheWWWorm/CursedLands/issues/242) [#240](https://github.com/TheWWWorm/CursedLands/issues/240)
+- Unreal standing units pick a new idle each cycle and village script poses hold until an order. [#232](https://github.com/TheWWWorm/CursedLands/issues/232)
+- Unreal draws spell runes in the camp slots instead of the spell column. [#239](https://github.com/TheWWWorm/CursedLands/issues/239)
+- Unreal direct-view mouse look keeps the pointer inside the window. [#238](https://github.com/TheWWWorm/CursedLands/issues/238)
+- Unreal keeps the village talk highlight during conversations, makes the unit panel's view tabs clickable with the original's sounds and restarts the menu theme under the Network game screens.
+
+Unreal co-op uses protocol 1033 and online Arena uses protocol 1007. See [the release notes](docs/releases/2.0.0-experimental.10.md).
+
 ## 2.0.0-experimental.9
 
 - Unreal co-op host and guest run one shared implementation of the field and gamepad controls, including selection keys, Follow, Use/Steal, belt casts, weapon shortcuts, lever use and the camera.
