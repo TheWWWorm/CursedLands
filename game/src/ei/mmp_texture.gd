@@ -13,6 +13,9 @@ static var _raw_kernel: RefCounted = ClassDB.instantiate("MmpTextureKernel") \
 ## Texture packs may supply a PNG for an MMP entry (remake-only). Readers
 ## receive the PNG bytes from the archive overlay and decode them here.
 const PNG_SIGNATURE := [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]
+## "EIFLIPV1": a mod texture marked flip_vertical (CL-205) arrives behind these bytes from ResArchive.read;
+## the decoders read the file after them and flip its rows. The Unreal port's mmp::FlipMarker is the same.
+const FLIP_MARKER := "EIFLIPV1"
 const MAX_SIDE := 16384
 const MAX_PIXELS := 64 * 1024 * 1024
 
@@ -26,8 +29,14 @@ static func is_png(data: PackedByteArray) -> bool:
 	return true
 
 
+static func is_flipped(data: PackedByteArray) -> bool:
+	return data.size() > FLIP_MARKER.length() and data.slice(0, FLIP_MARKER.length()) == FLIP_MARKER.to_ascii_buffer()
+
+
 ## Pixel size from an MMP or PNG header without decoding; ZERO if neither.
 static func image_size(data: PackedByteArray) -> Vector2i:
+	if is_flipped(data):
+		return image_size(data.slice(FLIP_MARKER.length()))
 	if is_png(data):
 		# IHDR follows the signature: big-endian width and height.
 		return Vector2i(_be32(data, 16), _be32(data, 20))
@@ -70,6 +79,11 @@ static func _decode_png(data: PackedByteArray) -> Image:
 
 
 static func decode(data: PackedByteArray) -> Image:
+	if is_flipped(data):
+		var turned := decode(data.slice(FLIP_MARKER.length()))
+		if turned:
+			turned.flip_y()
+		return turned
 	if is_png(data):
 		return _decode_png(data)
 	if data.size() < DATA_OFFSET or data.decode_u32(0) != MAGIC:
@@ -104,6 +118,12 @@ static func decode(data: PackedByteArray) -> Image:
 ## CPU image callers continue to use decode(); HD/redress images need their
 ## own generated mipmaps after editing.
 static func decode_texture(data: PackedByteArray, allow_compressed: bool) -> Image:
+	if is_flipped(data):
+		# A flipped texture has no authored DXT levels to keep: decode, flip, then its own mips.
+		var turned := decode(data)
+		if turned:
+			turned.generate_mipmaps()
+		return turned
 	if is_png(data):
 		var png := _decode_png(data)
 		if png:

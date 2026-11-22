@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.0.0-experimental.11
+
+- Unreal: selected units are drawn white in both selection modes, as in the original, and each co-op seat draws its own selection. [#273](https://github.com/TheWWWorm/CursedLands/issues/273)
+- Unreal: a crawling or kneeling hero ordered to attack stands up at once and strikes. [#120](https://github.com/TheWWWorm/CursedLands/issues/120)
+- Unreal: spell school knowledge counts the illusion perk for divination and the enchantments perk for healing and domination, so traders stock and heroes can equip those ready spells as in the original. The magic help lists Fire, Lightning, Acid, Sensory and Astral knowledge. [#135](https://github.com/TheWWWorm/CursedLands/issues/135)
+- Unreal: a run ordered across a long route that was only partly planned walks on toward the goal. Hit monsters walk round to foes they can reach, and melee units aim their strike at a moving target's next position. [#137](https://github.com/TheWWWorm/CursedLands/issues/137) [#250](https://github.com/TheWWWorm/CursedLands/issues/250) [#252](https://github.com/TheWWWorm/CursedLands/issues/252)
+- Unreal: health is shown rounded and hit numbers are taken over the shown health. Wand and potion casts from the belt are heard by enemies. [#254](https://github.com/TheWWWorm/CursedLands/issues/254) [#255](https://github.com/TheWWWorm/CursedLands/issues/255)
+- Unreal: a save keeps a hero's current move and attack orders. In network play, a character is saved when a trader closes and before the host leaves. [#251](https://github.com/TheWWWorm/CursedLands/issues/251) [#277](https://github.com/TheWWWorm/CursedLands/issues/277)
+- Unreal: villagers finish their scripted walks. Clicking a villager with nothing to say plays the original's click, and no idle lines are said in villages. [#247](https://github.com/TheWWWorm/CursedLands/issues/247) [#274](https://github.com/TheWWWorm/CursedLands/issues/274) [#249](https://github.com/TheWWWorm/CursedLands/issues/249)
+- Unreal: the selection mark stays on a bridge deck, order previews plan routes as the order will, and path marks stay on the water surface. The modern camera follows bridge decks. [#269](https://github.com/TheWWWorm/CursedLands/issues/269) [#265](https://github.com/TheWWWorm/CursedLands/issues/265) [#248](https://github.com/TheWWWorm/CursedLands/issues/248) [#234](https://github.com/TheWWWorm/CursedLands/issues/234)
+- Unreal: a replanned walk no longer repeats its footprints and steps. Spell effects and lights the party cannot see stay hidden in the fog. [#263](https://github.com/TheWWWorm/CursedLands/issues/263) [#268](https://github.com/TheWWWorm/CursedLands/issues/268)
+- Unreal: torches and statue flames placed by the maps burn. Lava glows without Water and lava effects, objects under lava no longer glint through it, and animated water and lava tiles have no seams. [#270](https://github.com/TheWWWorm/CursedLands/issues/270) [#266](https://github.com/TheWWWorm/CursedLands/issues/266) [#267](https://github.com/TheWWWorm/CursedLands/issues/267) [#272](https://github.com/TheWWWorm/CursedLands/issues/272)
+- Unreal: extra leaves grow only on broad-leaved trees and bushes. [#271](https://github.com/TheWWWorm/CursedLands/issues/271)
+- Unreal: spell runes are arranged round the icon as in the original, and only spells show the rune ring in the camp. The character doll turns about its torso. A wheel notch moves the camp lists by one row. [#264](https://github.com/TheWWWorm/CursedLands/issues/264) [#275](https://github.com/TheWWWorm/CursedLands/issues/275) [#276](https://github.com/TheWWWorm/CursedLands/issues/276) [#278](https://github.com/TheWWWorm/CursedLands/issues/278)
+- Unreal: the aim wheel works in the first- and third-person views. Camera speed also scales the original camera's pan, turn and tilt. [#246](https://github.com/TheWWWorm/CursedLands/issues/246) [#235](https://github.com/TheWWWorm/CursedLands/issues/235)
+- Unreal: the journal lists failed quests separately and marks failed objectives. Quest lights follow scenery that carries a quest. The tutorial guide pauses the game, and a loaded save keeps its camera view.
+- Unreal: a co-op guest entering a location gets the host's time of day at once. The Riendel villa fires cast shadows. Mods can use PNG textures and flipped textures, `reload_textures` reloads them in a running single-player game, and the console runs any script function without an unlock word.
+- Unreal: remake rules are read from the player's settings for every game instead of a per-game copy.
+- Unreal: many smaller fixes to scripts, combat, traps, loot, trading, training, the HUD, network play and Autochess.
+
+Unreal co-op uses protocol 1034 and online Arena uses protocol 1007. See [the release notes](docs/releases/2.0.0-experimental.11.md).
+
 ## 2.0.0-experimental.10
 
 - Unreal co-op host and guest share the spell keys and slots, spell refusals, the field cursor, the belt and its direct-view aim, the aim wheel, gamepad buttons, target cycling, minimap marks, journal clicks, item tips and the unit panel. Shift-clicking a unit adds it without reviving, the message log no longer blocks field clicks, and both seats refuse Select all in a network game.

@@ -17056,9 +17056,9 @@
       "category": "focused",
       "script": "tools/tests/mod_texture_png.gd",
       "marker": "MOD_TEXTURE_PNG",
-      "min_checks": 35,
+      "min_checks": 41,
       "quick": false,
-      "description": "Texture packs replace MMP entries with PNG images through the real package reader, including menus.res signpost textures loaded as RGBA while non-texture menus.res entries stay rejected; a high-resolution armour layer composes at its own size over an original-size skin, and disabling the package restores the originals.",
+      "description": "Texture packs replace MMP entries with PNG images through the real package reader, including menus.res signpost textures loaded as RGBA while non-texture menus.res entries stay rejected; a flip_vertical override decodes upside down through the image probe and texture paths, and a non-boolean flip_vertical is rejected; a high-resolution armour layer composes at its own size over an original-size skin, and disabling the package restores the originals.",
       "kind": "remake_regression",
       "timeout": 420,
       "args": [

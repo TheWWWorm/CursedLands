@@ -845,6 +845,11 @@ func read_figure(file: String) -> PackedByteArray:
 
 
 ## Cached, mipmapped texture for objects; null if missing.
+## The decoded textures, emptied for a texture reload (Session.reload_textures, CL-204).
+func clear_texture_cache() -> void:
+	_texture_cache.clear()
+
+
 func get_texture(name: String, authored_mips := false) -> Texture2D:
 	name = name.to_lower()
 	var key := name + ("#authored_mips" if authored_mips else "")

@@ -48,6 +48,7 @@ func _ready() -> void:
 	var skin_size := original_skin.get_size()
 	var big := skin_size.x * 4
 	var world := GameData.textures.names_with_suffix(".mmp")[0].trim_suffix(".mmp")
+	var turned := GameData.textures.names_with_suffix(".mmp")[1].trim_suffix(".mmp")
 	# A signpost texture that only menus.res holds, so load_image must take the menus path.
 	var menu := ""
 	for n: String in (GameData.menus.names_with_suffix(".mmp") if GameData.menus else PackedStringArray()):
@@ -69,10 +70,17 @@ func _ready() -> void:
 	m.overrides = [
 		{"archive":"redress.res","entry":mask+"png-armour.mmp","file":"redress.res/png-armour.png"},
 		{"archive":"redress.res","entry":mask+"png-skin.mmp","file":"redress.res/png-skin.png"},
-		{"archive":"textures.res","entry":world+".mmp","file":"textures.res/world.png"}, menu_override]
+		{"archive":"textures.res","entry":world+".mmp","file":"textures.res/world.png"}, menu_override,
+		{"archive":"textures.res","entry":turned+".mmp","file":"textures.res/turned.png","flip_vertical":true}]
 	check(ModSchema.manifest_error(m).is_empty(), "PNG replacement files are accepted for MMP entries")
+	# CL-205: flip_vertical is true or false, on a texture override or the package.
+	var bad_flip := m.duplicate(true); bad_flip.overrides[4].flip_vertical = 1
+	check(not ModSchema.manifest_error(bad_flip).is_empty(), "a non-boolean flip_vertical is rejected")
+	var package_flip := m.duplicate(true); package_flip.flip_vertical = "yes"
+	check(not ModSchema.manifest_error(package_flip).is_empty(), "a non-boolean package flip_vertical is rejected")
 	var assets := {"redress.res/png-armour.png":png(big, blue, true), "redress.res/png-skin.png":png(skin_size.x, red),
-		"textures.res/world.png":png(128, green), "menus.res/signpost.png":png(96, yellow)}
+		"textures.res/world.png":png(128, green), "menus.res/signpost.png":png(96, yellow),
+		"textures.res/turned.png":png(64, green, true)}
 	check(ModStore.import_package(pack(m, assets)).is_empty(), "PNG texture package imports")
 	check(ModStore.create_profile("PNG texture test").is_empty(), "create isolated texture profile")
 	check(ModStore.set_packages(["png.fixture@1.0"]).is_empty(), "select PNG package")
@@ -81,7 +89,23 @@ func _ready() -> void:
 	check(GameData.textures.read(world + ".mmp") == assets["textures.res/world.png"], "world texture reader returns the PNG replacement")
 	var world_image := GameData.load_image(world)
 	check(world_image != null and world_image.get_size() == Vector2i(128, 128) and world_image.get_pixel(3, 3).is_equal_approx(green), "world texture loads from PNG")
+	# CL-205: the flipped PNG's transparent top half is drawn at the bottom; the probes see through the marker.
+	var turned_bytes := GameData.textures.read(turned + ".mmp")
+	check(EIMmp.is_flipped(turned_bytes) and EIMmp.image_size(turned_bytes) == Vector2i(64, 64), "a flipped override reads behind its marker")
+	var turned_image := GameData.load_image(turned)
+	check(turned_image != null and turned_image.get_pixel(3, 3).is_equal_approx(green) and turned_image.get_pixel(3, 60).a < 0.01, "a flip_vertical texture decodes upside down")
+	var turned_tex := GameData.get_texture(turned, true)
+	check(turned_tex != null and turned_tex.get_image().get_pixel(3, 3).is_equal_approx(green), "the flipped texture path keeps the flip")
+	check(GameData.textures.read_original(turned + ".mmp") != turned_bytes, "the original texture is untouched")
 	var world_tex := GameData.get_texture(world, true)
+	# CL-204: an edited mod file shows after the caches are emptied, without a restart or a remount.
+	var reload_path := ModStore.override_path("textures.res", turned + ".mmp")
+	var edited := FileAccess.open(reload_path, FileAccess.WRITE)
+	edited.store_buffer(png(32, blue)); edited.close()
+	check(GameData.get_texture(turned, true).get_width() == 64, "the cached texture stays until a reload")
+	DataSwitch.clear_caches(); GameData.clear_texture_cache()
+	var reloaded := GameData.get_texture(turned, true)
+	check(reloaded != null and reloaded.get_width() == 32 and reloaded.get_image().get_pixel(3, 3).is_equal_approx(blue), "a texture reload decodes the edited mod file")
 	check(world_tex != null and world_tex.get_width() == 128, "authored-mip texture path accepts PNG")
 	check(GameData.menus.read(menu + ".mmp") == assets["menus.res/signpost.png"], "menus.res reader returns the signpost PNG")
 	var menu_image := GameData.load_image(menu)

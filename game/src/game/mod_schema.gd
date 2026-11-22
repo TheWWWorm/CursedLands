@@ -137,7 +137,10 @@ static func manifest_error(m: Variant) -> String:
 		if not a is Dictionary or not safe_path(a.get("file")) or not safe_path(a.get("entry")): return "Invalid override path."
 		if a.get("archive", "") not in RESOURCE_ARCHIVES + ["sfx.res", "speech.res"]: return RemakeText.t("Mods can replace textures.res, redress.res, menus.res, sfx.res and speech.res.")
 		if a.archive in RESOURCE_ARCHIVES and not a.entry.ends_with(".mmp"): return RemakeText.t("Texture overrides must be MMP files.")
+		# CL-205: a texture may be marked as authored upside down (or the whole package, as its default).
+		if a.has("flip_vertical") and (not a.flip_vertical is bool or a.archive not in RESOURCE_ARCHIVES): return "Invalid archive overrides."
 		if m.api == 2 and not resource_entry(a.archive, a.entry): return "Package API 2 currently supports texture packs only."
+	if m.has("flip_vertical") and not m.flip_vertical is bool: return "Invalid archive overrides."
 	if not m.get("attachments", []) is Array or m.get("attachments", []).size() > 64: return "Invalid mod documentation."
 	if m.api == 1 and not m.get("attachments", []).is_empty(): return "Mod documentation needs package API 2."
 	for path in m.get("attachments", []):

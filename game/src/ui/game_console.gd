@@ -391,6 +391,7 @@ func run(line:String):
 			else:_write(_path(name),"\n".join(lines)+"\n")
 			return
 		"lastfps":append(str(Engine.get_frames_per_second()));return
+		"reload_textures":_reload_textures();return
 		"cursor":_cursor(words);return
 	if not unlocked:append(RemakeText.t("Type thingamabob to unlock console commands."));return
 	if cmd in ["quit","exit"]:get_tree().quit();return
@@ -430,3 +431,14 @@ func run(line:String):
 	if is_instance_valid(s.game):
 		for u:GameUnit in s.game.selected:selection.append(u.uid)
 	s.submit({"t":"console","line":line,"request":_request,"selection":selection})
+
+
+func _reload_textures() -> void:
+	# CL-204: runs in this (rendering) process, which owns the texture caches; the save and load go through
+	# the local simulation service when there is one.
+	var s:=_bind_session()
+	if s==null:append(RemakeText.t("Start or load a campaign first."));return
+	if not s.texture_reload_allowed():append(RemakeText.t("Texture reload needs a single-player game outside loading and cinematics."));return
+	append(RemakeText.t("Reloading textures..."))
+	var ok:bool=await s.reload_textures()
+	if is_instance_valid(self):append(RemakeText.t("Textures reloaded.") if ok else RemakeText.t("Could not reload the textures."))

@@ -25,6 +25,7 @@ const ROWS := [
 	["copy","Copy console output.","copy"],
 	["clear","Clear console output.","clear"],
 	["lastfps","Print rendered frames per second.","lastfps"],
+	["reload_textures","Reload mod textures: save, decode every texture again from the mod files and load the game back. Single-player only.","reload_textures"],
 	["cursor [on [0.05..10]|off]","Show map coordinates and a teleport command for ground under the cursor; otherwise show screen pixels. Use on to log continuously, even with the console closed; off stops. Default interval: 0.1 s (0.05-10 s).","cursor on 0.1"],
 	["console t|b|c|l|r|f","Place the console at the top, bottom, centre, left, right or fullscreen.","console f"],
 	["history N","Set the number of retained output lines.","history 500"],

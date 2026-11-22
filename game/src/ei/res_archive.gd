@@ -52,7 +52,11 @@ func has(name: String) -> bool:
 
 func read(name: String) -> PackedByteArray:
 	var replacement := ModStore.override_path(_archive_name, name)
-	if not replacement.is_empty(): return FileAccess.get_file_as_bytes(replacement)
+	if not replacement.is_empty():
+		var file := FileAccess.get_file_as_bytes(replacement)
+		# CL-205: EIMmp decodes the file behind its marker and turns the rows upside down.
+		if not file.is_empty() and ModStore.override_flipped(_archive_name, name): return EIMmp.FLIP_MARKER.to_ascii_buffer() + file
+		return file
 	var data := read_original(name)
 	return AstralPatches.database_entry(name,data) if astral_patches else data
 

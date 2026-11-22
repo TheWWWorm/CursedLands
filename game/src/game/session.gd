@@ -5567,6 +5567,35 @@ func load_game(slot: String) -> bool:
 	return _load_state(slot, s)
 
 
+## CL-204: a texture modder's reload. The game is saved to a slot of its own, every decoded texture cache
+## is emptied and that save is loaded again, so the terrain, scenery, units and interface decode their
+## textures afresh from the mounted mod files (the overlay reads the files on each read). Single-player
+## only: a host's load reloads every co-op seat. The slot is removed afterwards.
+const TEXTURE_RELOAD_SLOT := "texture_reload"
+
+func texture_reload_allowed() -> bool:
+	if loading_game or movie_active() or ending_active or world == null or not lmp.is_empty():
+		return false
+	if local_host.frontend:
+		return local_host.single_player
+	return is_host and multiplayer.get_peers().is_empty()
+
+func reload_textures() -> bool:
+	if not texture_reload_allowed():
+		return false
+	if local_host.frontend:
+		var answer := await local_host.request("save", {"slot": TEXTURE_RELOAD_SLOT, "name": "", "camera": local_host.view(), "image": PackedByteArray()})
+		if not bool(answer.get("ok", false)):
+			return false
+	elif save_game(TEXTURE_RELOAD_SLOT) != OK:
+		return false
+	DataSwitch.clear_caches()
+	GameData.clear_texture_cache()
+	var ok := await load_game_shown(TEXTURE_RELOAD_SLOT)
+	SaveInfo.delete(TEXTURE_RELOAD_SLOT)
+	return ok
+
+
 ## Cover the frontend before waiting for a local simulation service. Its
 ## startup/request can yield many frames before the host sends load-prepare.
 func load_game_shown(slot: String) -> bool:

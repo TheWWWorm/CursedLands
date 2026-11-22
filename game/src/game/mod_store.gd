@@ -14,6 +14,7 @@ static var startup_error := ""
 static var _loaded := false
 static var _session: WeakRef
 static var _archives: Dictionary = {}
+static var _flipped: Dictionary = {}  # "archive/entry" of overrides drawn upside down (CL-205)
 static var data_revision := 0
 static var _mounted: Array = []
 static var _config_bad := false
@@ -460,14 +461,25 @@ static func mount() -> String:
 	if startup_error != "":
 		_mounted.clear()
 		return startup_error
+	_flipped.clear()
 	for key in _mounted:
 		var m: Dictionary = catalog[key]
-		for a in m.get("overrides", []): _archives[a.archive + "/" + a.entry.to_lower()] = m._root.path_join(a.file)
+		for a in m.get("overrides", []):
+			var slot: String = a.archive + "/" + a.entry.to_lower()
+			_archives[slot] = m._root.path_join(a.file)
+			# CL-205: a texture authored upside down (flip_vertical, or the package's default); a later package's
+			# override replaces the file and its orientation together.
+			if a.archive in ModSchema.RESOURCE_ARCHIVES and bool(a.get("flip_vertical", m.get("flip_vertical", false))): _flipped[slot] = true
+			else: _flipped.erase(slot)
 	GameData.difficulty = GameData.option("difficulty")
 	return startup_error
 
 static func override_path(archive: String, entry: String) -> String:
 	return str(_archives.get(archive.to_lower() + "/" + entry.to_lower(), ""))
+
+## The override is drawn upside down (flip_vertical, CL-205).
+static func override_flipped(archive: String, entry: String) -> bool:
+	return _flipped.has(archive.to_lower() + "/" + entry.to_lower())
 
 static func override_entries(archive: String) -> Array:
 	var out := []
