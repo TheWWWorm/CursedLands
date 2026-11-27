@@ -495,7 +495,8 @@ func _rpc_request(serial: int, command: String, data: Dictionary) -> void:
 				frame = Image.new()
 				if frame.load_png_from_buffer(png) != OK:
 					frame = null
-			var error := session.save_game(String(data.get("slot", "")), String(data.get("name", "")), frame)
+			var error := session.save_game(String(data.get("slot", "")), String(data.get("name", "")), frame,
+				single_player and bool(data.get("private_snapshot", false)))
 			result.ok = error in [OK, ERR_BUSY]
 			result.queued = error == ERR_BUSY
 			result.error = int(error)

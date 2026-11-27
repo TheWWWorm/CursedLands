@@ -5415,7 +5415,7 @@ func _leader() -> GameUnit:
 ## frame captured when the game switched to its menus, the save's shot
 ## without it (quick / auto saves) the frame
 ## screen shortly after.
-func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
+func save_game(slot: String, save_name := "", frame: Image = null, private_snapshot := false) -> Error:
 	if mod_script_failed: return ERR_UNAVAILABLE
 	if local_host.frontend:
 		local_host.save(slot, save_name, frame)
@@ -5431,10 +5431,10 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
 	if loading_game:
 		return ERR_UNAVAILABLE
 	if coop.purse_active():   # mid-command of a joiner (its purse in state): right after
-		save_game.call_deferred(slot, save_name, frame)
+		if not private_snapshot: save_game.call_deferred(slot, save_name, frame)
 		return ERR_BUSY
 	if movie_active():
-		_movie_saves[slot] = [save_name, frame]
+		if not private_snapshot: _movie_saves[slot] = [save_name, frame]
 		return ERR_BUSY
 	swap.cancel_all()   # return offered items before the authoritative save snapshot
 	_capture_save_state()
@@ -5446,9 +5446,9 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
 		SaveInfo.write(slot, state.get_var(0, "gtime"), _allod_id(), zone_id, save_name)
 		if frame:
 			SaveInfo.write_shot_image(slot, frame)
-		elif not local_host.worker:
+		elif not private_snapshot and not local_host.worker:
 			SaveInfo.write_shot(slot, get_viewport())
-		local_host.saved(slot, frame != null)
+		if not private_snapshot: local_host.saved(slot, frame != null)
 	# No log line: the original checks the free space first («no_disc_space» box
 	# load_panel) and shows nothing after a save; while it saves it shows
 	# «string notify_saving» (NotifyLine; after the shot, so the
@@ -5571,7 +5571,6 @@ func load_game(slot: String) -> bool:
 ## is emptied and that save is loaded again, so the terrain, scenery, units and interface decode their
 ## textures afresh from the mounted mod files (the overlay reads the files on each read). Single-player
 ## only: a host's load reloads every co-op seat. The slot is removed afterwards.
-const TEXTURE_RELOAD_SLOT := "texture_reload"
 
 func texture_reload_allowed() -> bool:
 	if loading_game or movie_active() or ending_active or world == null or not lmp.is_empty():
@@ -5583,17 +5582,30 @@ func texture_reload_allowed() -> bool:
 func reload_textures() -> bool:
 	if not texture_reload_allowed():
 		return false
-	if local_host.frontend:
-		var answer := await local_host.request("save", {"slot": TEXTURE_RELOAD_SLOT, "name": "", "camera": local_host.view(), "image": PackedByteArray()})
-		if not bool(answer.get("ok", false)):
-			return false
-	elif save_game(TEXTURE_RELOAD_SLOT) != OK:
+	# The directory is owned by this invocation. An imported save and any orphaned
+	# sidecars can therefore keep their original names.
+	var folder := "texture-reload-" + Crypto.new().generate_random_bytes(16).hex_encode()
+	var root := SaveInfo.directory()
+	var directory := root.path_join(folder)
+	if DirAccess.make_dir_recursive_absolute(root) != OK or DirAccess.make_dir_absolute(directory) != OK:
 		return false
-	DataSwitch.clear_caches()
-	GameData.clear_texture_cache()
-	var ok := await load_game_shown(TEXTURE_RELOAD_SLOT)
-	SaveInfo.delete(TEXTURE_RELOAD_SLOT)
-	return ok
+	var slot := folder.path_join("state")
+	var saved: bool
+	if local_host.frontend:
+		var answer := await local_host.request("save", {"slot":slot, "camera":local_host.view(), "private_snapshot":true})
+		saved = bool(answer.get("ok", false)) and not bool(answer.get("queued", false))
+	else:
+		saved = save_game(slot, "", null, true) == OK
+	var loaded := false
+	if saved:
+		DataSwitch.clear_caches()
+		GameData.clear_texture_cache()
+		loaded = await load_game_shown(slot)
+	for ext in ["sav", "info.sav"]:
+		var file := directory.path_join("state." + ext)
+		if FileAccess.file_exists(file): DirAccess.remove_absolute(file)
+	DirAccess.remove_absolute(directory)
+	return loaded
 
 
 ## Cover the frontend before waiting for a local simulation service. Its

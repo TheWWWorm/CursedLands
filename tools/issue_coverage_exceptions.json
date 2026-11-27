@@ -133,5 +133,12 @@
   "275": "Unreal-only camp rune ring regression registered in tools/tests/test_unreal_camp_spell_runes.py.",
   "276": "Unreal-only character doll pivot regression registered in tools/tests/test_unreal_doll_pivot.py.",
   "277": "Unreal-only network character save regression registered in tools/tests/test_unreal_lmp_bag.py (automation CursedLands.Development.Lmp.BagKept).",
-  "278": "Unreal-only camp list wheel regression in tools/tests/test_unreal_audit_fixed_regressions.py (test_wheel_glides_the_rows)."
+  "278": "Unreal-only camp list wheel regression in tools/tests/test_unreal_audit_fixed_regressions.py (test_wheel_glides_the_rows).",
+  "280": "Unreal-only hero light regression registered in tools/tests/test_unreal_hero_light_cd.py (test_the_night_light_is_the_cd_releases).",
+  "283": "Unreal-only quest light regression registered in tools/tests/test_unreal_quest_light_look.py, with the carried light height in tools/tests/test_unreal_gh_issue_regressions.py (automation CursedLands.Coop.Quest.CarriedLightHeight).",
+  "284": "Unreal-only talk highlight regression registered in tools/tests/test_unreal_talk_lit.py (test_the_last_topic_keeps_the_white_to_the_end).",
+  "285": "Unreal-only CD 1.06 camera, profile and lighting regressions: automation CursedLands.Campaign.Camera.CdPitchRange, CdSpeeds and CdDistances run by tools/tests/test_unreal_gh_issue_regressions.py, and tools/tests/test_unreal_objects_lighting_cd.py.",
+  "279": "Unreal-only automation test CursedLands.Campaign.Party.HireControlledMerc, run by tools/tests/test_unreal_gh_issue_regressions.py.",
+  "281": "Unreal-only automation test CursedLands.Coop.Session.LmpSharedClock, run by tools/tests/test_unreal_gh_issue_regressions.py.",
+  "282": "Unreal-only automation test CursedLands.Camp.DollIdlesWhenPaused, run by tools/tests/test_unreal_gh_issue_regressions.py, with the game run in tools/tests/test_unreal_travel_camp_doll.py."
 }

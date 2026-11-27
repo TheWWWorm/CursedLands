@@ -365,7 +365,7 @@ static func rescan() -> void:
 		if folder != key or catalog.has(key):
 			errors.append(RemakeText.t("Invalid installed package folder: %s") % folder)
 			continue
-		var result := inspect_package(base, m)
+		var result := inspect_package(base, m, Callable(), true)
 		if not result.error.is_empty():
 			errors.append(key + ": " + RemakeText.t(result.error))
 			continue
@@ -373,7 +373,7 @@ static func rescan() -> void:
 
 ## Read-only verification can run on an installer worker. Publishing the
 ## resulting entry does not need to rehash every installed pack on the UI thread.
-static func inspect_package(base: String, manifest: Dictionary, cancelled := Callable()) -> Dictionary:
+static func inspect_package(base: String, manifest: Dictionary, cancelled := Callable(), installed := false) -> Dictionary:
 	var error := ModSchema.manifest_error(manifest)
 	if not error.is_empty(): return {"error": error}
 	var file := FileAccess.open(base.path_join("mod.json"), FileAccess.READ)
@@ -382,10 +382,15 @@ static func inspect_package(base: String, manifest: Dictionary, cancelled := Cal
 	var total := file.get_length()
 	var hashes := {}
 	var script_bytes := 0
+	var missing := []
+	var required: Array = manifest.get("attachments", []) + manifest.get("script", {}).get("modules", {}).values()
 	for name in ModSchema.asset_files(manifest):
 		if cancelled.is_valid() and cancelled.call(): return {"error": "Download cancelled."}
 		var path := base.path_join(name)
 		var asset := FileAccess.open(path, FileAccess.READ)
+		if asset == null and installed and name not in required and not FileAccess.file_exists(path) and not DirAccess.dir_exists_absolute(path):
+			missing.append(name)
+			continue
 		if asset == null or asset.get_length() > MAX_PACKAGE: return {"error": RemakeText.t("Missing or oversized asset: %s") % name}
 		if name in manifest.get("script", {}).get("modules", {}).values():
 			script_bytes += asset.get_length()
@@ -396,6 +401,7 @@ static func inspect_package(base: String, manifest: Dictionary, cancelled := Cal
 	var entry := manifest.duplicate(true)
 	entry._digest = ModSchema.digest({"manifest": manifest, "files": hashes})
 	entry._root = base
+	if not missing.is_empty(): entry._missing = missing
 	return {"error": "", "package": entry}
 
 static func resolve(p: Dictionary) -> Dictionary:
@@ -433,7 +439,8 @@ static func resolve(p: Dictionary) -> Dictionary:
 	for key in order:
 		var m: Dictionary = catalog[key]
 		var writes := []
-		for a in m.get("overrides", []): writes.append("asset:" + a.archive + "/" + a.entry.to_lower())
+		for a in m.get("overrides", []):
+			if a.file not in m.get("_missing", []): writes.append("asset:" + a.archive + "/" + a.entry.to_lower())
 		for patch in m.get("patches", []): writes.append("db:" + patch.get("database", "campaign") + "/" + patch.table + "/" + patch.record.to_lower() + "/" + patch.field)
 		for o in m.get("options", []):
 			if not str(o.get("binding", "")).is_empty(): writes.append("binding:" + o.binding)
@@ -465,6 +472,9 @@ static func mount() -> String:
 	for key in _mounted:
 		var m: Dictionary = catalog[key]
 		for a in m.get("overrides", []):
+			if a.file in m.get("_missing", []):
+				push_warning("MOD_OVERRIDE_MISSING: %s: %s" % [key, a.file])
+				continue
 			var slot: String = a.archive + "/" + a.entry.to_lower()
 			_archives[slot] = m._root.path_join(a.file)
 			# CL-205: a texture authored upside down (flip_vertical, or the package's default); a later package's

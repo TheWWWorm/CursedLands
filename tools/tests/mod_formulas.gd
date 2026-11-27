@@ -180,6 +180,16 @@ func _ready() -> void:
 		XpRules.give(s, 100.0)
 		check(ModFormula.invocations == calls, "failed authority cannot re-enter Lua")
 		dispose(s)
+	var mixed_key := "example.expedition-xp@1.0.0"
+	var mixed_root: String = ModStore.catalog[mixed_key]._root
+	var mixed := manifest()
+	mixed.overrides = [{"archive":"textures.res", "entry":"zone1001.mmp", "file":"absent.mmp"}]
+	check(ModStore.atomic_write(mixed_root.path_join("mod.json"), JSON.stringify(mixed).to_utf8_buffer()) == "", "declare an absent optional texture in the installed formula package")
+	ModStore.rescan()
+	check(mount([mixed_key]) == "", "installed formula verifies and mounts with an absent texture")
+	check(DirAccess.remove_absolute(ProjectSettings.globalize_path(mixed_root.path_join("main.lua"))) == OK, "remove the required formula module")
+	ModStore.rescan()
+	check(not ModStore.catalog.has(mixed_key), "an absent formula source still invalidates the installed package")
 	check(ModStore.select_profile("default") == "" and ModStore.mount() == "", "return to unmodded profile clears scripts")
 	vanilla = probe()
 	calls = ModFormula.invocations

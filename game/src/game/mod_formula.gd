@@ -26,7 +26,7 @@ static func mount(order: Array) -> String:
 		if not m.has("script"): continue
 		if not supported(): return RemakeText.t("Formula mods currently require Windows or Linux on a 64-bit PC.")
 		if not _load_runtime(): return RemakeText.t("The formula runtime is unavailable. Reinstall this game build.")
-		var verified := ModStore.inspect_package(m._root, _manifest(m))
+		var verified := ModStore.inspect_package(m._root, _manifest(m), Callable(), true)
 		if verified.error != "" or verified.package._digest != m._digest: return RemakeText.t("The formula package changed. Reinstall the matching version.")
 		var sources := {}
 		for name in m.script.modules:
@@ -47,6 +47,7 @@ static func _manifest(m: Dictionary) -> Dictionary:
 	var copy := m.duplicate(true)
 	copy.erase("_root")
 	copy.erase("_digest")
+	copy.erase("_missing")
 	return copy
 
 static func _kernel(bundle: Dictionary) -> Dictionary:
